@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογισμός Βημάτων — Επανάληψη × Βήμα</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ffedd5,#fdba74);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#9a3412,#ea580c);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fff7ed;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#9a3412;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.stage-box{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:16px;margin-bottom:14px;position:relative;overflow:hidden}
+.road{height:60px;background:linear-gradient(90deg,#334155 0%,#334155 100%);border-radius:8px;position:relative;margin:10px 0}
+.road-line{position:absolute;top:50%;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#fbbf24 0px,#fbbf24 20px,transparent 20px,transparent 35px);transform:translateY(-50%)}
+.cat-sprite{position:absolute;top:50%;transform:translateY(-50%);font-size:1.8em;transition:left .3s}
+.start-mark{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:.7em;color:#22c55e;font-weight:700}
+.end-mark{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.7em;color:#ef4444;font-weight:700}
+.distance-label{text-align:center;font-size:.85em;font-weight:700;color:#9a3412;margin:8px 0}
+.formula-box{background:#1e293b;border-radius:14px;padding:16px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.9em;text-align:center;line-height:2.2}
+.formula-box .kw{color:#fdba74;font-weight:700}
+.formula-box .val{color:#34d399;font-weight:700}
+.formula-box .op{color:#fbbf24}
+.formula-input{display:inline-block;width:60px;padding:4px 8px;border-radius:8px;background:#334155;border:2px solid #64748b;text-align:center;font-size:1em;color:#fff;font-weight:700;outline:none;font-family:'Courier New',monospace}
+.formula-input:focus{border-color:#ea580c;background:#3d2a1e}
+.scratch-block{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.85em;font-weight:600;color:#fff;margin:4px}
+.block-repeat{background:#f59e0b}
+.block-move{background:#3b82f6}
+.block-flag{background:#22c55e}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-run{background:linear-gradient(135deg,#9a3412,#ea580c);color:#fff}
+.btn-run:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(154,52,18,.4)}
+.btn-run:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.challenge-cards{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:14px}
+.ch-card{padding:10px 16px;background:#fff7ed;border:2px solid #fdba74;border-radius:12px;cursor:pointer;font-size:.85em;transition:all .2s;text-align:center;user-select:none;min-width:120px}
+.ch-card:hover{transform:translateY(-2px);border-color:#ea580c}
+.ch-card.active{background:#ea580c;color:#fff;border-color:#9a3412}
+.ch-card.done{opacity:.5;pointer-events:none}
+.ch-card .ch-label{font-weight:700;color:#9a3412}
+.ch-card.active .ch-label{color:#fff}
+@media(max-width:600px){.formula-box{font-size:.78em;padding:12px}.formula-input{width:45px;font-size:.85em}.ch-card{min-width:90px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .scratch-block > * + * { margin-left: 6px; }
+  .controls > * + * { margin-left: 15px; }
+  .challenge-cards > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🐱 Υπολογισμός Βημάτων Scratch</h1>
+<p>Βρες πόσα βήματα χρειάζεται η γάτα για να διασχίσει τον δρόμο!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch: <b>Συνολικά βήματα = Επαναλήψεις × Μέγεθος Βήματος</b>. Π.χ. αν κάνεις 10 φορές × 20 βήματα = 200 βήματα συνολικά!</div>
+<div class="score-bar">Πρόκληση <span id="roundNum">1</span>/<span id="roundTotal">5</span> — <span id="scoreStr">0</span> σωστά</div>
+<div class="challenge-cards" id="challengeCards"></div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-run" id="runBtn" onclick="checkAnswer()">▶️ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetRound()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var challenges=[
+{distance:200,stepSize:10,repetitions:20,desc:'Δρόμος 200 βημάτων'},
+{distance:200,stepSize:5,repetitions:40,desc:'Δρόμος 200 βημάτων'},
+{distance:200,stepSize:20,repetitions:10,desc:'Δρόμος 200 βημάτων'},
+{distance:200,stepSize:25,repetitions:8,desc:'Δρόμος 200 βημάτων'},
+{distance:200,stepSize:4,repetitions:50,desc:'Δρόμος 200 βημάτων'}
+];
+
+var currentRound=0;
+var score=0;
+
+function renderRound(){
+var ch=challenges[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=challenges.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+renderChallengeCards();
+var area=document.getElementById('gameArea');
+var html='<div class="stage-box">';
+html+='<div class="distance-label">🎯 Στόχος: <b>'+ch.distance+' βήματα</b></div>';
+html+='<div class="road"><div class="road-line"></div><span class="start-mark">ΑΡΧΗ</span><span class="end-mark">'+ch.distance+'</span><span class="cat-sprite" id="catSprite" style="left:8px">🐱</span></div>';
+html+='</div>';
+html+='<div class="formula-box">';
+html+='<div><span class="block-flag">🚩 Όταν πατηθεί πράσινη σημαία</span></div>';
+html+='<div><span class="block-repeat">Επανάλαβε <input class="formula-input" id="repInput" type="number" min="1" max="100" placeholder="?"> φορές</span></div>';
+html+='<div><span class="block-move">Κινήσου <span class="val">'+ch.stepSize+'</span> βήματα</span></div>';
+html+='</div>';
+html+='<div style="text-align:center;margin-top:8px;font-size:.82em;color:#9a3412">Μέγεθος βήματος = <b>'+ch.stepSize+'</b> — Πόσες φορές πρέπει να επαναλάβεις;</div>';
+area.innerHTML=html;
+}
+
+function renderChallengeCards(){
+var container=document.getElementById('challengeCards');
+container.innerHTML='';
+for(var i=0;i<challenges.length;i++){
+var ch=challenges[i];
+var div=document.createElement('div');
+div.className='ch-card'+(i===currentRound?' active':'')+(i<currentRound?' done':'');
+div.innerHTML='<div class="ch-label">'+ch.desc+'</div><div style="font-size:.75em">βήμα: '+ch.stepSize+'</div>';
+div.onclick=function(idx){return function(){if(idx!==currentRound){currentRound=idx;renderRound();}};}(i);
+container.appendChild(div);
+}
+}
+
+function checkAnswer(){
+var ch=challenges[currentRound];
+var input=document.getElementById('repInput');
+var val=parseInt(input.value);
+if(isNaN(val)||val<1){
+showFeedback('⚠️ Γράψε έναν αριθμό μεγαλύτερο από 0!',false);
+return;
+}
+var total=val*ch.stepSize;
+var cat=document.getElementById('catSprite');
+if(total===ch.distance){
+score++;
+showFeedback('🎉 Σωστά! '+val+' × '+ch.stepSize+' = '+total+' βήματα! Η γάτα έφτασε!',true);
+document.getElementById('scoreStr').textContent=score;
+animateCat(true);
+setTimeout(function(){
+if(currentRound<challenges.length-1){currentRound++;renderRound();}
+else showFinal();
+},2200);
+}else{
+var hint=total>ch.distance?'περισσότερα από ':'λιγότερα από ';
+showFeedback('❌ '+val+' × '+ch.stepSize+' = '+total+' — '+hint+ch.distance+'! Δοκίμασε ξανά.',false);
+animateCat(false,total,ch.distance);
+}
+}
+
+function animateCat(success,total,dist){
+var cat=document.getElementById('catSprite');
+var roadWidth=cat.parentElement.offsetWidth-60;
+if(success){
+cat.style.transition='left 1s ease-in-out';
+cat.style.left=(roadWidth)+'px';
+}else{
+var pct=Math.min((total/dist),1.5);
+cat.style.transition='left 1s ease-in-out';
+cat.style.left=Math.max(8,Math.min(roadWidth*pct,roadWidth))+'px';
+setTimeout(function(){
+cat.style.transition='left .5s';
+cat.style.left='8px';
+},1200);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/challenges.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Υπολόγισες σωστά όλες τις επαναλήψεις!';
+else if(pct>=60)msg='👏 Μπράβο! '+score+'/'+challenges.length+' σωστά!';
+else msg='💪 '+score+'/'+challenges.length+' σωστά. Δοκίμασε ξανά!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=60?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#9a3412">'+msg+'</div>';
+}
+
+function resetRound(){
+renderRound();
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+renderRound();
+</script>
+</body>
+</html>

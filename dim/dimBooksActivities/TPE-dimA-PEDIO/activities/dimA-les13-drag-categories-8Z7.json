@@ -1,0 +1,48 @@
+{
+  "title": "Καλώρια δικτύου",
+  "subtitle": "Διάκρινε ποιος είναι συνδεδεμένος και ποιος όχι",
+  "categories": [
+    {
+      "id": "connected",
+      "name": "ΣΥΝΔΕΔΕΜΕΝΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "disconnected",
+      "name": "ΜΗ ΣΥΝΔΕΔΕΜΕΝΟΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Καλώδιο δικτύου",
+      "category": "connected"
+    },
+    {
+      "id": "item2",
+      "text": "Wi-Fi",
+      "category": "connected"
+    },
+    {
+      "id": "item3",
+      "text": "USB stick",
+      "category": "disconnected"
+    },
+    {
+      "id": "item4",
+      "text": "Δρομολογητής",
+      "category": "connected"
+    },
+    {
+      "id": "item5",
+      "text": "Μόνος υπολογιστής",
+      "category": "disconnected"
+    },
+    {
+      "id": "item6",
+      "text": "Hub",
+      "category": "connected"
+    }
+  ]
+}

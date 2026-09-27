@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Κίνδυνος ή Πρόληψη;",
+  "subtitle": "Ταξινόμησε κάθε όρο",
+  "instructions": "Πάτα αριστερό βέλος για Κίνδυνο, δεξιό για Μέτρο Πρόληψης",
+  "categories": [
+    { "id": "danger", "name": "Κίνδυνος", "color": "#f44336", "key": "ArrowLeft" },
+    { "id": "prevent", "name": "Μέτρο Πρόληψης", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Hacking - Εισβολή", "category": "danger" },
+    { "text": "Antivirus", "category": "prevent" },
+    { "text": "Phishing - Απάτη", "category": "danger" },
+    { "text": "Ισχυρός κωδικός", "category": "prevent" },
+    { "text": "Malware - Ιός", "category": "danger" },
+    { "text": "Ενημέρωση λογισμικού", "category": "prevent" },
+    { "text": "Cyberbullying", "category": "danger" },
+    { "text": "Αποφυγή ύποπτων email", "category": "prevent" },
+    { "text": "Εξάρτηση από διαδίκτυο", "category": "danger" },
+    { "text": "Κρυπτογράφηση δεδομένων", "category": "prevent" }
+  ],
+  "duration": 30
+}

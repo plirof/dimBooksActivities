@@ -1,0 +1,40 @@
+{
+    "id": "dimE-les30-match-tvz",
+    "title": "Creative Commons - Άδειες χρήσης - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "CC-BY",
+                "right": "Αναφορά δημιουργού"
+            },
+            {
+                "left": "CC-BY-NC",
+                "right": "Αναφορά + μη εμπορική"
+            },
+            {
+                "left": "CC-BY-ND",
+                "right": "Αναφορά + όχι παράγωγα"
+            },
+            {
+                "left": "CC-BY-SA",
+                "right": "Αναφορά + ίδια άδεια"
+            },
+            {
+                "left": "Creative Commons",
+                "right": "Άδειες νόμιμης χρήσης"
+            },
+            {
+                "left": "Πνευματικά δικαιώματα",
+                "right": "Νόμιμη προστασία δημιουργημάτων"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les30",
+        "creativecommons"
+    ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κουμπί", "error": false},
+        {"text": "τερματισμού", "error": true, "correct": "ενεργοποίησης", "feedback": "Για να ανοίξουμε πατάμε το κουμπί ενεργοποίησης!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ανοίξει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάνω", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "παράθυρο", "error": true, "correct": "εικονίδιο", "feedback": "Κάνουμε κλικ στο εικονίδιο, όχι στο παράθυρο!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ανοίξει", "error": false},
+        {"text": "εφαρμογή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "εικονίδιο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "μεγάλο", "error": true, "correct": "μικρό", "feedback": "Το εικονίδιο είναι μια μικρή εικόνα!"},
+        {"text": "στην", "error": false},
+        {"text": "οθόνη.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κλείσω", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "ενεργοποίηση", "error": true, "correct": "τερματισμό", "feedback": "Για να κλείσουμε κάνουμε τερματισμό!"},
+        {"text": "του", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    }
+  ]
+}

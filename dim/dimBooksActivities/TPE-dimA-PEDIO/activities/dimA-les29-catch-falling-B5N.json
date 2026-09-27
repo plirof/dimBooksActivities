@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Σχήματα & Εργαλεία",
+  "subtitle": "Πιάσε τα σχήματα και τα εργαλεία!",
+  "instructions": "Πιάστε μόνο ΣΧΗΜΑΤΑ και ΕΡΓΑΛΕΙΑ ζωγραφικής! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Κύκλος", "correct": true, "color": "#4CAF50"},
+    {"text": "Καρέκλα", "correct": false, "color": "#f44336"},
+    {"text": "Γόμα", "correct": true, "color": "#2196F3"},
+    {"text": "Γάτα", "correct": false, "color": "#FF9800"},
+    {"text": "Τετράγωνο", "correct": true, "color": "#9C27B0"},
+    {"text": "Κουνέλι", "correct": false, "color": "#E91E63"},
+    {"text": "Έλλειψη", "correct": true, "color": "#009688"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FFC107"},
+    {"text": "Αναίρεση", "correct": true, "color": "#795548"},
+    {"text": "Μπάνιο", "correct": false, "color": "#607D8B"}
+  ]
+}

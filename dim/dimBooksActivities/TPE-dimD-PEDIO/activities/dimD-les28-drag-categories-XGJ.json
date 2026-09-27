@@ -1,0 +1,48 @@
+{
+  "title": "Με άδεια ή Χωρίς άδεια",
+  "subtitle": "Διάκρινε τα υλικά με άδεια από αυτά χωρίς",
+  "categories": [
+    {
+      "id": "with",
+      "name": "ΜΕ ΑΔΕΙΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "without",
+      "name": "ΧΩΡΙΣ ΑΔΕΙΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📸 Photo με CC-BY",
+      "category": "with"
+    },
+    {
+      "id": "item2",
+      "text": "🎵 Pop τραγούδι",
+      "category": "without"
+    },
+    {
+      "id": "item3",
+      "text": "🖼️ Δημόσια εικόνα",
+      "category": "with"
+    },
+    {
+      "id": "item4",
+      "text": "🎬 Blockbuster",
+      "category": "without"
+    },
+    {
+      "id": "item5",
+      "text": "📝 Wikipedia κείμενο",
+      "category": "with"
+    },
+    {
+      "id": "item6",
+      "text": "🎵 MP3 download",
+      "category": "without"
+    }
+  ]
+}

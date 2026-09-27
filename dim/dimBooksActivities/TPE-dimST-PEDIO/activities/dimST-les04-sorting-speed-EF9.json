@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υποπρόγραμμα ή Πρόγραμμα;",
+  "subtitle": "Ταξινόμησε κάθε χαρακτηριστικό",
+  "instructions": "Πάτα αριστερό βέλος για Υποπρόγραμμα, δεξιό για Κύριο Πρόγραμμα",
+  "categories": [
+    { "id": "sub", "name": "Υποπρόγραμμα", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "main", "name": "Κύριο Πρόγραμμα", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Ορισμός νέας εντολής", "category": "sub" },
+    { "text": "Συμβάν πράσινης σημαίας", "category": "main" },
+    { "text": "Μεταβλητή εισόδου", "category": "sub" },
+    { "text": "Εντολή ρώτησε...", "category": "main" },
+    { "text": "Υπολογισμός μήκους", "category": "sub" },
+    { "text": "Κλήση υποπρογράμματος", "category": "main" },
+    { "text": "Εμφάνιση αποτελέσματος", "category": "sub" },
+    { "text": "Εντολή πες...", "category": "main" },
+    { "text": "Παίρνει ακτίνα ως είσοδο", "category": "sub" },
+    { "text": "Ζητάει ακτίνα από χρήστη", "category": "main" }
+  ],
+  "duration": 30
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Υπολογιστικό Φύλλο",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "στήλες", "error": false, "correct": "", "feedback": "" },
+        { "text": "έχουν", "error": false, "correct": "", "feedback": "" },
+        { "text": "ονόματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "με", "error": false, "correct": "", "feedback": "" },
+        { "text": "ελληνικά", "error": true, "correct": "λατινικά", "feedback": "Οι στήλες έχουν ΛΑΤΙΝΙΚΑ γράμματα A, B, C, D..." },
+        { "text": "γράμματα.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "όνομα", "error": false, "correct": "", "feedback": "" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "κελιού", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "αριθμός", "error": true, "correct": "στήλη και αριθμός γραμμής", "feedback": "Το όνομα του κελιού είναι π.χ. B3 (γράμμα στήλης + αριθμός γραμμής)" },
+        { "text": "γραμμής.", "error": true, "correct": "γραμμής.", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "αριθμοί", "error": false, "correct": "", "feedback": "" },
+        { "text": "στοιχίζονται", "error": false, "correct": "", "feedback": "" },
+        { "text": "αυτόματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αριστερά.", "error": true, "correct": "δεξιά.", "feedback": "Οι αριθμοί στοιχίζονται ΔΕΞΙΑ. Οι λέξεις αριστερά." }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "εισαγάγεις", "error": false, "correct": "", "feedback": "" },
+        { "text": "γραμμή", "error": false, "correct": "", "feedback": "" },
+        { "text": "κάνεις", "error": false, "correct": "", "feedback": "" },
+        { "text": "αριστερό", "error": true, "correct": "δεξί", "feedback": "Κάνεις ΔΕΞΙ κλικ στο όνομα γραμμής" },
+        { "text": "κλικ.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

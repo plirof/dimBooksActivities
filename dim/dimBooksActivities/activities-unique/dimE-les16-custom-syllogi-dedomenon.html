@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συλλογή Δεδομένων | Μάθημα 16</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.main{max-width:650px;width:100%}
+.round-box{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.round-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.scenario{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.scenario .s-text{color:#e2e8f0;font-size:.75rem;line-height:1.5}
+.scenario .s-icon{font-size:1.3rem;display:block;margin-bottom:4px}
+.pool-area{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px;min-height:44px;padding:6px;background:#1e293b;border-radius:10px;border:1px dashed #475569}
+.pool-item{padding:8px 14px;border-radius:10px;font-size:.72rem;font-weight:600;cursor:grab;transition:all .2s;user-select:none;touch-action:none;border:2px solid transparent}
+.pool-item:hover{transform:translateY(-2px)}
+.pool-item:active{cursor:grabbing;transform:scale(.95)}
+.sources-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:8px}
+.source-col{background:#1e293b;border-radius:12px;padding:10px;border:2px dashed #475569;min-height:120px;transition:all .3s}
+.source-col.dragover{border-color:#6366f1;background:#1e1b4b}
+.source-col.correct{border-color:#22c55e;background:#22c55e11}
+.source-col .col-header{text-align:center;font-size:.72rem;font-weight:700;color:#fbbf24;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #334155}
+.source-col .col-items{display:flex;flex-direction:column;gap:4px}
+.placed-item{padding:6px 10px;border-radius:8px;font-size:.68rem;font-weight:600;text-align:center;cursor:pointer;transition:all .2s;background:#334155;color:#e2e8f0}
+.placed-item:hover{background:#475569}
+.placed-item.wrong{border:2px solid #ef4444;background:#ef444422;color:#f87171}
+.placed-item.correct-placement{border:2px solid #22c55e;background:#22c55e22;color:#4ade80}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.feedback.info{color:#94a3b8}
+@media(max-width:500px){.sources-grid{grid-template-columns:1fr}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .round-title > * + * { margin-left: 6px; }
+  .pool-area > * { margin: 3px; }
+  .source-col .col-items > * + * { margin-top: 4px; }
+  .nav-btns > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Συλλογή Δεδομένων</h1>
+<p class="subtitle">Ταξινόμησε τις πηγές και τις μεθόδους συλλογής δεδομένων!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Γύρος:</span> <span id="roundNum">1</span>/5</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var rounds=[
+{
+scenario:{icon:'🌍',text:'Θέλεις να μάθεις πόσοι μαθητές στην Ελλάδα χρησιμοποιούν διαδίκτυο για τα μαθήματά τους.'},
+pool:['Ερωτηματολόγιο στην τάξη','Στατιστική Υπηρεσία','Παρατήρηση στο εργαστήριο','Άρθρο από το διαδίκτυο','Συνέντευξη από φίλο','Δημοσιευμένα στοιχεία ΕΛΣΤΑΤ'],
+slots:[
+{name:'Δημοσιευμένα Δεδομένα',icon:'📰',accept:['Στατιστική Υπηρεσία','Άρθρο από το διαδίκτυο','Δημοσιευμένα στοιχεία ΕΛΣΤΑΤ']},
+{name:'Δικά μας Δεδομένα',icon:'✏️',accept:['Ερωτηματολόγιο στην τάξη','Παρατήρηση στο εργαστήριο','Συνέντευξη από φίλο']}
+],
+info:'Τα δημοσιευμένα δεδομένα τα βρίσκουμε έτοιμα από επίσημες πηγές. Τα δικά μας δεδομένα τα συλλέγουμε μόνοι μας!'
+},
+{
+scenario:{icon:'🏫',text:'Θέλεις να μάθεις τι επάγγελμα ονειρεύονται τα παιδιά της τάξης σου.'},
+pool:['Βιβλίο στατιστικής','Συνέντευξη συμμαθητών','Αποτελέσματα εκλογών','Ερωτηματολόγιο','Άρθρο εφημερίδας','Καταγραφή απαντήσεων'],
+slots:[
+{name:'Δημοσιευμένα Δεδομένα',icon:'📰',accept:['Βιβλίο στατιστικής','Αποτελέσματα εκλογών','Άρθρο εφημερίδας']},
+{name:'Δικά μας Δεδομένα',icon:'✏️',accept:['Συνέντευξη συμμαθητών','Ερωτηματολόγιο','Καταγραφή απαντήσεων']}
+],
+info:'Για να μάθεις τι θέλουν τα παιδιά της τάξης σου, πρέπει να ρωτήσεις τα ίδια!'
+},
+{
+scenario:{icon:'☀️',text:'Θέλεις να καταγράψεις πόσες ώρες βγαίνει ο ήλιος κάθε μέρα για ένα μήνα.'},
+pool:['Μετεωρολογικός σταθμός','Καθημερινή παρατήρηση','Καιρική ιστοσελίδα','Ημερολόγιο καταγραφής','Δορυφορική εικόνα','Πρόγνωση καιρού'],
+slots:[
+{name:'Δημοσιευμένα Δεδομένα',icon:'📰',accept:['Μετεωρολογικός σταθμός','Καιρική ιστοσελίδα','Δορυφορική εικόνα']},
+{name:'Δικά μας Δεδομένα',icon:'✏️',accept:['Καθημερινή παρατήρηση','Ημερολόγιο καταγραφής','Πρόγνωση καιρού']}
+],
+info:'Κάποια δεδομένα τα συλλέγουμε μόνοι μας (παρατήρηση) και κάποια τα παίρνουμε από επιστημονικές πηγές.'
+},
+{
+scenario:{icon:'🎮',text:'Θέλεις να μάθεις πόσες ώρες παίζουν παιχνίδια τα παιδιά του σχολείου σου.'},
+pool:['Πανελλαδική έρευνα','Ερώτηση σε φίλους','Ιστολόγιο παιχνιδιών','Φόρμα στο σχολείο','Στατιστική παιχνιδιών','Ομαδική συζήτηση'],
+slots:[
+{name:'Δημοσιευμένα Δεδομένα',icon:'📰',accept:['Πανελλαδική έρευνα','Ιστολόγιο παιχνιδιών','Στατιστική παιχνιδιών']},
+{name:'Δικά μας Δεδομένα',icon:'✏️',accept:['Ερώτηση σε φίλους','Φόρμα στο σχολείο','Ομαδική συζήτηση']}
+],
+info:'Οι έρευνες αγοράς και τα ιστολόγια δημοσιεύουν δεδομένα. Αν θέλεις πληροφορίες για το δικό σου σχολείο, ρώτα τους συμμαθητές σου!'
+},
+{
+scenario:{icon:'🛒',text:'Θέλεις να μάθεις ποια προϊόντα αγοράζουν περισσότερο οι οικογένειες τα Χριστούγεννα.'},
+pool:['Έρευνα σούπερ μάρκετ','Καταγραφή αγορών','Ερωτηματολόγιο γειτονιάς','Ανακοίνωση εμπορικού συλλόγου','Ιστοσελίδα στατιστικής','Συνέντευξη καταστηματαρχών'],
+slots:[
+{name:'Δημοσιευμένα Δεδομένα',icon:'📰',accept:['Έρευνα σούπερ μάρκετ','Ανακοίνωση εμπορικού συλλόγου','Ιστοσελίδα στατιστικής']},
+{name:'Δικά μας Δεδομένα',icon:'✏️',accept:['Καταγραφή αγορών','Ερωτηματολόγιο γειτονιάς','Συνέντευξη καταστηματαρχών']}
+],
+info:'Ο εμπορικός σύλλογος δημοσιεύει στοιχεία πωλήσεων. Μπορείς όμως και μόνος σου να ρωτήσεις ή να καταγράψεις!'
+}
+];
+var currentRound=0;
+var pts=0;
+var placed={};
+var checked=false;
+function render(){
+var main=document.getElementById('main');
+var r=rounds[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+checked=false;
+placed={};
+var h='';
+h+='<div class="round-box">';
+h+='<div class="round-title">📋 Σενάριο '+(currentRound+1)+'</div>';
+h+='<div class="scenario"><span class="s-icon">'+r.scenario.icon+'</span><div class="s-text">'+r.scenario.text+'</div></div>';
+h+='<div style="text-align:center;margin-bottom:8px;color:#94a3b8;font-size:.7rem;">👇 Σύρε κάθε στοιχείο στη σωστή κατηγορία</div>';
+h+='<div class="pool-area" id="poolArea">';
+for(var i=0;i<r.pool.length;i++){
+h+='<div class="pool-item" id="pool'+i+'" draggable="true" onclick="clickPoolItem('+i+')" ondragstart="dragStart(event,'+i+')" style="background:#334155;color:#e2e8f0">'+r.pool[i]+'</div>';
+}
+h+='</div>';
+h+='<div class="sources-grid">';
+for(var j=0;j<r.slots.length;j++){
+h+='<div class="source-col" id="slot'+j+'" ondragover="dragOver(event)" ondrop="drop(event,'+j+')" onclick="clickSlot('+j+')"><div class="col-header">'+r.slots[j].icon+' '+r.slots[j].name+'</div><div class="col-items" id="slotItems'+j+'"></div></div>';
+}
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος</button></div>';
+h+='<div style="margin-top:6px;padding:8px;background:#1e293b;border-radius:8px;font-size:.65rem;color:#64748b;line-height:1.4" id="infoBox">💡 '+r.info+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevRound()"'+(currentRound===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextRound()"'+(currentRound===rounds.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function clickPoolItem(idx){
+if(checked)return;
+var poolEl=document.getElementById('pool'+idx);
+if(!poolEl||poolEl.classList.contains('placed'))return;
+var itemText=rounds[currentRound].pool[idx];
+var firstEmpty=null;
+for(var j=0;j<rounds[currentRound].slots.length;j++){
+var items=document.getElementById('slotItems'+j);
+if(!items)continue;
+if(!placed[j])placed[j]=[];
+if(placed[j].length<rounds[currentRound].slots[j].accept.length){
+firstEmpty=j;break;}
+}
+if(firstEmpty===null)return;
+if(!placed[firstEmpty])placed[firstEmpty]=[];
+placed[firstEmpty].push(idx);
+poolEl.classList.add('placed');
+poolEl.style.display='none';
+renderSlot(firstEmpty);
+}
+function clickSlot(slotIdx){
+if(checked)return;
+if(!placed[slotIdx]||placed[slotIdx].length===0)return;
+var lastIdx=placed[slotIdx].pop();
+var poolEl=document.getElementById('pool'+lastIdx);
+if(poolEl){poolEl.classList.remove('placed');poolEl.style.display='';}
+renderSlot(slotIdx);
+}
+function renderSlot(slotIdx){
+var items=document.getElementById('slotItems'+slotIdx);
+if(!items)return;
+items.innerHTML='';
+var r=rounds[currentRound];
+if(!placed[slotIdx])return;
+for(var i=0;i<placed[slotIdx].length;i++){
+var idx=placed[slotIdx][i];
+var cls='placed-item';
+items.innerHTML+='<div class="'+cls+'">'+r.pool[idx]+'</div>';
+}
+}
+function checkAnswers(){
+var r=rounds[currentRound];
+var allCorrect=true;
+var totalPlaced=0;
+for(var j=0;j<r.slots.length;j++){
+if(!placed[j])placed[j]=[];
+totalPlaced+=placed[j].length;
+var slotItems=document.getElementById('slotItems'+j);
+if(!slotItems)continue;
+var children=slotItems.children;
+for(var k=0;k<children.length;k++){
+var idx=placed[j][k];
+var accepted=r.slots[j].accept;
+if(accepted.indexOf(r.pool[idx])>=0){
+children[k].classList.add('correct-placement');
+}else{
+children[k].classList.add('wrong');
+children[k].textContent+=' ❌';
+allCorrect=false;
+}
+}
+}
+if(totalPlaced!==r.pool.length){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Τοποθέτησε όλα τα στοιχεία!';
+fb.className='feedback fail';
+return;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Σωστή ταξινόμηση!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ Υπάρχουν λάθη. Πάτα πάνω σε λάθος στοιχείο για να το βγάλεις.';
+fb.className='feedback fail';
+document.getElementById('checkBtn').disabled=false;
+checked=false;
+}
+}
+function dragStart(ev,idx){
+ev.dataTransfer.setData('text/plain',idx);
+ev.dataTransfer.effectAllowed='move';
+}
+function dragOver(ev){
+ev.preventDefault();
+ev.dataTransfer.dropEffect='move';
+var col=ev.target.closest('.source-col');
+if(col){col.classList.add('dragover');}
+}
+function drop(ev,slotIdx){
+ev.preventDefault();
+var col=ev.target.closest('.source-col');
+if(col){col.classList.remove('dragover');}
+if(checked)return;
+var idx=parseInt(ev.dataTransfer.getData('text/plain'));
+var poolEl=document.getElementById('pool'+idx);
+if(!poolEl||poolEl.classList.contains('placed'))return;
+if(!placed[slotIdx])placed[slotIdx]=[];
+placed[slotIdx].push(idx);
+poolEl.classList.add('placed');
+poolEl.style.display='none';
+renderSlot(slotIdx);
+}
+function prevRound(){if(currentRound>0){currentRound--;render();}}
+function nextRound(){if(currentRound<rounds.length-1){currentRound++;render();}}
+render();
+</script>
+</body>
+</html>

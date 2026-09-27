@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογιστής: Είσοδος → Αποτέλεσμα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:40px;max-width:600px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+h1{text-align:center;color:#4a3f8a;margin-bottom:6px;font-size:1.6rem}
+.subtitle{text-align:center;color:#8a7fb5;margin-bottom:28px;font-size:.92rem}
+.input-group{margin-bottom:18px}
+.input-group label{display:block;font-weight:600;color:#4a3f8a;margin-bottom:6px;font-size:.95rem}
+.input-group input{width:100%;padding:12px 16px;border:3px solid #ddd;border-radius:12px;font-size:1.05rem;outline:none;transition:border-color .3s;font-family:inherit}
+.input-group input:focus{border-color:#764ba2}
+.btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;font-family:inherit;font-weight:700;transition:transform .2s,box-shadow .2s;margin-top:8px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(118,75,162,.4)}
+.btn:active{transform:translateY(0)}
+.flow-area{margin-top:28px;display:none}
+.flow-title{text-align:center;color:#4a3f8a;font-weight:700;font-size:1.1rem;margin-bottom:16px}
+.flow-chain{display:flex;flex-direction:column;align-items:center;gap:6px}
+.flow-step{background:#f5f3ff;border:2px solid #ddd;border-radius:14px;padding:14px 24px;width:100%;text-align:center;transition:all .4s;opacity:0;transform:translateY(15px)}
+.flow-step.visible{opacity:1;transform:translateY(0);border-color:#764ba2}
+.flow-step .step-label{font-size:.78rem;color:#8a7fb5;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.flow-step .step-value{font-size:1.25rem;font-weight:700;color:#4a3f8a}
+.flow-arrow{font-size:1.5rem;color:#764ba2;opacity:0;transition:opacity .3s}
+.flow-arrow.visible{opacity:1}
+.result-step{background:linear-gradient(135deg,#667eea,#764ba2)!important;border-color:transparent!important}
+.result-step .step-label{color:#e0d7ff!important}
+.result-step .step-value{color:#fff!important;font-size:1.5rem}
+.error-msg{color:#e74c3c;text-align:center;margin-top:10px;font-weight:600;display:none}
+.reset-btn{display:block;margin:20px auto 0;padding:10px 28px;background:#e0d7ff;color:#4a3f8a;border:none;border-radius:10px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600;transition:transform .2s}
+.reset-btn:hover{transform:translateY(-1px)}
+.help-btn{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;font-size:1.5rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(118,75,162,.5);transition:transform .2s,box-shadow .2s;z-index:1000;display:flex;align-items:center;justify-content:center}
+.help-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(118,75,162,.6)}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.visible{display:flex}
+.modal-box{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:28px 26px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;animation:modalPop .35s ease}
+@keyframes modalPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999;transition:color .2s}
+.modal-close:hover{color:#333}
+.modal-title{font-size:1.15rem;font-weight:700;color:#4a3f8a;margin-bottom:14px}
+.modal-box ol{margin:8px 0 8px 20px;color:#4a3f8a;line-height:1.8;font-size:.93rem}
+.modal-box ol strong{color:#333}
+.modal-box p{color:#555;font-size:.9rem;line-height:1.6;margin:8px 0 0}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .flow-chain > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔬 Υπολογιστής: Είσοδος → Αποτέλεσμα</h1>
+<p class="subtitle">Εισήγαγε το όνομά σου και την ακτίνα ενός κύκλου για να υπολογιστεί η περιφέρεια!</p>
+
+<div id="inputArea">
+<div class="input-group">
+<label>👤 Το όνομά σου:</label>
+<input type="text" id="nameInput" placeholder="π.χ. Μαρία">
+</div>
+<div class="input-group">
+<label>📏 Ακτίνα κύκλου (cm):</label>
+<input type="number" id="radiusInput" min="0" step="any" placeholder="π.χ. 5">
+</div>
+<button class="btn" onclick="calculate()">Υπολογισμός Περιφέρειας</button>
+<p id="errorMsg" class="error-msg">Παρακαλώ συμπλήρωσε σωστά όλα τα πεδία!</p>
+</div>
+
+<div id="flowArea" class="flow-area">
+<p class="flow-title">📋 Βήματα Υπολογισμού</p>
+<div class="flow-chain">
+<div class="flow-step" id="step1">
+<div class="step-label">Είσοδος: Όνομα</div>
+<div class="step-value" id="step1Val">-</div>
+</div>
+<div class="flow-arrow" id="arrow1">⬇️</div>
+<div class="flow-step" id="step2">
+<div class="step-label">Είσοδος: Ακτίνα (r)</div>
+<div class="step-value" id="step2Val">-</div>
+</div>
+<div class="flow-arrow" id="arrow2">⬇️</div>
+<div class="flow-step" id="step3">
+<div class="step-label">Τύπος</div>
+<div class="step-value">Περιφέρεια = 2 × π × r</div>
+</div>
+<div class="flow-arrow" id="arrow3">⬇️</div>
+<div class="flow-step" id="step4">
+<div class="step-label">Αντικατάσταση</div>
+<div class="step-value" id="step4Val">-</div>
+</div>
+<div class="flow-arrow" id="arrow4">⬇️</div>
+<div class="flow-step result-step" id="step5">
+<div class="step-label">✅ Αποτέλεσμα</div>
+<div class="step-value" id="step5Val">-</div>
+</div>
+</div>
+<button class="reset-btn" onclick="resetForm()">🔄 Νέος Υπολογισμός</button>
+</div>
+</div>
+
+<button class="help-btn" onclick="toggleModal()">?</button>
+
+<div class="modal-overlay" id="helpModal" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="toggleModal()">&times;</button>
+    <div class="modal-title">💡 Τι θα μάθουμε;</div>
+    <p>Κάθε πρόγραμμα ηλεκτρονικού υπολογιστή λειτουργεί με <strong>3 βήματα</strong>:</p>
+    <ol>
+      <li><strong>Είσοδος (Input)</strong> — Δίνουμε δεδομένα στον υπολογιστή (π.χ. ένα νούμερο).</li>
+      <li><strong>Επεξεργασία (Processing)</strong> — Ο υπολογιστής εκτελεί έναν υπολογισμό με βάση έναν τύπο.</li>
+      <li><strong>Έξοδος (Output)</strong> — Παίρνουμε το αποτέλεσμα!</li>
+    </ol>
+    <p>Σε αυτή τη δραστηριότητα θα δούμε πώς ο υπολογιστής παίρνει την <strong>ακτίνα</strong> ενός κύκλου, εφαρμόζει τον τύπο <em>Περιφέρεια = 2 × π × r</em> και μας δίνει το αποτέλεσμα!</p>
+  </div>
+</div>
+
+<script>
+function toggleModal(){
+  document.getElementById('helpModal').classList.toggle('visible');
+}
+function closeModalOutside(e){
+  if(e.target===document.getElementById('helpModal')) toggleModal();
+}
+function calculate(){
+var name=document.getElementById('nameInput').value.trim();
+var rStr=document.getElementById('radiusInput').value.trim();
+var r=parseFloat(rStr);
+if(!name||!rStr||isNaN(r)||r<=0){
+document.getElementById('errorMsg').style.display='block';
+return;
+}
+document.getElementById('errorMsg').style.display='none';
+document.getElementById('inputArea').style.display='none';
+var area=document.getElementById('flowArea');
+area.style.display='block';
+
+document.getElementById('step1Val').textContent=name;
+document.getElementById('step2Val').textContent=r+' cm';
+document.getElementById('step4Val').textContent='2 × π × '+r+' = 2 × 3.14159... × '+r;
+var circ=(2*Math.PI*r).toFixed(2);
+document.getElementById('step5Val').textContent=circ+' cm';
+
+var steps=['step1','arrow1','step2','arrow2','step3','arrow3','step4','arrow4','step5'];
+steps.forEach(function(id,i){
+setTimeout(function(){
+document.getElementById(id).classList.add('visible');
+},(i+1)*300);
+});
+}
+
+function resetForm(){
+document.getElementById('flowArea').style.display='none';
+document.getElementById('inputArea').style.display='';
+document.getElementById('nameInput').value='';
+document.getElementById('radiusInput').value='';
+var steps=['step1','arrow1','step2','arrow2','step3','arrow3','step4','arrow4','step5'];
+steps.forEach(function(id){
+document.getElementById(id).classList.remove('visible');
+});
+document.getElementById('nameInput').focus();
+}
+
+document.getElementById('radiusInput').addEventListener('keydown',function(e){
+if(e.key==='Enter') calculate();
+});
+</script>
+</body>
+</html>

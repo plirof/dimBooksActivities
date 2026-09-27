@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κύριος Κινητήρας: Τροχός Καίσαρα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:20px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.4rem;margin-bottom:3px;}
+.subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:15px;}
+.tabs{display:flex;gap:4px;margin-bottom:15px;}
+.tab{flex:1;padding:10px;border:none;border-radius:12px;cursor:pointer;font-size:.85rem;font-weight:bold;background:#e0e0e0;color:#666;transition:all .2s;}
+.tab.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 3px 10px rgba(102,126,234,.3);}
+.wheel-section{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap;}
+.arrow-btn{width:50px;height:50px;border-radius:50%;border:none;font-size:1.4rem;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.15);transition:all .2s;}
+.arrow-btn:hover{transform:scale(1.1);}
+.arrow-btn:active{transform:scale(.95);}
+.wheel-wrap{position:relative;width:300px;height:300px;}
+.wheel-svg{width:100%;height:100%;}
+.shift-display{text-align:center;font-size:1.2rem;font-weight:bold;color:#5b3ea8;margin-bottom:12px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:8px;border-radius:12px;}
+.mode-content{display:none;}
+.mode-content.active{display:block;}
+.input-group{margin-bottom:12px;}
+.input-group label{display:block;font-weight:bold;color:#555;margin-bottom:5px;font-size:.9rem;}
+.input-group input,.input-group textarea{width:100%;padding:10px 14px;border:2px solid #e0e0e0;border-radius:12px;font-size:1rem;outline:none;transition:border-color .2s;font-family:inherit;}
+.input-group input:focus,.input-group textarea:focus{border-color:#667eea;}
+.result-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:12px;padding:12px;min-height:50px;word-break:break-all;font-size:1.1rem;font-weight:bold;color:#166534;margin-top:8px;}
+.result-box.error{background:linear-gradient(135deg,#fef2f2,#fecaca);border-color:#f87171;color:#991b1b;}
+.btn{padding:10px 22px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:bold;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-success{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-warning{background:linear-gradient(135deg,#f7971e,#ffd200);color:#333;}
+.challenge-box{background:linear-gradient(135deg,#fefce8,#fef9c3);border:2px solid #fde047;border-radius:12px;padding:15px;margin-bottom:12px;}
+.challenge-box .encrypted-word{font-size:1.5rem;font-weight:bold;letter-spacing:6px;color:#b45309;text-align:center;margin:10px 0;}
+.mapping-row{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-bottom:10px;}
+.mapping-cell{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:bold;border-radius:6px;}
+.mapping-cell.top{background:#ede9fe;color:#5b3ea8;border:1px solid #c4b5fd;}
+.mapping-cell.bot{background:#fff3e0;color:#c2410c;border:1px solid #fdba74;}
+.mapping-cell.highlight{background:#fef08a;color:#854d0e;border-color:#facc15;box-shadow:0 0 6px rgba(250,204,21,.5);}
+.letter-pair{display:flex;flex-direction:column;align-items:center;gap:1px;margin:0 1px;}
+.outer-l{fill:#5b3ea8;font-weight:bold;font-size:13px;}
+.inner-l{fill:#c2410c;font-weight:bold;font-size:12px;}
+.outer-circle{fill:#ede9fe;stroke:#8b5cf6;stroke-width:2;}
+.inner-circle{fill:#fff3e0;stroke:#f59e0b;stroke-width:2;}
+.center-circle{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5;}
+.conn-line{stroke:#a78bfa;stroke-width:1;stroke-dasharray:4,2;opacity:.5;}
+.congrats{text-align:center;padding:20px;}
+.congrats .emoji{font-size:3rem;margin-bottom:8px;}
+.congrats h2{color:#16a34a;font-size:1.3rem;margin-bottom:5px;}
+.congrats p{color:#666;font-size:.95rem;}
+@media(max-width:600px){
+.container{padding:12px;}
+.wheel-wrap{width:260px;height:260px;}
+.arrow-btn{width:40px;height:40px;font-size:1.1rem;}
+.outer-l{font-size:11px;}
+.inner-l{font-size:10px;}
+.mapping-cell{width:26px;height:26px;font-size:.65rem;}
+h1{font-size:1.1rem;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tabs > * + * { margin-left: 4px; }
+  .wheel-section > * { margin: 5px; }
+  .btn > * + * { margin-left: 6px; }
+  .mapping-row > * { margin: 1.5px; }
+  .letter-pair > * + * { margin-top: 1px; }
+  .g61f8_0 > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔐 Τροχός Κρυπτογράφησης Καίσαρα</h1>
+<p class="subtitle">Περιστρέψε τον εσωτερικό δίσκο για να κωδικοποιήσεις μηνύματα!</p>
+
+<div class="tabs">
+<button class="tab active" onclick="switchMode('encode')">🔒 Κωδικοποίηση</button>
+<button class="tab" onclick="switchMode('decode')">🔓 Αποκωδικοποίηση</button>
+<button class="tab" onclick="switchMode('challenge')">🎯 Πρόκληση</button>
+</div>
+
+<div class="shift-display" id="shiftDisplay">🔑 Κλειδί: +0</div>
+
+<div class="wheel-section">
+<button class="arrow-btn" onclick="rotateWheel(-1)" title="Περιστροφή αριστερά">◀</button>
+<div class="wheel-wrap">
+<svg class="wheel-svg" id="wheelSvg" viewBox="-160 -160 320 320"></svg>
+</div>
+<button class="arrow-btn" onclick="rotateWheel(1)" title="Περιστροφή δεξιά">▶</button>
+</div>
+
+<div class="mapping-row" id="mappingRow"></div>
+
+<div class="mode-content active" id="mode-encode">
+<div class="input-group">
+<label>✉️ Γράψε το μήνυμά σου (μόνο κεφαλαία ελληνικά):</label>
+<input type="text" id="encodeInput" placeholder="π.χ. ΓΕΙΑ ΣΟΥ" oninput="encode()" maxlength="50">
+</div>
+<div class="result-box" id="encodeResult">Το κρυπτογραφημένο μήνυμα θα εμφανιστεί εδώ...</div>
+</div>
+
+<div class="mode-content" id="mode-decode">
+<div class="input-group">
+<label>🔓 Γράψε το κρυπτογραφημένο μήνυμα:</label>
+<input type="text" id="decodeInput" placeholder="π.χ. ΔΘΛΔ" oninput="decode()" maxlength="50">
+</div>
+<div class="result-box" id="decodeResult">Το αρχικό μήνυμα θα εμφανιστεί εδώ...</div>
+</div>
+
+<div class="mode-content" id="mode-challenge">
+<div class="challenge-box" id="challengeBox">
+<p style="text-align:center;font-weight:bold;color:#92400e;margin-bottom:5px;">🤔 Μυστικό Μήνυμα!</p>
+<p style="text-align:center;font-size:.9rem;color:#78350f;">Βρες το σωστό κλειδί για να αποκωδικοποιήσεις τη λέξη:</p>
+<div class="encrypted-word" id="challengeEncrypted"></div>
+<p style="text-align:center;font-size:.85rem;color:#92400e;" id="challengeHint"></p>
+</div>
+<div class="input-group">
+<label>✏️ Η απάντησή σου:</label>
+<input type="text" id="challengeInput" placeholder="Γράψε τη λέξη..." maxlength="30">
+</div>
+<div class="g61f8_0" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+<button class="btn btn-success" onclick="checkChallenge()">✓ Έλεγχος</button>
+<button class="btn btn-warning" onclick="useHint()">💡 Υπόδειξη</button>
+<button class="btn btn-primary" onclick="newChallenge()">🔄 Νέα Πρόκληση</button>
+</div>
+<div class="result-box" id="challengeResult" style="margin-top:10px;display:none;"></div>
+<div id="challengeSuccess" style="display:none;" class="congrats">
+<div class="emoji">🎉</div>
+<h2>Μπράβο! Το βρήκες!</h2>
+<p id="successMsg"></p>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+var GREEK='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+var N=GREEK.length;
+var ANGLE=360/N;
+var OUTER_R=138;
+var INNER_R=88;
+var CENTER_R=30;
+var shift=0;
+var currentMode='encode';
+var NS='http://www.w3.org/2000/svg';
+var outerTexts=[];
+var innerTexts=[];
+var connLines=[];
+var challengeData=[
+{encrypted:'ΨΓΥΠΚΞΥ',answer:'ΣΧΟΛΕΙΟ',key:5,hint:'Σκέψου: πού πηγαίνουμε κάθε μέρα;'},
+{encrypted:'ΖΛΛΙΩ',answer:'ΕΝΝΕΑ',key:5,hint:'Είναι ένας αριθμός!'},
+{encrypted:'ΞΓΖΡ',answer:'ΘΑΛΑΣΣΑ',key:5,hint:'Είναι μπλε και έχει κυμματάκια... Ήμουν λάθος, δοκίμασε άλλο κλειδί!'},
+{encrypted:'ΚΨΩΣΨΔΛ',answer:'ΓΡΑΜΜΑΤΑ',key:8,hint:'Τι στέλνουμε με ταχυδρομείο;'},
+{encrypted:'ΣΙΟΞΛΟ',answer:'ΚΑΛΟΚΑΙΡΙ',key:9,hint:'Η αγαπημένη εποχή για διακοπές!'}
+];
+var currentChallenge=null;
+var hintsUsed=0;
+
+function buildWheel(){
+var svg=document.getElementById('wheelSvg');
+svg.innerHTML='';
+var bgOuter=document.createElementNS(NS,'circle');
+bgOuter.setAttribute('cx',0);bgOuter.setAttribute('cy',0);bgOuter.setAttribute('r',OUTER_R);
+bgOuter.setAttribute('class','outer-circle');
+svg.appendChild(bgOuter);
+var bgInner=document.createElementNS(NS,'circle');
+bgInner.setAttribute('cx',0);bgInner.setAttribute('cy',0);bgInner.setAttribute('r',INNER_R);
+bgInner.setAttribute('class','inner-circle');
+svg.appendChild(bgInner);
+var bgCenter=document.createElementNS(NS,'circle');
+bgCenter.setAttribute('cx',0);bgCenter.setAttribute('cy',0);bgCenter.setAttribute('r',CENTER_R);
+bgCenter.setAttribute('class','center-circle');
+svg.appendChild(bgCenter);
+var lockText=document.createElementNS(NS,'text');
+lockText.setAttribute('x',0);lockText.setAttribute('y',0);
+lockText.setAttribute('text-anchor','middle');lockText.setAttribute('dominant-baseline','central');
+lockText.setAttribute('font-size','20');lockText.textContent='🔑';
+svg.appendChild(lockText);
+for(var i=0;i<N;i++){
+var a=(i*ANGLE-90)*Math.PI/180;
+var line=document.createElementNS(NS,'line');
+var x1=(INNER_R+5)*Math.cos(a),y1=(INNER_R+5)*Math.sin(a);
+var x2=(OUTER_R-5)*Math.cos(a),y2=(OUTER_R-5)*Math.sin(a);
+line.setAttribute('x1',x1);line.setAttribute('y1',y1);
+line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+line.setAttribute('class','conn-line');
+line.style.display='none';
+svg.appendChild(line);
+connLines.push(line);
+}
+outerTexts=[];innerTexts=[];
+for(var i=0;i<N;i++){
+var a=(i*ANGLE-90)*Math.PI/180;
+var ox=OUTER_R*Math.cos(a),oy=OUTER_R*Math.sin(a);
+var ot=document.createElementNS(NS,'text');
+ot.setAttribute('x',ox);ot.setAttribute('y',oy);
+ot.setAttribute('text-anchor','middle');ot.setAttribute('dominant-baseline','central');
+ot.setAttribute('class','outer-l');ot.textContent=GREEK[i];
+ot.setAttribute('data-idx',i);
+svg.appendChild(ot);outerTexts.push(ot);
+var ix=INNER_R*Math.cos(a),iy=INNER_R*Math.sin(a);
+var it=document.createElementNS(NS,'text');
+it.setAttribute('x',ix);it.setAttribute('y',iy);
+it.setAttribute('text-anchor','middle');it.setAttribute('dominant-baseline','central');
+it.setAttribute('class','inner-l');
+it.setAttribute('data-idx',i);
+svg.appendChild(it);innerTexts.push(it);
+}
+updateInnerRing();
+buildMapping();
+}
+
+function updateInnerRing(){
+for(var i=0;i<N;i++){
+var shifted=(i+shift)%N;
+if(shifted<0)shifted+=N;
+innerTexts[i].textContent=GREEK[shifted];
+}
+document.getElementById('shiftDisplay').textContent='🔑 Κλειδί: +'+shift;
+}
+
+function buildMapping(){
+var row=document.getElementById('mappingRow');
+row.innerHTML='';
+for(var i=0;i<N;i++){
+var pair=document.createElement('div');
+pair.className='letter-pair';
+var top=document.createElement('div');
+top.className='mapping-cell top';top.textContent=GREEK[i];
+var bot=document.createElement('div');
+bot.className='mapping-cell bot';bot.textContent=GREEK[(i+shift)%N];
+pair.appendChild(top);pair.appendChild(bot);
+row.appendChild(pair);
+}
+}
+
+function encrypt(text){
+var result='';
+for(var i=0;i<text.length;i++){
+var ch=text[i];
+var idx=GREEK.indexOf(ch);
+if(idx>=0){
+result+=GREEK[(idx+shift)%N];
+}else{
+result+=ch;
+}
+}
+return result;
+}
+
+function decrypt(text){
+var result='';
+for(var i=0;i<text.length;i++){
+var ch=text[i];
+var idx=GREEK.indexOf(ch);
+if(idx>=0){
+var d=idx-shift;
+if(d<0)d+=N;
+result+=GREEK[d%N];
+}else{
+result+=ch;
+}
+}
+return result;
+}
+
+window.encode=function(){
+var input=document.getElementById('encodeInput').value.toUpperCase();
+var res=document.getElementById('encodeResult');
+var encrypted=encrypt(input);
+res.textContent=encrypted||'Το κρυπτογραφημένο μήνυμα θα εμφανιστεί εδώ...';
+res.className='result-box';
+highlightMappings(input);
+};
+
+window.decode=function(){
+var input=document.getElementById('decodeInput').value.toUpperCase();
+var res=document.getElementById('decodeResult');
+var decrypted=decrypt(input);
+res.textContent=decrypted||'Το αρχικό μήνυμα θα εμφανιστεί εδώ...';
+res.className='result-box';
+};
+
+window.rotateWheel=function(dir){
+shift=(shift+dir+N)%N;
+updateInnerRing();
+buildMapping();
+if(currentMode==='encode')window.encode();
+if(currentMode==='decode')window.decode();
+};
+
+window.switchMode=function(mode){
+currentMode=mode;
+document.querySelectorAll('.tab').forEach(function(t,i){
+var modes=['encode','decode','challenge'];
+t.classList.toggle('active',modes[i]===mode);
+});
+document.querySelectorAll('.mode-content').forEach(function(el){
+el.classList.toggle('active',el.id==='mode-'+mode);
+});
+if(mode==='challenge'&&!currentChallenge)newChallenge();
+};
+
+function highlightMappings(text){
+var used=new Set();
+for(var i=0;i<text.length;i++){
+var idx=GREEK.indexOf(text[i]);
+if(idx>=0)used.add(idx);
+}
+var cells=document.querySelectorAll('.letter-pair');
+cells.forEach(function(pair,i){
+var topEl=pair.querySelector('.top');
+var idx=GREEK.indexOf(topEl.textContent);
+pair.querySelectorAll('.mapping-cell').forEach(function(c){
+c.classList.toggle('highlight',used.has(idx));
+});
+});
+for(var i=0;i<N;i++){
+connLines[i].style.display=used.has(i)?'':'none';
+outerTexts[i].style.fontWeight=used.has(i)?'900':'bold';
+outerTexts[i].style.fontSize=used.has(i)?'15px':'13px';
+}
+}
+
+window.newChallenge=function(){
+var idx=Math.floor(Math.random()*challengeData.length);
+currentChallenge=Object.assign({},challengeData[idx]);
+hintsUsed=0;
+document.getElementById('challengeEncrypted').textContent=currentChallenge.encrypted;
+document.getElementById('challengeHint').textContent='';
+document.getElementById('challengeInput').value='';
+document.getElementById('challengeResult').style.display='none';
+document.getElementById('challengeSuccess').style.display='none';
+shift=0;
+updateInnerRing();
+buildMapping();
+};
+
+window.useHint=function(){
+if(!currentChallenge)return;
+hintsUsed++;
+if(hintsUsed===1){
+document.getElementById('challengeHint').textContent='💡 '+currentChallenge.hint;
+}else if(hintsUsed===2){
+var answer=currentChallenge.answer;
+var reveal=Math.min(2,answer.length);
+var hintStr='';
+for(var i=0;i<answer.length;i++){
+hintStr+=(i<reveal)?answer[i]:'_';
+}
+document.getElementById('challengeHint').textContent='💡 Τα πρώτα γράμματα: '+hintStr;
+}else{
+var answer=currentChallenge.answer;
+document.getElementById('challengeHint').textContent='💡 Το κλειδί είναι: '+currentChallenge.key;
+}
+};
+
+window.checkChallenge=function(){
+if(!currentChallenge)return;
+var userAnswer=document.getElementById('challengeInput').value.toUpperCase().trim();
+var res=document.getElementById('challengeResult');
+res.style.display='block';
+if(userAnswer===currentChallenge.answer){
+res.className='result-box';
+res.style.background='linear-gradient(135deg,#f0fdf4,#dcfce7)';
+res.style.borderColor='#86efac';res.style.color='#166534';
+res.textContent='✅ Σωστό! Η λέξη ήταν: '+currentChallenge.answer;
+document.getElementById('challengeSuccess').style.display='block';
+document.getElementById('successMsg').textContent='Αποκωδικοποίησες τη λέξη «'+currentChallenge.answer+'» με κλειδί +'+currentChallenge.key+'!';
+shift=currentChallenge.key;
+updateInnerRing();
+buildMapping();
+}else{
+res.className='result-box error';
+res.textContent='❌ Δεν είναι σωστό. Δοκίμασε άλλο κλειδί!';
+}
+};
+
+buildWheel();
+})();
+</script>
+</body>
+</html>

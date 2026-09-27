@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Ψηφιακές Συσκευές",
+  "subtitle": "Πιάσε μόνο ψηφιακές συσκευές!",
+  "instructions": "Πιάσε μόνο ΨΗΦΙΑΚΕΣ ΣΥΣΚΕΥΕΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Έξυπνο ρολόι", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάλτα", "correct": false, "color": "#f44336"},
+    {"text": "Πλοηγός", "correct": true, "color": "#2196F3"},
+    {"text": "Σφουγγαρίστρα", "correct": false, "color": "#FF9800"},
+    {"text": "Σκούπα ρομπότ", "correct": true, "color": "#9C27B0"},
+    {"text": "Κουτάλι", "correct": false, "color": "#E91E63"},
+    {"text": "Μηχάνημα πληρωμής", "correct": true, "color": "#009688"},
+    {"text": "Μαχαίρι", "correct": false, "color": "#FFC107"},
+    {"text": "Ταμπλέτα", "correct": true, "color": "#795548"},
+    {"text": "Πιρούνι", "correct": false, "color": "#607D8B"}
+  ]
+}

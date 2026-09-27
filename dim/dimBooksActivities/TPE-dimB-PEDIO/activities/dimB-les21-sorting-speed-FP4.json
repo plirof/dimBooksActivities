@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πλήκτρα Πληκτρολογίου",
+  "subtitle": "Ταξινόμησε: τι κάνει το κάθε πλήκτρο;",
+  "instructions": "Βάλε κάθε λειτουργία στη σωστή κατηγορία",
+  "categories": [
+    { "id": "grapsimo", "name": "Γράψιμο", "color": "#2196F3", "key": "A" },
+    { "id": "diorthosi", "name": "Διόρθωση", "color": "#f44336", "key": "L" }
+  ],
+  "items": [
+    { "text": "Γράμματα Α-Ω", "category": "grapsimo" },
+    { "text": "Delete (σβήσιμο)", "category": "diorthosi" },
+    { "text": "Τόνος", "category": "grapsimo" },
+    { "text": "Backspace", "category": "diorthosi" },
+    { "text": "Κόμμα και τελεία", "category": "grapsimo" },
+    { "text": "Enter (παράγραφος)", "category": "grapsimo" },
+    { "text": "Caps Lock", "category": "grapsimo" },
+    { "text": "Undo", "category": "diorthosi" },
+    { "text": "Space (κενό)", "category": "grapsimo" },
+    { "text": "Ακύρωση", "category": "diorthosi" }
+  ],
+  "duration": 30
+}

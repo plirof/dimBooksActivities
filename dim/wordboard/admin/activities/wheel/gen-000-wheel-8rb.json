@@ -1,0 +1,21 @@
+{
+    "id": "gen-000-wheel-8rb",
+    "title": "Random Activities Wheel",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "segments": [
+            "Read a book",
+            "Do a math problem",
+            "Draw a picture",
+            "Write a story",
+            "Exercise for 5 minutes",
+            "Sing a song",
+            "Clean your desk",
+            "Help a friend",
+            "Practice spelling",
+            "Answer a question"
+        ]
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Αλγοριθμικές Έννοιες",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Αλγόριθμος", "error": false, "correct": "Αλγόριθμος", "feedback": "" },
+        { "text": "Αλγορήθμος", "error": true, "correct": "Αλγόριθμος", "feedback": "Γράφεται Αλγόριθμος με ι" },
+        { "text": "Επανάληψη", "error": false, "correct": "Επανάληψη", "feedback": "" },
+        { "text": "Επανάληφη", "error": true, "correct": "Επανάληψη", "feedback": "Γράφεται Επανάληψη με ψ" },
+        { "text": "Επιλογή", "error": false, "correct": "Επιλογή", "feedback": "" },
+        { "text": "Βημά", "error": true, "correct": "Βήμα", "feedback": "Γράφεται Βήμα" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Συνθήκη", "error": false, "correct": "Συνθήκη", "feedback": "" },
+        { "text": "Συνθήκει", "error": true, "correct": "Συνθήκη", "feedback": "Γράφεται Συνθήκη" },
+        { "text": "Βαρκάρης", "error": false, "correct": "Βαρκάρης", "feedback": "" },
+        { "text": "Βαρκάρής", "error": true, "correct": "Βαρκάρης", "feedback": "Δεν χρειάζεται τόνος στο ρη" },
+        { "text": "Λύση", "error": false, "correct": "Λύση", "feedback": "" },
+        { "text": "Γεγονότο", "error": true, "correct": "Γεγονός", "feedback": "Γράφεται Γεγονός" }
+      ]
+    }
+  ]
+}

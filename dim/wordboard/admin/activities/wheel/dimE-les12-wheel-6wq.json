@@ -1,0 +1,26 @@
+{
+    "id": "dimE-les12-wheel-6wq",
+    "title": "Ψηφιοποίηση κειμένου - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "ASCII",
+            "Bit",
+            "Byte",
+            "Δυαδικός",
+            "Κωδικοποίηση",
+            "Χαρακτήρας",
+            "0 και 1",
+            "8 bits",
+            "Κείμενο",
+            "Αριθμός"
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les12",
+        "ASCII"
+    ]
+}

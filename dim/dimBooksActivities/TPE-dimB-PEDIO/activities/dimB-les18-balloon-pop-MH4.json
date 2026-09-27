@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι τρώει ο άνθρωπος;",
+  "subtitle": "Σπάσε μόνο τις τροφές που τρώει ο άνθρωπος",
+  "instruction": "Σπάσε τις λέξεις που είναι τροφές",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Λαχανικά", "correct": true, "color": "#4CAF50" },
+    { "text": "Πέτρα", "correct": false, "color": "#f44336" },
+    { "text": "Κρέας", "correct": true, "color": "#4CAF50" },
+    { "text": "Αμμος", "correct": false, "color": "#f44336" },
+    { "text": "Δημητριακά", "correct": true, "color": "#4CAF50" },
+    { "text": "Νερό", "correct": false, "color": "#f44336" },
+    { "text": "Ντομάτες", "correct": true, "color": "#4CAF50" },
+    { "text": "Χαρτί", "correct": false, "color": "#f44336" },
+    { "text": "Μοσχάρι", "correct": true, "color": "#4CAF50" },
+    { "text": "Σίδερο", "correct": false, "color": "#f44336" }
+  ]
+}

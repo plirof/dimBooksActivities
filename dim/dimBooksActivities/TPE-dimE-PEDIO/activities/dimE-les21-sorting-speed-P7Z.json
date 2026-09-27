@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Καταλήξεις",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "safe", "name": "Αξιόπιστο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "unsure", "name": "Πρέπει Έλεγχο", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": ".gov (κυβέρνηση)", "category": "safe"},
+    {"text": "Ιστότοπος χωρίς συγγραφέα", "category": "unsure"},
+    {"text": ".edu (πανεπιστήμιο)", "category": "safe"},
+    {"text": "Παλιά πληροφορία (2010)", "category": "unsure"},
+    {"text": "Κυβερνητικός ιστότοπος .gr", "category": "safe"},
+    {"text": "Ιστότοπος με ορθογραφικά λάθη", "category": "unsure"},
+    {"text": "Ιστότοπος με στοιχεία επικοινωνίας", "category": "safe"},
+    {"text": "Ιστότοπος χωρίς ημερομηνία", "category": "unsure"},
+    {"text": "Ιστότοπος πανεπιστημίου", "category": "safe"},
+    {"text": "Άγνωστος δημιουργός", "category": "unsure"}
+  ],
+  "duration": 30
+}

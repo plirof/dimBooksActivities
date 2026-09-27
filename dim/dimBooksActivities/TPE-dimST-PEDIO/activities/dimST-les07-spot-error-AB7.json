@@ -1,0 +1,56 @@
+{
+  "title": "Βρες τα Λάθη: Επίπεδα Δυσκολίας",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Στο", "error": false },
+        { "text": "επίπεδο", "error": false },
+        { "text": "1", "error": false },
+        { "text": "ο", "error": false },
+        { "text": "αριθμός", "error": false },
+        { "text": "είναι", "error": false },
+        { "text": "από", "error": false },
+        { "text": "το", "error": false },
+        { "text": "1", "error": false },
+        { "text": "μέχρι", "error": false },
+        { "text": "το", "error": false },
+        { "text": "20.", "error": true, "correct": "10", "feedback": "Επίπεδο 1: 1 μέχρι 10 = 1 × 10" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "εμφωλευμένη", "error": false },
+        { "text": "εντολή", "error": false },
+        { "text": "βρίσκεται", "error": false },
+        { "text": "μετά", "error": true, "correct": "μέσα", "feedback": "Η εμφωλευμένη εντολή βρίσκεται μέσα στην πρώτη, όχι μετά" },
+        { "text": "την", "error": false },
+        { "text": "πρώτη.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "παιχνίδι", "error": false },
+        { "text": "σταματάει", "error": false },
+        { "text": "όταν", "error": false },
+        { "text": "το", "error": false },
+        { "text": "επίπεδο", "error": false },
+        { "text": "γίνει", "error": false },
+        { "text": "< 3.", "error": true, "correct": "> 3", "feedback": "Το παιχνίδι σταματάει όταν το επίπεδο γίνει > 3" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Οι", "error": false },
+        { "text": "ήχοι", "error": false },
+        { "text": "και", "error": false },
+        { "text": "τα", "error": false },
+        { "text": "εφέ", "error": false },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Τα εφέ βελτιώνουν την αλληλεπίδραση με τον παίκτη", "correct_word": "βελτιώνουν" },
+        { "text": "χρειάζονται", "error": true, "correct": "βελτιώνουν", "feedback": "Τα εφέ βελτιώνουν την αλληλεπίδραση, είναι σημαντικά" }
+      ]
+    }
+  ]
+}

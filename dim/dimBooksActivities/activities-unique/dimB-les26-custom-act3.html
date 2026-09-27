@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 26 - Δραστηριότητα 3: e-me</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{text-align:center;color:#fff;margin-bottom:10px;font-size:1.5rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;margin-bottom:20px}
+.progress-bar-wrap{background:#e0e0e0;border-radius:15px;height:36px;position:relative;margin-bottom:20px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#43e97b,#38f9d7);border-radius:15px;transition:width .5s ease;width:0}
+.progress-labels{display:flex;justify-content:space-between;font-size:.72rem;color:#555;margin-top:4px;flex-wrap:wrap;gap:4px}
+.progress-labels span{flex:1;text-align:center}
+.progress-labels span.done{color:#2e7d32;font-weight:700}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:120px;padding:12px 8px;border:2px solid #764ba2;background:#fff;color:#764ba2;border-radius:14px;font-size:.95rem;cursor:pointer;font-weight:700;transition:all .3s;text-align:center}
+.tab-btn:hover{background:#f3e5f5}
+.tab-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:transparent}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.announcement{background:#f8f9fa;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.announcement-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;font-weight:700}
+.announcement-meta{font-size:.8rem;color:#888}
+.announcement-title{font-weight:700;font-size:1.05rem;margin-bottom:4px}
+.announcement-body{color:#444;line-height:1.5;margin-bottom:10px}
+.like-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:2px solid #e91e63;background:#fff;color:#e91e63;border-radius:30px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .3s}
+.like-btn:hover{background:#fce4ec}
+.like-btn.liked{background:#e91e63;color:#fff}
+.upload-section{display:flex;flex-direction:column;gap:14px}
+.upload-section label{font-weight:700;color:#555;font-size:.9rem}
+.upload-section input[type=text],.upload-section textarea{width:100%;padding:12px;border:2px solid #ddd;border-radius:12px;font-size:1rem;font-family:inherit;resize:vertical;transition:border-color .3s}
+.upload-section input:focus,.upload-section textarea:focus{outline:none;border-color:#764ba2}
+.upload-btn{padding:14px 28px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(67,233,123,.4);transition:transform .2s}
+.upload-btn:hover{transform:scale(1.03)}
+.upload-btn:disabled{opacity:.5;cursor:default;transform:none}
+.success-msg{background:#e8f5e9;color:#2e7d32;padding:12px;border-radius:12px;text-align:center;font-weight:700;margin-top:10px;display:none}
+.my-page-section{margin-bottom:16px}
+.my-page-section h3{color:#764ba2;margin-bottom:10px;font-size:1rem}
+.my-item{background:#f8f9fa;border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:.9rem;border-left:4px solid #764ba2}
+.empty-msg{color:#999;font-style:italic}
+.congrats{display:none;text-align:center;padding:30px}
+.congrats h2{color:#2e7d32;font-size:1.5rem;margin-bottom:10px}
+.congrats p{color:#555;font-size:1.1rem}
+.congrats .big-emoji{font-size:4rem;margin-bottom:10px}
+@media(max-width:600px){.tabs{flex-direction:column}.container{padding:15px}h1{font-size:1.2rem}.progress-labels{font-size:.65rem}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .progress-labels > * { margin: 2px; }
+  .tabs > * { margin: 4px; }
+  .announcement-header > * + * { margin-left: 10px; }
+  .like-btn > * + * { margin-left: 6px; }
+  .upload-section > * + * { margin-top: 14px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🖥️ Μάθημα 26 - Δραστηριότητα 3</h1>
+<div class="container" id="mainArea">
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+<div class="progress-labels">
+<span id="lbl1">📌 Δες ανακοίνωση</span>
+<span id="lbl2">❤️ Κάνε like</span>
+<span id="lbl3">📤 Ανέβασε εργασία</span>
+</div>
+<div class="tabs">
+<button class="tab-btn active" onclick="switchTab(0)">📢 Ανακοινώσεις</button>
+<button class="tab-btn" onclick="switchTab(1)">📤 Ανέβασε</button>
+<button class="tab-btn" onclick="switchTab(2)">👤 Η σελίδα μου</button>
+</div>
+<div class="tab-content active" id="tab0">
+<div class="announcement">
+<div class="announcement-header">
+<div class="avatar">Μ</div>
+<div><strong>κυρία Μαρία</strong><div class="announcement-meta">σήμερα 09:00</div></div>
+</div>
+<div class="announcement-title">🎨 Εργασία ζωγραφικής</div>
+<div class="announcement-body">Παιδιά, φέρετε αύριο τα χρωματιστά μολύβια σας! Θα ζωγραφίσουμε την άνοιξη! 🌸</div>
+<button class="like-btn" id="like0" onclick="toggleLike(0)">❤️ <span>Μου αρέσει</span> <span class="count">(0)</span></button>
+</div>
+<div class="announcement">
+<div class="announcement-header">
+<div class="avatar">Μ</div>
+<div><strong>κυρία Μαρία</strong><div class="announcement-meta">σήμερα 10:30</div></div>
+</div>
+<div class="announcement-title">📚 Σχολική βιβλιοθήκη</div>
+<div class="announcement-body">Αύριο Πέμπτη θα επισκεφτούμε τη βιβλιοθήκη! Μην ξεχάσετε να φέρετε την κάρτα σας. 📖</div>
+<button class="like-btn" id="like1" onclick="toggleLike(1)">❤️ <span>Μου αρέσει</span> <span class="count">(0)</span></button>
+</div>
+</div>
+<div class="tab-content" id="tab1">
+<div class="upload-section">
+<label for="titleInput">📝 Τίτλος εργασίας:</label>
+<input type="text" id="titleInput" maxlength="60" placeholder="Γράψε τον τίτλο...">
+<label for="descInput">📋 Περιγραφή:</label>
+<textarea id="descInput" rows="4" maxlength="300" placeholder="Γράψε μια μικρή περιγραφή..."></textarea>
+<button class="upload-btn" id="uploadBtn" onclick="doUpload()">📤 Ανέβασμα</button>
+<div class="success-msg" id="uploadSuccess">✅ Η εργασία σου ανέβηκε επιτυχώς!</div>
+</div>
+</div>
+<div class="tab-content" id="tab2">
+<div class="my-page-section">
+<h3>📤 Οι εργασίες μου</h3>
+<div id="myUploads"><p class="empty-msg">Δεν έχεις ανεβάσει κάτι ακόμα.</p></div>
+</div>
+<div class="my-page-section">
+<h3>❤️ Ανακοινώσεις που μου αρέσουν</h3>
+<div id="myLikes"><p class="empty-msg">Δεν έχεις κάνει like ακόμα.</p></div>
+</div>
+</div>
+</div>
+<div class="container congrats" id="congratsArea">
+<div class="big-emoji">🎉</div>
+<h2>Μπράβο! Τέλεια δουλειά!</h2>
+<p>Έμαθες να χρησιμοποιείς το e-me! 🖥️<br>Είδες ανακοινώσεις, έκανες like και ανέβασες εργασία!</p>
+</div>
+
+<script>
+var tasks={seenAnnouncement:false,liked:false,uploaded:false};
+var likeState=[false,false];
+var likeCounts=[0,0];
+var uploadedItems=[];
+var announcements=[
+{title:"🎨 Εργασία ζωγραφικής",body:"Παιδιά, φέρετε αύριο τα χρωματιστά μολύβια σας!"},
+{title:"📚 Σχολική βιβλιοθήκη",body:"Αύριο Πέμπτη θα επισκεφτούμε τη βιβλιοθήκη!"}
+];
+
+function switchTab(i){
+document.querySelectorAll('.tab-btn').forEach(function(b,idx){b.classList.toggle('active',idx===i)});
+document.querySelectorAll('.tab-content').forEach(function(c,idx){c.classList.toggle('active',idx===i)});
+if(!tasks.seenAnnouncement&&i===0){tasks.seenAnnouncement=true;updateProgress()}
+}
+
+function toggleLike(idx){
+likeState[idx]=!likeState[idx];
+if(likeState[idx])likeCounts[idx]++;else likeCounts[idx]--;
+var btn=document.getElementById('like'+idx);
+btn.classList.toggle('liked',likeState[idx]);
+var spans=btn.querySelectorAll('span');
+spans[0].textContent=likeState[idx]?'Μου αρέσει':'Μου αρέσει';
+spans[1].textContent='('+likeCounts[idx]+')';
+if(!tasks.liked){var any=likeState.some(function(l){return l});if(any){tasks.liked=true;updateProgress()}}
+updateMyPage();
+}
+
+function doUpload(){
+var title=document.getElementById('titleInput').value.trim();
+var desc=document.getElementById('descInput').value.trim();
+if(!title){alert('Γράψε έναν τίτλο πρώτα! 😊');return}
+uploadedItems.push({title:title,desc:desc});
+document.getElementById('uploadSuccess').style.display='block';
+document.getElementById('uploadBtn').disabled=true;
+document.getElementById('titleInput').disabled=true;
+document.getElementById('descInput').disabled=true;
+if(!tasks.uploaded){tasks.uploaded=true;updateProgress()}
+updateMyPage();
+}
+
+function updateMyPage(){
+var upDiv=document.getElementById('myUploads');
+if(uploadedItems.length){
+upDiv.innerHTML='';
+uploadedItems.forEach(function(it){
+var d=document.createElement('div');d.className='my-item';
+d.textContent='📎 '+it.title+(it.desc?' — '+it.desc:'');
+upDiv.appendChild(d);
+});
+}
+var lkDiv=document.getElementById('myLikes');
+var liked=announcements.filter(function(_,i){return likeState[i]});
+if(liked.length){
+lkDiv.innerHTML='';
+liked.forEach(function(a){
+var d=document.createElement('div');d.className='my-item';
+d.textContent='❤️ '+a.title;
+lkDiv.appendChild(d);
+});
+}
+}
+
+function updateProgress(){
+var done=0;
+if(tasks.seenAnnouncement){done++;document.getElementById('lbl1').className='done';document.getElementById('lbl1').textContent='✅ Δες ανακοίνωση ✓'}
+if(tasks.liked){done++;document.getElementById('lbl2').className='done';document.getElementById('lbl2').textContent='✅ Κάνε like ✓'}
+if(tasks.uploaded){done++;document.getElementById('lbl3').className='done';document.getElementById('lbl3').textContent='✅ Ανέβασε εργασία ✓'}
+document.getElementById('progressFill').style.width=(done/3*100)+'%';
+if(done===3){
+setTimeout(function(){
+document.getElementById('mainArea').style.display='none';
+document.getElementById('congratsArea').style.display='block';
+},600);
+}
+}
+</script>
+</body>
+</html>

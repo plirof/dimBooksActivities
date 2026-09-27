@@ -1,0 +1,361 @@
+================================================================================
+  KARAQUIZ - QUIZ JSON FORMAT SPECIFICATION
+  For AI Agents: Generate quizzes compatible with this Kahoot clone
+===============================================================================
+
+⚠️ IMPORTANT NOTE ABOUT "AUTO-GENERATED" FIELDS
+The notes below say that "id", "created_at", and "updated_at" are auto-generated
+and can be omitted. This is TRUE when importing via the admin UI or API.
+
+However, when placing JSON files directly in data/quiz/ (which is how the
+quiz-generation pipeline works), the app reads them directly and these fields
+MUST be present. See the sample files in data/quiz/ for the correct format.
+
+Required fields when writing files directly to data/quiz/:
+- Top-level: "id" (filename without .json), "title", "questions", "created_at"
+- Per-question: "id" (unique string), "text", "answers", "correct"=
+
+This document defines the exact JSON format used by the KaraQuiz application.
+Any AI agent can use this spec to generate quiz JSON that is directly importable
+via the app's "Import JSON" feature or the import_json API endpoint.
+
+================================================================================
+1. QUIZ JSON STRUCTURE (TOP LEVEL)
+================================================================================
+
+{
+    "title":                "string (REQUIRED) - Quiz title, max ~100 chars",
+    "description":          "string (OPTIONAL) - Short description of the quiz",
+    "category":             "string (OPTIONAL) - Subject/category (e.g. 'Math', 'Science')",
+    "tags":                 "string (OPTIONAL) - Comma-separated tags for filtering",
+    "questions":            [ ... array of question objects (REQUIRED, min 1) ... ],
+    "randomize_questions":  "boolean (OPTIONAL, default false) - Shuffle question order per game",
+    "randomize_answers":    "boolean (OPTIONAL, default false) - Shuffle answer order per question",
+    "allow_solo":           "boolean (OPTIONAL, default false) - Allow solo (no PIN) play"
+}
+
+NOTES:
+  - "id" is AUTO-GENERATED on import. Omit it or leave as empty string "".
+  - "created_at" is AUTO-GENERATED on import. Omit it or leave as empty string "".
+  - "updated_at" is set automatically on edit. Omit it.
+
+================================================================================
+2. QUESTION OBJECT STRUCTURE (inside "questions" array)
+================================================================================
+
+{
+    "text":        "string (REQUIRED) - The question text",
+    "answers":     [ "string", "string", ... ],
+    "correct":     "integer (REQUIRED) - 0-based index of the correct answer in the answers array",
+    "explanation": "string (OPTIONAL, default '') - Explanation shown after answering",
+    "time":        "integer (OPTIONAL, default 20) - Time limit in seconds",
+    "points":      "integer (always 1000, can omit)"
+}
+
+NOTES:
+  - "id" is AUTO-GENERATED on import. Omit it or leave as empty string "".
+  - "answers" must contain 2, 3, or 4 non-empty strings.
+  - "correct" must be a valid index: 0 for the first answer, 1 for the second, etc.
+  - "correct" must be >= 0 and < length of "answers" array.
+  - "time" allowed values: 10, 15, 20, 25, 30, 60, 90, 120, or 0 (no limit).
+    Any value outside 10-120 is clamped. Default is 20.
+  - "points" is always 1000 (the app handles speed/streak multipliers internally).
+
+================================================================================
+3. VALIDATION RULES (enforced by the import endpoint)
+================================================================================
+
+The following checks are performed when importing a quiz JSON:
+
+  [FAIL] Missing "title" field or empty title                -> Error
+  [FAIL] Missing "questions" field or empty questions array   -> Error
+  [FAIL] Any question with empty "text"                       -> Question SKIPPED
+  [FAIL] Any question with empty "answers" array              -> Question SKIPPED
+  [FAIL] Any question missing "correct" field                 -> Question SKIPPED
+  [FAIL] Any question with fewer than 2 non-empty answers     -> Question SKIPPED
+  [FAIL] "correct" index out of range for that question       -> Error (fatal)
+  [FAIL] All questions invalid (none pass validation)         -> Error
+
+  If SOME questions are invalid but at least 1 is valid, the valid ones are kept.
+
+================================================================================
+4. COMPLETE EXAMPLE QUIZES
+================================================================================
+
+--- EXAMPLE 1: Basic Math Quiz (4 answers per question, explanations) ----------
+
+{
+    "title": "Basic Math Challenge",
+    "description": "Test your basic math skills with addition, subtraction, multiplication, and division!",
+    "category": "Math",
+    "tags": "math, arithmetic, elementary",
+    "randomize_questions": false,
+    "randomize_answers": false,
+    "allow_solo": true,
+    "questions": [
+        {
+            "text": "What is 15 + 27?",
+            "answers": ["32", "42", "45", "52"],
+            "correct": 1,
+            "explanation": "15 + 27 = 42. Add the ones (5+7=12, carry 1) then tens (1+2+1=4).",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "text": "What is 100 - 35?",
+            "answers": ["55", "65", "75", "85"],
+            "correct": 1,
+            "explanation": "100 - 35 = 65. Subtract from 100: borrow from hundreds.",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "text": "What is 8 x 7?",
+            "answers": ["48", "54", "56", "64"],
+            "correct": 2,
+            "explanation": "8 x 7 = 56. Think of it as 8 groups of 7.",
+            "time": 25,
+            "points": 1000
+        },
+        {
+            "text": "What is 72 / 8?",
+            "answers": ["8", "9", "10", "11"],
+            "correct": 1,
+            "explanation": "72 / 8 = 9. How many times does 8 fit into 72?",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "text": "What is 25 x 4?",
+            "answers": ["80", "90", "100", "110"],
+            "correct": 2,
+            "explanation": "25 x 4 = 100. A quarter of 100 is 25, so 4 quarters make 100.",
+            "time": 25,
+            "points": 1000
+        }
+    ]
+}
+
+--- EXAMPLE 2: Science Quiz (3 answers per question) ----------------------------
+
+{
+    "title": "Fun Science Quiz",
+    "description": "Test your science knowledge with these exciting questions!",
+    "category": "Science",
+    "tags": "science, nature, general",
+    "randomize_questions": true,
+    "randomize_answers": true,
+    "allow_solo": true,
+    "questions": [
+        {
+            "text": "What planet is known as the Red Planet?",
+            "answers": ["Venus", "Mars", "Jupiter"],
+            "correct": 1,
+            "explanation": "Mars appears red due to iron oxide (rust) on its surface.",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "text": "What gas do plants absorb from the air?",
+            "answers": ["Oxygen", "Carbon Dioxide", "Nitrogen"],
+            "correct": 1,
+            "explanation": "Plants absorb CO2 during photosynthesis and release oxygen.",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "text": "What is H2O commonly known as?",
+            "answers": ["Salt", "Water", "Sugar"],
+            "correct": 1,
+            "explanation": "H2O is the chemical formula for water: 2 hydrogen + 1 oxygen.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "How many legs does a spider have?",
+            "answers": ["6", "8", "10"],
+            "correct": 1,
+            "explanation": "Spiders have 8 legs. Insects have 6, but spiders are arachnids.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "What is the center of our solar system?",
+            "answers": ["Earth", "Sun", "Moon"],
+            "correct": 1,
+            "explanation": "The Sun is a star at the center of our solar system.",
+            "time": 15,
+            "points": 1000
+        }
+    ]
+}
+
+--- EXAMPLE 3: True/False Style Quiz (2 answers per question) ------------------
+
+{
+    "title": "True or False: Geography",
+    "description": "Can you tell fact from fiction in world geography?",
+    "category": "Geography",
+    "tags": "geography, true-false, world",
+    "randomize_questions": true,
+    "randomize_answers": false,
+    "allow_solo": true,
+    "questions": [
+        {
+            "text": "Paris is the capital of France.",
+            "answers": ["True", "False"],
+            "correct": 0,
+            "explanation": "Yes! Paris has been the capital of France for centuries.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "The Nile is the longest river in the world.",
+            "answers": ["True", "False"],
+            "correct": 0,
+            "explanation": "The Nile stretches approximately 6,650 km through northeastern Africa.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "Australia is the largest continent.",
+            "answers": ["True", "False"],
+            "correct": 1,
+            "explanation": "Asia is the largest continent. Australia is the smallest.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "Mount Everest is the tallest mountain on Earth.",
+            "answers": ["True", "False"],
+            "correct": 0,
+            "explanation": "Mount Everest is 8,849 meters (29,032 feet) tall.",
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "text": "The Pacific Ocean is smaller than the Atlantic Ocean.",
+            "answers": ["True", "False"],
+            "correct": 1,
+            "explanation": "The Pacific is the largest ocean, covering about 165 million sq km.",
+            "time": 15,
+            "points": 1000
+        }
+    ]
+}
+
+================================================================================
+5. QUICK-REFERENCE: FIELD SUMMARY
+================================================================================
+
+QUIZ-LEVEL FIELDS
+  title                 string    REQUIRED    Quiz title
+  description           string    optional    Short description
+  category              string    optional    Subject category
+  tags                  string    optional    Comma-separated tags
+  questions             array     REQUIRED    Min 1 question
+  randomize_questions   boolean   optional    default: false
+  randomize_answers     boolean   optional    default: false
+  allow_solo            boolean   optional    default: false
+
+QUESTION-LEVEL FIELDS
+  text                  string    REQUIRED    Question text
+  answers               array     REQUIRED    2-4 non-empty strings
+  correct               integer   REQUIRED    0-based index into answers[]
+  explanation           string    optional    Shown after answering (default: "")
+  time                  integer   optional    Seconds: 10|15|20|25|30|60|90|120|0 (default: 20)
+  points                integer   optional    Always 1000 (can omit)
+
+AUTO-GENERATED (omit these, the app creates them)
+  id                    string    ignored     Unique quiz/question ID
+  created_at            string    ignored     "YYYY-MM-DD HH:MM:SS"
+  updated_at            string    ignored     "YYYY-MM-DD HH:MM:SS"
+
+================================================================================
+6. IMPORT INSTRUCTIONS
+================================================================================
+
+Once you have a valid quiz JSON, you can import it into the app in two ways:
+
+METHOD A: Via the Web UI
+  1. Log in as admin
+  2. Go to "Create Quiz" page
+  3. Click the "JSON Code" tab/section
+  4. Paste the quiz JSON into the textarea
+  5. Click "Import JSON"
+
+METHOD B: Via the API (for automation/scripts)
+  POST to: /api/quiz.php
+  Form data:
+    action    = import_json
+    quiz_json = <your JSON string>
+
+  Example with curl:
+    curl -X POST http://localhost/kahoot012d/api/quiz.php \
+         -d "action=import_json" \
+         -d "quiz_json={\"title\":\"My Quiz\",\"questions\":[...]}" 
+
+  Response on success: {"success":true}
+  Response on failure: {"success":false,"error":"error message"}
+
+================================================================================
+7. AI AGENT PROMPT TEMPLATE
+================================================================================
+
+Copy the prompt below and fill in the [BRACKETS] to generate a quiz:
+
+--- CUT HERE ---
+
+You are a quiz generator. Generate a quiz in the exact JSON format below.
+The JSON must be valid and directly importable into a Kahoot-style quiz app.
+
+QUIZ REQUIREMENTS:
+- Title: [YOUR QUIZ TITLE HERE]
+- Description: [SHORT DESCRIPTION]
+- Category: [SUBJECT/CATEGORY]
+- Tags: [COMMA-SEPARATED TAGS]
+- Number of questions: [NUMBER, e.g. 10]
+- Answers per question: [2, 3, or 4]
+- Difficulty: [easy / medium / hard / mixed]
+- Language: [English / Greek / other]
+- Randomize questions: [true/false]
+- Randomize answers: [true/false]
+- Allow solo play: [true/false]
+- Include explanations: [yes/no]
+
+OUTPUT FORMAT - produce ONLY valid JSON matching this structure:
+
+{
+    "title": "string",
+    "description": "string",
+    "category": "string",
+    "tags": "string",
+    "randomize_questions": false,
+    "randomize_answers": false,
+    "allow_solo": true,
+    "questions": [
+        {
+            "text": "question text",
+            "answers": ["option A", "option B", "option C", "option D"],
+            "correct": 0,
+            "explanation": "why the answer is correct",
+            "time": 20,
+            "points": 1000
+        }
+    ]
+}
+
+RULES:
+- "correct" is a 0-based index: 0 = first answer, 1 = second, etc.
+- "answers" must have 2, 3, or 4 non-empty strings.
+- "correct" must be >= 0 and < number of answers.
+- "time" must be one of: 10, 15, 20, 25, 30, 60, 90, 120, or 0 (no limit).
+- "points" is always 1000.
+- Do NOT include "id", "created_at", or "updated_at" - they are auto-generated.
+- Output ONLY the JSON, no markdown fences, no commentary.
+
+--- CUT HERE ---
+
+================================================================================
+END OF SPECIFICATION
+================================================================================

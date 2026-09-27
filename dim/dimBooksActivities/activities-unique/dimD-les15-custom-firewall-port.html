@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firewall - Τείχος Προστασίας</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0e7ff,#bae6fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e3a5f,#3b82f6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#1e3a5f;text-align:center;line-height:1.5}
+.score-display{text-align:center;margin-bottom:12px;font-size:1.05em;font-weight:700;color:#1e3a5f}
+.firewall-scene{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;background:#f0f9ff;border-radius:16px;border:2px solid #bae6fd;margin-bottom:14px;position:relative;min-height:120px}
+.computer-icon{font-size:2.8em;flex-shrink:0}
+.firewall-wall{width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0}
+.brick{width:50px;height:14px;background:linear-gradient(135deg,#f97316,#ea580c);border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.brick:nth-child(even){width:44px}
+.internet-icon{font-size:2.8em;flex-shrink:0}
+.packet-area{background:#fafafa;border-radius:16px;border:2px solid #e5e7eb;padding:16px;margin-bottom:14px}
+.packet-area h3{text-align:center;color:#1e3a5f;margin-bottom:12px;font-size:1em}
+.current-packet{text-align:center;padding:16px;background:#fff;border:2px solid #bae6fd;border-radius:14px;margin-bottom:14px;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.current-packet .pkt-emoji{font-size:2em;margin-bottom:6px}
+.current-packet .pkt-text{font-size:1em;font-weight:600;color:#334155}
+.action-btns{display:flex;gap:12px;justify-content:center}
+.btn-action{padding:14px 32px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.btn-allow{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff}
+.btn-allow:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-block{background:linear-gradient(135deg,#dc2626,#f87171);color:#fff}
+.btn-block:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(220,38,38,.4)}
+.btn-action:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.log-area{background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;padding:12px;max-height:200px;overflow-y:auto;margin-bottom:14px}
+.log-area h4{text-align:center;color:#64748b;margin-bottom:8px;font-size:.85em}
+.log-entry{padding:6px 10px;border-radius:8px;margin-bottom:4px;font-size:.85em;display:flex;align-items:center;gap:6px}
+.log-entry.log-allow{background:#f0fdf4;color:#166534}
+.log-entry.log-block{background:#fef2f2;color:#991b1b}
+.log-entry.log-correct .log-icon{color:#16a34a}
+.log-entry.log-wrong .log-icon{color:#dc2626}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:10px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.progress-dots{text-align:center;margin-bottom:10px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#3b82f6;transform:scale(1.3)}
+@media(max-width:550px){.firewall-scene{flex-wrap:wrap}.packet-area{padding:10px}.btn-action{padding:12px 20px;font-size:.9em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .firewall-scene > * + * { margin-left: 14px; }
+  .firewall-wall > * + * { margin-top: 2px; }
+  .action-btns > * + * { margin-left: 12px; }
+  .btn-action > * + * { margin-left: 6px; }
+  .log-entry > * + * { margin-left: 6px; }
+  .controls > * + * { margin-left: 15px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🧱 Firewall: Τείχος Προστασίας</h1>
+<p>Αποφάδισε ποια πακέτα δεδομένων να επιτρέψεις και ποια να μπλοκάρεις!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Το Firewall (τείχος προστασίας)</b> ελέγχει τα δεδομένα που μπαίνουν και βγαίνουν από τον υπολογιστή σου. Επέτρεψε τα ασφαλή και μπλόκαρε τα επικίνδυνα!</div>
+<div class="progress-dots" id="progressDots"></div>
+<div class="score-display" id="scoreDisplay">Πακέτο: 0 / 10</div>
+<div class="firewall-scene">
+<div class="internet-icon">🌍</div>
+<div class="firewall-wall" id="firewallWall">
+<div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+</div>
+<div class="computer-icon">💻</div>
+</div>
+<div class="packet-area">
+<h3>📦 Εισερχόμενο πακέτο δεδομένων</h3>
+<div class="current-packet" id="currentPacket">
+<div class="pkt-emoji">⏳</div>
+<div class="pkt-text">Πατήστε «Αρχή» για να ξεκινήσει το παιχνίδι</div>
+</div>
+<div class="action-btns">
+<button class="btn-action btn-allow" id="btnAllow" onclick="decide('allow')" disabled>✅ Επέτρεψε</button>
+<button class="btn-action btn-block" id="btnBlock" onclick="decide('block')" disabled>🚫 Μπλόκαρε</button>
+</div>
+</div>
+<div class="log-area" id="logArea">
+<h4>📜 Καταγραφή αποφάσεων</h4>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var packets=[
+{text:'Ενημέρωση antivirus από επίσημο site',emoji:'🛡️',correct:'allow',reason:'Ασφαλής ενημέρωση προστασίας'},
+{text:'Email από άγνωστο με συνημμένο .exe',emoji:'📧',correct:'block',reason:'Ύποπτο συνημμένο — μπορεί να έχει ιό!'},
+{text:'Λήψη παιχνιδιού από αξιόπιστο κατάστημα',emoji:'🎮',correct:'allow',reason:'Από επίσημο, ασφαλές κατάστημα εφαρμογών'},
+{text:'Διαφήμιση «Κέρδισε iPhone — κάνε κλικ!»',emoji:'📱',correct:'block',reason:'Είναι παγίδα (phishing/scam)!'},
+{text:'Πρόσβαση στην εκπαιδευτική πλατφόρμα e-me',emoji:'📚',correct:'allow',reason:'Ασφαλής εκπαιδευτική πλατφόρμα ΠΣΔ'},
+{text:'Popup «Ο υπολογιστής σας έχει ιό — κατεβάστε!»',emoji:'⚠️',correct:'block',reason:'Ψεύτικη προειδοποίηση — τεχνάσμα απατεώνων!'},
+{text:'Αυτόματη ενημέρωση λειτουργικού συστήματος',emoji:'🔄',correct:'allow',reason:'Σημαντικές ενημερώσεις ασφαλείας'},
+{text:'Σύνδεσμος σε email: «Δωρεάν δώρο — τώρα!»',emoji:'🎁',correct:'block',reason:'Ύποπτος σύνδεσμος — μην κάνεις κλικ!'},
+{text:'Αποστολή homework στο webmail.sch.gr',emoji:'✉️',correct:'allow',reason:'Ασφαλής υπηρεσία email του σχολείου'},
+{text:'Λήψη αρχείου από torrent/p2p site',emoji:'🏴‍☠️',correct:'block',reason:'Παράνομο site — μεγάλος κίνδυνος ιών!'}
+];
+
+var currentIndex=0;
+var score=0;
+var results=[];
+
+function buildDots(){
+var container=document.getElementById('progressDots');
+container.innerHTML='';
+for(var i=0;i<packets.length;i++){
+var dot=document.createElement('div');
+dot.className='dot';
+dot.id='dot-'+i;
+container.appendChild(dot);
+}
+}
+
+function showPacket(){
+if(currentIndex>=packets.length){
+showFinalResult();
+return;
+}
+var pkt=packets[currentIndex];
+document.getElementById('currentPacket').innerHTML='<div class="pkt-emoji">'+pkt.emoji+'</div><div class="pkt-text">'+pkt.text+'</div>';
+document.getElementById('scoreDisplay').textContent='Πακέτο: '+(currentIndex+1)+' / '+packets.length;
+document.getElementById('btnAllow').disabled=false;
+document.getElementById('btnBlock').disabled=false;
+var dots=document.querySelectorAll('.dot');
+for(var i=0;i<dots.length;i++){
+dots[i].classList.remove('current');
+}
+document.getElementById('dot-'+currentIndex).classList.add('current');
+}
+
+function decide(choice){
+var pkt=packets[currentIndex];
+var isCorrect=choice===pkt.correct;
+if(isCorrect)score++;
+results.push({index:currentIndex,choice:choice,correct:isCorrect});
+var dot=document.getElementById('dot-'+currentIndex);
+dot.classList.remove('current');
+dot.classList.add(isCorrect?'done-ok':'done-wrong');
+var logArea=document.getElementById('logArea');
+var entry=document.createElement('div');
+entry.className='log-entry '+(choice==='allow'?'log-allow':'log-block')+' '+(isCorrect?'log-correct':'log-wrong');
+var icon=isCorrect?'✅':'❌';
+var actionText=choice==='allow'?'ΕΠΕΤΡΑΠΗ':'ΜΠΛΟΚΑΡΙΣΤΟ';
+entry.innerHTML='<span class="log-icon">'+icon+'</span> '+pkt.emoji+' '+actionText+' — '+(isCorrect?'Σωστό!':'Λάθος! '+pkt.reason);
+logArea.appendChild(entry);
+logArea.scrollTop=logArea.scrollHeight;
+document.getElementById('btnAllow').disabled=true;
+document.getElementById('btnBlock').disabled=true;
+if(!isCorrect){
+showFeedback('❌ '+pkt.reason,false);
+}else{
+showFeedback('✅ Σωστή απόφαση!',true);
+}
+currentIndex++;
+setTimeout(function(){
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+showPacket();
+},1800);
+}
+
+function showFinalResult(){
+document.getElementById('currentPacket').innerHTML='<div class="pkt-emoji">🏁</div><div class="pkt-text">Ολοκληρώθηκε!</div>';
+document.getElementById('btnAllow').disabled=true;
+document.getElementById('btnBlock').disabled=true;
+document.getElementById('scoreDisplay').textContent='Αποτέλεσμα: '+score+' / '+packets.length;
+if(score===packets.length){
+showFeedback('🎉 Τέλεια! Είσαι expert στην προστασία! Μπλόκαρες όλες τις απειλές! 🛡️',true);
+}else if(score>=7){
+showFeedback('👍 Καλή δουλειά! '+score+'/'+packets.length+' σωστά. Πρόσεχε πάντα τι επιτρέπεις!',true);
+}else{
+showFeedback('🔍 '+score+'/'+packets.length+' σωστά. Χρειάζεται περισσότερη προσοχή στα ύποπτα πακέτα!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentIndex=0;
+score=0;
+results=[];
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+document.getElementById('logArea').innerHTML='<h4>📜 Καταγραφή αποφάσεων</h4>';
+buildDots();
+showPacket();
+}
+
+buildDots();
+showPacket();
+</script>
+</body>
+</html>

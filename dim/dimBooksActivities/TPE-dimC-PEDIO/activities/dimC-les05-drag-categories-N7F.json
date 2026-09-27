@@ -1,0 +1,68 @@
+{
+  "title": "Στοιχεία του Scratch",
+  "subtitle": "Ταξινόμησε τους όρους στις σωστές κατηγορίες",
+  "categories": [
+    {
+      "id": "condition",
+      "name": "ΣΥΝΘΗΚΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "command",
+      "name": "ΕΝΤΟΛΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "event",
+      "name": "ΣΥΜΒΑΝ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αγγίζει το σκυλάκι;",
+      "category": "condition"
+    },
+    {
+      "id": "item2",
+      "text": "Πες «Γεια σου!»",
+      "category": "command"
+    },
+    {
+      "id": "item3",
+      "text": "Πάτημα πλήκτρου →",
+      "category": "event"
+    },
+    {
+      "id": "item4",
+      "text": "Όταν πατηθεί πράσινη σημαία",
+      "category": "event"
+    },
+    {
+      "id": "item5",
+      "text": "Κινήσου 10 βήματα",
+      "category": "command"
+    },
+    {
+      "id": "item6",
+      "text": "Αγγίζει ακμή σκηνής;",
+      "category": "condition"
+    },
+    {
+      "id": "item7",
+      "text": "Δείκτης ποντικιού κοντά;",
+      "category": "condition"
+    },
+    {
+      "id": "item8",
+      "text": "Άλλαξε ενδυμασία",
+      "category": "command"
+    },
+    {
+      "id": "item9",
+      "text": "Όταν κάνω κλικ πάνω σε αυτό",
+      "category": "event"
+    }
+  ]
+}

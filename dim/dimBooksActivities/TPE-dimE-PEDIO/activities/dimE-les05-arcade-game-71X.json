@@ -1,0 +1,15 @@
+{
+  "title": "Αστερίες + Αλιγκάτορ — Φτάσε 10 πόντους!",
+  "subtitle": "Μάζεψε ⭐ αστερίες — Απόφυγε 🐡 αλιγκάτορ!",
+  "winScore": 10,
+  "maxLives": 3,
+  "initialStars": 5,
+  "initialPuffers": 2,
+  "maxPuffers": 3,
+  "pufferSpeed": 1.8,
+  "canvasW": 600,
+  "canvasH": 400,
+  "hasSliders": false,
+  "hasLevels": false,
+  "hasConditionBox": false
+}

@@ -1,0 +1,104 @@
+{
+    "quiz": {
+        "id": "6982a000000001.12345678",
+        "title": "BASIC-PRINT-LET",
+        "description": "\u03a4\u03b5\u03c3\u03c4 \u03b3\u03b9\u03b1 \u03c4\u03b9\u03c2 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ad\u03c2 PRINT \u03ba\u03b1\u03b9 LET \u03c3\u03c4\u03b7 \u03b3\u03bb\u03ce\u03c3\u03c3\u03b1 BASIC",
+        "questions": [
+            {
+                "id": "6982a000000002.12345678",
+                "text": "\u03a0\u03bf\u03b9\u03b1 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ae \u03b5\u03ba\u03c4\u03c5\u03c0\u03ce\u03bd\u03b5\u03b9 \u03c4\u03bf \u03ba\u03b5\u03af\u03bc\u03b5\u03bd\u03bf hello \u03c3\u03c4\u03b7\u03bd \u03bf\u03b8\u03cc\u03bd\u03b7;",
+                "answers": [
+                    "PRINT hello",
+                    "PRINT \"hello\"",
+                    "SHOW \"hello\"",
+                    "DISPLAY hello"
+                ],
+                "correct": 1,
+                "time": 20,
+                "points": 1000
+            },
+            {
+                "id": "6982a000000003.12345678",
+                "text": "\u03a0\u03bf\u03b9\u03b1 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ae \u03b5\u03ba\u03c4\u03c5\u03c0\u03ce\u03bd\u03b5\u03b9 \u03c4\u03bf \u03b1\u03c0\u03bf\u03c4\u03ad\u03bb\u03b5\u03c3\u03bc\u03b1 \u03c4\u03b7\u03c2 \u03c0\u03c1\u03cc\u03c3\u03b8\u03b5\u03c3\u03b7\u03c2 1+3;",
+                "answers": [
+                    "PRINT 1+3",
+                    "PRINT \"1+3\"",
+                    "CALC 1+3",
+                    "SHOW 1+3"
+                ],
+                "correct": 0,
+                "time": 20,
+                "points": 1000
+            },
+            {
+                "id": "6982a000000004.12345678",
+                "text": "\u03a0\u03bf\u03b9\u03b1 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ae \u03b1\u03c0\u03bf\u03b8\u03b7\u03ba\u03b5\u03cd\u03b5\u03b9 \u03c4\u03b7\u03bd \u03c4\u03b9\u03bc\u03ae 4 \u03c3\u03c4\u03b7 \u03bc\u03b5\u03c4\u03b1\u03b2\u03bb\u03b7\u03c4\u03ae A;",
+                "answers": [
+                    "STORE A=4",
+                    "SET A=4",
+                    "LET A=4",
+                    "SAVE A=4"
+                ],
+                "correct": 2,
+                "time": 20,
+                "points": 1000
+            },
+            {
+                "id": "6982a000000005.12345678",
+                "text": "\u03a0\u03bf\u03b9\u03b1 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ae \u03b1\u03c0\u03bf\u03b8\u03b7\u03ba\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf \u03ba\u03b5\u03af\u03bc\u03b5\u03bd\u03bf hello \u03c3\u03c4\u03b7 \u03bc\u03b5\u03c4\u03b1\u03b2\u03bb\u03b7\u03c4\u03ae B$;",
+                "answers": [
+                    "LET B=hello",
+                    "SET B$=hello",
+                    "LET B$=\"hello\"",
+                    "STORE B$=\"hello\""
+                ],
+                "correct": 2,
+                "time": 20,
+                "points": 1000
+            },
+            {
+                "id": "6982a000000006.12345678",
+                "text": "\u03a0\u03bf\u03b9\u03b1 \u03b5\u03bd\u03c4\u03bf\u03bb\u03ae \u03b5\u03ba\u03c4\u03c5\u03c0\u03ce\u03bd\u03b5\u03b9 \u03c4\u03b7\u03bd \u03c4\u03b9\u03bc\u03ae \u03c4\u03b7\u03c2 \u03bc\u03b5\u03c4\u03b1\u03b2\u03bb\u03b7\u03c4\u03ae\u03c2 B$;",
+                "answers": [
+                    "SHOW B$",
+                    "PRINT B$",
+                    "DISPLAY B$",
+                    "TYPE B$"
+                ],
+                "correct": 1,
+                "time": 20,
+                "points": 1000
+            }
+        ],
+        "created_at": "2026-02-04 03:00:00"
+    },
+    "answers": [
+        [
+            {
+                "username": "\u03a3\u03c0\u03c5\u03c1\u03af\u03b4\u03c9\u03bdCHR",
+                "answer": 3,
+                "is_correct": false,
+                "points": 0,
+                "time_taken": 20,
+                "streak": 0
+            },
+            {
+                "username": "\u0391\u03b8\u03b1\u03bd\u03ac\u03c3\u03b9\u03bf\u03c2",
+                "answer": 1,
+                "is_correct": true,
+                "points": 50,
+                "time_taken": 20,
+                "streak": 1
+            }
+        ]
+    ],
+    "scores": {
+        "\u03a3\u03c0\u03c5\u03c1\u03af\u03b4\u03c9\u03bdCHR": 0,
+        "\u0391\u03b8\u03b1\u03bd\u03ac\u03c3\u03b9\u03bf\u03c2": 50
+    },
+    "streaks": {
+        "\u03a3\u03c0\u03c5\u03c1\u03af\u03b4\u03c9\u03bdCHR": 0,
+        "\u0391\u03b8\u03b1\u03bd\u03ac\u03c3\u03b9\u03bf\u03c2": 1
+    },
+    "question_results": []
+}

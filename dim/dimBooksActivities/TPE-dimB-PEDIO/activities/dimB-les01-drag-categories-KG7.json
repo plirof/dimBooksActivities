@@ -1,0 +1,48 @@
+{
+  "title": "Έχει επανάληψη ή Δεν έχει",
+  "subtitle": "Διάκρινε ποια φαινόμενα επαναλαμβάνονται",
+  "categories": [
+    {
+      "id": "has",
+      "name": "ΕΧΕΙ ΕΠΑΝΑΛΗΨΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΔΕΝ ΕΧΕΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🌅 Ηλιακός κύκλος",
+      "category": "has"
+    },
+    {
+      "id": "item2",
+      "text": "🎂 Γενέθλια",
+      "category": "no"
+    },
+    {
+      "id": "item3",
+      "text": "🌊 Παλίρροια",
+      "category": "has"
+    },
+    {
+      "id": "item4",
+      "text": "📅 Χριστούγεννα",
+      "category": "has"
+    },
+    {
+      "id": "item5",
+      "text": "🎓 Αποφοίτηση",
+      "category": "no"
+    },
+    {
+      "id": "item6",
+      "text": "🌙 Φεγγάρι φάσεις",
+      "category": "has"
+    }
+  ]
+}

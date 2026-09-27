@@ -1,0 +1,39 @@
+{
+  "title": "Βρες τα Λάθη: Μοτίβο Επανάληψης",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Βρες", "error": false},
+        {"text": "ποιες", "error": false},
+        {"text": "εντολές", "error": false},
+        {"text": "ξεχνούνται", "error": true, "correct": "επαναλαμβάνονται", "feedback": "Ψάχνουμε εντολές που επαναλαμβάνονται, όχι που ξεχνιούνται!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Διάβασε", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "αριθμό", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "τετράγωνο", "error": true, "correct": "κυκλάκι", "feedback": "Ο αριθμός είναι στο κυκλάκι, όχι στο τετράγωνο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Σχεδίασε", "error": false},
+        {"text": "τόσα", "error": false},
+        {"text": "μοτίβα", "error": false},
+        {"text": "όσα", "error": false},
+        {"text": "θέλεις", "error": true, "correct": "λέει", "feedback": "Σχεδιάζουμε τόσες φορές όσες λέει ο αριθμός!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εξάσκηση", "error": false},
+        {"text": "δεν", "error": true, "correct": "είναι", "feedback": "Η εξάσκηση είναι απαραίτητη για τα μοτίβα!"}
+      ]
+    }
+  ]
+}

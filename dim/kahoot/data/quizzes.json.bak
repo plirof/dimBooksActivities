@@ -1,0 +1,380 @@
+{
+    "quizzes": [
+        {
+            "id": "sample_math_001",
+            "title": "Basic Math Challenge",
+            "description": "Test your basic math skills with addition, subtraction, multiplication, and division!",
+            "questions": [
+                {
+                    "id": "698233f58d61d0.99282019",
+                    "text": "What is 15 + 27?",
+                    "answers": [
+                        "32",
+                        "42",
+                        "45",
+                        "52"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6222.64736827",
+                    "text": "What is 100 - 35?",
+                    "answers": [
+                        "55",
+                        "65",
+                        "75",
+                        "85"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6231.69319886",
+                    "text": "What is 8 \u00d7 7?",
+                    "answers": [
+                        "48",
+                        "54",
+                        "56",
+                        "64"
+                    ],
+                    "correct": 2,
+                    "time": 25,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6243.72670307",
+                    "text": "What is 72 \u00f7 8?",
+                    "answers": [
+                        "8",
+                        "9",
+                        "10",
+                        "11"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6254.23400240",
+                    "text": "What is 25 \u00d7 4?",
+                    "answers": [
+                        "80",
+                        "90",
+                        "100",
+                        "110"
+                    ],
+                    "correct": 2,
+                    "time": 25,
+                    "points": 1000
+                }
+            ],
+            "created_at": "2026-02-03 18:44:21"
+        },
+        {
+            "id": "sample_geography_001",
+            "title": "World Geography",
+            "description": "Explore the world with these fun geography questions!",
+            "questions": [
+                {
+                    "id": "698233f58d6314.58115484",
+                    "text": "What is the capital of France?",
+                    "answers": [
+                        "London",
+                        "Berlin",
+                        "Paris",
+                        "Madrid"
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6320.48785800",
+                    "text": "Which continent is Egypt in?",
+                    "answers": [
+                        "Asia",
+                        "Europe",
+                        "Africa",
+                        "Australia"
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6337.12819586",
+                    "text": "What is the largest ocean on Earth?",
+                    "answers": [
+                        "Atlantic",
+                        "Indian",
+                        "Arctic",
+                        "Pacific"
+                    ],
+                    "correct": 3,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6347.12749783",
+                    "text": "Which country has the most people?",
+                    "answers": [
+                        "USA",
+                        "India",
+                        "China",
+                        "Indonesia"
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6353.70681028",
+                    "text": "What is the capital of Japan?",
+                    "answers": [
+                        "Seoul",
+                        "Beijing",
+                        "Tokyo",
+                        "Bangkok"
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                }
+            ],
+            "created_at": "2026-02-03 18:44:21"
+        },
+        {
+            "id": "sample_science_001",
+            "title": "Fun Science Quiz",
+            "description": "Test your science knowledge with these exciting questions!",
+            "questions": [
+                {
+                    "id": "698233f58d6364.61796359",
+                    "text": "What planet is known as the Red Planet?",
+                    "answers": [
+                        "Venus",
+                        "Mars",
+                        "Jupiter",
+                        "Saturn"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6372.80399926",
+                    "text": "What gas do plants breathe in?",
+                    "answers": [
+                        "Oxygen",
+                        "Carbon Dioxide",
+                        "Nitrogen",
+                        "Hydrogen"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6389.00609069",
+                    "text": "What is H2O commonly known as?",
+                    "answers": [
+                        "Salt",
+                        "Sugar",
+                        "Water",
+                        "Air"
+                    ],
+                    "correct": 2,
+                    "time": 15,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d6397.27001016",
+                    "text": "How many legs does a spider have?",
+                    "answers": [
+                        "6",
+                        "8",
+                        "10",
+                        "12"
+                    ],
+                    "correct": 1,
+                    "time": 15,
+                    "points": 1000
+                },
+                {
+                    "id": "698233f58d63a3.89474405",
+                    "text": "What is the center of our solar system?",
+                    "answers": [
+                        "Earth",
+                        "Moon",
+                        "Sun",
+                        "Mars"
+                    ],
+                    "correct": 2,
+                    "time": 15,
+                    "points": 1000
+                }
+            ],
+            "created_at": "2026-02-03 18:44:21"
+        },
+        {
+            "id": "69825d7002ea32.45227205",
+            "title": "aaaaaaaa",
+            "description": "aaaaaaaaa",
+            "questions": [
+                {
+                    "id": "69825d7002e216.74077503",
+                    "text": "aaaaa",
+                    "answers": [
+                        "aaa",
+                        "bbb",
+                        "ccc",
+                        "ddd"
+                    ],
+                    "correct": 0,
+                    "explanation": "",
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "69828393a85ac8.68605429",
+                    "text": "bbbb",
+                    "answers": [
+                        "ccc",
+                        "aaa",
+                        "ddd",
+                        "bbbb"
+                    ],
+                    "correct": 3,
+                    "explanation": "",
+                    "time": 10,
+                    "points": 1000
+                }
+            ],
+            "created_at": "2026-02-03 21:41:20",
+            "randomize_questions": true,
+            "randomize_answers": false,
+            "updated_at": "2026-02-07 12:30:15",
+            "category": "",
+            "tags": "",
+            "allow_solo": true
+        },
+        {
+            "id": "698288bcd20dd7.92604317",
+            "title": "aaaaaaaa (Copy)",
+            "description": "aaaaaaaaa",
+            "questions": [
+                {
+                    "id": "698288bcd21098.20256284",
+                    "text": "aaaaa2",
+                    "answers": [
+                        "aaa2",
+                        "bbb",
+                        "ccc",
+                        "ddd"
+                    ],
+                    "correct": 0,
+                    "explanation": "",
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "698288bcd21103.82385261",
+                    "text": "bbbb",
+                    "answers": [
+                        "ccc",
+                        "aaa",
+                        "ddd",
+                        "bbbb"
+                    ],
+                    "correct": 3,
+                    "explanation": "",
+                    "time": 10,
+                    "points": 1000
+                }
+            ],
+            "randomize_questions": false,
+            "randomize_answers": true,
+            "created_at": "2026-02-04 00:46:04",
+            "updated_at": "2026-02-07 12:40:18",
+            "category": "",
+            "tags": "",
+            "allow_solo": true
+        },
+        {
+            "id": "6982a000000001.12345678",
+            "title": "BASIC-PRINT-LET",
+            "description": "Τεστ για τις εντολές PRINT και LET στη γλώσσα BASIC",
+            "questions": [
+                {
+                    "id": "6982a000000002.12345678",
+                    "text": "Ποια εντολή εκτυπώνει το κείμενο hello στην οθόνη;",
+                    "answers": [
+                        "PRINT hello",
+                        "PRINT \"hello\"",
+                        "SHOW \"hello\"",
+                        "DISPLAY hello"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "6982a000000003.12345678",
+                    "text": "Ποια εντολή εκτυπώνει το αποτέλεσμα της πρόσθεσης 1+3;",
+                    "answers": [
+                        "PRINT 1+3",
+                        "PRINT \"1+3\"",
+                        "CALC 1+3",
+                        "SHOW 1+3"
+                    ],
+                    "correct": 0,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "6982a000000004.12345678",
+                    "text": "Ποια εντολή αποθηκεύει την τιμή 4 στη μεταβλητή A;",
+                    "answers": [
+                        "STORE A=4",
+                        "SET A=4",
+                        "LET A=4",
+                        "SAVE A=4"
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "6982a000000005.12345678",
+                    "text": "Ποια εντολή αποθηκεύει το κείμενο hello στη μεταβλητή B$;",
+                    "answers": [
+                        "LET B=hello",
+                        "SET B$=hello",
+                        "LET B$=\"hello\"",
+                        "STORE B$=\"hello\""
+                    ],
+                    "correct": 2,
+                    "time": 20,
+                    "points": 1000
+                },
+                {
+                    "id": "6982a000000006.12345678",
+                    "text": "Ποια εντολή εκτυπώνει την τιμή της μεταβλητής B$;",
+                    "answers": [
+                        "SHOW B$",
+                        "PRINT B$",
+                        "DISPLAY B$",
+                        "TYPE B$"
+                    ],
+                    "correct": 1,
+                    "time": 20,
+                    "points": 1000
+                }
+            ],
+            "created_at": "2026-02-04 03:00:00"
+        }
+    ]
+}

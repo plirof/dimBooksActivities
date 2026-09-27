@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τύποι Αρχείων",
+  "subtitle": "Μόνο τύπους αρχείων!",
+  "instruction": "Σπάσε μόνο ΤΥΠΟΥΣ ΑΡΧΕΙΩΝ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κείμενο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Ποντίκι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εικόνα", "correct": true, "color": "#45B7D1" },
+    { "text": "Οθόνη", "correct": false, "color": "#96CEB4" },
+    { "text": "Ήχος", "correct": true, "color": "#FFEAA7" },
+    { "text": "Εικονίδιο", "correct": false, "color": "#DDA0DD" },
+    { "text": "Βίντεο", "correct": true, "color": "#98D8C8" },
+    { "text": "Πληκτρολόγιο", "correct": false, "color": "#F7DC6F" },
+    { "text": "Φωτογραφία", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κουμπί", "correct": false, "color": "#85C1E9" }
+  ]
+}

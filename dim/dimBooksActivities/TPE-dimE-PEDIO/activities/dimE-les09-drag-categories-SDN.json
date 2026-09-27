@@ -1,0 +1,18 @@
+{
+  "title": "Σειριακή ή Παράλληλη;",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "serial", "name": "Σειριακή Εκτέλεση", "color": "#FF9800" },
+    { "id": "parallel", "name": "Παράλληλη Εκτέλεση", "color": "#4CAF50" }
+  ],
+  "items": [
+    { "id": "s1", "text": "📝 Μία εντολή μετά την άλλη", "category": "serial" },
+    { "id": "s2", "text": "🎵 Μουσική AND χορός ταυτόχρονα", "category": "parallel" },
+    { "id": "s3", "text": "🟢 Δύο σενάρια πράσινης σημαίας", "category": "parallel" },
+    { "id": "s4", "text": "↻ Ρόδα ΚΑΙ μετά ανάποδη ρόδα", "category": "serial" },
+    { "id": "s5", "text": "👥 Αλεξία χορεύει ΚΑΙ Αλεξία2 χορεύει", "category": "parallel" },
+    { "id": "s6", "text": "👕 Ενδυμασία 1 → Ενδυμασία 2 → ...", "category": "serial" },
+    { "id": "s7", "text": "🔊 Ήχος παίζει και ταυτόχρονα κίνηση", "category": "parallel" },
+    { "id": "s8", "text": "⏱️ Περίμενε και μετά συνέχισε", "category": "serial" }
+  ]
+}

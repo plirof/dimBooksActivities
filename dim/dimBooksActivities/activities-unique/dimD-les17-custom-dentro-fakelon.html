@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δέντρο Φακέλων - Ιεραρχία Αρχείων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:860px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#eff6ff;border-radius:12px;border-left:4px solid #3b82f6;padding:10px 14px;font-size:.85em;color:#1e3a8a;line-height:1.5}
+.info b{color:#1e40af}
+.score-row{display:flex;justify-content:space-between;align-items:center;font-size:.9em;font-weight:600;color:#1e40af}
+.layout{display:flex;gap:14px;min-height:300px}
+.pool-col{flex:0 0 180px;background:#f8fafc;border-radius:14px;border:2px solid #e2e8f0;padding:10px;display:flex;flex-direction:column;gap:6px}
+.pool-col h4{text-align:center;font-size:.8em;color:#64748b;margin-bottom:4px}
+.pool-item{padding:8px 10px;border-radius:10px;font-size:.82em;cursor:pointer;transition:all .2s;border:2px solid #e2e8f0;background:#fff;text-align:center;user-select:none;touch-action:none}
+.pool-item:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.pool-item.folder{border-color:#93c5fd;background:#eff6ff;color:#1e40af;font-weight:700}
+.pool-item.file{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.pool-item.placed{opacity:.3;pointer-events:none;text-decoration:line-through}
+.pool-item.selected{border-color:#3b82f6;background:#dbeafe;transform:scale(1.05)}
+.tree-col{flex:1;background:#f8fafc;border-radius:14px;border:2px solid #e2e8f0;padding:12px;overflow-y:auto}
+.tree-col h4{font-size:.8em;color:#64748b;margin-bottom:8px}
+.tree-root{font-size:.85em;font-weight:700;color:#1e40af;padding:6px 10px;background:#dbeafe;border-radius:8px;margin-bottom:8px;display:inline-block}
+.folder-row{padding:4px 0;margin:2px 0}
+.folder-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:2px dashed #cbd5e1;background:#fff;font-size:.82em;font-weight:700;color:#1e40af;cursor:pointer;transition:all .2s;min-width:80px;user-select:none;touch-action:none}
+.folder-btn:hover{border-color:#93c5fd;background:#eff6ff;transform:translateY(-1px)}
+.folder-btn.drag-over{border-color:#3b82f6;background:#dbeafe;border-style:solid}
+.folder-btn.has-children{border-style:solid;border-color:#93c5fd}
+.folder-contents{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 4px 24px}
+.f-placed{padding:4px 8px;border-radius:6px;font-size:.75em;background:#fffbeb;border:1px solid #fde68a;color:#92400e;display:inline-flex;align-items:center;gap:3px}
+.empty-hint{color:#94a3b8;font-size:.75em;padding:4px 8px}
+.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(30,64,175,.35)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn-hint{background:#fffbeb;color:#92400e;border:2px solid #fde68a}
+.btn-hint:hover{background:#fef3c7}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.layout{flex-direction:column}.pool-col{flex:auto;flex-direction:row;flex-wrap:wrap}.pool-item{flex:1;min-width:80px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .layout > * + * { margin-left: 14px; }
+  .pool-col > * + * { margin-top: 6px; }
+  .folder-btn > * + * { margin-left: 6px; }
+  .folder-contents > * { margin: 2px; }
+  .f-placed > * + * { margin-left: 3px; }
+  .controls > * { margin: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📂 Δέντρο Φακέλων — Ιεραρχία Αρχείων</h1>
+<p>Τοποθέτησε κάθε αρχείο στον σωστό φάκελο!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>Θυμάμαι:</b> Τα αρχεία οργανώνονται σε <b>φακέλους</b>. Κάθε αρχείο ανήκει σε έναν συγκεκριμένο φάκελο. Διάλεξε ένα αρχείο από αριστερά και μετά πάτα τον φάκελο όπου ανήκει!</div>
+<div class="score-row"><span>⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></span><span id="levelLabel">Επίπεδο 1</span></div>
+<div class="layout" id="mainLayout">
+<div class="pool-col" id="poolCol">
+<h4>📦 Τοποθέτησε:</h4>
+<div id="poolItems"></div>
+</div>
+<div class="tree-col" id="treeCol">
+<h4>🌳 Φάκελοι</h4>
+<div id="treeArea"></div>
+</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkTree()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-hint" id="hintBtn" onclick="showHint()">💡 Βοήθεια</button>
+<button class="btn btn-reset" onclick="resetLevel()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var levels=[
+{
+title:'Οργάνωση Εγγράφων Σχολείου',
+root:'Το Σχολείο μου',
+folders:[
+{name:'Έγγραφα',parent:null,order:0},
+{name:'Γλώσσα',parent:'Έγγραφα',order:0},
+{name:'Φυσική',parent:'Έγγραφα',order:1},
+{name:'Ιστορία',parent:'Έγγραφα',order:2},
+{name:'Μαθηματικά',parent:'Έγγραφα',order:3},
+{name:'Γεωγραφία',parent:'Έγγραφα',order:4}
+],
+pool:[
+{id:'math',label:'Μαθηματικά.txt',type:'file',parent:'Μαθηματικά'},
+{id:'lang',label:'Γλώσσα.txt',type:'file',parent:'Γλώσσα'},
+{id:'gram',label:'Γραμματική',type:'folder',parent:'Γλώσσα'},
+{id:'phys',label:'Φυσική.txt',type:'file',parent:'Φυσική'},
+{id:'history',label:'Ιστορία.txt',type:'file',parent:'Ιστορία'},
+{id:'geo',label:'Γεωγραφία.txt',type:'file',parent:'Γεωγραφία'}
+]
+},
+{
+title:'Οργάνωση Φωτογραφιών',
+root:'Οι Φωτογραφίες μου',
+folders:[
+{name:'2024',parent:null,order:0},
+{name:'Διακοπές',parent:'2024',order:0},
+{name:'Γιορτές',parent:'2024',order:1},
+{name:'Οικογένεια',parent:'2024',order:2}
+],
+pool:[
+{id:'summer',label:'Διακοπές.png',type:'file',parent:'Διακοπές'},
+{id:'xmas',label:'Χριστούγεννα.png',type:'file',parent:'Γιορτές'},
+{id:'easter',label:'Πάσχα.png',type:'file',parent:'Γιορτές'},
+{id:'bd',label:'Γενέθλια.png',type:'file',parent:'Γιορτές'},
+{id:'beach',label:'Θάλασσα.jpg',type:'file',parent:'Διακοπές'},
+{id:'mount',label:'Βουνό.jpg',type:'file',parent:'Διακοπές'},
+{id:'fam',label:'Οικογένεια.jpg',type:'file',parent:'Οικογένεια'}
+]
+},
+{
+title:'Οργάνωση Μουσικής',
+root:'Η Μουσική μου',
+folders:[
+{name:'Μουσική',parent:null,order:0},
+{name:'Ελληνικά',parent:'Μουσική',order:0},
+{name:'Ξένα',parent:'Μουσική',order:1},
+{name:'Λίστες',parent:'Μουσική',order:2}
+],
+pool:[
+{id:'song1',label:'Τραγούδι1.mp3',type:'file',parent:'Ελληνικά'},
+{id:'song2',label:'Τραγούδι2.mp3',type:'file',parent:'Ελληνικά'},
+{id:'song3',label:'Song.mp3',type:'file',parent:'Ξένα'},
+{id:'song4',label:'Song2.mp3',type:'file',parent:'Ξένα'},
+{id:'play',label:'Playlist.docx',type:'file',parent:'Λίστες'}
+]
+}
+];
+
+var currentLevel=0;
+var placed={};
+var selectedPool=null;
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function renderLevel(){
+var lv=levels[currentLevel];
+placed={};
+selectedPool=null;
+document.getElementById('levelLabel').textContent=lv.title;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('totalDisplay').textContent=lv.pool.length;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('checkBtn').disabled=true;
+renderPool();
+renderTree();
+}
+
+function renderPool(){
+var pool=document.getElementById('poolItems');
+pool.innerHTML='';
+var items=levels[currentLevel].pool.slice();
+shuffle(items);
+for(var i=0;i<items.length;i++){
+var it=items[i];
+var div=document.createElement('div');
+div.className='pool-item '+(it.type==='folder'?'folder':'file');
+div.textContent=(it.type==='folder'?'📁 ':'📄 ')+it.label;
+div.dataset.id=it.id;
+div.dataset.parent=it.parent;
+div.setAttribute('draggable','true');
+div.ondragstart=function(e){dragStart(e,this);};
+div.ondragend=function(e){dragEnd(e,this);};
+div.ontouchstart=function(e){touchStart(e,this);};
+div.ontouchmove=function(e){touchMove(e,this);};
+div.ontouchend=function(e){touchEnd(e,this);};
+div.onclick=function(){selectFromPool(this);};
+pool.appendChild(div);
+}
+}
+
+function selectFromPool(el){
+if(el.classList.contains('placed'))return;
+if(selectedPool){
+document.querySelectorAll('.pool-item').forEach(function(e){e.classList.remove('selected');});
+if(selectedPool===el){selectedPool=null;return;}
+}
+el.classList.add('selected');
+selectedPool=el;
+}
+
+function renderTree(){
+var area=document.getElementById('treeArea');
+var lv=levels[currentLevel];
+var html='<div class="tree-root">📁 '+lv.root+'</div>';
+var topFolders=lv.folders.filter(function(f){return f.parent===null;});
+topFolders.sort(function(a,b){return a.order-b.order;});
+for(var t=0;t<topFolders.length;t++){
+html+=renderFolderTree(topFolders[t].name,lv.folders,0);
+}
+area.innerHTML=html;
+attachFolderListeners();
+}
+
+function renderFolderTree(folderName,folders,depth){
+var html='<div class="folder-row" style="margin-left:'+(depth*20)+'px">';
+var folderId='fld-'+folderName.replace(/\s+/g,'_');
+html+='<div class="folder-btn" id="'+folderId+'" data-folder="'+folderName+'">📁 '+folderName+'</div>';
+var children=folders.filter(function(f){return f.parent===folderName;});
+children.sort(function(a,b){return a.order-b.order;});
+html+='<div class="folder-contents" id="contents-'+folderName.replace(/\s+/g,'_')+'"></div>';
+for(var c=0;c<children.length;c++){
+html+=renderFolderTree(children[c].name,folders,depth+1);
+}
+html+='</div>';
+return html;
+}
+
+function attachFolderListeners(){
+var btns=document.querySelectorAll('.folder-btn');
+for(var i=0;i<btns.length;i++){
+(function(el){
+el.addEventListener('dragover',function(e){e.preventDefault();el.classList.add('drag-over');});
+el.addEventListener('dragleave',function(){el.classList.remove('drag-over');});
+el.addEventListener('drop',function(e){
+e.preventDefault();
+el.classList.remove('drag-over');
+var id=e.dataTransfer.getData('text');
+if(id)tryPlace(id,el.dataset.folder);
+});
+el.addEventListener('click',function(){
+var name=el.dataset.folder;
+if(selectedPool){
+tryPlace(selectedPool.dataset.id,name);
+selectedPool.classList.remove('selected');
+selectedPool=null;
+}
+});
+})(btns[i]);
+}
+var pools=document.querySelectorAll('.pool-item');
+for(var i=0;i<pools.length;i++){
+(function(el){
+el.addEventListener('touchstart',function(e){
+touchStart(e,el);
+},{passive:true});
+el.addEventListener('touchmove',function(e){
+touchMove(e,el);
+},{passive:false});
+el.addEventListener('touchend',function(e){
+touchEnd(e,el);
+},{passive:true});
+})(pools[i]);
+}
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('selected');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text',el.dataset.id);
+}
+
+function dragEnd(e,el){
+el.classList.remove('selected');
+dragItem=null;
+var z=document.querySelectorAll('.drag-over');
+for(var i=0;i<z.length;i++)z[i].classList.remove('drag-over');
+}
+
+function touchStart(e,el){
+if(el.classList.contains('placed'))return;
+dragItem=el;
+el.classList.add('selected');
+}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var t=document.elementFromPoint(touch.clientX,touch.clientY);
+var z=t&&(t.classList.contains('folder-btn')?t:t.closest('.folder-btn'));
+var all=document.querySelectorAll('.folder-btn');
+for(var i=0;i<all.length;i++)all[i].classList.remove('drag-over');
+if(z&&!z.classList.contains('drag-over'))z.classList.add('drag-over');
+el.dataset.targetFolder=z?z.dataset.folder:'';
+}
+
+function touchEnd(e,el){
+el.classList.remove('selected');
+var target=el.dataset.targetFolder;
+var all=document.querySelectorAll('.folder-btn');
+for(var i=0;i<all.length;i++)all[i].classList.remove('drag-over');
+if(target){tryPlace(el.dataset.id,target);}
+el.dataset.targetFolder='';
+dragItem=null;
+}
+
+function tryPlace(itemId,folderName){
+if(!folderName)return;
+var lv=levels[currentLevel];
+var item=null;
+for(var i=0;i<lv.pool.length;i++){
+if(lv.pool[i].id===itemId){item=lv.pool[i];break;}
+}
+if(!item)return;
+var poolEl=document.querySelector('.pool-item[data-id="'+itemId+'"]');
+if(!poolEl||poolEl.classList.contains('placed'))return;
+if(item.parent!==folderName){
+showFeedback('❌ Το «'+item.label+'» δεν ανήκει στον φάκελο «'+folderName+'»!',false);
+return;
+}
+poolEl.classList.add('placed');
+poolEl.classList.remove('selected');
+selectedPool=null;
+placed[itemId]=folderName;
+var cont=document.getElementById('contents-'+folderName.replace(/\s+/g,'_'));
+if(cont){
+var tag=document.createElement('span');
+tag.className='f-placed';
+tag.textContent='📄 '+item.label;
+cont.appendChild(tag);
+}
+updateScore();
+}
+
+function updateScore(){
+var count=Object.keys(placed).length;
+var total=levels[currentLevel].pool.length;
+document.getElementById('scoreDisplay').textContent=count;
+document.getElementById('checkBtn').disabled=count<total;
+if(count===total){
+showFeedback('✅ Όλα τοποθετήθηκαν! Πάτα «Έλεγχος»!',true);
+}
+}
+
+function checkTree(){
+var lv=levels[currentLevel];
+var correct=0;
+for(var i=0;i<lv.pool.length;i++){
+var item=lv.pool[i];
+if(placed[item.id]===item.parent)correct++;
+}
+if(correct===lv.pool.length){
+showFeedback('🎉 Μπράβο! Όλα τα αρχεία είναι στη σωστή θέση!',true);
+if(currentLevel<levels.length-1){
+setTimeout(function(){currentLevel++;renderLevel();},1800);
+}else{
+showFeedback('🏆 Συγχαρητήρια! Ολοκλήρωσες όλα τα επίπεδα!',true);
+}
+}else{
+showFeedback('🔍 '+correct+'/'+lv.pool.length+' σωστά. Κάποια είναι σε λάθος φάκελο — δοκίμασε ξανά!',false);
+}
+}
+
+function showHint(){
+var lv=levels[currentLevel];
+var unplaced=[];
+for(var i=0;i<lv.pool.length;i++){
+if(!placed[lv.pool[i].id])unplaced.push(lv.pool[i]);
+}
+if(unplaced.length===0){showFeedback('✅ Δεν χρειάζεσαι βοήθεια!',true);return;}
+var h=unplaced[0];
+showFeedback('💡 Το «'+h.label+'» ανήκει στον φάκελο «'+h.parent+'»',true);
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetLevel(){
+renderLevel();
+}
+
+renderLevel();
+</script>
+</body>
+</html>

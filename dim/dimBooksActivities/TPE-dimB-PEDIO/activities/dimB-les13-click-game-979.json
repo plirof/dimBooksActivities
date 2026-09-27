@@ -1,0 +1,14 @@
+{
+  "title": "Άνοιξε την Εφαρμογή!",
+  "subtitle": "Διπλό κλικ για άνοιγμα, 1 κλικ για επιλογή",
+  "instructions": "Κάνε κλικ στα εικονίδια για να τα επιλέξεις!",
+  "duration": 25,
+  "maxTargets": 3,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "📁", "color": "#FFF3E0" },
+    { "label": "📄", "color": "#E3F2FD" },
+    { "label": "🎵", "color": "#FCE4EC" },
+    { "label": "🖼️", "color": "#E8F5E9" }
+  ]
+}

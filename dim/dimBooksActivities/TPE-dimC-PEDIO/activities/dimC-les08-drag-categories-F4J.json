@@ -1,0 +1,63 @@
+{
+  "title": "Εντολές Ελέγχου Ρομπότ",
+  "subtitle": "Ταξινόμησε τις εντολές σε Κίνηση, Αίσθηση ή Επανάληψη",
+  "categories": [
+    {
+      "id": "move",
+      "name": "ΚΙΝΗΣΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "sense",
+      "name": "ΑΙΣΘΗΣΗ",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "loop",
+      "name": "ΕΠΑΝΑΛΗΨΗ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Πήγαινε μπροστά συνεχώς",
+      "category": "move"
+    },
+    {
+      "id": "item2",
+      "text": "Αν συναντήσεις εμπόδιο",
+      "category": "sense"
+    },
+    {
+      "id": "item3",
+      "text": "Επανάλαβε για πάντα",
+      "category": "loop"
+    },
+    {
+      "id": "item4",
+      "text": "Σταμάτα",
+      "category": "move"
+    },
+    {
+      "id": "item5",
+      "text": "Στρίψε δεξιά",
+      "category": "move"
+    },
+    {
+      "id": "item6",
+      "text": "Αν υπάρχει κάτι μπροστά",
+      "category": "sense"
+    },
+    {
+      "id": "item7",
+      "text": "Επανάλαβε 4 φορές",
+      "category": "loop"
+    },
+    {
+      "id": "item8",
+      "text": "Μέχρι... επανάλαβε",
+      "category": "loop"
+    }
+  ]
+}

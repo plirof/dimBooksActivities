@@ -1,0 +1,40 @@
+{
+  "title": "Βρες τα Λάθη: TuxPaint",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "TuxPaint", "error": false, "correct": "", "feedback": "" },
+        { "text": "ειναι", "error": true, "correct": "είναι", "feedback": "Λείπει ο τόνος" },
+        { "text": "προγραμμα", "error": true, "correct": "πρόγραμμα", "feedback": "Λείπει ο τόνος" },
+        { "text": "ζωγραφικής", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "μεγάλα", "error": true, "correct": "μικρά", "feedback": "Είναι για μικρά παιδιά" },
+        { "text": "παιδιά", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "σβιστρα", "error": true, "correct": "σβήστρα", "feedback": "Λάθος ορθογραφία" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "η", "error": false, "correct": "", "feedback": "" },
+        { "text": "αναηρεση", "error": true, "correct": "αναίρεση", "feedback": "Λάθος ορθογραφία" },
+        { "text": "διορθώνουν", "error": false, "correct": "", "feedback": "" },
+        { "text": "λάθη", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "κλείσω", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "TuxPaint", "error": false, "correct": "", "feedback": "" },
+        { "text": "πατάω", "error": false, "correct": "", "feedback": "" },
+        { "text": "Enter", "error": true, "correct": "Quit/Έξοδος", "feedback": "Δεν κλείνει με Enter, αλλά με Quit" }
+      ]
+    }
+  ]
+}

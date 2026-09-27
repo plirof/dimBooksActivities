@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ζωγραφική",
+  "subtitle": "Πιάσε ό,τι χρησιμοποιείς για να ζωγραφίσεις!",
+  "instructions": "Πιάσε μόνο ό,τι ΧΡΗΣΙΜΟΠΟΙΕΙΣ για ΖΩΓΡΑΦΙΚΗ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Μολύβι", "correct": true, "color": "#4CAF50"},
+    {"text": "Κατσαβίδι", "correct": false, "color": "#f44336"},
+    {"text": "Χρώμα", "correct": true, "color": "#2196F3"},
+    {"text": "Σκουπόξυλο", "correct": false, "color": "#FF9800"},
+    {"text": "Γραφίδα", "correct": true, "color": "#9C27B0"},
+    {"text": "Πιρούνι", "correct": false, "color": "#E91E63"},
+    {"text": "Ποντίκι", "correct": true, "color": "#009688"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FFC107"},
+    {"text": "Πάχος", "correct": true, "color": "#795548"},
+    {"text": "Σφυρί", "correct": false, "color": "#607D8B"}
+  ]
+}

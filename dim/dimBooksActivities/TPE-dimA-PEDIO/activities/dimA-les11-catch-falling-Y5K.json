@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Συσκευές",
+  "subtitle": "Πιάσε μόνο τις συσκευές του υπολογιστή!",
+  "instructions": "Πιάσε μόνο τις ΣΥΣΚΕΥΕΣ ΤΟΥ ΥΠΟΛΟΓΙΣΤΗ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Οθόνη", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Ποντίκι", "correct": true, "color": "#2196F3"},
+    {"text": "Κούνια", "correct": false, "color": "#FF9800"},
+    {"text": "Κάμερα", "correct": true, "color": "#9C27B0"},
+    {"text": "Μπαλάκι", "correct": false, "color": "#E91E63"},
+    {"text": "Πληκτρολόγιο", "correct": true, "color": "#009688"},
+    {"text": "Καρέκλα", "correct": false, "color": "#FFC107"},
+    {"text": "Μικρόφωνο", "correct": true, "color": "#795548"},
+    {"text": "Μαξιλάρι", "correct": false, "color": "#607D8B"}
+  ]
+}

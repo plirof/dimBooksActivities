@@ -1,0 +1,51 @@
+{
+    "id": "gen-000-missingword-4wr",
+    "title": "Fill in the Blanks",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "The sun rises in the ___",
+                "options": [
+                    "west",
+                    "east",
+                    "north",
+                    "south"
+                ],
+                "correct": "east"
+            },
+            {
+                "sentence": "A dog has ___ legs",
+                "options": [
+                    "two",
+                    "three",
+                    "four",
+                    "six"
+                ],
+                "correct": "four"
+            },
+            {
+                "sentence": "Water boils at ___ degrees Celsius",
+                "options": [
+                    "90",
+                    "100",
+                    "110",
+                    "120"
+                ],
+                "correct": "100"
+            },
+            {
+                "sentence": "The largest planet is ___",
+                "options": [
+                    "Earth",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn"
+                ],
+                "correct": "Jupiter"
+            }
+        ]
+    }
+}

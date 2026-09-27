@@ -1,0 +1,73 @@
+{
+    "id": "sample_science_001",
+    "title": "Fun Science Quiz",
+    "description": "Test your science knowledge with these exciting questions!",
+    "questions": [
+        {
+            "id": "698233f58d6364.61796359",
+            "text": "What planet is known as the Red Planet?",
+            "answers": [
+                "Venus",
+                "Mars",
+                "Jupiter",
+                "Saturn"
+            ],
+            "correct": 1,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6372.80399926",
+            "text": "What gas do plants breathe in?",
+            "answers": [
+                "Oxygen",
+                "Carbon Dioxide",
+                "Nitrogen",
+                "Hydrogen"
+            ],
+            "correct": 1,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6389.00609069",
+            "text": "What is H2O commonly known as?",
+            "answers": [
+                "Salt",
+                "Sugar",
+                "Water",
+                "Air"
+            ],
+            "correct": 2,
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6397.27001016",
+            "text": "How many legs does a spider have?",
+            "answers": [
+                "6",
+                "8",
+                "10",
+                "12"
+            ],
+            "correct": 1,
+            "time": 15,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d63a3.89474405",
+            "text": "What is the center of our solar system?",
+            "answers": [
+                "Earth",
+                "Moon",
+                "Sun",
+                "Mars"
+            ],
+            "correct": 2,
+            "time": 15,
+            "points": 1000
+        }
+    ],
+    "created_at": "2026-02-03 18:44:21"
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ιδιότητες Αρχείων | Μάθημα 16</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.main{max-width:680px;width:100%}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.props-dialog{background:#1e293b;border-radius:14px;border:2px solid #475569;padding:14px;margin-bottom:12px;position:relative}
+.props-dialog .dlg-title{color:#94a3b8;font-size:.6rem;font-weight:700;text-transform:uppercase;text-align:center;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #334155}
+.props-dialog .dlg-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #334155}
+.props-dialog .dlg-icon{font-size:2.2rem;background:#0f172a;border-radius:10px;padding:6px;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.props-dialog .dlg-name{color:#f1f5f9;font-size:.9rem;font-weight:700}
+.props-dialog .dlg-ext{color:#94a3b8;font-size:.65rem}
+.props-dialog .dlg-table{width:100%}
+.props-dialog .dlg-row{display:flex;padding:5px 0;border-bottom:1px solid #0f172a}
+.props-dialog .dlg-label{color:#94a3b8;font-size:.68rem;font-weight:600;width:110px;flex-shrink:0}
+.props-dialog .dlg-value{color:#e2e8f0;font-size:.72rem;font-weight:500}
+.match-area{background:#1e293b;border-radius:12px;padding:12px;border:2px solid #334155}
+.match-title{color:#94a3b8;font-size:.65rem;font-weight:700;text-align:center;margin-bottom:8px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:6px}
+.prop-box{background:#0f172a;border-radius:10px;padding:10px;border:2px solid #334155;cursor:pointer;transition:all .2s;min-height:44px}
+.prop-box:hover{border-color:#6366f1}
+.prop-box.selected{border-color:#a78bfa;background:#1e1b4b}
+.prop-box.matched{border-color:#22c55e;background:#22c55e11;cursor:default}
+.prop-box.wrong{border-color:#ef4444;background:#ef444422}
+.prop-label{color:#94a3b8;font-size:.6rem;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.prop-val-place{color:#475569;font-size:.72rem;font-weight:600;font-style:italic}
+.prop-val-place.filled{color:#fbbf24;font-weight:700;font-style:normal}
+.value-pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;padding:8px;background:#0f172a;border-radius:10px;min-height:44px;border:2px dashed #334155}
+.value-chip{padding:8px 16px;border-radius:10px;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#e2e8f0;border:2px solid #334155;touch-action:none}
+.value-chip:hover{transform:translateY(-2px);border-color:#6366f1}
+.value-chip.used{opacity:.4;cursor:default;border-color:#475569}
+.value-chip.selected{border-color:#a78bfa;background:#1e1b4b}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:8px;background:#22c55e;color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+@media(max-width:500px){.match-grid{grid-template-columns:1fr}.props-dialog .dlg-row{flex-direction:column;gap:2px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .props-dialog .dlg-header > * + * { margin-left: 10px; }
+  .value-pool > * { margin: 3px; }
+  .nav-btns > * { margin: 3px; }
+  @media(max-width:500px){
+    .props-dialog .dlg-row > * + * { margin-top: 2px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📁 Ιδιότητες Αρχείων</h1>
+<p class="subtitle">Διάβασε τις ιδιότητες του αρχείου και μετά αντιστοίχησέ τες!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Αρχείο:</span> <span id="fileNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var levels=[
+{
+icon:'📄',name:'Εργασία_Μαθηματικών.docx',ext:'Αρχείο Word',
+properties:[
+{label:'Μέγεθος',value:'24 KB'},
+{label:'Τύπος',value:'Αρχείο Word (.docx)'},
+{label:'Ημερομηνία δημιουργίας',value:'10/03/2026'},
+{label:'Ημερομηνία τροποποίησης',value:'15/03/2026'}
+],
+distractors:['1.2 MB','Αρχείο PDF (.pdf)','05/01/2025','22/03/2026'],
+info:'Κάθε αρχείο έχει ιδιότητες: όνομα, μέγεθος, τύπο, ημερομηνίες δημιουργίας και τροποποίησης.'
+},
+{
+icon:'🖼️',name:'Φωτογραφία_Διακοπών.jpg',ext:'Αρχείο Εικόνας',
+properties:[
+{label:'Μέγεθος',value:'2.8 MB'},
+{label:'Τύπος',value:'Αρχείο JPEG (.jpg)'},
+{label:'Ημερομηνία δημιουργίας',value:'05/07/2025'},
+{label:'Ημερομηνία τροποποίησης',value:'05/07/2025'}
+],
+distractors:['150 KB','Αρχείο PNG (.png)','20/12/2026','10/03/2026'],
+info:'Οι εικόνες είναι συνήθως μεγαλύτερες σε μέγεθος από ένα έγγραφο κειμένου.'
+},
+{
+icon:'📊',name:'Πωλήσεις_2026.xlsx',ext:'Υπολογιστικό Φύλλο',
+properties:[
+{label:'Μέγεθος',value:'56 KB'},
+{label:'Τύπος',value:'Αρχείο Excel (.xlsx)'},
+{label:'Ημερομηνία δημιουργίας',value:'02/01/2026'},
+{label:'Ημερομηνία τροποποίησης',value:'18/04/2026'}
+],
+distractors:['3.5 MB','Αρχείο Word (.docx)','15/06/2025','02/01/2025'],
+info:'Τα υπολογιστικά φύλλα οργανώνουν δεδομένα σε πίνακες και έχουν συνήθως μικρό μέγεθος.'
+},
+{
+icon:'🎵',name:'Αγαπημένο_Τραγούδι.mp3',ext:'Αρχείο Μουσικής',
+properties:[
+{label:'Μέγεθος',value:'4.1 MB'},
+{label:'Τύπος',value:'Αρχείο MP3 (.mp3)'},
+{label:'Ημερομηνία δημιουργίας',value:'12/09/2025'},
+{label:'Ημερομηνία τροποποίησης',value:'28/02/2026'}
+],
+distractors:['200 KB','Αρχείο WAV (.wav)','01/01/2027','12/09/2026'],
+info:'Τα αρχεία μουσικής MP3 είναι συμπιεσμένα και καταλαμβάνουν λίγα MB.'
+},
+{
+icon:'📺',name:'Παρουσίαση_Τέχνης.pptx',ext:'Αρχείο Παρουσίασης',
+properties:[
+{label:'Μέγεθος',value:'1.5 MB'},
+{label:'Τύπος',value:'Αρχείο PowerPoint (.pptx)'},
+{label:'Ημερομηνία δημιουργίας',value:'20/11/2025'},
+{label:'Ημερομηνία τροποποίησης',value:'25/11/2025'}
+],
+distractors:['800 KB','Αρχείο Word (.docx)','10/10/2024','30/12/2025'],
+info:'Οι παρουσιάσεις με εικόνες και εφέ καταλαμβάνουν περισσότερο χώρο από απλά έγγραφα.'
+},
+{
+icon:'📦',name:'Εγκατάσταση_Προγράμματος.exe',ext:'Εφαρμογή',
+properties:[
+{label:'Μέγεθος',value:'45.2 MB'},
+{label:'Τύπος',value:'Εφαρμογή (.exe)'},
+{label:'Ημερομηνία δημιουργίας',value:'08/12/2025'},
+{label:'Ημερομηνία τροποποίησης',value:'08/12/2025'}
+],
+distractors:['10 KB','Αρχείο ZIP (.zip)','15/03/2026','20/12/2025'],
+info:'Τα προγράμματα (.exe) είναι συνήθως πολύ μεγαλύτερα από άλλα αρχεία.'
+}
+];
+var current=0;
+var pts=0;
+var matches={};
+var selectedChip=null;
+var usedChips={};
+var chipValues=[];
+function render(){
+var lv=levels[current];
+matches={};
+selectedChip=null;
+usedChips={};
+document.getElementById('fileNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="props-dialog">';
+h+='<div class="dlg-title">📋 Παράθυρο Ιδιοτήτων Αρχείου</div>';
+h+='<div class="dlg-header">';
+h+='<div class="dlg-icon">'+lv.icon+'</div>';
+h+='<div><div class="dlg-name">'+lv.name+'</div><div class="dlg-ext">'+lv.ext+'</div></div>';
+h+='</div>';
+h+='<div class="dlg-table">';
+for(var i=0;i<lv.properties.length;i++){
+h+='<div class="dlg-row"><span class="dlg-label">'+lv.properties[i].label+':</span><span class="dlg-value">'+lv.properties[i].value+'</span></div>';
+}
+h+='</div></div>';
+h+='<div class="match-area">';
+h+='<div class="match-title">✏️ Αντιστοίχησε τις ιδιότητες (διάλεξε τιμή από κάτω και πάτα στο κουτάκι):</div>';
+h+='<div class="match-grid">';
+for(var i=0;i<lv.properties.length;i++){
+h+='<div class="prop-box" id="prop'+i+'" onclick="clickProp('+i+')">';
+h+='<div class="prop-label">'+lv.properties[i].label+'</div>';
+h+='<div class="prop-val-place" id="propVal'+i+'">❓ βάλε τιμή</div>';
+h+='</div>';
+}
+h+='</div>';
+var pool=[];
+for(var i=0;i<lv.properties.length;i++)pool.push({value:lv.properties[i].value,correct:true});
+for(var i=0;i<lv.distractors.length;i++)pool.push({value:lv.distractors[i],correct:false});
+shuffle(pool);
+chipValues=pool;
+h+='<div class="value-pool" id="pool">';
+for(var j=0;j<pool.length;j++){
+h+='<div class="value-chip" id="chip'+j+'" onclick="clickChip('+j+')">'+pool[j].value+'</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:8px">';
+h+='<button class="btn-check" id="checkBtn" onclick="checkFile()">✅ Έλεγχος</button></div>';
+h+='</div>';
+h+='<div style="margin-top:6px;padding:8px;background:#0f172a;border-radius:8px;font-size:.65rem;color:#64748b;line-height:1.4">💡 '+lv.info+'</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevFile()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextFile()"'+(current===levels.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function clickChip(idx){
+var chip=document.getElementById('chip'+idx);
+if(usedChips[idx])return;
+if(selectedChip!==null){
+document.querySelectorAll('.value-chip.selected').forEach(function(e){e.classList.remove('selected');});
+}
+chip.classList.add('selected');
+selectedChip=idx;
+}
+function clickProp(propIdx){
+if(selectedChip===null)return;
+var lv=levels[current];
+var propVal=lv.properties[propIdx].value;
+var chipValue=chipValues[selectedChip].value;
+if(chipValue!==propVal){
+document.getElementById('feedback').textContent='❌ Η τιμή "'+chipValue+'" δεν αντιστοιχεί στο '+lv.properties[propIdx].label+'!';
+document.getElementById('feedback').className='feedback fail';
+return;
+}
+if(matches[propIdx]!==undefined){
+var oldChip=document.getElementById('chip'+matches[propIdx]);
+if(oldChip){oldChip.classList.remove('used');}
+delete usedChips[matches[propIdx]];
+}
+matches[propIdx]=selectedChip;
+usedChips[selectedChip]=true;
+var chip=document.getElementById('chip'+selectedChip);
+chip.classList.remove('selected');
+chip.classList.add('used');
+var propEl=document.getElementById('propVal'+propIdx);
+propEl.textContent=chipValue;
+propEl.className='prop-val-place filled';
+var propBox=document.getElementById('prop'+propIdx);
+propBox.classList.add('matched');
+selectedChip=null;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+}
+function checkFile(){
+var lv=levels[current];
+var matchedCount=Object.keys(matches).length;
+if(matchedCount<lv.properties.length){
+document.getElementById('feedback').textContent='⚠️ Αντιστοίχησε όλες τις ιδιότητες!';
+document.getElementById('feedback').className='feedback fail';
+return;
+}
+pts+=10;
+document.getElementById('pts').textContent=pts;
+document.getElementById('feedback').textContent='🎉 Μπράβο! Γνώρισες τις ιδιότητες του αρχείου!';
+document.getElementById('feedback').className='feedback ok';
+}
+function prevFile(){if(current>0){current--;render();}}
+function nextFile(){if(current<levels.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

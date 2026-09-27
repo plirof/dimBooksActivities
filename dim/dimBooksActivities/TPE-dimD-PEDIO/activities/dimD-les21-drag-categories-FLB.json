@@ -1,0 +1,48 @@
+{
+  "title": "Χορηγούμενο ή Οργανικό",
+  "subtitle": "Διάκρινε τα χορηγούμενα από τα οργανικά αποτελέσματα",
+  "categories": [
+    {
+      "id": "sponsored",
+      "name": "ΧΟΡΗΓΟΥΜΕΝΟ",
+      "color": "#F44336"
+    },
+    {
+      "id": "organic",
+      "name": "ΟΡΓΑΝΙΚΟ",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📢 Διαφήμιση Adidas",
+      "category": "sponsored"
+    },
+    {
+      "id": "item2",
+      "text": "📰 Άρθρο Wikipedia",
+      "category": "organic"
+    },
+    {
+      "id": "item3",
+      "text": "📢 Προσφορά ενοικίασης",
+      "category": "sponsored"
+    },
+    {
+      "id": "item4",
+      "text": "📚 Ακαδημαϊκό άρθρο",
+      "category": "organic"
+    },
+    {
+      "id": "item5",
+      "text": "📢 «Αγορά τώρα!»",
+      "category": "sponsored"
+    },
+    {
+      "id": "item6",
+      "text": "📖 Blog post",
+      "category": "organic"
+    }
+  ]
+}

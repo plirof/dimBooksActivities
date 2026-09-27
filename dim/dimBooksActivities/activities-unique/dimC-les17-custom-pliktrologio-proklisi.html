@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πρόκληση Πληκτρολογίου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fecaca,#f87171);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:750px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px}
+.game-area{background:#fef2f2;border-radius:16px;border:2px solid #fecaca;padding:20px;min-height:350px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.level-badge{display:inline-block;background:#dc2626;color:#fff;padding:4px 16px;border-radius:20px;font-size:.85em;font-weight:700;margin-bottom:12px}
+.target-display{font-size:3.5em;margin-bottom:6px}
+.target-label{font-size:1.3em;font-weight:700;color:#b91c1c;margin-bottom:4px;text-align:center}
+.target-hint{font-size:.9em;color:#b91c1c;opacity:.8;margin-bottom:16px;text-align:center}
+.target-desc{font-size:1em;color:#7f1d1d;margin-bottom:18px;text-align:center;line-height:1.5}
+.keyboard-visual{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:16px;max-width:550px}
+.k-key{display:flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:4px 8px;background:#fff;border:2px solid #e5e7eb;border-radius:8px;font-size:.8em;font-weight:600;cursor:pointer;transition:all .15s;user-select:none;color:#374151}
+.k-key:hover{background:#fef2f2;border-color:#dc2626;transform:scale(1.05)}
+.k-key:active{transform:scale(.95)}
+.k-key.wrong{animation:shake .4s;border-color:#dc2626;background:#fee2e2}
+.k-key.ok{border-color:#047857;background:#d1fae5;animation:pulse .3s}
+.k-key.special{background:#fef3c7;border-color:#f59e0b}
+.k-key.space{min-width:140px}
+.k-key.mod{background:#f3e8ff;border-color:#c4b5fd}
+.k-key:disabled{opacity:.6;cursor:not-allowed}
+.stats{display:flex;gap:20px;margin-bottom:14px;font-size:.9em}
+.stat{background:#fef2f2;padding:6px 16px;border-radius:20px;color:#b91c1c;font-weight:600}
+.progress-dots{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+.p-dot{width:24px;height:24px;border-radius:50%;border:2px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:.65em;font-weight:700;color:#999}
+.p-dot.done{border-color:#047857;background:#d1fae5;color:#047857}
+.p-dot.wrong{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.p-dot.current{border-color:#dc2626;background:#dc2626;color:#fff}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:30px;margin-top:6px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(185,28,28,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555;margin-left:10px}
+.btn-reset:hover{background:#e0e0e0}
+.controls{display:flex;justify-content:center;margin-top:12px}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media(max-width:500px){.k-key{min-width:36px;height:36px;font-size:.7em}.k-key.space{min-width:100px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .keyboard-visual > * { margin: 3px; }
+  .stats > * + * { margin-left: 20px; }
+  .progress-dots > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎮 Πρόκληση Πληκτρολογίου</h1>
+<p>Πάτα με το ποντίκι τον σωστό συνδυασμό πλήκτρων!</p>
+</div>
+<div class="area">
+<div class="game-area" id="gameArea">
+<div id="progressDots" class="progress-dots"></div>
+<div class="stats"><span class="stat">⭐ <span id="levelDisplay">1</span></span><span class="stat">✅ <span id="scoreDisplay">0</span></span><span class="stat">⏱️ <span id="streakDisplay">0</span></span></div>
+<div class="level-badge" id="levelBadge">Επίπεδο 1</div>
+<div id="gameContent"></div>
+<div id="feedbackArea" class="feedback"></div>
+</div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextRound()" style="display:none">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var levels=[
+{
+name:'Βασικά Πλήκτρα',
+rounds:[
+{q:'Πάτα τα πλήκτρα για να γράψεις <b>Α</b> κεφαλαίο',keys:['Shift','A'],display:'Α'},
+{q:'Πάτα τα πλήκτρα για να γράψεις <b>!</b>',keys:['Shift','1'],display:'!'},
+{q:'Πάτα για <b>νέα γραμμή</b>',keys:['Enter'],display:'↵'},
+{q:'Πάτα για <b>κενό</b>',keys:['Space'],display:'␣'},
+{q:'Πάτα για <b>εσοχή</b>',keys:['Tab'],display:'↹'}
+]
+},
+{
+name:'Σβήσιμο & Κεφαλαία',
+rounds:[
+{q:'Πάτα για να <b>σβήσεις</b> αριστερά',keys:['Backspace'],display:'⌫'},
+{q:'Πάτα για να γράφεις <b>μόνιμα κεφαλαία</b>',keys:['CapsLock'],display:'🔡'},
+{q:'Πάτα για να <b>σβήσεις</b> δεξιά',keys:['Delete'],display:'⌦'},
+{q:'Πάτα τα πλήκτρα για να γράψεις <b>@</b>',keys:['Shift','2'],display:'@'},
+{q:'Πάτα για <b>κόμμα</b> (,)</b>',keys:[','],display:','}
+]
+},
+{
+name:'Αλλαγή Γλώσσας & Σύμβολα',
+rounds:[
+{q:'Πάτα τα πλήκτρα για να <b>αλλάξεις γλώσσα</b>',keys:['Alt','Shift'],display:'ΕΛ/EN'},
+{q:'Πάτα τα πλήκτρα για <b>></b>',keys:['Shift','.'],display:'>'},
+{q:'Πάτα για <b>τελεία</b> (.)',keys:['.'],display:'.'},
+{q:'Πάτα τα πλήκτρα για <b>%</b>',keys:['Shift','5'],display:'%'},
+{q:'Πάτα τα πλήκτρα για <b>(</b>',keys:['Shift','9'],display:'('}
+]
+}
+];
+
+var allKeys=[
+{id:'Shift',label:'Shift',cls:'mod'},
+{id:'Alt',label:'Alt',cls:'mod'},
+{id:'CapsLock',label:'Caps',cls:'mod'},
+{id:'Enter',label:'Enter',cls:'special'},
+{id:'Backspace',label:'Bksp',cls:'special'},
+{id:'Delete',label:'Del',cls:'special'},
+{id:'Tab',label:'Tab',cls:'special'},
+{id:'Space',label:'Space',cls:'space'},
+{id:'1',label:'1'},{id:'2',label:'2'},{id:'3',label:'3'},{id:'4',label:'4'},{id:'5',label:'5'},
+{id:'6',label:'6'},{id:'7',label:'7'},{id:'8',label:'8'},{id:'9',label:'9'},{id:'0',label:'0'},
+{id:'A',label:'A'},{id:'B',label:'B'},{id:'C',label:'C'},{id:'D',label:'D'},{id:'E',label:'E'},
+{id:'.',label:'.'},{id:',',label:','}
+];
+
+var currentLevel=0;
+var currentRound=0;
+var score=0;
+var streak=0;
+var roundResults=[];
+var answered=false;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initGame(){
+currentLevel=0;
+currentRound=0;
+score=0;
+streak=0;
+roundResults=[];
+answered=false;
+render();
+}
+
+function render(){
+var level=levels[currentLevel];
+var round=level.rounds[currentRound];
+document.getElementById('levelDisplay').textContent=currentLevel+1;
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('streakDisplay').textContent=streak;
+document.getElementById('levelBadge').textContent='Επίπεδο '+(currentLevel+1)+': '+level.name;
+renderProgress();
+renderGame(round);
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedbackArea').textContent='';
+document.getElementById('feedbackArea').className='feedback';
+}
+
+function renderProgress(){
+var total=0;
+for(var i=0;i<levels.length;i++)total+=levels[i].rounds.length;
+var container=document.getElementById('progressDots');
+container.innerHTML='';
+var idx=0;
+for(var l=0;l<levels.length;l++){
+for(var r=0;r<levels[l].rounds.length;r++){
+var dot=document.createElement('div');
+dot.className='p-dot';
+if(roundResults[idx]!==undefined)dot.classList.add(roundResults[idx]?'done':'wrong');
+if(l===currentLevel&&r===currentRound)dot.classList.add('current');
+dot.textContent=idx+1;
+container.appendChild(dot);
+idx++;
+}
+}
+}
+
+function renderGame(round){
+var container=document.getElementById('gameContent');
+var html='<div class="target-display">'+round.display+'</div>';
+html+='<div class="target-label">Τι πατάω;</div>';
+html+='<div class="target-desc">'+round.q+'</div>';
+html+='<div class="keyboard-visual" id="keyboardVisual">';
+for(var i=0;i<allKeys.length;i++){
+var k=allKeys[i];
+var extra=k.cls?' '+k.cls:'';
+html+='<button class="k-key'+extra+'" data-key="'+k.id+'" onclick="pressKey(\''+k.id+'\',this)">'+k.label+'</button>';
+}
+html+='</div>';
+container.innerHTML=html;
+answered=false;
+}
+
+var pressedKeys=[];
+
+function pressKey(keyId,btn){
+if(answered){
+shakeBtn(btn);
+return;
+}
+var round=levels[currentLevel].rounds[currentRound];
+var expected=round.keys;
+var nextIdx=pressedKeys.length;
+
+if(nextIdx>=expected.length){
+shakeBtn(btn);
+return;
+}
+if(keyId===expected[nextIdx]){
+btn.classList.add('ok');
+btn.disabled=true;
+pressedKeys.push(keyId);
+if(pressedKeys.length===expected.length){
+answered=true;
+var idx=0;
+for(var i=0;i<currentLevel;i++)idx+=levels[i].rounds.length;
+idx+=currentRound;
+roundResults[idx]=true;
+score++;
+streak++;
+document.getElementById('feedbackArea').textContent='✅ Σωστά!';
+document.getElementById('feedbackArea').className='feedback ok';
+var isLast=currentRound>=levels[currentLevel].rounds.length-1&&currentLevel>=levels.length-1;
+document.getElementById('nextBtn').style.display='inline-block';
+document.getElementById('nextBtn').textContent=isLast?'🏁 Τέλος':'⏭ Επόμενο';
+document.getElementById('nextBtn').disabled=false;
+renderProgress();
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('streakDisplay').textContent=streak;
+}
+}else{
+btn.classList.add('wrong');
+var idx=0;
+for(var i=0;i<currentLevel;i++)idx+=levels[i].rounds.length;
+idx+=currentRound;
+roundResults[idx]=false;
+streak=0;
+answered=true;
+document.getElementById('feedbackArea').textContent='❌ Λάθος! Έπρεπε να πατήσεις: '+expected.join(' + ');
+document.getElementById('feedbackArea').className='feedback fail';
+var isLast=currentRound>=levels[currentLevel].rounds.length-1&&currentLevel>=levels.length-1;
+document.getElementById('nextBtn').style.display='inline-block';
+document.getElementById('nextBtn').textContent=isLast?'🏁 Τέλος':'⏭ Επόμενο';
+document.getElementById('nextBtn').disabled=false;
+renderProgress();
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('streakDisplay').textContent=streak;
+}
+}
+
+function shakeBtn(btn){
+btn.classList.add('wrong');
+setTimeout(function(){btn.classList.remove('wrong');},400);
+}
+
+function nextRound(){
+pressedKeys=[];
+if(currentRound>=levels[currentLevel].rounds.length-1){
+if(currentLevel>=levels.length-1){
+showFinal();
+return;
+}
+currentLevel++;
+currentRound=0;
+}else{
+currentRound++;
+}
+render();
+}
+
+function showFinal(){
+var total=0;
+for(var i=0;i<levels.length;i++)total+=levels[i].rounds.length;
+var pct=Math.round(score/total*100);
+var msg='';
+if(pct===100)msg='🎉 Τέλεια! '+score+'/'+total+' σωστά! Είσαι ειδικός στο πληκτρολόγιο! 🏆';
+else if(pct>=70)msg='👏 Μπράβο! '+score+'/'+total+' σωστές! Συνέχισε την εξάσκηση!';
+else msg='💪 '+score+'/'+total+' σωστές. Δοκίμασε ξανά για καλύτερο σκορ!';
+document.getElementById('gameContent').innerHTML='<div style="font-size:3em;margin-bottom:10px">⌨️🏆</div><div style="font-size:1.2em;font-weight:700;color:#b91c1c">'+msg+'</div>';
+document.getElementById('feedbackArea').textContent='';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('levelBadge').textContent='Ολοκληρώθηκε!';
+}
+
+function resetGame(){
+pressedKeys=[];
+initGame();
+}
+
+initGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Σωστά ή Λάθος",
+  "subtitle": "Πιάσε τις σωστές προτάσεις για τη μορφοποίηση κειμένου!",
+  "instructions": "Πιάσε μόνο τις ΣΩΣΤΕΣ προτάσεις. Απόφυγε τις λανθασμένες!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 5,
+  "items": [
+    { "text": "Bold = έντονη γραφή", "correct": true, "color": "#4CAF50" },
+    { "text": "Italic = υπογράμμιση", "correct": false, "color": "#f44336" },
+    { "text": "Underline = υπογράμμιση", "correct": true, "color": "#2196F3" },
+    { "text": "Undo = αναίρεση", "correct": true, "color": "#9C27B0" },
+    { "text": "Copy = αποθήκευση", "correct": false, "color": "#FF9800" },
+    { "text": "Paste = επικόλληση", "correct": true, "color": "#00BCD4" },
+    { "text": "Save = διαγραφή", "correct": false, "color": "#E91E63" },
+    { "text": "Διπλό κλικ = επιλογή λέξης", "correct": true, "color": "#8BC34A" },
+    { "text": "Τριπλό κλικ = επιλογή παραγράφου", "correct": true, "color": "#3F51B5" },
+    { "text": "Μονό κλικ = επιλογή παραγράφου", "correct": false, "color": "#FF5722" }
+  ]
+}

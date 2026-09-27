@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εγκυκλοπαίδειες & Λεξικά | Μάθημα 27</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fdf2f8,#f472b6);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#831843;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#be185d;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#831843;font-size:.75rem;font-weight:700;border:1px solid #f472b6;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.need-card{background:#fdf2f8;border:2px solid #fbcfe8;border-radius:12px;padding:10px;margin:6px 0}
+.need-title{font-size:.78rem;font-weight:700;color:#831843;text-align:center;margin-bottom:4px}
+.need-desc{font-size:.7rem;color:#9d174d;text-align:center}
+.tool-opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.tool-opt{padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.tool-opt:hover{border-color:#be185d;background:#fdf2f8}
+.tool-opt .tool-icon{font-size:1rem;min-width:24px;text-align:center}
+.tool-opt .tool-text{flex:1}
+.tool-opt .tool-url{font-size:.58rem;color:#9ca3af;font-style:italic}
+.tool-opt.selected{border-color:#be185d;background:#fce7f3;color:#831843;font-weight:700}
+.tool-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.tool-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.tool-opt.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#be185d;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#9d174d}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #be185d;border-radius:10px;background:transparent;color:#be185d;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fdf2f8}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .tool-opts > * + * { margin-top: 6px; }
+  .tool-opt > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📚 Εγκυκλοπαίδειες & Λεξικά</h1>
+<p class="subtitle">Ποιο εργαλείο θα χρησιμοποιήσεις σε κάθε περίπτωση;</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ανάγκη:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var tools=[
+{icon:'📖',name:'Ανοιχτή Βιβλιοθήκη',url:'openbook.gr'},
+{icon:'🌐',name:'Βικιπαίδεια',url:'el.wikipedia.org'},
+{icon:'📝',name:'Βικιλεξικό',url:'el.wiktionary.org'},
+{icon:'📕',name:'Λεξικό Κοινής Νεοελληνικής',url:'greek-language.gr'}
+];
+var needs=[
+{
+title:'Χρειάζομαι πληροφορίες για τον Αλέξανδρο τον Μέγα',
+desc:'Γράφω μια εργασία για ιστορία και θέλω λεπτομέρειες.',
+correct:1,
+explain:'Η Βικιπαίδεια έχει αναλυτικά άρθρα για ιστορικά πρόσωπα.'
+},
+{
+title:'Θέλω ένα ελεύθερο ψηφιακό βιβλίο να διαβάσω',
+desc:'Ψάχνω ελληνικά βιβλία δωρεάν στο ίντερνετ.',
+correct:0,
+explain:'Η Ανοιχτή Βιβλιοθήκη (openbook.gr) έχει χιλιάδες δωρεάν ελληνικά βιβλία.'
+},
+{
+title:'Δεν ξέρω τι σημαίνει η λέξη "ευκαιρία"',
+desc:'Θέλω ετυμολογία, ορθογραφία και εξήγηση.',
+correct:3,
+explain:'Το Λεξικό Κοινής Νεοελληνικής έχει εξηγήσεις, ορθογραφία και ετυμολογία.'
+},
+{
+title:'Θέλω να βρω τη σημασία μιας άγνωστης λέξης',
+desc:'Χρειάζομαι γρήγορα τον ορισμό μιας λέξης.',
+correct:2,
+explain:'Το Βικιλεξικό είναι η ιδανική πηγή για ορισμούς λέξεων.'
+},
+{
+title:'Θέλω να μάθω για το ηλιακό σύστημα',
+desc:'Κάνω παρουσίαση για τους πλανήτες.',
+correct:1,
+explain:'Η Βικιπαίδεια έχει πλήρεις πληροφορίες για κάθε πλανήτη.'
+},
+{
+title:'Ψάχνω ένα ακουστικό βιβλίο στα Ελληνικά',
+desc:'Θέλω να ακούσω ένα παραμύθι ή ένα μυθιστόρημα.',
+correct:0,
+explain:'Η Ανοιχτή Βιβλιοθήκη έχει και ακουστικά βιβλία (audiobooks).'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var n=needs[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="need-card">';
+h+='<div class="need-title">'+n.title+'</div>';
+h+='<div class="need-desc">'+n.desc+'</div>';
+h+='</div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#831843;text-align:center;margin:4px 0">Ποιο εργαλείο θα χρησιμοποιήσεις;</p>';
+h+='<div class="tool-opts">';
+for(var i=0;i<tools.length;i++){
+var cls='tool-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===n.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">';
+h+='<span class="tool-icon">'+tools[i].icon+'</span>';
+h+='<span class="tool-text">'+tools[i].name+'</span>';
+h+='<span class="tool-url">'+tools[i].url+'</span>';
+h+='</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===n.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+n.explain:'❌ '+n.explain)+'</div>';
+if(curQ<needs.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Ανάγκη ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<needs.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

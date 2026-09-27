@@ -1,0 +1,58 @@
+{
+  "title": "Αισθητήρες σε χρήσεις",
+  "subtitle": "Ταίριαξε κάθε αισθητήρα στη σωστή χρήση",
+  "categories": [
+    {
+      "id": "light",
+      "name": "ΦΩΤΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "sound",
+      "name": "ΗΧΟΥ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "temp",
+      "name": "ΘΕΡΜΟΚΡΑΣΙΑΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "dist",
+      "name": "ΑΠΟΣΤΑΣΗΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🌞 Θερμοστάτης",
+      "category": "light"
+    },
+    {
+      "id": "item2",
+      "text": "🎤 Φωνητικός βοηθός",
+      "category": "sound"
+    },
+    {
+      "id": "item3",
+      "text": "🌡️ Ψηφιακό θερμόμετρο",
+      "category": "temp"
+    },
+    {
+      "id": "item4",
+      "text": "🚗 Πίσω παρκινγκ",
+      "category": "dist"
+    },
+    {
+      "id": "item5",
+      "text": "📷 Φωτοκύτταρο",
+      "category": "light"
+    },
+    {
+      "id": "item6",
+      "text": "🔊 Δείκτης σιωπής",
+      "category": "sound"
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συμπλήρωσε τα Κενά!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:15px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#fa709a;font-size:1.1em}
+.text-area{background:#fffde7;border-radius:12px;padding:18px;margin-bottom:15px;line-height:2;font-size:1.05em;color:#333}
+.blank-btn{display:inline-block;padding:4px 16px;border:2px dashed #fa709a;border-radius:20px;background:#fff0f5;color:#fa709a;font-weight:700;cursor:pointer;transition:all .2s;min-width:80px;text-align:center;font-size:.95em;vertical-align:middle}
+.blank-btn:hover{background:#fce4ec;transform:scale(1.05)}
+.blank-btn.filled{border-style:solid;background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.blank-btn.wrong-blank{border-style:solid;background:#ffebee;border-color:#f44336;color:#c62828}
+.blank-btn.correct-blank{border-style:solid;background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:20px;max-width:360px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal h3{color:#333;margin-bottom:12px;text-align:center}
+.option-btn{display:block;width:100%;padding:10px;margin-bottom:8px;border:2px solid #e0e0e0;border-radius:10px;background:#fff;color:#333;font-size:1em;cursor:pointer;text-align:left;transition:all .2s}
+.option-btn:hover{background:#fce4ec;border-color:#fa709a}
+.controls{display:flex;justify-content:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.ctrl-btn{padding:10px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;color:#fff;transition:all .2s}
+.ctrl-btn:hover{transform:scale(1.05)}
+.check-btn{background:linear-gradient(135deg,#fa709a,#fee140)}
+.next-btn{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;min-height:28px;margin-bottom:10px}
+.feedback.correct{color:#2e7d32}
+.feedback.wrong{color:#c62828}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#fa709a,#fee140);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#fa709a;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#fa709a,#fee140);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+<h3 id="modalTitle">Επέλεξε λέξη</h3>
+<div id="modalOptions"></div>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const rounds=data.rounds;
+let currentRound=0,totalScore=0,totalBlanks=0;
+
+rounds.forEach(rd=>totalBlanks+=rd.blanks.length);
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle)}</h2>
+<p>Διάβασε το κείμενο και βάλε τις σωστές λέξεις στα κενά.</p>
+<p>Γύροι: ${rounds.length} | Κενά: ${totalBlanks}</p>
+<button class="start-btn" onclick="startGame()">Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+currentRound=0;totalScore=0;showRound()
+};
+
+function showRound(){
+if(currentRound>=rounds.length){showEnd();return}
+const rd=rounds[currentRound];
+const answers={};
+rd.blanks.forEach(b=>answers[b.id]=null);
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Γύρος: <span>${currentRound+1}/${rounds.length}</span></div>
+<div class="stat">Σκορ: <span id="score">${totalScore}/${totalBlanks}</span></div>
+</div>
+<div class="text-area" id="textArea"></div>
+<div class="controls">
+<button class="ctrl-btn check-btn" onclick="checkRound()">Έλεγχος</button>
+</div>
+<div class="feedback" id="feedback"></div>
+`;
+renderText(rd,answers)
+}
+
+function renderText(rd,answers){
+const area=document.getElementById('textArea');
+let html=esc(rd.text);
+rd.blanks.forEach(b=>{
+const marker='{{'+b.id+'}}';
+const filled=answers[b.id]!==null;
+const display=filled?esc(b.options[answers[b.id]]):'?';
+const cls=filled?'blank-btn filled':'blank-btn';
+html=html.replace(marker,`<span class="${cls}" onclick="openModal(${b.id})" id="blank-${b.id}" style="display:inline-block">${display}</span>`)
+});
+area.innerHTML=html;
+window._currentAnswers=answers;
+window._currentRound=rd
+}
+
+window.openModal=function(blankId){
+const rd=window._currentRound;
+const blank=rd.blanks.find(b=>b.id===blankId);
+if(!blank)return;
+const overlay=document.getElementById('modalOverlay');
+const opts=document.getElementById('modalOptions');
+const title=document.getElementById('modalTitle');
+title.textContent='Επέλεξε λέξη';
+opts.innerHTML='';
+blank.options.forEach((opt,i)=>{
+const btn=document.createElement('button');
+btn.className='option-btn';
+btn.textContent=opt;
+btn.onclick=()=>selectOption(blankId,i);
+opts.appendChild(btn)
+});
+overlay.classList.add('show')
+};
+
+function selectOption(blankId,optIdx){
+window._currentAnswers[blankId]=optIdx;
+const overlay=document.getElementById('modalOverlay');
+overlay.classList.remove('show');
+const rd=window._currentRound;
+renderText(rd,window._currentAnswers)
+}
+
+window.checkRound=function(){
+const rd=window._currentRound;
+const answers=window._currentAnswers;
+const fb=document.getElementById('feedback');
+let allFilled=true;
+let roundScore=0;
+rd.blanks.forEach(b=>{
+if(answers[b.id]===null){allFilled=false;return}
+const el=document.getElementById('blank-'+b.id);
+if(answers[b.id]===b.correct){
+el.classList.add('correct-blank');
+el.classList.remove('wrong-blank');
+roundScore++
+}else{
+el.classList.add('wrong-blank');
+el.classList.remove('correct-blank')
+}
+});
+if(!allFilled){fb.className='feedback';fb.textContent='Συμπλήρωσε όλα τα κενά πρώτα!';return}
+totalScore+=roundScore;
+document.getElementById('score').textContent=totalScore+'/'+totalBlanks;
+if(roundScore===rd.blanks.length){
+fb.className='feedback correct';fb.textContent='Τέλεια! Όλα σωστά σε αυτόν τον γύρο!'
+}else{
+fb.className='feedback wrong';fb.textContent=`${roundScore}/${rd.blanks.length} σωστά σε αυτόν τον γύρο.`
+}
+const controls=document.querySelector('.controls');
+const nextBtn=document.createElement('button');
+nextBtn.className='ctrl-btn next-btn';
+nextBtn.textContent=currentRound<rounds.length-1?'Επόμενος Γύρος':'Αποτελέσματα';
+nextBtn.onclick=()=>{currentRound++;showRound()};
+controls.innerHTML='';
+controls.appendChild(nextBtn)
+};
+
+function showEnd(){
+let msg=totalScore===totalBlanks?'Τέλεια! Όλα σωστά!':totalScore>=totalBlanks*0.7?'Μπράβο! Πολύ καλά!':totalScore>=totalBlanks*0.4?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Τέλος Παιχνιδιού!</h2>
+<div class="final-score">${totalScore}/${totalBlanks}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

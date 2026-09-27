@@ -1,0 +1,41 @@
+{
+    "id": "6a02d8a5a15306.05515647",
+    "title": "testmultifile2",
+    "description": "",
+    "category": "testmultifile2",
+    "tags": "",
+    "questions": [
+        {
+            "id": "6a02d8a5a140d0.40208174",
+            "text": "a",
+            "answers": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "correct": 0,
+            "explanation": "",
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "6a02d8a5a142a7.75593423",
+            "text": "b",
+            "answers": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "correct": 1,
+            "explanation": "",
+            "time": 20,
+            "points": 1000
+        }
+    ],
+    "randomize_questions": true,
+    "randomize_answers": false,
+    "allow_solo": false,
+    "created_at": "2026-05-12 09:37:09"
+}

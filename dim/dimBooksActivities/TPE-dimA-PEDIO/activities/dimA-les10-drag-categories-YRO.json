@@ -1,0 +1,63 @@
+{
+  "title": "Υπολογιστές σε περιγραφές μεγέθους",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στον σωστό τύπο υπολογιστή",
+  "categories": [
+    {
+      "id": "desktop",
+      "name": "ΓΡΑΦΕΙΟΥ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "laptop",
+      "name": "ΦΟΡΗΤΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "tablet",
+      "name": "ΤΑΜΠΛΕΤΑ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "phone",
+      "name": "ΚΙΝΗΤΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Μεγάλη οθόνη",
+      "category": "desktop"
+    },
+    {
+      "id": "item2",
+      "text": "Πληκτρολόγιο ξεχωριστό",
+      "category": "desktop"
+    },
+    {
+      "id": "item3",
+      "text": "Ζυγίζει 2-3 κιλά",
+      "category": "laptop"
+    },
+    {
+      "id": "item4",
+      "text": "Ανοίγει-κλείνει",
+      "category": "laptop"
+    },
+    {
+      "id": "item5",
+      "text": "Χωράει στην τσέπη",
+      "category": "phone"
+    },
+    {
+      "id": "item6",
+      "text": "Αγγίζεις οθόνη",
+      "category": "tablet"
+    },
+    {
+      "id": "item7",
+      "text": "Μπαταρία = όλη μέρα",
+      "category": "phone"
+    }
+  ]
+}

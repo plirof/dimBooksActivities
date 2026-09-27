@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εντολές Ρομπότ</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+min-height: 100vh;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h1 {
+color: white;
+text-align: center;
+font-size: 1.8rem;
+margin-bottom: 5px;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #fff8e1;
+text-align: center;
+margin-bottom: 15px;
+font-size: 1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 20px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+width: 100%;
+height: 8px;
+background: #dfe6e9;
+border-radius: 4px;
+margin-bottom: 15px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, #e17055, #fdcb6e);
+border-radius: 4px;
+transition: width 0.5s ease;
+}
+.round-info {
+text-align: center;
+font-size: 1.1rem;
+font-weight: bold;
+color: #e17055;
+margin-bottom: 15px;
+}
+.question {
+text-align: center;
+font-size: 1.05rem;
+color: #2d3436;
+margin-bottom: 15px;
+line-height: 1.5;
+}
+.mini-grid-wrap {
+display: flex;
+justify-content: center;
+margin-bottom: 15px;
+}
+.mini-grid {
+display: grid;
+grid-gap: 2px;
+background: #b2bec3;
+padding: 2px;
+border-radius: 8px;
+}
+.mcell {
+width: 45px;
+height: 45px;
+background: #ffeaa7;
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.2rem;
+font-family: 'NotoColorEmoji', 'Segoe UI', sans-serif;
+}
+.mcell.robot { background: #74b9ff; }
+.mcell.target { background: #55efc4; }
+.mcell.trail { background: #81ecec; }
+.cmd-sequence {
+display: flex;
+gap: 8px;
+justify-content: center;
+flex-wrap: wrap;
+margin-bottom: 15px;
+}
+.cmd-chip {
+padding: 8px 14px;
+border-radius: 8px;
+font-weight: bold;
+font-size: 0.9rem;
+color: white;
+}
+.cmd-chip.forward { background: #0984e3; }
+.cmd-chip.backward { background: #6c5ce7; }
+.cmd-chip.left { background: #e17055; }
+.cmd-chip.right { background: #d4a017; color: #2d3436; }
+.options {
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-gap: 10px;
+margin-bottom: 15px;
+}
+.opt-btn {
+padding: 14px;
+border: 3px solid #dfe6e9;
+border-radius: 12px;
+background: white;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s;
+text-align: center;
+}
+.opt-btn:hover { border-color: #e17055; transform: translateY(-2px); }
+.opt-btn.correct { border-color: #00b894; background: #e6fff9; }
+.opt-btn.wrong { border-color: #d63031; background: #ffe6e6; }
+.opt-btn.disabled { pointer-events: none; opacity: 0.7; }
+.explanation {
+background: #f8f9fa;
+border-radius: 10px;
+padding: 12px;
+margin-top: 10px;
+text-align: center;
+font-size: 0.95rem;
+color: #636e72;
+display: none;
+}
+.next-btn {
+display: none;
+padding: 12px 30px;
+background: #e17055;
+color: white;
+border: none;
+border-radius: 12px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin: 10px auto 0;
+}
+.next-btn:hover { background: #d35f46; }
+.completion {
+display: none;
+text-align: center;
+padding: 30px;
+}
+.completion h2 { color: #e17055; font-size: 1.6rem; margin-bottom: 10px; }
+.stars { font-size: 2.5rem; font-family: 'NotoColorEmoji', 'Segoe UI', sans-serif; margin: 15px 0; }
+.restart-btn {
+padding: 12px 30px;
+background: #e17055;
+color: white;
+border: none;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+margin-top: 15px;
+}
+.restart-btn:hover { background: #d35f46; }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .cmd-sequence > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🤖 Εντολές Ρομπότ</h1>
+<p class="subtitle">Μάντεψε πού θα πάει το ρομπότ!</p>
+<div class="container" id="gameContainer">
+<div class="round-info" id="roundInfo">Γύρος 1 / 8</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="question" id="question"></div>
+<div class="mini-grid-wrap"><div class="mini-grid" id="miniGrid"></div></div>
+<div class="cmd-sequence" id="cmdSeq"></div>
+<div class="options" id="options"></div>
+<div class="explanation" id="explanation"></div>
+<button class="next-btn" id="nextBtn" onclick="nextRound()">Επόμενο ▶️</button>
+</div>
+<div class="container completion" id="completion">
+<h2>🎉 Μπράβο!</h2>
+<p>Ολοκλήρωσες όλους τους γύρους!</p>
+<div class="stars" id="stars"></div>
+<p id="scoreText"></p>
+<button class="restart-btn" onclick="restartGame()">🔄 Ξαναπαίξε</button>
+</div>
+<script>
+var rounds = [
+{type:'predict',gridSize:4,start:{r:0,c:0},facing:0,cmds:['forward','forward','right','forward'],options:[{r:0,c:2,label:'Α'},{r:1,c:3,label:'Β'},{r:2,c:0,label:'Γ'},{r:0,c:1,label:'Δ'}],correct:'Β',explain:'Μπροστά 2 φορές = γραμμή 0 στήλη 2. Δεξιά στροφή + μπροστά = γραμμή 1 στήλη 2... αγγίζει όριο.'},
+{type:'predict',gridSize:4,start:{r:2,c:2},facing:0,cmds:['left','forward','forward'],options:[{r:0,c:2,label:'Α'},{r:2,c:0,label:'Β'},{r:2,c:4,label:'Γ'},{r:4,c:2,label:'Δ'}],correct:'Β',explain:'Αριστερή στροφή (κοιτάζει αριστερά), μετά 2 μπροστά = στήλη 0.'},
+{type:'predict',gridSize:4,start:{r:3,c:0},facing:0,cmds:['right','forward','forward','right','forward'],options:[{r:1,c:2,label:'Α'},{r:3,c:3,label:'Β'},{r:1,c:3,label:'Γ'},{r:3,c:1,label:'Δ'}],correct:'Γ',explain:'Δεξιά στροφή, 2 μπροστά (στήλη 2), δεξιά στροφή, 2 μπροστά (γραμμή 1).'},
+{type:'predict',gridSize:4,start:{r:0,c:3},facing:2,cmds:['forward','left','forward','forward'],options:[{r:2,c:3,label:'Α'},{r:2,c:1,label:'Β'},{r:4,c:3,label:'Γ'},{r:2,c:0,label:'Δ'}],correct:'Β',explain:'Ξεκινά κοιτώντας κάτω. Μπροστά (γραμμή 1), αριστερά (κοιτάζει δεξιά), 2 μπροστά (στήλη 1).'},
+{type:'predict',gridSize:5,start:{r:0,c:0},facing:1,cmds:['forward','forward','left','forward','forward'],options:[{r:0,c:2,label:'Α'},{r:2,c:0,label:'Β'},{r:2,c:2,label:'Γ'},{r:0,c:4,label:'Δ'}],correct:'Γ',explain:'Ξεκινά κοιτώντας δεξιά. 2 μπροστά (στήλη 2), αριστερή στροφή (κοιτάζει πάνω), 2 μπροστά (γραμμή 2).'},
+{type:'predict',gridSize:5,start:{r:4,c:4},facing:3,cmds:['forward','forward','right','forward','forward'],options:[{r:2,c:4,label:'Α'},{r:4,c:2,label:'Β'},{r:2,c:2,label:'Γ'},{r:0,c:4,label:'Δ'}],correct:'Γ',explain:'Ξεκινά κοιτώντας αριστερά. 2 μπροστά (στήλη 2), δεξιά (κοιτάζει πάνω), 2 μπροστά (γραμμή 2).'},
+{type:'build',gridSize:4,start:{r:0,c:0},facing:0,target:{r:1,c:2},choices:[['forward','forward','right','forward'],['right','forward','forward','left'],['forward','right','forward','forward'],['forward','forward','forward','right']],correct:0,explain:'Μπροστά 2, στρίψε δεξιά, μπροστά 1 = (1,2)'},
+{type:'build',gridSize:4,start:{r:3,c:3},facing:3,target:{r:1,c:1},choices:[['forward','forward','right','forward','forward'],['left','forward','forward','left','forward'],['forward','left','forward','forward'],['backward','backward','left','forward']],correct:1,explain:'Αριστερή στροφή (κοιτάζει κάτω), 2 μπροστά (γραμμή 1), αριστερά (κοιτάζει αριστερά), 2 μπροστά (στήλη 1).'}
+];
+var currentRound = 0;
+var score = 0;
+var answered = false;
+var dirs = [{dr:-1,dc:0},{dr:0,dc:1},{dr:1,dc:0},{dr:0,dc:-1}];
+var labels = {forward:'⬆️ Μπροστά',backward:'⬇️ Πίσω',left:'⬅️ Αριστερά',right:'➡️ Δεξιά'};
+function simulate(start, facing, cmds, gridSize) {
+var pos = {r:start.r, c:start.c};
+var f = facing;
+var path = [{r:pos.r,c:pos.c}];
+for (var i = 0; i < cmds.length; i++) {
+var cmd = cmds[i];
+if (cmd === 'forward') {
+var nr = pos.r + dirs[f].dr;
+var nc = pos.c + dirs[f].dc;
+if (nr >= 0 && nr < gridSize && nc >= 0 && nc < gridSize) { pos.r = nr; pos.c = nc; }
+} else if (cmd === 'backward') {
+var nr2 = pos.r - dirs[f].dr;
+var nc2 = pos.c - dirs[f].dc;
+if (nr2 >= 0 && nr2 < gridSize && nc2 >= 0 && nc2 < gridSize) { pos.r = nr2; pos.c = nc2; }
+} else if (cmd === 'left') { f = (f + 3) % 4; }
+else if (cmd === 'right') { f = (f + 1) % 4; }
+path.push({r:pos.r,c:pos.c});
+}
+return {pos:pos,facing:f,path:path};
+}
+function renderRound() {
+var rd = rounds[currentRound];
+answered = false;
+document.getElementById('roundInfo').textContent = 'Γύρος ' + (currentRound + 1) + ' / ' + rounds.length;
+document.getElementById('progressFill').style.width = (currentRound / rounds.length * 100) + '%';
+document.getElementById('nextBtn').style.display = 'none';
+document.getElementById('explanation').style.display = 'none';
+renderMiniGrid(rd);
+var seqEl = document.getElementById('cmdSeq');
+if (rd.type === 'predict') {
+document.getElementById('question').textContent = 'Το ρομπότ ξεκινάει από τη θέση ' + String.fromCharCode(65 + rd.start.r) + rd.start.c + '. Πού θα καταλήξει;';
+var html = '';
+for (var i = 0; i < rd.cmds.length; i++) {
+html += '<span class="cmd-chip ' + rd.cmds[i] + '">' + labels[rd.cmds[i]] + '</span>';
+}
+seqEl.innerHTML = html;
+renderPredictOptions(rd);
+} else {
+document.getElementById('question').textContent = 'Το ρομπότ ξεκινά από (' + rd.start.r + ',' + rd.start.c + ') και πρέπει να φτάσει στο ⭐. Ποια εντολές χρειάζονται;';
+seqEl.innerHTML = '';
+renderBuildOptions(rd);
+}
+}
+function renderMiniGrid(rd) {
+var g = document.getElementById('miniGrid');
+g.innerHTML = '';
+g.style.gridTemplateColumns = 'repeat(' + rd.gridSize + ', 45px)';
+for (var r = 0; r < rd.gridSize; r++) {
+for (var c = 0; c < rd.gridSize; c++) {
+var cell = document.createElement('div');
+cell.className = 'mcell';
+if (rd.start.r === r && rd.start.c === c) { cell.classList.add('robot'); cell.textContent = '🤖'; }
+else if (rd.type === 'build' && rd.target.r === r && rd.target.c === c) { cell.classList.add('target'); cell.textContent = '⭐'; }
+else {
+if (rd.type === 'predict') {
+var isOpt = rd.options.some(function(o) { return o.r === r && o.c === c; });
+if (isOpt) {
+var opt = rd.options.find(function(o) { return o.r === r && o.c === c; });
+cell.textContent = opt.label;
+cell.style.fontWeight = 'bold';
+cell.style.color = '#e17055';
+}
+}
+}
+g.appendChild(cell);
+}
+}
+}
+function renderPredictOptions(rd) {
+var opts = document.getElementById('options');
+opts.innerHTML = '';
+var shuffled = rd.options.slice().sort(function() { return Math.random() - 0.5; });
+for (var i = 0; i < shuffled.length; i++) {
+var btn = document.createElement('button');
+btn.className = 'opt-btn';
+btn.textContent = 'Θέση ' + shuffled[i].label + ' (' + shuffled[i].r + ', ' + shuffled[i].c + ')';
+btn.dataset.label = shuffled[i].label;
+btn.onclick = function() { checkAnswer(this.dataset.label); };
+opts.appendChild(btn);
+}
+}
+function renderBuildOptions(rd) {
+var opts = document.getElementById('options');
+opts.innerHTML = '';
+var letters = ['Α','Β','Γ','Δ'];
+for (var i = 0; i < rd.choices.length; i++) {
+var btn = document.createElement('button');
+btn.className = 'opt-btn';
+var cmdStr = rd.choices[i].map(function(c) { return labels[c]; }).join(' → ');
+btn.innerHTML = '<strong>' + letters[i] + '</strong><br><span style="font-size:0.8rem">' + cmdStr + '</span>';
+btn.dataset.idx = i;
+btn.onclick = function() { checkBuild(parseInt(this.dataset.idx)); };
+opts.appendChild(btn);
+}
+}
+function checkAnswer(label) {
+if (answered) return;
+answered = true;
+var rd = rounds[currentRound];
+var btns = document.querySelectorAll('.opt-btn');
+for (var i = 0; i < btns.length; i++) {
+btns[i].classList.add('disabled');
+if (btns[i].dataset.label === rd.correct) btns[i].classList.add('correct');
+if (btns[i].dataset.label === label && label !== rd.correct) btns[i].classList.add('wrong');
+}
+if (label === rd.correct) score++;
+showFeedback();
+}
+function checkBuild(idx) {
+if (answered) return;
+answered = true;
+var rd = rounds[currentRound];
+var btns = document.querySelectorAll('.opt-btn');
+for (var i = 0; i < btns.length; i++) {
+btns[i].classList.add('disabled');
+if (parseInt(btns[i].dataset.idx) === rd.correct) btns[i].classList.add('correct');
+if (parseInt(btns[i].dataset.idx) === idx && idx !== rd.correct) btns[i].classList.add('wrong');
+}
+if (idx === rd.correct) score++;
+showFeedback();
+}
+function showFeedback() {
+var rd = rounds[currentRound];
+var exp = document.getElementById('explanation');
+exp.textContent = rd.explain;
+exp.style.display = 'block';
+document.getElementById('nextBtn').style.display = 'block';
+}
+function nextRound() {
+currentRound++;
+if (currentRound >= rounds.length) { showCompletion(); }
+else { renderRound(); }
+}
+function showCompletion() {
+document.getElementById('gameContainer').style.display = 'none';
+document.getElementById('completion').style.display = 'block';
+var pct = score / rounds.length;
+var stars = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+document.getElementById('stars').textContent = stars;
+document.getElementById('scoreText').textContent = 'Σωστές απαντήσεις: ' + score + ' / ' + rounds.length;
+}
+function restartGame() {
+currentRound = 0;
+score = 0;
+document.getElementById('gameContainer').style.display = 'block';
+document.getElementById('completion').style.display = 'none';
+renderRound();
+}
+renderRound();
+</script>
+</body>
+</html>

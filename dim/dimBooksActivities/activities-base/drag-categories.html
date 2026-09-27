@@ -1,0 +1,254 @@
+<!-- v002-260519 -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξινόμηση σε Κατηγορίες</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:900px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:20px;font-weight:400}
+.items-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:15px;background:#f8f9fa;border-radius:12px;margin-bottom:25px;min-height:60px}
+.drag-item{padding:10px 16px;background:#fff;border:2px solid #e0e0e0;border-radius:10px;cursor:grab;font-size:.95em;color:#333;user-select:none;transition:all .2s}
+.drag-item:hover{border-color:#667eea;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.drag-item.dragging{opacity:.5;cursor:grabbing}
+.drag-item.placed{opacity:.3;pointer-events:none;border-style:dashed}
+.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.category{border:3px dashed #ccc;border-radius:15px;padding:15px;min-height:200px;transition:all .3s}
+.category.drag-over{border-color:#667eea;background:#f0f0ff;transform:scale(1.02)}
+.category-header{text-align:center;font-size:1.1em;font-weight:700;margin-bottom:12px;padding:8px;border-radius:8px;color:#fff}
+.category-items{display:flex;flex-direction:column;gap:8px;min-height:100px}
+.category-item{padding:8px 12px;background:#f0f0f0;border-radius:8px;font-size:.9em;cursor:grab;position:relative;transition:all .2s}
+.category-item:hover{background:#e0e0e0}
+.category-item.correct{background:#e8f5e9;border:2px solid #4CAF50}
+.category-item.wrong{background:#ffebee;border:2px solid #f44336}
+.check-btn{display:block;margin:25px auto 0;padding:12px 40px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.check-btn:hover{transform:scale(1.05)}
+.check-btn:disabled{opacity:.5;cursor:default;transform:none}
+.score-area{display:none;text-align:center;padding:20px}
+.score-area h2{font-size:1.4em;color:#333;margin-bottom:10px}
+.score-area .score{font-size:2.5em;font-weight:700;color:#f5576c}
+.score-area .message{font-size:1.1em;color:#666;margin-top:10px}
+.restart-btn{margin-top:15px;padding:12px 40px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;border-radius:12px;font-size:1em;cursor:pointer}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.empty-pool-msg{color:#aaa;font-style:italic;text-align:center;padding:10px}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json</div>';throw new Error('No data')}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+if(!Array.prototype.flat)Array.prototype.flat=function(){return[].concat.apply([],this)};
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const shuffled=[...data.items].sort(()=>Math.random()-.5);
+let placed={};
+data.categories.forEach(c=>placed[c.id]=[]);
+
+let dragId=null,dragCat=null,isFromCategory=false;
+
+document.addEventListener('dragstart',e=>{
+const el=e.target.closest('[draggable]');
+if(!el||!el.dataset.id)return;
+dragId=el.dataset.id;
+dragCat=el.dataset.category;
+isFromCategory=el.classList.contains('category-item');
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',dragId)
+});
+document.addEventListener('dragend',e=>{
+const el=e.target.closest('[draggable]');
+if(el)el.classList.remove('dragging');
+document.querySelectorAll('.category').forEach(c=>c.classList.remove('drag-over'));
+document.querySelectorAll('.drag-item').forEach(d=>d.classList.remove('dragging'));
+const poolItems=shuffled.filter(item=>!Object.values(placed).flat().includes(item.id));
+const btn=document.getElementById('checkBtn');
+if(btn)btn.disabled=poolItems.length>0
+});
+document.addEventListener('dragover',e=>{
+const cat=e.target.closest('.category');
+if(cat){e.preventDefault();cat.classList.add('drag-over')}
+});
+document.addEventListener('dragleave',e=>{
+const cat=e.target.closest('.category');
+if(cat&&!cat.contains(e.relatedTarget))cat.classList.remove('drag-over')
+});
+document.addEventListener('drop',e=>{
+e.preventDefault();
+const cat=e.target.closest('.category');
+if(!cat)return;
+cat.classList.remove('drag-over');
+const catId=cat.dataset.cat;
+if(isFromCategory){
+Object.keys(placed).forEach(k=>{placed[k]=placed[k].filter(id=>id!==dragId)})
+}
+placed[catId].push(dragId);
+render()
+});
+
+(function setupTouchDrag(){
+let touchEl=null,touchClone=null,touchId=null,touchIsCat=false,offsetX=0,offsetY=0,touchW=0,startX=0,startY=0;
+document.addEventListener('touchstart',e=>{
+const el=e.target.closest('[draggable]');
+if(!el||!el.dataset.id)return;
+const touch=e.touches[0];
+touchEl=el;touchId=el.dataset.id;
+touchIsCat=el.classList.contains('category-item');
+const rect=el.getBoundingClientRect();
+offsetX=touch.clientX-rect.left;offsetY=touch.clientY-rect.top;
+touchW=rect.width;
+startX=touch.clientX;startY=touch.clientY;
+},{passive:false});
+document.addEventListener('touchmove',e=>{
+if(!touchEl)return;
+if(!touchClone){
+const t=e.touches[0];
+if(Math.abs(t.clientX-startX)<10&&Math.abs(t.clientY-startY)<10)return;
+touchClone=touchEl.cloneNode(true);
+touchClone.style.cssText='position:fixed;z-index:9999;pointer-events:none;opacity:0.8;width:'+touchW+'px;transform:scale(1.05)';
+touchClone.style.left=(t.clientX-offsetX)+'px';
+touchClone.style.top=(t.clientY-offsetY)+'px';
+document.body.appendChild(touchClone);
+touchEl.classList.add('dragging');
+}
+e.preventDefault();
+const touch=e.touches[0];
+touchClone.style.left=(touch.clientX-offsetX)+'px';
+touchClone.style.top=(touch.clientY-offsetY)+'px';
+document.querySelectorAll('.category').forEach(c=>c.classList.remove('drag-over'));
+const el=document.elementFromPoint(touch.clientX,touch.clientY);
+const cat=el?el.closest('.category'):null;
+if(cat)cat.classList.add('drag-over')
+},{passive:false});
+document.addEventListener('touchend',e=>{
+if(!touchClone){touchEl=null;touchId=null;touchIsCat=false;return}
+const touch=e.changedTouches[0];
+if(touchClone.parentNode)touchClone.remove();
+touchClone=null;
+document.querySelectorAll('.category').forEach(c=>c.classList.remove('drag-over'));
+if(touchEl)touchEl.classList.remove('dragging');
+const pool=document.getElementById('pool');
+const dropTarget=document.elementFromPoint(touch.clientX,touch.clientY);
+if(pool&&pool.contains(dropTarget)&&touchIsCat){
+Object.keys(placed).forEach(k=>{placed[k]=placed[k].filter(id=>id!==touchId)});
+render()
+}else{
+const cat=dropTarget?dropTarget.closest('.category'):null;
+if(cat){
+const catId=cat.dataset.cat;
+if(touchIsCat){Object.keys(placed).forEach(k=>{placed[k]=placed[k].filter(id=>id!==touchId)})}
+placed[catId].push(touchId);
+render()
+}}
+touchEl=null;touchId=null;touchIsCat=false
+})
+})();
+
+(function setupTapToPlace(){
+var selId=null,selCat=false,sx=0,sy=0,wasTap=false;
+var s=document.createElement('style');
+s.textContent='.tap-selected{outline:3px solid #667eea!important;background:#eef0ff!important;box-shadow:0 0 12px rgba(102,126,234,.4)!important}';
+document.head.appendChild(s);
+function clearSel(){selId=null;selCat=false;document.querySelectorAll('.tap-selected').forEach(function(el){el.classList.remove('tap-selected')})}
+document.addEventListener('touchstart',function(e){
+sx=e.touches[0].clientX;sy=e.touches[0].clientY;wasTap=true;
+},{passive:true});
+document.addEventListener('touchend',function(e){
+if(!wasTap)return;
+wasTap=false;
+var touch=e.changedTouches[0];
+if(Math.abs(touch.clientX-sx)>10||Math.abs(touch.clientY-sy)>10)return;
+var target=document.elementFromPoint(touch.clientX,touch.clientY);
+if(!target)return;
+if(selId){
+var catEl=target.closest('.category');
+if(catEl){
+var catId=catEl.dataset.cat;
+if(selCat){Object.keys(placed).forEach(function(k){placed[k]=placed[k].filter(function(id){return id!==selId})})}
+placed[catId].push(selId);clearSel();render();return;
+}
+var poolEl=target.closest('#pool');
+if(poolEl){
+Object.keys(placed).forEach(function(k){placed[k]=placed[k].filter(function(id){return id!==selId})});
+clearSel();render();return;
+}
+var itemEl=target.closest('[draggable]');
+if(itemEl&&itemEl.dataset.id&&itemEl.dataset.id!==selId){
+clearSel();selId=itemEl.dataset.id;
+selCat=itemEl.classList.contains('category-item');
+itemEl.classList.add('tap-selected');return;
+}
+clearSel();return;
+}
+var itemEl=target.closest('[draggable]');
+if(itemEl&&itemEl.dataset.id){
+selId=itemEl.dataset.id;
+selCat=itemEl.classList.contains('category-item');
+itemEl.classList.add('tap-selected');
+}
+},{passive:true});
+})();
+
+function render(){
+const poolItems=shuffled.filter(item=>!Object.values(placed).flat().includes(item.id));
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>${esc(data.subtitle||'Σύρε κάθε στοιχείο στη σωστή κατηγορία')}</h2>
+<div class="items-pool" id="pool">
+${poolItems.length===0?'<div class="empty-pool-msg">Όλα τα στοιχεία τοποθετήθηκαν!</div>':''}
+${poolItems.map(item=>`<div class="drag-item" draggable="true" data-id="${esc(item.id)}" data-category="${esc(item.category)}">${esc(item.text)}</div>`).join('')}
+</div>
+<div class="categories">
+${data.categories.map(cat=>`
+<div class="category" data-cat="${esc(cat.id)}" style="border-color:${cat.color}40">
+<div class="category-header" style="background:${cat.color}">${esc(cat.name)}</div>
+<div class="category-items" data-cat="${esc(cat.id)}">
+${placed[cat.id].map(id=>{const item=data.items.find(i=>i.id===id);return`<div class="category-item" draggable="true" data-id="${esc(item.id)}" data-category="${esc(item.category)}">${esc(item.text)}</div>`}).join('')}
+</div>
+</div>`).join('')}
+</div>
+<button class="check-btn" id="checkBtn" ${poolItems.length>0?'disabled':''}>Έλεγχος Απαντήσεων</button>
+`;
+document.getElementById('checkBtn').onclick=checkAnswers;
+}
+
+function checkAnswers(){
+let correct=0,total=0;
+Object.keys(placed).forEach(catId=>{
+placed[catId].forEach(id=>{
+total++;
+const item=data.items.find(i=>i.id===id);
+const el=document.querySelector(`.category-item[data-id="${id}"]`);
+if(item.category===catId){correct++;el.classList.add('correct')}else{el.classList.add('wrong')}
+})
+});
+const pct=Math.round((correct/total)*100);
+let msg=pct>=90?'Τέλεια! Τα ξέρεις όλα!':pct>=70?'Μπράβο! Πολύ καλά!':pct>=50?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML+=`
+<div class="score-area" style="display:block">
+<h2>Αποτέλεσμα</h2>
+<div class="score">${correct}/${total}</div>
+<div class="message">${esc(msg)}</div>
+<button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>
+</div>`;
+document.getElementById('checkBtn').style.display='none';
+document.querySelectorAll('.category-item').forEach(el=>{el.draggable=false;el.style.cursor='default'})
+}
+
+render()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

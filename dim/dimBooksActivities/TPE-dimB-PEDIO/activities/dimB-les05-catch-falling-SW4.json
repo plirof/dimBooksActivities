@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Κοντορεβιθούλης",
+  "subtitle": "Πιάσε μόνο αντικείμενα της ιστορίας!",
+  "instructions": "Πιάσε μόνο ΣΤΟΙΧΕΙΑ της ιστορίας! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Ψίχουλα", "correct": true, "color": "#4CAF50"},
+    {"text": "Πυξίδα", "correct": false, "color": "#f44336"},
+    {"text": "Δάσος", "correct": true, "color": "#2196F3"},
+    {"text": "Θάλασσα", "correct": false, "color": "#FF9800"},
+    {"text": "Σπίτι", "correct": true, "color": "#9C27B0"},
+    {"text": "Αεροπλάνο", "correct": false, "color": "#E91E63"},
+    {"text": "Λάθος", "correct": true, "color": "#009688"},
+    {"text": "Μπανάνα", "correct": false, "color": "#FFC107"},
+    {"text": "Πρόγραμμα", "correct": true, "color": "#795548"},
+    {"text": "Παλάτι", "correct": false, "color": "#607D8B"}
+  ]
+}

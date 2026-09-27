@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+260923 - mpάλα->μπάλα
+    -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αλήθεια ή Ψέμα; - dimC les02</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #4a3f8a;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+h1 .emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    color: #7c6fbf;
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 20px;
+    background: #e8e0f0;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.round-label {
+    text-align: center;
+    color: #6c5ce7;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.character-card {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    border: 3px solid #f9ca24;
+    text-align: center;
+}
+
+.character-card .char-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 8px;
+}
+
+.character-card .char-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.character-card .char-desc {
+    font-size: 1.05rem;
+    color: #2d3436;
+    line-height: 1.7;
+}
+
+.character-card .char-desc b {
+    color: #d63031;
+    font-size: 1.1rem;
+}
+
+.statement-area {
+    margin-bottom: 12px;
+}
+
+.statement-card {
+    background: #f8f9ff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border: 2px solid #d5d0f0;
+    transition: all 0.3s ease;
+}
+
+.statement-card.correct {
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.statement-card.wrong {
+    border-color: #e17055;
+    background: #fff0ec;
+}
+
+.statement-card .stmt-text {
+    font-size: 1.15rem;
+    color: #2d3436;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-answer {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-answer:active {
+    transform: scale(0.95);
+}
+
+.btn-answer.true-btn {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+}
+
+.btn-answer.true-btn:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+}
+
+.btn-answer.false-btn {
+    background: linear-gradient(135deg, #e17055, #d63031);
+    color: white;
+}
+
+.btn-answer.false-btn:hover {
+    background: linear-gradient(135deg, #d63031, #e17055);
+}
+
+.btn-answer:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.feedback {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+.feedback.correct-fb {
+    color: #00b894;
+}
+
+.feedback.wrong-fb {
+    color: #d63031;
+}
+
+.btn-next {
+    display: block;
+    margin: 16px auto 0;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+}
+
+.btn-next:active {
+    transform: scale(0.95);
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.completion-screen h2 {
+    color: #4a3f8a;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #6c5ce7;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+.completion-screen .score-detail {
+    color: #7c6fbf;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.statement-card {
+    animation: popIn 0.3s ease;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .btn-row > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Αλήθεια ή Ψέμα; <span class="emoji-title">🤔</span></h1>
+    <p class="subtitle">Διάβασε την περιγραφή και βρες τι είναι αλήθεια!</p>
+
+    <div id="game-area">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%">0 / 0</div>
+        </div>
+        <div class="round-label" id="round-label"></div>
+        <div class="character-card" id="character-card"></div>
+        <div class="statement-area" id="statement-area"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-next hidden" id="btn-next">Επόμενη Πρόταση ➡️</button>
+    </div>
+
+    <div class="completion-screen hidden" id="completion-screen">
+        <div class="stars" id="stars"></div>
+        <h2>Μπράβο! Τέλειωσες! 🎉</h2>
+        <p class="score-text" id="score-text"></p>
+        <p class="score-detail" id="score-detail"></p>
+        <button class="btn-restart" id="btn-restart">Παίξε Ξανά! 🔄</button>
+    </div>
+</div>
+
+<script>
+var rounds = [
+    {
+        name: "Ο Νίκος",
+        emoji: "👦",
+        desc: "Έχει <b>κόκκινο καπέλο</b>, φοράει <b>μπλε μπλούζα</b>, κρατάει <b>μπάλα</b>, φοράει <b>πράσινα παπούτσια</b>, <b>ΔΕΝ</b> φοράει γυαλιά",
+        attributes: { "έχει κόκκινο καπέλο": true, "φοράει μπλε μπλούζα": true, "κρατάει μπάλα": true, "φοράει πράσινα παπούτσια": true, "φοράει γυαλιά": false, "έχει κίτρινο καπέλο": false, "φοράει κόκκινη μπλούζα": false, "κρατάει σακούλα": false },
+        statements: [
+            { text: "Ο Νίκος έχει κόκκινο καπέλο.", answer: true },
+            { text: "Ο Νίκος φοράει μπλε μπλούζα.", answer: true },
+            { text: "Ο Νίκος φοράει γυαλιά.", answer: false },
+            { text: "Ο Νίκος κρατάει μπάλα.", answer: true },
+            { text: "Ο Νίκος έχει κίτρινο καπέλο.", answer: false },
+            { text: "Ο Νίκος φοράει πράσινα παπούτσια.", answer: true },
+            { text: "Ο Νίκος φοράει κόκκινη μπλούζα.", answer: false },
+            { text: "Ο Νίκος κρατάει σακούλα.", answer: false }
+        ]
+    },
+    {
+        name: "Η Μαρία",
+        emoji: "👧",
+        desc: "Φοράει <b>κοκκιν φόρεμα</b>, έχει <b>μακριά μαλλιά</b>, κρατάει <b>βιβλίο</b>, φοράει <b>κίτρινα παπούτσια</b>, <b>ΔΕΝ</b> φοράει καπέλο",
+        attributes: { "φοράει κόκκινο φόρεμα": true, "έχει μακριά μαλλιά": true, "κρατάει βιβλίο": true, "φοράει κίτρινα παπούτσια": true, "φοράει καπέλο": false, "φοράει μπλε φόρεμα": false, "έχει κοντά μαλλιά": false, "κρατάει μολύβι": false },
+        statements: [
+            { text: "Η Μαρία φοράει κόκκινο φόρεμα.", answer: true },
+            { text: "Η Μαρία έχει μακριά μαλλιά.", answer: true },
+            { text: "Η Μαρία φοράει καπέλο.", answer: false },
+            { text: "Η Μαρία κρατάει βιβλίο.", answer: true },
+            { text: "Η Μαρία φοράει μπλε φόρεμα.", answer: false },
+            { text: "Η Μαρία φοράει κίτρινα παπούτσια.", answer: true },
+            { text: "Η Μαρία έχει κοντά μαλλιά.", answer: false },
+            { text: "Η Μαρία κρατάει μολύβι.", answer: false }
+        ]
+    },
+    {
+        name: "Ο Γιώργος",
+        emoji: "🧑",
+        desc: "Φοράει <b>πράσινο μπλουζάκι</b>, έχει <b>σγουρά μαλλιά</b>, κρατάει <b>ψαροντούφεκο</b>, φοράει <b>κοντά παντελόνια</b>, <b>ΔΕΝ</b> έχει γένια",
+        attributes: { "φοράει πράσινο μπλουζάκι": true, "έχει σγουρά μαλλιά": true, "κρατάει ψαροντούφεκο": true, "φοράει κοντά παντελόνια": true, "έχει γένια": false, "φοράει κόκκινο μπλουζάκι": false, "έχει ίσια μαλλιά": false, "κρατάει μπαλίτσα": false },
+        statements: [
+            { text: "Ο Γιώργος φοράει πράσινο μπλουζάκι.", answer: true },
+            { text: "Ο Γιώργος έχει σγουρά μαλλιά.", answer: true },
+            { text: "Ο Γιώργος έχει γένια.", answer: false },
+            { text: "Ο Γιώργος κρατάει ψαροντούφεκο.", answer: true },
+            { text: "Ο Γιώργος φοράει κόκκινο μπλουζάκι.", answer: false },
+            { text: "Ο Γιώργος φοράει κοντά παντελόνια.", answer: true },
+            { text: "Ο Γιώργος έχει ίσια μαλλιά.", answer: false },
+            { text: "Ο Γιώργος κρατάει μπαλίτσα.", answer: false }
+        ]
+    },
+    {
+        name: "Η Ελένη",
+        emoji: "👩",
+        desc: "Φοράει <b>μωβ παλτό</b>, έχει <b>μαύρα μαλλιά</b>, κρατάει <b>ομπρέλα</b>, φοράει <b>μποτάκια</b>, <b>ΔΕΝ</b> φοράει κασκόλ",
+        attributes: { "φοράει μωβ παλτό": true, "έχει μαύρα μαλλιά": true, "κρατάει ομπρέλα": true, "φοράει μποτάκια": true, "φοράει κασκόλ": false, "φοράει κόκκινο παλτό": false, "έχει ξανθά μαλλιά": false, "κρατάει τσάντα": false },
+        statements: [
+            { text: "Η Ελένη φοράει μωβ παλτό.", answer: true },
+            { text: "Η Ελένη έχει μαύρα μαλλιά.", answer: true },
+            { text: "Η Ελένη φοράει κασκόλ.", answer: false },
+            { text: "Η Ελένη κρατάει ομπρέλα.", answer: true },
+            { text: "Η Ελένη φοράει κόκκινο παλτό.", answer: false },
+            { text: "Η Ελένη φοράει μποτάκια.", answer: true },
+            { text: "Η Ελένη έχει ξανθά μαλλιά.", answer: false },
+            { text: "Η Ελένη κρατάει τσάντα.", answer: false }
+        ]
+    }
+];
+
+var currentRound = 0;
+var currentStmt = 0;
+var score = 0;
+var totalAnswered = 0;
+var totalStatements = 0;
+var answered = false;
+
+function init() {
+    rounds.forEach(function(r) {
+        totalStatements += r.statements.length;
+    });
+    currentRound = 0;
+    currentStmt = 0;
+    score = 0;
+    totalAnswered = 0;
+    document.getElementById('completion-screen').classList.add('hidden');
+    document.getElementById('game-area').classList.remove('hidden');
+    renderRound();
+}
+
+function renderRound() {
+    answered = false;
+    var round = rounds[currentRound];
+    document.getElementById('round-label').textContent = "Γύρος " + (currentRound + 1) + " από " + rounds.length;
+    var cardHtml = '<span class="char-emoji">' + round.emoji + '</span>';
+    cardHtml += '<div class="char-name">' + round.name + '</div>';
+    cardHtml += '<div class="char-desc">' + round.desc + '</div>';
+    document.getElementById('character-card').innerHTML = cardHtml;
+    renderStatement();
+}
+
+function renderStatement() {
+    answered = false;
+    var round = rounds[currentRound];
+    var stmt = round.statements[currentStmt];
+    updateProgress();
+
+    var html = '<div class="statement-card" id="stmt-card">';
+    html += '<div class="stmt-text">«' + stmt.text + '»</div>';
+    html += '<div class="btn-row">';
+    html += '<button class="btn-answer true-btn" id="btn-true" onclick="handleAnswer(true)">Αλήθεια ✅</button>';
+    html += '<button class="btn-answer false-btn" id="btn-false" onclick="handleAnswer(false)">Ψέμα ❌</button>';
+    html += '</div>';
+    html += '</div>';
+
+    document.getElementById('statement-area').innerHTML = html;
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('btn-next').classList.add('hidden');
+}
+
+function handleAnswer(userAnswer) {
+    if (answered) return;
+    answered = true;
+
+    var round = rounds[currentRound];
+    var stmt = round.statements[currentStmt];
+    var isCorrect = (userAnswer === stmt.answer);
+
+    if (isCorrect) {
+        score++;
+    }
+    totalAnswered++;
+
+    var card = document.getElementById('stmt-card');
+    var fb = document.getElementById('feedback');
+
+    if (isCorrect) {
+        card.classList.add('correct');
+        fb.textContent = '🎉 Σωστό! Μπράβο!';
+        fb.className = 'feedback correct-fb';
+    } else {
+        card.classList.add('wrong');
+        var correctAnswer = stmt.answer ? 'Αλήθεια' : 'Ψέμα';
+        fb.textContent = '😢 Λάθος! Η σωστή απάντηση είναι: ' + correctAnswer;
+        fb.className = 'feedback wrong-fb';
+    }
+
+    document.getElementById('btn-true').disabled = true;
+    document.getElementById('btn-false').disabled = true;
+
+    updateProgress();
+
+    if (currentStmt < round.statements.length - 1 || currentRound < rounds.length - 1) {
+        document.getElementById('btn-next').classList.remove('hidden');
+    } else {
+        setTimeout(showCompletion, 1200);
+    }
+}
+
+function nextStatement() {
+    var round = rounds[currentRound];
+    if (currentStmt < round.statements.length - 1) {
+        currentStmt++;
+        renderStatement();
+    } else {
+        currentRound++;
+        currentStmt = 0;
+        if (currentRound < rounds.length) {
+            renderRound();
+        } else {
+            showCompletion();
+        }
+    }
+}
+
+function updateProgress() {
+    var pct = (totalAnswered / totalStatements) * 100;
+    var bar = document.getElementById('progress-fill');
+    bar.style.width = pct + '%';
+    bar.textContent = totalAnswered + ' / ' + totalStatements;
+}
+
+function showCompletion() {
+    document.getElementById('game-area').classList.add('hidden');
+    var cs = document.getElementById('completion-screen');
+    cs.classList.remove('hidden');
+
+    var pct = score / totalStatements;
+    var starCount = pct >= 0.9 ? 3 : (pct >= 0.6 ? 2 : 1);
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        starsHtml += (i < starCount) ? '⭐' : '☆';
+    }
+    document.getElementById('stars').textContent = starsHtml;
+    document.getElementById('score-text').textContent = 'Σκορ: ' + score + ' / ' + totalStatements;
+
+    var msg = '';
+    if (pct === 1) msg = 'Τέλειο! Τα ξέρεις όλα! 🏆';
+    else if (pct >= 0.8) msg = 'Πολύ καλό! Μπράβο! 🌟';
+    else if (pct >= 0.6) msg = 'Καλό! Συνέχισε έτσι! 💪';
+    else msg = 'Προσπάθησε ξανά! Μπορείς! 🤗';
+    document.getElementById('score-detail').textContent = msg;
+}
+
+document.getElementById('btn-next').addEventListener('click', nextStatement);
+document.getElementById('btn-restart').addEventListener('click', init);
+
+init();
+</script>
+</body>
+</html>

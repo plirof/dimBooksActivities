@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Συνθήκες",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "kairos", "name": "Καιρός", "color": "#2196F3", "key": "ArrowLeft"},
+    {"id": "rouxa", "name": "Ρούχα", "color": "#4CAF50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Βρέχει", "category": "kairos"},
+    {"text": "Κασκόλ", "category": "rouxa"},
+    {"text": "Κάνει κρύο", "category": "kairos"},
+    {"text": "Ομπρέλα", "category": "rouxa"},
+    {"text": "Έχει ήλιο", "category": "kairos"},
+    {"text": "Σκούφος", "category": "rouxa"},
+    {"text": "Έχει αέρα", "category": "kairos"},
+    {"text": "Αντιανεμικό", "category": "rouxa"},
+    {"text": "Νεφώματα", "category": "kairos"},
+    {"text": "Γυαλιά ηλίου", "category": "rouxa"}
+  ],
+  "duration": 30
+}

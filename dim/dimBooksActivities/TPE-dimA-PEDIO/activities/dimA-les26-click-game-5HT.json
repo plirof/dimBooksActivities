@@ -1,0 +1,14 @@
+{
+  "title": "Πλοήγηση!",
+  "subtitle": "Κάνε κλικ στα links και βρες πληροφορίες",
+  "instructions": "Κλικ στους συνδέσμους για να πλοηγηθείς!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "🏠 Αρχική", "color": "#BBDEFB" },
+    { "label": "📖 Μαθήματα", "color": "#C8E6C9" },
+    { "label": "🎮 Παιχνίδια", "color": "#FFF9C4" },
+    { "label": "📞 Επικοινωνία", "color": "#FFE0B2" }
+  ]
+}

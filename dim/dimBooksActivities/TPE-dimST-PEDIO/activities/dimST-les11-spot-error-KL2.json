@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Καταγραφή Δεδομένων",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Τα", "error": false },
+        { "text": "ονόματα", "error": false },
+        { "text": "των", "error": false },
+        { "text": "στηλών", "error": false },
+        { "text": "γράφονται", "error": false },
+        { "text": "με", "error": false },
+        { "text": "ελληνικούς", "error": true, "correct": "λατινικούς", "feedback": "Τα ονόματα στηλών πρέπει να είναι με λατινικούς χαρακτήρες" },
+        { "text": "χαρακτήρες.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "εντολή", "error": false },
+        { "text": "δημιουργίας", "error": false },
+        { "text": "στήλης", "error": false },
+        { "text": "μπαίνει", "error": false },
+        { "text": "στο", "error": false },
+        { "text": "«για πάντα».", "error": true, "correct": "«κατά την έναρξη»", "feedback": "Η δημιουργία στήλης γίνεται μία φορά, στην εντολή «κατά την έναρξη»" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "αρχείο", "error": false },
+        { "text": "δεδομένων", "error": false },
+        { "text": "ονομάζεται", "error": false },
+        { "text": "MEASUREMENTS.", "error": true, "correct": "MY_DATA", "feedback": "Το αρχείο ονομάζεται MY_DATA.HTM" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "micro:bit", "error": false },
+        { "text": "εμφανίζεται", "error": false },
+        { "text": "στον", "error": false },
+        { "text": "εξεταστή", "error": true, "correct": "εξερευνητή", "feedback": "Εμφανίζεται στον εξερευνητή αρχείων ως εξωτερικός αποθηκευτικός χώρος" },
+        { "text": "αρχείων.", "error": false }
+      ]
+    }
+  ]
+}

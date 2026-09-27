@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro:bit Φωτός: Slider → Ήλιος/Φεγγάρι</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:650px;width:100%;padding:25px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.3rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:20px;}
+
+.microbit{width:320px;margin:0 auto 20px;position:relative;background:#1a7a3a;border-radius:20px;padding:25px 20px 15px;box-shadow:0 6px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);}
+.microbit::before{content:'micro:bit';position:absolute;top:6px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.3);font-size:.6rem;font-weight:bold;letter-spacing:1px;}
+.microbit-inner{display:flex;flex-direction:column;align-items:center;gap:12px;}
+
+.led-grid{width:180px;height:140px;background:#1a1a2e;border-radius:8px;padding:10px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);grid-gap:3px;position:relative;overflow:hidden;}
+.led{width:100%;aspect-ratio:1;border-radius:50%;background:#2a2a3e;transition:all .3s;}
+.led.on{background:#ff0;box-shadow:0 0 8px #ff0,0 0 15px rgba(255,255,0,.3);}
+.led.on-blue{background:#4af;box-shadow:0 0 8px #4af,0 0 15px rgba(68,170,255,.3);}
+
+.led-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3.5rem;z-index:10;pointer-events:none;filter:drop-shadow(0 0 10px rgba(0,0,0,.5));transition:all .3s;}
+
+.buttons-row{display:flex;gap:40px;justify-content:center;margin-top:5px;}
+.mbtn{width:44px;height:44px;border-radius:50%;background:#c0c0c0;border:2px solid #999;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.7rem;color:#444;box-shadow:0 2px 4px rgba(0,0,0,.3);}
+
+.pins-row{display:flex;justify-content:space-between;width:100%;margin-top:5px;}
+.pin{width:8px;height:10px;background:gold;border-radius:2px;}
+
+.slider-section{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:15px;}
+.slider-section label{display:block;font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:1rem;text-align:center;}
+.slider-wrapper{display:flex;align-items:center;gap:12px;justify-content:center;}
+.slider-wrapper span{font-weight:bold;color:#764ba2;min-width:35px;text-align:center;}
+input[type=range]{width:250px;height:8px;-webkit-appearance:none;background:linear-gradient(90deg,#1a1a2e,#ffd700,#ff8c00);border-radius:4px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+
+.value-display{text-align:center;margin-bottom:15px;}
+.value-big{font-size:2.5rem;font-weight:bold;color:#5b3ea8;}
+.value-label{color:#888;font-size:.85rem;}
+
+.logic-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:14px;padding:18px;margin-bottom:15px;}
+.logic-title{font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:.95rem;}
+.logic-code{font-family:'Courier New',monospace;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:10px;font-size:.85rem;line-height:1.6;white-space:pre-line;}
+.logic-code .keyword{color:#cba6f7;}
+.logic-code .cond{color:#f9e2af;}
+.logic-code .str{color:#a6e3a1;}
+.logic-code .num{color:#fab387;}
+.logic-code .comment{color:#6c7086;font-style:italic;}
+
+.status-box{text-align:center;padding:15px;border-radius:14px;font-size:1.2rem;font-weight:bold;transition:all .3s;}
+.status-day{background:linear-gradient(135deg,#fefce8,#fef9c3);color:#854d0e;border:2px solid #fde047;}
+.status-night{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#c4b5fd;border:2px solid #6366f1;}
+
+@media(max-width:600px){.container{padding:15px;}.microbit{width:260px;padding:20px 15px 12px;}.led-grid{width:150px;height:120px;}input[type=range]{width:180px;}.led-label{font-size:2.5rem;}.value-big{font-size:2rem;}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .microbit-inner > * + * { margin-top: 12px; }
+  .buttons-row > * + * { margin-left: 40px; }
+  .slider-wrapper > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💡 Micro:bit Φωτός: Slider → Ήλιος/Φεγγάρι</h1>
+<p class="subtitle">Ρύθμισε το φως και δες πώς αντιδρά το micro:bit!</p>
+
+<div class="microbit">
+<div class="microbit-inner">
+<div class="pins-row"><div class="pin"></div><div class="pin"></div><div class="pin"></div><div class="pin"></div><div class="pin"></div></div>
+<div class="led-grid" id="ledGrid">
+<div class="led" id="led-label-wrapper" style="grid-column:1/-1;grid-row:1/-1;position:relative;display:flex;align-items:center;justify-content:center;background:transparent;">
+<span class="led-label" id="ledLabel">🌙</span>
+</div>
+</div>
+<div class="buttons-row"><div class="mbtn">A</div><div class="mbtn">B</div></div>
+<div class="pins-row"><div class="pin"></div><div class="pin"></div><div class="pin"></div><div class="pin"></div><div class="pin"></div></div>
+</div>
+</div>
+
+<div class="value-display">
+<div class="value-big" id="lightValue">0</div>
+<div class="value-label">Επίπεδο Φωτός (0-255)</div>
+</div>
+
+<div class="slider-section">
+<label>🌞 Ρύθμιση Φωτός 🌙</label>
+<div class="slider-wrapper">
+<span>🌙</span>
+<input type="range" id="lightSlider" min="0" max="255" value="0" oninput="updateLight(this.value)">
+<span>☀️</span>
+</div>
+</div>
+
+<div class="status-box status-night" id="statusBox">🌙 Νύχτα - Χαμηλό Φως</div>
+
+<div class="logic-box">
+<div class="logic-title">🧠 Λογική του Προγράμματος:</div>
+<div class="logic-code" id="logicCode"><span class="keyword">εάν</span> φως <span class="cond">≥</span> <span class="num">100</span>
+  <span class="str">→ Εμφάνιση ☀️ ΗΛΙΟΣ</span>
+<span class="keyword">αλλιώς</span>
+  <span class="str">→ Εμφάνιση 🌙 ΦΕΓΓΑΡΙ</span></div>
+</div>
+</div>
+
+<script>
+(function(){
+var sunPattern=[
+[0,1,1,1,0],
+[1,0,1,0,1],
+[1,1,1,1,1],
+[1,0,1,0,1],
+[0,1,1,1,0]
+];
+var moonPattern=[
+[0,0,1,1,0],
+[0,1,0,0,1],
+[0,1,0,0,0],
+[0,1,0,0,1],
+[0,0,1,1,0]
+];
+
+function buildGrid(){
+var grid=document.getElementById('ledGrid');
+var wrapper=document.getElementById('led-label-wrapper');
+grid.innerHTML='';
+for(var r=0;r<5;r++){
+for(var c=0;c<5;c++){
+var led=document.createElement('div');
+led.className='led';
+led.setAttribute('data-r',r);
+led.setAttribute('data-c',c);
+grid.appendChild(led);
+}
+}
+grid.appendChild(wrapper);
+}
+buildGrid();
+
+window.updateLight=function(val){
+val=parseInt(val);
+document.getElementById('lightValue').textContent=val;
+
+var label=document.getElementById('ledLabel');
+var statusBox=document.getElementById('statusBox');
+var leds=document.querySelectorAll('.led[data-r]');
+
+var pattern,isSun;
+if(val>=100){
+pattern=sunPattern;
+isSun=true;
+label.textContent='☀️';
+statusBox.className='status-box status-day';
+statusBox.textContent='☀️ Μέρα - Αρκετό Φως!';
+}else{
+pattern=moonPattern;
+isSun=false;
+label.textContent='🌙';
+statusBox.className='status-box status-night';
+statusBox.textContent='🌙 Νύχτα - Χαμηλό Φως';
+}
+
+var brightness=isSun?Math.min(1,(val-100)/155+0.4):Math.max(0.2,val/100);
+
+leds.forEach(function(led){
+var r=parseInt(led.getAttribute('data-r'));
+var c=parseInt(led.getAttribute('data-c'));
+if(pattern[r][c]){
+led.className=isSun?'led on':'led on-blue';
+led.style.opacity=brightness;
+}else{
+led.className='led';
+led.style.opacity=1;
+}
+});
+
+var codeEl=document.getElementById('logicCode');
+if(val>=100){
+codeEl.innerHTML='<span class="keyword">εάν</span> φως (<span class="num">'+val+'</span>) <span class="cond">≥</span> <span class="num">100</span>  <span style="color:#a6e3a1;">✓ ΑΛΗΘΕΣ</span>\n  <span class="str">→ ☀️ Εμφάνιση ΗΛΙΟΥ</span>';
+}else{
+codeEl.innerHTML='<span class="keyword">εάν</span> φως (<span class="num">'+val+'</span>) <span class="cond">≥</span> <span class="num">100</span>  <span style="color:#f38ba8;">✗ ΨΕΥΔΕΣ</span>\n  <span class="keyword">αλλιώς</span>\n  <span class="str">→ 🌙 Εμφάνιση ΦΕΓΓΑΡΙΟΥ</span>';
+}
+};
+
+window.updateLight(0);
+})();
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '1')) return;
+  var F = [['.led', 1]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+</body>
+</html>

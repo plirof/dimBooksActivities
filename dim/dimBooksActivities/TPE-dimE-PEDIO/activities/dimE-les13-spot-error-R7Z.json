@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Υλικό Υπολογιστή",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "μνήμη", "error": false, "correct": "", "feedback": "" },
+        { "text": "αποθηκεύει", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνιμα", "error": true, "correct": "προσωρινά", "feedback": "Η μνήμη αποθηκεύει ΠΡΟΣΩΡΙΝΑ, όχι μόνιμα. Σβήνεται με τερματισμό." },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεδομένα.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "επεξεργαστής", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "η", "error": true, "correct": "το", "feedback": "Ο επεξεργαστής είναι ΤΟ «μυαλό», όχι η..." },
+        { "text": "μνήμη", "error": true, "correct": "μυαλό", "feedback": "Ο επεξεργαστής είναι ΤΟ «ΜΥΑΛΟ» του υπολογιστή" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπολογιστή.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "δίσκος", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "πιο", "error": false, "correct": "", "feedback": "" },
+        { "text": "γρήγορος", "error": true, "correct": "αργός", "feedback": "Ο δίσκος είναι πιο ΑΡΓΟΣ από τη μνήμη" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "τη", "error": false, "correct": "", "feedback": "" },
+        { "text": "μνήμη.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "κοινόχρηστος", "error": false, "correct": "", "feedback": "" },
+        { "text": "φάκελος", "error": false, "correct": "", "feedback": "" },
+        { "text": "έχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "πρόσβαση", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνο", "error": true, "correct": "", "feedback": "Ο κοινόχρηστος φάκελος έχει πρόσβαση ΟΛΟΙ οι χρήστες" },
+        { "text": "ένας", "error": true, "correct": "όλοι οι", "feedback": "Ο κοινόχρηστος φάκελος έχει πρόσβαση ΟΛΟΙ οι χρήστες" },
+        { "text": "χρήστης.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

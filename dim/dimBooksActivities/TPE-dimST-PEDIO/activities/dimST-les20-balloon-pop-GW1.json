@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ερωτήματα",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με την ανάλυση δεδομένων",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με τα ερωτήματα και την ανάλυση δεδομένων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Ερώτημα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ανάλυση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Συχνότητα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Διάγραμμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ερωτηματολόγιο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Big Data",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "IoT",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Hacking",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Στοιχεία Φύλλου",
+  "subtitle": "Πιάσε τις σωστές ενέργειες!",
+  "instructions": "Πιάσε τις σωστές πράξεις στο υπολογιστικό φύλλο!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Enter = οριστικοποίηση", "correct": true, "color": "#4CAF50" },
+    { "text": "Δεξί κλικ = εισαγωγή γραμμής", "correct": true, "color": "#2196F3" },
+    { "text": "Κελί B3", "correct": true, "color": "#FF9800" },
+    { "text": "Μορφοποίηση", "correct": true, "color": "#9C27B0" },
+    { "text": "Γραμμή εισαγωγής", "correct": true, "color": "#00BCD4" },
+    { "text": "Στήλες A, B, C", "correct": true, "color": "#E91E63" },
+    { "text": "Γραμμές α, β, γ", "correct": false, "color": "#F44336" },
+    { "text": "Enter = διαγραφή", "correct": false, "color": "#795548" },
+    { "text": "Αριστερό κλικ = εισαγωγή", "correct": false, "color": "#607D8B" },
+    { "text": "Κελί 3B", "correct": false, "color": "#FF5722" }
+  ]
+}

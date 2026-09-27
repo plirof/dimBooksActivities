@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Ψηφιακά",
+  "subtitle": "Πιάσε μόνο ψηφιακές έννοιες!",
+  "instructions": "Πιάσε μόνο ό,τι σχετίζεται με τον ΥΠΟΛΟΓΙΣΤΗ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Bit", "correct": true, "color": "#4CAF50"},
+    {"text": "Μολύβι", "correct": false, "color": "#f44336"},
+    {"text": "Δεδομένα", "correct": true, "color": "#2196F3"},
+    {"text": "Ψαλίδι", "correct": false, "color": "#FF9800"},
+    {"text": "Έξοδος", "correct": true, "color": "#9C27B0"},
+    {"text": "Σφουγγάρι", "correct": false, "color": "#E91E63"},
+    {"text": "Είσοδος", "correct": true, "color": "#009688"},
+    {"text": "Κουζίνα", "correct": false, "color": "#FFC107"},
+    {"text": "Επεξεργασία", "correct": true, "color": "#795548"},
+    {"text": "Κουπί", "correct": false, "color": "#607D8B"}
+  ]
+}

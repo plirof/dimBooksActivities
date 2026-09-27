@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Συλλογή Δεδομένων",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με τη συλλογή δεδομένων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Ερωτηματολόγιο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φόρμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Δεδομένα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Δημοσκόπηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Υπολογιστικό φύλλο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "e-me",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πρόγραμμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Κώδικας",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Άθλημα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λόγος",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

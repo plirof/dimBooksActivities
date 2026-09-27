@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Παρουσίαση",
+  "subtitle": "Ταξινόμησε τα στοιχεία στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε στοιχείο.",
+  "categories": [
+    { "id": "dimiourgia", "name": "Δημιουργία", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "perieomeno", "name": "Περιεχόμενο", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "provoli", "name": "Προβολή", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "kanena", "name": "Δεν ανήκει", "color": "#f44336", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Νέα διαφάνεια", "category": "dimiourgia" },
+    { "text": "Κενή παρουσίαση", "category": "dimiourgia" },
+    { "text": "Αποθήκευση", "category": "dimiourgia" },
+    { "text": "Τίτλος", "category": "perieomeno" },
+    { "text": "Εικόνα", "category": "perieomeno" },
+    { "text": "Κείμενο", "category": "perieomeno" },
+    { "text": "Υπότιτλος", "category": "perieomeno" },
+    { "text": "F5", "category": "provoli" },
+    { "text": "ESC", "category": "provoli" },
+    { "text": "Δεξί βελάκι", "category": "provoli" },
+    { "text": "Αριστερό βελάκι", "category": "provoli" },
+    { "text": "Κωδικός wifi", "category": "kanena" }
+  ],
+  "duration": 45
+}

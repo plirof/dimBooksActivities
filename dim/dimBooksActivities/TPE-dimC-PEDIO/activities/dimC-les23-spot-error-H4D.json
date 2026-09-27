@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Προφίλ e-me",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βάλω", "error": false},
+        {"text": "τηλέφωνο", "error": true, "correct": "μότο ή περιγραφή", "feedback": "ΔΕΝ βάζουμε τηλέφωνο στο προφίλ! Είναι προσωπικό δεδομένο!"},
+        {"text": "στο", "error": false},
+        {"text": "προφίλ", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "αβατάρ", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "η", "error": false},
+        {"text": "φωτογραφία", "error": true, "correct": "εικονικός χαρακτήρας", "feedback": "Το avatar είναι ΕΙΚΟΝΙΚΟΣ ΧΑΡΑΚΤΗΡΑΣ, όχι απαραίτητα φωτογραφία!"},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "δώσω", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "κωδικό", "error": false},
+        {"text": "μου", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "φίλους.", "error": true, "correct": "ποτέ", "feedback": "ΔΕΝ δίνουμε ΠΟΤΕ τον κωδικό μας σε κανέναν!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "προσωπικά", "error": false},
+        {"text": "δεδομένα", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "προστατεύουμε.", "error": true, "correct": "πρέπει να τα προστατεύουμε", "feedback": "ΠΡΕΠΕΙ να προστατεύουμε τα προσωπικά μας δεδομένα!"}
+      ]
+    }
+  ]
+}

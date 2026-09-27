@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χάρτης Ιστού - Μέσα Μετακίνησης</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0e7ff,#c7d2fe);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:900px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:20px}
+.map-area{position:relative;min-height:420px;background:#f8f9ff;border-radius:16px;border:2px dashed #c7d2fe;padding:15px;overflow:hidden}
+.svg-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.center-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:16px 22px;border-radius:60px;font-size:1em;font-weight:700;box-shadow:0 6px 25px rgba(67,56,202,.35);text-align:center;white-space:nowrap}
+.web-nodes{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+.web-slot{position:absolute;width:150px;height:56px;border:3px dashed #a5b4fc;border-radius:50px;display:flex;align-items:center;justify-content:center;background:#fff;font-size:.9em;transition:all .3s;cursor:default;transform:translate(-50%,-50%);overflow:hidden;padding:4px 10px;text-align:center}
+.web-slot.filled{border-style:solid;border-color:#6366f1;background:#eef2ff}
+.web-slot.drag-over{border-color:#4338ca;background:#e0e7ff;transform:translate(-50%,-50%) scale(1.08)}
+.pool-area{background:#f8f9ff;border-radius:16px;border:2px solid #c7d2fe;padding:15px;margin-top:15px}
+.pool-area h3{text-align:center;color:#4338ca;margin-bottom:10px;font-size:1em}
+.vehicle-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:60px}
+.vehicle-card{padding:10px 20px;background:linear-gradient(135deg,#fff,#eef2ff);border:2px solid #c7d2fe;border-radius:50px;cursor:grab;font-size:.95em;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);user-select:none;touch-action:none}
+.vehicle-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#6366f1}
+.vehicle-card:active{cursor:grabbing}
+.vehicle-card.dragging{opacity:.4}
+.vehicle-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(67,56,202,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.2em;font-weight:700;margin-top:12px;min-height:40px}
+.feedback.ok{color:#4338ca}
+.feedback.fail{color:#dc2626}
+.info-box{background:#eef2ff;border-radius:12px;padding:12px 16px;margin-bottom:12px;font-size:.9em;color:#4338ca;text-align:center;line-height:1.5}
+@media(max-width:700px){.center-node{font-size:.85em;padding:12px 16px}.web-slot{width:120px;height:48px;font-size:.8em}}
+@media(max-width:500px){.map-area{min-height:350px}.web-slot{width:100px;height:44px;font-size:.75em}.header h1{font-size:1.1em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .vehicle-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🕸️ Χάρτης Ιστού: Μέσα Μετακίνησης στην Πόλη</h1>
+<p>Τοποθέτησε κάθε μέσο μετακίνησης γύρω από την κεντρική έννοια!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Χάρτης ιστού:</b> Η κεντρική έννοια στο κέντρο και οι σχετικές έννοιες ακτινωτά γύρω της, σαν ιστός αράχνης!</div>
+<div class="map-area" id="mapArea">
+<svg class="svg-lines" id="svgLines"></svg>
+<div class="center-node">🚗 Μέσα μετακίνησης</div>
+<div class="web-nodes" id="webNodes"></div>
+</div>
+<div class="pool-area">
+<h3>🚦 Μέσα μετακίνησης — σύρε το καθένα στη θέση του</h3>
+<div class="vehicle-pool" id="vehiclePool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var vehicles=[
+{name:'Μετρό',emoji:'🚇',id:'metro'},
+{name:'Λεωφορείο',emoji:'🚌',id:'bus'},
+{name:'Ταξί',emoji:'🚕',id:'taxi'},
+{name:'Ποδήλατο',emoji:'🚲',id:'bike'},
+{name:'Τραμ',emoji:'🚋',id:'tram'},
+{name:'Ηλ. πατίνι',emoji:'🛴',id:'escooter'}
+];
+
+var slotPositions=[];
+var placements={};
+var dragItem=null;
+
+function layoutSlots(){
+var map=document.getElementById('mapArea');
+var mapRect=map.getBoundingClientRect();
+var w=map.clientWidth||800;
+var h=map.clientHeight||450;
+var cx=w/2;
+var cy=h/2;
+var radius=Math.min(w,h)*0.32;
+var angles=[-90,-30,30,90,150,210];
+var container=document.getElementById('webNodes');
+container.innerHTML='';
+slotPositions=[];
+var svg=document.getElementById('svgLines');
+svg.innerHTML='';
+svg.setAttribute('viewBox','0 0 '+w+' '+h);
+for(var i=0;i<vehicles.length;i++){
+var angle=angles[i]*Math.PI/180;
+var x=cx+radius*Math.cos(angle);
+var y=cy+radius*Math.sin(angle);
+slotPositions.push({x:x,y:y,angle:angles[i]});
+var slot=document.createElement('div');
+slot.className='web-slot';
+slot.id='slot-'+i;
+slot.dataset.vehicleIdx=i;
+slot.style.left=x+'px';
+slot.style.top=y+'px';
+slot.innerHTML='❓';
+container.appendChild(slot);
+var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+line.setAttribute('x1',cx);
+line.setAttribute('y1',cy);
+line.setAttribute('x2',x);
+line.setAttribute('y2',y);
+line.setAttribute('stroke','#a5b4fc');
+line.setAttribute('stroke-width','2');
+line.setAttribute('stroke-dasharray','6,4');
+svg.appendChild(line);
+}
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initPool(){
+var pool=document.getElementById('vehiclePool');
+pool.innerHTML='';
+var order=[];
+for(var i=0;i<vehicles.length;i++)order.push(i);
+shuffle(order);
+for(var i=0;i<order.length;i++){
+var idx=order[i];
+var v=vehicles[idx];
+var card=document.createElement('div');
+card.className='vehicle-card';
+card.setAttribute('draggable','true');
+card.dataset.vehicleIdx=idx;
+card.innerHTML=v.emoji+' '+v.name;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function getSlotEl(idx){
+return document.getElementById('slot-'+idx);
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',el.dataset.vehicleIdx);
+}
+
+function dragEnd(e,el){
+el.classList.remove('dragging');
+dragItem=null;
+clearDragOver();
+}
+
+function touchStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){
+var slot=elUnder.classList.contains('web-slot')?elUnder:elUnder.closest('.web-slot');
+if(slot&&!slot.classList.contains('filled')){
+slot.classList.add('drag-over');
+dragItem.dataset.targetSlot=slot.id;
+}else{
+dragItem.dataset.targetSlot='';
+}
+}else{
+dragItem.dataset.targetSlot='';
+}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');
+clearDragOver();
+if(el.dataset.targetSlot){
+var idx=parseInt(el.dataset.targetSlot.replace('slot-',''));
+tryPlaceVehicle(el,idx);
+}
+el.dataset.targetSlot='';
+}
+
+document.addEventListener('dragstart',function(e){
+if(!e.target.classList.contains('vehicle-card'))e.preventDefault();
+});
+document.addEventListener('dragover',function(e){
+if(dragItem&&(e.target.classList.contains('web-slot')||e.target.closest('.web-slot')))e.preventDefault();
+});
+document.addEventListener('drop',function(e){
+e.preventDefault();
+if(!dragItem)return;
+var slot=e.target.classList.contains('web-slot')?e.target:e.target.closest('.web-slot');
+if(!slot||slot.classList.contains('filled'))return;
+var parts=slot.id.split('-');
+var idx=parseInt(parts[1]);
+tryPlaceVehicle(dragItem,idx);
+});
+
+function tryPlaceVehicle(card,slotIdx){
+var vIdx=parseInt(card.dataset.vehicleIdx);
+var vehicle=vehicles[vIdx];
+if(placements[slotIdx]!==undefined){
+showFeedback('⚠️ Η θέση αυτή είναι ήδη γεμάτη!',false);
+return;
+}
+placements[slotIdx]=vIdx;
+card.classList.add('placed');
+var slotEl=getSlotEl(slotIdx);
+slotEl.classList.add('filled');
+slotEl.innerHTML=vehicle.emoji+'<br>'+vehicle.name;
+slotEl.dataset.placedIdx=vIdx;
+showFeedback('✅ Μπράβο! Το '+vehicle.emoji+' '+vehicle.name+' τοποθετήθηκε!',true);
+document.getElementById('checkBtn').disabled=Object.keys(placements).length<vehicles.length;
+}
+
+function checkAnswers(){
+var correct=0;
+var total=vehicles.length;
+for(var slotIdx in placements){
+var placedIdx=placements[slotIdx];
+if(parseInt(slotIdx)===placedIdx)correct++;
+}
+if(correct===total){
+showFeedback('🎉 Υπέροχα! Όλα τα μέσα μετακίνησης είναι στις σωστές θέσεις! Ο χάρτης ιστού ολοκληρώθηκε! 🕸️✅',true);
+}else{
+showFeedback('🔍 '+correct+'/'+total+' σωστά. Μερικές θέσεις είναι λάθος — δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},3000);
+}
+
+function clearDragOver(){
+var slots=document.querySelectorAll('.web-slot');
+for(var i=0;i<slots.length;i++)slots[i].classList.remove('drag-over');
+}
+
+function resetGame(){
+placements={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+document.getElementById('checkBtn').disabled=true;
+var slots=document.querySelectorAll('.web-slot');
+for(var i=0;i<slots.length;i++){
+slots[i].classList.remove('filled');
+slots[i].innerHTML='❓';
+delete slots[i].dataset.placedIdx;
+}
+initPool();
+resetLayout();
+}
+
+function resetLayout(){
+var prev=document.getElementById('webNodes');
+prev.innerHTML='';
+document.getElementById('svgLines').innerHTML='';
+slotPositions=[];
+layoutSlots();
+}
+
+layoutSlots();
+initPool();
+document.getElementById('checkBtn').disabled=true;
+</script>
+</body>
+</html>

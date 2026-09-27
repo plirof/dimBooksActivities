@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Αποθήκευση",
+  "subtitle": "Πιάσε λέξεις για αρχεία!",
+  "instructions": "Πιάσε μόνο λέξεις για ΑΡΧΕΙΑ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Αρχείο", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάλα", "correct": false, "color": "#f44336"},
+    {"text": "Αποθήκευση", "correct": true, "color": "#2196F3"},
+    {"text": "Γάτα", "correct": false, "color": "#FF9800"},
+    {"text": "Όνομα", "correct": true, "color": "#9C27B0"},
+    {"text": "Κούνια", "correct": false, "color": "#E91E63"},
+    {"text": "Εικονίδιο", "correct": true, "color": "#009688"},
+    {"text": "Σκύλος", "correct": false, "color": "#FFC107"},
+    {"text": "Μενού", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

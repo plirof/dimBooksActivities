@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μηνύματα",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με έννοιες σχετικές με τα μηνύματα!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Μήνυμα", "correct": true, "color": "#4CAF50" },
+    { "text": "Αποστολή", "correct": true, "color": "#2196F3" },
+    { "text": "Παραλαβή", "correct": true, "color": "#FF9800" },
+    { "text": "Συγχρονισμός", "correct": true, "color": "#9C27B0" },
+    { "text": "Επικοινωνία", "correct": true, "color": "#00BCD4" },
+    { "text": "Αλληλεπίδραση", "correct": true, "color": "#E91E63" },
+    { "text": "Εκτύπωση", "correct": false, "color": "#F44336" },
+    { "text": "Διαγραφή αρχείου", "correct": false, "color": "#795548" },
+    { "text": "Αποθήκευση δεδομένων", "correct": false, "color": "#607D8B" },
+    { "text": "Λήψη φωτογραφίας", "correct": false, "color": "#FF5722" }
+  ]
+}

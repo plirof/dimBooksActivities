@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Φύση ή Πάρτι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Φύση ή Πάρτι;",
+  "categories": [
+    {"id": "fysi", "name": "Φύση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "parti", "name": "Πάρτι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ημέρα - Νύχτα", "category": "fysi"},
+    {"text": "Γλυκά", "category": "parti"},
+    {"text": "Εποχές", "category": "fysi"},
+    {"text": "Χορός", "category": "parti"},
+    {"text": "Φεγγάρι", "category": "fysi"},
+    {"text": "Προσκλήσεις", "category": "parti"},
+    {"text": "Αναπνοή", "category": "fysi"},
+    {"text": "Παλαμάκια", "category": "parti"}
+  ],
+  "duration": 30
+}

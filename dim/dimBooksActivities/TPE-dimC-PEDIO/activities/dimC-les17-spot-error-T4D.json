@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Πληκτρολόγιο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "κεφαλαίο", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "μόνο", "error": true, "correct": "Shift και το γράμμα", "feedback": "Για ένα κεφαλαίο πατάμε SHIFT ΚΑΙ ΤΟ ΓΡΑΜΜΑ μαζί!"},
+        {"text": "το", "error": false},
+        {"text": "γράμμα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Enter", "error": false},
+        {"text": "σβήνει", "error": true, "correct": "κάνει νέα παράγραφο", "feedback": "Το Enter ΚΑΝΕΙ ΝΕΑ ΠΑΡΑΓΡΑΦΟ, δεν σβήνει!"},
+        {"text": "χαρακτήρες.", "error": true, "correct": "", "feedback": "Το Enter κάνει νέα παράγραφο! Το Backspace/Delete σβήνει!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "αλλαγή", "error": false},
+        {"text": "γλώσσας", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "Shift", "error": true, "correct": "Alt + Shift", "feedback": "Για αλλαγή γλώσσας πατάμε ALT + SHIFT μαζί!"},
+        {"text": "μόνο.", "error": true, "correct": "", "feedback": "Χρειάζεται Alt + Shift μαζί!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Tab", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "κενό", "error": true, "correct": "εσοχή", "feedback": "Το Tab βάζει ΕΣΟΧΗ, όχι κενό! Το Space βάζει κενό."},
+        {"text": "σαν", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Space.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράψω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "!", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "μόνο", "error": true, "correct": "Shift +", "feedback": "Για το ! πατάμε SHIFT ΚΑΙ 1 μαζί!"},
+        {"text": "το", "error": false},
+        {"text": "1.", "error": false}
+      ]
+    }
+  ]
+}

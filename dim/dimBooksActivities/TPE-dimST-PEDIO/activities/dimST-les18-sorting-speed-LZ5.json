@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αύξουσα ή Φθίνουσα;",
+  "subtitle": "Ταξινόμησε γρήγορα τον τύπο κάθε εντολής",
+  "instructions": "Πάτα αριστερά για αύξουσα, δεξιά για φθίνουσα",
+  "categories": [
+    {
+      "id": "asc",
+      "name": "Αύξουσα",
+      "color": "#4CAF50",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "desc",
+      "name": "Φθίνουσα",
+      "color": "#f44336",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Μικρότερη τιμή πρώτη", "category": "asc" },
+    { "text": "Μεγαλύτερη τιμή πρώτη", "category": "desc" },
+    { "text": "Α → Ω", "category": "asc" },
+    { "text": "Ω → Α", "category": "desc" },
+    { "text": "1, 2, 3, 4, 5", "category": "asc" },
+    { "text": "5, 4, 3, 2, 1", "category": "desc" },
+    { "text": "Επόμενη μεγαλύτερη ακολουθεί", "category": "asc" },
+    { "text": "Επόμενη μικρότερη ακολουθεί", "category": "desc" },
+    { "text": "Τελευταία η μεγαλύτερη", "category": "asc" },
+    { "text": "Τελευταία η μικρότερη", "category": "desc" },
+    { "text": "10, 20, 30, 40", "category": "asc" },
+    { "text": "40, 30, 20, 10", "category": "desc" }
+  ],
+  "duration": 45
+}

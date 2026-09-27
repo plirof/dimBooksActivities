@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αντιγραφή και Επικόλληση</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+width: 100%;
+max-width: 1200px;
+justify-content: center;
+}
+.source-destination {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+max-width: 450px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.source-destination h3 {
+text-align: center;
+margin-bottom: 20px;
+color: #333;
+}
+.content-box {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 20px;
+min-height: 250px;
+border: 2px dashed #ddd;
+margin-bottom: 20px;
+}
+.web-content {
+background: white;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid transparent;
+user-select: none;
+}
+.web-content:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.web-content.selected {
+border-color: #667eea;
+background: rgba(102, 126, 234, 0.1);
+}
+.content-text {
+color: #333;
+line-height: 1.5;
+}
+.web-item {
+display: flex;
+gap: 15px;
+align-items: flex-start;
+padding: 10px;
+background: #f8f9fa;
+border-radius: 10px;
+margin-bottom: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid #ddd;
+}
+.web-item:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.web-item.copied {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.web-item-icon {
+font-size: 2rem;
+}
+.web-item-content {
+flex: 1;
+}
+.web-item-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 5px;
+}
+.web-item-desc {
+color: #666;
+font-size: 0.9rem;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+.instruction-text {
+color: #666;
+text-align: center;
+font-size: 0.9rem;
+margin-bottom: 10px;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .container > * { margin: 15px; }
+  .web-item > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📋 Αντιγραφή και Επικόλληση</h1>
+<p class="subtitle">Προσπαθήστε να αντιγράψετε περιεχόμενο από το διαδίκτυο στη διαφάνειά σας</p>
+
+<div class="score">✅ Αντιγραμμένα: <span id="score">0</span>/6</div>
+
+<div class="container">
+<div class="source-destination">
+<h3>🌐 Περιεχόμενο από το Διαδίκτυο</h3>
+<div class="instruction-text">Κάντε κλικ σε ένα στοιχείο για να το αντιγράψετε</div>
+<div class="content-box" id="sourceBox">
+<div class="web-item" onclick="copyItem(1)" data-id="1">
+<div class="web-item-icon">🐱</div>
+<div class="web-item-content">
+<div class="web-item-title">Γάτα</div>
+<div class="web-item-desc">Μικρό οικόσιτο ζώο</div>
+</div>
+</div>
+
+<div class="web-item" onclick="copyItem(2)" data-id="2">
+<div class="web-item-icon">🐕</div>
+<div class="web-item-content">
+<div class="web-item-title">Σκύλος</div>
+<div class="web-item-desc">Τα φιλαράκια του ανθρώπου</div>
+</div>
+</div>
+
+<div class="web-item" onclick="copyItem(3)" data-id="3">
+<div class="web-item-icon">🐦</div>
+<div class="web-item-content">
+<div class="web-item-title">Πτηνό</div>
+<div class="web-item-desc">Ζώο που μπορεί να πετάξει</div>
+</div>
+</div>
+
+<div class="web-item" onclick="copyItem(4)" data-id="4">
+<div class="web-item-icon">🐟</div>
+<div class="web-item-content">
+<div class="web-item-title">Ψάρι</div>
+<div class="web-item-desc">Ζώο που ζει στο νερό</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="source-destination">
+<h3>📊 Η Διαφάνειά Μου</h3>
+<div class="instruction-text">Πατήστε το κουμπί για να επικολλήσετε το αντεγραμμένο περιεχόμενο</div>
+<div class="content-box" id="destinationBox">
+<p style="color: #999; text-align: center; padding-top: 100px;">Η διαφάνεια είναι άδεια. Αντιγράψτε περιεχόμενο και επικολλήστε το εδώ.</p>
+</div>
+<button class="btn" id="pasteBtn" onclick="pasteItem()" disabled>📋 Επικόλληση (Paste)</button>
+</div>
+</div>
+
+<div class="mascot">📝</div>
+
+<script>
+const items = {
+1: { icon: '🐱', title: 'Γάτα', desc: 'Μικρό οικόσιτο ζώο' },
+2: { icon: '🐕', title: 'Σκύλος', desc: 'Τα φιλαράκια του ανθρώπου' },
+3: { icon: '🐦', title: 'Πτηνό', desc: 'Ζώο που μπορεί να πετάξει' },
+4: { icon: '🐟', title: 'Ψάρι', desc: 'Ζώο που ζει στο νερό' }
+};
+
+let copiedItem = null;
+let pastedItems = [];
+let score = 0;
+
+function copyItem(id) {
+copiedItem = id;
+
+document.querySelectorAll('.web-item').forEach(item => {
+item.classList.remove('copied');
+});
+
+const selectedItem = document.querySelector(`[data-id="${id}"]`);
+if (selectedItem) {
+selectedItem.classList.add('copied');
+}
+
+document.getElementById('pasteBtn').disabled = false;
+
+const item = items[id];
+alert('📋 Αντιγράψατε: ' + item.title);
+}
+
+function pasteItem() {
+if (!copiedItem) {
+alert('Πρώτα πρέπει να αντιγράψετε κάτι!');
+return;
+}
+
+if (pastedItems.includes(copiedItem)) {
+alert('Αυτό το περιεχόμενο υπάρχει ήδη στη διαφάνεια!');
+return;
+}
+
+const destinationBox = document.getElementById('destinationBox');
+const item = items[copiedItem];
+
+if (pastedItems.length === 0) {
+destinationBox.innerHTML = '';
+}
+
+const pastedElement = document.createElement('div');
+pastedElement.className = 'web-item';
+pastedElement.style.borderColor = '#27ae60';
+pastedElement.style.background = 'rgba(39, 174, 96, 0.1)';
+pastedElement.innerHTML = `
+<div class="web-item-icon">${item.icon}</div>
+<div class="web-item-content">
+<div class="web-item-title">${item.title}</div>
+<div class="web-item-desc">${item.desc}</div>
+</div>
+`;
+
+destinationBox.appendChild(pastedElement);
+
+pastedItems.push(copiedItem);
+score++;
+document.getElementById('score').textContent = score;
+
+document.getElementById('pasteBtn').disabled = true;
+
+if (score === 4) {
+alert('🎉 Συγχαρητήρια! Αντιγράψατε όλα τα περιεχόμενα στη διαφάνειά σας!');
+}
+
+copiedItem = null;
+document.querySelectorAll('.web-item').forEach(item => {
+item.classList.remove('copied');
+});
+}
+</script>
+</body>
+</html>

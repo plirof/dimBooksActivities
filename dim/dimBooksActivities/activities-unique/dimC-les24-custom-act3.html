@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 24.3 - Simulated blog 📝</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #43e97b 100%);
+    padding: 12px;
+    color: #333;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 22px 18px 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.6rem; margin-bottom: 6px; }
+  .header p { font-size: 1.05rem; opacity: .92; }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-label {
+    display: block;
+    font-weight: 700;
+    font-size: .95rem;
+    color: #555;
+    margin-bottom: 6px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 3px solid #e0e0e0;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .2s;
+    color: #333;
+  }
+  .form-input:focus { border-color: #764ba2; }
+  textarea.form-input { resize: vertical; min-height: 100px; }
+
+  .category-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .category-btn {
+    border: 3px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 8px 16px;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .category-btn:hover { border-color: #bbb; }
+  .category-btn.active { border-color: #764ba2; background: #f0f0ff; color: #764ba2; }
+
+  .emoji-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .emoji-option {
+    width: 56px;
+    height: 56px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #e0e0e0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .emoji-option:hover { border-color: #bbb; transform: scale(1.05); }
+  .emoji-option.active { border-color: #764ba2; background: #f0f0ff; transform: scale(1.1); }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 16px;
+    padding: 14px 28px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .btn:hover { transform: scale(1.05); }
+  .btn:active { transform: scale(.96); }
+
+  .btn-create {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
+  }
+  .btn-new {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  .blog-feed {
+    display: none;
+  }
+  .blog-feed.show { display: block; }
+
+  .post {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 2px solid #f0f0f0;
+  }
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .post-emoji {
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+  .post-meta {
+    flex: 1;
+  }
+  .post-title-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  .post-category {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 8px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cat-animals { background: #e74c3c; }
+  .cat-nature { background: #27ae60; }
+  .cat-school { background: #2980b9; }
+  .cat-sports { background: #f39c12; }
+  .post-author {
+    font-size: .82rem;
+    color: #999;
+    margin-top: 2px;
+  }
+  .post-body {
+    font-size: .95rem;
+    color: #555;
+    line-height: 1.5;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .feed-label {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #764ba2;
+    margin-bottom: 14px;
+  }
+
+  .editor-panel {
+    display: block;
+  }
+  .editor-panel.hidden { display: none; }
+
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.25rem; }
+    .header p { font-size: .9rem; }
+    .emoji-option { width: 48px; height: 48px; font-size: 1.6rem; }
+    .btn { padding: 12px 20px; font-size: 1rem; }
+    .category-btn { padding: 6px 12px; font-size: .85rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .category-row > * { margin: 4px; }
+  .emoji-selector > * { margin: 5px; }
+  .btn-row > * { margin: 6px; }
+  .post-header > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>📝 Δημιούργησε την ανάρτησή σου!</h1>
+    <p>Γράψε τίτλο, κείμενο και διάλεξε κατηγορία!</p>
+  </div>
+
+  <div class="card editor-panel" id="editorPanel">
+    <div class="section-title">✏️ Νέα ανάρτηση</div>
+
+    <div class="form-group">
+      <label class="form-label">📰 Τίτλος ανάρτησης</label>
+      <input type="text" class="form-input" id="postTitle" maxlength="60" placeholder="Γράψε τον τίτλο...">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">📄 Γράψε το κείμενό σου...</label>
+      <textarea class="form-input" id="postContent" maxlength="300" placeholder="Γράψε εδώ το κείμενό σου..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">🏷 Κατηγορία</label>
+      <div class="category-row" id="categoryRow">
+        <button class="category-btn" data-cat="animals" onclick="selectCategory('animals', this)">🐾 Ζώα</button>
+        <button class="category-btn" data-cat="nature" onclick="selectCategory('nature', this)">🌿 Φύση</button>
+        <button class="category-btn" data-cat="school" onclick="selectCategory('school', this)">🏫 Σχολείο</button>
+        <button class="category-btn" data-cat="sports" onclick="selectCategory('sports', this)">⚽ Άθληση</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">🖼 Εικόνα</label>
+      <div class="emoji-selector" id="emojiSelector">
+        <div class="emoji-option" data-emoji="🐶" onclick="selectEmoji('🐶', this)">🐶</div>
+        <div class="emoji-option" data-emoji="🌸" onclick="selectEmoji('🌸', this)">🌸</div>
+        <div class="emoji-option" data-emoji="📚" onclick="selectEmoji('📚', this)">📚</div>
+        <div class="emoji-option" data-emoji="⚽" onclick="selectEmoji('⚽', this)">⚽</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-create" onclick="createPost()">🚀 Δημιουργία ανάρτησης!</button>
+    </div>
+  </div>
+
+  <div class="card blog-feed" id="blogFeed">
+    <div class="feed-label">📰 Blog - Οι αναρτήσεις μας</div>
+    <div id="postsContainer"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-new" onclick="newPost()">✏️ Νέα ανάρτηση</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var selectedCategory = '';
+  var selectedEmoji = '';
+  var posts = [];
+  var catMap = {
+    animals: { label: '🐾 Ζώα', cls: 'cat-animals' },
+    nature: { label: '🌿 Φύση', cls: 'cat-nature' },
+    school: { label: '🏫 Σχολείο', cls: 'cat-school' },
+    sports: { label: '⚽ Άθληση', cls: 'cat-sports' }
+  };
+
+  var prePosts = [
+    {
+      title: 'Η γάτα μου η Λούνα',
+      content: 'Έχω μια γατούλα που λέγεται Λούνα! Είναι άσπρη με μαύρες βούλες και της αρέσει να παίζει με τη μπάλα του νήματος. Κάθε βράδυ κοιμάται δίπλα μου!',
+      category: 'animals',
+      emoji: '🐱',
+      author: 'Μαρία 😊'
+    },
+    {
+      title: 'Η εκδρομή μας στο βουνό',
+      content: 'Πήγαμε εκδρομή στο βουνό με το σχολείο! Είδαμε πολλά δέντρα, λουλούδια και μια μικρή πηγή. Ήταν η πιο ωραία μέρα! Φάγαμε σάντουιτς στη φύση.',
+      category: 'nature',
+      emoji: '🌲',
+      author: 'Γιάννης 🤠'
+    }
+  ];
+
+  function selectCategory(cat, btn) {
+    selectedCategory = cat;
+    var btns = document.querySelectorAll('.category-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    btn.classList.add('active');
+  }
+
+  function selectEmoji(emoji, el) {
+    selectedEmoji = emoji;
+    var opts = document.querySelectorAll('.emoji-option');
+    for (var i = 0; i < opts.length; i++) opts[i].classList.remove('active');
+    el.classList.add('active');
+  }
+
+  function createPost() {
+    var titleVal = document.getElementById('postTitle').value.trim();
+    var contentVal = document.getElementById('postContent').value.trim();
+
+    if (!titleVal) { alert('Γράψε έναν τίτλο! 📰'); return; }
+    if (!contentVal) { alert('Γράψε το κείμενό σου! 📄'); return; }
+    if (!selectedCategory) { alert('Διάλεξε μια κατηγορία! 🏷'); return; }
+    if (!selectedEmoji) { alert('Διάλεξε μια εικόνα! 🖼'); return; }
+
+    var post = {
+      title: titleVal,
+      content: contentVal,
+      category: selectedCategory,
+      emoji: selectedEmoji,
+      author: 'Εμένα ✨'
+    };
+
+    posts.unshift(post);
+    showFeed();
+  }
+
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function renderPost(post, container) {
+    var div = document.createElement('div');
+    div.className = 'post';
+
+    var cat = catMap[post.category] || catMap.animals;
+
+    div.innerHTML = '';
+    var header = document.createElement('div');
+    header.className = 'post-header';
+
+    var emojiEl = document.createElement('div');
+    emojiEl.className = 'post-emoji';
+    emojiEl.textContent = post.emoji;
+
+    var meta = document.createElement('div');
+    meta.className = 'post-meta';
+
+    var titleEl = document.createElement('div');
+    titleEl.className = 'post-title-text';
+    titleEl.textContent = post.title;
+
+    var catEl = document.createElement('span');
+    catEl.className = 'post-category ' + cat.cls;
+    catEl.textContent = cat.label;
+
+    var authorEl = document.createElement('div');
+    authorEl.className = 'post-author';
+    authorEl.textContent = 'Από: ' + post.author;
+
+    meta.appendChild(titleEl);
+    meta.appendChild(catEl);
+    meta.appendChild(authorEl);
+
+    header.appendChild(emojiEl);
+    header.appendChild(meta);
+
+    var body = document.createElement('div');
+    body.className = 'post-body';
+    body.textContent = post.content;
+
+    div.appendChild(header);
+    div.appendChild(body);
+
+    container.appendChild(div);
+  }
+
+  function showFeed() {
+    document.getElementById('editorPanel').classList.add('hidden');
+    document.getElementById('blogFeed').classList.add('show');
+
+    var container = document.getElementById('postsContainer');
+    container.innerHTML = '';
+
+    var i;
+    for (i = 0; i < posts.length; i++) {
+      renderPost(posts[i], container);
+    }
+    for (i = 0; i < prePosts.length; i++) {
+      renderPost(prePosts[i], container);
+    }
+  }
+
+  function newPost() {
+    document.getElementById('editorPanel').classList.remove('hidden');
+    document.getElementById('blogFeed').classList.remove('show');
+
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postContent').value = '';
+    selectedCategory = '';
+    selectedEmoji = '';
+
+    var catBtns = document.querySelectorAll('.category-btn');
+    for (var i = 0; i < catBtns.length; i++) catBtns[i].classList.remove('active');
+    var emojiOpts = document.querySelectorAll('.emoji-option');
+    for (var j = 0; j < emojiOpts.length; j++) emojiOpts[j].classList.remove('active');
+  }
+</script>
+
+</body>
+</html>

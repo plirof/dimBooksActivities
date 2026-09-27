@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Φίλτρα Δεδομένων",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Φίλτρο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αυτόματο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Φίλδρο",
+          "error": true,
+          "correct": "Φίλτρο",
+          "feedback": "Το σωστό είναι 'Φίλτρο' με 'λ' και 'τ'"
+        },
+        {
+          "text": "Επικεφαλίδα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Επικεφαλίδαδα",
+          "error": true,
+          "correct": "Επικεφαλίδα",
+          "feedback": "Το σωστό είναι 'Επικεφαλίδα' με ένα 'δα'"
+        },
+        {
+          "text": "Βελάκι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Εντάξει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Επιλογή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αυτομάτοτο",
+          "error": true,
+          "correct": "Αυτόματο",
+          "feedback": "Το σωστό είναι 'Αυτόματο' χωρίς διπλό 'το'"
+        },
+        {
+          "text": "Γραμμή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Τετιμή",
+          "error": true,
+          "correct": "Τιμή",
+          "feedback": "Το σωστό είναι 'Τιμή' χωρίς 'τε'"
+        },
+        {
+          "text": "Στήλη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

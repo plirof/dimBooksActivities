@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Υλικό Υπολογιστή",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "ταχύτητα", "error": false },
+        { "text": "του", "error": false },
+        { "text": "επεξεργαστή", "error": false },
+        { "text": "μετριέται", "error": false },
+        { "text": "σε", "error": false },
+        { "text": "GB.", "error": true, "correct": "GHz", "feedback": "Η ταχύτητα επεξεργαστή μετριέται σε GHz (Gigahertz)" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false },
+        { "text": "δίσκος", "error": false },
+        { "text": "HDD", "error": false },
+        { "text": "είναι", "error": false },
+        { "text": "ταχύτερος", "error": true, "correct": "πιο αργός", "feedback": "Ο SSD είναι ταχύτερος από τον HDD" },
+        { "text": "από", "error": false },
+        { "text": "τον", "error": false },
+        { "text": "SSD.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "μνήμη", "error": false },
+        { "text": "διατηρεί", "error": false },
+        { "text": "τα", "error": false },
+        { "text": "δεδομένα", "error": false },
+        { "text": "όταν", "error": false },
+        { "text": "κλείσει", "error": true, "correct": "χάνει τα δεδομένα όταν κλείσει", "feedback": "Η μνήμη RAM σβήνεται όταν τερματιστεί ο υπολογιστής" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "μέγεθος", "error": false },
+        { "text": "της", "error": false },
+        { "text": "οθόνης", "error": false },
+        { "text": "μετριέται", "error": false },
+        { "text": "σε", "error": false },
+        { "text": "pixel.", "error": true, "correct": "ίντσες", "feedback": "Το μέγεθος οθόνης μετριέται σε ίντσες. Τα pixel αφορούν την ανάλυση." }
+      ]
+    }
+  ]
+}

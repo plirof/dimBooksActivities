@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Φίλτρα",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με τα φίλτρα",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με τα φίλτρα δεδομένων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Φίλτρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αυτόματο φίλτρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Επικεφαλίδα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Βελάκι",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εντάξει",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Τιμή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Πρόγραμμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

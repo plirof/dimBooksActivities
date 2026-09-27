@@ -1,0 +1,13 @@
+{
+  "title": "Βρες τον Σύνδεσμο!",
+  "subtitle": "Κάνε κλικ εκεί που ο δείκτης γίνεται χεράκι",
+  "instructions": "Κάνε κλικ μόνο στα στοιχεία που είναι υπερσύνδεσμοι!",
+  "duration": 25,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "🔗 Link", "color": "#C8E6C9" },
+    { "label": "📝 Κείμενο", "color": "#E0E0E0" },
+    { "label": "🖼️ Εικόνα", "color": "#E0E0E0" }
+  ]
+}

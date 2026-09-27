@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι έχει το micro:bit;",
+  "subtitle": "Μόνο στοιχεία του micro:bit!",
+  "instruction": "Σπάσε μόνο ΣΤΟΙΧΕΙΑ του micro:bit!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Φωτάκια LED", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουζίνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Κουμπιά", "correct": true, "color": "#45B7D1" },
+    { "text": "Μπάρμπεκιου", "correct": false, "color": "#96CEB4" },
+    { "text": "Μικρόφωνο", "correct": true, "color": "#FFEAA7" },
+    { "text": "Ψυγείο", "correct": false, "color": "#DDA0DD" },
+    { "text": "Ηχείο", "correct": true, "color": "#98D8C8" },
+    { "text": "Καρέκλα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Οθόνη LED 5x5", "correct": true, "color": "#BB8FCE" },
+    { "text": "Τηλεόραση", "correct": false, "color": "#85C1E9" }
+  ]
+}

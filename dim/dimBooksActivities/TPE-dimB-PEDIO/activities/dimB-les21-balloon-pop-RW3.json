@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Πλήκτρα Πληκτρολογίου",
+  "subtitle": "Σπάσε μόνο τα πλήκτρα του πληκτρολογίου",
+  "instruction": "Σπάσε μόνο πλήκτρα που υπάρχουν στο πληκτρολόγιο",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Enter", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουπί", "correct": false, "color": "#f44336" },
+    { "text": "Caps Lock", "correct": true, "color": "#4CAF50" },
+    { "text": "Σφυρί", "correct": false, "color": "#f44336" },
+    { "text": "Delete", "correct": true, "color": "#4CAF50" },
+    { "text": "Πριόνι", "correct": false, "color": "#f44336" },
+    { "text": "Space", "correct": true, "color": "#4CAF50" },
+    { "text": "Κάστρο", "correct": false, "color": "#f44336" },
+    { "text": "Shift", "correct": true, "color": "#4CAF50" },
+    { "text": "Τέντες", "correct": false, "color": "#f44336" }
+  ]
+}

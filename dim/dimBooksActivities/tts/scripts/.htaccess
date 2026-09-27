@@ -1,0 +1,5 @@
+# Shared runtime shared by all 180 lessons: when these files are updated, classroom
+# browsers must pick up the new version immediately instead of serving a cached copy.
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, must-revalidate"
+</IfModule>

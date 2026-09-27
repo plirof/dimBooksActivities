@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υπηρεσίες Βίντεο ΠΣΔ",
+  "subtitle": "Μόνο τους όρους της πλατφόρμας βίντεο!",
+  "instruction": "Σπάσε μόνο τις λέξεις που σχετίζονται με τις ΥΠΗΡΕΣΙΕΣ ΒΙΝΤΕΟ του ΠΣΔ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κατηγορίες", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Αγαπημένα", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Ομάδες", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Μεταδόσεις", "correct": true, "color": "#98D8C8" },
+    { "text": "Καρέκλα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Παρουσιάσεις", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μήλο", "correct": false, "color": "#85C1E9" }
+  ]
+}

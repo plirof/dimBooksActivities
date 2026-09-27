@@ -1,0 +1,35 @@
+{
+  "title": "Βρες τα Λάθη: Κυψέλη e-me",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "κυψελη", "error": true, "correct": "κυψέλη", "feedback": "Λείπει ο τόνος" },
+        { "text": "αντιστοιχεί", "error": false, "correct": "", "feedback": "" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "ένα", "error": false, "correct": "", "feedback": "" },
+        { "text": "παιχνίδι", "error": true, "correct": "μάθημα", "feedback": "Αντιστοιχεί σε μάθημα, όχι παιχνίδι" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "τοιχος", "error": true, "correct": "τοίχος", "feedback": "Λείπει ο τόνος" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "παιχνίδια", "error": true, "correct": "αναρτήσεις και σχόλια", "feedback": "Ο τοίχος είναι για αναρτήσεις, όχι παιχνίδια" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "μελη", "error": true, "correct": "μέλη", "feedback": "Λείπει ο τόνος" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "συμμαθητες", "error": true, "correct": "συμμαθητές", "feedback": "Λείπει ο τόνος" },
+        { "text": "μου", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

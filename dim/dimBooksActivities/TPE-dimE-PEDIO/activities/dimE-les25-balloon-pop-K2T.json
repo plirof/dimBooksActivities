@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ψηφιακό Περιεχόμενο",
+  "subtitle": "Μόνο τους όρους ψηφιακού περιεχομένου!",
+  "instruction": "Σπάσε μόνο τις λέξεις που σχετίζονται με το ΨΗΦΙΑΚΟ ΠΕΡΙΕΧΟΜΕΝΟ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Ενσωμάτωση βίντεο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "YouTube URL", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Αρχείο ήχου", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Πλαίσιο βίντεο", "correct": true, "color": "#98D8C8" },
+    { "text": "Καρέκλα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Εισαγωγή εικόνας", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μήλο", "correct": false, "color": "#85C1E9" }
+  ]
+}

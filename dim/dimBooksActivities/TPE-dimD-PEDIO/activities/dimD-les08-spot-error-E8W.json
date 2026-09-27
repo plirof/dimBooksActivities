@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Ρομποτική Ορολογία",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ρομπότ", "error": false, "correct": "Ρομπότ", "feedback": "" },
+        { "text": "Ρομποτ", "error": true, "correct": "Ρομπότ", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Πίστα", "error": false, "correct": "Πίστα", "feedback": "" },
+        { "text": "Πιστα", "error": true, "correct": "Πίστα", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Γωνία", "error": false, "correct": "Γωνία", "feedback": "" },
+        { "text": "Γονία", "error": true, "correct": "Γωνία", "feedback": "Γράφεται Γωνία" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Κινητήρας", "error": false, "correct": "Κινητήρας", "feedback": "" },
+        { "text": "Κινητηρας", "error": true, "correct": "Κινητήρας", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Δεξιόστροφα", "error": false, "correct": "Δεξιόστροφα", "feedback": "" },
+        { "text": "Αριστερόστροφα", "error": false, "correct": "Αριστερόστροφα", "feedback": "" },
+        { "text": "Εδάφους", "error": false, "correct": "Εδάφους", "feedback": "" },
+        { "text": "Εδαφους", "error": true, "correct": "Εδάφους", "feedback": "Χρειάζεται τόνος" }
+      ]
+    }
+  ]
+}

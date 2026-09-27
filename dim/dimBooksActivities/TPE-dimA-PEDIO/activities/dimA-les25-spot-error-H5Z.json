@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Πρώτες Λέξεις",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "Πρέπει", "feedback": "Πρέπει να βάζω κενό ανάμεσα στις λέξεις!"},
+        {"text": "να", "error": false},
+        {"text": "βάζω", "error": false},
+        {"text": "κενό", "error": false},
+        {"text": "ανάμεσα", "error": false},
+        {"text": "στις", "error": false},
+        {"text": "λέξεις.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Enter", "error": true, "correct": "Space", "feedback": "Πατάω το SPACE για κενό, όχι Enter!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βάλω", "error": false},
+        {"text": "κενό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράψω", "error": false},
+        {"text": "μικρά", "error": false},
+        {"text": "γράφω", "error": true, "correct": "γράμματα", "feedback": "Για να γράψω μικρά ΓΡΑΜΜΑΤΑ, σβήνω το Caps Lock!"},
+        {"text": "σβήνω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Caps Lock.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Γράφω", "error": false},
+        {"text": "λέξεις", "error": false},
+        {"text": "χωρίς", "error": true, "correct": "με", "feedback": "Γράφω λέξεις ΜΕ το πληκτρολόγιο!"},
+        {"text": "το", "error": false},
+        {"text": "πληκτρολόγιο.", "error": false}
+      ]
+    }
+  ]
+}

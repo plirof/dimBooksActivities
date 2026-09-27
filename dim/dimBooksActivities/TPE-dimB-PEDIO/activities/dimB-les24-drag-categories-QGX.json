@@ -1,0 +1,58 @@
+{
+  "title": "Εργαλεία TuxPaint",
+  "subtitle": "Ταίριαξε κάθε εργαλείο TuxPaint στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "brush",
+      "name": "ΠΙΝΕΛΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "eraser",
+      "name": "ΣΒΗΣΤΡΑ",
+      "color": "#F44336"
+    },
+    {
+      "id": "shapes",
+      "name": "ΣΧΗΜΑΤΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖌️ Μπλέ",
+      "category": "brush"
+    },
+    {
+      "id": "item2",
+      "text": "🧹 Σβήσιμο",
+      "category": "eraser"
+    },
+    {
+      "id": "item3",
+      "text": "⭕ Κύκλος",
+      "category": "shapes"
+    },
+    {
+      "id": "item4",
+      "text": "🔤 Γράμματα",
+      "category": "text"
+    },
+    {
+      "id": "item5",
+      "text": "🖌️ Μαρκαδόρος",
+      "category": "brush"
+    },
+    {
+      "id": "item6",
+      "text": "⬜ Τετράγωνο",
+      "category": "shapes"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ασφαλείς Συμπεριφορές",
+  "subtitle": "Μόνο ΣΩΣΤΕΣ συμπεριφορές!",
+  "instruction": "Σπάσε μόνο τα μπαλόνια με ΣΩΣΤΗ συμπεριφορά στο διαδίκτυο!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Εγκαθιστώ antivirus", "correct": true, "color": "#4CAF50" },
+    { "text": "Βάζω όνομα ως κωδικό", "correct": false, "color": "#f44336" },
+    { "text": "Ενημερώνω το antivirus", "correct": true, "color": "#2196F3" },
+    { "text": "Κλικ σε δώρα", "correct": false, "color": "#FF9800" },
+    { "text": "Ισχυρός κωδικός 8+ χαρακτήρες", "correct": true, "color": "#9C27B0" },
+    { "text": "Μοιράζω κωδικό", "correct": false, "color": "#E91E63" },
+    { "text": "Αποσυνδέομαι στο τέλος", "correct": true, "color": "#00BCD4" },
+    { "text": "Ανοίγω ασυνήθιστα email", "correct": false, "color": "#FFC107" },
+    { "text": "Προσέχω τι εγκαθιστώ", "correct": true, "color": "#795548" },
+    { "text": "Βάζω 123 ως κωδικό", "correct": false, "color": "#607D8B" }
+  ]
+}

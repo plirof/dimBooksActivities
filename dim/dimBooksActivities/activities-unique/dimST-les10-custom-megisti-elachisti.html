@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μέγιστη και Ελάχιστη | Μάθημα 10</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.main{max-width:700px;width:100%}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.problem-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.problem-box .p-icon{font-size:1.3rem;display:block;margin-bottom:2px}
+.problem-box .p-text{color:#e2e8f0;font-size:.75rem;line-height:1.5}
+.flowchart-area{display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:10px;min-height:200px;padding:12px;background:#1e293b;border-radius:12px;border:1px dashed #475569}
+.flow-step{display:flex;align-items:center;gap:8px;width:100%;max-width:400px;padding:10px 14px;border-radius:10px;background:#334155;border:2px solid #475569;cursor:pointer;transition:all .2s;font-size:.72rem;font-weight:600;color:#e2e8f0;text-align:center;justify-content:center}
+.flow-step:hover{transform:translateY(-2px);border-color:#6366f1}
+.flow-step.placed{border-color:#6366f1;background:#1e1b4b;cursor:default}
+.flow-step.correct-slot{border-color:#22c55e;background:#22c55e11;color:#4ade80}
+.flow-step.wrong-slot{border-color:#ef4444;background:#ef444422;color:#f87171}
+.flow-arrow{color:#475569;font-size:1.2rem}
+.pool-area{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px;padding:10px;background:#1e293b;border-radius:10px;min-height:48px}
+.pool-item{padding:8px 14px;border-radius:8px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#e2e8f0;border:2px solid #475569;touch-action:none}
+.pool-item:hover{transform:translateY(-2px);border-color:#6366f1}
+.pool-item.selected{border-color:#a78bfa;background:#1e1b4b}
+.pool-item.placed{opacity:.4;cursor:default}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .flowchart-area > * + * { margin-top: 6px; }
+  .flow-step > * + * { margin-left: 8px; }
+  .pool-area > * { margin: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔢 Αλγόριθμος Μέγιστης & Ελάχιστης</h1>
+<p class="subtitle">Τοποθέτησε τα βήματα στη σωστή σειρά για να φτιάξεις τον αλγόριθμο!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόβλημα:</span> <span id="probNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var levels=[
+{
+icon:'🌡️',text:'Θέλεις να βρεις τη μέγιστη θερμοκρασία της ημέρας. Βάλε τα βήματα του αλγορίθμου στη σωστή σειρά!',
+steps:['Όρισε μέγιστη = θερμοκρασία','Μέτρησε θερμοκρασία με αισθητήρα','Αν θερμοκρασία > μέγιστη τότε μέγιστη = θερμοκρασία','Εμφάνισε τη μέγιστη θερμοκρασία','Επανάλαβε από το βήμα 2'],
+correct:[0,1,2,3,4],
+hint:'Υπόδειξη: Πρώτα αρχικοποιούμε τη μεταβλητή, μετά μετράμε, συγκρίνουμε, εμφανίζουμε και επαναλαμβάνουμε.'
+},
+{
+icon:'❄️',text:'Θέλεις να βρεις την ΕΛΑΧΙΣΤΗ θερμοκρασία. Ποια είναι η σωστή σειρά;',
+steps:['Όρισε ελάχιστη = θερμοκρασία','Μέτρησε νέα θερμοκρασία','Αν θερμοκρασία < ελάχιστη τότε ελάχιστη = θερμοκρασία','Εμφάνισε την ελάχιστη','Επανάλαβε από το βήμα 2'],
+correct:[0,1,2,3,4],
+hint:'Για την ελάχιστη, η συνθήκη αντιστρέφεται: έλεγχουμε αν η νέα τιμή είναι ΜΙΚΡΟΤΕΡΗ από την προηγούμενη ελάχιστη.'
+},
+{
+icon:'📊',text:'Θέλεις να βρεις ταυτόχρονα ΜΕΓΙΣΤΗ και ΕΛΑΧΙΣΤΗ θερμοκρασία. Παράταξε σωστά!',
+steps:['Όρισε μέγιστη = θερμοκρασία, ελάχιστη = θερμοκρασία','Μέτρησε νέα θερμοκρασία','Αν θερμοκρασία > μέγιστη τότε μέγιστη = θερμοκρασία','Αν θερμοκρασία < ελάχιστη τότε ελάχιστη = θερμοκρασία','Εμφάνισε μέγιστη και ελάχιστη','Επανάλαβε από το βήμα 2'],
+correct:[0,1,2,3,4,5],
+hint:'Για δύο τιμές, αρχικοποιούμε ΚΑΙ τις δύο στην ίδια αρχική τιμή και ελέγχουμε ξεχωριστά κάθε συνθήκη.'
+},
+{
+icon:'🎮',text:'Στο παιχνίδι «Μάντεψε τον αριθμό», θέλεις να παρακολουθείς τη ΜΕΓΙΣΤΗ βαθμολογία. Ταξινόμησε τα βήματα!',
+steps:['Όρισε ρεκόρ = 0','Παίκτης δίνει βαθμολογία','Αν βαθμολογία > ρεκόρ τότε ρεκόρ = βαθμολογία','Εμφάνισε «Νέο ρεκόρ!» ή «Προσπάθησε ξανά»','Επανάλαβε από το βήμα 2'],
+correct:[0,1,2,3,4],
+hint:'Το ρεκόρ ξεκινά από το 0. Κάθε φορά που κάποιος σκοράρει πάνω από το ρεκόρ, το ρεκόρ ενημερώνεται.'
+},
+{
+icon:'🏃',text:'Θέλεις να καταγράψεις τον ταχύτερο χρόνο (τον ΜΙΚΡΟΤΕΡΟ αριθμό) σε αγώνα δρόμου. Ταξινόμησε!',
+steps:['Όρισε ταχύτερος = μεγάλος αριθμός (π.χ. 999)','Μέτρησε χρόνο δρομέα','Αν χρόνος < ταχύτερος τότε ταχύτερος = χρόνος','Εμφάνισε τον ταχύτερο χρόνο','Επανάλαβε από το βήμα 2'],
+correct:[0,1,2,3,4],
+hint:'Για τον ταχύτερο χρόνο (ελάχιστο), αρχικοποιούμε με πολύ ΜΕΓΑΛΗ τιμή, ώστε ο πρώτος χρόνος να είναι σίγουρα μικρότερος.'
+},
+{
+icon:'🧮',text:'Σε μία σειρά αριθμών: 15, 8, 22, 3, 10. Προσομοίωσε τον αλγόριθμο εύρεσης μέγιστης τιμής βήμα-βήμα!',
+steps:['Αρχή: μέγιστη = 15 (πρώτος αριθμός)','Διάβασε επόμενο: 8. 8 > 15; Όχι','Διάβασε επόμενο: 22. 22 > 15; Ναι! μέγιστη = 22','Διάβασε επόμενο: 3. 3 > 22; Όχι','Διάβασε επόμενο: 10. 10 > 22; Όχι','Τέλος. Μέγιστη = 22'],
+correct:[0,1,2,3,4,5],
+hint:'Ακολούθησε τον αλγόριθμο βήμα-βήμα: διάβασε κάθε αριθμό, σύγκρινέ τον με την τρέχουσα μέγιστη, και ενημέρωσε αν χρειάζεται.'
+}
+];
+var current=0;
+var pts=0;
+var placed={};
+var checked=false;
+var selectedItem=null;
+function render(){
+var lv=levels[current];
+checked=false;
+placed={};
+selectedItem=null;
+document.getElementById('probNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">📋 Πρόβλημα '+(current+1)+'</div>';
+h+='<div class="problem-box"><span class="p-icon">'+lv.icon+'</span><div class="p-text">'+lv.text+'</div></div>';
+h+='<div class="flowchart-area" id="flowArea">';
+if(lv.steps.length>0){
+for(var i=0;i<lv.steps.length;i++){
+h+='<div class="flow-step" id="slot'+i+'" onclick="clickSlot('+i+')">'+(placed[i]!==undefined?lv.steps[placed[i]]:'<span style="color:#64748b;font-weight:400">⬤ Βήμα '+(i+1)+'</span>')+'</div>';
+if(i<lv.steps.length-1){
+h+='<div class="flow-arrow">⬇</div>';
+}
+}
+}
+h+='</div>';
+h+='<div class="pool-area" id="poolArea">';
+var usedIndices=[];
+for(var key in placed){usedIndices.push(placed[key]);}
+for(var j=0;j<lv.steps.length;j++){
+var isUsed=usedIndices.indexOf(j)>=0;
+h+='<div class="pool-item'+(isUsed?' placed':'')+(selectedItem===j?' selected':'')+'" id="pool'+j+'" onclick="clickPool('+j+')">'+lv.steps[j]+'</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkOrder()">✅ Έλεγχος Σειράς</button></div>';
+h+='<div class="hint-box">💡 '+lv.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevProb()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextProb()"'+(current===levels.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function clickPool(idx){
+if(checked)return;
+var poolEl=document.getElementById('pool'+idx);
+if(!poolEl||poolEl.classList.contains('placed'))return;
+selectedItem=selectedItem===idx?null:idx;
+var chips=document.querySelectorAll('.pool-item');
+for(var i=0;i<chips.length;i++){
+if(i!==idx){chips[i].classList.remove('selected');}
+}
+poolEl.classList.toggle('selected');
+}
+function clickSlot(slotIdx){
+if(checked)return;
+if(selectedItem===null)return;
+if(placed[slotIdx]!==undefined){
+var oldIdx=placed[slotIdx];
+var oldPool=document.getElementById('pool'+oldIdx);
+if(oldPool){oldPool.classList.remove('placed');}
+}
+placed[slotIdx]=selectedItem;
+var poolEl=document.getElementById('pool'+selectedItem);
+if(poolEl){
+poolEl.classList.add('placed');
+poolEl.classList.remove('selected');
+}
+selectedItem=null;
+renderSlots();
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+}
+function renderSlots(){
+var lv=levels[current];
+for(var i=0;i<lv.steps.length;i++){
+var el=document.getElementById('slot'+i);
+if(!el)continue;
+if(placed[i]!==undefined){
+el.textContent=lv.steps[placed[i]];
+el.classList.add('placed');
+}else{
+el.innerHTML='<span style="color:#64748b;font-weight:400">⬤ Βήμα '+(i+1)+'</span>';
+el.classList.remove('placed');
+}
+}
+}
+function checkOrder(){
+var lv=levels[current];
+var allFilled=true;
+for(var i=0;i<lv.steps.length;i++){
+if(placed[i]===undefined){allFilled=false;break;}
+}
+if(!allFilled){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Τοποθέτησε όλα τα βήματα!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var j=0;j<lv.correct.length;j++){
+var slotEl=document.getElementById('slot'+j);
+if(placed[j]!==lv.correct[j]){
+allCorrect=false;
+if(slotEl){
+slotEl.classList.add('wrong-slot');
+slotEl.textContent+=' ❌';
+}
+}else{
+if(slotEl){slotEl.classList.add('correct-slot');}
+}
+}
+var fb=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Σωστή σειρά βημάτων!';
+fb.className='feedback ok';
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+}else{
+fb.textContent='⚠️ Κάποια βήματα είναι σε λάθος θέση. Πάτα πάνω τους για να τα βγάλεις και δοκίμασε ξανά!';
+fb.className='feedback fail';
+}
+}
+function prevProb(){if(current>0){current--;render();}}
+function nextProb(){if(current<levels.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

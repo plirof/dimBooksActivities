@@ -1,0 +1,58 @@
+{
+  "title": "Πόροι ιστοσελίδας σε εικονίδια",
+  "subtitle": "Ταίριαξε κάθε στοιχείο στον σωστό τύπο πόρου",
+  "categories": [
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "audio",
+      "name": "ΗΧΟΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📝 Παραγράφος",
+      "category": "text"
+    },
+    {
+      "id": "item2",
+      "text": "🖼️ Φωτογραφία",
+      "category": "img"
+    },
+    {
+      "id": "item3",
+      "text": "🎥 Κλιπ",
+      "category": "video"
+    },
+    {
+      "id": "item4",
+      "text": "🎵 Μουσική",
+      "category": "audio"
+    },
+    {
+      "id": "item5",
+      "text": "📄 Άρθρο",
+      "category": "text"
+    },
+    {
+      "id": "item6",
+      "text": "📷 Banner",
+      "category": "img"
+    }
+  ]
+}

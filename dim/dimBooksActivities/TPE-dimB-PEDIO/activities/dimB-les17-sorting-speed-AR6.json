@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Έννοια ή Σύνδεση;",
+  "subtitle": "Ταξινόμησε τις λέξεις: μπαίνουν σε σχήμα ή σε γραμμή;",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία",
+  "categories": [
+    { "id": "ennia", "name": "Έννοια (Σχήμα)", "color": "#2196F3", "key": "A" },
+    { "id": "syndesi", "name": "Σύνδεση (Γραμμή)", "color": "#f44336", "key": "L" }
+  ],
+  "items": [
+    { "text": "Ζώα", "category": "ennia" },
+    { "text": "Χωρίζονται σε", "category": "syndesi" },
+    { "text": "Κατοικίδια", "category": "ennia" },
+    { "text": "Όπως", "category": "syndesi" },
+    { "text": "Δάσος", "category": "ennia" },
+    { "text": "Ανήκουν σε", "category": "syndesi" },
+    { "text": "Φάρμα", "category": "ennia" },
+    { "text": "Είναι", "category": "syndesi" },
+    { "text": "Γάτα", "category": "ennia" },
+    { "text": "Έχουν", "category": "syndesi" }
+  ],
+  "duration": 30
+}

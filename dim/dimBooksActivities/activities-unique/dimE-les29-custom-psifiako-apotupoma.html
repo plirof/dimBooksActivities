@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ψηφιακό Αποτύπωμα | Μάθημα 29</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ede9fe,#a78bfa);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#3b0764;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#7c3aed;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#3b0764;font-size:.75rem;font-weight:700;border:1px solid #a78bfa;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.trace-card{background:#ede9fe;border:2px solid #c4b5fd;border-radius:12px;padding:10px;margin:6px 0}
+.trace-title{font-size:.78rem;font-weight:700;color:#3b0764;text-align:center;margin-bottom:4px}
+.trace-desc{font-size:.7rem;color:#4c1d95;text-align:center}
+.cat-row{display:flex;gap:8px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.cat-btn{padding:10px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;min-width:120px}
+.cat-btn:hover{transform:scale(1.03)}
+.cat-btn.c1{border-color:#22c55e;color:#14532d}
+.cat-btn.c1:hover{background:#dcfce7}
+.cat-btn.c2{border-color:#f59e0b;color:#78350f}
+.cat-btn.c2:hover{background:#fef3c7}
+.cat-btn.c3{border-color:#8b5cf6;color:#3b0764}
+.cat-btn.c3:hover{background:#ede9fe}
+.cat-btn.selected{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.cat-btn.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.cat-btn.wrong{background:#fef2f2;border-color:#ef4444;color:#dc2626}
+.cat-btn.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#7c3aed;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#6d28d9}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #7c3aed;border-radius:10px;background:transparent;color:#7c3aed;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#ede9fe}
+.legend{display:flex;gap:10px;justify-content:center;margin:6px 0;flex-wrap:wrap}
+.legend span{font-size:.6rem;padding:3px 8px;border-radius:6px;font-weight:700}
+.legend .l1{background:#dcfce7;color:#14532d}
+.legend .l2{background:#fef3c7;color:#78350f}
+.legend .l3{background:#ede9fe;color:#3b0764}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .cat-row > * { margin: 4px; }
+  .legend > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>👣 Ψηφιακό Αποτύπωμα</h1>
+<p class="subtitle">Ενεργό, Παθητικό ή Cookies; Ταξινόμησε κάθε περίπτωση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Περίπτωση:</span> <span id="qNum">1</span>/<span id="qTotal">8</span></span>
+</div>
+<div class="legend">
+<span class="l1">🟢 Ενεργό αποτύπωμα</span>
+<span class="l2">🟡 Παθητικό αποτύπωμα</span>
+<span class="l3">🟣 Cookies</span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var cases=[
+{
+title:'📸 Ανεβάζεις φωτογραφία στο Instagram',
+desc:'Αποφασίζεις εσύ να δημοσιεύσεις τη φωτογραφία.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:0,
+explain:'Ενεργό: Αποφασίζεις ΕΣΥ να ανεβάσεις περιεχόμενο.'
+},
+{
+title:'🏷️ Σε σημειώνουν (tag) φίλοι σε φωτογραφία',
+desc:'Δεν το ήθελες — το έκαναν άλλοι χωρίς να ξέρεις.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:1,
+explain:'Παθητικό: Άλλοι σε σημειώνουν — εσύ δεν το αποφασίζεις.'
+},
+{
+title:'🍪 Ένα site αποθηκεύει ποιες σελίδες επισκέφτηκες',
+desc:'Μικρά αρχεία στον browser σου καταγράφουν τις προτιμήσεις σου.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:2,
+explain:'Cookies: Μικρά αρχεία που δημιουργεί ο browser όταν επισκέπτεσαι ένα site.'
+},
+{
+title:'📧 Στέλνεις ένα email',
+desc:'Γράφεις και στέλνεις εσύ ένα μήνυμα σε φίλο.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:0,
+explain:'Ενεργό: Εσύ αποφασίζεις να στείλεις το email.'
+},
+{
+title:'📱 Εγγράφεσαι σε newsletter',
+desc:'Δίνεις εσύ τη συγκατάθεσή σου να λαμβάνεις ενημερώσεις.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:0,
+explain:'Ενεργό: Εσύ επιλέγεις να εγγραφείς.'
+},
+{
+title:'🕵️ Ένα site καταγράφει τη διεύθυνση IP σου',
+desc:'Δεν το ξέρεις — γίνεται αυτόματα όταν μπαίνεις στη σελίδα.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:1,
+explain:'Παθητικό: Αφήνεις ίχνη χωρίς να το θέλεις ή να το ξέρεις.'
+},
+{
+title:'🍪 Αποδέχεστε τα cookies ενός e-shop',
+desc:'Πατάς "Αποδοχή" όταν σου ζητηθεί.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:2,
+explain:'Cookies: Αποδέχεσαι την αποθήκευση δεδομένων περιήγησης.'
+},
+{
+title:'💬 Γράφεις σχόλιο σε ένα blog',
+desc:'Αποφασίζεις εσύ να αφήσεις τη γνώμη σου.',
+cats:['Ενεργό','Παθητικό','Cookies'],
+correct:0,
+explain:'Ενεργό: Εσύ επιλέγεις να δημοσιεύσεις σχόλιο.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var c=cases[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="trace-card">';
+h+='<div class="trace-title">'+c.title+'</div>';
+h+='<div class="trace-desc">'+c.desc+'</div>';
+h+='</div>';
+h+='<div class="cat-row">';
+for(var i=0;i<c.cats.length;i++){
+var cls='cat-btn c'+(i+1);
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===c.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+c.cats[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===c.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+c.explain:'❌ '+c.explain)+'</div>';
+if(curQ<cases.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Περίπτωση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<cases.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

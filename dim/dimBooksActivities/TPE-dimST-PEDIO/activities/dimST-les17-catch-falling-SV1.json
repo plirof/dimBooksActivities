@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Στοιχεία Υπολογιστικού Φύλλου",
+  "subtitle": "Πιάσε τα σωστά στοιχεία του υπολογιστικού φύλλου",
+  "instructions": "Πιάσε τα σωστά στοιχεία και άσε τα λάθος να πέσουν",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Κελί",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Γραμμή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Στήλη",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Διάγραμμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πίνακας",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ερώτημα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

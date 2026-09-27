@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Υπολογιστές και Αποθήκευση",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ταμπλέτα", "error": false, "correct": "Ταμπλέτα", "feedback": "" },
+        { "text": "Ταμπλέντα", "error": true, "correct": "Ταμπλέτα", "feedback": "Γράφεται Ταμπλέτα" },
+        { "text": "Φορητός", "error": false, "correct": "Φορητός", "feedback": "" },
+        { "text": "Φωρητός", "error": true, "correct": "Φορητός", "feedback": "Γράφεται Φορητός με ο" },
+        { "text": "Οθόνη", "error": false, "correct": "Οθόνη", "feedback": "" },
+        { "text": "Οθώνη", "error": true, "correct": "Οθόνη", "feedback": "Γράφεται Οθόνη" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Χωρητικότητα", "error": false, "correct": "Χωρητικότητα", "feedback": "" },
+        { "text": "Μνήμη φλάς", "error": true, "correct": "Μνήμη φλας", "feedback": "Γράφεται φλας χωρίς τόνο" },
+        { "text": "Αποθήκευση", "error": false, "correct": "Αποθήκευση", "feedback": "" },
+        { "text": "Αποθήκεβη", "error": true, "correct": "Αποθήκευση", "feedback": "Γράφεται Αποθήκευση" },
+        { "text": "Αντίγραφο", "error": false, "correct": "Αντίγραφο", "feedback": "" },
+        { "text": "Αντίκραφο", "error": true, "correct": "Αντίγραφο", "feedback": "Γράφεται Αντίγραφο με γ" }
+      ]
+    }
+  ]
+}

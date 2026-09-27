@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δημιουργικό Διαδίκτυο & PEGI",
+  "subtitle": "Μόνο τους όρους δημιουργικού διαδικτύου!",
+  "instruction": "Σπάσε μόνο τις λέξεις που σχετίζονται με το ΔΗΜΙΟΥΡΓΙΚΟ ΔΙΑΔΙΚΤΥΟ και το PEGI!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Scratch", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "PEGI", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Hour of Code", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Serious games", "correct": true, "color": "#98D8C8" },
+    { "text": "Καρέκλα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Οπτικός προγραμματισμός", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μήλο", "correct": false, "color": "#85C1E9" }
+  ]
+}

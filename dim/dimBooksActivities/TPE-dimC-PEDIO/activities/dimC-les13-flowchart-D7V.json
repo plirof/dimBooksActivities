@@ -1,0 +1,14 @@
+{
+  "title": "Φτιάξε το διάγραμμα ροής!",
+  "subtitle": "Βάλε τα βήματα στη σωστή σειρά",
+  "processTitle": "Προστασία υπολογιστή από ιούς",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Προμηθεύομαι λογισμικό antivirus"},
+    {"id": 2, "type": "action", "text": "Εγκαθιστώ το antivirus στον υπολογιστή"},
+    {"id": 3, "type": "action", "text": "Συνδέω το antivirus στο διαδίκτυο"},
+    {"id": 4, "type": "action", "text": "Ενημερώνω το antivirus για νέους ιούς"},
+    {"id": 5, "type": "action", "text": "Το antivirus σκανάρει τον υπολογιστή"},
+    {"id": 6, "type": "action", "text": "Ο υπολογιστής είναι προστατευμένος"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5, 6]
+}

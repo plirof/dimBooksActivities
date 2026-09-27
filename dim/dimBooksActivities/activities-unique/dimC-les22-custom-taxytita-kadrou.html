@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταχύτητα Καρέ</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ecfccb,#a3e635);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#3f6212,#65a30d);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f7fee7;border-radius:12px;border-left:4px solid #65a30d;padding:10px 14px;font-size:.85em;color:#365314;line-height:1.5}
+.info b{color:#3f6212}
+.demo-section{background:#f7fee7;border-radius:16px;border:2px solid #bef264;padding:16px}
+.demo-section h3{color:#3f6212;font-size:1em;margin-bottom:10px;text-align:center}
+.comparison{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.demo-box{background:#fff;border-radius:14px;border:2px solid #e2e8f0;padding:14px;text-align:center;width:200px}
+.demo-box .db-title{font-size:.9em;font-weight:700;color:#3f6212;margin-bottom:8px}
+.demo-box .db-anim{height:80px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2em;overflow:hidden;position:relative}
+.demo-box .db-fps{font-size:.8em;color:#65a30d;margin-top:6px;font-weight:600}
+.quiz-area{background:#f8fafc;border-radius:16px;border:2px solid #bef264;padding:16px}
+.quiz-area h3{color:#3f6212;font-size:1em;margin-bottom:12px;text-align:center}
+.quiz-anim{height:100px;background:#f0fdf4;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:2.5em;overflow:hidden;position:relative;border:1px solid #bef264}
+.quiz-options{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.quiz-opt{padding:10px 20px;border:2px solid #e2e8f0;border-radius:50px;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s;background:#fff}
+.quiz-opt:hover{border-color:#65a30d;background:#f7fee7}
+.quiz-opt.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.quiz-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
+.quiz-opt.disabled{pointer-events:none;opacity:.6}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#3f6212}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#3f6212,#65a30d);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(63,98,18,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.comparison{flex-direction:column;align-items:center}.demo-box{width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .comparison > * { margin: 8px; }
+  .quiz-options > * { margin: 4px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎞️ Ταχύτητα Καρέ (FPS)</h1>
+<p>Μάθε πώς η ταχύτητα επηρεάζει το animation!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>FPS</b> σημαίνει «Καρέ ανά Δευτερόλεπτο» (Frames Per Second). Αν έχουμε <b>1 fps</b>, βλέπουμε 1 εικόνα/δευτερόλεπτο (πολύ αργά). Αν έχουμε <b>24 fps</b>, βλέπουμε 24 εικόνες/δευτερόλεπτο (ομαλή κίνηση, σαν ταινία!).</div>
+<div class="score-bar">⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="demo-section">
+<h3>🔬 Σύγκρινο ταχύτητες</h3>
+<div class="comparison">
+<div class="demo-box">
+<div class="db-title">🐢 1 fps</div>
+<div class="db-anim" id="demo1"></div>
+<div class="db-fps">1 καρέ/δευτερόλεπτο</div>
+</div>
+<div class="demo-box">
+<div class="db-title">🚶 4 fps</div>
+<div class="db-anim" id="demo4"></div>
+<div class="db-fps">4 καρέ/δευτερόλεπτο</div>
+</div>
+<div class="demo-box">
+<div class="db-title">🏃 12 fps</div>
+<div class="db-anim" id="demo12"></div>
+<div class="db-fps">12 καρέ/δευτερόλεπτο</div>
+</div>
+</div>
+</div>
+<div class="quiz-area" id="quizArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var ballFrames=['⚽','🟡','🔴','🟢'];
+var demos=[
+{el:'demo1',fps:1,idx:0},
+{el:'demo4',fps:4,idx:0},
+{el:'demo12',fps:12,idx:0}
+];
+
+var questions=[
+{
+prompt:'Παρατήρησε τα 3 animations παραπάνω. Ποιο φαίνεται πιο ομαλό;',
+animType:'compare',
+options:['1 fps','4 fps','12 fps'],
+correct:2,
+explain:'Στα 12 fps η κίνηση φαίνεται πιο ομαλή γιατί αλλάζουν περισσότερες εικόνες κάθε δευτερόλεπτο!'
+},
+{
+prompt:'Αν το animation σου φαίνεται «σπασμένο» (jerky), τι πρέπει να αυξήσεις;',
+animType:'concept',
+options:['Τον αριθμό των fps','Τον αριθμό των χρωμάτων','Το μέγεθος της οθόνης'],
+correct:0,
+explain:'Αυξάνοντας τα fps (καρέ/δευτερόλεπτο) η κίνηση γίνεται πιο ομαλή!'
+},
+{
+prompt:'Μια ταινία στον κινηματογράφο συνήθως παίζει στα:',
+animType:'concept',
+options:['2 fps','24 fps','100 fps'],
+correct:1,
+explain:'Οι ταινίες παίζουν στα 24 fps — 24 εικόνες κάθε δευτερόλεπτο!'
+},
+{
+prompt:'Αν έχεις μόνο 4 καρέ αλλά θέλεις ομαλή κίνηση στα 8 fps, πόσο θα διαρκέσει το animation;',
+animType:'concept',
+options:['4 δευτερόλεπτα','2 δευτερόλεπτα','8 δευτερόλεπτα'],
+correct:1,
+explain:'4 καρέ / 8 fps = 0,5 δευτερόλεπτο... Όμως εδώ το animation θα επαναλαμβάνεται! Αν τα παίξεις μια φορά: 4/8 = 0,5 δευτ. Αν τα κάνεις loop: 4 καρέ × (1/8) = 0,5 δευτ. per loop.'
+},
+{
+prompt:'Τι είναι ένα GIF;',
+animType:'concept',
+options:['Ένα είδος animation από εικόνες','Ένα βίντεο με ήχο','Ένα πρόγραμμα επεξεργασίας'],
+correct:0,
+explain:'Το GIF είναι μια μορφή εικόνας που υποστηρίζει animation — εναλλασσόμενες εικόνες χωρίς ήχο!'
+}
+];
+
+var currentQ=0;
+var score=0;
+var locked=false;
+var demoTimers=[];
+
+function animateDemos(){
+for(var i=0;i<demos.length;i++){
+(function(d){
+var timer=setInterval(function(){
+d.idx=(d.idx+1)%ballFrames.length;
+var el=document.getElementById(d.el);
+if(el)el.textContent=ballFrames[d.idx];
+},1000/d.fps);
+demoTimers.push(timer);
+})(demos[i]);
+}
+}
+
+function renderQuestion(){
+var q=questions[currentQ];
+locked=false;
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+var area=document.getElementById('quizArea');
+var html='<h3>❓ Ερώτηση '+(currentQ+1)+'/'+questions.length+'</h3>';
+html+='<p style="text-align:center;font-size:.95em;color:#1e293b;margin-bottom:12px;line-height:1.5">'+q.prompt+'</p>';
+html+='<div class="quiz-options" id="quizOpts">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="quiz-opt" data-idx="'+i+'" onclick="answerQ(this)">'+q.options[i]+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function answerQ(el){
+if(locked)return;
+locked=true;
+var q=questions[currentQ];
+var chosen=parseInt(el.dataset.idx);
+var opts=document.querySelectorAll('.quiz-opt');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.add('disabled');
+if(parseInt(opts[i].dataset.idx)===q.correct)opts[i].classList.add('correct');
+}
+if(chosen===q.correct){
+score++;
+el.classList.add('correct');
+showFeedback('✅ Σωστό! '+q.explain,true);
+}else{
+el.classList.add('wrong');
+showFeedback('❌ '+q.explain,false);
+}
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('nextBtn').disabled=false;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextQuestion(){
+currentQ++;
+if(currentQ>=questions.length){
+showResult();
+}else{
+renderQuestion();
+}
+}
+
+function showResult(){
+var pct=Math.round(score/questions.length*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+document.getElementById('quizArea').innerHTML='<div style="text-align:center;padding:16px"><div style="font-size:2em">'+stars+'</div><h3 style="color:#3f6212;margin:8px 0">'+score+'/'+questions.length+'</h3><p style="color:#64748b;font-size:.9em">'+(pct>=80?'Μπράβο! Καταλαβαίνεις την ταχύτητα καρέ!':'Συνέχισε! Θα τα μάθεις όλα!')+'</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentQ=0;
+score=0;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('nextBtn').style.display='inline-block';
+renderQuestion();
+}
+
+document.getElementById('totalDisplay').textContent=questions.length;
+animateDemos();
+renderQuestion();
+</script>
+</body>
+</html>

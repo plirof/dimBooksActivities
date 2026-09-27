@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μορφές Αρχείων",
+  "subtitle": "Σπάσε τα μπαλόνια με σωστές μορφές αρχείων!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν σωστές μορφές αρχείων ψηφιακού περιεχομένου.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "JPG - Φωτογραφία",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "MP4 - Βίντεο",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "PNG - Εικόνα",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "TXT - Κείμενο",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "MP3 - Ήχος",
+      "correct": true,
+      "color": "#e91e63"
+    },
+    {
+      "text": "XYZ - Άγνωστο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "ABC - Λάθος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "PDF - Έγγραφο",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "123 - Αριθμοί",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "GIF - Εικόνα",
+      "correct": true,
+      "color": "#8bc34a"
+    }
+  ]
+}

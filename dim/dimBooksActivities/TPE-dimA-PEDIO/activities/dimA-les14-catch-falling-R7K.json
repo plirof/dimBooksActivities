@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Επικοινωνία",
+  "subtitle": "Πιάσε ό,τι έχει να κάνει με το διαδίκτυο!",
+  "instructions": "Πιάσε μόνο τα πράγματα για το ΔΙΑΔΙΚΤΥΟ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Email", "correct": true, "color": "#4CAF50"},
+    {"text": "Γάτα", "correct": false, "color": "#f44336"},
+    {"text": "Μήνυμα", "correct": true, "color": "#2196F3"},
+    {"text": "Κούνια", "correct": false, "color": "#FF9800"},
+    {"text": "Υπολογιστής", "correct": true, "color": "#9C27B0"},
+    {"text": "Μολύβι", "correct": false, "color": "#E91E63"},
+    {"text": "Επικοινωνία", "correct": true, "color": "#009688"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FFC107"},
+    {"text": "Αποστολή", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

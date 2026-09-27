@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χρονικός Προγραμματισμός - EdBlocks</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#dbeafe;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#075985;text-align:center;line-height:1.5}
+.time-simulation{background:#f0fdf4;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.path-display{display:flex;align-items:center;gap:15px;font-size:1.5em}
+.path-segment{background:#fff;border:2px solid #e2e8f0;border-radius:10px;padding:12px 18px;display:flex;align-items:center;gap:8px;transition:all .3s}
+.path-segment.active{border-color:#0ea5e9;background:#e0f2fe;transform:scale(1.1)}
+.segment-emoji{font-size:2em}
+.segment-time{background:#fef3c7;border-radius:6px;padding:4px 10px;font-weight:700;color:#d97706;font-size:.85em}
+.slider-area{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.slider-row label{min-width:180px;font-weight:700;color:#475569;font-size:.9em}
+.slider-row input[type="range"]{flex:1;max-width:250px}
+.slider-value{min-width:80px;text-align:center;font-weight:700;color:#0369a1;font-size:.95em}
+.total-time{background:#fef9c3;border-radius:12px;padding:12px;text-align:center;font-size:1.1em;font-weight:700;color:#b45309}
+.challenge{background:#fce7f3;border:2px solid #f0abfc;border-radius:14px;padding:14px;margin-bottom:14px}
+.challenge h3{color:#be185d;margin-bottom:8px;font-size:1em}
+.challenge p{color:#9d174d;font-size:.9em;line-height:1.5}
+.btn-play{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-check{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;border:none;border-radius:50px;padding:10px 24px;font-size:.95em;font-weight:700;cursor:pointer;margin:10px auto;display:block;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(59,130,246,.4)}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:550px){.path-display{gap:10px;font-size:1.2em}.segment-emoji{font-size:1.5em}.slider-row label{min-width:140px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .time-simulation > * + * { margin-top: 12px; }
+  .path-display > * + * { margin-left: 15px; }
+  .path-segment > * + * { margin-left: 8px; }
+  .slider-row > * + * { margin-left: 12px; }
+  @media(max-width:550px){
+    .path-display > * + * { margin-left: 10px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>⏱️ Χρονικός Προγραμματισμός</h1>
+<p>Ρύθμισε τους σωστούς χρόνους για να ολοκληρωθεί η διαδρομή!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο EdBlocks, οι χρόνοι είναι δεκαδικοί αριθμοί! Μικρότερος χρόνος = πιο γρήγορη κίνηση. Χρησιμοποίησε τη διαίρεση για ακριβέστερο έλεγχο!</div>
+
+<div class="time-simulation">
+<div class="path-display" id="pathDisplay">
+<div class="path-segment" id="seg1">
+<div class="segment-emoji">⬆️</div>
+<div>Προχώρα</div>
+<div class="segment-time" id="time1">1.0 δλ.</div>
+</div>
+<div class="path-segment" id="seg2">
+<div class="segment-emoji">➡️</div>
+<div>Στρίψε</div>
+<div class="segment-time" id="time2">0.5 δλ.</div>
+</div>
+<div class="path-segment" id="seg3">
+<div class="segment-emoji">⬆️</div>
+<div>Προχώρα</div>
+<div class="segment-time" id="time3">1.5 δλ.</div>
+</div>
+</div>
+</div>
+
+<div class="slider-area">
+<div class="slider-row">
+<label>⬆️ Χρόνος 1ου τμήματος:</label>
+<input type="range" id="slider1" min="0.5" max="2" step="0.1" value="1" oninput="updateTimes()">
+<span class="slider-value" id="val1">1.0 δλ.</span>
+</div>
+<div class="slider-row">
+<label>➡️ Χρόνος στροφής:</label>
+<input type="range" id="slider2" min="0.3" max="1" step="0.1" value="0.5" oninput="updateTimes()">
+<span class="slider-value" id="val2">0.5 δλ.</span>
+</div>
+<div class="slider-row">
+<label>⬆️ Χρόνος 2ου τμήματος:</label>
+<input type="range" id="slider3" min="0.5" max="2" step="0.1" value="1.5" oninput="updateTimes()">
+<span class="slider-value" id="val3">1.5 δλ.</span>
+</div>
+</div>
+
+<div class="total-time" id="totalTime">
+🕐 Συνολικός χρόνος: 3.0 δευτερόλεπτα
+</div>
+
+<div class="challenge">
+<h3>🎯 Πρόκληση:</h3>
+<p>Ρύθμισε τους χρόνους ώστε ο συνολικός χρόνος να είναι ακριβώς <b>2.4 δευτερόλεπτα</b> και το ρομπότ να κινείται άνετα (όχι γρήγορα)!</p>
+</div>
+
+<button class="btn-play" id="playBtn" onclick="runSimulation()">▶️ Δες την Κίνηση</button>
+<button class="btn-check" onclick="checkChallenge()">✅ Έλεγχος Πρόκλησης</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var isAnimating=false;
+
+function updateTimes(){
+  var time1=parseFloat(document.getElementById('slider1').value);
+  var time2=parseFloat(document.getElementById('slider2').value);
+  var time3=parseFloat(document.getElementById('slider3').value);
+  
+  document.getElementById('time1').textContent=time1.toFixed(1)+' δλ.';
+  document.getElementById('time2').textContent=time2.toFixed(1)+' δλ.';
+  document.getElementById('time3').textContent=time3.toFixed(1)+' δλ.';
+  
+  document.getElementById('val1').textContent=time1.toFixed(1)+' δλ.';
+  document.getElementById('val2').textContent=time2.toFixed(1)+' δλ.';
+  document.getElementById('val3').textContent=time3.toFixed(1)+' δλ.';
+  
+  var totalTime=time1+time2+time3;
+  document.getElementById('totalTime').textContent='🕐 Συνολικός χρόνος: '+totalTime.toFixed(1)+' δευτερόλεπτα';
+}
+
+function runSimulation(){
+  if(isAnimating)return;
+  
+  var time1=parseFloat(document.getElementById('slider1').value);
+  var time2=parseFloat(document.getElementById('slider2').value);
+  var time3=parseFloat(document.getElementById('slider3').value);
+  
+  isAnimating=true;
+  document.getElementById('playBtn').disabled=true;
+  
+  var segs=[document.getElementById('seg1'),document.getElementById('seg2'),document.getElementById('seg3')];
+  var times=[time1,time2,time3];
+  
+  for(var i=0;i<segs.length;i++){
+    segs[i].classList.remove('active');
+  }
+  
+  function animateSeg(index){
+    if(index>=segs.length){
+      isAnimating=false;
+      document.getElementById('playBtn').disabled=false;
+      return;
+    }
+    
+    segs[index].classList.add('active');
+    
+    setTimeout(function(){
+      segs[index].classList.remove('active');
+      animateSeg(index+1);
+    },times[index]*1000);
+  }
+  
+  animateSeg(0);
+}
+
+function checkChallenge(){
+  var time1=parseFloat(document.getElementById('slider1').value);
+  var time2=parseFloat(document.getElementById('slider2').value);
+  var time3=parseFloat(document.getElementById('slider3').value);
+  var totalTime=time1+time2+time3;
+  
+  var totalTimeTarget=2.4;
+  var tolerance=0.1;
+  
+  var totalTimeCorrect=totalTime>=totalTimeTarget-tolerance&&totalTime<=totalTimeTarget+tolerance;
+  var notTooFast=time1>=0.8&&time2>=0.4&&time3>=0.8;
+  
+  if(totalTimeCorrect&&notTooFast){
+    showFeedback('🎉 Σωστά! Ο συνολικός χρόνος είναι '+totalTime.toFixed(1)+' δλ. και η κίνηση είναι άνετη!',true);
+  }else if(!totalTimeCorrect){
+    showFeedback('❌ Ο συνολικός χρόνος είναι '+totalTime.toFixed(1)+' δλ., πρέπει να είναι 2.4 δλ.!',false);
+  }else{
+    showFeedback('❌ Κάποιο χρονικό διάστημα είναι πολύ μικρό, το ρομπότ θα κουνιέται γρήγορα!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+updateTimes();
+</script>
+</body>
+</html>

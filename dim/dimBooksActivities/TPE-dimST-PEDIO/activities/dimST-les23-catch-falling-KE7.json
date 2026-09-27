@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Αναρτήσεις",
+  "subtitle": "Πιάσε τις σωστές λέξεις για αναρτήσεις ιστολογίου",
+  "instructions": "Πιάστε τις λέξεις σχετικές με τις αναρτήσεις",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Άρθρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εικόνα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Βίντεο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Σύνδεσμος",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πηγή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πολυμέσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φόρουμ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "QR Code",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ρυθμίσεις Λειτουργικού | Μάθημα 13</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:650px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.desktop-sim{background:#1e293b;border-radius:14px;border:2px solid #334155;overflow:hidden;margin-bottom:10px}
+.taskbar{background:#0f172a;padding:6px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #334155}
+.taskbar .start-btn{background:#6366f1;color:#fff;padding:4px 12px;border-radius:6px;font-size:.62rem;font-weight:700;cursor:pointer;border:none}
+.taskbar .start-btn:hover{background:#818cf8}
+.taskbar .tb-icon{color:#64748b;font-size:.9rem;cursor:pointer;transition:color .2s}
+.taskbar .tb-icon:hover{color:#e2e8f0}
+.taskbar .tb-clock{color:#64748b;font-size:.6rem;margin-left:auto;font-family:monospace}
+.settings-window{background:#0f172a;border-radius:10px;margin:10px;border:1px solid #334155;overflow:hidden}
+.settings-header{background:#1e293b;padding:6px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #334155}
+.settings-header .sh-title{color:#e2e8f0;font-size:.7rem;font-weight:600}
+.settings-body{padding:10px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1e293b}
+.setting-row:last-child{border-bottom:none}
+.setting-label{display:flex;align-items:center;gap:6px;color:#e2e8f0;font-size:.68rem}
+.setting-label .sl-icon{font-size:1rem}
+.setting-control{display:flex;align-items:center;gap:6px}
+.toggle-switch{width:36px;height:20px;background:#475569;border-radius:10px;cursor:pointer;position:relative;transition:all .2s;border:none;padding:0}
+.toggle-switch.on{background:#22c55e}
+.toggle-switch::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:all .2s}
+.toggle-switch.on::after{left:18px}
+.setting-select{padding:4px 8px;background:#334155;color:#e2e8f0;border:1px solid #475569;border-radius:6px;font-size:.62rem;cursor:pointer}
+.setting-slider{width:80px;-webkit-appearance:none;appearance:none;height:4px;background:#475569;border-radius:2px;outline:none}
+.setting-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#6366f1;border:2px solid #818cf8;cursor:pointer}
+.setting-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#6366f1;border:2px solid #818cf8;cursor:pointer}
+.slider-val{color:#fbbf24;font-size:.65rem;min-width:28px;text-align:center;font-family:monospace}
+.task-prompt{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #fbbf24}
+.task-prompt .tp-icon{font-size:1.1rem;display:block;margin-bottom:2px}
+.task-prompt .tp-text{color:#e2e8f0;font-size:.72rem;line-height:1.5}
+.task-prompt .tp-hint{color:#64748b;font-size:.62rem;margin-top:2px}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px;clear:both}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .taskbar > * + * { margin-left: 8px; }
+  .settings-header > * + * { margin-left: 6px; }
+  .setting-label > * + * { margin-left: 6px; }
+  .setting-control > * + * { margin-left: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>⚙️ Ρυθμίσεις Λειτουργικού Συστήματος</h1>
+<p class="subtitle">Ολοκλήρωσε τις εργασίες ρύθμισης του υπολογιστή!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Εργασία:</span> <span id="taskNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var tasks=[
+{
+icon:'🖱️',text:'Ο χρήστης είναι αριστερόχειρας. Άλλαξε τις ρυθμίσεις του ποντικιού για αριστερόχειρες.',
+hint:'Στις Ρυθμίσεις > Συσκευές > Ποντίκι, υπάρχει επιλογή για εναλλαγή κουμπιών.',
+settings:{
+'Εναλλαγή κουμπιών':{type:'toggle',target:true},
+'Ταχύτητα δείκτη':{type:'slider',target:7}
+},
+check:function(s){return s['Εναλλαγή κουμπιών']===true&&s['Ταχύτητα δείκτη']>=6;}
+},
+{
+icon:'🔊',text:'Ρύθμισε τον ήχο: αύξησε την ένταση στο 80% και βεβαιώσου ότι τα ηχεία είναι ενεργά.',
+hint:'Στις Ρυθμίσεις > Ήχου, μπορείς να αυξομειώσεις την ένταση και να επιλέξεις συσκευή εξόδου.',
+settings:{
+'Ένταση':{type:'slider',target:80},
+'Συσκευή εξόδου':{type:'select',options:['Ηχεία','Ακουστικά','Bluetooth'],target:'Ηχεία'}
+},
+check:function(s){return s['Ένταση']>=75&&s['Συσκευή εξόδου']==='Ηχεία';}
+},
+{
+icon:'🖨️',text:'Ο εκτυπωτής δεν τυπώνει. Πήγαινε στις ρυθμίσεις και βεβαιώσου ότι ο εκτυπωτής είναι συνδεδεμένος και η επιλογή είναι σωστή.',
+hint:'Στις Ρυθμίσεις > Συσκευές > Εκτυπωτές, επέλεξε τον εκτυπωτή που θέλεις να χρησιμοποιήσεις.',
+settings:{
+'Εκτυπωτής':{type:'select',options:['Canon MG3600','HP Deskjet','Epson (απενεργ.)'],target:'Canon MG3600'},
+'Ορισμός ως προεπιλογή':{type:'toggle',target:true}
+},
+check:function(s){return s['Εκτυπωτής']==='Canon MG3600'||s['Εκτυπωτής']==='HP Deskjet';}
+},
+{
+icon:'🌐',text:'Ρύθμισε την ημερομηνία και ώρα του συστήματος στη σωστή ζώνη ώρας για Ελλάδα.',
+hint:'Στις Ρυθμίσεις > Ώρα & Γλώσσα > Ημερομηνία & Ώρα, επέλεξε αυτόματη ρύθμιση και ζώνη ώρας.',
+settings:{
+'Αυτόματη ώρα':{type:'toggle',target:true},
+'Ζώνη ώρας':{type:'select',options:['UTC+2 Αθήνα','UTC+0 Λονδίνο','UTC+1 Παρίσι'],target:'UTC+2 Αθήνα'}
+},
+check:function(s){return s['Αυτόματη ώρα']===true&&s['Ζώνη ώρας']==='UTC+2 Αθήνα';}
+},
+{
+icon:'📱',text:'Εγκατέστησε μία νέα εφαρμογή από το κατάστημα εφαρμογών (Store) και άλλαξε τις ρυθμίσεις ενημερώσεων.',
+hint:'Στις Ρυθμίσεις > Εφαρμογές, μπορείς να διαχειριστείς τις εφαρμογές και τις αυτόματες ενημερώσεις.',
+settings:{
+'Αυτόματες ενημερώσεις':{type:'toggle',target:true},
+'Εγκατάσταση από Store':{type:'toggle',target:true}
+},
+check:function(s){return s['Αυτόματες ενημερώσεις']===true&&s['Εγκατάσταση από Store']===true;}
+},
+{
+icon:'🖥️',text:'Προσάρμοσε την επιφάνεια εργασίας: ενεργοποίησε το night light και άλλαξε την ανάλυση οθόνης.',
+hint:'Στις Ρυθμίσεις > Οθόνη, μπορείς να ρυθμίσεις τη φωτεινότητα, το night light και την ανάλυση.',
+settings:{
+'Night light':{type:'toggle',target:true},
+'Ανάλυση':{type:'select',options:['1920×1080','1366×768','1280×720'],target:'1920×1080'}
+},
+check:function(s){return s['Night light']===true&&s['Ανάλυση']==='1920×1080';}
+}
+];
+var current=0;
+var pts=0;
+var settings={};
+var checked=false;
+function render(){
+var t=tasks[current];
+checked=false;
+settings={};
+document.getElementById('taskNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">⚙️ '+t.icon+' Εργασία '+(current+1)+'</div>';
+h+='<div class="task-prompt"><span class="tp-icon">📋</span><div class="tp-text">'+t.text+'</div></div>';
+h+='<div class="desktop-sim">';
+h+='<div class="taskbar">';
+h+='<button class="start-btn" onclick="clickStart()">⏺ Έναρξη</button>';
+h+='<span class="tb-icon">🔍</span>';
+h+='<span class="tb-icon">📁</span>';
+h+='<span class="tb-icon">⚙️</span>';
+h+='<span class="tb-clock" id="clock">'+getClock()+'</span>';
+h+='</div>';
+h+='<div class="settings-window">';
+h+='<div class="settings-header"><span>⚙️</span><span class="sh-title">Ρυθμίσεις Συστήματος</span></div>';
+h+='<div class="settings-body" id="settingsBody">';
+var keys=Object.keys(t.settings);
+for(var i=0;i<keys.length;i++){
+var key=keys[i];
+var s=t.settings[key];
+h+='<div class="setting-row">';
+h+='<div class="setting-label"><span class="sl-icon">'+getSettingIcon(key)+'</span>'+key+'</div>';
+h+='<div class="setting-control">';
+if(s.type==='toggle'){
+var val=settings[key]===undefined?false:settings[key];
+h+='<button class="toggle-switch'+(val?' on':'')+'" id="set_'+i+'" onclick="toggleSetting('+i+')"></button>';
+}else if(s.type==='slider'){
+var val2=settings[key]===undefined?50:settings[key];
+h+='<input type="range" class="setting-slider" id="set_'+i+'" min="0" max="100" value="'+val2+'" oninput="sliderSetting('+i+',this.value)">';
+h+='<span class="slider-val" id="sv_'+i+'">'+val2+'%</span>';
+}else if(s.type==='select'){
+var selVal=settings[key]===undefined?s.options[0]:settings[key];
+h+='<select class="setting-select" id="set_'+i+'" onchange="selectSetting('+i+',this.value)">';
+for(var o=0;o<s.options.length;o++){
+h+='<option value="'+s.options[o]+'"'+(selVal===s.options[o]?' selected':'')+'>'+s.options[o]+'</option>';
+}
+h+='</select>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='</div>';
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkTask()">✅ Ολοκλήρωση Εργασίας</button></div>';
+h+='<div class="hint-box">💡 '+t.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function getClock(){
+var d=new Date();
+return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+function getSettingIcon(key){
+var icons={'Εναλλαγή κουμπιών':'🖱️','Ταχύτητα δείκτη':'🎯','Ένταση':'🔊','Συσκευή εξόδου':'🔈','Εκτυπωτής':'🖨️','Ορισμός ως προεπιλογή':'📌','Αυτόματη ώρα':'⏰','Ζώνη ώρας':'🌍','Αυτόματες ενημερώσεις':'🔄','Εγκατάσταση από Store':'📥','Night light':'🌙','Ανάλυση':'🖥️'};
+return icons[key]||'⚙️';
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevTask()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextTask()"'+(current===tasks.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function toggleSetting(idx){
+if(checked)return;
+var keys=Object.keys(tasks[current].settings);
+var key=keys[idx];
+var currentVal=settings[key]===undefined?false:settings[key];
+settings[key]=!currentVal;
+var el=document.getElementById('set_'+idx);
+if(el)el.classList.toggle('on');
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function sliderSetting(idx,val){
+if(checked)return;
+var keys=Object.keys(tasks[current].settings);
+settings[keys[idx]]=parseInt(val);
+var sv=document.getElementById('sv_'+idx);
+if(sv)sv.textContent=val+'%';
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function selectSetting(idx,val){
+if(checked)return;
+var keys=Object.keys(tasks[current].settings);
+settings[keys[idx]]=val;
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function clickStart(){
+var fb=document.getElementById('feedback');
+fb.textContent='🖥️ Άνοιξες το μενού Έναρξης! Πήγαινε στις Ρυθμίσεις από το εικονίδιο ⚙️.';
+fb.className='feedback';
+}
+function checkTask(){
+var t=tasks[current];
+var fb=document.getElementById('feedback');
+if(!t.check(settings)){
+fb.textContent='⚠️ Οι ρυθμίσεις δεν είναι σωστές. Διάβασε ξανά την εργασία!';
+fb.className='feedback fail';
+return;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Ολοκλήρωσες την εργασία!';
+fb.className='feedback ok';
+}
+function prevTask(){if(current>0){current--;render();}}
+function nextTask(){if(current<tasks.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+{
+    "quiz": {
+        "id": "698288bcd20dd7.92604317",
+        "title": "aaaaaaaa (Copy)",
+        "description": "aaaaaaaaa",
+        "questions": [
+            {
+                "id": "698288bcd21098.20256284",
+                "text": "aaaaa2",
+                "answers": [
+                    "aaa2",
+                    "bbb",
+                    "ccc",
+                    "ddd"
+                ],
+                "correct": 0,
+                "explanation": "",
+                "time": 20,
+                "points": 1000
+            },
+            {
+                "id": "698288bcd21103.82385261",
+                "text": "bbbb",
+                "answers": [
+                    "ccc",
+                    "aaa",
+                    "ddd",
+                    "bbbb"
+                ],
+                "correct": 3,
+                "explanation": "",
+                "time": 10,
+                "points": 1000
+            }
+        ],
+        "randomize_questions": false,
+        "randomize_answers": false,
+        "created_at": "2026-02-04 00:46:04",
+        "updated_at": "2026-02-04 00:46:20"
+    },
+    "answers": [],
+    "scores": {
+        "clnt": 500,
+        "iron": 200,
+        "srv": 50
+    },
+    "streaks": {
+        "clnt": 1,
+        "iron": 1,
+        "srv": 0
+    },
+    "question_results": [
+        {
+            "question_index": 0,
+            "answers": [
+                [
+                    {
+                        "username": "clnt",
+                        "answer": 1,
+                        "is_correct": false,
+                        "points": 0,
+                        "time_taken": 20,
+                        "streak": 0
+                    },
+                    {
+                        "username": "iron",
+                        "answer": 2,
+                        "is_correct": false,
+                        "points": 0,
+                        "time_taken": 20,
+                        "streak": 0
+                    },
+                    {
+                        "username": "srv",
+                        "answer": 0,
+                        "is_correct": true,
+                        "points": 50,
+                        "time_taken": 20,
+                        "streak": 1
+                    }
+                ]
+            ]
+        },
+        {
+            "question_index": 1,
+            "answers": {
+                "1": [
+                    {
+                        "username": "clnt",
+                        "answer": 3,
+                        "is_correct": true,
+                        "points": 500,
+                        "time_taken": 5,
+                        "streak": 1
+                    },
+                    {
+                        "username": "iron",
+                        "answer": 3,
+                        "is_correct": true,
+                        "points": 200,
+                        "time_taken": 8,
+                        "streak": 1
+                    },
+                    {
+                        "username": "srv",
+                        "answer": 0,
+                        "is_correct": false,
+                        "points": 0,
+                        "time_taken": 10,
+                        "streak": 0
+                    }
+                ]
+            }
+        }
+    ]
+}

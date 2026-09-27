@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Έξυπνες Συσκευές — Αυτοματισμοί</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f9a8d4);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#831843,#ec4899);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{padding:16px;display:flex;flex-direction:column;gap:12px}
+.info{background:#fdf2f8;border-radius:12px;border-left:4px solid #ec4899;padding:10px 14px;font-size:.85em;color:#831843;line-height:1.5}
+.info b{color:#9d174d}
+.score-row{display:flex;justify-content:space-between;align-items:center}
+.score-row span{font-weight:600;color:#831843;font-size:.9em}
+.round-box{background:#fdf2f8;border-radius:16px;border:2px solid #fbcfe8;padding:16px;min-height:320px}
+.scenario-icon{text-align:center;font-size:2.5em;margin-bottom:6px}
+.scenario-text{text-align:center;font-weight:700;color:#831843;font-size:1em;margin-bottom:14px;line-height:1.5}
+.solution-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:10px}
+.sol-card{padding:14px;border:2px solid #fbcfe8;border-radius:14px;text-align:center;cursor:pointer;transition:all .25s;background:#fff;user-select:none;touch-action:none}
+.sol-card:hover{transform:translateY(-2px);border-color:#ec4899;box-shadow:0 4px 12px rgba(236,72,153,.15)}
+.sol-card .s-icon{font-size:1.8em;margin-bottom:4px}
+.sol-card .s-label{font-size:.85em;font-weight:600;color:#334155}
+.sol-card .s-desc{font-size:.75em;color:#94a3b8;margin-top:2px;line-height:1.3}
+.sol-card.selected{border-color:#ec4899;background:#fdf2f8;transform:scale(1.03)}
+.sol-card.correct{border-color:#16a34a;background:#dcfce7}
+.sol-card.correct .s-label{color:#166534}
+.sol-card.wrong{border-color:#ef4444;background:#fee2e2}
+.sol-card.wrong .s-label{color:#b91c1c}
+.sol-card.reveal-correct{border-color:#16a34a;background:#f0fdf4}
+.sol-card:disabled{pointer-events:none}
+.connector-line{position:relative;height:4px;background:#fbcfe8;border-radius:2px;margin:8px 0;overflow:hidden}
+.connector-line .fill{height:100%;background:linear-gradient(90deg,#ec4899,#f472b6);width:0;transition:width .5s}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#831843,#ec4899);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(131,24,67,.35)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.chain-visual{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;padding:10px;background:#fdf2f8;border-radius:12px;flex-wrap:wrap}
+.chain-link{padding:6px 12px;border-radius:8px;font-size:.8em;font-weight:600}
+.chain-link.sensor{background:#e0e7ff;color:#3730a3}
+.chain-link.if{background:#fef3c7;color:#92400e}
+.chain-link.then{background:#d1fae5;color:#065f46}
+.chain-arrow{color:#ec4899;font-size:1.2em}
+@media(max-width:500px){.solution-grid{grid-template-columns:1fr}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .controls > * + * { margin-left: 12px; }
+  .chain-visual > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🏠 Έξυπνες Συσκευές — Αυτοματισμοί</h1>
+<p>Σύνδεσε το πρόβλημα με την έξυπνη λύση!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>Έξυπνες συσκευές (IoT)</b> χρησιμοποιούν αισθητήρες για να αντιληφθούν το περιβάλλον και ενεργοποιούν αυτόματα λειτουργίες. Π.χ. αν ανιχνευθεί κίνηση, ανάβει το φως. Αυτό λέγεται <b>αυτοματισμός</b>!</div>
+<div class="score-row"><span>⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></span><span id="roundLabel">1/8</span></div>
+<div class="round-box" id="roundBox"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="submitAnswer()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" id="nextBtn" onclick="nextRound()" style="display:none">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var rounds=[
+{
+emoji:'🌡️',
+problem:'Το δωμάτιο είναι πολύ ζεστό το καλοκαίρι.',
+solutions:[
+{icon:'❄️',label:'Smart AC',desc:'Ανάβει αυτόματα όταν η θερμοκρασία ξεπεράσει τους 26°C',correct:true,chain:{s:'Αισθητήρας θερμοκρασίας',c:'> 26°C',a:'Ενεργοποίηση κλιματιστικού'}},
+{icon:'💡',label:'Smart Light',desc:'Ανάβει όταν νυχτώνει',correct:false,chain:null},
+{icon:'🔔',label:'Smart Doorbell',desc:'Χτυπάει όταν έρχεται επισκέπτης',correct:false,chain:null},
+{icon:'📹',label:'Smart Camera',desc:'Καταγράφει όταν ανιχνεύει κίνηση',correct:false,chain:null}
+]
+},
+{
+emoji:'🌙',
+problem:'Νυχτώνει και τα φώτα του σπιτιού πρέπει να ανάψουν.',
+solutions:[
+{icon:'🔔',label:'Smart Doorbell',desc:'Χτυπάει όταν κάποιος πατάει το κουδούνι',correct:false,chain:null},
+{icon:'💡',label:'Smart Light',desc:'Ανάβει αυτόματα όταν ο αισθητήρας φωτός ανιχνεύσει σκοτάδι',correct:true,chain:{s:'Αισθητήρας φωτός',c:'Σκοτάδι',a:'Ανάβουν τα φώτα'}},
+{icon:'📹',label:'Smart Camera',desc:'Καταγράφει βίντεο 24/7',correct:false,chain:null},
+{icon:'❄️',label:'Smart AC',desc:'Ρυθμίζει τη θερμοκρασία',correct:false,chain:null}
+]
+},
+{
+emoji:'🚪',
+problem:'Κάποιος χτυπάει την εξώπορτα αλλά εσύ είσαι στον επάνω όροφο.',
+solutions:[
+{icon:'💡',label:'Smart Light',desc:'Ανάβει με φωνητική εντολή',correct:false,chain:null},
+{icon:'❄️',label:'Smart AC',desc:'Κρυώνει το σπίτι',correct:false,chain:null},
+{icon:'🔔',label:'Smart Doorbell',desc:'Σου στέλνει ειδοποίηση στο κινητό και βλέπεις ποιος είναι',correct:true,chain:{s:'Αισθητήρας κουδουνιού',c:'Πάτημα κουδουνιού',a:'Ειδοποίηση στο κινητό'}},
+{icon:'📹',label:'Smart Camera',desc:'Τραβάει φωτογραφία κάθε ώρα',correct:false,chain:null}
+]
+},
+{
+emoji:'🚗',
+problem:'Παρκάρεις και πλησιάζεις σε εμπόδιο — κινδυνεύεις να χτυπήσεις.',
+solutions:[
+{icon:'💡',label:'Smart Light',desc:'Ανάβει το εσωτερικό φως',correct:false,chain:null},
+{icon:'🔔',label:'Smart Bell',desc:'Χτυπάει όταν πατάς κόρνα',correct:false,chain:null},
+{icon:'📏',label:'Αισθητήρας απόστασης',desc:'Ηχεί προειδοποιητικό σήμα όταν πλησιάζεις πολύ',correct:true,chain:{s:'Αισθητήρας απόστασης',c:'< 30 cm από εμπόδιο',a:'Ηχητική προειδοποίηση'}},
+{icon:'📹',label:'Smart Camera',desc:'Καταγράφει την κίνηση',correct:false,chain:null}
+]
+},
+{
+emoji:'🌳',
+problem:'Το πρωί τα ρολά πρέπει να ανοίξουν για να μπει φως.',
+solutions:[
+{icon:'🔔',label:'Smart Alarm',desc:'Χτυπάει κάθε πρωί',correct:false,chain:null},
+{icon:'💡',label:'Smart Roller',desc:'Ανοίγουν αυτόματα βάσει ώρας ή φωτεινότητας',correct:true,chain:{s:'Αισθητήρας φωτός + ρολόι',c:'Πρωί + φως ημέρας',a:'Άνοιγμα ρολών'}},
+{icon:'❄️',label:'Smart AC',desc:'Ρυθμίζει θερμοκρασία',correct:false,chain:null},
+{icon:'📹',label:'Smart Camera',desc:'Καταγράφει',correct:false,chain:null}
+]
+},
+{
+emoji:'🚶',
+problem:'Μπαίνεις στο σκοτεινό γκαράζ και χρειάζεσαι φως.',
+solutions:[
+{icon:'💡',label:'Smart Light + Motion',desc:'Ανάβει αυτόματα όταν ανιχνευθεί κίνηση',correct:true,chain:{s:'Αισθητήρας κίνησης',c:'Ανίχνευση κίνησης',a:'Ανάβουν τα φώτα γκαράζ'}},
+{icon:'🔔',label:'Smart Bell',desc:'Χτυπάει',correct:false,chain:null},
+{icon:'📹',label:'Smart Camera',desc:'Τραβάει φωτογραφία',correct:false,chain:null},
+{icon:'📏',label:'Smart Distance',desc:'Μετράει απόσταση',correct:false,chain:null}
+]
+},
+{
+emoji:'💧',
+problem:'Υπάρχει διαρροή νερού στο μπάνιο και πρέπει να ειδοποιηθείς.',
+solutions:[
+{icon:'💡',label:'Smart Light',desc:'Ανάβει',correct:false,chain:null},
+{icon:'🔔',label:'Smart Alarm',desc:'Χτυπάει συναγερμός',correct:false,chain:null},
+{icon:'💧',label:'Αισθητήρας νερού',desc:'Ανιχνεύει υγρασία/νερό και στέλνει ειδοποίηση στο κινητό',correct:true,chain:{s:'Αισθητήρας υγρασίας',c:'Ανίχνευση νερού',a:'Ειδοποίηση στο κινητό'}},
+{icon:'📹',label:'Smart Camera',desc:'Καταγράφει',correct:false,chain:null}
+]
+},
+{
+emoji:'🏙️',
+problem:'Ο δρόμος έχει κίνηση — πώς θα πας πιο γρήγορα στο σχολείο;',
+solutions:[
+{icon:'💡',label:'Smart Lights',desc:'Ανάβουν',correct:false,chain:null},
+{icon:'🗺️',label:'GPS + Χάρτες',desc:'Το GPS υπολογίζει τη διαδρομή με τη λιγότερη κίνηση σε πραγματικό χρόνο',correct:true,chain:{s:'Δεδομένα κίνησης + GPS',c:'Μποτιλιάρισμα',a:'Πρόταση εναλλακτικής διαδρομής'}},
+{icon:'📹',label:'Traffic Camera',desc:'Δείχνει την κίνηση',correct:false,chain:null},
+{icon:'🔔',label:'Smart Bell',desc:'Χτυπάει',correct:false,chain:null}
+]
+}
+];
+
+var currentRound=0;
+var score=0;
+var selectedAnswer=null;
+var answered=false;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var roundOrder=[];
+
+function renderRound(){
+var r=rounds[roundOrder[currentRound]];
+selectedAnswer=null;
+answered=false;
+document.getElementById('checkBtn').disabled=true;
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('totalDisplay').textContent=rounds.length;
+document.getElementById('roundLabel').textContent=(currentRound+1)+'/'+rounds.length;
+var box=document.getElementById('roundBox');
+var html='<div class="scenario-icon">'+r.emoji+'</div>';
+html+='<div class="scenario-text">'+r.problem+'</div>';
+html+='<div style="font-size:.8em;color:#831843;text-align:center;margin-bottom:10px;font-weight:600">🤔 Διάλεξε την έξυπνη λύση:</div>';
+html+='<div class="solution-grid">';
+var opts=r.solutions.slice();
+shuffle(opts);
+for(var i=0;i<opts.length;i++){
+var s=opts[i];
+html+='<div class="sol-card" data-idx="'+i+'" onclick="selectSolution(this,'+i+')">';
+html+='<div class="s-icon">'+s.icon+'</div>';
+html+='<div class="s-label">'+s.label+'</div>';
+html+='<div class="s-desc">'+s.desc+'</div>';
+html+='</div>';
+}
+html+='</div>';
+box.innerHTML=html;
+window._currentOpts=opts;
+}
+
+function selectSolution(el,idx){
+if(answered)return;
+var cards=document.querySelectorAll('.sol-card');
+for(var i=0;i<cards.length;i++)cards[i].classList.remove('selected');
+el.classList.add('selected');
+selectedAnswer=idx;
+document.getElementById('checkBtn').disabled=false;
+}
+
+function submitAnswer(){
+if(selectedAnswer===null||answered)return;
+var r=rounds[roundOrder[currentRound]];
+var opts=window._currentOpts;
+answered=true;
+var cards=document.querySelectorAll('.sol-card');
+for(var i=0;i<cards.length;i++){
+cards[i].classList.remove('selected');
+cards[i].disabled=true;
+}
+var chosen=opts[selectedAnswer];
+if(chosen.correct){
+score++;
+cards[selectedAnswer].classList.add('correct');
+var chain=chosen.chain;
+if(chain){
+var chainHtml='<div class="chain-visual"><span class="chain-link sensor">🔍 '+chain.s+'</span><span class="chain-arrow">➡️</span><span class="chain-link if">ΑΝ '+chain.c+'</span><span class="chain-arrow">➡️</span><span class="chain-link then">⚡ ΤΟΤΕ '+chain.a+'</span></div>';
+document.getElementById('roundBox').innerHTML+=chainHtml;
+}
+showFeedback('✅ Σωστά! '+chosen.icon+' '+chosen.label+' είναι η κατάλληλη λύση!',true);
+}else{
+cards[selectedAnswer].classList.add('wrong');
+for(var i=0;i<cards.length;i++){
+var s=opts[i];
+if(s.correct){cards[i].classList.add('reveal-correct');}
+}
+showFeedback('❌ Λάθος. Η σωστή λύση ήταν κάποια άλλη — δες τις επιλογές!',false);
+}
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+document.getElementById('nextBtn').style.display='inline-block';
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextRound(){
+if(currentRound>=rounds.length-1){
+showFinal();
+return;
+}
+currentRound++;
+renderRound();
+}
+
+function showFinal(){
+var pct=Math.round(score/rounds.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! '+score+'/'+rounds.length+'! Γνωρίζεις άριστα τις έξυπνες συσκευές και τους αυτοματισμούς!';
+else if(pct>=60)msg='👏 Μπράβο! '+score+'/'+rounds.length+' σωστά! Συνέχισε να εξερευνάς τις έξυπνες τεχνολογίες!';
+else msg='💪 '+score+'/'+rounds.length+' σωστά. Δοκίμασε ξανά για να μάθεις περισσότερα!';
+document.getElementById('roundBox').innerHTML='<div style="text-align:center;padding:30px;font-size:1.15em;font-weight:700;color:#831843">'+msg+'</div>';
+document.getElementById('nextBtn').style.display='none';
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+roundOrder=[];
+for(var i=0;i<rounds.length;i++)roundOrder.push(i);
+shuffle(roundOrder);
+renderRound();
+document.getElementById('nextBtn').style.display='inline-block';
+}
+
+resetGame();
+</script>
+</body>
+</html>

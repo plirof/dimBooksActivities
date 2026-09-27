@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Ψηφιακά Δεδομένα",
+  "subtitle": "Πιάσε τα είδη ψηφιακών δεδομένων!",
+  "instructions": "Πιάσε τα αντικείμενα που είναι είδη ψηφιακών δεδομένων. Απόφυγε τα λάθος!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Εικόνα", "correct": true, "color": "#4caf50" },
+    { "text": "Βίντεο", "correct": true, "color": "#2196f3" },
+    { "text": "Τούβλο", "correct": false, "color": "#f44336" },
+    { "text": "Ήχος", "correct": true, "color": "#ff9800" },
+    { "text": "Κείμενο", "correct": true, "color": "#00bcd4" },
+    { "text": "Καρέκλα", "correct": false, "color": "#9c27b0" },
+    { "text": "Αριθμοί", "correct": true, "color": "#8bc34a" },
+    { "text": "Γυαλί", "correct": false, "color": "#ff5722" },
+    { "text": "Πίκσελ", "correct": true, "color": "#607d8b" },
+    { "text": "Νερό", "correct": false, "color": "#e91e63" }
+  ]
+}

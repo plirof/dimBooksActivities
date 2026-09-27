@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αναγνώριση Χρώματος | Μάθημα 9</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#86efac);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#166534;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#22c55e;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#166534;font-size:.75rem;font-weight:700;border:1px solid #86efac;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:550px;width:100%}
+.cmd-box{background:#f0f9ff;border:2px solid #bae6fd;border-radius:12px;padding:10px;margin:6px 0;text-align:center}
+.cmd-icon{font-size:1.2rem}
+.cmd-text{font-size:.78rem;font-weight:700;color:#0369a1;margin:2px 0}
+.cmd-hint{font-size:.65rem;color:#64748b}
+.track-wrap{position:relative;margin:8px 0;cursor:pointer}
+.track{height:70px;border-radius:10px;position:relative;overflow:hidden;border:2px solid #d1d5db}
+.track-white{position:absolute;top:0;left:0;height:100%;width:60%;background:#f8fafc;border-right:2px dashed #94a3b8}
+.track-black{position:absolute;top:0;left:60%;height:100%;width:40%;background:#1e293b}
+.track-line{position:absolute;top:0;left:60%;height:100%;width:2px;background:#ef4444;z-index:2}
+.track-label-w{position:absolute;bottom:4px;left:4px;font-size:.55rem;font-weight:700;color:#64748b;z-index:3}
+.track-label-b{position:absolute;bottom:4px;right:4px;font-size:.55rem;font-weight:700;color:#94a3b8;z-index:3}
+.track-label-line{position:absolute;bottom:4px;left:58%;font-size:.5rem;font-weight:700;color:#ef4444;z-index:3}
+.robot-emoji{position:absolute;top:50%;font-size:2rem;z-index:10;transition:none;transform:translate(-50%,-50%)}
+.pred-marker{position:absolute;top:0;width:4px;height:100%;background:#f59e0b;z-index:5;pointer-events:none;transition:none}
+.pred-arrow{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:1.1rem;z-index:6;pointer-events:none}
+.pred-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:#f59e0b;z-index:6;pointer-events:none;white-space:nowrap}
+.track-clickable{position:absolute;top:0;left:0;width:100%;height:100%;z-index:4;cursor:pointer}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.btn{display:block;margin:6px auto;padding:10px 24px;border:none;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer}
+.btn-go{background:#22c55e;color:#fff}
+.btn-go:hover{background:#16a34a}
+.btn-go:disabled{opacity:.5;cursor:not-allowed}
+.btn-next{background:transparent;border:2px solid #22c55e;color:#22c55e}
+.btn-next:hover{background:#f0fdf4}
+.btn-reset{background:transparent;border:2px solid #d1d5db;color:#6b7280;font-size:.7rem;padding:6px 16px;margin-top:8px}
+.btn-reset:hover{background:#f9fafb}
+.marker-dot{position:absolute;top:50%;left:50%;width:16px;height:16px;border-radius:50%;background:#f59e0b;border:3px solid #fff;transform:translate(-50%,-50%);z-index:7;pointer-events:none;box-shadow:0 0 8px rgba(245,158,11,.6)}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🤖 Αναγνώριση Χρώματος</h1>
+<p class="subtitle">Προβλέψτε πού θα σταματήσει το ρομπότ!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Γύρος:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var rounds=[
+{start:5,cmd:'Προχώρα όσο άσπρο',correct:60,explain:'Το ρομπότ προχωράει όσο ο αισθητήρας βλέπει άσπρο. Σταματάει ακριβώς όταν συναντήσει μαύρο στο 60%.'},
+{start:35,cmd:'Προχώρα όσο άσπρο',correct:60,explain:'Από όπου και αν ξεκινήσει, το ρομπότ προχωράει μέχρι να δει μαύρο. Από το 35% φτάνει στο 60% και σταματά.'},
+{start:70,cmd:'Προχώρα όσο άσπρο',correct:70,explain:'Το ρομπότ είναι ήδη σε μαύρη επιφάνεια! Αφού δεν βλέπει άσπρο, δεν κινείται καθόλου.'},
+{start:5,cmd:'Προχώρα όσο μαύρο',correct:100,explain:'Το ρομπότ διασχίζει πρώτα το άσπρο (χωρίς να σταματάει) και μετά προχωράει όσο βλέπει μαύρο. Φτάνει ως το τέλος στο 100%.'},
+{start:40,cmd:'Προχώρα μπροστά 30%',correct:70,explain:'Εδώ δεν έχει σημασία το χρώμα! Απλή κίνηση: 40% + 30% = 70%. Το ρομπότ κινείται 30% ανεξάρτητα από την επιφάνεια.'}
+];
+var curQ=0,pts=0,prediction=-1,running=false,revealed=false;
+function initQ(){prediction=-1;running=false;revealed=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var r=rounds[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="cmd-box"><div class="cmd-icon">📟</div><div class="cmd-text">'+r.cmd+'</div><div class="cmd-hint">Πάτα στην πίστα για να προβλέψεις πού θα σταματήσει το ρομπότ</div></div>';
+var robPos=r.start;
+if(revealed)robPos=r.correct;
+h+='<div class="track-wrap" id="trackWrap">';
+h+='<div class="track" id="track">';
+h+='<div class="track-white"></div><div class="track-black"></div><div class="track-line"></div>';
+h+='<span class="track-label-w">⬜ Άσπρο</span><span class="track-label-b">⬛ Μαύρο</span><span class="track-label-line">│</span>';
+if(revealed&&prediction>=0){
+var pPos=Math.min(Math.max(prediction,0),100);
+h+='<div class="pred-marker" style="left:'+pPos+'%"><div class="marker-dot"></div></div>';
+h+='<div class="pred-arrow" style="left:'+pPos+'%">🔽</div>';
+h+='<div class="pred-label" style="left:'+pPos+'%">Η πρόβλεψή σου</div>';
+}
+h+='<div class="robot-emoji" id="robot" style="left:'+robPos+'%">🤖</div>';
+if(!revealed){
+h+='<div class="track-clickable" onclick="predict(event)"></div>';
+}
+h+='</div>';
+h+='</div>';
+if(!revealed&&prediction>=0){
+h+='<button class="btn btn-go" onclick="execute()">▶️ Εκτέλεση</button>';
+}
+if(!revealed&&prediction<0){
+h+='<p style="font-size:.65rem;color:#94a3b8;text-align:center;margin:4px 0">👆 Κάνε κλικ στην πίστα για να προβλέψεις</p>';
+}
+if(revealed){
+var correct=prediction===r.correct;
+if(correct){pts+=10;document.getElementById('pts').textContent=pts;}
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστά! Το ρομπότ σταμάτησε στο '+r.correct+'%.':'❌ Το ρομπότ σταμάτησε στο '+r.correct+'% (εσύ είπες '+prediction+'%)')+'</div>';
+h+='<p style="font-size:.68rem;color:#64748b;text-align:center;margin:2px 0 6px">💡 '+r.explain+'</p>';
+if(curQ<rounds.length-1){
+h+='<button class="btn btn-go btn-next" onclick="nextQ()">Επόμενος Γύρος ▶</button>';
+}else{
+h+='<button class="btn btn-go btn-next" onclick="showFinal()">Τέλος 🏁</button>';
+}
+}
+h+='<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>';
+main.innerHTML=h;
+}
+function predict(e){
+if(running||revealed)return;
+var track=e.currentTarget.parentElement;
+var rect=track.getBoundingClientRect();
+var x=e.clientX||(e.touches&&e.touches[0].clientX);
+if(!x)return;
+var pct=Math.round((x-rect.left)/rect.width*100);
+prediction=Math.min(Math.max(pct,0),100);
+render();
+}
+function execute(){
+if(revealed||running||prediction<0)return;
+running=true;
+var r=rounds[curQ];
+var robot=document.getElementById('robot');
+var startPos=r.start;
+var endPos=r.correct;
+var steps=Math.abs(endPos-startPos);
+if(steps===0){
+robot.style.left=endPos+'%';
+revealed=true;
+running=false;
+render();
+return;
+}
+var stepSize=endPos>startPos?1:-1;
+var current=startPos;
+var interval=setInterval(function(){
+if((stepSize>0&&current>=endPos)||(stepSize<0&&current<=endPos)){
+clearInterval(interval);
+robot.style.left=endPos+'%';
+revealed=true;
+running=false;
+render();
+return;
+}
+current+=stepSize;
+robot.style.left=current+'%';
+},Math.max(20,Math.min(50,200/steps)));
+}
+function nextQ(){if(curQ<rounds.length-1){curQ++;initQ();render();}}
+function showFinal(){
+var pct=Math.round(pts/(rounds.length*10)*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! '+pts+'/'+(rounds.length*10)+'! Κατανοείς πλήρως την αναγνώριση χρώματος!';
+else if(pct>=50)msg='👏 Μπράβο! '+pts+'/'+(rounds.length*10)+' σωστά!';
+else msg='💪 '+pts+'/'+(rounds.length*10)+'. Θυμήσου: το ρομπότ προχωράει όσο βλέπει το χρώμα που του λέει η εντολή!';
+var main=document.getElementById('main');
+main.innerHTML='<div style="text-align:center;padding:20px;font-size:1.1em;font-weight:700;color:#166534">'+msg+'</div><button class="btn btn-reset" onclick="resetGame()" style="margin-top:12px">🔄 Αρχή</button>';
+}
+function resetGame(){curQ=0;pts=0;initQ();render();}
+initQ();render();
+</script>
+</body>
+</html>

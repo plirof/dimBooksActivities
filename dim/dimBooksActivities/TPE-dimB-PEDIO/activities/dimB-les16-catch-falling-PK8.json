@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι πάει σε ποιον φάκελο;",
+  "subtitle": "Πιάσε τα αρχεία που ανήκουν στον φάκελο Έγγραφα",
+  "instructions": "Πιάσε μόνο τα αρχεία κειμένου. Απόφυγε τις εικόνες.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Κείμενο", "correct": true, "color": "#4CAF50" },
+    { "text": "Ζωγραφιά", "correct": false, "color": "#f44336" },
+    { "text": "Έκθεση", "correct": true, "color": "#4CAF50" },
+    { "text": "Φωτογραφία", "correct": false, "color": "#f44336" },
+    { "text": "Λίστα", "correct": true, "color": "#4CAF50" },
+    { "text": "Σχεδιάσεις", "correct": false, "color": "#f44336" },
+    { "text": "Επιστολή", "correct": true, "color": "#4CAF50" },
+    { "text": "Αφίσα", "correct": false, "color": "#f44336" },
+    { "text": "Δοκίμιο", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρτ ποστάλ", "correct": false, "color": "#f44336" }
+  ]
+}

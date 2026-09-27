@@ -1,0 +1,48 @@
+{
+  "title": "Φθίνουσα ή Αύξουσα",
+  "subtitle": "Διάκρινε τη σειρά ταξινόμησης",
+  "categories": [
+    {
+      "id": "asc",
+      "name": "ΑΥΞΟΥΣΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "desc",
+      "name": "ΦΘΙΝΟΥΣΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Α→Ω",
+      "category": "asc"
+    },
+    {
+      "id": "item2",
+      "text": "100→1",
+      "category": "desc"
+    },
+    {
+      "id": "item3",
+      "text": "1→100",
+      "category": "asc"
+    },
+    {
+      "id": "item4",
+      "text": "Ω→Α",
+      "category": "desc"
+    },
+    {
+      "id": "item5",
+      "text": "Μικρό→Μεγάλο",
+      "category": "asc"
+    },
+    {
+      "id": "item6",
+      "text": "Μεγάλο→Μικρό",
+      "category": "desc"
+    }
+  ]
+}

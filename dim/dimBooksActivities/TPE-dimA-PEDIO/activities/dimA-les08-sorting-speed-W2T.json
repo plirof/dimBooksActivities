@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Το ρομπότ μπορεί;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Μπορεί ή Δεν μπορεί;",
+  "categories": [
+    {"id": "mporei", "name": "Μπορεί", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "denmporei", "name": "Δεν μπορεί", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Σκουπίζει", "category": "mporei"},
+    {"text": "Κλαίει", "category": "denmporei"},
+    {"text": "Κουδουνίζει", "category": "mporei"},
+    {"text": "Αγαπάει", "category": "denmporei"},
+    {"text": "Βοηθάει", "category": "mporei"},
+    {"text": "Ονειρεύεται", "category": "denmporei"},
+    {"text": "Κάνει δουλειά", "category": "mporei"},
+    {"text": "Χαίρεται", "category": "denmporei"}
+  ],
+  "duration": 30
+}

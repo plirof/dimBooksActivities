@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εντολές Αλγορίθμων",
+  "subtitle": "Ταξινόμησε κάθε εντολή στη σωστή κατηγορία",
+  "instructions": "Πάτα αριστερό βέλος για Είσοδο, δεξιό βέλος για Έξοδο",
+  "categories": [
+    { "id": "input", "name": "Είσοδος", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "output", "name": "Έξοδος", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Εντολή Διάβασε", "category": "input" },
+    { "text": "Εντολή Γράψε", "category": "output" },
+    { "text": "Πληκτρολόγηση αριθμού", "category": "input" },
+    { "text": "Εμφάνιση στην οθόνη", "category": "output" },
+    { "text": "Δεδομένα χρήστη", "category": "input" },
+    { "text": "Αποτέλεσμα υπολογισμού", "category": "output" },
+    { "text": "Ανάγνωση ακτίνας", "category": "input" },
+    { "text": "Εκτύπωση αθροίσματος", "category": "output" },
+    { "text": "Καταχώρηση βαθμού", "category": "input" },
+    { "text": "Εμφάνιση μέσου όρου", "category": "output" }
+  ],
+  "duration": 30
+}

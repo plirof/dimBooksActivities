@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Logger: Κουμπί → Μέτρηση → Πίνακας</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{color:#fff;text-align:center;margin-bottom:8px;font-size:1.6em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.95em}
+.container{background:#fff;border-radius:18px;padding:24px;max-width:820px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.2);margin-bottom:20px}
+.microbit{width:220px;height:140px;background:#1a1a2e;border-radius:16px;margin:0 auto 20px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+.microbit-label{color:#666;font-size:.7em;position:absolute;top:6px;left:10px}
+.microbit-screen{width:100px;height:50px;background:#0a0a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.microbit-screen canvas{display:block}
+.microbit-buttons{display:flex;gap:40px;margin-top:6px}
+.microbit-btn{width:36px;height:36px;border-radius:50%;background:#333;border:2px solid #555;color:#fff;font-weight:bold;font-size:.8em;cursor:pointer;transition:all .15s}
+.microbit-btn:hover{background:#555}
+.microbit-btn:active{transform:scale(.9);background:#764ba2}
+.led-strip{display:flex;gap:2px;position:absolute;top:6px;right:10px}
+.led{width:5px;height:5px;border-radius:50%;background:#333}
+.led.on{background:#0f0;box-shadow:0 0 6px #0f0}
+.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.btn{padding:10px 22px;border:none;border-radius:10px;font-size:.95em;cursor:pointer;font-family:inherit;transition:all .2s;font-weight:600}
+.btn-record{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.btn-record:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,.4)}
+.btn-reset{background:#e0e0e0;color:#333}
+.btn-reset:hover{background:#ccc}
+.btn-export{background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff}
+.btn-export:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(17,153,142,.4)}
+.stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.stat{background:#f0f0ff;border-radius:10px;padding:8px 16px;text-align:center;font-size:.85em}
+.stat strong{color:#764ba2;font-size:1.1em;display:block}
+.table-wrapper{max-height:280px;overflow-y:auto;border-radius:10px;border:1px solid #e0e0e0}
+.table-wrapper::-webkit-scrollbar{width:6px}
+.table-wrapper::-webkit-scrollbar-thumb{background:#764ba2;border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:.9em}
+thead{position:sticky;top:0;z-index:1}
+th{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px;text-align:center;font-weight:600}
+td{padding:8px 10px;text-align:center;border-bottom:1px solid #eee}
+tr:nth-child(even){background:#f8f8ff}
+tr:hover{background:#eee8ff}
+.bar-cell{width:80px}
+.bar-bg{width:100%;height:14px;background:#eee;border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px;transition:width .5s}
+.export-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+.export-modal.show{display:flex}
+.export-card{background:#fff;border-radius:18px;padding:30px;max-width:420px;width:90%;text-align:center}
+.export-card h2{color:#764ba2;margin-bottom:14px}
+.export-card p{margin:6px 0;color:#555;font-size:.9em}
+.export-card .close-btn{margin-top:16px;padding:8px 24px;border:none;border-radius:8px;background:#764ba2;color:#fff;cursor:pointer;font-family:inherit}
+.empty-msg{text-align:center;color:#aaa;padding:30px;font-style:italic}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .microbit-buttons > * + * { margin-left: 40px; }
+  .led-strip > * + * { margin-left: 2px; }
+  .controls > * { margin: 6px; }
+  .stats > * { margin: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<h1>📊 Data Logger: Κουμπί → Μέτρηση → Πίνακας</h1>
+<p class="subtitle">Προσομοίωση καταγραφής δεδομένων με micro:bit</p>
+
+<div class="container">
+  <div class="microbit">
+    <span class="microbit-label">micro:bit</span>
+    <div class="led-strip" id="ledStrip"></div>
+    <div class="microbit-screen">
+      <canvas id="screenCanvas" width="100" height="50"></canvas>
+    </div>
+    <div class="microbit-buttons">
+      <button class="microbit-btn" id="btnA" onclick="recordMeasurement()">A</button>
+      <button class="microbit-btn" id="btnB" onclick="resetData()">B</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-record" onclick="recordMeasurement()">📥 Καταγραφή Μέτρησης</button>
+    <button class="btn btn-export" onclick="exportData()">📤 Εξαγωγή Δεδομένων</button>
+    <button class="btn btn-reset" onclick="resetData()">🗑️ Καθαρισμός</button>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat">Καταγραφές:<strong id="countStat">0</strong></div>
+    <div class="stat">Μέση τιμή:<strong id="avgStat">-</strong></div>
+    <div class="stat">Μέγιστη:<strong id="maxStat">-</strong></div>
+    <div class="stat">Ελάχιστη:<strong id="minStat">-</strong></div>
+  </div>
+
+  <div id="tableArea">
+    <p class="empty-msg" id="emptyMsg">Πάτα το κουμπί A για να καταγράψεις μια μέτρηση φωτός!</p>
+    <div class="table-wrapper" id="tableWrapper" style="display:none">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Χρονική Σημείωση</th><th>Φως (0-255)</th><th>Ράβδος</th></tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="export-modal" id="exportModal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="export-card">
+    <h2>📤 Σύνοψη Εξαγωγής</h2>
+    <p id="exportContent"></p>
+    <button class="close-btn" onclick="document.getElementById('exportModal').classList.remove('show')">Κλείσιμο</button>
+  </div>
+</div>
+
+<script>
+var data=[];
+var canvas=document.getElementById('screenCanvas');
+var ctx=canvas.getContext('2d');
+
+function initLeds(){
+  var strip=document.getElementById('ledStrip');
+  strip.innerHTML='';
+  for(var i=0;i<5;i++){
+    var led=document.createElement('div');
+    led.className='led';
+    strip.appendChild(led);
+  }
+}
+initLeds();
+
+function drawScreen(value){
+  ctx.clearRect(0,0,100,50);
+  ctx.fillStyle='#0a0a1a';
+  ctx.fillRect(0,0,100,50);
+  ctx.fillStyle='#00ff00';
+  ctx.font='bold 16px Segoe UI';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  if(value!==null){
+    ctx.fillText(value,50,25);
+  } else {
+    ctx.font='10px Segoe UI';
+    ctx.fillText('έτοιμο',50,25);
+  }
+}
+drawScreen(null);
+
+function blinkLeds(){
+  var leds=document.querySelectorAll('.led');
+  leds.forEach(function(l){l.classList.add('on')});
+  setTimeout(function(){leds.forEach(function(l){l.classList.remove('on')})},600);
+}
+
+function getColor(v){
+  if(v<85) return '#667eea';
+  if(v<170) return '#764ba2';
+  return '#e74c3c';
+}
+
+function updateStats(){
+  var countEl=document.getElementById('countStat');
+  var avgEl=document.getElementById('avgStat');
+  var maxEl=document.getElementById('maxStat');
+  var minEl=document.getElementById('minStat');
+  countEl.textContent=data.length;
+  if(data.length>0){
+    var vals=data.map(function(d){return d.value});
+    var sum=vals.reduce(function(a,b){return a+b},0);
+    avgEl.textContent=(sum/vals.length).toFixed(1);
+    maxEl.textContent=Math.max.apply(null,vals);
+    minEl.textContent=Math.min.apply(null,vals);
+  } else {
+    avgEl.textContent='-';
+    maxEl.textContent='-';
+    minEl.textContent='-';
+  }
+}
+
+function recordMeasurement(){
+  var now=new Date();
+  var ts=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+  var value=Math.floor(Math.random()*256);
+  data.push({id:data.length+1,time:ts,value:value});
+
+  drawScreen(value);
+  blinkLeds();
+
+  document.getElementById('emptyMsg').style.display='none';
+  document.getElementById('tableWrapper').style.display='block';
+
+  var tbody=document.getElementById('dataBody');
+  var row=document.createElement('tr');
+  row.style.animation='fadeIn .3s';
+  var pct=(value/255*100).toFixed(0);
+  row.innerHTML='<td><strong>#'+data.length+'</strong></td><td>'+ts+'</td><td><strong style="color:'+getColor(value)+'">'+value+'</strong></td><td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:'+pct+'%;background:'+getColor(value)+'"></div></div></td>';
+  tbody.appendChild(row);
+
+  updateStats();
+
+  var wrapper=document.getElementById('tableWrapper');
+  wrapper.scrollTop=wrapper.scrollHeight;
+}
+
+function resetData(){
+  if(data.length>0 && !confirm('Θέλεις σίγουρα να διαγράψεις όλα τα δεδομένα;')) return;
+  data=[];
+  document.getElementById('dataBody').innerHTML='';
+  document.getElementById('tableWrapper').style.display='none';
+  document.getElementById('emptyMsg').style.display='block';
+  drawScreen(null);
+  updateStats();
+}
+
+function exportData(){
+  if(data.length===0){
+    document.getElementById('exportContent').innerHTML='<strong>Δεν υπάρχουν δεδομένα!</strong><br>Πάτα το κουμπί A για καταγραφές.';
+  } else {
+    var vals=data.map(function(d){return d.value});
+    var sum=vals.reduce(function(a,b){return a+b},0);
+    var avg=(sum/vals.length).toFixed(1);
+    var mx=Math.max.apply(null,vals);
+    var mn=Math.min.apply(null,vals);
+    var range=mx-mn;
+    document.getElementById('exportContent').innerHTML=
+      '<strong>📊 Σύνοψη Data Logger</strong><br><br>'+
+      'Συνολικές καταγραφές: <strong>'+data.length+'</strong><br>'+
+      'Μέση τιμή φωτός: <strong>'+avg+'</strong><br>'+
+      'Μέγιστη τιμή: <strong>'+mx+'</strong><br>'+
+      'Ελάχιστη τιμή: <strong>'+mn+'</strong><br>'+
+      'Εύρος: <strong>'+range+'</strong><br>'+
+      'Πρώτη καταγραφή: <strong>'+data[0].time+'</strong><br>'+
+      'Τελευταία καταγραφή: <strong>'+data[data.length-1].time+'</strong><br><br>'+
+      '<em>Τα δεδομένα προσομοιώνουν μετρήσεις φωτός (0-255).</em>';
+  }
+  document.getElementById('exportModal').classList.add('show');
+}
+</script>
+</body>
+</html>

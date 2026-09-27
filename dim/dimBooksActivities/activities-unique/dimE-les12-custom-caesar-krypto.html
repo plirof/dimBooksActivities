@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κρυπτογράφηση → Δυαδικό | Μάθημα 12</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:750px;width:100%;padding:20px;}
+.section{background:#f8f9ff;border-radius:14px;padding:16px;margin-bottom:14px;border:2px solid #e8eaf6;}
+.section-title{font-size:1rem;font-weight:700;color:#4527a0;margin-bottom:10px;text-align:center;}
+.word-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0;}
+.word-btn{padding:8px 16px;border:2px solid #667eea;border-radius:10px;background:#fff;font-weight:700;cursor:pointer;color:#4527a0;transition:all .2s;}
+.word-btn:hover,.word-btn.active{background:#667eea;color:#fff;}
+.chain-area{display:flex;flex-direction:column;gap:8px;align-items:center;}
+.letter-card{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;}
+.letter-card .ch{font-size:1.8rem;font-weight:800;color:#4527a0;min-width:30px;text-align:center;}
+.letter-card .arrow{color:#764ba2;font-weight:700;}
+.letter-card .code{font-size:1.1rem;font-weight:700;color:#e65100;min-width:30px;text-align:center;}
+.letter-card .binary{font-family:monospace;font-size:1rem;font-weight:700;color:#2e7d32;letter-spacing:2px;background:#f1f8e9;padding:4px 8px;border-radius:6px;}
+.letter-card .enc-ch{font-size:1.8rem;font-weight:800;color:#c62828;min-width:30px;text-align:center;}
+.letter-card .enc-bin{font-family:monospace;font-size:1rem;font-weight:700;color:#c62828;letter-spacing:2px;background:#ffebee;padding:4px 8px;border-radius:6px;}
+.result-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:12px;padding:14px;text-align:center;font-size:1.1rem;font-weight:700;color:#166534;word-break:break-all;margin-top:10px;}
+.key-row{display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:12px;}
+.key-btn{width:36px;height:36px;border-radius:50%;border:2px solid #667eea;background:#fff;font-size:1rem;font-weight:700;cursor:pointer;color:#5b3ea8;}
+.key-val{font-size:1.1rem;font-weight:800;color:#5b3ea8;min-width:100px;text-align:center;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .word-row > * { margin: 4px; }
+  .chain-area > * + * { margin-top: 8px; }
+  .letter-card > * { margin: 5px; }
+  .key-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔐 Κρυπτογράφηση Λέξης → Δυαδικό</h1>
+<p class="subtitle">Κρυπτογράφησε λέξεις και δες τις σε δυαδικό κώδικα!</p>
+<div class="container">
+<div class="section">
+<div class="section-title">🔑 Κλειδί Καίσαρα</div>
+<div class="key-row">
+<button class="key-btn" onclick="chKey(-1)">-</button>
+<span class="key-val" id="keyV">Κλειδί: 3</span>
+<button class="key-btn" onclick="chKey(1)">+</button>
+</div>
+</div>
+<div class="section">
+<div class="section-title">📝 Διάλεξε ή Γράψε Λέξη</div>
+<div class="word-row">
+<button class="word-btn" onclick="setW('ΝΑΙ')">ΝΑΙ</button>
+<button class="word-btn" onclick="setW('ΣΧΟΛΕΙΟ')">ΣΧΟΛΕΙΟ</button>
+<button class="word-btn" onclick="setW('ΓΕΙΑ')">ΓΕΙΑ</button>
+<button class="word-btn" onclick="setW('ΜΑΘΗΜΑ')">ΜΑΘΗΜΑ</button>
+</div>
+<div style="text-align:center;margin-top:8px;">
+<input type="text" id="wInp" placeholder="Ή γράψε δική σου (κεφαλαία)..." style="width:80%;max-width:300px;padding:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:1rem;text-align:center;text-transform:uppercase;outline:none;" oninput="customW()">
+</div>
+</div>
+<div class="section">
+<div class="section-title">🔗 Αλυσίδα Κρυπτογράφησης</div>
+<div class="chain-area" id="chain"></div>
+</div>
+<div class="result-box" id="result">Διάλεξε μια λέξη για να ξεκινήσεις!</div>
+</div>
+<script>
+var GR='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';var N=GR.length;var key=3;var word='';
+function toBin(n){var s='';for(var i=7;i>=0;i--)s+=(n>>i)&1;return s;}
+function chKey(d){key=((key+d-1+N)%N)+1;if(key<1)key=N;document.getElementById('keyV').textContent='Κλειδί: '+key;render();}
+function setW(w){word=w;document.getElementById('wInp').value=w;render();}
+function customW(){word=document.getElementById('wInp').value.toUpperCase().replace(/[^Α-Ω]/g,'');render();}
+function encrypt(ch){var i=GR.indexOf(ch);return i>=0?GR[(i+key)%N]:ch;}
+function render(){
+var chain=document.getElementById('chain');var result=document.getElementById('result');
+if(!word){chain.innerHTML='';result.textContent='Διάλεξε μια λέξη για να ξεκινήσεις!';return;}
+var html='';var encWord='';
+for(var i=0;i<word.length;i++){
+var ch=word[i];var idx=GR.indexOf(ch);
+var enc=encrypt(ch);var encIdx=GR.indexOf(enc);
+encWord+=enc;
+var origCode=idx>=0?(idx+1):0;var encCode=encIdx>=0?(encIdx+1):0;
+html+='<div class="letter-card">';
+html+='<span class="ch">'+ch+'</span><span class="arrow">→</span>';
+html+='<span class="code">'+(origCode>0?origCode:'?')+'</span><span class="arrow">→</span>';
+html+='<span class="binary">'+(origCode>0?toBin(origCode):'????????')+'</span>';
+html+='<span class="arrow" style="color:#c62828;">+key→</span>';
+html+='<span class="enc-ch">'+enc+'</span><span class="arrow" style="color:#c62828;">→</span>';
+html+='<span class="enc-bin">'+(encCode>0?toBin(encCode):'????????')+'</span>';
+html+='</div>';
+}
+chain.innerHTML=html;
+result.innerHTML='🔓 Αρχικό: <b>'+word+'</b> → 🔒 Κρυπτογραφημένο: <b style="color:#c62828;">'+encWord+'</b>';
+}
+</script>
+</body>
+</html>

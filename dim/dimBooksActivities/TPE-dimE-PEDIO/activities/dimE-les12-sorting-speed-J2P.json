@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ψηφιοποίηση",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "enc", "name": "Κωδικοποίηση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "dec", "name": "Αποκωδικοποίηση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Γράμμα → Δυαδικά", "category": "enc"},
+    {"text": "ΕΚΔΡΟΜΗ → 00101...", "category": "enc"},
+    {"text": "Βρες γράμμα σε πίνακα", "category": "enc"},
+    {"text": "Γράψε δυαδικά δεξιά", "category": "enc"},
+    {"text": "Δυαδικά → Γράμμα", "category": "dec"},
+    {"text": "10111... → ΨΗΦΙΑΚΟ", "category": "dec"},
+    {"text": "Βρες δυαδικά σε πίνακα", "category": "dec"},
+    {"text": "Γράψε γράμμα αριστερά", "category": "dec"},
+    {"text": "Κείμενο σε 0 και 1", "category": "enc"},
+    {"text": "0 και 1 σε κείμενο", "category": "dec"}
+  ],
+  "duration": 30
+}

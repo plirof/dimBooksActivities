@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Στοιχεία Φύλλου",
+  "subtitle": "Πιάσε τις σωστές έννοιες!",
+  "instructions": "Πιάσε τις λέξεις σχετικές με το υπολογιστικό φύλλο!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Κελί", "correct": true, "color": "#4CAF50" },
+    { "text": "Γραμμή", "correct": true, "color": "#2196F3" },
+    { "text": "Στήλη", "correct": true, "color": "#FF9800" },
+    { "text": "Πίνακας", "correct": true, "color": "#9C27B0" },
+    { "text": "Διάγραμμα", "correct": true, "color": "#00BCD4" },
+    { "text": "Τύπος", "correct": true, "color": "#E91E63" },
+    { "text": "Συνάρτηση", "correct": true, "color": "#8BC34A" },
+    { "text": "Μέγεθος", "correct": true, "color": "#3F51B5" },
+    { "text": "Ψυγείο", "correct": false, "color": "#F44336" },
+    { "text": "Φούρνος", "correct": false, "color": "#795548" }
+  ]
+}

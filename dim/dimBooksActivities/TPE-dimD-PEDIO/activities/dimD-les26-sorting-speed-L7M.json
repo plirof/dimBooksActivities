@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Διαχείριση Επαφών",
+  "subtitle": "Ταξινόμησε τις ενέργειες στις σωστές κατηγορίες!",
+  "instructions": "Πάτα ← για Προσθήκη Επαφής, → για Διαχείριση Επικοινωνίας!",
+  "categories": [
+    { "id": "add", "name": "Προσθήκη Επαφής", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "manage", "name": "Διαχείριση Επικοινωνίας", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Στέλνω αίτημα σύνδεσης", "category": "add" },
+    { "text": "Αποδέχομαι αίτημα", "category": "add" },
+    { "text": "Στέλνω μήνυμα κειμένου", "category": "manage" },
+    { "text": "Αναζητώ μέλος με τον φακό", "category": "add" },
+    { "text": "Ξεκινάω συνομιλία", "category": "manage" },
+    { "text": "Απορρίπτω αίτημα", "category": "add" },
+    { "text": "Διαγράφω ιστορικό συνομιλίας", "category": "manage" },
+    { "text": "Κάνω αποκλεισμό επαφής", "category": "manage" },
+    { "text": "Πληκτρολογώ ονοματεπώνυμο", "category": "add" },
+    { "text": "Παύω ειδοποιήσεις", "category": "manage" },
+    { "text": "Ελέγχω το καμπανάκι", "category": "add" },
+    { "text": "Αποχωρώ από ομαδική συνομιλία", "category": "manage" }
+  ],
+  "duration": 45
+}

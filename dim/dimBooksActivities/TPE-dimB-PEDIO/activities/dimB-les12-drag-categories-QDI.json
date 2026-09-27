@@ -1,0 +1,48 @@
+{
+  "title": "Είσοδος ή Έξοδος συσκευών",
+  "subtitle": "Κάθε συσκευή είναι είσοδος ή έξοδος;",
+  "categories": [
+    {
+      "id": "input",
+      "name": "ΕΙΣΟΔΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "output",
+      "name": "ΕΞΟΔΟΣ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "⌨️ Πληκτρολόγιο",
+      "category": "input"
+    },
+    {
+      "id": "item2",
+      "text": "🖱️ Ποντίκι",
+      "category": "input"
+    },
+    {
+      "id": "item3",
+      "text": "🖥️ Οθόνη",
+      "category": "output"
+    },
+    {
+      "id": "item4",
+      "text": "🖨️ Εκτυπωτής",
+      "category": "output"
+    },
+    {
+      "id": "item5",
+      "text": "🎤 Μικρόφωνο",
+      "category": "input"
+    },
+    {
+      "id": "item6",
+      "text": "🔊 Ηχεία",
+      "category": "output"
+    }
+  ]
+}

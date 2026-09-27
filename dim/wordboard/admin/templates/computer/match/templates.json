@@ -1,0 +1,94 @@
+{
+  "templates": [
+    {
+      "id": "computer_match_parts_001",
+      "name": "Μέρη του υπολογιστή",
+      "description": "Ταίριαξε τα μέρη του υπολογιστή",
+      "category": "computer_match",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "pairs": [
+        {"left": "Οθόνη", "right": "Για να βλέπουμε"},
+        {"left": "Πληκτρολόγιο", "right": "Για να γράφουμε"},
+        {"left": "Ποντίκι", "right": "Για να κάνουμε κλικ"},
+        {"left": "Σκληρός δίσκος", "right": "Για αποθήκευση"},
+        {"left": "Εκτυπωτής", "right": "Για εκτύπωση"},
+        {"left": "Ηχεία", "right": "Για να ακούμε"},
+        {"left": "Μικρόφωνο", "right": "Για να μιλάμε"},
+        {"left": "Κάμερα", "right": "Για βίντεο κλήσεις"}
+      ]
+    },
+    {
+      "id": "computer_match_keyboard_001",
+      "name": "Πλήκτρα υπολογιστή",
+      "description": "Ταίριαξε τα πλήκτρα με τη χρήση τους",
+      "category": "computer_match",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "pairs": [
+        {"left": "Enter", "right": "Επιβεβαίωση"},
+        {"left": "Escape", "right": "Ακύρωση"},
+        {"left": "Space", "right": "Κενό"},
+        {"left": "Backspace", "right": "Διαγραφή γράμματος"},
+        {"left": "Delete", "right": "Διαγραφή"},
+        {"left": "Shift", "right": "Κεφαλαία"},
+        {"left": "Ctrl", "right": "Συντόμευση"},
+        {"left": "Alt", "right": "Εναλλακτικό"}
+      ]
+    },
+    {
+      "id": "computer_match_programs_001",
+      "name": "Προγράμματα υπολογιστή",
+      "description": "Ταίριαξε τα προγράμματα με τη χρήση τους",
+      "category": "computer_match",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "pairs": [
+        {"left": "Word", "right": "Γράψιμο κειμένου"},
+        {"left": "Excel", "right": "Λογαριασμοί"},
+        {"left": "Paint", "right": "Ζωγραφική"},
+        {"left": "Calculator", "right": "Μαθηματικά"},
+        {"left": "Browser", "right": "Ίντερνετ"},
+        {"left": "Notepad", "right": "Απλό κείμενο"},
+        {"left": "Media Player", "right": "Μουσική/Βίντεο"},
+        {"left": "Solitaire", "right": "Παιχνίδι"}
+      ]
+    },
+    {
+      "id": "computer_match_internet_001",
+      "name": "Ίντερνετ όροι",
+      "description": "Ταίριαξε τους όρους του ίντερνετ",
+      "category": "computer_match",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "pairs": [
+        {"left": "Browser", "right": "Πρόγραμμα περιήγησης"},
+        {"left": "Website", "right": "Ιστοσελίδα"},
+        {"left": "Link", "right": "Σύνδεσμος"},
+        {"left": "Email", "right": "Ηλεκτρονικό ταχυδρομείο"},
+        {"left": "Password", "right": "Κωδικός"},
+        {"left": "Username", "right": "Όνομα χρήστη"},
+        {"left": "Search", "right": "Αναζήτηση"},
+        {"left": "Download", "right": "Λήψη αρχείου"}
+      ]
+    },
+    {
+      "id": "computer_match_devices_001",
+      "name": "Συσκευές",
+      "description": "Ταίριαξε τις συσκευές με τη χρήση τους",
+      "category": "computer_match",
+      "difficulty": "easy",
+      "tags": ["computer", "devices", "greek", "elementary"],
+      "pairs": [
+        {"left": "Tablet", "right": "Μικρός υπολογιστής με οθόνη αφής"},
+        {"left": "Laptop", "right": "Φορητός υπολογιστής"},
+        {"left": "Smartphone", "right": "Έξυπνο τηλέφωνο"},
+        {"left": "USB Stick", "right": "Μνήμη USB"},
+        {"left": "Webcam", "right": "Κάμερα για υπολογιστή"},
+        {"left": "Headphones", "right": "Ακουστικά"},
+        {"left": "Scanner", "right": "Σαρωτής"},
+        {"left": "Router", "right": "Δρομολογητής ίντερνετ"}
+      ]
+    }
+  ]
+}

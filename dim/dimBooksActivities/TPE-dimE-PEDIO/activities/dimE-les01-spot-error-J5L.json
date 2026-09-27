@@ -1,0 +1,68 @@
+{
+  "title": "Βρες τα Λάθη: Καίσαρας",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αλγόριθμος", "error": false},
+        {"text": "του", "error": false},
+        {"text": "Καίσαρα", "error": false},
+        {"text": "κρυπτογραφεί", "error": false},
+        {"text": "με", "error": false},
+        {"text": "αφαίρεση", "error": true, "correct": "αντικατάσταση", "feedback": "Η μέθοδος του Καίσαρα χρησιμοποιεί αντικατάσταση, όχι αφαίρεση!"},
+        {"text": "γραμμάτων.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μετατόπιση", "error": false},
+        {"text": "στον", "error": false},
+        {"text": "Καίσαρα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πάντα", "error": false},
+        {"text": "διαφορετική", "error": true, "correct": "ίδια", "feedback": "Η μετατόπιση είναι πάντα ο ίδιος αριθμός!"},
+        {"text": "για", "error": false},
+        {"text": "κάθε", "error": false},
+        {"text": "γράμμα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μεταβλητή", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "σταθερή", "error": true, "correct": "αλλαγόμενη", "feedback": "Η μεταβλητή παίρνει διαφορετικές τιμές, δεν είναι σταθερή!"},
+        {"text": "τιμή", "error": false},
+        {"text": "κατά", "error": false},
+        {"text": "την", "error": false},
+        {"text": "εκτέλεση.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "μετατόπιση", "error": false},
+        {"text": "3", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Α", "error": false},
+        {"text": "γίνεται", "error": false},
+        {"text": "Β.", "error": true, "correct": "Δ", "feedback": "Α + 3 θέσεις = Δ, όχι Β!"},
+        {"text": "", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κρυπτογραφούμε", "error": false},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κάνουμε", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "μηνύματα", "error": false},
+        {"text": "πιο", "error": false},
+        {"text": "ευανάγνωστα.", "error": true, "correct": "αδιάβαστα", "feedback": "Κρυπτογραφούμε για να κάνουμε τα μηνύματα ΑΔΙΑΒΑΣΤΑ!"}
+      ]
+    }
+  ]
+}

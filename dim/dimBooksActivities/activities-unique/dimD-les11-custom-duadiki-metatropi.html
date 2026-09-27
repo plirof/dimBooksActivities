@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δυαδική Μετατροπή - Binary</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f3e8ff,#d8b4fe);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f3e8ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#6b21a8;text-align:center;line-height:1.5}
+.challenge-area{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px}
+.letter-display{font-size:4em;text-align:center;margin-bottom:10px}
+.binary-input{background:#fff;border:2px solid #a78bfa;border-radius:12px;padding:14px;margin-bottom:14px}
+.input-label{font-weight:700;color:#7c3aed;margin-bottom:10px;font-size:.95em;text-align:center}
+.binary-bits{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.bit-input{width:45px;height:55px;border:2px solid #d8b4fe;border-radius:8px;text-align:center;font-size:1.5em;font-weight:700;color:#7c3aed;transition:all .2s}
+.bit-input:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.2)}
+.bit-input.invalid{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.btn-check{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#7c3aed;margin-bottom:12px}
+.hint-box{background:#fef3c7;border-radius:12px;padding:10px 14px;margin-bottom:12px;text-align:center;font-size:.9em;color:#b45309}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#7c3aed;transform:scale(1.3)}
+@media(max-width:550px){.letter-display{font-size:3em}.bit-input{width:38px;height:48px;font-size:1.3em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .binary-bits > * + * { margin-left: 8px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>💻 Δυαδική Μετατροπή</h1>
+<p>Μετάτρεψε τα γράμματα σε δυαδικά ψηφία (0 και 1)!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Οι υπολογιστές χρησιμοποιούν μόνο 0 και 1! Κάθε γράμμα έχει τον δικό του μοναδικό κώδικα από 5 δυαδικά ψηφία!</div>
+
+<div class="score-display" id="scoreDisplay">Βαθμολογία: 0 / 8</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="challenge-area">
+<div class="letter-display" id="letterDisplay">Α</div>
+</div>
+
+<div class="binary-input">
+<div class="input-label">🔢 Δύαδικός κώδικας του γράμματος:</div>
+<div class="binary-bits">
+<input type="text" class="bit-input" id="bit1" maxlength="1" oninput="validateBit(this)" onkeydown="handleKeyDown(event,0)">
+<input type="text" class="bit-input" id="bit2" maxlength="1" oninput="validateBit(this)" onkeydown="handleKeyDown(event,1)">
+<input type="text" class="bit-input" id="bit3" maxlength="1" oninput="validateBit(this)" onkeydown="handleKeyDown(event,2)">
+<input type="text" class="bit-input" id="bit4" maxlength="1" oninput="validateBit(this)" onkeydown="handleKeyDown(event,3)">
+<input type="text" class="bit-input" id="bit5" maxlength="1" oninput="validateBit(this)" onkeydown="handleKeyDown(event,4)">
+</div>
+</div>
+
+<div class="hint-box" id="hintBox">
+💡 Υπόδειξη: Η σειρά ξεκινάει από Α = 00001, Β = 00010...
+</div>
+
+<button class="btn-check" id="checkBtn" onclick="checkAnswer()">✅ Έλεγχος</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentIndex=0;
+var score=0;
+
+var letters=[
+  {letter:'Α',binary:'00001'},
+  {letter:'Β',binary:'00010'},
+  {letter:'Γ',binary:'00011'},
+  {letter:'Δ',binary:'00100'},
+  {letter:'Ε',binary:'00101'},
+  {letter:'Σ',binary:'10010'},
+  {letter:'Τ',binary:'10011'},
+  {letter:'Ρ',binary:'10001'}
+];
+
+function buildDots(){
+  var container=document.getElementById('progressDots');
+  container.innerHTML='';
+  for(var i=0;i<letters.length;i++){
+    var dot=document.createElement('div');
+    dot.className='dot';
+    dot.id='dot-'+i;
+    container.appendChild(dot);
+  }
+}
+
+function initChallenge(){
+  var letter=letters[currentIndex];
+  document.getElementById('letterDisplay').textContent=letter.letter;
+  
+  for(var i=1;i<=5;i++){
+    var input=document.getElementById('bit'+i);
+    input.value='';
+    input.classList.remove('invalid');
+  }
+  document.getElementById('bit1').focus();
+  
+  updateDots();
+}
+
+function validateBit(input){
+  var value=input.value;
+  if(value!=='0'&&value!=='1'){
+    input.classList.add('invalid');
+  }else{
+    input.classList.remove('invalid');
+    if(value.length===1){
+      var nextId='bit'+(parseInt(input.id.replace('bit',''))+1);
+      var nextInput=document.getElementById(nextId);
+      if(nextInput){
+        nextInput.focus();
+      }
+    }
+  }
+}
+
+function handleKeyDown(event,index){
+  if(event.key==='Backspace'&&event.target.value===''){
+    var prevId='bit'+index;
+    var prevInput=document.getElementById(prevId);
+    if(prevInput){
+      prevInput.focus();
+    }
+  }
+}
+
+function checkAnswer(){
+  var userBinary='';
+  for(var i=1;i<=5;i++){
+    var bit=document.getElementById('bit'+i).value;
+    if(bit==='0'||bit==='1'){
+      userBinary+=bit;
+    }else{
+      showFeedback('❌ Συμπλήρωσε όλα τα δυαδικά ψηφία (0 ή 1)!',false);
+      return;
+    }
+  }
+  
+  var letter=letters[currentIndex];
+  var isCorrect=userBinary===letter.binary;
+  
+  if(isCorrect){
+    score++;
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-ok');
+    showFeedback('✅ Σωστά! '+letter.letter+' = '+letter.binary,true);
+    
+    currentIndex++;
+    
+    if(currentIndex>=letters.length){
+      showFinalResult();
+    }else{
+      setTimeout(function(){
+        document.getElementById('feedback').textContent='';
+        document.getElementById('feedback').className='feedback';
+        initChallenge();
+      },1500);
+    }
+  }else{
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-wrong');
+    showFeedback('❌ Λάθος! '+letter.letter+' = '+letter.binary,false);
+    
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+      document.getElementById('feedback').className='feedback';
+      dot.classList.remove('done-wrong');
+      dot.classList.add('current');
+    },2000);
+  }
+  
+  updateScore();
+}
+
+function updateDots(){
+  var dots=document.querySelectorAll('.dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.remove('current');
+  }
+  document.getElementById('dot-'+currentIndex).classList.add('current');
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent='Βαθμολογία: '+score+' / '+letters.length;
+}
+
+function showFinalResult(){
+  document.getElementById('letterDisplay').textContent='🏆';
+  document.getElementById('checkBtn').style.display='none';
+  
+  if(score===letters.length){
+    showFeedback('🏆 Τέλεια! Κωδικοποίησες όλα τα γράμματα σωστά!',true);
+  }else if(score>=5){
+    showFeedback('👍 Καλά! '+score+'/'+letters.length+' σωστά!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+letters.length+' σωστά. Πρακτική περισσότερο!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+buildDots();
+initChallenge();
+</script>
+</body>
+</html>

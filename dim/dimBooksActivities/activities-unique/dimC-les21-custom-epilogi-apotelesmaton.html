@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Επιλογή Αποτελεσμάτων Αναζήτησης</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f3ff,#a78bfa);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f5f3ff;border-radius:12px;border-left:4px solid #7c3aed;padding:10px 14px;font-size:.85em;color:#3b0764;line-height:1.5}
+.info b{color:#5b21b6}
+.scenario{background:#faf5ff;border-radius:14px;border:2px solid #ddd6fe;padding:16px}
+.scenario h3{color:#5b21b6;font-size:1em;margin-bottom:6px}
+.scenario p{color:#4c1d95;font-size:.9em;line-height:1.5}
+.browser{background:#fff;border-radius:16px;border:2px solid #ddd6fe;overflow:hidden}
+.browser-bar{background:#f1f5f9;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e2e8f0}
+.browser-dots{display:flex;gap:4px}
+.browser-dots span{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot-red{background:#ef4444}
+.dot-yellow{background:#f59e0b}
+.dot-green{background:#22c55e}
+.browser-url{flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:.8em;color:#64748b}
+.search-header{padding:12px 16px;border-bottom:1px solid #e2e8f0;font-size:.85em;color:#6b7280}
+.search-header b{color:#5b21b6}
+.results-list{padding:8px}
+.result-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.result-row:hover{background:#faf5ff}
+.result-row.selected-best{border-color:#22c55e;background:#f0fdf4}
+.result-row.selected-ok{border-color:#f59e0b;background:#fffbeb}
+.result-row.selected-bad{border-color:#ef4444;background:#fef2f2}
+.result-row.locked{cursor:default;opacity:.7}
+.r-rank{font-size:.75em;color:#a78bfa;font-weight:700;min-width:24px;padding-top:4px}
+.r-content{flex:1}
+.r-content .r-url{font-size:.72em;color:#16a34a;margin-bottom:2px}
+.r-content .r-title{font-size:.88em;color:#1d4ed8;font-weight:600;margin-bottom:2px}
+.r-content .r-desc{font-size:.78em;color:#64748b;line-height:1.4}
+.r-icon{font-size:1.3em;padding-top:2px}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#5b21b6}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(91,33,182,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.result-row{padding:8px}.r-content .r-title{font-size:.82em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .browser-bar > * + * { margin-left: 8px; }
+  .browser-dots > * + * { margin-left: 4px; }
+  .result-row > * + * { margin-left: 10px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎯 Επιλογή Αποτελεσμάτων Αναζήτησης</h1>
+<p>Διάλεξε το πιο κατάλληλο αποτέλεσμα για κάθε ερώτηση!</p>
+</div>
+<div class="area">
+<div class="info">💡 Όταν αναζητάμε κάτι, παίρνουμε <b>πολλά αποτελέσματα</b>. Πρέπει να διαλέξουμε το πιο <b>σχετικό</b>! Κοιτάμε τον τίτλο, την περιγραφή και τη διεύθυνση URL.</div>
+<div class="score-bar">⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="scenario" id="scenarioBox"></div>
+<div class="browser" id="browserArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextChallenge()">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var challenges=[
+{
+scenario:'Η μαμά σου θέλει να βρει τις ώρες λειτουργίας του Μουσείου Βυζαντινού Πολιτισμού στη Θεσσαλονίκη.',
+query:'Μουσείο Βυζαντινού Πολιτισμού Θεσσαλονίκη ώρες',
+results:[
+{url:'www.mbp.gr',title:'Μουσείο Βυζαντινού Πολιτισμού — Ώρες & Είσοδος',desc:'Επίσημη σελίδα: Ώρες λειτουργίας, τιμές εισιτηρίων, διεύθυνση και πληροφορίες επισκεπτών.',quality:'best'},
+{url:'www.thessaloniki-guide.gr',title:'Μουσεία Θεσσαλονίκης',desc:'Λίστα με όλα τα μουσεία της Θεσσαλονίκης με σύντομες περιγραφές.',quality:'ok'},
+{url:'www.byzantine-art.gr',title:'Βυζαντινή Τέχνη — Ιστορία',desc:'Η ιστορία της βυζαντινής τέχνης από τον 4ο έως τον 15ο αιώνα.',quality:'bad'},
+{url:'www.museum-shop.gr',title:'Μουσείο Βυζαντινού Πολιτισμού — Ε-shop',desc:'Αγόρασε αναμνηστικά και αντίγραφα από το μουσείο online.',quality:'bad'}
+]
+},
+{
+scenario:'Ψάχνεις μια συνταγή για να φτιάξεις σπιτική πίτσα με τα αδέρφια σου.',
+query:'συνταγή σπιτική πίτσα εύκολη',
+results:[
+{url:'www.easy-cook.gr',title:'Εύκολη Σπιτική Πίτσα — 30 λεπτά!',desc:'Βήμα-βήμα συνταγή με φωτογραφίες. Υλικά: ζύμη, σως, τυρί, λαχανικά.',quality:'best'},
+{url:'www.pizza-restaurant.gr',title:'Πίτσα Delivery — Παραγγελία Online',desc:'Παράδοση πίτσας στο σπίτι σου σε 45 λεπτά. Μεγάλη ποικιλία.',quality:'bad'},
+{url:'www.cooking-tips.gr',title:'Πώς να Φτιάξεις Ζύμη για Πίτσα',desc:'Μόνο η συνταγή για τη ζύμη. Χωρίς γέμιση και σως.',quality:'ok'},
+{url:'www.italian-food.gr',title:'Η Ιστορία της Πίτσας',desc:'Από πού κατάγεται η πίτσα και πώς έγινε διάσημη σε όλο τον κόσμο.',quality:'bad'}
+]
+},
+{
+scenario:'Ο δάσκαλός σου ζήτησε να βρεις πληροφορίες για τον ήλιο για έναproject.',
+query:'ήλιος αστέρας ηλιακό σύστημα πληροφορίες',
+results:[
+{url:'www.nasa-kids.gr',title:'Ο Ήλιος — Ο αστέρας μας!',desc:'Για παιδιά: Μέγεθος, θερμοκρασία, απόσταση από τη Γη, ηλιακά ηφαίστεια.',quality:'best'},
+{url:'www.weather.gr',title:'Ηλιακή Ακτινοβολία και Καρκίνος Δέρματος',desc:'Προστασία από τον ήλιο. Κρέμες ηλιακής προστασίας και SPF.',quality:'bad'},
+{url:'www.astronomy.gr',title:'Το Ηλιακό Σύστημα',desc:'Γενικές πληροφορίες για όλα τα γράμματα: Ερμής, Αφροδίτη, Γη, Άρης...',quality:'ok'},
+{url:'www.mythology.gr',title:'Ο Ήλιος στην Ελληνική Μυθολογία',desc:'Ο Ηλιος, γιος του Υπερίονα. Μύθοι και θρύλοι για τον θεό Ήλιο.',quality:'bad'}
+]
+},
+{
+scenario:'Θέλεις να μάθεις πώς να φτιάξεις έναν ανεμοδείκτη για το μάθημα των Φυσικών.',
+query:'πώς φτιάχνω ανεμοδείκτης κατασκευή',
+results:[
+{url:'www.stem-kids.gr',title:'Κατασκευή Ανεμοδείκτη — Βήμα-Βήμα!',desc:'Εύκολη κατασκευή ανεμοδείκτη με χαρτί, καλαμάκι και χαρτόνι. Υλικά και οδηγίες.',quality:'best'},
+{url:'www.weather-instruments.gr',title:'Τι είναι Ανεμοδείκτης;',desc:'Επεξήγηση της λειτουργίας του ανεμοδείκτη. Τύποι και χρήσεις.',quality:'ok'},
+{url:'www.buy-weather.gr',title:'Αγόρασε Ανεμοδείκτη Online',desc:'Επαγγελματικοί ανεμοδείκτες. Δωρεάν αποστολή.',quality:'bad'},
+{url:'www.wind-history.gr',title:'Ιστορία της Μέτρησης του Ανέμου',desc:'Πώς μετρούσαν τον άνεμο οι αρχαίοι civilizations.',quality:'bad'}
+]
+},
+{
+scenario:'Ψάχνεις τραγούδια για τη σχολική γιορτή της 28ης Οκτωβρίου.',
+query:'τραγούδια 28 Οκτωβρίου σχολική γιορτή',
+results:[
+{url:'www.school-songs.gr',title:'Τραγούδια για τη Γιορτή του Όχι',desc:'Συλλογή τραγουδιών για σχολικές γιορτές: στίχοι, μουσική, φύλλα.',quality:'best'},
+{url:'www.oxi-day.gr',title:'28 Οκτωβρίου 1940 — Η Ιστορία',desc:'Τι συνέβη στις 28 Οκτωβρίου 1940. Τα γεγονότα και οι ήρωες.',quality:'bad'},
+{url:'www.printable-songs.gr',title:'Στίχοι Πατριωτικών Τραγουδιών',desc:'Στίχοι δημοφιλών πατριωτικών τραγουδιών για εκτύπωση.',quality:'ok'},
+{url:'www.party-music.gr',title:'Μουσική για Πάρτι!',desc:'Τα πιο διάσημα τραγούδια για πάρτι και διασκέδαση.',quality:'bad'}
+]
+}
+];
+
+var currentChallenge=0;
+var score=0;
+var locked=false;
+
+function renderChallenge(){
+var ch=challenges[currentChallenge];
+locked=false;
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+document.getElementById('scenarioBox').innerHTML='<h3>📋 Σενάριο:</h3><p>'+ch.scenario+'</p>';
+
+var area=document.getElementById('browserArea');
+var html='<div class="browser-bar"><div class="browser-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div><div class="browser-url">www.anazitisi.gr/search?q='+encodeURIComponent(ch.query)+'</div></div>';
+html+='<div class="search-header">Αποτελέσματα για: <b>'+ch.query+'</b> — 约 250.000 αποτελέσματα</div>';
+html+='<div class="results-list">';
+for(var i=0;i<ch.results.length;i++){
+var r=ch.results[i];
+html+='<div class="result-row" data-idx="'+i+'" data-quality="'+r.quality+'" onclick="selectResult(this)">';
+html+='<div class="r-rank">#'+(i+1)+'</div>';
+html+='<div class="r-content"><div class="r-url">🔗 '+r.url+'</div><div class="r-title">'+r.title+'</div><div class="r-desc">'+r.desc+'</div></div>';
+html+='<div class="r-icon">🔘</div>';
+html+='</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function selectResult(el){
+if(locked)return;
+locked=true;
+var quality=el.dataset.quality;
+var rows=document.querySelectorAll('.result-row');
+for(var i=0;i<rows.length;i++){
+rows[i].classList.add('locked');
+var q=rows[i].dataset.quality;
+if(q==='best')rows[i].querySelector('.r-icon').textContent='✅';
+else if(q==='ok')rows[i].querySelector('.r-icon').textContent='⚠️';
+else rows[i].querySelector('.r-icon').textContent='❌';
+}
+if(quality==='best'){
+el.classList.add('selected-best');
+score++;
+showFeedback('🎉 Τέλεια! Αυτό είναι το πιο κατάλληλο αποτέλεσμα!',true);
+}else if(quality==='ok'){
+el.classList.add('selected-ok');
+showFeedback('⚠️ Αυτό είναι κάπως σχετικό, αλλά υπάρχει καλύτερο!',false);
+}else{
+el.classList.add('selected-bad');
+showFeedback('❌ Αυτό δεν είναι κατάλληλο! Κοίταξε ποιο είναι το ✅.',false);
+}
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('nextBtn').disabled=false;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextChallenge(){
+if(currentChallenge<challenges.length-1){
+currentChallenge++;
+renderChallenge();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+var total=challenges.length;
+var pct=Math.round(score/total*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+var scenarioBox=document.getElementById('scenarioBox');
+scenarioBox.innerHTML='';
+var area=document.getElementById('browserArea');
+area.innerHTML='<div style="text-align:center;padding:30px"><div style="font-size:2.5em">'+stars+'</div><h3 style="color:#5b21b6;margin:10px 0">Βρήκες '+score+'/'+total+' καλύτερα αποτελέσματα!</h3><p style="color:#64748b;font-size:.95em">'+(pct>=80?'Μπράβο! Ξέρεις να διαλέγεις τα πιο σχετικά αποτελέσματα!':'Συνέχισε την προσπάθεια! Θα γίνεις καλύτερος!')+'</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentChallenge=0;
+score=0;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('nextBtn').style.display='inline-block';
+renderChallenge();
+}
+
+document.getElementById('totalDisplay').textContent=challenges.length;
+renderChallenge();
+</script>
+</body>
+</html>

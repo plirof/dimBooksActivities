@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λογική Έκφραση Τέλους | Μάθημα 6</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#86efac);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#14532d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#16a34a;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#14532d;font-size:.75rem;font-weight:700;border:1px solid #86efac;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.bug-card{background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:10px;margin:8px 0}
+.bug-title{font-size:.78rem;font-weight:700;color:#dc2626;text-align:center;margin-bottom:4px}
+.bug-desc{font-size:.72rem;color:#7f1d1d;text-align:center}
+.fix-area{margin:8px 0}
+.fix-label{font-size:.7rem;font-weight:700;color:#14532d;text-align:center;margin:4px 0}
+.fix-options{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.fix-opt{padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.72rem;font-family:monospace;color:#334155;background:#fff;cursor:pointer;transition:all .2s}
+.fix-opt:hover{border-color:#16a34a;background:#f0fdf4}
+.fix-opt.selected{border-color:#16a34a;background:#dcfce7;color:#14532d;font-weight:700}
+.fix-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.fix-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#15803d}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #16a34a;border-radius:10px;background:transparent;color:#16a34a;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0fdf4}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .fix-options > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🐛 Διόρθωση Σφαλμάτων</h1>
+<p class="subtitle">Βρες το πρόβλημα στο παιχνίδι και διάλεξε τη σωστή λύση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόβλημα:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var bugs=[
+{
+title:'🐛 Σφάλμα 1: Οι ήρωες δεν σταματάνε!',
+desc:'Οι χαρακτήρες συνεχίζουν να κινούνται ακόμα και όταν οι πόντοι φτάσουν τους 10.',
+options:[
+'Βάλε "Επανάλαβε ώσπου (πόντοι=10 Ή ζωές=0)" αντί για "Για πάντα"',
+'Βάλε "Επανάλαβε 10 φορές" αντί για "Για πάντα"',
+'Βάλε "Αν πόντοι=10 τότε σταμάτα όλα" μέσα στο "Για πάντα"',
+'Διέγραψε την εντολή "Για πάντα"'
+],
+correct:0,
+explain:'Η εντολή "Επανάλαβε ώστου" με τη σύνθετη συνθήκη σταματάει όλους όταν πόντοι=10 Ή ζωές=0.'
+},
+{
+title:'🐛 Σφάλμα 2: Ζωές κάτω από το 0!',
+desc:'Οι ζωές συνεχίζουν να μειώνονται και γίνονται -1, -2 κ.λπ.',
+options:[
+'Βάλε "Αν ζωές=0 τότε σταμάτα" μόνο στο φουσκωτό ψάρι',
+'Χρηίμοποίησε "Επανάλαβε ώσπου (πόντοι=10 Ή ζωές=0)" σε όλα τα προγράμματα',
+'Αλλάξε "Άλλαξε ζωές κατά -1" σε "Βάλε ζωές σε 0"',
+'Πρόσθεσε "Αν ζωές<0 τότε βάλε ζωές σε 0"'
+],
+correct:1,
+explain:'Η σωστή συνθήκη τερματισμού σταματάει ΟΛΑ τα προγράμματα (Έλλη, αστερίας, ψάρι) ταυτόχρονα.'
+},
+{
+title:'🐛 Σφάλμα 3: Ο αστερίας εξαφανίζεται νωρίς!',
+desc:'Ο αστερίας σταματάει να εμφανίζεται πριν οι πόντοι φτάσουν 10.',
+options:[
+'Αύξησε τις επαναλήψεις του αστερία από 10 σε 20',
+'Βάλε "Για πάντα" στον αστερία αντί για "Επανάλαβε 10"',
+'Αφαίρεσε το "Κρύψε" από τον αστερία',
+'Πρόσθεσε "Επανάλαβε ώστου" στον αστερία με τη συνθήκη τερματισμού'
+],
+correct:3,
+explain:'Ο αστερίας πρέπει να έχει "Επανάλαβε ώστου" με την ΙΔΙΑ συνθήκη τερματισμού με την Έλλη.'
+},
+{
+title:'🐛 Σφάλμα 4: Πόντοι πάνω από 10!',
+desc:'Ο αστερίας δίνει πόντους ακόμα κι όταν οι πόντοι έχουν φτάσει 10.',
+options:[
+'Βάλε "Αν πόντοι<10 τότε άλλαξε πόντους κατά 1"',
+'Αλλάξε "Άλλαξε πόντους κατά 1" σε "Βάλε πόντους σε 10"',
+'Βάλε "Επανάλαβε ώστου (πόντοι=10 Ή ζωές=0)" στον αστερία',
+'Και οι δύο πρώτες επιλογές είναι λάθος, πρέπει "Επανάλαβε ώστου" σε ΟΛΑ τα sprites'
+],
+correct:3,
+explain:'Η λύση είναι "Επανάλαβε ώστου" σε ΟΛΑ τα προγράμματα (Έλλη, αστερίας, ψάρι) με την ίδια συνθήκη.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+
+function initQ(){selected=-1;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var b=bugs[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="bug-card">';
+h+='<div class="bug-title">'+b.title+'</div>';
+h+='<div class="bug-desc">'+b.desc+'</div>';
+h+='</div>';
+h+='<div class="fix-label">Ποια είναι η σωστή λύση;</div>';
+h+='<div class="fix-options">';
+for(var i=0;i<b.options.length;i++){
+var cls='fix-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===b.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+b.options[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Απάντησης</button>';
+}
+if(checked){
+var correct=selected===b.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστά! '+b.explain:'❌ '+b.explain)+'</div>';
+if(curQ<bugs.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Πρόβλημα ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+
+function nextQ(){
+if(curQ<bugs.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

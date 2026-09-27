@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: e-me",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Τοίχος = επικοινωνία κυψέλης", "category": "swsto"},
+    {"text": "Μήνυμα = σε οποιονδήποτε", "category": "lathos"},
+    {"text": "Ρυθμίσεις = αλλάζω εμφάνιση", "category": "swsto"},
+    {"text": "Κλήση = χωρίς επαφή", "category": "lathos"},
+    {"text": "Μήνυμα = ένας προς πολλούς", "category": "swsto"},
+    {"text": "Βιντεοκλήση = ένας προς πολλούς", "category": "lathos"},
+    {"text": "Μπορώ να αλλάξω γραμματοσειρά", "category": "swsto"},
+    {"text": "Τοίχος = μόνο σχόλια", "category": "lathos"},
+    {"text": "Κυψέλη = ομάδα συνεργασίας", "category": "swsto"},
+    {"text": "Επαφή = οποιοσδήποτε στο διαδίκτυο", "category": "lathos"}
+  ],
+  "duration": 30
+}

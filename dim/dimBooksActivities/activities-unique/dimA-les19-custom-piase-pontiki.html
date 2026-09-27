@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Πιάσε το ποντίκι! 🖱️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff8e1, #ffecb3, #ffe082);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #ff8f00, #ff6f00);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(255,111,0,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #e65100; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .mouse-show {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 32px 20px; text-align: center; margin-bottom: 16px;
+    position: relative;
+  }
+  .mouse-big {
+    font-size: 6rem; line-height: 1.2;
+    transition: transform .1s;
+    user-select: none;
+  }
+  .mouse-big:active { transform: scale(.95); }
+  .mouse-parts {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .part-btn {
+    border: 3px solid #e0e0e0; border-radius: 20px;
+    padding: 16px 24px; background: #fff;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    flex: 1; max-width: 140px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .part-btn .pb-emoji { font-size: 2rem; }
+  .part-btn:active { transform: scale(.95); }
+  .part-btn:disabled { opacity: .5; transform: none !important; cursor: default; }
+  .part-btn.correct { border-color: #43a047; background: #e8f5e9; }
+  .part-btn.wrong { border-color: #e53935; background: #ffebee; }
+  .action-display {
+    background: #f5f5f5; border-radius: 16px; padding: 20px;
+    text-align: center; font-size: 1.3rem; margin-bottom: 16px;
+    min-height: 80px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .action-display .ad-emoji { font-size: 3rem; margin-bottom: 6px; }
+  .action-display .ad-text { font-weight: 600; color: #333; }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #ff8f00, #ff6f00);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(255,111,0,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .mouse-big { font-size: 5rem; }
+    .part-btn { padding: 12px 16px; font-size: 1rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .mouse-parts > * { margin: 8px; }
+  .part-btn > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🖱️ Πιάσε το ποντίκι!</h1>
+    <p>Μάθε τα μέρη του ποντικιού</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ερώτηση 1/8</span>
+  </div>
+  <div class="instructions">
+    👆 Δες την κίνηση. Πάτησε το σωστό μέρος του ποντικιού!
+  </div>
+  <div id="gameArea">
+    <div class="action-display" id="actionDisplay">
+      <span class="ad-emoji" id="adEmoji">🖱️</span>
+      <span class="ad-text" id="adText">Πάτα το…</span>
+    </div>
+    <div class="mouse-show">
+      <div class="mouse-big">🖱️</div>
+      <div class="mouse-parts" id="mouseParts"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Ξέρεις όλα τα μέρη του ποντικιού!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var questions = [
+    { emoji: '👆', text: 'Πάτα το αριστερό πλήκτρο!', answer: 0 },
+    { emoji: '👇', text: 'Πάτα το δεξί πλήκτρο!', answer: 1 },
+    { emoji: '🔄', text: 'Γύρνα τη ροδέλα!', answer: 2 },
+    { emoji: '🖱️', text: 'Πιάσε ολόκληρο το ποντίκι!', answer: 3 },
+    { emoji: '👆', text: 'Κάνε ένα κλικ! (αριστερό)', answer: 0 },
+    { emoji: '👇', text: 'Κάνε δεξί κλικ!', answer: 1 },
+    { emoji: '🔁', text: 'Κύλησε τη ροδέλα!', answer: 2 },
+    { emoji: '✋', text: 'Πάτησε το ποντίκι!', answer: 3 }
+  ];
+
+  var parts = [
+    { emoji: '👈', name: 'Αριστερό πλήκτρο' },
+    { emoji: '👉', name: 'Δεξί πλήκτρο' },
+    { emoji: '🔄', name: 'Ροδέλα' },
+    { emoji: '🖐️', name: 'Σώμα ποντικιού' }
+  ];
+
+  var shuffled = [];
+  var current = 0;
+  var score = 0;
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffled = shuffle(questions.slice());
+    current = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showQuestion();
+  }
+
+  function showQuestion() {
+    if (current >= shuffled.length) { showResult(); return; }
+    var q = shuffled[current];
+    document.getElementById('adEmoji').textContent = q.emoji;
+    document.getElementById('adText').textContent = q.text;
+    document.getElementById('roundDisplay').textContent = 'Ερώτηση ' + (current+1) + '/' + shuffled.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    var mp = document.getElementById('mouseParts');
+    mp.innerHTML = '';
+    for (var i = 0; i < parts.length; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'part-btn';
+      btn.setAttribute('data-idx', i);
+      btn.innerHTML = '<span class="pb-emoji">' + parts[i].emoji + '</span>' + parts[i].name;
+      btn.addEventListener('click', function() { pick(this); });
+      mp.appendChild(btn);
+    }
+  }
+
+  function pick(el) {
+    var q = shuffled[current];
+    var idx = parseInt(el.getAttribute('data-idx'));
+    var correct = (idx === q.answer);
+    var btns = document.querySelectorAll('.part-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    var fb = document.getElementById('feedback');
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      el.classList.add('correct');
+      fb.className = 'feedback show true';
+      fb.textContent = '✅ Μπράβο! ' + parts[idx].name + ' — Σωστά!';
+      setTimeout(function() { current++; showQuestion(); }, 1000);
+    } else {
+      el.classList.add('wrong');
+      btns[q.answer].classList.add('correct');
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Το σωστό είναι: ' + parts[q.answer].name + '!';
+      setTimeout(function() { current++; showQuestion(); }, 1500);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = shuffled.length;
+    var e, ti, m;
+    if (score === t) { e = '🏆'; ti = 'Τέλεια!'; m = 'Ξέρεις το ποντίκι απ\' έξω κι ανακατωτά!' }
+    else if (score >= 6) { e = '🎉'; ti = 'Μπράβο!'; m = 'Τα ξέρεις σχεδόν όλα!' }
+    else if (score >= 4) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά!' }
+    else { e = '💪'; ti = 'Καλή αρχή!'; m = 'Κάθε φορά θα μαθαίνεις περισσότερα!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + t + ' σωστά! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

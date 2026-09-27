@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Τύποι και Πράξεις | Μάθημα 18</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#bbf7d0);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#14532d;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#16a34a;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#14532d;font-size:.75rem;font-weight:700;border:1px solid #86efac;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.spreadsheet{border-collapse:collapse;width:100%;margin:8px 0}
+.spreadsheet th{background:#16a34a;color:#fff;font-size:.7rem;padding:6px 8px;border:1px solid #86efac}
+.spreadsheet td{border:1px solid #d1d5db;padding:6px 8px;text-align:center;font-size:.75rem;cursor:pointer;transition:all .2s}
+.spreadsheet td:hover{background:#dcfce7}
+.spreadsheet td.highlighted{background:#bbf7d0;font-weight:700}
+.spreadsheet td.header-row{background:#f0fdf4;font-weight:700;color:#14532d;font-size:.65rem}
+.formula-bar{display:flex;align-items:center;gap:6px;background:#f8fafc;border:2px solid #d1d5db;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.8rem}
+.formula-bar .fx{color:#16a34a;font-weight:700;font-size:.7rem}
+.formula-bar .formula-text{flex:1;color:#1e293b;font-family:monospace;min-height:1.2em}
+.op-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.op-btn{padding:8px 14px;border:2px solid #d1d5db;border-radius:10px;background:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;min-width:44px;min-height:44px}
+.op-btn:hover{border-color:#16a34a;background:#f0fdf4}
+.op-btn:active{transform:scale(.95)}
+.op-btn.used{border-color:#6366f1;background:#eef2ff}
+.action-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 4px;padding-top:8px;border-top:1px solid #e2e8f0}
+.del-btn{padding:8px 18px;border:2px solid #f59e0b;border-radius:10px;background:#fffbeb;color:#b45309;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;min-height:44px}
+.del-btn:hover{border-color:#d97706;background:#fef3c7}
+.del-btn:active{transform:scale(.95)}
+.check-btn{display:block;margin:0 auto;padding:10px 28px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
+.check-btn:hover{background:#15803d}
+.check-btn:disabled{background:#94a3b8;cursor:default}
+.task-text{font-size:.78rem;color:#334155;line-height:1.5;margin-bottom:8px;background:#f0fdf4;padding:8px;border-radius:8px;border-left:3px solid #16a34a}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.8rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#14532d22;color:#14532d}
+.nav-next{background:#16a34a;color:#fff}
+.next-task-btn{display:none;margin:6px auto;padding:8px 20px;border:2px solid #16a34a;border-radius:10px;background:transparent;color:#16a34a;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-task-btn.show{display:block}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .formula-bar > * + * { margin-left: 6px; }
+  .op-btns > * { margin: 3px; }
+  .action-btns > * { margin: 4px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🧮 Τύποι και Πράξεις στο Υπολογιστικό Φύλλο</h1>
+<p class="subtitle">Φτιάξε σωστούς τύπους επιλέγοντας κελιά και τελεστές!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Άσκηση:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" id="prevBtn" onclick="prevTask()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" id="nextBtn" onclick="nextTask()">Επόμ. ▶</button>
+</div>
+<script>
+var tasks=[
+{
+title:'Πρόσθεση',
+desc:'Υπολόγισε το άθροισμα των κελιών A2 και B2. Κάνε κλικ στα κελιά και πάτα τον τελεστή +',
+grid:{A1:'Φρούτα',B1:'Τιμή',C1:'Τιμή',A2:'Μήλο',B2:'3',C2:'5'},
+targetFormula:'=B2+C2',
+expectedResult:8
+},
+{
+title:'Πολλαπλασιασμός',
+desc:'Υπολόγισε το κόστος: Πλήθος × Τιμή. Κάνε κλικ στα κελιά και πάτα τον τελεστή *',
+grid:{A1:'Πλήθος',B1:'Τιμή',A2:'4',B2:'6'},
+targetFormula:'=A2*B2',
+expectedResult:24
+},
+{
+title:'Διαίρεση',
+desc:'Μοίρασε το συνολικό κόστος στο πλήθος των παιδιών. Κάνε κλικ στα κελιά και πάτα /',
+grid:{A1:'Σύνολο',B1:'Παιδιά',A2:'120',B2:'6'},
+targetFormula:'=A2/B2',
+expectedResult:20
+},
+{
+title:'Αφαίρεση',
+desc:'Βρες πόσα απομένουν: Σύνολο - Πληρώθηκαν. Κάνε κλικ στα κελιά και πάτα -',
+grid:{A1:'Σύνολο',B1:'Πληρώθηκαν',A2:'50',B2:'32'},
+targetFormula:'=A2-B2',
+expectedResult:18
+},
+{
+title:'Σύνθετος Τύπος',
+desc:'Υπολόγισε: (Τιμή × Πλήθος) + Μεταφορικά. Φτιάξε τον τύπο με κελιά και τελεστές!',
+grid:{A1:'Τιμή',B1:'Πλήθος',C1:'Μεταφορικά',A2:'8',B2:'3',C2:'5'},
+targetFormula:'=A2*B2+C2',
+expectedResult:29
+}
+];
+var curTask=0;
+var formula=[];
+var pts=0;
+var selectedCells=[];
+var answered=false;
+
+function getGridData(t){
+var keys=Object.keys(t.grid);
+var cols=['A','B','C','D','E'];
+var maxCol=0,maxRow=0;
+keys.forEach(function(k){
+var col=cols.indexOf(k.charAt(0));
+var row=parseInt(k.substring(1));
+if(col>maxCol)maxCol=col;
+if(row>maxRow)maxRow=row;
+});
+return{maxCol:maxCol,maxRow:maxRow};
+}
+
+function render(){
+var t=tasks[curTask];
+document.getElementById('qNum').textContent=curTask+1;
+document.getElementById('pts').textContent=pts;
+var d=getGridData(t);
+var main=document.getElementById('main');
+var h='';
+h+='<div class="task-text">📌 '+t.desc+'</div>';
+h+='<table class="spreadsheet">';
+h+='<tr><th></th>';
+var cols=['A','B','C','D','E'];
+for(var c=0;c<=d.maxCol;c++){
+h+='<th>'+cols[c]+'</th>';
+}
+h+='</tr>';
+for(var r=1;r<=d.maxRow;r++){
+h+='<tr><td class="header-row">'+r+'</td>';
+for(var c=0;c<=d.maxCol;c++){
+var key=cols[c]+r;
+var val=t.grid[key]||'';
+var isSel=selectedCells.indexOf(key)!==-1;
+h+='<td class="'+(isSel?'highlighted':'')+'" onclick="clickCell(\''+key+'\')">'+val+'</td>';
+}
+h+='</tr>';
+}
+h+='</table>';
+h+='<div class="formula-bar"><span class="fx">fx</span><span class="formula-text" id="formulaText">='+formula.join('')+'</span></div>';
+	h+='<div class="op-btns">';
+	var ops=['+','-','*','/','(',')'];
+	ops.forEach(function(op){
+		h+='<button class="op-btn" onclick="clickOp(\''+op+'\')">'+op+'</button>';
+	});
+	h+='</div>';
+	h+='<div class="action-btns">';
+	h+='<button class="del-btn" onclick="clickOp(\'⌫\')">⌫ Διαγραφή</button>';
+	h+='<button class="check-btn" onclick="clickOp(\'✓\')">✓ Έλεγχος</button>';
+	h+='</div>';
+if(answered){
+var correct=formula.join('')===t.targetFormula.substring(1);
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστό! Το αποτέλεσμα είναι '+t.expectedResult:'❌ Ο σωστός τύπος είναι '+t.targetFormula)+' | Αποτέλεσμα: '+evalFormula()+'</div>';
+h+='<button class="next-task-btn show" onclick="nextTask()">Επόμενη Άσκηση ▶</button>';
+}
+h+='</div>';
+main.innerHTML=h;
+}
+
+function clickCell(key){
+if(answered)return;
+if(selectedCells.indexOf(key)===-1){
+selectedCells.push(key);
+formula.push(key);
+}
+render();
+}
+
+function clickOp(op){
+if(answered)return;
+if(op==='⌫'){
+formula.pop();
+selectedCells=[];
+formula.forEach(function(f){
+if(f.match(/^[A-Z]\d+$/)&&selectedCells.indexOf(f)===-1)selectedCells.push(f);
+});
+}else if(op==='✓'){
+checkAnswer();
+return;
+}else{
+formula.push(op);
+}
+render();
+}
+
+function evalFormula(){
+var t=tasks[curTask];
+var expr=formula.join('');
+var cols=['A','B','C','D','E'];
+expr=expr.replace(/([A-Z])(\d+)/g,function(m,c,r){
+var key=c+r;
+var val=t.grid[key];
+return val||'0';
+});
+try{return eval(expr);}catch(e){return '?';}
+}
+
+function checkAnswer(){
+var t=tasks[curTask];
+var fStr=formula.join('');
+if(fStr===t.targetFormula.substring(1)){
+pts+=10;
+}
+answered=true;
+render();
+}
+
+function nextTask(){
+if(curTask<tasks.length-1){
+curTask++;
+formula=[];
+selectedCells=[];
+answered=false;
+render();
+}
+}
+
+function prevTask(){
+if(curTask>0){
+curTask--;
+formula=[];
+selectedCells=[];
+answered=false;
+render();
+}
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 Δωμάτια: Θερμοκρασία → Μέγιστη</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.3rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:20px;}
+
+.max-display{text-align:center;margin-bottom:20px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#fef2f2,#fecaca);border:3px solid #f87171;}
+.max-label{font-size:.9rem;color:#991b1b;font-weight:bold;margin-bottom:5px;}
+.max-value{font-size:2.5rem;font-weight:bold;color:#dc2626;}
+.max-room{font-size:.9rem;color:#991b1b;margin-top:4px;}
+
+.rooms{display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap;justify-content:center;}
+.room-card{flex:1;min-width:200px;max-width:260px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:16px;padding:18px;text-align:center;transition:all .3s;}
+.room-card.hottest{border-color:#ef4444;background:linear-gradient(135deg,#fef2f2,#fee2e2);box-shadow:0 0 20px rgba(239,68,68,.2);transform:scale(1.03);}
+.room-card.coldest{border-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#dbeafe);}
+
+.room-name{font-weight:bold;color:#5b3ea8;font-size:1rem;margin-bottom:8px;}
+.room-icon{font-size:2rem;display:block;margin-bottom:5px;}
+.room-temp{font-size:2.2rem;font-weight:bold;margin-bottom:10px;transition:color .3s;}
+.room-temp span{font-size:1rem;color:#888;}
+
+.thermometer{width:30px;height:80px;margin:0 auto 10px;position:relative;}
+.thermo-tube{width:10px;height:60px;background:#e2e8f0;border-radius:5px 5px 0 0;margin:0 auto;position:relative;overflow:hidden;}
+.thermo-fill{position:absolute;bottom:0;left:0;right:0;border-radius:5px 5px 0 0;transition:all .3s;}
+.thermo-bulb{width:20px;height:20px;border-radius:50%;margin:-5px auto 0;transition:background .3s;}
+
+.slider-wrap{margin-top:8px;}
+.slider-wrap input[type=range]{width:100%;height:6px;-webkit-appearance:none;background:linear-gradient(90deg,#3b82f6,#22c55e,#eab308,#ef4444);border-radius:3px;outline:none;}
+.slider-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3);}
+
+.room-tag{display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:bold;margin-top:8px;}
+.tag-hot{background:#fef2f2;color:#dc2626;border:1px solid #f87171;}
+.tag-cold{background:#eff6ff;color:#2563eb;border:1px solid #60a5fa;}
+.tag-normal{background:#f0fdf4;color:#16a34a;border:1px solid #86efac;}
+
+.comparison{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:14px;padding:15px;margin-bottom:15px;}
+.comp-title{font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:.9rem;text-align:center;}
+.comp-bars{display:flex;flex-direction:column;gap:8px;}
+.comp-row{display:flex;align-items:center;gap:8px;}
+.comp-label{font-size:.8rem;font-weight:bold;color:#5b3ea8;min-width:75px;text-align:right;}
+.comp-track{flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden;position:relative;}
+.comp-fill{height:100%;border-radius:10px;transition:all .3s;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:.65rem;font-weight:bold;color:#fff;min-width:25px;}
+
+.btn-center{text-align:center;margin-top:10px;}
+.btn{padding:12px 24px;border:none;border-radius:12px;cursor:pointer;font-size:.95rem;font-weight:bold;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+
+.info-box{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:14px;padding:15px;margin-top:15px;}
+.info-title{font-weight:bold;color:#5b3ea8;margin-bottom:8px;font-size:.9rem;}
+.info-text{color:#666;font-size:.85rem;line-height:1.6;}
+.info-text code{background:#1e1e2e;color:#cdd6f4;padding:2px 6px;border-radius:4px;font-size:.8rem;}
+
+@media(max-width:700px){.rooms{flex-direction:column;align-items:center;}.room-card{max-width:100%;min-width:auto;}.room-temp{font-size:1.8rem;}.max-value{font-size:2rem;}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .rooms > * { margin: 7.5px; }
+  .comp-bars > * + * { margin-top: 8px; }
+  .comp-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🌡️ 3 Δωμάτια: Θερμοκρασία → Μέγιστη</h1>
+<p class="subtitle">Βρες ποιο δωμάτιο έχει τη μεγαλύτερη θερμοκρασία!</p>
+
+<div class="max-display" id="maxDisplay">
+<div class="max-label">🔥 Μέγιστη Θερμοκρασία</div>
+<div class="max-value" id="maxValue">-5°C</div>
+<div class="max-room" id="maxRoom">Αίθουσα Α</div>
+</div>
+
+<div class="rooms" id="rooms"></div>
+
+<div class="comparison">
+<div class="comp-title">📊 Σύγκριση Θερμοκρασιών</div>
+<div class="comp-bars" id="compBars"></div>
+</div>
+
+<div class="btn-center">
+<button class="btn btn-primary" onclick="resetTemps()">🔄 Επαναφορά</button>
+</div>
+
+<div class="info-box">
+<div class="info-title">💡 Πώς δουλεύει:</div>
+<div class="info-text">
+Ρύθμισε τη θερμοκρασία κάθε δωματίου με τους sliders.<br>
+Το πρόγραμμα βρίσκει αυτόματα τη <strong>μέγιστη θερμοκρασία</strong>.<br>
+Λογική: <code>εάν θερμ_Α > θερμ_Β και θερμ_Α > θερμ_Γ → μέγιστη = θερμ_Α</code>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+var rooms=[
+{name:'Αίθουσα Α',icon:'🏫',color:'#667eea',min:-5,max:50,value:22},
+{name:'Αίθουσα Β',icon:'📚',color:'#764ba2',min:-5,max:50,value:18},
+{name:'Αίθουσα Γ',icon:'💻',color:'#8b5cf6',min:-5,max:50,value:25}
+];
+
+function getTempColor(t){
+if(t<10)return'#3b82f6';
+if(t<20)return'#22c55e';
+if(t<30)return'#eab308';
+if(t<40)return'#f97316';
+return'#ef4444';
+}
+
+function getTempTag(t,idx){
+var maxVal=Math.max.apply(null,rooms.map(function(r){return r.value;}));
+var minVal=Math.min.apply(null,rooms.map(function(r){return r.value;}));
+if(rooms[idx].value===maxVal)return'<div class="room-tag tag-hot">🔥 Μέγιστη</div>';
+if(rooms[idx].value===minVal)return'<div class="room-tag tag-cold">❄️ Ελάχιστη</div>';
+return'<div class="room-tag tag-normal">✓ Κανονική</div>';
+}
+
+function buildRooms(){
+var container=document.getElementById('rooms');
+container.innerHTML='';
+rooms.forEach(function(room,i){
+var card=document.createElement('div');
+card.className='room-card';
+card.id='room-'+i;
+
+var fillPct=((room.value-room.min)/(room.max-room.min))*100;
+var fillColor=getTempColor(room.value);
+
+card.innerHTML=
+'<div class="room-icon">'+room.icon+'</div>'+
+'<div class="room-name">'+room.name+'</div>'+
+'<div class="thermometer">'+
+'<div class="thermo-tube"><div class="thermo-fill" style="height:'+fillPct+'%;background:'+fillColor+';"></div></div>'+
+'<div class="thermo-bulb" style="background:'+fillColor+';box-shadow:0 0 8px '+fillColor+';"></div>'+
+'</div>'+
+'<div class="room-temp" style="color:'+fillColor+';">'+room.value+'<span>°C</span></div>'+
+'<div class="slider-wrap">'+
+'<input type="range" min="-5" max="50" value="'+room.value+'" oninput="setTemp('+i+',this.value)">'+
+'</div>'+
+'<div style="display:flex;justify-content:space-between;font-size:.7rem;color:#aaa;margin-top:4px;"><span>-5°C</span><span>50°C</span></div>'+
+getTempTag(room.value,i);
+
+container.appendChild(card);
+});
+updateMax();
+updateComparison();
+}
+
+window.setTemp=function(idx,val){
+rooms[idx].value=parseInt(val);
+buildRooms();
+};
+
+function updateMax(){
+var maxVal=-Infinity;
+var maxIdx=0;
+var minVal=Infinity;
+rooms.forEach(function(r,i){
+if(r.value>maxVal){maxVal=r.value;maxIdx=i;}
+if(r.value<minVal)minVal=r.value;
+});
+
+document.getElementById('maxValue').textContent=maxVal+'°C';
+document.getElementById('maxRoom').textContent=rooms[maxIdx].icon+' '+rooms[maxIdx].name;
+
+rooms.forEach(function(r,i){
+var card=document.getElementById('room-'+i);
+if(card){
+card.classList.remove('hottest','coldest');
+if(i===maxIdx)card.classList.add('hottest');
+if(r.value===minVal&&rooms.length>1)card.classList.add('coldest');
+}
+});
+}
+
+function updateComparison(){
+var container=document.getElementById('compBars');
+container.innerHTML='';
+var range=55;
+rooms.forEach(function(room,i){
+var pct=((room.value-room.min)/range)*100;
+var color=getTempColor(room.value);
+var row=document.createElement('div');
+row.className='comp-row';
+row.innerHTML=
+'<div class="comp-label">'+room.icon+' '+room.name.split(' ')[1]+'</div>'+
+'<div class="comp-track"><div class="comp-fill" style="width:'+pct+'%;background:'+color+';">'+room.value+'°</div></div>';
+container.appendChild(row);
+});
+}
+
+window.resetTemps=function(){
+rooms[0].value=22;
+rooms[1].value=18;
+rooms[2].value=25;
+buildRooms();
+};
+
+buildRooms();
+})();
+</script>
+</body>
+</html>

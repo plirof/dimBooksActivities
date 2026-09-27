@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Θερμόμετρο",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ο", "error": false },
+        { "text": "αισθητήρας", "error": false },
+        { "text": "θερμοκρασίας", "error": false },
+        { "text": "μετράει", "error": false },
+        { "text": "από", "error": false },
+        { "text": "0°C", "error": true, "correct": "-5°C", "feedback": "Μετράει από -5°C έως 50°C" },
+        { "text": "έως", "error": false },
+        { "text": "50°C.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "μέγιστη", "error": false },
+        { "text": "θερμοκρασία", "error": false },
+        { "text": "υπολογίζεται", "error": false },
+        { "text": "στη", "error": true, "correct": "στην", "feedback": "Λέμε «στην εντολή» — χρειάζεται το τελικό -ν." },
+        { "text": "εντολή", "error": false },
+        { "text": "«κατά", "error": false },
+        { "text": "την", "error": false },
+        { "text": "έναρξη».", "error": true, "correct": "«για πάντα»", "feedback": "Ο υπολογισμός γίνεται στην εντολή «για πάντα», στην «κατά την έναρξη» μόνο αρχικοποιείται" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "κουμπί", "error": false },
+        { "text": "Α", "error": false },
+        { "text": "δείχνει", "error": false },
+        { "text": "τη", "error": false },
+        { "text": "μέγιστη", "error": true, "correct": "τρέχουσα", "feedback": "Το κουμπί Α δείχνει την τρέχουσα θερμοκρασία, το Β τη μέγιστη" },
+        { "text": "θερμοκρασία.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "κουμπί", "error": false },
+        { "text": "επανεκκίνησης", "error": false },
+        { "text": "βρίσκεται", "error": false },
+        { "text": "μπροστά.", "error": true, "correct": "στο πίσω μέρος", "feedback": "Το κουμπί reset βρίσκεται στο πίσω μέρος του micro:bit" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+    "id": "dimE-les11-wheel-ri5",
+    "title": "Χαρούμενα γενέθλια! (micro:bit) - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "micro:bit",
+            "MakeCode",
+            "LED",
+            "Αισθητήρες",
+            "Μελωδία",
+            "Χρόνια Πολλά",
+            "Βρόχοι",
+            "Συνθήκες",
+            "Ταρακούνημα",
+            "Νότες"
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les11",
+        "microbit"
+    ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: ScratchJr",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εντολή", "error": false},
+        {"text": "επανάληψης", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "στις", "error": false},
+        {"text": "πράσινες", "error": true, "correct": "πορτοκαλί", "feedback": "Η εντολή επανάληψης είναι στις πορτοκαλί εντολές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πάτα", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κόκκινο", "error": false},
+        {"text": "τρίγωνο", "error": true, "correct": "εξάγωνο", "feedback": "Σταματάμε με το κόκκινο εξάγωνο, όχι τρίγωνο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΟΡΙΣΕ", "error": false},
+        {"text": "ΤΑΧΥΤΗΤΑ", "error": false},
+        {"text": "για", "error": false},
+        {"text": "πιο", "error": false},
+        {"text": "αργή", "error": true, "correct": "γρήγορη", "feedback": "Θέλουμε πιο γρήγορη ταχύτητα, όχι αργή!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Διάλεξε", "error": false},
+        {"text": "χαρακτήρες", "error": false},
+        {"text": "από", "error": false},
+        {"text": "την", "error": false},
+        {"text": "κουζίνα", "error": true, "correct": "βιβλιοθήκη", "feedback": "Διαλέγουμε χαρακτήρες από τη βιβλιοθήκη!"}
+      ]
+    }
+  ]
+}

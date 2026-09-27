@@ -1,0 +1,14 @@
+{
+  "title": "Βρες την Αποθήκευση!",
+  "subtitle": "Κάνε κλικ στο εικονίδιο αποθήκευσης",
+  "instructions": "Βρες και κάνε κλικ στη δισκέτα 💾 — προσοχή στα άλλα εικονίδια!",
+  "duration": 25,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "💾", "color": "#C8E6C9" },
+    { "label": "🖨️", "color": "#E0E0E0" },
+    { "label": "📂", "color": "#FFE0B2" },
+    { "label": "🗑️", "color": "#FFCDD2" }
+  ]
+}

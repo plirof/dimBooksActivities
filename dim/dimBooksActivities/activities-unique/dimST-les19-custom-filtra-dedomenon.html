@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φίλτρα Δεδομένων | Μάθημα 19</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:800px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.task-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #6366f1}
+.task-box .t-icon{font-size:1.1rem;display:block;margin-bottom:2px}
+.task-box .t-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.filter-bar{display:flex;gap:4px;flex-wrap:wrap;align-items:center;padding:8px;background:#0f172a;border-radius:10px;border:1px solid #334155;margin-bottom:8px}
+.filter-bar .fb-label{color:#94a3b8;font-size:.62rem;font-weight:600;margin-right:4px}
+.filter-btn{padding:4px 10px;border:1px solid #475569;border-radius:6px;background:#1e293b;color:#94a3b8;font-size:.6rem;cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:#6366f1}
+.filter-btn.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.filter-btn.clear{background:#ef444411;color:#f87171;border-color:#ef4444}
+.filter-count{font-size:.6rem;color:#64748b;margin-left:auto}
+.data-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid #334155;margin-bottom:8px}
+.data-table{width:100%;border-collapse:collapse;font-size:.62rem}
+.data-table th{background:#1e293b;padding:4px 6px;border:1px solid #334155;color:#fbbf24;font-weight:700;text-align:center}
+.data-table td{padding:3px 6px;border:1px solid #1e293b;color:#e2e8f0;text-align:center}
+.data-table tr:nth-child(even) td{background:#0f172a44}
+.vis-indicator{display:flex;gap:6px;align-items:center;padding:4px 8px;background:#0f172a;border-radius:8px;font-size:.6rem;color:#64748b;margin-bottom:6px;flex-wrap:wrap}
+.vis-indicator .vis-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.vis-indicator .vis-dot.green{background:#22c55e}
+.vis-indicator .vis-dot.yellow{background:#f59e0b}
+.vis-indicator .vis-dot.gray{background:#475569}
+.q-area{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.q-row{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px;flex-wrap:wrap}
+.q-row .q-text{color:#e2e8f0;font-size:.64rem;flex:1;min-width:120px}
+.q-row .q-opts{display:flex;gap:3px}
+.q-row .q-btn{padding:3px 8px;border:1px solid #475569;border-radius:6px;background:#0f172a;color:#94a3b8;font-size:.56rem;cursor:pointer}
+.q-row .q-btn.selected{background:#6366f1;color:#fff;border-color:#6366f1}
+.q-row .q-btn.correct{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.q-row .q-btn.wrong{background:#ef444422;color:#f87171;border-color:#ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .filter-bar > * { margin: 2px; }
+  .vis-indicator > * { margin: 3px; }
+  .q-area > * + * { margin-top: 6px; }
+  .q-row > * { margin: 3px; }
+  .q-row .q-opts > * + * { margin-left: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Φίλτρα Δεδομένων</h1>
+<p class="subtitle">Εφάρμοσε φίλτρα για να βρεις συγκεκριμένες πληροφορίες!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σετ:</span> <span id="dsNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var datasets=[
+{
+title:'🌧️ Φίλτρο Καιρικών Φαινομένων',
+desc:'Εφάρμοσε φίλτρο για να δεις μόνο τις πόλεις με συγκεκριμένο καιρό.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:4,
+filterValues:['☀️ Ηλιοφάνεια','⛅ Συννεφιά','☁️ Συννεφιά'],
+questions:[
+{q:'Εφάρμοσε φίλτρο για ☀️ Ηλιοφάνεια. Πόσες πόλεις εμφανίζονται;',opts:['2','3','4','5'],correct:1},
+{q:'Εφάρμοσε φίλτρο για ☁️ Συννεφιά. Πόσες πόλεις;',opts:['1','2','3','4'],correct:1},
+{q:'Χωρίς φίλτρο, πόσες πόλεις έχει συνολικά ο πίνακας;',opts:['6','7','8','9'],correct:2}
+],
+hint:'Το φίλτρο εμφανίζει ΜΟΝΟ τις γραμμές που ταιριάζουν. Οι υπόλοιπες κρύβονται προσωρινά.'
+},
+{
+title:'🌡️ Φίλτρο Θερμοκρασίας',
+desc:'Φιλτράρισε τις πόλεις με βάση τη θερμοκρασία.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:1,
+filterValues:['≥25°C','<25°C'],
+questions:[
+{q:'Φίλτρο ≥25°C: πόσες πόλεις;',opts:['2','3','4','5'],correct:1},
+{q:'Φίλτρο <25°C: πόσες πόλεις;',opts:['3','4','5','6'],correct:2},
+{q:'Ποια πόλη με <25°C έχει τον ισχυρότερο άνεμο;',opts:['Παρίσι','Λονδίνο','Βερολίνο','Όσλο'],correct:1}
+],
+hint:'Το φίλτρο θερμοκρασίας σε βοηθά να συγκρίνεις ομάδες πόλεων με βάση το κλίμα τους.'
+},
+{
+title:'💨 Φίλτρο Ανέμου',
+desc:'Βρες πόλεις με δυνατούς ή ασθενείς ανέμους.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:2,
+filterValues:['≥15 km/h','<15 km/h'],
+questions:[
+{q:'Φίλτρο ≥15 km/h: πόσες πόλεις;',opts:['2','3','4','5'],correct:2},
+{q:'Φίλτρο <15 km/h: πόσες πόλεις;',opts:['2','3','4','5'],correct:3},
+{q:'Παρατήρησε: οι πόλεις με δυνατό άνεμο έχουν συνήθως...',opts:['Υψηλότερη θερμοκρασία','Χαμηλότερη θερμοκρασία','Υψηλότερη υγρασία','Ηλιοφάνεια'],correct:1}
+],
+hint:'Σύγκρινε τα αποτελέσματα των δύο φίλτρων για να δεις διαφορές στα χαρακτηριστικά.'
+},
+{
+title:'💧 Φίλτρο Υγρασίας',
+desc:'Φιλτράρισε με βάση την υγρασία και βρες μοτίβα.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:3,
+filterValues:['≥60%','<60%'],
+questions:[
+{q:'Φίλτρο ≥60% υγρασία: πόσες πόλεις;',opts:['1','2','3','4'],correct:1},
+{q:'Ποιες πόλεις έχουν υγρασία <50%; (χρησιμοποίησε φίλτρο)',opts:['Αθήνα, Μαδρίτη','Αθήνα, Ρώμη','Μαδρίτη, Ρώμη','Αθήνα, Μαδρίτη, Ρώμη'],correct:0},
+{q:'Παρατήρησε: οι πόλεις με υγρασία ≥60% έχουν...',opts:['Ηλιοφάνεια','Συννεφιά','Υψηλή θερμοκρασία','Χαμηλό άνεμο'],correct:1}
+],
+hint:'Η υψηλή υγρασία (≥60%) σχετίζεται με συννεφιά και βροχή. Η χαμηλή με ηλιοφάνεια.'
+},
+{
+title:'🎯 Πολλαπλά Φίλτρα',
+desc:'Συνδύασε παρατηρήσεις από διαφορετικά φίλτρα για σύνθετες απαντήσεις.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:0,
+filterValues:['Νότια Ευρώπη','Βόρεια Ευρώπη'],
+questions:[
+{q:'Ποιες νότιες πόλεις έχουν θερμοκρασία ≥26°C;',opts:['Αθήνα, Ρώμη','Αθήνα, Μαδρίτη','Αθήνα, Ρώμη, Μαδρίτη','Ρώμη, Μαδρίτη'],correct:2},
+{q:'Ποιες βόρειες πόλεις έχουν άνεμο ≥18 km/h;',opts:['Λονδίνο, Βερολίνο','Παρίσι, Λονδίνο','Βερολίνο, Παρίσι','Λονδίνο, Βερολίνο, Παρίσι'],correct:0},
+{q:'Τι κοινό έχουν οι νότιες πόλεις;',opts:['Χαμηλή θερμοκρασία','Υψηλή υγρασία','Ηλιοφάνεια & χαμηλή υγρασία','Δυνατό άνεμο'],correct:2}
+],
+hint:'Με πολλαπλά φίλτρα μπορείς να απαντήσεις σε σύνθετα ερωτήματα για τα δεδομένα σου.'
+},
+{
+title:'🧩 Διαφορά Φίλτρου & Ταξινόμησης',
+desc:'Κατανόησε τη διαφορά: το φίλτρο κρύβει γραμμές, η ταξινόμηση αλλάζει σειρά.',
+headers:['Πόλη','Θερμοκρασία','Άνεμος','Υγρασία','Καιρός'],
+data:[
+['Αθήνα','28°C','12 km/h','45%','☀️ Ηλιοφάνεια'],
+['Παρίσι','22°C','18 km/h','55%','⛅ Συννεφιά'],
+['Λονδίνο','19°C','22 km/h','65%','☁️ Συννεφιά'],
+['Ρώμη','26°C','10 km/h','50%','☀️ Ηλιοφάνεια'],
+['Βερολίνο','21°C','20 km/h','58%','⛅ Συννεφιά'],
+['Μαδρίτη','30°C','8 km/h','35%','☀️ Ηλιοφάνεια'],
+['Όσλο','16°C','15 km/h','70%','☁️ Συννεφιά'],
+['Βιέννη','23°C','14 km/h','52%','⛅ Συννεφιά']
+],
+filterCol:4,
+filterValues:['☀️ Ηλιοφάνεια','⛅ Συννεφιά','☁️ Συννεφιά'],
+questions:[
+{q:'Εφάρμοσε φίλτρο ☀️. Πόσες γραμμές βλέπεις;',opts:['2','3','4','5'],correct:1},
+{q:'Το φίλτρο...',opts:['Αλλάζει τη σειρά','Κρύβει γραμμές','Διαγράφει δεδομένα','Προσθέτει γραμμές'],correct:1},
+{q:'Η ταξινόμηση...',opts:['Κρύβει γραμμές','Αλλάζει τη σειρά','Διαγράφει δεδομένα','Προσθέτει δεδομένα'],correct:1}
+],
+hint:'Το φίλτρο είναι σαν μεγεθυντικός φακός: δείχνει μόνο ό,τι σε ενδιαφέρει. Η ταξινόμηση είναι σαν αναδιάταξη.'
+}
+];
+var current=0;
+var pts=0;
+var activeFilter=null;
+var selectedQs={};
+var checked=false;
+function render(){
+var ds=datasets[current];
+checked=false;
+selectedQs={};
+activeFilter=null;
+document.getElementById('dsNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+ds.title+'</div>';
+h+='<div class="task-box"><span class="t-icon">📋</span><div class="t-text">'+ds.desc+'</div></div>';
+h+='<div class="filter-bar">';
+h+='<span class="fb-label">🔍 Φίλτρο:</span>';
+for(var f=0;f<ds.filterValues.length;f++){
+var isActive=activeFilter===ds.filterValues[f];
+h+='<div class="filter-btn'+(isActive?' active':'')+'" id="fbtn_'+f+'" onclick="applyFilter('+f+')">'+ds.filterValues[f]+'</div>';
+}
+h+='<div class="filter-btn clear" onclick="clearFilter()">✕ Καθαρισμός</div>';
+h+='<span class="filter-count" id="filterCount">Εμφάνιση: '+ds.data.length+'/'+ds.data.length+'</span>';
+h+='</div>';
+h+='<div class="data-table-wrap">';
+h+='<table class="data-table"><thead><tr>';
+for(var hd=0;hd<ds.headers.length;hd++){
+h+='<th>'+ds.headers[hd]+'</th>';
+}
+h+='</tr></thead><tbody id="tableBody">';
+var filtered=getFilteredData();
+for(var r=0;r<filtered.length;r++){
+h+='<tr>';
+for(var c=0;c<filtered[r].length;c++){
+h+='<td>'+filtered[r][c]+'</td>';
+}
+h+='</tr>';
+}
+h+='</tbody></table>';
+h+='</div>';
+h+='<div class="q-area">';
+for(var q=0;q<ds.questions.length;q++){
+var qq=ds.questions[q];
+h+='<div class="q-row">';
+h+='<span class="q-text">'+(q+1)+'. '+qq.q+'</span>';
+h+='<div class="q-opts">';
+for(var o=0;o<qq.opts.length;o++){
+var sel=(selectedQs[q]===o?' selected':'');
+h+='<div class="q-btn'+sel+'" id="qbtn_'+q+'_'+o+'" onclick="selectQ('+q+','+o+')">'+qq.opts[o]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkQ()">✅ Έλεγχος Απαντήσεων</button></div>';
+h+='<div class="hint-box">💡 '+ds.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function getFilteredData(){
+var ds=datasets[current];
+if(!activeFilter)return ds.data;
+var col=ds.filterCol;
+if(col===0){
+if(activeFilter==='Νότια Ευρώπη')return ds.data.filter(function(r){return ['Αθήνα','Ρώμη','Μαδρίτη','Βιέννη'].indexOf(r[0])>=0;});
+if(activeFilter==='Βόρεια Ευρώπη')return ds.data.filter(function(r){return ['Παρίσι','Λονδίνο','Βερολίνο','Όσλο'].indexOf(r[0])>=0;});
+}
+if(col===4)return ds.data.filter(function(r){return r[4]===activeFilter;});
+if(col===1){
+if(activeFilter==='≥25°C')return ds.data.filter(function(r){return parseInt(r[1])>=25;});
+if(activeFilter==='<25°C')return ds.data.filter(function(r){return parseInt(r[1])<25;});
+}
+if(col===2){
+if(activeFilter==='≥15 km/h')return ds.data.filter(function(r){return parseInt(r[2])>=15;});
+if(activeFilter==='<15 km/h')return ds.data.filter(function(r){return parseInt(r[2])<15;});
+}
+if(col===3){
+if(activeFilter==='≥60%')return ds.data.filter(function(r){return parseInt(r[3])>=60;});
+if(activeFilter==='<60%')return ds.data.filter(function(r){return parseInt(r[3])<60;});
+}
+return ds.data;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevDs()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextDs()"'+(current===datasets.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function applyFilter(fIdx){
+if(checked)return;
+var ds=datasets[current];
+activeFilter=ds.filterValues[fIdx];
+render();
+}
+function clearFilter(){
+if(checked)return;
+activeFilter=null;
+render();
+}
+function selectQ(qIdx,optIdx){
+if(checked)return;
+selectedQs[qIdx]=optIdx;
+var ds=datasets[current];
+for(var o=0;o<ds.questions[qIdx].opts.length;o++){
+var el=document.getElementById('qbtn_'+qIdx+'_'+o);
+if(el)el.classList.toggle('selected',o===optIdx);
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkQ(){
+var ds=datasets[current];
+var allAnswered=true;
+for(var q=0;q<ds.questions.length;q++){if(selectedQs[q]===undefined){allAnswered=false;break;}}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Απάντησε σε όλες τις ερωτήσεις!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var q2=0;q2<ds.questions.length;q2++){
+var correct=ds.questions[q2].correct;
+var btn=document.getElementById('qbtn_'+q2+'_'+selectedQs[q2]);
+if(btn){btn.classList.remove('selected');btn.classList.add(selectedQs[q2]===correct?'correct':'wrong');btn.style.pointerEvents='none';}
+var correctBtn=document.getElementById('qbtn_'+q2+'_'+correct);
+if(correctBtn)correctBtn.classList.add('correct');
+if(selectedQs[q2]!==correct)allCorrect=false;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι απαντήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες απαντήσεις είναι λάθος. Τα πράσινα είναι σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevDs(){if(current>0){current--;render();}}
+function nextDs(){if(current<datasets.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

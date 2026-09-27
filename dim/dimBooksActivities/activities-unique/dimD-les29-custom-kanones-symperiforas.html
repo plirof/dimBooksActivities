@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κανόνες Συμπεριφοράς</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 800px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.post-card {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border: 2px solid #e0e0e0;
+}
+.post-header {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 15px;
+}
+.post-avatar {
+font-size: 2rem;
+}
+.post-user {
+font-weight: bold;
+color: #333;
+}
+.post-text {
+color: #333;
+margin-bottom: 15px;
+line-height: 1.5;
+}
+.action-buttons {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.action-btn {
+flex: 1;
+min-width: 100px;
+padding: 10px 15px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 0.9rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.action-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.action-btn.good:hover, .action-btn.good.selected {
+background: #27ae60;
+color: white;
+border-color: #27ae60;
+}
+.action-btn.bad:hover, .action-btn.bad.selected {
+background: #e74c3c;
+color: white;
+border-color: #e74c3c;
+}
+.feedback {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 15px;
+margin-top: 15px;
+display: none;
+text-align: center;
+font-weight: bold;
+}
+.feedback.show {
+display: block;
+}
+.feedback.correct {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.feedback.wrong {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .post-header > * + * { margin-left: 12px; }
+  .action-buttons > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📋 Κανόνες Συμπεριφοράς</h1>
+<p class="subtitle">Αξιολογήστε αν η συμπεριφορά είναι σωστή (Netiquette)</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/4</div>
+
+<div class="container">
+<div class="post-card" id="post1">
+<div class="post-header">
+<div class="post-avatar">👦</div>
+<div class="post-user">Γιώργος</div>
+</div>
+<div class="post-text">Ευχαριστώ για την βοήθεια με την εργασία!</div>
+<div class="action-buttons">
+<button class="action-btn good" onclick="evaluatePost(1, true)">✓ Σωστή</button>
+<button class="action-btn bad" onclick="evaluatePost(1, false)">✗ Λάθος</button>
+</div>
+<div class="feedback" id="feedback1"></div>
+</div>
+
+<div class="post-card" id="post2">
+<div class="post-header">
+<div class="post-avatar">👧</div>
+<div class="post-user">Μαρία</div>
+</div>
+<div class="post-text">ΕΙΣΑΙ ΤΕΛΕΙΟΣ! ΠΑΝΤΑ ΓΡΑΦΕΙΣ ΤΕΛΕΙΩΣ!</div>
+<div class="action-buttons">
+<button class="action-btn good" onclick="evaluatePost(2, false)">✓ Σωστή</button>
+<button class="action-btn bad" onclick="evaluatePost(2, true)">✗ Λάθος</button>
+</div>
+<div class="feedback" id="feedback2"></div>
+</div>
+
+<div class="post-card" id="post3">
+<div class="post-header">
+<div class="post-avatar">👨</div>
+<div class="post-user">Νίκος</div>
+</div>
+<div class="post-text">Μοιράζομαι μια φωτογραφία από το σχολείο μας. Όλοι οι συμμαθητές μου το επιτρέπουν!</div>
+<div class="action-buttons">
+<button class="action-btn good" onclick="evaluatePost(3, true)">✓ Σωστή</button>
+<button class="action-btn bad" onclick="evaluatePost(3, false)">✗ Λάθος</button>
+</div>
+<div class="feedback" id="feedback3"></div>
+</div>
+
+<div class="post-card" id="post4">
+<div class="post-header">
+<div class="post-avatar">👩</div>
+<div class="post-user">Ελένη</div>
+</div>
+<div class="post-text">Δεν συμφωνώ με την άποψή σου, αλλά σεβάζω τη γνώμη σου.</div>
+<div class="action-buttons">
+<button class="action-btn good" onclick="evaluatePost(4, true)">✓ Σωστή</button>
+<button class="action-btn bad" onclick="evaluatePost(4, false)">✗ Λάθος</button>
+</div>
+<div class="feedback" id="feedback4"></div>
+</div>
+</div>
+
+<div class="mascot">📝</div>
+
+<script>
+let score = 0;
+const answers = { 1: true, 2: false, 3: true, 4: true };
+
+function evaluatePost(postNum, isGood) {
+const post = document.getElementById('post' + postNum);
+if (post.classList.contains('evaluated')) return;
+
+post.classList.add('evaluated');
+
+const correct = answers[postNum] === isGood;
+const feedback = document.getElementById('feedback' + postNum);
+const buttons = post.querySelectorAll('.action-btn');
+
+buttons.forEach(btn => {
+btn.disabled = true;
+if ((btn.classList.contains('good') && isGood) || (btn.classList.contains('bad') && !isGood)) {
+btn.classList.add('selected');
+}
+});
+
+feedback.className = 'feedback show ' + (correct ? 'correct' : 'wrong');
+
+if (correct) {
+score++;
+document.getElementById('score').textContent = score;
+feedback.innerHTML = '✅ Σωστά! Αυτή η συμπεριφορά τηρεί τους κανόνες Netiquette!';
+} else {
+feedback.innerHTML = '❌ Λάθος! Αυτή η συμπεριφορά δεν τηρεί τους κανόνες Netiquette.';
+}
+}
+</script>
+</body>
+</html>

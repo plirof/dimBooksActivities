@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υλικό ή Λογισμικό",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε στοιχείο!",
+  "categories": [
+    {"id": "yliko", "name": "Υλικό (Hardware)", "color": "#e91e63", "key": "ArrowLeft"},
+    {"id": "logismiko", "name": "Λογισμικό (Software)", "color": "#4caf50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πληκτρολόγιο", "category": "yliko"},
+    {"text": "Εφαρμογή ζωγραφικής", "category": "logismiko"},
+    {"text": "Οθόνη", "category": "yliko"},
+    {"text": "Φυλλομετρητής", "category": "logismiko"},
+    {"text": "Επεξεργαστής", "category": "yliko"},
+    {"text": "Πρόγραμμα γραφής", "category": "logismiko"},
+    {"text": "Εκτυπωτής", "category": "yliko"},
+    {"text": "Πρόγραμμα προγραμματισμού", "category": "logismiko"},
+    {"text": "Δίσκος αποθήκευσης", "category": "yliko"},
+    {"text": "Εφαρμογή χαρτών", "category": "logismiko"}
+  ],
+  "duration": 30
+}

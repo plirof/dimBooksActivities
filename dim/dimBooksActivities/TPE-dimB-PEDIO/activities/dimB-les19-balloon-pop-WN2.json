@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μέρη Φυλλομετρητή",
+  "subtitle": "Σπάσε μόνο τα μέρη του παραθύρου του φυλλομετρητή",
+  "instruction": "Σπάσε μόνο τα στοιχεία που ανήκουν στο παράθυρο του φυλλομετρητή",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Καρτέλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Ανανέωση", "correct": true, "color": "#4CAF50" },
+    { "text": "Ψαλίδι", "correct": false, "color": "#f44336" },
+    { "text": "Σελιδοδείκτης", "correct": true, "color": "#4CAF50" },
+    { "text": "Γόμα", "correct": false, "color": "#f44336" },
+    { "text": "Γραμμή διεύθυνσης", "correct": true, "color": "#4CAF50" },
+    { "text": "Χάρακας", "correct": false, "color": "#f44336" },
+    { "text": "Κουμπί πίσω", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπογιές", "correct": false, "color": "#f44336" }
+  ]
+}

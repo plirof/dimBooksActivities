@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: ΑΛΗΘΕΙΑ ή ΨΕΜΑ",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα Αριστερά για ΑΛΗΘΕΙΑ, Δεξιά για ΨΕΜΑ!",
+  "categories": [
+    {"id": "true", "name": "ΑΛΗΘΕΙΑ", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "false", "name": "ΨΕΜΑ", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Η μέρα έχει 24 ώρες", "category": "true"},
+    {"text": "Η εβδομάδα έχει 6 μέρες", "category": "false"},
+    {"text": "Το λεπτό έχει 60 δευτερόλεπτα", "category": "true"},
+    {"text": "Το 5 είναι μεγαλύτερο του 7", "category": "false"},
+    {"text": "Οι εποχές είναι 4", "category": "true"},
+    {"text": "Ο χρόνος έχει 11 μήνες", "category": "false"},
+    {"text": "5 x 6 = 30", "category": "true"},
+    {"text": "7 x 6 = 48", "category": "false"},
+    {"text": "Το μέτρο έχει 100 εκατοστά", "category": "true"},
+    {"text": "Η γάτα έχει 2 πόδια", "category": "false"}
+  ],
+  "duration": 30
+}

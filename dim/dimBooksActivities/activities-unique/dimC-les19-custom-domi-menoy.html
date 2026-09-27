@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δομή & Μενού Δικτυακών Τόπων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e9d5ff,#d8b4fe);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px}
+.info-box{background:#f3e8ff;border-radius:12px;border-left:4px solid #a855f7;padding:10px 14px;font-size:.85em;color:#6b21a8;line-height:1.5;margin-bottom:12px}
+.game-area{background:#faf5ff;border-radius:16px;border:2px solid #e9d5ff;padding:14px;min-height:320px}
+.game-area h3{color:#7c3aed;font-size:.95em;margin-bottom:10px;text-align:center}
+.round-badge{text-align:center;font-size:.85em;color:#7c3aed;font-weight:600;margin-bottom:8px}
+.match-area{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.match-col{flex:1;min-width:200px}
+.match-item{padding:12px 16px;border:2px solid #e9d5ff;border-radius:12px;margin-bottom:8px;font-size:.85em;cursor:pointer;transition:all .25s;background:#fff;text-align:center;line-height:1.5}
+.match-item:hover{transform:translateY(-2px);border-color:#a855f7}
+.match-item.selected{border-color:#7c3aed;background:#ede9fe;font-weight:700}
+.match-item.matched{border-color:#22c55e;background:#f0fdf4;cursor:default;opacity:.8}
+.match-item.matched-2{border-color:#22c55e;background:#d1fae5}
+.match-item.wrong{animation:shake .4s;border-color:#dc2626;background:#fee2e2}
+.connector{display:flex;align-items:center;justify-content:center;font-size:2em;color:#a855f7;padding:0 8px;flex-shrink:0}
+.match-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;justify-content:center;flex-wrap:wrap}
+.description-area{background:#f0fdf4;border-radius:12px;padding:12px;font-size:.85em;color:#065f46;line-height:1.6;margin-top:10px}
+.menu-builder{margin-top:12px}
+.menu-label{font-size:.85em;font-weight:600;color:#7c3aed;margin-bottom:6px}
+.menu-items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.menu-tag{padding:6px 14px;border-radius:20px;font-size:.8em;font-weight:600}
+.menu-tag.linear{background:#fee2e2;color:#991b1b;border:2px solid #fca5a5}
+.menu-tag.tree{background:#d1fae5;color:#065f46;border:2px solid #86efac}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(124,58,237,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px;margin-top:10px}
+.feedback.ok{color:#7c3aed}
+.feedback.fail{color:#dc2626}
+.progress-dots{display:flex;gap:4px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.pr-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7em;font-weight:700;border:2px solid #e9d5ff;color:#c4b5fd}
+.pr-dot.done{border-color:#7c3aed;background:#ede9fe;color:#7c3aed}
+.pr-dot.wrong{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.pr-dot.active{border-color:#7c3aed;background:#7c3aed;color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+@media(max-width:500px){.match-col{min-width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .match-area > * { margin: 6px; }
+  .match-row > * { margin: 4px; }
+  .menu-items > * { margin: 3px; }
+  .controls > * + * { margin-left: 12px; }
+  .progress-dots > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🏛️ Δομή & Μενού Δικτυακών Τόπων</h1>
+<p>Ταίριαξε τον δικτυακό τόπο με τη σωστή δομή και το κατάλληλο μενού!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Θυμάμαι:</b> Κάθε δικτυακός τόπος έχει: <b>διεύθυνση (URL)</b>, <b>ιδιοκτήτη</b>, <b>δομή</b> (γραμμική ή δενδρική) και <b>μενού</b> πλοήγησης. Η <b>γραμμική δομή</b> είναι σαν βιβλίο — με σειρά. Η <b>δενδρική</b> έχει κατηγορίες και υποκατηγορίες.</div>
+<div class="game-area">
+<div class="progress-dots" id="progressDots"></div>
+<div class="round-badge" id="roundBadge"></div>
+<div id="gameContent"></div>
+<div class="feedback" id="feedback"></div>
+</div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextRound()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var rounds=[
+{
+site:'Βιογραφία διάσημου τραγουδιστή',
+owner:'Άτομο',
+url:'https://www.giannis-music.gr',
+desc:'Ένας δικτυακός τόπος που παρουσιάζει τη ζωή ενός τραγουδιστή. Η ιστορία του λέγεται με χρονολογική σειρά.',
+structure:'linear',
+menu:['Παιδικά χρόνια','Πρώτες επιτυχίες','Η μεγάλη καριέρα','Σημερινή ζωή'],
+sQuestion:'Τι δομή έχει αυτός ο δικτυακός τόπος;',
+sOptions:['Γραμμική (με σειρά, σαν βιβλίο)','Δενδρική (με κατηγορίες)'],
+sCorrect:0,
+mQuestion:'Διάλεξε το σωστό μενού:',
+mOptions:[
+['Παιδικά χρόνια','Πρώτες επιτυχίες','Η μεγάλη καριέρα','Σημερινή ζωή'],
+['Αρχική','Προϊόντα','Προσφορές','Επικοινωνία']
+],
+mCorrect:0
+},
+{
+site:'Κατάστημα ρούχων online',
+owner:'Εταιρεία',
+url:'https://www.modashop.gr',
+desc:'Ένα ηλεκτρονικό κατάστημα με ρούχα. Τα προϊόντα χωρίζονται σε κατηγορίες και υποκατηγορίες.',
+structure:'tree',
+sQuestion:'Τι δομή έχει αυτός ο δικτυακός τόπος;',
+sOptions:['Γραμμική (με σειρά, σαν βιβλίο)','Δενδρική (με κατηγορίες και υποκατηγορίες)'],
+sCorrect:1,
+mQuestion:'Διάλεξε το σωστό μενού:',
+mOptions:[
+['Αρχική','Ανδρικά','Γυναικεία','Παιδικά','Επικοινωνία'],
+['Σελίδα 1','Σελίδα 2','Σελίδα 3']
+],
+mCorrect:0
+},
+{
+site:'Δικτυακός τόπος σχολείου',
+owner:'Οργάνωση',
+url:'https://dim-athinas.sch.gr',
+desc:'Ο δικτυακός τόπος ενός σχολείου με πληροφορίες για το προσωπικό, ανακοινώσεις και υλικό μαθημάτων, οργανωμένο σε κατηγορίες.',
+structure:'tree',
+sQuestion:'Τι δομή έχει αυτός ο δικτυακός τόπος;',
+sOptions:['Γραμμική (με σειρά)','Δενδρική (με κατηγορίες και υποκατηγορίες)'],
+sCorrect:1,
+mQuestion:'Διάλεξε το σωστό μενού:',
+mOptions:[
+['Αρχική','Το σχολείο','Δράσεις','Ανακοινώσεις','Επικοινωνία'],
+['Βιογραφία','Εργασία','Χόμπι']
+],
+mCorrect:0
+},
+{
+site:'Οδηγός για ένα ταξίδι',
+owner:'Άτομο',
+url:'https://www.taxidi-stin-ellada.gr',
+desc:'Οδηγός για ταξίδι στην Ελλάδα: προετοιμασία, προορισμοί, διαμονή, δραστηριότητες με προτεινόμενη σειρά.',
+structure:'linear',
+sQuestion:'Τι δομή έχει αυτός ο δικτυακός τόπος;',
+sOptions:['Γραμμική (με σειρά)','Δενδρική (με κατηγορίες)'],
+sCorrect:0,
+mQuestion:'Διάλεξε το σωστό μενού:',
+mOptions:[
+['Προετοιμασία','Προορισμοί','Διαμονή','Δραστηριότητες'],
+['Αρχική','Προϊόντα','Επικοινωνία']
+],
+mCorrect:0
+},
+{
+site:'Διαδικτυακή εγκυκλοπαίδεια',
+owner:'Οργάνωση',
+url:'https://www.e-gnoseis.gr',
+desc:'Μια εγκυκλοπαίδεια με θέματα χωρισμένα σε κατηγορίες: Επιστήμες, Ιστορία, Γεωγραφία, με τις δικές τους υποκατηγορίες.',
+structure:'tree',
+sQuestion:'Τι δομή έχει αυτός ο δικτυακός τόπος;',
+sOptions:['Γραμμική (με σειρά)','Δενδρική (με κατηγορίες και υποκατηγορίες)'],
+sCorrect:1,
+mQuestion:'Διάλεξε το σωστό μενού:',
+mOptions:[
+['Επιστήμες','Ιστορία','Γεωγραφία','Πολιτισμός'],
+['Εισαγωγή','Κεφάλαιο 1','Κεφάλαιο 2']
+],
+mCorrect:0
+}
+];
+
+var currentRound=0;
+var results=[];
+var phase='structure';
+var answered=false;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var roundOrder=[];
+
+function renderProgress(){
+var container=document.getElementById('progressDots');
+container.innerHTML='';
+for(var i=0;i<rounds.length;i++){
+var dot=document.createElement('div');
+dot.className='pr-dot';
+dot.textContent=i+1;
+if(results[i]!==undefined)dot.classList.add(results[i]?'done':'wrong');
+if(i===currentRound)dot.classList.add('active');
+container.appendChild(dot);
+}
+}
+
+function renderRound(){
+renderProgress();
+var r=rounds[roundOrder[currentRound]];
+var container=document.getElementById('gameContent');
+document.getElementById('roundBadge').textContent='🌐 '+(currentRound+1)+'/'+rounds.length+' — '+r.site;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+var isLast=currentRound>=rounds.length-1;
+document.getElementById('nextBtn').textContent=isLast?'🏁 Τέλος':'⏭ Επόμενο';
+document.getElementById('nextBtn').disabled=true;
+
+if(phase==='structure'){
+renderStructureQuestion(container,r);
+}else{
+renderMenuQuestion(container,r);
+}
+}
+
+function renderStructureQuestion(container,r){
+var html='<div class="match-area"><div class="match-col" style="text-align:center;padding:12px;background:#f0fdf4;border-radius:12px;border:2px solid #bbf7d0">';
+html+='<div style="font-size:2em;margin-bottom:6px">🌐</div><div style="font-weight:700;margin-bottom:4px">'+r.site+'</div>';
+html+='<div style="font-size:.8em;color:#6b7280">'+r.url+'</div>';
+html+='<div style="font-size:.8em;color:#7c3aed;margin-top:6px">Ιδιοκτήτης: '+r.owner+'</div>';
+html+='</div></div>';
+html+='<div class="description-area">'+r.desc+'</div>';
+html+='<div style="margin-top:10px"><p style="font-weight:600;color:#7c3aed;margin-bottom:8px">'+r.sQuestion+'</p>';
+for(var i=0;i<r.sOptions.length;i++){
+html+='<div class="match-item" data-struct="'+i+'" onclick="selectStructure(this,'+i+')">'+r.sOptions[i]+'</div>';
+}
+html+='</div>';
+container.innerHTML=html;
+answered=false;
+}
+
+function selectStructure(el,idx){
+if(answered)return;
+var r=rounds[roundOrder[currentRound]];
+var items=document.querySelectorAll('.match-item');
+for(var i=0;i<items.length;i++)items[i].classList.remove('selected');
+el.classList.add('selected');
+if(idx===r.sCorrect){
+showFeedback('✅ Σωστή δομή!',true);
+setTimeout(function(){phase='menu';renderRound();},800);
+}else{
+el.classList.add('wrong');
+showFeedback('❌ Δεν είναι σωστό. Η δομή του τόπου είναι: '+(r.structure==='linear'?'γραμμική':'δενδρική'),false);
+setTimeout(function(){el.classList.remove('wrong');},600);
+}
+answered=true;
+}
+
+function renderMenuQuestion(container,r){
+var correctMenu=r.mOptions[r.mCorrect];
+var html='<div class="match-area" style="flex-direction:column"><div style="text-align:center;padding:10px;background:#f0fdf4;border-radius:12px;border:2px solid #bbf7d0">';
+html+='<div style="font-weight:700;font-size:.9em">🌐 '+r.site+'</div></div>';
+html+='<p style="font-weight:600;color:#7c3aed;margin:8px 0">'+r.mQuestion+'</p>';
+for(var j=0;j<r.mOptions.length;j++){
+var menu=r.mOptions[j];
+var isRight=j===r.mCorrect?' ✓':'';
+html+='<div class="match-item menu-opt" data-menu="'+j+'" onclick="selectMenu(this,'+j+')">📋 ';
+for(var k=0;k<menu.length;k++){
+html+=(k>0?' · ':'')+menu[k];
+}
+html+=isRight+'</div>';
+}
+html+='</div>';
+container.innerHTML=html;
+answered=false;
+}
+
+function selectMenu(el,idx){
+if(answered)return;
+var r=rounds[roundOrder[currentRound]];
+var items=document.querySelectorAll('.menu-opt');
+for(var i=0;i<items.length;i++)items[i].classList.remove('selected');
+el.classList.add('selected');
+if(idx===r.mCorrect){
+showFeedback('✅ Σωστό μενού! Ο '+r.site+' ταιριάζει με αυτό το μενού!',true);
+results[currentRound]=true;
+renderProgress();
+document.getElementById('nextBtn').disabled=false;
+}else{
+el.classList.add('wrong');
+showFeedback('❌ Λάθος μενού. Δοκίμασε το άλλο!',false);
+setTimeout(function(){el.classList.remove('wrong');},600);
+}
+answered=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextRound(){
+phase='structure';
+if(currentRound>=rounds.length-1){
+showFinal();
+return;
+}
+currentRound++;
+renderRound();
+}
+
+function showFinal(){
+var correct=0;
+for(var i=0;i<results.length;i++)if(results[i])correct++;
+var pct=Math.round(correct/results.length*100);
+var msg='';
+if(pct===100)msg='🎉 Τέλεια! '+correct+'/'+results.length+'! Γνωρίζεις πολύ καλά τα χαρακτηριστικά των δικτυακών τόπων! 🏆';
+else if(pct>=60)msg='👏 Μπράβο! '+correct+'/'+results.length+' σωστά! Συνέχισε να εξερευνάς!';
+else msg='💪 '+correct+'/'+results.length+' σωστά. Δοκίμασε ξανά!';
+document.getElementById('gameContent').innerHTML='<div style="text-align:center;padding:30px;font-size:1.2em;font-weight:700;color:#7c3aed">'+msg+'</div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('roundBadge').textContent='Ολοκληρώθηκε!';
+}
+
+function resetGame(){
+currentRound=0;
+results=[];
+phase='structure';
+roundOrder=[];
+for(var i=0;i<rounds.length;i++)roundOrder.push(i);
+shuffle(roundOrder);
+renderRound();
+document.getElementById('nextBtn').style.display='inline-block';
+}
+
+resetGame();
+</script>
+</body>
+</html>

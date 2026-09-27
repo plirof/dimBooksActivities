@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ταξίδι στο Φεγγάρι",
+  "subtitle": "Πιάσε ό,τι ανήκει στο διάστημα!",
+  "instructions": "Πιάσε μόνο ό,τι ανήκει στο ΔΙΑΣΤΗΜΑ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Πύραυλος", "correct": true, "color": "#4CAF50"},
+    {"text": "Κούνια", "correct": false, "color": "#f44336"},
+    {"text": "Φεγγάρι", "correct": true, "color": "#2196F3"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FF9800"},
+    {"text": "Αστροναύτης", "correct": true, "color": "#9C27B0"},
+    {"text": "Γάτα", "correct": false, "color": "#E91E63"},
+    {"text": "Αστέρια", "correct": true, "color": "#009688"},
+    {"text": "Μπίλιες", "correct": false, "color": "#FFC107"},
+    {"text": "Ιστορία", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

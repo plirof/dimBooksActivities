@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι τρώει ο άνθρωπος;",
+  "subtitle": "Πιάσε μόνο τις τροφές",
+  "instructions": "Πιάσε τις τροφές. Απόφυγε τα μη τρόφιμα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Ντομάτα", "correct": true, "color": "#4CAF50" },
+    { "text": "Πέτρα", "correct": false, "color": "#f44336" },
+    { "text": "Μοσχάρι", "correct": true, "color": "#4CAF50" },
+    { "text": "Αμμος", "correct": false, "color": "#f44336" },
+    { "text": "Μπρόκολο", "correct": true, "color": "#4CAF50" },
+    { "text": "Σίδερο", "correct": false, "color": "#f44336" },
+    { "text": "Κοτόπουλο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τσιμέντο", "correct": false, "color": "#f44336" },
+    { "text": "Αγγούρι", "correct": true, "color": "#4CAF50" },
+    { "text": "Ξύλο", "correct": false, "color": "#f44336" }
+  ]
+}

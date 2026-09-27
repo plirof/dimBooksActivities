@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Ενέργειες Email",
+  "subtitle": "Πιάσε τις σωστές ενέργειες email!",
+  "instructions": "Πιάσε τις πραγματικές ενέργειες στο email. Απόφυγε τις λάθος.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Νέο μήνυμα", "correct": true, "color": "#4caf50" },
+    { "text": "Αποστολή", "correct": true, "color": "#2196f3" },
+    { "text": "Απάντηση", "correct": true, "color": "#ff9800" },
+    { "text": "Προώθηση", "correct": true, "color": "#9c27b0" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#f44336" },
+    { "text": "Συνημμένο", "correct": true, "color": "#00bcd4" },
+    { "text": "Εισερχόμενα", "correct": true, "color": "#8bc34a" },
+    { "text": "Μαγειρική", "correct": false, "color": "#f44336" },
+    { "text": "Διαγραφή", "correct": true, "color": "#e91e63" },
+    { "text": "Πτήση", "correct": false, "color": "#f44336" }
+  ]
+}

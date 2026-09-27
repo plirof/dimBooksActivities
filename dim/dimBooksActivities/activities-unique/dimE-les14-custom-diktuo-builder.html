@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAN vs WAN: Κατασκευή Δικτύου | Μάθημα 14</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#1a0a2e,#2d1b4e);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.top-controls{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.tab-btn{padding:6px 14px;border:2px solid #334155;border-radius:10px;background:#0f172a;color:#94a3b8;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.tab-btn.active-lan{background:#3b82f6;color:#fff;border-color:#60a5fa}
+.tab-btn.active-wan{background:#8b5cf6;color:#fff;border-color:#a78bfa}
+.reset-btn{padding:6px 14px;border:none;border-radius:10px;background:#ef4444;color:#fff;font-size:.72rem;font-weight:700;cursor:pointer}
+.score-item{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.game-wrap{display:flex;gap:10px;max-width:850px;width:100%;flex-wrap:wrap;justify-content:center}
+.workspace{background:#0f172a;border-radius:16px;border:2px solid #1e293b;flex:1;min-width:300px;padding:10px;position:relative}
+.workspace canvas{width:100%;border-radius:10px;display:block;cursor:pointer}
+.workspace-label{position:absolute;top:-10px;left:16px;background:#1e293b;padding:2px 10px;border-radius:8px;color:#64748b;font-size:.65rem;font-weight:700;border:1px solid #334155}
+.sidebar{width:200px;display:flex;flex-direction:column;gap:8px}
+.device-tray{background:#0f172a;border-radius:14px;border:2px solid #1e293b;padding:8px}
+.tray-title{color:#94a3b8;font-size:.68rem;font-weight:700;text-align:center;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #1e293b}
+.device-list{display:flex;flex-direction:column;gap:5px}
+.dev-btn{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px;cursor:pointer;transition:all .2s;border:2px solid transparent;user-select:none}
+.dev-btn:hover{border-color:#6366f1}
+.dev-btn.selected{border-color:#a78bfa;background:#1e1b4b}
+.dev-btn.placed{opacity:.4;cursor:default;pointer-events:none}
+.dev-btn .d-icon{font-size:1.2rem}
+.dev-btn .d-name{color:#e2e8f0;font-size:.65rem;font-weight:600}
+.info-box{background:#1e293b;border-radius:12px;padding:8px;border:1px solid #334155}
+.info-title{color:#fbbf24;font-size:.72rem;font-weight:700;margin-bottom:4px;text-align:center}
+.info-text{color:#94a3b8;font-size:.65rem;line-height:1.4}
+.check-btn{width:100%;padding:8px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s}
+.check-btn:hover{transform:translateY(-1px)}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.lan-only{display:block}
+.wan-only{display:none}
+@media(max-width:700px){.game-wrap{flex-direction:column;align-items:center}.sidebar{width:100%;max-width:400px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .top-controls > * { margin: 4px; }
+  .game-wrap > * { margin: 5px; }
+  .sidebar > * + * { margin-top: 8px; }
+  .device-list > * + * { margin-top: 5px; }
+  .dev-btn > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏗️ LAN vs WAN: Κατασκευή Δικτύου</h1>
+<p class="subtitle">Τοποθέτησε τις συσκευές και δημιούργησε το δίκτυο! Λειτουργίες LAN ή WAN.</p>
+<div class="top-controls">
+<button class="tab-btn active-lan" id="tabLAN" onclick="switchMode('lan')">🏠 LAN (Τοπικό)</button>
+<button class="tab-btn" id="tabWAN" onclick="switchMode('wan')">🌍 WAN (Ευρύτερο)</button>
+<button class="reset-btn" onclick="resetAll()">🔄 Αρχή</button>
+<span class="score-item">Πόντοι: <span id="pts">0</span></span>
+</div>
+<div class="game-wrap">
+<div class="workspace">
+<span class="workspace-label" id="wsLabel">🏠 Τοπικό Δίκτυο (LAN)</span>
+<canvas id="c" width="500" height="360"></canvas>
+</div>
+<div class="sidebar">
+<div class="device-tray">
+<div class="tray-title">🔧 Συσκευές — Πάτησε και μετά πάτησε στο καμβά</div>
+<div class="device-list" id="devList"></div>
+</div>
+<div class="info-box">
+<div class="info-title" id="infoTitle">📖 Πληροφορίες</div>
+<div class="info-text" id="infoText">Διάλεξε LAN ή WAN και τοποθέτησε τις σωστές συσκευές στο δίκτυο. Κάθε τύπος δικτύου έχει συγκεκριμένες απαιτήσεις!</div>
+</div>
+<button class="check-btn" onclick="checkNetwork()">✅ Έλεγχος Δικτύου</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var canvas=document.getElementById('c');
+var ctx=canvas.getContext('2d');
+var W=500,H=360;
+var mode='lan';
+var pts=0;
+var placedDevices=[];
+var selectedDev=null;
+var devDefs={
+lan:[
+{id:'pc1',icon:'💻',name:'Υπολογιστής 1',cat:'client'},
+{id:'pc2',icon:'💻',name:'Υπολογιστής 2',cat:'client'},
+{id:'router',icon:'📡',name:'Δρομολογητής',cat:'router'},
+{id:'server',icon:'🖥️',name:'Εξυπηρετητής',cat:'server'},
+{id:'printer',icon:'🖨️',name:'Εκτυπωτής',cat:'peripheral'}
+],
+wan:[
+{id:'pc1',icon:'💻',name:'Υπολογιστής (Πελάτης)',cat:'client'},
+{id:'router1',icon:'📡',name:'Router 1 (Τοπικό)',cat:'router'},
+{id:'router2',icon:'📡',name:'Router 2 (Κεντρικό)',cat:'router'},
+{id:'router3',icon:'📡',name:'Router 3 (Απομακρ.)',cat:'router'},
+{id:'server',icon:'🖥️',name:'Server (Απομακρυσμένος)',cat:'server'},
+{id:'lan1',icon:'🏠',name:'LAN Γραφείου',cat:'lan'},
+{id:'lan2',icon:'🏫',name:'LAN Σχολείου',cat:'lan'}
+]
+};
+var zones={
+lan:[
+{label:'Τοπικό Δίκτυο (LAN) — Γραφείο / Σπίτι',y:20,h:320,color:'#3b82f620'}
+],
+wan:[
+{label:'LAN 1 — Γραφείο',y:10,h:100,color:'#3b82f620'},
+{label:'Δίκτυο WAN — Σύνδεση',y:120,h:120,color:'#8b5cf620'},
+{label:'LAN 2 — Σχολείο',y:250,h:100,color:'#22c55e20'}
+]
+};
+var lanRules={
+mustHave:['client','router','server'],
+mustPlace:{client:1,router:1,server:1},
+msg:'Το LAN χρειάζεται τουλάχιστον 1 υπολογιστή (πελάτη), 1 δρομολογητή και 1 εξυπηρετητή.'
+};
+var wanRules={
+mustHave:['client','router','server','lan'],
+mustPlace:{client:1,router:1,server:1,lan:1},
+msg:'Το WAN χρειάζεται πελάτη, δρομολογητές, εξυπηρετητή και τουλάχιστον 1 LAN.'
+};
+function init(){
+buildDevList();
+draw();
+canvas.addEventListener('click',onCanvasClick);
+canvas.addEventListener('touchend',function(e){
+e.preventDefault();
+var r=canvas.getBoundingClientRect();
+var t=e.changedTouches[0];
+var cx=(t.clientX-r.left)*(W/r.width);
+var cy=(t.clientY-r.top)*(H/r.height);
+placeAt(cx,cy);
+});
+}
+function buildDevList(){
+var list=document.getElementById('devList');
+list.innerHTML='';
+var devs=devDefs[mode];
+for(var i=0;i<devs.length;i++){
+var d=devs[i];
+var placed=placedDevices.some(function(p){return p.id===d.id;});
+var div=document.createElement('div');
+div.className='dev-btn'+(placed?' placed':'')+(selectedDev===d.id?' selected':'');
+div.innerHTML='<span class="d-icon">'+d.icon+'</span><span class="d-name">'+d.name+'</span>';
+if(!placed){
+div.onclick=(function(id){return function(){selectDev(id);};})(d.id);
+}
+list.appendChild(div);
+}
+}
+function selectDev(id){
+selectedDev=selectedDev===id?null:id;
+buildDevList();
+}
+function onCanvasClick(e){
+var r=canvas.getBoundingClientRect();
+var cx=(e.clientX-r.left)*(W/r.width);
+var cy=(e.clientY-r.top)*(H/r.height);
+placeAt(cx,cy);
+}
+function placeAt(cx,cy){
+if(!selectedDev)return;
+var devs=devDefs[mode];
+var dev=devs.find(function(d){return d.id===selectedDev;});
+if(!dev)return;
+if(placedDevices.some(function(p){return p.id===dev.id;}))return;
+placedDevices.push({id:dev.id,icon:dev.icon,name:dev.name,cat:dev.cat,x:cx,y:cy});
+selectedDev=null;
+pts+=2;
+document.getElementById('pts').textContent=pts;
+buildDevList();
+draw();
+}
+function draw(){
+ctx.clearRect(0,0,W,H);
+var bg=ctx.createLinearGradient(0,0,0,H);
+bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#1e293b');
+ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+var zs=zones[mode];
+for(var z=0;z<zs.length;z++){
+var zone=zs[z];
+ctx.fillStyle=zone.color;
+ctx.beginPath();
+ctx.roundRect(10,zone.y,W-20,zone.h,12);
+ctx.fill();
+ctx.strokeStyle='#334155';ctx.lineWidth=1;
+ctx.stroke();
+ctx.fillStyle='#475569';ctx.font='bold 9px sans-serif';
+ctx.textAlign='left';ctx.textBaseline='top';
+ctx.fillText(zone.label,18,zone.y+6);
+}
+for(var i=0;i<placedDevices.length;i++){
+var a=placedDevices[i];
+for(var j=i+1;j<placedDevices.length;j++){
+var b=placedDevices[j];
+var connected=(a.cat==='router'&&b.cat!=='lan')||(b.cat==='router'&&a.cat!=='lan');
+if(a.cat==='lan'||b.cat==='lan')connected=true;
+if(connected){
+ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+ctx.strokeStyle='#334155';ctx.lineWidth=1.5;
+ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+}
+}
+}
+for(var k=0;k<placedDevices.length;k++){
+var p=placedDevices[k];
+ctx.beginPath();ctx.arc(p.x,p.y,22,0,Math.PI*2);
+ctx.fillStyle='#0f172a';ctx.fill();
+ctx.strokeStyle='#6366f1';ctx.lineWidth=2;ctx.stroke();
+ctx.font='20px "Segoe UI Emoji","Noto Color Emoji",sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(p.icon,p.x,p.y);
+ctx.fillStyle='#cbd5e1';ctx.font='bold 8px sans-serif';
+ctx.textBaseline='top';ctx.fillText(p.name,p.x,p.y+26);
+}
+if(placedDevices.length===0){
+ctx.fillStyle='#334155';ctx.font='12px sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('Επίλεξε συσκευή και πάτα εδώ για να την τοποθετήσεις!',W/2,H/2);
+}
+}
+function switchMode(m){
+if(mode===m)return;
+mode=m;
+placedDevices=[];
+selectedDev=null;
+document.getElementById('tabLAN').className='tab-btn'+(m==='lan'?' active-lan':'');
+document.getElementById('tabWAN').className='tab-btn'+(m==='wan'?' active-wan':'');
+document.getElementById('wsLabel').textContent=m==='lan'?'🏠 Τοπικό Δίκτυο (LAN)':'🌍 Δίκτυο Ευρύτερης Εμβέλειας (WAN)';
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+var infoText=document.getElementById('infoText');
+infoText.textContent=m==='lan'?'Το LAN συνδέει συσκευές σε έναν χώρο (γραφείο, σπίτι, κτίριο). Τοποθέτησε υπολογιστές, router, server και εκτυπωτή!':'Το WAN συνδέει LAN σε μεγάλες αποστάσεις (πόλεις, χώρες). Τοποθέτησε LANs, routers, και απομακρυσμένο server!';
+buildDevList();
+draw();
+}
+function checkNetwork(){
+var cats={};
+for(var i=0;i<placedDevices.length;i++){
+var c=placedDevices[i].cat;
+cats[c]=(cats[c]||0)+1;
+}
+var rules=mode==='lan'?lanRules:wanRules;
+var fb=document.getElementById('feedback');
+var allOk=true;
+for(var j=0;j<rules.mustHave.length;j++){
+if(!cats[rules.mustHave[j]]){
+allOk=false;
+break;
+}
+}
+if(placedDevices.length<3){allOk=false;}
+if(allOk){
+pts+=15;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Το '+(mode==='lan'?'LAN':'WAN')+' σου είναι πλήρες!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ '+rules.msg;
+fb.className='feedback fail';
+}
+}
+function resetAll(){
+placedDevices=[];
+selectedDev=null;
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+buildDevList();
+draw();
+}
+init();
+</script>
+</body>
+</html>

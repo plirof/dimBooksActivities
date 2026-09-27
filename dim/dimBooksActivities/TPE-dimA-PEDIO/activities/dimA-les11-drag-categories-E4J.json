@@ -1,0 +1,58 @@
+{
+  "title": "Συσκευές στη σωστή θέση",
+  "subtitle": "Τοποθέτησε κάθε συσκευή στη σωστή θέση πάνω στο γραφείο",
+  "categories": [
+    {
+      "id": "left",
+      "name": "ΑΡΙΣΤΕΡΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "right",
+      "name": "ΔΕΞΙΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "center",
+      "name": "ΚΕΝΤΡΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "top",
+      "name": "ΠΑΝΩ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Πληκτρολόγιο",
+      "category": "left"
+    },
+    {
+      "id": "item2",
+      "text": "Ποντίκι",
+      "category": "right"
+    },
+    {
+      "id": "item3",
+      "text": "Οθόνη",
+      "category": "center"
+    },
+    {
+      "id": "item4",
+      "text": "Εκτυπωτής",
+      "category": "top"
+    },
+    {
+      "id": "item5",
+      "text": "Ηχεία",
+      "category": "right"
+    },
+    {
+      "id": "item6",
+      "text": "Κάμερα",
+      "category": "center"
+    }
+  ]
+}

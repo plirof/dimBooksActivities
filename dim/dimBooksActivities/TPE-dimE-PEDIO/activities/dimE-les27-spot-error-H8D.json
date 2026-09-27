@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακά Μουσεία",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Εθνικό", "error": false},
+        {"text": "Αρχαιολογικό", "error": false},
+        {"text": "Μουσείο", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στη", "error": false},
+        {"text": "Θεσσαλονίκη", "error": true, "correct": "Αθήνα", "feedback": "Το Εθνικό Αρχαιολογικό Μουσείο βρίσκεται στην ΑΘΗΝΑ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Βικιπαίδεια", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μια", "error": false},
+        {"text": "επί πληρωμή", "error": true, "correct": "ελεύθερη", "feedback": "Η Βικιπαίδεια είναι ΕΛΕΥΘΕΡΗ εγκυκλοπαίδεια!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "ψηφιακά", "error": false},
+        {"text": "μουσεία", "error": false},
+        {"text": "μπορούν", "error": false},
+        {"text": "να", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "επισκεφτούμε", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και από", "feedback": "Μπορούμε να τα επισκεφτούμε ΚΑΙ ΑΠΟ τον υπολογιστή μας!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Openbook", "error": false},
+        {"text": "προσφέρει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Το Openbook προσφέρει ψηφιακά βιβλία, όχι ΜΟΝΟ κάτι!"},
+        {"text": "ψηφιακά", "error": false},
+        {"text": "βιβλία", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Αρχαιολογικό", "error": false},
+        {"text": "Μουσείο", "error": false},
+        {"text": "Ηρακλείου", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "Αθήνα", "error": true, "correct": "Κρήτη", "feedback": "Το Αρχαιολογικό Μουσείο Ηρακλείου βρίσκεται στην ΚΡΗΤΗ!"}
+      ]
+    }
+  ]
+}

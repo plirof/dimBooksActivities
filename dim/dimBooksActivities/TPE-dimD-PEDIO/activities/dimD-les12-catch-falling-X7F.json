@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Μέσα Αποθήκευσης",
+  "subtitle": "Πιάσε τα μέσα αποθήκευσης!",
+  "instructions": "Πιάσε τα σωστά μέσα αποθήκευσης. Απόφυγε τα λάθος!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Σκληρός δίσκος HDD", "correct": true, "color": "#4caf50" },
+    { "text": "Δίσκος SSD", "correct": true, "color": "#2196f3" },
+    { "text": "Μνήμη φλας", "correct": true, "color": "#ff9800" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Κάρτα μνήμης", "correct": true, "color": "#00bcd4" },
+    { "text": "Μπλογκ", "correct": false, "color": "#9c27b0" },
+    { "text": "Εξωτερικός δίσκος", "correct": true, "color": "#8bc34a" },
+    { "text": "Σφουγγάρι", "correct": false, "color": "#ff5722" },
+    { "text": "Εσωτερικός δίσκος", "correct": true, "color": "#607d8b" },
+    { "text": "Καρέκλα", "correct": false, "color": "#e91e63" }
+  ]
+}

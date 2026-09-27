@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Κατευθύνσεις",
+  "subtitle": "Μόνο λέξεις για κίνηση!",
+  "instruction": "Σπάσε μόνο λέξεις για ΚΙΝΗΣΗ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Πάνω", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπάντα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Κάτω", "correct": true, "color": "#45B7D1" },
+    { "text": "Πίτσα", "correct": false, "color": "#96CEB4" },
+    { "text": "Δεξιά", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάλα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Αριστερά", "correct": true, "color": "#98D8C8" },
+    { "text": "Σκύλος", "correct": false, "color": "#F7DC6F" },
+    { "text": "Βέλος", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κούπα", "correct": false, "color": "#85C1E9" }
+  ]
+}

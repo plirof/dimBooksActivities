@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αλγόριθμος 1 ή 2;",
+  "subtitle": "Ταξινόμησε κάθε χαρακτηριστικό στον σωστό αλγόριθμο",
+  "instructions": "Πάτα αριστερό βέλος για Αλγόριθμο 1, δεξιό βέλος για Αλγόριθμο 2",
+  "categories": [
+    { "id": "algo1", "name": "Αλγόριθμος 1", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "algo2", "name": "Αλγόριθμος 2", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Ο παίκτης κερδίζει πάντα", "category": "algo1" },
+    { "text": "Όριο 5 προσπαθειών", "category": "algo2" },
+    { "text": "Χωρίς μετρητή", "category": "algo1" },
+    { "text": "Με εντολή Αλλιώς", "category": "algo2" },
+    { "text": "Απλή συνθήκη λήξης", "category": "algo1" },
+    { "text": "Σύνθετη λογική έκφραση", "category": "algo2" },
+    { "text": "Ο παίκτης μπορεί να χάσει", "category": "algo2" },
+    { "text": "Τυχαίος αριθμός 1-10", "category": "algo1" },
+    { "text": "Μετρητής προσπαθειών", "category": "algo2" },
+    { "text": "Χωρίς όριο προσπαθειών", "category": "algo1" }
+  ],
+  "duration": 30
+}

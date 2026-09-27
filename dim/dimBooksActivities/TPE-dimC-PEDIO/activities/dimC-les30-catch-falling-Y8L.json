@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Κανόνες & Όρια",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τους σωστούς ΚΑΝΟΝΕΣ χρήσης! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "2 ώρες/μέρα", "correct": true, "color": "#4CAF50"},
+    {"text": "10 ώρες/μέρα", "correct": false, "color": "#f44336"},
+    {"text": "Τακτικά διαλείμματα", "correct": true, "color": "#2196F3"},
+    {"text": "Καθόλου διάλειμμα", "correct": false, "color": "#FF9800"},
+    {"text": "Ανάρτηση είναι δημόσια", "correct": true, "color": "#9C27B0"},
+    {"text": "Όλα είναι σωστά", "correct": false, "color": "#E91E63"},
+    {"text": "Μένει για πάντα", "correct": true, "color": "#009688"},
+    {"text": "Μπορώ να διαγράψω", "correct": false, "color": "#FFC107"},
+    {"text": "Ισορροπία ζωής", "correct": true, "color": "#795548"},
+    {"text": "Απεριόριστος χρόνος", "correct": false, "color": "#607D8B"}
+  ]
+}

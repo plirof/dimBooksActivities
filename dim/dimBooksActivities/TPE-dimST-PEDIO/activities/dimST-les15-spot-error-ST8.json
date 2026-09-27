@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Ασφάλεια στο Διαδίκτυο",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "phishing", "error": false },
+        { "text": "είναι", "error": false },
+        { "text": "πρόγραμμα", "error": true, "correct": "απάτη", "feedback": "Το phishing είναι απάτη, όχι πρόγραμμα" },
+        { "text": "που", "error": false },
+        { "text": "κλέβει", "error": false },
+        { "text": "δεδομένα.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false },
+        { "text": "προστασία", "error": false },
+        { "text": "αρκεί", "error": false },
+        { "text": "μόνο", "error": true, "correct": "όχι μόνο", "feedback": "Δεν αρκεί μόνο antivirus. Χρειάζονται και ισχυροί κωδικοί, ενημερώσεις κλπ." },
+        { "text": "το", "error": false },
+        { "text": "antivirus.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false },
+        { "text": "κωδικός", "error": false },
+        { "text": "πρόσβασης", "error": false },
+        { "text": "πρέπει", "error": false },
+        { "text": "να", "error": false },
+        { "text": "είναι", "error": false },
+        { "text": "απλός.", "error": true, "correct": "ισχυρός", "feedback": "Ο κωδικός πρέπει να είναι ισχυρός, όχι απλός" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Στο", "error": false },
+        { "text": "IoT", "error": false },
+        { "text": "οι", "error": false },
+        { "text": "συσκευές", "error": false },
+        { "text": "χρειάζονται", "error": false },
+        { "text": "ανθρώπινη", "error": true, "correct": "δεν χρειάζονται ανθρώπινη", "feedback": "Οι συσκευές IoT ανταλλάσσουν δεδομένα ΧΩΡΙΣ ανθρώπινη παρέμβαση" }
+      ]
+    }
+  ]
+}

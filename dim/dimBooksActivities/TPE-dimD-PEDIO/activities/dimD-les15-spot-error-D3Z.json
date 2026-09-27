@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Διαδικτυακή Ασφάλεια",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ασφάλεια", "error": false, "correct": "Ασφάλεια", "feedback": "" },
+        { "text": "Ασφάλλεια", "error": true, "correct": "Ασφάλεια", "feedback": "Γράφεται Ασφάλεια" },
+        { "text": "Προστασία", "error": false, "correct": "Προστασία", "feedback": "" },
+        { "text": "Προστασσία", "error": true, "correct": "Προστασία", "feedback": "Γράφεται Προστασία με ένα σ" },
+        { "text": "Κακόβουλο", "error": false, "correct": "Κακόβουλο", "feedback": "" },
+        { "text": "Κακόβουλο", "error": true, "correct": "Κακόβουλο", "feedback": "Γράφεται Κακόβουλο" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ενημέρωση", "error": false, "correct": "Ενημέρωση", "feedback": "" },
+        { "text": "Ενιμέρωση", "error": true, "correct": "Ενημέρωση", "feedback": "Γράφεται Ενημέρωση" },
+        { "text": "Διαφήμιση", "error": false, "correct": "Διαφήμιση", "feedback": "" },
+        { "text": "Διαφήμεση", "error": true, "correct": "Διαφήμιση", "feedback": "Γράφεται Διαφήμιση" },
+        { "text": "Προσβολή", "error": false, "correct": "Προσβολή", "feedback": "" },
+        { "text": "Προσβολη", "error": true, "correct": "Προσβολή", "feedback": "Γράφεται Προσβολή με τόνο" }
+      ]
+    }
+  ]
+}

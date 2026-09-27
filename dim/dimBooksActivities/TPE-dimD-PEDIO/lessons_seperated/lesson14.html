@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Πληροφορική Δ&#x27; Δημοτικού — Μάθημα 14: Το ταξίδι των δεδομένων σε ένα δίκτυο . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54</title>
+
+<title>Pliroforiki_D-dimotikou_light-web_v.5.0_PEDIO/index</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="pdftohtml 0.36"/>
+<meta name="date" content="2026-04-03T12:31:32+00:00"/>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+
+</head>
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<!-- Page 56 -->
+<a name="56"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft5668{font-size:18px;line-height:27px;font-family:SBIYKN+IEPSans;color:#000000;}
+-->
+</style>
+<div id="page56-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index056.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft5612">54</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft5664"><b>2</b></p>
+<p style="position:absolute;top:21px;left:98px;white-space:nowrap" class="ft5625">Πληροφορική Δ’ Δημοτικού</p>
+<p style="position:absolute;top:44px;left:98px;white-space:nowrap" class="ft5665">Υπολογιστικά συστήματα – Ψηφιακές συσκευές – Δίκτυα</p>
+<p style="position:absolute;top:147px;left:121px;white-space:nowrap" class="ft5646"><b>&#160; &#160; &#160;Μάθημα 14ο</b></p>
+<p style="position:absolute;top:128px;left:361px;white-space:nowrap" class="ft5657">Το ταξίδι των δεδομένων&#160;&#160;<br/>σε ένα δίκτυο</p>
+<p style="position:absolute;top:273px;left:122px;white-space:nowrap" class="ft5637">&#160;Να κατανοείς τον ρόλο του δρομολογητή και τον τρόπο που μεταφέρονται&#160;&#160;</p>
+<p style="position:absolute;top:297px;left:128px;white-space:nowrap" class="ft5637">τα δεδομένα σε δίκτυα.</p>
+<p style="position:absolute;top:325px;left:122px;white-space:nowrap" class="ft5637">&#160;Να αξιοποιείς τις τεχνολογίες διασύνδεσης συσκευών με ασφάλεια και&#160;</p>
+<p style="position:absolute;top:349px;left:128px;white-space:nowrap" class="ft5637">υπευθυνότητα.</p>
+<p style="position:absolute;top:377px;left:122px;white-space:nowrap" class="ft5637">&#160;Να γνωρίζεις τη σημασία των αντιγράφων ασφαλείας για τα αρχεία τους και πώς&#160;</p>
+<p style="position:absolute;top:401px;left:128px;white-space:nowrap" class="ft5637">αυτά λαμβάνονται.</p>
+<p style="position:absolute;top:226px;left:130px;white-space:nowrap" class="ft5615"><b>Στο μάθημα αυτό θα μάθεις:</b></p>
+<p style="position:absolute;top:687px;left:156px;white-space:nowrap" class="ft5668"><b>Τι είναι ο δρομολογητής (router);<br/></b>Ο δρομολογητής (router) είναι μια ψηφιακή συσκευή που&#160;</p>
+<p style="position:absolute;top:742px;left:155px;white-space:nowrap" class="ft5621">χρησιμοποιείται σε ένα δίκτυο υπολογιστών για τη μεταφορά&#160;</p>
+<p style="position:absolute;top:769px;left:138px;white-space:nowrap" class="ft5621">δεδομένων από ένα σημείο προς ένα άλλο. Ο δρομολογητής&#160;</p>
+<p style="position:absolute;top:796px;left:102px;white-space:nowrap" class="ft5623">λαμβάνει ένα σύνολο από δεδομένα από διάφορες πηγές στο δίκτυο&#160;<br/>και αποφασίζει τη διαδρομή που πρέπει να ακολουθήσουν αυτά τα δεδομένα για&#160;<br/>να φτάσουν στον προορισμό τους (δρομολόγηση).&#160;</p>
+<p style="position:absolute;top:911px;left:85px;white-space:nowrap" class="ft5623"><b>Παράδειγμα<br/></b>Σκέψου ότι ο δρομολογητής είναι σαν τροχονόμος στο δίκτυο&#160;&#160;<br/>των υπολογιστών. Όταν ένας υπολογιστής ή μια συσκευή στέλνει&#160;<br/>πληροφορίες προς έναν άλλο υπολογιστή ή συσκευή, ο δρομολογητής&#160;<br/>αποφασίζει ποιος δρόμος είναι ο καλύτερος για να φτάσουν αυτές&#160;&#160;<br/>οι πληροφορίες στον προορισμό τους.&#160;</p>
+<p style="position:absolute;top:504px;left:130px;white-space:nowrap" class="ft5621">Θυμάμαι ότι... Ένα από τα βασικά οφέλη ενός δικτύου είναι η&#160;</p>
+<p style="position:absolute;top:531px;left:120px;white-space:nowrap" class="ft5621">μεταφορά δεδομένων μεταξύ ηλεκτρονικών υπολογιστών.&#160;</p>
+<p style="position:absolute;top:558px;left:111px;white-space:nowrap" class="ft5623">Επίσης, ότι συσκευές συνδέονται σε ένα δίκτυο και&#160;<br/>ανταλλάσσουν αρχεία.</p>
+<p style="position:absolute;top:571px;left:650px;white-space:nowrap" class="ft5612">Βίντεο -&#160;Το ταξίδι&#160;</p>
+<p style="position:absolute;top:592px;left:654px;white-space:nowrap" class="ft5612">των δεδομένων&#160;&#160;</p>
+<p style="position:absolute;top:613px;left:659px;white-space:nowrap" class="ft5612">σε ένα δίκτυο.</p>
+</div>
+
+<!-- Page 57 -->
+<a name="57"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page57-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index057.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft5712">55</p>
+<p style="position:absolute;top:32px;left:391px;white-space:nowrap" class="ft5749">Μάθημα 14ο: Το ταξίδι των δεδομένων σε ένα δίκτυο</p>
+<p style="position:absolute;top:840px;left:164px;white-space:nowrap" class="ft5715"><b>Τι είναι τα αντίγραφα ασφαλείας (backups);</b></p>
+<p style="position:absolute;top:868px;left:165px;white-space:nowrap" class="ft5721">Τα δεδομένα που σε αφορούν είναι πολύτιμα. Για τον λόγο αυτό θα&#160;</p>
+<p style="position:absolute;top:895px;left:164px;white-space:nowrap" class="ft5721">πρέπει να κρατάς αντίγραφα αυτών των δεδομένων, ειδικά αυτών που&#160;</p>
+<p style="position:absolute;top:922px;left:152px;white-space:nowrap" class="ft5721">είναι πολύ σημαντικά.&#160;Τα αντίγραφα ασφαλείας (backups) των σημαντικών&#160;</p>
+<p style="position:absolute;top:949px;left:113px;white-space:nowrap" class="ft5721">αρχείων και πληροφοριών που έχεις στον υπολογιστή ή στο κινητό σου&#160;</p>
+<p style="position:absolute;top:976px;left:102px;white-space:nowrap" class="ft5723">τηλέφωνο μπορείς να τα χρησιμοποιήσεις αν χάσεις ή αν κάτι πάει στραβά με τη&#160;<br/>συσκευή σου. Έτσι, τα δεδομένα σου είναι ασφαλή και μπορείς να τα ανακτήσεις&#160;<br/>αν χρειαστεί.</p>
+<p style="position:absolute;top:141px;left:226px;white-space:nowrap" class="ft5715"><b>Πού χρησιμοποιούνται οι δρομολογητές;</b></p>
+<p style="position:absolute;top:169px;left:229px;white-space:nowrap" class="ft5723">Οι δρομολογητές χρησιμοποιούνται σε μικρά δίκτυα, όπως&#160;&#160;<br/>τα σπίτια και τα γραφεία, αλλά και σε μεγάλα δίκτυα εταιρειών.&#160;</p>
+<p style="position:absolute;top:32px;left:391px;white-space:nowrap" class="ft5749">Μάθημα 14ο: Το ταξίδι των δεδομένων σε ένα δίκτυο</p>
+<p style="position:absolute;top:327px;left:132px;white-space:nowrap" class="ft5721">Γράψε δίπλα σε καθεμία πρόταση αν είναι σωστή (Σ) ή λάθος (Λ). Συζητήστε&#160;</p>
+<p style="position:absolute;top:354px;left:111px;white-space:nowrap" class="ft5721">στην ομάδα ή στην τάξη για τα σωστά αποτελέσματα.</p>
+<p style="position:absolute;top:389px;left:111px;white-space:nowrap" class="ft5729"><b>1.</b></p>
+<p style="position:absolute;top:389px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής είναι μια συσκευή που βοηθάει στη μεταφορά δεδομένων&#160;</p>
+<p style="position:absolute;top:416px;left:132px;white-space:nowrap" class="ft5721">από μια συσκευή σε άλλη.</p>
+<p style="position:absolute;top:447px;left:111px;white-space:nowrap" class="ft5729"><b>2.</b></p>
+<p style="position:absolute;top:448px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής είναι μια συσκευή που προστατεύει τις συσκευές από ιούς&#160;</p>
+<p style="position:absolute;top:475px;left:132px;white-space:nowrap" class="ft5721">και κακόβουλο λογισμικό.</p>
+<p style="position:absolute;top:506px;left:111px;white-space:nowrap" class="ft5729"><b>3.</b></p>
+<p style="position:absolute;top:506px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής μπορεί να συνδεθεί με άλλες συσκευές μέσω καλωδίων&#160;</p>
+<p style="position:absolute;top:533px;left:132px;white-space:nowrap" class="ft5721">δικτύου ή ασύρματα.</p>
+<p style="position:absolute;top:564px;left:111px;white-space:nowrap" class="ft5729"><b>4.</b></p>
+<p style="position:absolute;top:564px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής είναι μια συσκευή που μπορεί να παίξει μουσική&#160;&#160;</p>
+<p style="position:absolute;top:591px;left:132px;white-space:nowrap" class="ft5721">στο σπίτι.</p>
+<p style="position:absolute;top:622px;left:111px;white-space:nowrap" class="ft5729"><b>5.</b></p>
+<p style="position:absolute;top:622px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής είναι υπεύθυνος για τη μετάδοση του σήματος Wi-Fi&#160;&#160;</p>
+<p style="position:absolute;top:649px;left:132px;white-space:nowrap" class="ft5721">στο σπίτι.</p>
+<p style="position:absolute;top:680px;left:111px;white-space:nowrap" class="ft5729"><b>6.</b></p>
+<p style="position:absolute;top:681px;left:126px;white-space:nowrap" class="ft5721">&#160;Ο δρομολογητής μπορεί να προστατεύσει το δίκτυό σου με κωδικό&#160;</p>
+<p style="position:absolute;top:708px;left:132px;white-space:nowrap" class="ft5721">πρόσβασης.</p>
+</div>
+
+<!-- Page 58 -->
+<a name="58"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page58-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index058.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft5812">56</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft5864"><b>2</b></p>
+<p style="position:absolute;top:21px;left:98px;white-space:nowrap" class="ft5825">Πληροφορική Δ’ Δημοτικού</p>
+<p style="position:absolute;top:44px;left:98px;white-space:nowrap" class="ft5865">Υπολογιστικά συστήματα – Ψηφιακές συσκευές – Δίκτυα</p>
+<p style="position:absolute;top:143px;left:152px;white-space:nowrap" class="ft5815"><b>Πότε μπορούν να σε βοηθήσουν τα αντίγραφα ασφαλείας;</b></p>
+<p style="position:absolute;top:170px;left:153px;white-space:nowrap" class="ft5821">Τα αντίγραφα ασφαλείας σε βοηθούν να έχεις τα τελευταία δεδομένα στη&#160;</p>
+<p style="position:absolute;top:197px;left:149px;white-space:nowrap" class="ft5821">διάθεση σου: (α) αν ο σκληρός δίσκος που αποθηκεύσεις τα δεδομένα σου&#160;</p>
+<p style="position:absolute;top:224px;left:128px;white-space:nowrap" class="ft5821">χαλάσει ή υποστεί βλάβη, (β) αν πέσεις θύμα κακόβουλου λογισμικού (ιού), (γ)&#160;</p>
+<p style="position:absolute;top:251px;left:102px;white-space:nowrap" class="ft5821">αν ο κεντρικός υπολογιστής που αποθηκεύονται τα δεδομένα σου υποστεί βλάβη.</p>
+<p style="position:absolute;top:391px;left:119px;white-space:nowrap" class="ft5854"><b>Διαλέγω πόσο καλά έμαθα:</b></p>
+<p style="position:absolute;top:360px;left:401px;white-space:nowrap" class="ft5812">Έχω&#160;&#160;</p>
+<p style="position:absolute;top:381px;left:372px;white-space:nowrap" class="ft5812">καταλάβει και&#160;</p>
+<p style="position:absolute;top:402px;left:382px;white-space:nowrap" class="ft5812">μπορώ να&#160;</p>
+<p style="position:absolute;top:423px;left:387px;white-space:nowrap" class="ft5812">εξηγήσω</p>
+<p style="position:absolute;top:360px;left:507px;white-space:nowrap" class="ft5812">Έχω&#160;&#160;</p>
+<p style="position:absolute;top:381px;left:489px;white-space:nowrap" class="ft5812">καταλάβει&#160;</p>
+<p style="position:absolute;top:402px;left:499px;white-space:nowrap" class="ft5812">αρκετά&#160;&#160;</p>
+<p style="position:absolute;top:423px;left:506px;white-space:nowrap" class="ft5812">καλά</p>
+<p style="position:absolute;top:360px;left:613px;white-space:nowrap" class="ft5812">Έχω&#160;&#160;</p>
+<p style="position:absolute;top:381px;left:596px;white-space:nowrap" class="ft5812">καταλάβει&#160;</p>
+<p style="position:absolute;top:402px;left:597px;white-space:nowrap" class="ft5812">αλλά έχω&#160;</p>
+<p style="position:absolute;top:423px;left:602px;white-space:nowrap" class="ft5812">απορίες</p>
+<p style="position:absolute;top:381px;left:698px;white-space:nowrap" class="ft5812">Χρειάζομαι&#160;</p>
+<p style="position:absolute;top:402px;left:708px;white-space:nowrap" class="ft5812">βοήθεια</p>
+<p style="position:absolute;top:462px;left:105px;white-space:nowrap" class="ft5838">&#160;Να εξηγώ τον ρόλο του&#160;</p>
+<p style="position:absolute;top:484px;left:111px;white-space:nowrap" class="ft5855">δρομολογητή και τον τρόπο που&#160;<br/>μεταφέρονται τα δεδομένα σε&#160;<br/>δίκτυα.</p>
+<p style="position:absolute;top:575px;left:105px;white-space:nowrap" class="ft5838">&#160;Να γνωρίζω πώς να αξιοποιώ&#160;&#160;</p>
+<p style="position:absolute;top:597px;left:111px;white-space:nowrap" class="ft5855">τις τεχνολογίες διασύνδεσης&#160;<br/>συσκευών με ασφάλεια και&#160;<br/>υπευθυνότητα.</p>
+<p style="position:absolute;top:688px;left:105px;white-space:nowrap" class="ft5838">&#160;Να γνωρίζω τη σημασία των&#160;</p>
+<p style="position:absolute;top:710px;left:111px;white-space:nowrap" class="ft5855">αντιγράφων ασφαλείας των&#160;<br/>αρχείων και πώς αυτά&#160;<br/>λαμβάνονται.</p>
+</div>
+
+</body>
+</html>

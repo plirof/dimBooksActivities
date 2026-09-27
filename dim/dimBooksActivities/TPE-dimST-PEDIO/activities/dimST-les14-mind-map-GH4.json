@@ -1,0 +1,31 @@
+{
+  "title": "Νοητικός Χάρτης: Δίκτυα και Πρωτόκολλα",
+  "subtitle": "Σύρε τις λέξεις-κλειδιά στους σωστούς κλάδους",
+  "centralTopic": "Διασύνδεση στο Διαδίκτυο",
+  "branches": [
+    {
+      "id": "isp",
+      "label": "Πάροχοι",
+      "color": "#4CAF50",
+      "keywords": ["εταιρεία", "DSL", "οπτική ίνα", "κινητή", "καλώδιο", "Wi-Fi"]
+    },
+    {
+      "id": "meas",
+      "label": "Μονάδες Μέτρησης",
+      "color": "#2196F3",
+      "keywords": ["Mbps", "Gbps", "GB", "TB", "milliseconds", "ταχύτητα"]
+    },
+    {
+      "id": "proto",
+      "label": "Πρωτόκολλα",
+      "color": "#FF9800",
+      "keywords": ["TCP/IP", "HTTP", "HTTPS", "FTP", "SMTP", "POP3"]
+    },
+    {
+      "id": "addr",
+      "label": "Διευθύνσεις",
+      "color": "#9C27B0",
+      "keywords": ["IP", "IPv4", "IPv6", "MAC", "192.168.1.15", "μοναδικός κωδικός"]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: Ιστολόγια",
+  "subtitle": "Μάντεψε λέξεις για τα blogs!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΙΣΤΟΛΟΓΙΟ", "hint": "Διαδικτυακό ημερολόγιο (blog)", "category": "Blog" },
+    { "word": "ΑΡΘΡΟ", "hint": "Δημοσίευση σε blog", "category": "Blog" },
+    { "word": "ΚΥΨΕΛΗ", "hint": "Ομάδα στην e-me", "category": "e-me" },
+    { "word": "BLOGGER", "hint": "Αυτός που γράφει σε blog", "category": "Blog" },
+    { "word": "ΧΡΗΣΤΗΣ", "hint": "Το προσωπικό ιστολόγιο είναι του...", "category": "e-me" },
+    { "word": "ΗΜΕΡΟΛΟΓΙΟ", "hint": "Το blog μοιάζει με...", "category": "Blog" }
+  ]
+}

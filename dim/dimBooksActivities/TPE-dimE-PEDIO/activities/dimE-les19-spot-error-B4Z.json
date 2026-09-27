@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Διαγράμματα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ραβδόγραμμα", "error": false},
+        {"text": "εμφανίζει", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "δεδομένα", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "κύκλους.", "error": true, "correct": "στήλες", "feedback": "Το ραβδόγραμμα εμφανίζει δεδομένα σε στήλες, όχι σε κύκλους!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "υπόμνημα", "error": false},
+        {"text": "εμφανίζεται", "error": false},
+        {"text": "συνήθως", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "ραβδόγραμμα.", "error": true, "correct": "διάγραμμα πίτα", "feedback": "Το υπόμνημα υπάρχει συνήθως στο διάγραμμα πίτα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "φτιάξεις", "error": false},
+        {"text": "διάγραμμα", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "πρώτα", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράψεις", "error": true, "correct": "επιλέξεις", "feedback": "Πρέπει πρώτα να επιλέξεις τα δεδομένα, όχι να τα γράψεις!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ετικέτες", "error": false},
+        {"text": "δεδομένων", "error": false},
+        {"text": "εμφανίζουν", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "χρώματα", "error": true, "correct": "τους αριθμούς", "feedback": "Οι ετικέτες εμφανίζουν τους αριθμούς, όχι τα χρώματα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "διπλό", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διάγραμμα", "error": false},
+        {"text": "το", "error": true, "correct": "μπορώ να", "feedback": "Με διπλό κλικ ΜΠΟΡΩ να κάνω επεξεργασία, δεν διαγράφεται!"}
+      ]
+    }
+  ]
+}

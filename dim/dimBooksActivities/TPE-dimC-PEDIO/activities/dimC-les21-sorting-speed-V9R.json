@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Συμβουλές Αναζήτησης",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η συμβουλή;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ελέγχω πάντα την πηγή", "category": "swsto"},
+    {"text": "Παίρνω το πρώτο αποτέλεσμα", "category": "lathos"},
+    {"text": "Συγκρίνω πολλά αποτελέσματα", "category": "swsto"},
+    {"text": "Δεν διαβάζω περιγραφές", "category": "lathos"},
+    {"text": "Προτιμώ πανεπιστήμια ως πηγή", "category": "swsto"},
+    {"text": "Εμπιστεύομαι κάθε ιστοσελίδα", "category": "lathos"},
+    {"text": "Χρησιμοποιώ σωστά keywords", "category": "swsto"},
+    {"text": "Δεν με νοιάζει η εγκυρότητα", "category": "lathos"},
+    {"text": "Διαβάζω προσεκτικά το περιεχόμενο", "category": "swsto"},
+    {"text": "Φιλτράρω με κατηγορίες", "category": "swsto"}
+  ],
+  "duration": 30
+}

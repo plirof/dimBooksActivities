@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Επικοινωνία e-me</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+width: 100%;
+max-width: 1100px;
+justify-content: center;
+}
+.contacts-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+max-width: 450px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.section-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+text-align: center;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+justify-content: center;
+}
+.search-box {
+background: #f8f9fa;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 20px;
+display: flex;
+gap: 10px;
+}
+.search-input {
+flex: 1;
+padding: 10px 15px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+.search-input:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.search-btn {
+background: #667eea;
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.search-btn:hover {
+background: #764ba2;
+}
+.contacts-list {
+max-height: 400px;
+overflow-y: auto;
+}
+.contact-item {
+background: #f8f9fa;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid transparent;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.contact-item:hover {
+transform: translateX(5px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.contact-item.selected {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.contact-icon {
+font-size: 2rem;
+}
+.contact-info {
+flex: 1;
+}
+.contact-name {
+font-weight: bold;
+color: #333;
+font-size: 1rem;
+}
+.contact-school {
+color: #666;
+font-size: 0.85rem;
+margin-top: 3px;
+}
+.message-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+max-width: 450px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.message-area {
+background: #f8f9fa;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 15px;
+min-height: 200px;
+}
+.message-to {
+color: #666;
+font-size: 0.9rem;
+margin-bottom: 10px;
+padding-bottom: 10px;
+border-bottom: 1px solid #ddd;
+}
+.chat-bubble {
+background: white;
+border-radius: 10px;
+padding: 10px 15px;
+margin-bottom: 8px;
+max-width: 80%;
+}
+.chat-bubble.sent {
+background: #667eea;
+color: white;
+margin-left: auto;
+}
+.chat-bubble.received {
+background: #e0e0e0;
+color: #333;
+}
+.message-input-area {
+display: flex;
+gap: 10px;
+}
+.message-input {
+flex: 1;
+padding: 12px 15px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+.message-input:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.send-btn {
+background: #27ae60;
+color: white;
+border: none;
+padding: 12px 25px;
+border-radius: 8px;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.send-btn:hover {
+background: #219a52;
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.send-btn:disabled {
+background: #ccc;
+cursor: not-allowed;
+transform: none;
+}
+.instruction-text {
+color: #666;
+font-size: 0.9rem;
+text-align: center;
+margin-bottom: 10px;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .container > * { margin: 15px; }
+  .section-title > * + * { margin-left: 10px; }
+  .search-box > * + * { margin-left: 10px; }
+  .contact-item > * + * { margin-left: 12px; }
+  .message-input-area > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💬 Επικοινωνία e-me</h1>
+<p class="subtitle">Αναζητήστε επαφές και στείλτε μηνύματα</p>
+
+<div class="container">
+<div class="contacts-section">
+<div class="section-title">👥 Επαφές</div>
+
+<div class="search-box">
+<input type="text" class="search-input" id="searchInput" placeholder="Αναζήτηση ονόματος..." onkeyup="searchContacts()">
+<button class="search-btn" onclick="searchContacts()">🔍</button>
+</div>
+
+<div class="contacts-list" id="contactsList"></div>
+</div>
+
+<div class="message-section">
+<div class="section-title">💭 Συνομιλία</div>
+
+<div class="message-area">
+<div class="instruction-text" id="instructionText">Επιλέξτε μια επαφή για να στείλετε μήνυμα</div>
+<div class="message-to" id="messageTo"></div>
+<div id="chatArea"></div>
+</div>
+
+<div class="message-input-area">
+<input type="text" class="message-input" id="messageInput" placeholder="Γράψτε μήνυμα..." disabled>
+<button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>📤 Αποστολή</button>
+</div>
+</div>
+</div>
+
+<div class="mascot">💬</div>
+
+<script>
+const contacts = [
+{
+id: 1,
+name: 'Γιώργος Παπαδόπουλος',
+school: 'Σχολείο σας, 4η Δημοτικού',
+icon: '👦',
+messages: [
+{ text: 'Γεια σου!', sent: false }
+]
+},
+{
+id: 2,
+name: 'Μαρία Αντωνίου',
+school: 'Σχολείο σας, 4η Δημοτικού',
+icon: '👧',
+messages: []
+},
+{
+id: 3,
+name: 'Δάσκαλος Νικόλαος',
+school: 'Σχολείο σας',
+icon: '👨‍🏫',
+messages: [
+{ text: 'Καλημέρα σε όλους!', sent: false }
+]
+},
+{
+id: 4,
+name: 'Δασκάλα Ελένη',
+school: 'Σχολείο σας',
+icon: '👩‍🏫',
+messages: []
+},
+{
+id: 5,
+name: 'Νίκος Κωνσταντίνου',
+school: 'Σχολείο σας, 4η Δημοτικού',
+icon: '👦',
+messages: []
+}
+];
+
+let selectedContact = null;
+
+function renderContacts(contactsToRender = contacts) {
+const contactsList = document.getElementById('contactsList');
+
+if (contactsToRender.length === 0) {
+contactsList.innerHTML = '<p style="color: #999; text-align: center; padding-top: 20px;">Δεν βρέθηκαν επαφές.</p>';
+return;
+}
+
+contactsList.innerHTML = '';
+
+contactsToRender.forEach(contact => {
+const item = document.createElement('div');
+item.className = 'contact-item';
+if (selectedContact && selectedContact.id === contact.id) {
+item.classList.add('selected');
+}
+
+item.innerHTML = `
+<div class="contact-icon">${contact.icon}</div>
+<div class="contact-info">
+<div class="contact-name">${contact.name}</div>
+<div class="contact-school">${contact.school}</div>
+</div>
+`;
+
+item.onclick = () => selectContact(contact);
+
+contactsList.appendChild(item);
+});
+}
+
+function searchContacts() {
+const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+
+if (!searchTerm) {
+renderContacts();
+return;
+}
+
+const filteredContacts = contacts.filter(contact =>
+contact.name.toLowerCase().includes(searchTerm)
+);
+
+renderContacts(filteredContacts);
+}
+
+function selectContact(contact) {
+selectedContact = contact;
+
+document.querySelectorAll('.contact-item').forEach(item => {
+item.classList.remove('selected');
+});
+
+renderContacts();
+
+document.getElementById('instructionText').style.display = 'none';
+document.getElementById('messageInput').disabled = false;
+document.getElementById('sendBtn').disabled = false;
+
+const messageTo = document.getElementById('messageTo');
+messageTo.innerHTML = `<strong>Σε:</strong> ${contact.name} • ${contact.school}`;
+
+renderChat();
+}
+
+function renderChat() {
+const chatArea = document.getElementById('chatArea');
+chatArea.innerHTML = '';
+
+if (!selectedContact || selectedContact.messages.length === 0) {
+chatArea.innerHTML = '<p style="color: #999; text-align: center; padding-top: 50px;">Αρχή συνομιλίας. Στείλτε το πρώτο μήνυμα!</p>';
+return;
+}
+
+selectedContact.messages.forEach(msg => {
+const bubble = document.createElement('div');
+bubble.className = 'chat-bubble ' + (msg.sent ? 'sent' : 'received');
+bubble.textContent = msg.text;
+chatArea.appendChild(bubble);
+});
+
+chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function sendMessage() {
+const messageInput = document.getElementById('messageInput');
+const message = messageInput.value.trim();
+
+if (!message || !selectedContact) {
+return;
+}
+
+selectedContact.messages.push({
+text: message,
+sent: true
+});
+
+messageInput.value = '';
+renderChat();
+}
+
+document.getElementById('messageInput').addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+sendMessage();
+}
+});
+
+renderContacts();
+</script>
+</body>
+</html>

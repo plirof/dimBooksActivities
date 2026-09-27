@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ρυθμός Χορού | Μάθημα 8</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fef3c7,#fbbf24);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#78350f;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#b45309;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#78350f;font-size:.75rem;font-weight:700;border:1px solid #fbbf24;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.slider-area{margin:10px 0;text-align:center}
+.slider-label{font-size:.72rem;font-weight:700;color:#78350f;margin:4px 0}
+.slider-row{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0}
+.slider-row input[type=range]{width:200px;accent-color:#b45309}
+.slider-val{font-size:1rem;font-weight:700;color:#78350f;min-width:40px;text-align:center;background:#fef3c7;padding:4px 10px;border-radius:8px;border:2px solid #fbbf24}
+.dance-stage{width:200px;height:140px;margin:8px auto;border:3px solid #fbbf24;border-radius:14px;background:#fffbeb;position:relative;overflow:hidden}
+.dancer{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;transition:none}
+.dancer.pose-1{content:'💃'}
+.dancer.pose-2{content:'🕺'}
+.pose-label{font-size:.65rem;color:#64748b;text-align:center;margin:2px 0}
+.formula-box{background:#fffbeb;border:2px solid #fde68a;border-radius:10px;padding:8px;margin:8px 0;text-align:center;font-size:.75rem;font-weight:700;color:#78350f}
+.quiz-card{background:#fff7ed;border:2px solid #fed7aa;border-radius:12px;padding:10px;margin:8px 0}
+.quiz-q{font-size:.72rem;font-weight:700;color:#92400e;text-align:center;margin:4px 0}
+.quiz-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.quiz-opt{padding:8px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:.72rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.quiz-opt:hover{border-color:#b45309;background:#fef3c7}
+.quiz-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.quiz-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#b45309;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#92400e}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #b45309;border-radius:10px;background:transparent;color:#b45309;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fef3c7}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .slider-row > * + * { margin-left: 10px; }
+  .quiz-opts > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💃 Ρυθμός Χορού</h1>
+<p class="subtitle">Άλλαξε τη μεταβλητή "Ρυθμός" και δες πώς επηρεάζει τον χορό!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ερώτηση:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var questions=[
+{
+q:'Αν η εντολή είναι "περίμενε (1 / Ρυθμός) δευτερόλεπτα" και Ρυθμός=2, πόσα δευτερόλεπτα περιμένει;',
+opts:['0.5 δευτερόλεπτα','2 δευτερόλεπτα','1 δευτερόλεπτο','0.2 δευτερόλεπτα'],
+correct:0,
+explain:'1/2 = 0.5 δευτερόλεπτα. Ο χορός είναι γρήγορος!'
+},
+{
+q:'Θέλουμε η Αλεξία να χορεύει ΠΙΟ ΑΡΓΑ. Τι κάνουμε με τη μεταβλητή Ρυθμός;',
+opts:['Μειώνουμε τον Ρυθμό','Αυξάνουμε τον Ρυθμό','Δεν αλλάζουμε τίποτα','Βάζουμε Ρυθμό = 0'],
+correct:0,
+explain:'Μικρότερος Ρυθμός → μεγαλύτερο 1/Ρυθμός → πιο αργός χορός.'
+},
+{
+q:'Αν Ρυθμός=10, πόσα δευτερόλεπτα είναι η αναμονή μεταξύ στάσεων;',
+opts:['10 δευτερόλεπτα','1 δευτερόλεπτο','0.1 δευτερόλεπτο','0.01 δευτερόλεπτο'],
+correct:2,
+explain:'1/10 = 0.1 δευτερόλεπτα. Πολύ γρήγορος χορός!'
+},
+{
+q:'Γιατί βάζουμε τη μεταβλητή Ρυθμός σαν γραμμή κύλισης (slider);',
+opts:['Για να αλλάζουμε τον ρυθμό παίζοντας το παιχνίδι','Επειδή το Scratch το απαιτεί','Για να φαίνεται το όνομα της μεταβλητής','Δεν είναι απαραίτητο'],
+correct:0,
+explain:'Ο slider επιτρέπει στον χρήστη να αλλάζει τον ρυθμό πραγματικού χρόνου!'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false,sliderVal=5,poseIdx=0,poseTimer=null;
+
+function initQ(){selected=-1;checked=false;}
+
+function startDance(){
+if(poseTimer)clearInterval(poseTimer);
+poseTimer=setInterval(function(){
+poseIdx=(poseIdx+1)%4;
+var dancer=document.getElementById('dancer');
+if(dancer){
+var poses=['💃','🕺','💃','🤸'];
+dancer.textContent=poses[poseIdx];
+}
+},Math.max(100,1000/sliderVal));
+}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var q=questions[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="dance-stage"><div class="dancer" id="dancer">💃</div></div>';
+h+='<div class="slider-area">';
+h+='<div class="slider-label">🎚️ Μεταβλητή "Ρυθμός" (Γραμμή κύλισης)</div>';
+h+='<div class="slider-row">';
+h+='<span style="font-size:.65rem;color:#64748b">Αργά</span>';
+h+='<input type="range" min="1" max="20" value="'+sliderVal+'" oninput="changeSlider(this.value)" id="rSlider">';
+h+='<span style="font-size:.65rem;color:#64748b">Γρήγορα</span>';
+h+='<span class="slider-val" id="sVal">'+sliderVal+'</span>';
+h+='</div>';
+h+='</div>';
+h+='<div class="formula-box">⏱️ περίμενε (1 ÷ Ρυθμό) = '+(1/sliderVal).toFixed(2)+' δευτερόλεπτα</div>';
+h+='<div class="quiz-card">';
+h+='<div class="quiz-q">'+q.q+'</div>';
+h+='<div class="quiz-opts">';
+for(var i=0;i<q.opts.length;i++){
+var cls='quiz-opt';
+if(checked){
+if(i===q.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+q.opts[i]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===q.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+q.explain:'❌ '+q.explain)+'</div>';
+if(curQ<questions.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Ερώτηση ▶</button>';
+}
+}
+main.innerHTML=h;
+startDance();
+}
+
+function changeSlider(val){
+sliderVal=parseInt(val);
+var sv=document.getElementById('sVal');
+if(sv)sv.textContent=sliderVal;
+var fb=document.querySelector('.formula-box');
+if(fb)fb.innerHTML='⏱️ περίμενε (1 ÷ Ρυθμός) = '+(1/sliderVal).toFixed(2)+' δευτερόλεπτα';
+startDance();
+}
+
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<questions.length-1){curQ++;initQ();render();}}
+
+initQ();render();
+</script>
+</body>
+</html>

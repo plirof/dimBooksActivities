@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Αναρτήσεις",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Άρθρο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αρπρο",
+          "error": true,
+          "correct": "Άρθρο",
+          "feedback": "Το σωστό είναι 'Άρθρο'"
+        },
+        {
+          "text": "Ανάρτηση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Σύνδεσμος",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Σύνδεσμοσ",
+          "error": true,
+          "correct": "Σύνδεσμος",
+          "feedback": "Το σωστό είναι 'Σύνδεσμος' με τελικό 'ς'"
+        },
+        {
+          "text": "Εικόνα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Βίντεο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Πηγή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Πηγε",
+          "error": true,
+          "correct": "Πηγή",
+          "feedback": "Το σωστό είναι 'Πηγή' με 'ή'"
+        },
+        {
+          "text": "Ενημέρωση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ενημέροση",
+          "error": true,
+          "correct": "Ενημέρωση",
+          "feedback": "Το σωστό είναι 'Ενημέρωση' με 'ι'"
+        },
+        {
+          "text": "Πολυμέσα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "title": "Βρες τα Λάθη: Κομπιουτεράκι",
+  "subtitle": "Βρες τις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "διαίρεση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "με",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "το",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "1",
+          "error": true,
+          "correct": "0",
+          "feedback": "Η διαίρεση με το 0 είναι αδύνατη, όχι με το 1"
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "αδύνατη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Εμφωλευμένη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "σημαίνει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "έξω",
+          "error": true,
+          "correct": "μέσα",
+          "feedback": "Εμφωλευμένη σημαίνει ΜΕΣΑ σε άλλη εντολή, όχι έξω"
+        },
+        {
+          "text": "από",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "άλλη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Το",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "υποπρόγραμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "παίρνει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "δύο",
+          "error": true,
+          "correct": "τρεις",
+          "feedback": "Το υποπρόγραμμα παίρνει ΤΡΕΙΣ μεταβλητές: α, σύμβολο, β"
+        },
+        {
+          "text": "μεταβλητές",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εισόδου",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

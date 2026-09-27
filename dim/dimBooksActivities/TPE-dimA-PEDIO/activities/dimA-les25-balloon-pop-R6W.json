@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Πρώτες Λέξεις",
+  "subtitle": "Μόνο λέξεις που γράφω!",
+  "instruction": "Σπάσε μόνο ΛΕΞΕΙΣ ΠΟΥ ΜΠΟΡΩ ΝΑ ΓΡΑΨΩ ΜΕ ΤΟ ΠΛΗΚΤΡΟΛΟΓΙΟ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "ΠΑΙΧΝΙΔΙ", "correct": true, "color": "#4CAF50" },
+    { "text": "ΣΚΥΛΟΣ", "correct": true, "color": "#f44336" },
+    { "text": "ΚΛΙΚ", "correct": false, "color": "#4ECDC4" },
+    { "text": "ΥΠΟΛΟΓΙΣΤΗΣ", "correct": true, "color": "#2196F3" },
+    { "text": "ΔΕΞΙ", "correct": false, "color": "#96CEB4" },
+    { "text": "ΜΑΘΗΜΑ", "correct": true, "color": "#9C27B0" },
+    { "text": "ΚΥΛΙΣΗ", "correct": false, "color": "#DDA0DD" },
+    { "text": "ΣΧΟΛΕΙΟ", "correct": true, "color": "#FFC107" },
+    { "text": "ΣΥΡΩ", "correct": false, "color": "#00BCD4" },
+    { "text": "ΤΑΞΗ", "correct": true, "color": "#3F51B5" }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "title": "Ο Φυλλομετρητής",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "parts",
+      "name": "Μέρη παραθύρου",
+      "color": "#2196F3"
+    },
+    {
+      "id": "actions",
+      "name": "Λειτουργίες / Κουμπιά",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Καρτέλα (Tab)", "category": "parts" },
+    { "id": "i2", "text": "Γραμμή διεύθυνσης", "category": "parts" },
+    { "id": "i3", "text": "Σελιδοδείκτης (Bookmark)", "category": "parts" },
+    { "id": "i4", "text": "Πίσω (Back)", "category": "actions" },
+    { "id": "i5", "text": "Ανανέωση (Refresh)", "category": "actions" },
+    { "id": "i6", "text": "Κλείσιμο (Exit)", "category": "actions" }
+  ]
+}

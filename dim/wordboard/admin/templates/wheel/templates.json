@@ -1,0 +1,124 @@
+{
+  "templates": [
+    {
+      "id": "wheel_icebreaker_001",
+      "name": "Classroom Icebreakers",
+      "description": "Fun icebreaker questions for students",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["icebreaker", "fun", "classroom"],
+      "segments": [
+        "Share your favorite color",
+        "Tell us about your pet",
+        "What did you do this weekend?",
+        "What's your favorite food?",
+        "Share a fun fact about yourself",
+        "What's your favorite movie?",
+        "Tell us about your hobby",
+        "What's your favorite sport?",
+        "Share your dream vacation",
+        "What's your favorite book?"
+      ]
+    },
+    {
+      "id": "wheel_rewards_001",
+      "name": "Classroom Rewards",
+      "description": "Reward ideas for students",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["rewards", "incentives", "classroom"],
+      "segments": [
+        "Pick a song for the class",
+        "5 extra minutes of free time",
+        "Sit by a friend today",
+        "First in line for lunch",
+        "Choose a game to play",
+        "Teacher's helper for the day",
+        "No homework pass",
+        "Class mascot caretaker",
+        "Pick the classroom playlist",
+        "Line leader for the week"
+      ]
+    },
+    {
+      "id": "wheel_questions_001",
+      "name": "Random Discussion Questions",
+      "description": "Thought-provoking questions for class discussions",
+      "category": "wheel",
+      "difficulty": "medium",
+      "tags": ["discussion", "questions", "critical thinking"],
+      "segments": [
+        "What would you do with a million dollars?",
+        "If you could travel anywhere, where would you go?",
+        "What is the best advice you've ever received?",
+        "If you could have any superpower, what would it be?",
+        "What is your favorite thing about school?",
+        "What would you like to invent?",
+        "What is the most interesting thing you've learned?",
+        "If you could meet any historical figure, who would it be?",
+        "What is your favorite season and why?",
+        "What talent would you like to have?"
+      ]
+    },
+    {
+      "id": "wheel_activities_001",
+      "name": "Quick Classroom Activities",
+      "description": "Short activities for transitions or warm-ups",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["activities", "quick", "transitions"],
+      "segments": [
+        "Do 10 jumping jacks",
+        "Draw a quick self-portrait",
+        "Write your name backwards",
+        "Count to 20 in a foreign language",
+        "Draw your favorite animal",
+        "Name 5 things in the room that are red",
+        "Do the alphabet in sign language",
+        "Balance on one foot for 30 seconds",
+        "Name all the planets",
+        "Recite a favorite poem or rhyme"
+      ]
+    },
+    {
+      "id": "wheel_teamnames_001",
+      "name": "Team Name Generator",
+      "description": "Fun team names for group activities",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["team names", "groups", "fun"],
+      "segments": [
+        "The Brainy Bunch",
+        "The Dream Team",
+        "The Amazing Aces",
+        "The Star Squad",
+        "The Lightning Bolts",
+        "The Super Stars",
+        "The Cool Crew",
+        "The Thunder Thunders",
+        "The Champion Charters",
+        "The Fantastic Fours"
+      ]
+    },
+    {
+      "id": "wheel_compliments_001",
+      "name": "Compliment Generator",
+      "description": "Nice compliments to share with classmates",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["compliments", "positivity", "kindness"],
+      "segments": [
+        "You have great ideas!",
+        "Your artwork is amazing!",
+        "You're a good friend!",
+        "You work really hard!",
+        "You always help others!",
+        "Your smile brightens our day!",
+        "You're really smart!",
+        "You try your best!",
+        "You're a great listener!",
+        "You make our class better!"
+      ]
+    }
+  ]
+}

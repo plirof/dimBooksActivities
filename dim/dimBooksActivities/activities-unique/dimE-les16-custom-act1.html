@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογιστικό Φύλλο | Μάθημα 16</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:750px;width:100%;padding:16px;}
+.toolbar{display:flex;gap:6px;align-items:center;padding:8px;background:#e8eaf6;border-radius:10px;margin-bottom:10px;flex-wrap:wrap;}
+.toolbar .file-name{font-weight:700;color:#4527a0;font-size:.9rem;margin-right:auto;}
+.toolbar button{padding:6px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;background:#667eea;color:#fff;transition:all .2s;}
+.toolbar button:hover{background:#4527a0;}
+.spreadsheet{border:2px solid #c5cae9;border-radius:10px;overflow:auto;max-height:400px;}
+table{border-collapse:collapse;width:100%;font-size:.85rem;}
+th{background:#667eea;color:#fff;padding:6px 8px;position:sticky;top:0;z-index:2;min-width:70px;font-size:.8rem;}
+th:first-child{min-width:40px;background:#4527a0;}
+td{border:1px solid #e0e0e0;padding:4px 6px;min-width:70px;}
+td:first-child{background:#e8eaf6;font-weight:700;text-align:center;color:#4527a0;}
+td.editable{cursor:text;}
+td.editable:focus{outline:2px solid #667eea;background:#f3e5f5;}
+td.editable:hover{background:#f5f5f5;}
+.formula-bar{display:flex;gap:6px;align-items:center;padding:6px 10px;background:#fff;border:2px solid #c5cae9;border-radius:8px;margin-bottom:8px;}
+.formula-bar .cell-ref{font-weight:700;color:#4527a0;min-width:40px;}
+.formula-bar input{flex:1;border:none;outline:none;font-size:.9rem;font-family:'Courier New',monospace;}
+.status{display:flex;gap:12px;padding:8px;font-size:.8rem;color:#666;background:#fafafa;border-radius:0 0 10px 10px;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .toolbar > * { margin: 3px; }
+  .formula-bar > * + * { margin-left: 6px; }
+  .status > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Υπολογιστικό Φύλλο</h1>
+<p class="subtitle">Κελιά, Δεδομένα, Τύποι — Αποθήκευση ως .ods</p>
+<div class="container">
+<div class="toolbar">
+<span class="file-name">📄 Αγαπημένα_Φαγητά.ods</span>
+<button onclick="saveFile()">💾 Αποθήκευση</button>
+<button onclick="clearAll()">🗑️ Καθαρισμός</button>
+</div>
+<div class="formula-bar">
+<span class="cell-ref" id="cellRef">A1</span>
+<span style="color:#999;">fx</span>
+<input type="text" id="formulaInput" placeholder="Πληκτρολόγησε τιμή ή τύπο (π.χ. =SUM(B2:B6))" oninput="applyFormula()">
+</div>
+<div class="spreadsheet">
+<table id="sheet"></table>
+</div>
+<div class="status">
+<span>Κελί: <b id="selCell">A1</b></span>
+<span>Τύπος: <b id="cellType">κείμενο</b></span>
+<span id="msg" style="color:#4caf50;"></span>
+</div>
+</div>
+<script>
+var COLS=8,ROWS=10;var COL_LABELS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var data=[];var selRow=0,selCol=0;
+for(var r=0;r<ROWS;r++){data[r]=[];for(var c=0;c<COLS;c++)data[r][c]='';}
+data[0][0]='Μαθητής';data[0][1]='Πίτσα';data[0][2]='Μακαρόνια';data[0][3]='Σουβλάκι';data[0][4]='Μπέργκερ';data[0][5]='Σύνολο';
+data[1][0]='Μαρία';data[1][1]='5';data[1][2]='3';data[1][3]='4';data[1][4]='2';data[1][5]='=SUM(B2:E2)';
+data[2][0]='Γιώργος';data[2][1]='3';data[2][2]='5';data[2][3]='2';data[2][4]='4';data[2][5]='=SUM(B3:E3)';
+data[3][0]='Ελένη';data[3][1]='4';data[3][2]='2';data[3][3]='5';data[3][4]='3';data[3][5]='=SUM(B4:E4)';
+data[4][0]='Νίκος';data[4][1]='2';data[4][2]='4';data[4][3]='3';data[4][4]='5';data[4][5]='=SUM(B5:E5)';
+data[5][0]='Σύνολο';data[5][1]='=SUM(B2:B5)';data[5][2]='=SUM(C2:C5)';data[5][3]='=SUM(D2:D5)';data[5][4]='=SUM(E2:E5)';data[5][5]='=SUM(F2:F5)';
+function getRef(r,c){return COL_LABELS[c]+(r+1);}
+function evalFormula(f){
+if(!f||!f.startsWith('='))return f;
+var expr=f.substring(1);
+expr=expr.replace(/SUM\(([A-Z])(\d+):([A-Z])(\d+)\)/gi,function(m,c1,r1,c2,r2){
+var col1=COL_LABELS.indexOf(c1.toUpperCase()),row1=parseInt(r1)-1;
+var col2=COL_LABELS.indexOf(c2.toUpperCase()),row2=parseInt(r2)-1;
+if(col1!==col2)return m;
+var sum=0;for(var r=row1;r<=row2;r++){var v=parseFloat(data[r][col1]);if(!isNaN(v))sum+=v;}return sum;
+});
+try{var result=Function('"use strict";return ('+expr+')')();return isNaN(result)?f:result;}
+catch(e){return f;}
+}
+function displayVal(r,c){var v=data[r][c];var ev=evalFormula(v);return ev;}
+function render(){
+var t=document.getElementById('sheet');var html='<tr><th></th>';
+for(var c=0;c<COLS;c++)html+='<th>'+COL_LABELS[c]+'</th>';
+html+='</tr>';
+for(var r=0;r<ROWS;r++){
+html+='<tr><td>'+(r+1)+'</td>';
+for(var c=0;c<COLS;c++){
+var v=displayVal(r,c);
+var cls=r===selRow&&c===selCol?'editable selected':'editable';
+html+='<td class="'+cls+'" data-r="'+r+'" data-c="'+c+'" onclick="selectCell('+r+','+c+')" ondblclick="editCell('+r+','+c+')">'+v+'</td>';
+}
+html+='</tr>';
+}
+t.innerHTML=html;
+}
+function selectCell(r,c){
+selRow=r;selCol=c;
+document.getElementById('cellRef').textContent=getRef(r,c);
+document.getElementById('formulaInput').value=data[r][c];
+document.getElementById('selCell').textContent=getRef(r,c);
+var v=data[r][c];document.getElementById('cellType').textContent=v.startsWith('=')?'τύπος':'κείμενο';
+render();
+}
+function editCell(r,c){selectCell(r,c);document.getElementById('formulaInput').focus();}
+function applyFormula(){
+var val=document.getElementById('formulaInput').value;
+data[selRow][selCol]=val;
+document.getElementById('cellType').textContent=val.startsWith('=')?'τύπος':'κείμενο';
+render();
+}
+function saveFile(){
+document.getElementById('msg').textContent='✅ Αποθηκεύτηκε ως Αγαπημένα_Φαγητά.ods';
+setTimeout(function(){document.getElementById('msg').textContent='';},2000);
+}
+function clearAll(){for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)data[r][c]='';render();}
+document.getElementById('formulaInput').addEventListener('keydown',function(e){
+if(e.key==='Enter'){var nr=selRow+1;if(nr<ROWS)selectCell(nr,selCol);}
+if(e.key==='Tab'){e.preventDefault();var nc=selCol+(e.shiftKey?-1:1);if(nc>=0&&nc<COLS)selectCell(selRow,nc);}
+});
+render();selectCell(0,0);
+</script>
+</body>
+</html>

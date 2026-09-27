@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Ταξινόμηση Δεδομένων",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Ταξινόμηση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ταξινομήση",
+          "error": true,
+          "correct": "Ταξινόμηση",
+          "feedback": "Το σωστό είναι 'Ταξινόμηση' με 'μ' και όχι 'ν'"
+        },
+        {
+          "text": "Φθίνουσα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αύξουσα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αύξουσσα",
+          "error": true,
+          "correct": "Αύξουσα",
+          "feedback": "Το σωστό είναι 'Αύξουσα' με ένα 'σ'"
+        },
+        {
+          "text": "Κριτήριο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Στήλη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Γραμμή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Δεδομένα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Φθεινουσα",
+          "error": true,
+          "correct": "Φθίνουσα",
+          "feedback": "Το σωστό είναι 'Φθίνουσα' με 'ι' και όχι 'ει'"
+        },
+        {
+          "text": "Κριτήριο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κρητήριο",
+          "error": true,
+          "correct": "Κριτήριο",
+          "feedback": "Το σωστό είναι 'Κριτήριο' με 'ι' και όχι 'η'"
+        }
+      ]
+    }
+  ]
+}

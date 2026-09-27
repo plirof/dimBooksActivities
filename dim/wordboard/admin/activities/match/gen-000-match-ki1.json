@@ -1,0 +1,35 @@
+{
+    "id": "gen-000-match-ki1",
+    "title": "Animal Match",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "pairs": [
+            {
+                "left": "Cat",
+                "right": "Meow"
+            },
+            {
+                "left": "Dog",
+                "right": "Bark"
+            },
+            {
+                "left": "Cow",
+                "right": "Moo"
+            },
+            {
+                "left": "Duck",
+                "right": "Quack"
+            },
+            {
+                "left": "Sheep",
+                "right": "Baa"
+            },
+            {
+                "left": "Pig",
+                "right": "Oink"
+            }
+        ]
+    }
+}

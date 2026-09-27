@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Στοιχεία Κυψέλης",
+  "subtitle": "Ταξινόμησε: τι είναι το καθένα;",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "kyphlh", "name": "Στοιχείο Κυψέλης", "color": "#2196F3", "key": "A" },
+    { "id": "toixos", "name": "Ενέργεια Τοίχου", "color": "#f44336", "key": "L" },
+    { "id": "rolos", "name": "Ρόλος Ατόμου", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Τοίχος", "category": "kyphlh" },
+    { "text": "Νέα ανάρτηση", "category": "toixos" },
+    { "text": "Υπεύθυνος", "category": "rolos" },
+    { "text": "Μέλη", "category": "kyphlh" },
+    { "text": "Σχόλιο", "category": "toixos" },
+    { "text": "Εκπαιδευτικός", "category": "rolos" },
+    { "text": "Store εφαρμογών", "category": "kyphlh" },
+    { "text": "Καρδούλα", "category": "toixos" },
+    { "text": "Μαθητής/μαθήτρια", "category": "rolos" },
+    { "text": "Διαβάζω ανάρτηση", "category": "toixos" }
+  ],
+  "duration": 30
+}

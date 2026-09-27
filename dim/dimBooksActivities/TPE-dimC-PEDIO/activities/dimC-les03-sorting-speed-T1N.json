@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Παιχνίδι",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "kanonas", "name": "Κανόνας", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "apotelesma", "name": "Αποτέλεσμα", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αν έφαγε φρούτο", "category": "kanonas"},
+    {"text": "+1 πόντος", "category": "apotelesma"},
+    {"text": "Αν άγγιξε φαντασματάκι", "category": "kanonas"},
+    {"text": "-1 ζωή", "category": "apotelesma"},
+    {"text": "Αν βρέχει τότε πάρε ομπρέλα", "category": "kanonas"},
+    {"text": "Ο ήρωας κερδίζει", "category": "apotelesma"},
+    {"text": "Αν έχει αέρα τότε φόρεσε αντιανεμικό", "category": "kanonas"},
+    {"text": "Πρόσθεσε πόντο", "category": "apotelesma"},
+    {"text": "Αν σκάλα τότε πήγαινε εκεί", "category": "kanonas"},
+    {"text": "Αφαίρεσε ζωή", "category": "apotelesma"}
+  ],
+  "duration": 30
+}

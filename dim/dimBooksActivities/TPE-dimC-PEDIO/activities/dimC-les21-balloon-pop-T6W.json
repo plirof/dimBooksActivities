@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αξιόπιστες Πηγές",
+  "subtitle": "Μόνο αξιόπιστες πηγές!",
+  "instruction": "Σπάσε μόνο ΑΞΙΟΠΙΣΤΕΣ ΠΗΓΕΣ ΠΛΗΡΟΦΟΡΙΩΝ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Πανεπιστήμιο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουτσομπολιό", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εφημερίδα", "correct": true, "color": "#45B7D1" },
+    { "text": "Φήμες", "correct": false, "color": "#96CEB4" },
+    { "text": "Μουσείο", "correct": true, "color": "#FFEAA7" },
+    { "text": "Ανώνυμο blog", "correct": false, "color": "#DDA0DD" },
+    { "text": "Επίσημος ιστότοπος", "correct": true, "color": "#98D8C8" },
+    { "text": "Διαφημίσεις", "correct": false, "color": "#F7DC6F" },
+    { "text": "Βιβλιοθήκη", "correct": true, "color": "#BB8FCE" },
+    { "text": "Fake news", "correct": false, "color": "#85C1E9" }
+  ]
+}

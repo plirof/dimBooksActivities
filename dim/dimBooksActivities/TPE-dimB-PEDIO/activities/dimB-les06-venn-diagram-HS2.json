@@ -1,0 +1,17 @@
+{
+  "title": "Διάγραμμα Venn: Εντολές ή Στοιχεία;",
+  "subtitle": "Βάλε κάθε λέξη στη σωστή θέση!",
+  "circleA": { "label": "Εντολές ScratchJr", "color": "#2196F3" },
+  "circleB": { "label": "Στοιχεία ScratchJr", "color": "#4CAF50" },
+  "items": [
+    { "text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "zone": "A" },
+    { "text": "Ήρωας", "zone": "B" },
+    { "text": "ΕΠΑΝΑΛΑΒΕ", "zone": "A" },
+    { "text": "Μπάλα", "zone": "B" },
+    { "text": "ΠΗΔΑ", "zone": "A" },
+    { "text": "Σκηνικό", "zone": "B" },
+    { "text": "ΟΡΙΣΕ ΤΑΧΥΤΗΤΑ", "zone": "A" },
+    { "text": "Βιβλιοθήκη", "zone": "B" },
+    { "text": "ΠΗΓΑΙΝΕ ΣΤΗΝ ΑΡΧΗ", "zone": "A" }
+  ]
+}

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ανάλυση Δεδομένων | Μάθημα 19</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:750px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.scenario-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #fbbf24}
+.scenario-box .s-icon{font-size:1.2rem;display:block;margin-bottom:2px}
+.scenario-box .s-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.pizza-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));grid-gap:6px;margin-bottom:10px}
+.flavor-card{padding:12px 8px;background:#1e293b;border-radius:12px;border:2px solid #334155;text-align:center;cursor:pointer;transition:all .3s}
+.flavor-card:hover{transform:translateY(-3px);border-color:#6366f1}
+.flavor-card.selected{border-color:#a78bfa;background:#1e1b4b}
+.flavor-card.ordered{transform:translateY(-3px)}
+.flavor-card .f-icon{font-size:1.8rem;display:block;margin-bottom:2px}
+.flavor-card .f-name{color:#e2e8f0;font-size:.6rem;font-weight:600;display:block}
+.flavor-card .f-count{color:#64748b;font-size:.55rem;display:block}
+.flavor-card .f-bar-wrap{width:100%;height:6px;background:#0f172a;border-radius:3px;margin-top:4px;overflow:hidden}
+.flavor-card .f-bar-fill{height:100%;border-radius:3px;transition:width .5s;min-width:0}
+.order-area{display:flex;gap:8px;align-items:center;justify-content:center;padding:10px;background:#0f172a;border-radius:10px;border:1px solid #334155;margin-bottom:8px;flex-wrap:wrap}
+.order-area .oa-label{color:#94a3b8;font-size:.65rem;font-weight:600}
+.order-area .oa-total{font-family:monospace;font-size:1.2rem;font-weight:700;color:#fbbf24}
+.data-insights{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.insight-row{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px;flex-wrap:wrap}
+.insight-row .ir-icon{font-size:1rem}
+.insight-row .ir-text{color:#e2e8f0;font-size:.64rem;flex:1;min-width:120px}
+.insight-row .ir-opts{display:flex;gap:3px}
+.insight-row .ir-btn{padding:3px 8px;border:1px solid #475569;border-radius:6px;background:#0f172a;color:#94a3b8;font-size:.54rem;cursor:pointer}
+.insight-row .ir-btn.selected{background:#6366f1;color:#fff;border-color:#6366f1}
+.insight-row .ir-btn.correct{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.insight-row .ir-btn.wrong{background:#ef444422;color:#f87171;border-color:#ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .order-area > * { margin: 4px; }
+  .data-insights > * + * { margin-top: 6px; }
+  .insight-row > * { margin: 3px; }
+  .insight-row .ir-opts > * + * { margin-left: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Ανάλυση Δεδομένων Πάρτι</h1>
+<p class="subtitle">Οργάνωσε ένα πάρτι! Ανάλυσε προτιμήσεις και παρήγγειλε πίτσες!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="scNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var scenarios=[
+{
+icon:'🎉',text:'Οργανώνεις πάρτι για 20 παιδιά! Μάζεψες τις προτιμήσεις τους σε πίτσα. Ανάλυσε τα δεδομένα και παρήγγειλε!',
+flavors:[
+{name:'Πεπερόνι',icon:'🍕',votes:6},
+{name:'Τυρί',icon:'🧀',votes:4},
+{name:'Χωριάτικη',icon:'🥗',votes:3},
+{name:'Μαργαρίτα',icon:'🌿',votes:5},
+{name:'Ζαμπόν',icon:'🥩',votes:2}
+],
+questions:[
+{q:'Ποια γεύση έχει τις περισσότερες προτιμήσεις;',opts:['Πεπερόνι','Μαργαρίτα','Τυρί','Χωριάτικη'],correct:0},
+{q:'Πόσα παιδιά προτιμούν Μαργαρίτα ή Τυρί;',opts:['7','8','9','10'],correct:2},
+{q:'Αν κάθε πίτσα έχει 8 κομμάτια, πόσες πίτσες Πεπερόνι χρειάζεσαι για 20 άτομα; (20÷8≈3)',opts:['1','2','3','4'],correct:2}
+],
+hint:'Για να οργανώσεις κάτι, πρώτα μάζεψε δεδομένα, μετά ανάλυσέ τα και τέλος πάρε αποφάσεις.'
+},
+{
+icon:'📱',text:'Έκανες έρευνα στην τάξη για το πόση ώρα παίζουν παιχνίδια στο κινητό. Ανάλυσε τα αποτελέσματα!',
+flavors:[
+{name:'Καθόλου',icon:'🚫',votes:3},
+{name:'Έως 1 ώρα',icon:'⏱️',votes:7},
+{name:'1-2 ώρες',icon:'📱',votes:8},
+{name:'2-3 ώρες',icon:'🎮',votes:5},
+{name:'3+ ώρες',icon:'🔥',votes:2}
+],
+questions:[
+{q:'Πόσα παιδιά παίζουν λιγότερο από 1 ώρα την ημέρα;',opts:['3','7','10','8'],correct:2},
+{q:'Ποια είναι η πιο συνηθισμένη κατηγορία;',opts:['Καθόλου','Έως 1 ώρα','1-2 ώρες','2-3 ώρες'],correct:2},
+{q:'Πόσα παιδιά παίζουν πάνω από 2 ώρες;',opts:['5','7','8','2'],correct:1}
+],
+hint:'Ομαδοποίησε τα δεδομένα για να βγάλεις συμπεράσματα. Τα διαγράμματα βοηθούν στην οπτικοποίηση.'
+},
+{
+icon:'🏫',text:'Έρευνα στη γειτονιά: ποιο είναι το αγαπημένο μάθημα των παιδιών;',
+flavors:[
+{name:'Πληροφορική',icon:'💻',votes:9},
+{name:'Μαθηματικά',icon:'🔢',votes:5},
+{name:'Γλώσσα',icon:'📖',votes:4},
+{name:'Ιστορία',icon:'🏛️',votes:6},
+{name:'Φυσική',icon:'🔬',votes:3}
+],
+questions:[
+{q:'Πόσα παιδιά ρωτήθηκαν συνολικά;',opts:['24','25','26','27'],correct:3},
+{q:'Ποιο μάθημα έχει τις λιγότερες προτιμήσεις;',opts:['Ιστορία','Φυσική','Γλώσσα','Μαθηματικά'],correct:1},
+{q:'Αν η Πληροφορική είχε 9 ψήφους, τι ποσοστό είναι περίπου; (9/27≈33%)',opts:['20%','25%','33%','40%'],correct:2}
+],
+hint:'Το σύνολο των δεδομένων σε βοηθά να υπολογίσεις ποσοστά και αναλογίες.'
+},
+{
+icon:'🎬',text:'Θέλεις να δεις ταινία με φίλους. Μάζεψε προτιμήσεις και βρες την κατάλληλη!',
+flavors:[
+{name:'Περιπέτεια',icon:'⚔️',votes:5},
+{name:'Κωμωδία',icon:'😂',votes:8},
+{name:'Φαντασίας',icon:'🧙',votes:4},
+{name:'Κιν. κινουμ.',icon:'🎨',votes:6},
+{name:'Τρόμου',icon:'👻',votes:2}
+],
+questions:[
+{q:'Ποιο είδος ταινίας έχει τις περισσότερες προτιμήσεις;',opts:['Περιπέτεια','Κωμωδία','Φαντασίας','Κιν. κινουμ.'],correct:1},
+{q:'Πόσα παιδιά προτιμούν Περιπέτεια ή Φαντασίας;',opts:['7','8','9','10'],correct:2},
+{q:'Αν έπρεπε να διαλέξεις 2 είδη, ποια θα διάλεγες βάσει ψήφων;',opts:['Κωμωδία & Κιν. κινουμ.','Περιπέτεια & Κωμωδία','Κωμωδία & Φαντασίας','Περιπέτεια & Φαντασίας'],correct:0}
+],
+hint:'Η ανάλυση δεδομένων σε βοηθά να πάρεις αποφάσεις βασισμένες σε στοιχεία, όχι σε τυχαίες επιλογές.'
+},
+{
+icon:'🌿',text:'Θέλεις να φυτέψεις λουλούδια στον κήπο του σχολείου. Ρώτησες τα παιδιά τι προτιμούν!',
+flavors:[
+{name:'Τριαντάφυλλο',icon:'🌹',votes:7},
+{name:'Τουλίπα',icon:'🌷',votes:5},
+{name:'Ηλίανθος',icon:'🌻',votes:9},
+{name:'Μαργαρίτα',icon:'🌼',votes:4},
+{name:'Κρίνος',icon:'🌸',votes:3}
+],
+questions:[
+{q:'Ποιο λουλούδι είναι το αγαπημένο;',opts:['Τριαντάφυλλο','Τουλίπα','Ηλίανθος','Μαργαρίτα'],correct:2},
+{q:'Πόσα παιδιά προτίμησαν τριαντάφυλλα ή μαργαρίτες;',opts:['9','10','11','12'],correct:2},
+{q:'Αν είχες λεφτά για 2 είδη, τι θα φύτευες;',opts:['Ηλίανθο & Τριαντάφυλλο','Ηλίανθο & Τουλίπα','Τριαντάφυλλο & Τουλίπα','Ηλίανθο & Μαργαρίτα'],correct:0}
+],
+hint:'Τα δεδομένα σε βοηθούν να πάρεις την καλύτερη απόφαση για την πλειοψηφία.'
+},
+{
+icon:'🧮',title:'Επαναληπτική Ανάλυση',
+icon:'📊',text:'Εφάρμοσε όσα έμαθες: συλλογή, οργάνωση, ανάλυση και εξαγωγή συμπερασμάτων.',
+flavors:[
+{name:'Κόκκινο',icon:'🔴',votes:8},
+{name:'Μπλε',icon:'🔵',votes:6},
+{name:'Πράσινο',icon:'🟢',votes:4},
+{name:'Κίτρινο',icon:'🟡',votes:5},
+{name:'Μωβ',icon:'🟣',votes:2}
+],
+questions:[
+{q:'Πόσες ψήφους έχει το δημοφιλέστερο χρώμα;',opts:['6','7','8','9'],correct:2},
+{q:'Πόσα άτομα ψήφισαν συνολικά;',opts:['20','22','25','30'],correct:2},
+{q:'Ποιο χρώμα θα διάλεγες αν ήθελες κάτι ξεχωριστό (όχι το πιο δημοφιλές);',opts:['Κόκκινο','Μπλε','Πράσινο','Κίτρινο'],correct:2}
+],
+hint:'Η ανάλυση δεδομένων είναι μία ολοκληρωμένη διαδικασία: από τη συλλογή στην εξαγωγή συμπερασμάτων!'
+}
+];
+var current=0;
+var pts=0;
+var selectedQs={};
+var checked=false;
+function render(){
+var sc=scenarios[current];
+checked=false;
+selectedQs={};
+document.getElementById('scNum').textContent=current+1;
+var main=document.getElementById('main');
+var totalVotes=0;
+for(var v=0;v<sc.flavors.length;v++)totalVotes+=sc.flavors[v].votes;
+var maxVotes=0;
+for(var m=0;m<sc.flavors.length;m++){if(sc.flavors[m].votes>maxVotes)maxVotes=sc.flavors[m].votes;}
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+sc.icon+' Σενάριο '+(current+1)+'</div>';
+h+='<div class="scenario-box"><span class="s-icon">📋</span><div class="s-text">'+sc.text+'</div></div>';
+h+='<div class="pizza-grid">';
+for(var i=0;i<sc.flavors.length;i++){
+var f=sc.flavors[i];
+var pct=Math.max(2,(f.votes/maxVotes)*100);
+h+='<div class="flavor-card">';
+h+='<span class="f-icon">'+f.icon+'</span>';
+h+='<span class="f-name">'+f.name+'</span>';
+h+='<span class="f-count">'+f.votes+' ψήφοι</span>';
+h+='<div class="f-bar-wrap"><div class="f-bar-fill" style="width:'+pct+'%;background:var(--fc, #6366f1)"></div></div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div class="order-area">';
+h+='<span class="oa-label">Σύνολο ψήφων:</span>';
+h+='<span class="oa-total">'+totalVotes+'</span>';
+h+='</div>';
+h+='<div class="data-insights">';
+for(var q=0;q<sc.questions.length;q++){
+var qq=sc.questions[q];
+h+='<div class="insight-row">';
+h+='<span class="ir-icon">❓</span>';
+h+='<span class="ir-text">'+(q+1)+'. '+qq.q+'</span>';
+h+='<div class="ir-opts">';
+for(var o=0;o<qq.opts.length;o++){
+var sel=(selectedQs[q]===o?' selected':'');
+h+='<div class="ir-btn'+sel+'" id="qbtn_'+q+'_'+o+'" onclick="selectIR('+q+','+o+')">'+qq.opts[o]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkIR()">✅ Έλεγχος Απαντήσεων</button></div>';
+h+='<div class="hint-box">💡 '+sc.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevSc()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextSc()"'+(current===scenarios.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectIR(qIdx,optIdx){
+if(checked)return;
+selectedQs[qIdx]=optIdx;
+var sc=scenarios[current];
+for(var o=0;o<sc.questions[qIdx].opts.length;o++){
+var el=document.getElementById('qbtn_'+qIdx+'_'+o);
+if(el)el.classList.toggle('selected',o===optIdx);
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkIR(){
+var sc=scenarios[current];
+var allAnswered=true;
+for(var q=0;q<sc.questions.length;q++){if(selectedQs[q]===undefined){allAnswered=false;break;}}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Απάντησε σε όλες τις ερωτήσεις!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var q2=0;q2<sc.questions.length;q2++){
+var correct=sc.questions[q2].correct;
+var btn=document.getElementById('qbtn_'+q2+'_'+selectedQs[q2]);
+if(btn){btn.classList.remove('selected');btn.classList.add(selectedQs[q2]===correct?'correct':'wrong');btn.style.pointerEvents='none';}
+var correctBtn=document.getElementById('qbtn_'+q2+'_'+correct);
+if(correctBtn)correctBtn.classList.add('correct');
+if(selectedQs[q2]!==correct)allCorrect=false;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι απαντήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες απαντήσεις είναι λάθος. Τα πράσινα είναι σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevSc(){if(current>0){current--;render();}}
+function nextSc(){if(current<scenarios.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

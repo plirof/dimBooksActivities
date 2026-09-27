@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ασφάλεια στο Διαδίκτυο",
+  "subtitle": "Σπάσε μόνο τα στοιχεία ασφάλειας και IoT",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με την ασφάλεια και το IoT",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Hacking",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Phishing",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Κηπουρική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Malware",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Antivirus",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μαγειρική",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "IoT",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Έξυπνο σπίτι",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

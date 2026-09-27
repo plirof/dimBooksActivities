@@ -1,0 +1,55 @@
+{
+    "id": "dimC-les25-crossword-mx3",
+    "title": "Τα άρθρα ενός ιστολογίου της e-me - Σταυρόλεξο",
+    "type": "crossword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "grid": [
+            [
+                "Α",
+                "Ρ",
+                "Θ",
+                "Ρ",
+                "Α"
+            ],
+            [
+                "#",
+                "#",
+                "#",
+                "#",
+                "#"
+            ],
+            [
+                "Τ",
+                "Ι",
+                "Τ",
+                "Λ",
+                "Ο"
+            ]
+        ],
+        "words": [
+            {
+                "number": 1,
+                "direction": "across",
+                "clue": "Συνιστούν ένα ιστολόγιο",
+                "answer": "ΑΡΘΡΑ",
+                "row": 0,
+                "col": 0
+            },
+            {
+                "number": 2,
+                "direction": "across",
+                "clue": "Μονάδα μέτρησης δεδομένων",
+                "answer": "ΤΙΤΛΟ",
+                "row": 2,
+                "col": 0
+            }
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les25",
+        "e-me"
+    ]
+}

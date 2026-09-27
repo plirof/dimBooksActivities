@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Τροφές στον Χάρτη",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "άνθρωπος", "error": false, "correct": "", "feedback": "" },
+        { "text": "πινει", "error": true, "correct": "τρώει", "feedback": "Ο άνθρωπος τρώει, δεν πίνει τροφές" },
+        { "text": "λαχανικά", "error": false, "correct": "", "feedback": "" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "κρέας", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "κυρια", "error": true, "correct": "κύρια", "feedback": "Λείπει ο τόνος" },
+        { "text": "έννοια", "error": false, "correct": "", "feedback": "" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "χάρτη", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": true, "correct": "ο", "feedback": "Η κύρια έννοια είναι ο Άνθρωπος (αρσενικό)" },
+        { "text": "λαχανικά", "error": true, "correct": "άνθρωπος", "feedback": "Λάθος λέξη" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "κρέας", "error": false, "correct": "", "feedback": "" },
+        { "text": "μπορει", "error": true, "correct": "μπορεί", "feedback": "Λείπει ο τόνος" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "ντοματες", "error": true, "correct": "ντομάτες", "feedback": "Λείπει ο τόνος και είναι λάθος κατηγορία" }
+      ]
+    }
+  ]
+}

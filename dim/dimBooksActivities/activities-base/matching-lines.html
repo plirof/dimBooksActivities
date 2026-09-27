@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σύνδεσε τα Ζευγάρια!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:850px;width:100%;padding:40px;text-align:center;position:relative}
+h1{color:#8e44ad;font-size:2em;margin-bottom:10px}
+h2{color:#555;font-size:1.2em;margin-bottom:30px;font-weight:400}
+.game-area{position:relative;display:flex;justify-content:space-between;margin:20px 0;min-height:300px}
+.column{display:flex;flex-direction:column;flex:1;z-index:2;padding:0 40px}
+.match-item{padding:14px 16px;border:3px solid #ddd;border-radius:12px;background:#fff;cursor:pointer;font-size:1em;transition:all 0.3s;user-select:none;-webkit-user-select:none;text-align:center;margin-bottom:12px}
+.match-item:last-child{margin-bottom:0}
+.match-item:hover{border-color:#a18cd1;transform:translateY(-2px)}
+.match-item.selected{background:linear-gradient(135deg,#a18cd1,#fbc2eb);color:#fff;border-color:#8e44ad}
+.match-item.matched{background:#d4edda;border-color:#28a745;color:#155724;cursor:pointer}
+.match-item.wrong{background:#f8d7da;border-color:#dc3545}
+svg.lines-svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.btn{background:linear-gradient(135deg,#a18cd1,#fbc2eb);color:#fff;border:none;padding:15px 40px;font-size:1.1em;border-radius:12px;cursor:pointer;margin:10px 5px;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(161,140,209,0.4)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.score{font-size:1.4em;color:#8e44ad;margin:15px 0}
+.feedback{font-size:1.1em;margin:15px 0;padding:12px;border-radius:10px}
+.feedback.correct{background:#d4edda;color:#155724}
+.feedback.wrong{background:#f8d7da;color:#721c24}
+.start-btn{font-size:1.3em;padding:18px 50px}
+.hidden{display:none}
+.connections-count{font-size:0.95em;color:#888;margin:10px 0}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div style="font-size:3em;margin-bottom:20px">🔗</div>
+<h1 id="title">Σύνδεσε τα Ζευγάρια!</h1>
+<h2 id="subtitle">Ταίριαξε τις έννοιες</h2>
+<div id="startScreen">
+<button class="btn start-btn" onclick="startGame()">🎮 Ξεκίνα!</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="connections-count" id="connCount"></div>
+<div class="game-area" id="gameArea">
+<div class="column" id="leftCol"></div>
+<svg class="lines-svg" id="linesSvg"></svg>
+<div class="column" id="rightCol"></div>
+</div>
+<button class="btn" id="checkBtn" onclick="checkAll()" disabled>✓ Έλεγχος</button>
+<button class="btn" onclick="clearAll()" style="background:linear-gradient(135deg,#ccc,#999)">🗑️ Καθαρισμός</button>
+<div class="feedback hidden" id="feedback"></div>
+</div>
+<div id="endScreen" class="hidden">
+<div style="font-size:3em;margin-bottom:20px">🏆</div>
+<h1>Μπράβο!</h1>
+<div class="score" id="finalScore"></div>
+<p id="endMessage" style="color:#555;font-size:1.1em;margin:20px 0"></p>
+<button class="btn" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+let data=null,pairs=[],leftItems=[],rightItems=[],selectedLeft=null,selectedRight=null,connections=[],matched=[];
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+if(dataFile){
+fetch(dataFile).then(r=>r.json()).then(d=>{data=d;document.getElementById('title').textContent=esc(data.title||'Σύνδεσε τα Ζευγάρια!');document.getElementById('subtitle').textContent=esc(data.subtitle||'Ταίριαξε τις έννοιες');}).catch(e=>{document.getElementById('subtitle').textContent='Σφάλμα φόρτωσης δεδομένων';});
+}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){
+if(!data)return;
+pairs=[...data.pairs];
+leftItems=shuffle(pairs.map((p,i)=>({text:p.left,origIndex:i})));
+rightItems=shuffle(pairs.map((p,i)=>({text:p.right,origIndex:i})));
+connections=[];matched=[];selectedLeft=null;selectedRight=null;
+document.getElementById('startScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+document.getElementById('feedback').classList.add('hidden');
+renderColumns();
+}
+function renderColumns(){
+const lc=document.getElementById('leftCol');
+const rc=document.getElementById('rightCol');
+lc.innerHTML='';rc.innerHTML='';
+leftItems.forEach((item,i)=>{
+const el=document.createElement('div');
+el.className='match-item'+(matched.includes(item.origIndex)?' matched':'')+(selectedLeft===i?' selected':'');
+el.textContent=item.text;
+el.dataset.side='left';el.dataset.index=i;
+el.onclick=function(){clickLeft(i)};
+lc.appendChild(el);
+});
+rightItems.forEach((item,i)=>{
+const el=document.createElement('div');
+el.className='match-item'+(matched.includes(item.origIndex)?' matched':'')+(selectedRight===i?' selected':'');
+el.textContent=item.text;
+el.dataset.side='right';el.dataset.index=i;
+el.onclick=function(){clickRight(i)};
+rc.appendChild(el);
+});
+updateConnCount();drawLines();
+}
+function updateConnCount(){
+document.getElementById('connCount').textContent=`Συνδέσεις: ${connections.length} από ${pairs.length}`;
+document.getElementById('checkBtn').disabled=connections.length<pairs.length;
+}
+function clickLeft(index){
+if(matched.includes(leftItems[index].origIndex))return;
+selectedLeft=selectedLeft===index?null:index;
+selectedRight=null;
+renderColumns();
+}
+function clickRight(index){
+if(selectedLeft===null)return;
+if(matched.includes(rightItems[index].origIndex))return;
+const existing=connections.find(c=>c.leftIdx===selectedLeft);
+if(existing){connections=connections.filter(c=>c.leftIdx!==selectedLeft)}
+const existingR=connections.find(c=>c.rightIdx===index);
+if(existingR){connections=connections.filter(c=>c.rightIdx!==index)}
+connections.push({leftIdx:selectedLeft,rightIdx:index,leftOrig:leftItems[selectedLeft].origIndex,rightOrig:rightItems[index].origIndex});
+selectedLeft=null;selectedRight=null;
+renderColumns();
+}
+function drawLines(){
+const svg=document.getElementById('linesSvg');
+const area=document.getElementById('gameArea');
+const areaRect=area.getBoundingClientRect();
+svg.innerHTML='';
+svg.setAttribute('viewBox',`0 0 ${areaRect.width} ${areaRect.height}`);
+connections.forEach(conn=>{
+const leftEl=document.querySelector(`[data-side="left"][data-index="${conn.leftIdx}"]`);
+const rightEl=document.querySelector(`[data-side="right"][data-index="${conn.rightIdx}"]`);
+if(!leftEl||!rightEl)return;
+const lr=leftEl.getBoundingClientRect();
+const rr=rightEl.getBoundingClientRect();
+const x1=lr.right-areaRect.left;
+const y1=lr.top+lr.height/2-areaRect.top;
+const x2=rr.left-areaRect.left;
+const y2=rr.top+rr.height/2-areaRect.top;
+const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+line.setAttribute('x1',x1);line.setAttribute('y1',y1);
+line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+line.setAttribute('stroke','#8e44ad');line.setAttribute('stroke-width','3');
+line.setAttribute('stroke-linecap','round');
+svg.appendChild(line);
+});
+}
+function clearAll(){
+connections=[];matched=[];selectedLeft=null;selectedRight=null;
+document.getElementById('feedback').classList.add('hidden');
+renderColumns();
+}
+function checkAll(){
+let correct=0;
+connections.forEach(conn=>{
+if(conn.leftOrig===conn.rightOrig){
+correct++;
+matched.push(conn.leftOrig);
+}
+});
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden');
+if(correct===pairs.length){
+fb.className='feedback correct';
+fb.textContent='✓ Τέλειο! Όλα τα ζευγάρια σωστά!';
+renderColumns();
+setTimeout(()=>{endGame()},1500);
+}else{
+fb.className='feedback wrong';
+fb.textContent=`✗ ${correct} από ${pairs.length} σωστά. Διορθωσε τα λάθη!`;
+connections=[];matched=[];selectedLeft=null;selectedRight=null;
+renderColumns();
+setTimeout(()=>{fb.classList.add('hidden')},2500);
+}
+}
+function endGame(){
+document.getElementById('gameScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.remove('hidden');
+document.getElementById('finalScore').textContent=`${pairs.length} από ${pairs.length} σωστά!`;
+document.getElementById('endMessage').textContent='Εξαιρετικά! Ξέρεις καλά τις έννοιες! 🌟';
+}
+window.addEventListener('resize',function(){if(!document.getElementById('gameScreen').classList.contains('hidden'))drawLines()});
+</script>
+</body>
+</html>

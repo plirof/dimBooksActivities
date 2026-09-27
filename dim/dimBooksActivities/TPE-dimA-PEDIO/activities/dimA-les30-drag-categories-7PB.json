@@ -1,0 +1,53 @@
+{
+  "title": "Εφαρμογές σε περιγραφή",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στη σωστή εφαρμογή",
+  "categories": [
+    {
+      "id": "fotodentro",
+      "name": "ΦΩΤΟΔΕΝΤΡΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "etv",
+      "name": "ΕΚΠΑΙΔΕΥΤΙΚΗ ΤΗΛΕΟΡΑΣΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "games",
+      "name": "ΠΑΙΧΝΙΔΙΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📚 Βιβλία μαθημάτων",
+      "category": "fotodentro"
+    },
+    {
+      "id": "item2",
+      "text": "📺 Εκπαιδευτικές εκπομπές",
+      "category": "etv"
+    },
+    {
+      "id": "item3",
+      "text": "🧩 Ασκήσεις",
+      "category": "fotodentro"
+    },
+    {
+      "id": "item4",
+      "text": "🎮 Δημιουργικά παιχνίδια",
+      "category": "games"
+    },
+    {
+      "id": "item5",
+      "text": "🎬 Βίντεο μαθήματος",
+      "category": "etv"
+    },
+    {
+      "id": "item6",
+      "text": "🏆 Διαγωνισμοί",
+      "category": "games"
+    }
+  ]
+}

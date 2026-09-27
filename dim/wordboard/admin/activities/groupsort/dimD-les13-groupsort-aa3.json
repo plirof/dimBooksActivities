@@ -1,0 +1,45 @@
+{
+    "id": "dimD-les13-groupsort-aa3",
+    "title": "Οι εφαρμογές του υπολογιστή - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "groups": [
+            {
+                "name": "Εφαρμογές γραφείου",
+                "items": [
+                    "Writer",
+                    "Impress",
+                    "Calc",
+                    "Word",
+                    "Excel"
+                ]
+            },
+            {
+                "name": "Λειτουργικά συστήματα",
+                "items": [
+                    "Windows",
+                    "Linux",
+                    "MAC OS",
+                    "Android",
+                    "iOS"
+                ]
+            },
+            {
+                "name": "Φυλλομετρητές",
+                "items": [
+                    "Firefox",
+                    "Chrome",
+                    "Edge",
+                    "Safari"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les13",
+        "εφαρμογές"
+    ]
+}

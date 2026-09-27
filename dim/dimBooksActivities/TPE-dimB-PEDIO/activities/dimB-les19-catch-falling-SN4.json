@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Μέρη Φυλλομετρητή",
+  "subtitle": "Πιάσε μόνο τα μέρη του φυλλομετρητή",
+  "instructions": "Πιάσε τα στοιχεία του browser. Απόφυγε τα εργαλεία ζωγραφικής.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Καρτέλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Ανανέωση", "correct": true, "color": "#4CAF50" },
+    { "text": "Πινέλο", "correct": false, "color": "#f44336" },
+    { "text": "Σελιδοδείκτης", "correct": true, "color": "#4CAF50" },
+    { "text": "Γόμα", "correct": false, "color": "#f44336" },
+    { "text": "Back", "correct": true, "color": "#4CAF50" },
+    { "text": "Χάρακας", "correct": false, "color": "#f44336" },
+    { "text": "Address bar", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπογιές", "correct": false, "color": "#f44336" }
+  ]
+}

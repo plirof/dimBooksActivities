@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υποπρογράμματα",
+  "subtitle": "Σπάσε μόνο τα μπαλόνια με έννοιες των υποπρογραμμάτων!",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν έννοιες σχετικές με τα υποπρογράμματα!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Υποπρόγραμμα", "correct": true, "color": "#4CAF50" },
+    { "text": "Νέα εντολή", "correct": true, "color": "#2196F3" },
+    { "text": "Μεταβλητή", "correct": true, "color": "#FF9800" },
+    { "text": "Επανάληψη", "correct": true, "color": "#9C27B0" },
+    { "text": "Γραμμή κύλισης", "correct": true, "color": "#00BCD4" },
+    { "text": "Στρίψε δεξιά", "correct": true, "color": "#E91E63" },
+    { "text": "Διαγραφή", "correct": false, "color": "#F44336" },
+    { "text": "Αντιγραφή", "correct": false, "color": "#795548" },
+    { "text": "Εκτύπωση", "correct": false, "color": "#607D8B" },
+    { "text": "Αποθήκευση", "correct": false, "color": "#FF5722" }
+  ]
+}

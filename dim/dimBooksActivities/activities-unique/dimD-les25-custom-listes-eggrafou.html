@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λίστες σε Έγγραφο</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+width: 100%;
+max-width: 1100px;
+justify-content: center;
+}
+.items-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+max-width: 400px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.section-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+text-align: center;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+justify-content: center;
+}
+.items-list {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-bottom: 20px;
+}
+.list-item {
+background: #f8f9fa;
+padding: 15px 20px;
+border-radius: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid #ddd;
+user-select: none;
+}
+.list-item:hover {
+transform: translateX(5px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.list-item.selected {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.list-item-text {
+color: #333;
+font-weight: 500;
+}
+.type-buttons {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+.type-btn {
+padding: 15px 20px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.type-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.type-btn.active {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.type-btn .icon {
+font-size: 1.5rem;
+}
+.preview-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+max-width: 400px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.preview-content {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 20px;
+min-height: 250px;
+}
+.preview-list {
+margin: 0;
+padding-left: 20px;
+line-height: 2;
+}
+.preview-list li {
+margin-bottom: 10px;
+color: #333;
+}
+.preview-list ul {
+list-style-type: disc;
+}
+.preview-list ol {
+list-style-type: decimal;
+}
+.instruction-box {
+background: #fff3cd;
+border-radius: 12px;
+padding: 15px;
+margin-bottom: 20px;
+border: 2px solid #ffc107;
+}
+.instruction-text {
+color: #856404;
+font-size: 0.9rem;
+line-height: 1.6;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+margin-top: 15px;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .container > * { margin: 15px; }
+  .section-title > * + * { margin-left: 10px; }
+  .items-list > * + * { margin-top: 12px; }
+  .type-buttons > * + * { margin-top: 10px; }
+  .type-btn > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📝 Λίστες σε Έγγραφο</h1>
+<p class="subtitle">Επιλέξτε τα στοιχεία και τον τύπο λίστας για να τη δημιουργήσετε</p>
+
+<div class="container">
+<div class="items-section">
+<div class="section-title">📦 Διαθέσιμα Στοιχεία</div>
+
+<div class="instruction-box">
+<div class="instruction-text">
+📋 <strong>Κανόνας:</strong> Χρησιμοποιείτε αριθμημένη λίστα όταν η σειρά είναι σημαντική (βήματα). Χρησιμοποιείτε λίστα με κουκκίδες όταν η σειρά δεν είναι σημαντική (λίστα προετοιμασίας).
+</div>
+</div>
+
+<div class="items-list">
+<div class="list-item" onclick="selectItem(this, '1')">
+<div class="list-item-text">📚 Ελληνικά</div>
+</div>
+<div class="list-item" onclick="selectItem(this, '2')">
+<div class="list-item-text">🧮 Μαθηματικά</div>
+</div>
+<div class="list-item" onclick="selectItem(this, '3')">
+<div class="list-item-text">🔬 Φυσική</div>
+</div>
+<div class="list-item" onclick="selectItem(this, '4')">
+<div class="list-item-text">🎨 Καλλιτεχνικά</div>
+</div>
+<div class="list-item" onclick="selectItem(this, '5')">
+<div class="list-item-text">🏃 Φυσική Αγωγή</div>
+</div>
+<div class="list-item" onclick="selectItem(this, '6')">
+<div class="list-item-text">💻 Πληροφορική</div>
+</div>
+</div>
+
+<div class="type-buttons">
+<div class="type-btn" id="numberedBtn" onclick="selectType('numbered')">
+<div class="icon">🔢</div>
+<div>Αριθμημένη Λίστα</div>
+</div>
+<div class="type-btn" id="bulletBtn" onclick="selectType('bullet')">
+<div class="icon">•</div>
+<div>Λίστα με Κουκκίδες</div>
+</div>
+</div>
+</div>
+
+<div class="preview-section">
+<div class="section-title">👁️ Προεπισκόπηση Λίστας</div>
+<div class="preview-content">
+<div id="previewList" class="preview-list">
+<p style="color: #999; text-align: center; padding-top: 100px;">Επιλέξτε στοιχεία και τύπο λίστας για να δείτε την προεπισκόπηση.</p>
+</div>
+</div>
+<button class="btn" id="createBtn" onclick="createList()" disabled>✅ Δημιουργία Λίστας</button>
+</div>
+</div>
+
+<div class="mascot">📋</div>
+
+<script>
+let selectedItems = [];
+let selectedType = null;
+
+const items = {
+'1': 'Ελληνικά',
+'2': 'Μαθηματικά',
+'3': 'Φυσική',
+'4': 'Καλλιτεχνικά',
+'5': 'Φυσική Αγωγή',
+'6': 'Πληροφορική'
+};
+
+function selectItem(element, itemId) {
+if (selectedItems.includes(itemId)) {
+selectedItems = selectedItems.filter(id => id !== itemId);
+element.classList.remove('selected');
+} else {
+selectedItems.push(itemId);
+element.classList.add('selected');
+}
+
+updatePreview();
+}
+
+function selectType(type) {
+selectedType = type;
+
+document.querySelectorAll('.type-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+
+if (type === 'numbered') {
+document.getElementById('numberedBtn').classList.add('active');
+} else if (type === 'bullet') {
+document.getElementById('bulletBtn').classList.add('active');
+}
+
+updatePreview();
+}
+
+function updatePreview() {
+const previewList = document.getElementById('previewList');
+const createBtn = document.getElementById('createBtn');
+
+if (selectedItems.length === 0 || !selectedType) {
+previewList.innerHTML = '<p style="color: #999; text-align: center; padding-top: 100px;">Επιλέξτε στοιχεία και τύπο λίστας για να δείτε την προεπισκόπηση.</p>';
+createBtn.disabled = true;
+return;
+}
+
+createBtn.disabled = false;
+
+let html = '';
+
+if (selectedType === 'numbered') {
+html = '<ol class="preview-list" style="list-style-type: decimal;">';
+} else {
+html = '<ul class="preview-list" style="list-style-type: disc;">';
+}
+
+selectedItems.forEach(itemId => {
+html += '<li>' + items[itemId] + '</li>';
+});
+
+if (selectedType === 'numbered') {
+html += '</ol>';
+} else {
+html += '</ul>';
+}
+
+previewList.innerHTML = html;
+}
+
+function createList() {
+const previewList = document.getElementById('previewList');
+let message = '';
+
+if (selectedType === 'numbered') {
+message = 'Δημιουργήσατε μια <strong>αριθμημένη λίστα</strong>!';
+} else {
+message = 'Δημιουργήσατε μια <strong>λίστα με κουκκίδες</strong>!';
+}
+
+const resultHtml = `
+<div style="background: rgba(39, 174, 96, 0.1); padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #27ae60;">
+<h3 style="color: #155724; margin-bottom: 10px;">🎉 Επιτυχία!</h3>
+<p style="color: #155724; font-size: 1.1rem;">${message}</p>
+<p style="color: #155724; margin-top: 10px;">Η λίστα περιέχει ${selectedItems.length} στοιχεία.</p>
+</div>
+`;
+
+previewList.innerHTML = resultHtml;
+
+document.getElementById('createBtn').disabled = true;
+
+selectedItems = [];
+selectedType = null;
+
+document.querySelectorAll('.list-item').forEach(item => {
+item.classList.remove('selected');
+});
+
+document.querySelectorAll('.type-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+}
+</script>
+</body>
+</html>

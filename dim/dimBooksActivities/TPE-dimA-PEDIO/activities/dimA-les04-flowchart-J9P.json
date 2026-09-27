@@ -1,0 +1,12 @@
+{
+  "title": "Φτιάξε το διάγραμμα!",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Βρίσκω το μονοπάτι",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Βλέπω τις εντολές"},
+    {"id": 2, "type": "action", "text": "Πάω πάνω"},
+    {"id": 3, "type": "action", "text": "Πάω δεξιά"},
+    {"id": 4, "type": "action", "text": "Φτάνω!"}
+  ],
+  "correctOrder": [1, 2, 3, 4]
+}

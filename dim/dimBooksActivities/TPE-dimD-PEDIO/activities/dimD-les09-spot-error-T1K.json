@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Αισθητήρες",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Αισθητήρας", "error": false, "correct": "Αισθητήρας", "feedback": "" },
+        { "text": "Αισθητηρας", "error": true, "correct": "Αισθητήρας", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Επιφάνεια", "error": false, "correct": "Επιφάνεια", "feedback": "" },
+        { "text": "Επιφανεια", "error": true, "correct": "Επιφάνεια", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Λαβύρινθος", "error": false, "correct": "Λαβύρινθος", "feedback": "" },
+        { "text": "Λαβηρινθος", "error": true, "correct": "Λαβύρινθος", "feedback": "Γράφεται Λαβύρινθος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Αναγνωρίζει", "error": false, "correct": "Αναγνωρίζει", "feedback": "" },
+        { "text": "Αναγνωριζει", "error": true, "correct": "Αναγνωρίζει", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Έξυπνος", "error": false, "correct": "Έξυπνος", "feedback": "" },
+        { "text": "Εξυπνος", "error": true, "correct": "Έξυπνος", "feedback": "Χρειάζεται τόνος στο Έ" },
+        { "text": "Μαύρη", "error": false, "correct": "Μαύρη", "feedback": "" },
+        { "text": "Μαυρη", "error": true, "correct": "Μαύρη", "feedback": "Χρειάζεται τόνος" }
+      ]
+    }
+  ]
+}

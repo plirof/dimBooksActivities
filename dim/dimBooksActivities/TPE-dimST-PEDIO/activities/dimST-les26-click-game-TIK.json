@@ -1,0 +1,15 @@
+{
+  "title": "Τηλεκπαίδευση!",
+  "subtitle": "Κάνε κλικ στις σωστές ενέργειες",
+  "instructions": "Κάνε κλικ: mute, raise hand, chat, share screen — με τη σωστή σειρά!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "🎤 Μικρόφωνο", "color": "#C8E6C9" },
+    { "label": "✋ Σήκωμα χεριού", "color": "#BBDEFB" },
+    { "label": "💬 Chat", "color": "#FFF9C4" },
+    { "label": "🖥️ Οθόνη", "color": "#FFE0B2" },
+    { "label": "📞 Έξοδος", "color": "#FFCDD2" }
+  ]
+}

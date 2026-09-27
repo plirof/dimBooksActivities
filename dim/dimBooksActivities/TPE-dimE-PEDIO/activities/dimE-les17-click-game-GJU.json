@@ -1,0 +1,15 @@
+{
+  "title": "Βρες το Κελί!",
+  "subtitle": "Κάνε κλικ στο κελί με τη σωστή διεύθυνση",
+  "instructions": "Δίνονται συντεταγμένες — κάνε κλικ στο σωστό κελί!",
+  "duration": 30,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "A1", "color": "#C8E6C9" },
+    { "label": "B3", "color": "#BBDEFB" },
+    { "label": "C2", "color": "#FFF9C4" },
+    { "label": "D1", "color": "#FFE0B2" },
+    { "label": "E4", "color": "#E1BEE7" }
+  ]
+}

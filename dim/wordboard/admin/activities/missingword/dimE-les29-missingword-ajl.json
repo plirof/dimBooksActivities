@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les29-missingword-ajl",
+    "title": "Επιδράσεις από τη χρήση του διαδικτύου - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το ψηφιακό ___ αφήνουμε στο διαδίκτυο.",
+                "options": [
+                    "αποτύπωμα",
+                    "σφάλμα",
+                    "χάσμα",
+                    "μηνυμα"
+                ],
+                "correct": "αποτύπωμα"
+            },
+            {
+                "sentence": "Τα ___ news είναι ψευδείς ειδήσεις.",
+                "options": [
+                    "fake",
+                    "true",
+                    "real",
+                    "good"
+                ],
+                "correct": "fake"
+            },
+            {
+                "sentence": "Ο εκφοβισμός στο διαδίκτυο λέγεται ___.",
+                "options": [
+                    "cyberbullying",
+                    "netiquette",
+                    "backup",
+                    "download"
+                ],
+                "correct": "cyberbullying"
+            },
+            {
+                "sentence": "Το ψηφιακό ___ είναι ανισότητα πρόσβασης.",
+                "options": [
+                    "χάσμα",
+                    "αποτύπωμα",
+                    "μηνυμα",
+                    "κώδικας"
+                ],
+                "correct": "χάσμα"
+            },
+            {
+                "sentence": "IoT = Διαδίκτυο των ___.",
+                "options": [
+                    "Πραγμάτων",
+                    "Ανθρώπων",
+                    "Ζώων",
+                    "Φυτών"
+                ],
+                "correct": "Πραγμάτων"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les29",
+        "διαδίκτυο"
+    ]
+}

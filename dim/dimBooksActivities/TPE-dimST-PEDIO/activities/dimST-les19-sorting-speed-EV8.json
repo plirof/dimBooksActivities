@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ταξινόμηση ή Φίλτρο;",
+  "subtitle": "Ταξινόμησε γρήγορα κάθε λειτουργία",
+  "instructions": "Πάτα αριστερά για ταξινόμηση, δεξιά για φίλτρο",
+  "categories": [
+    {
+      "id": "sort",
+      "name": "Ταξινόμηση",
+      "color": "#2196F3",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "filter",
+      "name": "Φίλτρο",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Αλλάζει σειρά γραμμών", "category": "sort" },
+    { "text": "Κρύβει μη ταιριαστές γραμμές", "category": "filter" },
+    { "text": "Αύξουσα ή φθίνουσα", "category": "sort" },
+    { "text": "Αυτόματο από μενού Δεδομένα", "category": "filter" },
+    { "text": "Μεγαλύτερη τιμή πρώτη", "category": "sort" },
+    { "text": "Επιλογή συγκεκριμένης τιμής", "category": "filter" },
+    { "text": "Βελάκι στην επικεφαλίδα", "category": "filter" },
+    { "text": "Κριτήριο χαρακτηριστικό στήλης", "category": "sort" },
+    { "text": "Μία ή περισσότερες τιμές", "category": "filter" },
+    { "text": "Μικρότερη τιμή πρώτη", "category": "sort" },
+    { "text": "Κουμπί Εντάξει", "category": "filter" },
+    { "text": "Αναδιάταξη δεδομένων", "category": "sort" }
+  ],
+  "duration": 45
+}

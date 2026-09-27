@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Πληροφορική Ε&#x27; Δημοτικού — Μάθημα 1: Ο αλγόριθμος του Καίσαρα .................................................................................................................. 9</title>
+
+<title>Πληροφορική και Τεχνολογίες της Πληροφορίας και των Επικοινωνιών – Ε΄ Δημοτικού</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="pdftohtml 0.36"/>
+<meta name="author" content="Ναταλία Θεόκλεια Γεωργιτζίκη"/>
+<meta name="date" content="2026-03-31T12:49:06+00:00"/>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+
+</head>
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<!-- Page 10 -->
+<a name="10"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft1052{font-size:16px;font-family:FBMXDD+IEPComic;color:#000000;}
+	.ft1053{font-size:24px;font-family:FBMXDD+IEPComic;color:#00598a;}
+	.ft1054{font-size:27px;font-family:HELJFZ+IEPSans;color:#ffffff;}
+	.ft1055{font-size:15px;line-height:22px;font-family:LKOHJR+IEPSans;color:#000000;}
+	.ft1056{font-size:15px;line-height:22px;font-family:LKOHJR+IEPSans;color:#ffffff;}
+-->
+</style>
+<div id="page10-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index010.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:778px;white-space:nowrap" class="ft1024">9</p>
+<p style="position:absolute;top:436px;left:85px;white-space:nowrap" class="ft1055">Πολλές φορές, όταν μεταδίδουμε μηνύματα μέσα από τα δίκτυα των&#160;<br/>υπολογιστών, θέλουμε αυτά να είναι κωδικοποιημένα ώστε αν τυχόν&#160;<br/>κάποιος καταφέρει να τα υποκλέψει να μην είναι σε θέση να τα&#160;<br/>αποκρυπτογραφήσει και να τα διαβάσει. Με τον τρόπο αυτό ενισχύεται&#160;<br/>η ασφάλεια της επικοινωνίας μας.&#160;&#160;</p>
+<p style="position:absolute;top:571px;left:85px;white-space:nowrap" class="ft1055">Οι επιστήμονες της Πληροφορικής προσπαθούν να φτιάξουν&#160;<br/>αλγόριθμους&#160;</p>
+<p style="position:absolute;top:593px;left:174px;white-space:nowrap" class="ft1026"><b>κρυπτογράφησης</b></p>
+<p style="position:absolute;top:593px;left:302px;white-space:nowrap" class="ft1024">&#160;που να είναι δύσκολο να&#160;</p>
+<p style="position:absolute;top:616px;left:85px;white-space:nowrap" class="ft1055">αποκρυπτογραφηθούν και στη συνέχεια προγραμματίζουν τους υπολογιστές,&#160;&#160;<br/>έτσι ώστε να κωδικοποιούν τα μηνύματα πριν τα στείλουν, εφαρμόζοντας αυτούς τους αλγόριθμους.&#160;&#160;<br/>Έχουν επινοήσει διάφορες μεθόδους-τρόπους κρυπτογράφησης. Ένας από τους πιο παλιούς και πιο&#160;<br/>απλούς είναι η μέθοδος του Καίσαρα, η οποία είναι μία μέθοδος αντικατάστασης, δηλαδή αντικαθιστά&#160;<br/>κάθε χαρακτήρα με έναν άλλο χαρακτήρα.&#160;</p>
+<p style="position:absolute;top:32px;left:469px;white-space:nowrap" class="ft1052">&#160; &#160; &#160;Μάθημα 1ο: Ο αλγόριθμος του Καίσαρα&#160;</p>
+<p style="position:absolute;top:156px;left:349px;white-space:nowrap" class="ft1053">Ο αλγόριθμος του Καίσαρα&#160;</p>
+<p style="position:absolute;top:944px;left:85px;white-space:nowrap" class="ft1055">Σύμφωνα με τη μέθοδο αυτή, για να κωδικοποιήσουμε ένα γράμμα του αλφαβήτου, το αντικαθιστούμε με&#160;<br/>ένα άλλο που βρίσκεται μερικές θέσεις πιο πέρα στο αλφάβητο. Ο αριθμός των θέσεων είναι πάντοτε ο&#160;<br/>ίδιος και ονομάζεται&#160;</p>
+<p style="position:absolute;top:989px;left:221px;white-space:nowrap" class="ft1026"><b>μετατόπιση</b></p>
+<p style="position:absolute;top:989px;left:304px;white-space:nowrap" class="ft1024">. Έτσι, για παράδειγμα, αν αντικαθιστούμε το κάθε γράμμα με ένα άλλο&#160;</p>
+<p style="position:absolute;top:1012px;left:85px;white-space:nowrap" class="ft1055">που βρίσκεται τρεις θέσεις πιο μακριά, τότε κωδικοποιούμε το γράμμα&#160;Α&#160;με το γράμμα&#160;Δ, το γράμμα Β με&#160;<br/>το γράμμα Ε, κ.ο.κ. Στο παράδειγμα αυτό η μετατόπιση είναι 3.&#160;</p>
+<p style="position:absolute;top:280px;left:230px;white-space:nowrap" class="ft1044">&#160;</p>
+<p style="position:absolute;top:280px;left:251px;white-space:nowrap" class="ft1045">Ποια είναι η μέθοδος κρυπτογράφησης του Καίσαρα.</p>
+<p style="position:absolute;top:303px;left:230px;white-space:nowrap" class="ft1044">&#160;</p>
+<p style="position:absolute;top:303px;left:251px;white-space:nowrap" class="ft1045">Γιατί χρειάζεται να κρυπτογραφούμε τα δεδομένα μας.</p>
+<p style="position:absolute;top:325px;left:230px;white-space:nowrap" class="ft1044">&#160;</p>
+<p style="position:absolute;top:325px;left:251px;white-space:nowrap" class="ft1056">Πώς μπορεί να υλοποιηθεί η μέθοδος του Καίσαρα&#160;&#160;<br/>με τη μορφή αλγόριθμου.</p>
+<p style="position:absolute;top:370px;left:230px;white-space:nowrap" class="ft1044">&#160;</p>
+<p style="position:absolute;top:370px;left:251px;white-space:nowrap" class="ft1045">Τι είναι η μεταβλητή στον προγραμματισμό.</p>
+<p style="position:absolute;top:228px;left:267px;white-space:nowrap" class="ft1026"><b>Στο μάθημα αυτό θα μάθεις:</b></p>
+<p style="position:absolute;top:792px;left:199px;white-space:nowrap" class="ft1034">Ήξερες ότι... Η μέθοδος κρυπτογράφησης πήρε το όνομά της από τον Ιούλιο&#160;<br/>Καίσαρα, ο οποίος τη χρησιμοποιούσε στην προσωπική του αλληλογραφία&#160;&#160;</p>
+<p style="position:absolute;top:834px;left:145px;white-space:nowrap" class="ft1034">κατά τη ρωμαϊκή εποχή.&#160;&#160;<br/>&#160; &#160; &#160; &#160;&#160;<a href="https://el.wikipedia.org/wiki/%CE%9A%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1%CF%82_%CF%84%CE%BF%CF%85_%CE%9A%CE%B1%CE%AF%CF%83%CE%B1%CF%81%CE%B1">Πηγή:&#160;</a></p>
+<p style="position:absolute;top:855px;left:620px;white-space:nowrap" class="ft1024"><a href="https://el.wikipedia.org/wiki/%CE%9A%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1%CF%82_%CF%84%CE%BF%CF%85_%CE%9A%CE%B1%CE%AF%CF%83%CE%B1%CF%81%CE%B1">Βικιπαίδεια</a></p>
+<p style="position:absolute;top:157px;left:122px;white-space:nowrap" class="ft1054"><b>&#160; &#160; &#160;Μάθημα 1ο</b></p>
+</div>
+
+<!-- Page 11 -->
+<a name="11"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft1157{font-size:15px;font-family:FBMXDD+IEPComic;color:#00598a;}
+	.ft1158{font-size:15px;font-family:FBMXDD+IEPComic;color:#cc522e;}
+	.ft1159{font-size:15px;font-family:FBMXDD+IEPComic;color:#000000;}
+	.ft1160{font-size:15px;line-height:22px;font-family:FBMXDD+IEPComic;color:#000000;}
+-->
+</style>
+<div id="page11-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index011.png" alt="background image"/>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft1137">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:13px;left:26px;white-space:nowrap" class="ft1140"><b>1</b></p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft1124">10</p>
+<p style="position:absolute;top:125px;left:85px;white-space:nowrap" class="ft1124">Δες πώς μπορεί να κωδικοποιηθούν με τον τρόπο αυτό όλα τα γράμματα του ελληνικού αλφαβήτου.</p>
+<p style="position:absolute;top:156px;left:312px;white-space:nowrap" class="ft1157">Πίνακας αντικατάστασης γραμμάτων</p>
+<p style="position:absolute;top:198px;left:92px;white-space:nowrap" class="ft1126"><b>θέση</b></p>
+<p style="position:absolute;top:198px;left:163px;white-space:nowrap" class="ft1126"><b>1&#160;2&#160;3&#160;4&#160;5&#160;6&#160;7&#160;8</b></p>
+<p style="position:absolute;top:198px;left:357px;white-space:nowrap" class="ft1126"><b>9&#160;10&#160;11&#160;12&#160;13&#160;14&#160;15&#160;16&#160;17&#160;18&#160;19&#160;20&#160;21&#160;22&#160;23&#160;24</b></p>
+<p style="position:absolute;top:227px;left:92px;white-space:nowrap" class="ft1126"><b>Απλό</b></p>
+<p style="position:absolute;top:227px;left:163px;white-space:nowrap" class="ft1124">Α&#160;Β&#160;Γ&#160;Δ&#160;Ε&#160;Ζ&#160;Η&#160;Θ&#160;Ι</p>
+<p style="position:absolute;top:227px;left:382px;white-space:nowrap" class="ft1124">Κ</p>
+<p style="position:absolute;top:227px;left:412px;white-space:nowrap" class="ft1124">Λ</p>
+<p style="position:absolute;top:227px;left:442px;white-space:nowrap" class="ft1124">Μ&#160;Ν</p>
+<p style="position:absolute;top:227px;left:501px;white-space:nowrap" class="ft1124">Ξ</p>
+<p style="position:absolute;top:227px;left:531px;white-space:nowrap" class="ft1124">Ο&#160;Π</p>
+<p style="position:absolute;top:227px;left:589px;white-space:nowrap" class="ft1124">Ρ</p>
+<p style="position:absolute;top:227px;left:618px;white-space:nowrap" class="ft1124">Σ</p>
+<p style="position:absolute;top:227px;left:647px;white-space:nowrap" class="ft1124">Τ</p>
+<p style="position:absolute;top:227px;left:676px;white-space:nowrap" class="ft1124">Υ</p>
+<p style="position:absolute;top:227px;left:706px;white-space:nowrap" class="ft1124">Φ&#160;Χ</p>
+<p style="position:absolute;top:227px;left:764px;white-space:nowrap" class="ft1124">Ψ&#160;Ω</p>
+<p style="position:absolute;top:275px;left:92px;white-space:nowrap" class="ft1126"><b>Κωδι-&#160;</b></p>
+<p style="position:absolute;top:290px;left:92px;white-space:nowrap" class="ft1126"><b>κοποιη-&#160;</b></p>
+<p style="position:absolute;top:305px;left:92px;white-space:nowrap" class="ft1126"><b>μένο</b></p>
+<p style="position:absolute;top:275px;left:163px;white-space:nowrap" class="ft1124">Δ&#160;Ε&#160;Ζ&#160;Η&#160;Θ&#160;Ι&#160;Κ&#160;Λ&#160;Μ&#160;Ν</p>
+<p style="position:absolute;top:275px;left:412px;white-space:nowrap" class="ft1124">Ξ</p>
+<p style="position:absolute;top:275px;left:442px;white-space:nowrap" class="ft1124">Ο</p>
+<p style="position:absolute;top:275px;left:472px;white-space:nowrap" class="ft1124">Π</p>
+<p style="position:absolute;top:275px;left:501px;white-space:nowrap" class="ft1124">Ρ</p>
+<p style="position:absolute;top:275px;left:531px;white-space:nowrap" class="ft1124">Σ</p>
+<p style="position:absolute;top:275px;left:560px;white-space:nowrap" class="ft1124">Τ</p>
+<p style="position:absolute;top:275px;left:589px;white-space:nowrap" class="ft1124">Υ</p>
+<p style="position:absolute;top:275px;left:618px;white-space:nowrap" class="ft1124">Φ&#160;Χ</p>
+<p style="position:absolute;top:275px;left:676px;white-space:nowrap" class="ft1124">Ψ&#160;Ω</p>
+<p style="position:absolute;top:275px;left:735px;white-space:nowrap" class="ft1124">Α</p>
+<p style="position:absolute;top:275px;left:764px;white-space:nowrap" class="ft1124">Β</p>
+<p style="position:absolute;top:275px;left:793px;white-space:nowrap" class="ft1124">Γ</p>
+<p style="position:absolute;top:363px;left:85px;white-space:nowrap" class="ft1155">Σύμφωνα με τον πίνακα αντικατάστασης, π.χ. η λέξη ΒΟΗΘΕΙΑ&#160;&#160;<br/>μπορεί να κωδικοποιηθεί ως εξής: ΕΣΚΛΘΜΔ.</p>
+<p style="position:absolute;top:431px;left:85px;white-space:nowrap" class="ft1155">Ας προσπαθήσουμε τώρα να φτιάξουμε έναν αλγόριθμο που κωδικοποιεί γράμματα σύμφωνα με τη&#160;<br/>μέθοδο του Καίσαρα. Είναι πολύ συνηθισμένο, όταν φτιάχνουμε αλγόριθμους ή προγράμματα, για να&#160;<br/>επιλύσουμε ένα μεγάλο και δύσκολο πρόβλημα να προσπαθούμε να το «σπάσουμε» σε μικρότερα και&#160;<br/>πιο απλά προβλήματα (υπο-προβλήματα) που είναι ευκολότερο να τα αντιμετωπίσουμε.&#160;&#160;</p>
+<p style="position:absolute;top:543px;left:85px;white-space:nowrap" class="ft1155">Αυτή είναι μια στρατηγική επίλυσης προβλήματος που χρησιμοποιείται συχνά στην επιστήμη των&#160;<br/>υπολογιστών και θα την εφαρμόσουμε και παρακάτω στον αλγόριθμο της κρυπτογράφησης.</p>
+<p style="position:absolute;top:611px;left:85px;white-space:nowrap" class="ft1155">Έτσι, για να σχεδιάσουμε ευκολότερα έναν αλγόριθμο κρυπτογράφησης, μπορούμε να «σπάσουμε» το&#160;<br/>πρόβλημα της κρυπτογράφησης σε μικρότερα υπο-προβλήματα. Π.χ., ένας χωρισμός θα μπορούσε να&#160;<br/>είναι ο παρακάτω: (α) διάβασε κάποιους χαρακτήρες ως είσοδο, π.χ. από το πληκτρολόγιο, (β)&#160;<br/>κωδικοποίησέ τους με κάποια μέθοδο-τρόπο, και (γ) γράψε (εμφάνισε) τους κωδικοποιημένους&#160;<br/>χαρακτήρες ως έξοδο, π.χ. στην οθόνη του υπολογιστή.&#160;</p>
+<p style="position:absolute;top:747px;left:85px;white-space:nowrap" class="ft1155">Ας δούμε έναν αλγόριθμο ο οποίος μπορεί να κρυπτογραφεί κείμενα με τη μέθοδο του Καίσαρα.&#160;&#160;<br/>Ο αλγόριθμος αυτός θα μπορούσε εύκολα να προγραμματιστεί και να εκτελεστεί από κάποιον&#160;<br/>υπολογιστή πριν αυτός μεταδώσει τα μηνύματά του.</p>
+<p style="position:absolute;top:828px;left:123px;white-space:nowrap" class="ft1158">Αλγόριθμος 1</p>
+<p style="position:absolute;top:855px;left:123px;white-space:nowrap" class="ft1159">Επανάλαβε ώσπου να τελειώσουν όλα τα γράμματα</p>
+<p style="position:absolute;top:878px;left:143px;white-space:nowrap" class="ft1160">Διάβασε το επόμενο γράμμα&#160;<br/>Βρες τη&#160;</p>
+<p style="position:absolute;top:900px;left:200px;white-space:nowrap" class="ft1159">θέση</p>
+<p style="position:absolute;top:900px;left:200px;white-space:nowrap" class="ft1159">θέση&#160;του γράμματος στο αλφάβητο&#160;</p>
+<p style="position:absolute;top:923px;left:143px;white-space:nowrap" class="ft1159">Γράψε το γράμμα του αλφαβήτου που υπάρχει στη&#160;</p>
+<p style="position:absolute;top:922px;left:487px;white-space:nowrap" class="ft1159">θέση&#160;</p>
+<p style="position:absolute;top:922px;left:487px;white-space:nowrap" class="ft1159">θέση&#160;+ 3</p>
+<p style="position:absolute;top:1005px;left:85px;white-space:nowrap" class="ft1124">Η&#160;</p>
+<p style="position:absolute;top:1005px;left:100px;white-space:nowrap" class="ft1124">θέση&#160;του γράμματος έχει διαφορετική τιμή κάθε φορά που εκτελείται ο αλγόριθμος, ανάλογα με το&#160;&#160;</p>
+<p style="position:absolute;top:1028px;left:85px;white-space:nowrap" class="ft1124">ποιο είναι το επόμενο γράμμα του κειμένου που διαβάζει.&#160;Λέμε λοιπόν ότι η&#160;</p>
+<p style="position:absolute;top:1027px;left:590px;white-space:nowrap" class="ft1124">θέση&#160;είναι μία&#160;</p>
+<p style="position:absolute;top:1028px;left:687px;white-space:nowrap" class="ft1126"><b>μεταβλητή</b></p>
+<p style="position:absolute;top:1028px;left:762px;white-space:nowrap" class="ft1124">.&#160;&#160;</p>
+<p style="position:absolute;top:1050px;left:85px;white-space:nowrap" class="ft1124">Η μεταβλητή είναι μια πολύ σημαντική έννοια για τον προγραμματισμό και τους αλγόριθμους.&#160;</p>
+</div>
+
+<!-- Page 12 -->
+<a name="12"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft1261{font-size:18px;font-family:HELJFZ+IEPSans;color:#000000;}
+	.ft1262{font-size:15px;font-family:DYNLBH+IEPSans;color:#000000;}
+	.ft1263{font-size:15px;font-family:EXCRPF+Wingdings;color:#000000;}
+-->
+</style>
+<div id="page12-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index012.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:771px;white-space:nowrap" class="ft1224">11</p>
+<p style="position:absolute;top:32px;left:469px;white-space:nowrap" class="ft1252">&#160; &#160; &#160;Μάθημα 1ο: Ο αλγόριθμος του Καίσαρα&#160;</p>
+<p style="position:absolute;top:125px;left:85px;white-space:nowrap" class="ft1255">Μπορεί κανείς να τη φανταστεί σαν ένα κουτί που έχει ένα όνομα, αλλά το περιεχόμενό του μπορεί&#160;&#160;<br/>να αλλάζει, κάτι σαν το ταπεράκι του φαγητού που φέρνεις μαζί σου κάθε μέρα στο σχολείο και γράφει&#160;<br/>απέξω «Κολατσιό». Με τον ίδιο τρόπο και μία μεταβλητή έχει ένα μόνο όνομα, αλλά μπορεί να πάρει&#160;<br/>διαφορετικές τιμές. Χρησιμοποιούμε το όνομα της μεταβλητής όταν γράφουμε τους αλγόριθμους ή τα&#160;<br/>προγράμματά μας.&#160;</p>
+<p style="position:absolute;top:260px;left:85px;white-space:nowrap" class="ft1255">Οι τιμές της μεταβλητής εξαρτώνται από τα δεδομένα που επεξεργάζεται ο αλγόριθμος ή το πρόγραμμα.&#160;<br/>Έτσι, π.χ., για τη λέξη ΒΟΗΘΕΙΑ&#160;η μεταβλητή με όνομα&#160;</p>
+<p style="position:absolute;top:282px;left:458px;white-space:nowrap" class="ft1224">θέση&#160;στον προηγούμενο αλγόριθμο παίρνει&#160;</p>
+<p style="position:absolute;top:305px;left:85px;white-space:nowrap" class="ft1224">διαδοχικά τις τιμές: 2, 15, 7, 8, 5, 9 και 1 κάθε φορά που εκτελείται η επανάληψη</p>
+<p style="position:absolute;top:350px;left:85px;white-space:nowrap" class="ft1255">Στον παρακάτω πίνακα γράψε την τιμή που παίρνει η μεταβλητή θέση κάθε φορά που εκτελείται&#160;&#160;<br/>ο αλγόριθμος και βρες πώς κρυπτογραφείται η λέξη ΦΩΤΙΑ.</p>
+<p style="position:absolute;top:414px;left:244px;white-space:nowrap" class="ft1224">1η επανάληψη&#160;2η επανάληψη&#160;3η επανάληψη&#160;4η επανάληψη&#160;5η επανάληψη</p>
+<p style="position:absolute;top:445px;left:93px;white-space:nowrap" class="ft1224">Γράμμα της λέξης</p>
+<p style="position:absolute;top:453px;left:285px;white-space:nowrap" class="ft1261"><b>Φ</b></p>
+<p style="position:absolute;top:453px;left:395px;white-space:nowrap" class="ft1261"><b>Ω</b></p>
+<p style="position:absolute;top:453px;left:506px;white-space:nowrap" class="ft1261"><b>Τ</b></p>
+<p style="position:absolute;top:453px;left:618px;white-space:nowrap" class="ft1261"><b>Ι</b></p>
+<p style="position:absolute;top:453px;left:723px;white-space:nowrap" class="ft1261"><b>Α</b></p>
+<p style="position:absolute;top:489px;left:93px;white-space:nowrap" class="ft1224">Τιμή της μεταβλητής&#160;</p>
+<p style="position:absolute;top:510px;left:93px;white-space:nowrap" class="ft1262"><i>θέση</i></p>
+<p style="position:absolute;top:539px;left:93px;white-space:nowrap" class="ft1224">Τιμή του&#160;&#160;</p>
+<p style="position:absolute;top:560px;left:93px;white-space:nowrap" class="ft1262"><i>θέση</i></p>
+<p style="position:absolute;top:560px;left:126px;white-space:nowrap" class="ft1224">&#160;+ 3</p>
+<p style="position:absolute;top:590px;left:93px;white-space:nowrap" class="ft1234">Γράμμα της<br/>κρυπτογραφη-<br/>μένης λέξης</p>
+<p style="position:absolute;top:764px;left:122px;white-space:nowrap" class="ft1239"><b>Αξιολογώ πόσο καλά έμαθα</b></p>
+<p style="position:absolute;top:733px;left:401px;white-space:nowrap" class="ft1224">Έχω&#160;</p>
+<p style="position:absolute;top:754px;left:372px;white-space:nowrap" class="ft1224">καταλάβει και&#160;</p>
+<p style="position:absolute;top:775px;left:382px;white-space:nowrap" class="ft1224">μπορώ να &#160;</p>
+<p style="position:absolute;top:796px;left:387px;white-space:nowrap" class="ft1224">εξηγήσω</p>
+<p style="position:absolute;top:743px;left:507px;white-space:nowrap" class="ft1224">Έχω&#160;</p>
+<p style="position:absolute;top:764px;left:490px;white-space:nowrap" class="ft1224">καταλάβει&#160;</p>
+<p style="position:absolute;top:785px;left:482px;white-space:nowrap" class="ft1224">αρκετά καλά</p>
+<p style="position:absolute;top:733px;left:614px;white-space:nowrap" class="ft1224">Έχω&#160;</p>
+<p style="position:absolute;top:754px;left:596px;white-space:nowrap" class="ft1224">καταλάβει&#160;</p>
+<p style="position:absolute;top:775px;left:598px;white-space:nowrap" class="ft1224">αλλά έχω&#160;</p>
+<p style="position:absolute;top:796px;left:603px;white-space:nowrap" class="ft1224">απορίες</p>
+<p style="position:absolute;top:754px;left:700px;white-space:nowrap" class="ft1224">Χρειάζομαι&#160;</p>
+<p style="position:absolute;top:775px;left:709px;white-space:nowrap" class="ft1224">βοήθεια</p>
+<p style="position:absolute;top:843px;left:94px;white-space:nowrap" class="ft1263"></p>
+<p style="position:absolute;top:843px;left:106px;white-space:nowrap" class="ft1224">&#160;&#160;Τι είναι μία μέθοδος&#160;</p>
+<p style="position:absolute;top:864px;left:124px;white-space:nowrap" class="ft1224">κρυπτογράφησης.</p>
+<p style="position:absolute;top:914px;left:94px;white-space:nowrap" class="ft1263"></p>
+<p style="position:absolute;top:914px;left:105px;white-space:nowrap" class="ft1224">&#160;&#160;Πώς κωδικοποιούνται τα&#160;</p>
+<p style="position:absolute;top:935px;left:123px;white-space:nowrap" class="ft1234">δεδομένα με τη μέθοδο του&#160;<br/>Καίσαρα.</p>
+<p style="position:absolute;top:996px;left:94px;white-space:nowrap" class="ft1263"></p>
+<p style="position:absolute;top:996px;left:105px;white-space:nowrap" class="ft1224">&#160;&#160;Τι είναι μια μεταβλητή και γιατί&#160;</p>
+<p style="position:absolute;top:1017px;left:123px;white-space:nowrap" class="ft1234">χρησιμοποιείται στους&#160;<br/>αλγόριθμους και τα προγράμματα.</p>
+<p style="position:absolute;top:674px;left:759px;white-space:nowrap" class="ft1227"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11342">Ερωτήσεις&#160;</a></p>
+<p style="position:absolute;top:690px;left:755px;white-space:nowrap" class="ft1227"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11342">πολλαπλών&#160;</a></p>
+<p style="position:absolute;top:706px;left:760px;white-space:nowrap" class="ft1227"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11342">επιλογών.</a></p>
+</div>
+
+</body>
+</html>

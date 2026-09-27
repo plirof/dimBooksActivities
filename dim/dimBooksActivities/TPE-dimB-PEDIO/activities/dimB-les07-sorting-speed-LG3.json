@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Χρώμα Εντολής;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Μπλε ή Κόκκινη/Κίτρινη;",
+  "categories": [
+    {"id": "mple", "name": "Μπλε Εντολές", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "kokkini", "name": "Κόκκινες/Κίτρινες", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "category": "mple"},
+    {"text": "ΞΕΚΙΝΑ ΜΕ ΣΗΜΑΙΑ", "category": "kokkini"},
+    {"text": "ΣΤΡΙΨΕ ΔΕΞΙΑ", "category": "mple"},
+    {"text": "ΕΠΑΝΑΛΑΒΕ ΓΙΑ ΠΑΝΤΑ", "category": "kokkini"},
+    {"text": "ΠΗΔΑ", "category": "mple"},
+    {"text": "ΕΠΑΝΑΛΑΒΕ", "category": "kokkini"},
+    {"text": "ΣΤΡΙΨΕ ΑΡΙΣΤΕΡΑ", "category": "mple"},
+    {"text": "ΟΡΙΣΕ ΤΑΧΥΤΗΤΑ", "category": "kokkini"}
+  ],
+  "duration": 30
+}

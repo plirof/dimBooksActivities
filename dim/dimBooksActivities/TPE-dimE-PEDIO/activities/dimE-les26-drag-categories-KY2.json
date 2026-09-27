@@ -1,0 +1,53 @@
+{
+  "title": "Πλατφόρμες σε λειτουργίες",
+  "subtitle": "Ταίριαξε κάθε λειτουργία στη σωστή πλατφόρμα",
+  "categories": [
+    {
+      "id": "eme",
+      "name": "E-ME",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "sp",
+      "name": "SCHOOLPRESS",
+      "color": "#2196F3"
+    },
+    {
+      "id": "sr",
+      "name": "SCHOOL RADIO",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "💬 Μηνύματα",
+      "category": "eme"
+    },
+    {
+      "id": "item2",
+      "text": "📝 Blog",
+      "category": "sp"
+    },
+    {
+      "id": "item3",
+      "text": "📻 Ραδιόφωνο",
+      "category": "sr"
+    },
+    {
+      "id": "item4",
+      "text": "📁 Εργασίες",
+      "category": "eme"
+    },
+    {
+      "id": "item5",
+      "text": "📰 Άρθρα",
+      "category": "sp"
+    },
+    {
+      "id": "item6",
+      "text": "🎙️ Εκπομπές",
+      "category": "sr"
+    }
+  ]
+}

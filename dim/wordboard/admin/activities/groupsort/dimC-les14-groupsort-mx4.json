@@ -1,0 +1,46 @@
+{
+    "id": "dimC-les14-groupsort-mx4",
+    "title": "Αρχεία και φάκελοι - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "groups": [
+            {
+                "name": "Μορφές εικόνας",
+                "items": [
+                    "jpeg",
+                    "png",
+                    "gif"
+                ]
+            },
+            {
+                "name": "Μορφές ήχου",
+                "items": [
+                    "mp3",
+                    "wav"
+                ]
+            },
+            {
+                "name": "Μορφές βίντεο",
+                "items": [
+                    "mp4",
+                    "avi"
+                ]
+            },
+            {
+                "name": "Μορφές κειμένου",
+                "items": [
+                    "doc",
+                    "txt",
+                    "pdf"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les14",
+        "αρχεία"
+    ]
+}

@@ -1,0 +1,56 @@
+{
+  "title": "Βρες τα Λάθη: Παράλληλες Ακολουθίες",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Παράλληλες", "error": false, "correct": "", "feedback": "" },
+        { "text": "ακολουθίες", "error": false, "correct": "", "feedback": "" },
+        { "text": "σημαίνει", "error": false, "correct": "", "feedback": "" },
+        { "text": "ότι", "error": false, "correct": "", "feedback": "" },
+        { "text": "οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "εντολές", "error": false, "correct": "", "feedback": "" },
+        { "text": "εκτελούνται", "error": false, "correct": "", "feedback": "" },
+        { "text": "μετά.", "error": true, "correct": "ταυτόχρονα", "feedback": "Οι παράλληλες εντολές εκτελούνται ΤΑΥΤΟΧΡΟΝΑ, όχι μία μετά την άλλη" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Μόνο", "error": false, "correct": "", "feedback": "" },
+        { "text": "ένα", "error": true, "correct": "πολλά", "feedback": "Μπορούν να υπάρχουν ΠΟΛΛΑ σενάρια για το ίδιο συμβάν" },
+        { "text": "σενάριο", "error": false, "correct": "", "feedback": "" },
+        { "text": "μπορεί", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπάρχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "κάθε", "error": false, "correct": "", "feedback": "" },
+        { "text": "συμβάν.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντίγραφο", "error": false, "correct": "", "feedback": "" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "χαρακτήρα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Το αντίγραφο ΠΕΡΙΕΧΕΙ αντίγραφα όλων των σεναρίων του αρχικού" },
+        { "text": "έχει", "error": true, "correct": "περιέχει", "feedback": "Το αντίγραφο ΠΕΡΙΕΧΕΙ αντίγραφα όλων των σεναρίων του αρχικού" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "σενάρια.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "παράλληλη", "error": false, "correct": "", "feedback": "" },
+        { "text": "εκτέλεση", "error": false, "correct": "", "feedback": "" },
+        { "text": "χρειαζόμαστε", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαφορετικό", "error": true, "correct": "κοινό", "feedback": "Χρειαζόμαστε ένα ΚΟΙΝΟ συμβάν που ξεκινά ταυτόχρονα διαφορετικές ομάδες εντολών" },
+        { "text": "συμβάν", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "κάθε", "error": true, "correct": "όλα τα", "feedback": "Χρειαζόμαστε ένα ΚΟΙΝΟ συμβάν που ξεκινά ταυτόχρονα διαφορετικές ομάδες εντολών" },
+        { "text": "σενάριο.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

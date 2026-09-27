@@ -1,0 +1,58 @@
+{
+  "title": "Εργαλεία μορφοποίησης",
+  "subtitle": "Ταίριαξε κάθε μορφοποίηση στο σωστό εργαλείο",
+  "categories": [
+    {
+      "id": "bold",
+      "name": "BOLD",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "italic",
+      "name": "ITALIC",
+      "color": "#2196F3"
+    },
+    {
+      "id": "underline",
+      "name": "UNDERLINE",
+      "color": "#FF9800"
+    },
+    {
+      "id": "align",
+      "name": "ΣΤΟΙΧΙΣΗ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "**B**",
+      "category": "bold"
+    },
+    {
+      "id": "item2",
+      "text": "*I*",
+      "category": "italic"
+    },
+    {
+      "id": "item3",
+      "text": "U̲",
+      "category": "underline"
+    },
+    {
+      "id": "item4",
+      "text": "≡ Αριστερά",
+      "category": "align"
+    },
+    {
+      "id": "item5",
+      "text": "↔ Κεντρικά",
+      "category": "align"
+    },
+    {
+      "id": "item6",
+      "text": "__T__",
+      "category": "underline"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Διευθύνσεις Ιστοσελίδων και Αξιολόγηση",
+  "subtitle": "Ταίριαξε κάθε κατάληξη URL με τη σωστή έννοια",
+  "columns": 4,
+  "pairs": [
+    { "cardA": ".gr", "cardB": "Ιστότοπος σχετικός με την Ελλάδα" },
+    { "cardA": ".com", "cardB": "Ιστότοπος εταιρείας (company)" },
+    { "cardA": ".org", "cardB": "Ιστότοπος οργανισμού (organization)" },
+    { "cardA": ".edu", "cardB": "Εκπαιδευτικός ιστότοπος (education)" },
+    { "cardA": ".gov", "cardB": "Κυβερνητικός ιστότοπος (government)" },
+    { "cardA": "🔒 https://", "cardB": "Ασφαλής σύνδεση (secure)" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Επιφάνεια Εργασίας",
+  "subtitle": "Μόνο ό,τι βλέπουμε στην επιφάνεια εργασίας!",
+  "instruction": "Σπάσε μόνο ό,τι υπάρχει στην ΕΠΙΦΑΝΕΙΑ ΕΡΓΑΣΙΑΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Εικονίδιο εφαρμογής", "correct": true, "color": "#FF6B6B" },
+    { "text": "Ποντίκι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Φάκελος", "correct": true, "color": "#45B7D1" },
+    { "text": "Τυπωμένο χαρτί", "correct": false, "color": "#96CEB4" },
+    { "text": "Αρχείο", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μπαταρία", "correct": false, "color": "#DDA0DD" },
+    { "text": "Γραμμή εργασιών", "correct": true, "color": "#98D8C8" },
+    { "text": "Κάμερα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Εφαρμογή", "correct": true, "color": "#BB8FCE" },
+    { "text": "Καλώδιο", "correct": false, "color": "#85C1E9" }
+  ]
+}

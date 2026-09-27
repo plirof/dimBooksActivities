@@ -1,0 +1,58 @@
+{
+  "title": "Βρες τα Λάθη: Δίκτυα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Bluetooth", "error": false},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "καλώδιο", "error": true, "correct": "όχι καλώδιο", "feedback": "Το Bluetooth είναι ΑΣΥΡΜΑΤΗ τεχνολογία, δεν χρειάζεται καλώδιο!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "λειτουργήσει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "τοπικό", "error": true, "correct": "διεθνές", "feedback": "Το διαδίκτυο είναι ΔΙΕΘΝΕΣ δίκτυο, όχι τοπικό!"},
+        {"text": "δίκτυο", "error": false},
+        {"text": "υπολογιστών.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "συνδέσουμε", "error": false},
+        {"text": "δύο", "error": false},
+        {"text": "υπολογιστές", "error": false},
+        {"text": "χρειαζόμαστε", "error": false},
+        {"text": "hub.", "error": true, "correct": "καλώδιο", "feedback": "Για ΔΥΟ υπολογιστές αρκεί ΚΑΛΩΔΙΟ! Το hub χρειάζεται για ΠΑΡΑΠΑΝΩ από δύο!"},
+        {"text": "", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Wi-Fi", "error": false},
+        {"text": "σύνδεση", "error": false},
+        {"text": "χρησιμοποιεί", "error": false},
+        {"text": "καλώδιο.", "error": true, "correct": "δεν χρησιμοποιεί καλώδιο", "feedback": "Το Wi-Fi είναι ΑΣΥΡΜΑΤΗ σύνδεση, δεν χρησιμοποιεί καλώδιο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "δίκτυα", "error": false},
+        {"text": "επιτρέπουν", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Τα δίκτυα επιτρέπουν επικοινωνία, ανταλλαγή αρχείων, εκτύπωση από απόσταση ΚΑΙ αναπαραγωγή πολυμέσων!"},
+        {"text": "μουσική.", "error": true, "correct": "επικοινωνία, ανταλλαγή αρχείων, εκτύπωση και αναπαραγωγή πολυμέσων", "feedback": "Τα δίκτυα επιτρέπουν ΠΟΛΛΑ περισσότερα από μόνο μουσική!"}
+      ]
+    }
+  ]
+}

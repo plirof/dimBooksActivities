@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: micro:bit",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με έννοιες του micro:bit!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "micro:bit", "correct": true, "color": "#4CAF50" },
+    { "text": "Μελωδία", "correct": true, "color": "#2196F3" },
+    { "text": "Κουμπί Α", "correct": true, "color": "#FF9800" },
+    { "text": "Κουμπί Β", "correct": true, "color": "#9C27B0" },
+    { "text": "Κούνημα", "correct": true, "color": "#00BCD4" },
+    { "text": "Οθόνη LED", "correct": true, "color": "#E91E63" },
+    { "text": "Σκληρός δίσκος", "correct": false, "color": "#F44336" },
+    { "text": "Πληκτρολόγιο", "correct": false, "color": "#795548" },
+    { "text": "Ποντίκι", "correct": false, "color": "#607D8B" },
+    { "text": "Μονίτορ", "correct": false, "color": "#FF5722" }
+  ]
+}

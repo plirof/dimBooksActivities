@@ -1,0 +1,18 @@
+{
+  "title": "Μέρη του email — Σωστή κατηγορία;",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "fields", "name": "Πεδία email", "color": "#4CAF50" },
+    { "id": "actions", "name": "Ενέργειες email", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "f1", "text": "📧 Προς (Παραλήπτης)", "category": "fields" },
+    { "id": "f2", "text": "📋 Θέμα", "category": "fields" },
+    { "id": "f3", "text": "📝 Κείμενο μηνύματος", "category": "fields" },
+    { "id": "f4", "text": "📎 Συνημμένο αρχείο", "category": "fields" },
+    { "id": "a1", "text": "📤 Αποστολή", "category": "actions" },
+    { "id": "a2", "text": "↩️ Απάντηση", "category": "actions" },
+    { "id": "a3", "text": "➡️ Προώθηση", "category": "actions" },
+    { "id": "a4", "text": "🗑️ Διαγραφή", "category": "actions" }
+  ]
+}

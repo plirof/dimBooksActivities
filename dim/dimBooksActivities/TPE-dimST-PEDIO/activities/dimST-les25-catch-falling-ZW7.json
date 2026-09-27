@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Χαρακτηριστικά Παρουσίασης",
+  "subtitle": "Πιάσε μόνο ό,τι αφορά τις ΠΑΡΟΥΣΙΑΣΕΙΣ",
+  "instructions": "Πιάσε τα αντικείμενα που περιγράφουν ΠΑΡΟΥΣΙΑΣΕΙΣ. Απόφυγε τα έγγραφα!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Εντυπωσιακή προβολή", "correct": true, "color": "#4CAF50" },
+    { "text": "Σύντομες πληροφορίες", "correct": true, "color": "#4CAF50" },
+    { "text": "Ομιλητής παρουσιάζει", "correct": true, "color": "#4CAF50" },
+    { "text": "Λεπτομερές κείμενο", "correct": false, "color": "#f44336" },
+    { "text": "Εκτύπωση", "correct": false, "color": "#f44336" },
+    { "text": "Σχολική εκδήλωση", "correct": true, "color": "#4CAF50" },
+    { "text": "Διαφάνειες", "correct": true, "color": "#4CAF50" },
+    { "text": "Σχολική εργασία", "correct": false, "color": "#f44336" },
+    { "text": "Ιστορία ή ποίημα", "correct": false, "color": "#f44336" },
+    { "text": "Ελκυστική εμφάνιση", "correct": true, "color": "#4CAF50" }
+  ]
+}

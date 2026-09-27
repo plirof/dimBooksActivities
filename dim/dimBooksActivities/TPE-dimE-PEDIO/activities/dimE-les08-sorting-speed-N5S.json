@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υποπρογράμματα",
+  "subtitle": "Ταξινόμησε γρήγορα τις εντολές!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "sub", "name": "Υποπρόγραμμα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "var", "name": "Μεταβλητή / Ρυθμός", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ορισμός εντολής", "category": "sub"},
+    {"text": "Νέα εντολή", "category": "sub"},
+    {"text": "Χορός", "category": "sub"},
+    {"text": "Ρόδα", "category": "sub"},
+    {"text": "Ανάποδη ρόδα", "category": "sub"},
+    {"text": "Γραμμή κύλισης", "category": "var"},
+    {"text": "Τιμή Ρυθμού", "category": "var"},
+    {"text": "Μεταβολέας", "category": "var"},
+    {"text": "Διαίρεση", "category": "var"},
+    {"text": "Περίμενε", "category": "var"}
+  ],
+  "duration": 30
+}

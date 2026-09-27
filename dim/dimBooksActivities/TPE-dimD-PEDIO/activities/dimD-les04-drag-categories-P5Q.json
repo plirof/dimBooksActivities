@@ -1,0 +1,21 @@
+{
+  "title": "Αριθμητικές πράξεις στο Scratch",
+  "subtitle": "Σύρε κάθε πράξη στη σωστή κατηγορία",
+  "categories": [
+    { "id": "add", "name": "Πρόσθεση (+)", "color": "#4CAF50" },
+    { "id": "sub", "name": "Αφαίρεση (−)", "color": "#f44336" },
+    { "id": "mul", "name": "Πολλαπλασιασμός (×)", "color": "#FF9800" },
+    { "id": "div", "name": "Διαίρεση (÷)", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "i1", "text": "200 ÷ 10 = 20", "category": "div" },
+    { "id": "i2", "text": "5 × 40 = 200", "category": "mul" },
+    { "id": "i3", "text": "10 + 10 = 20", "category": "add" },
+    { "id": "i4", "text": "200 − 100 = 100", "category": "sub" },
+    { "id": "i5", "text": "200 ÷ 5 = 40", "category": "div" },
+    { "id": "i6", "text": "20 × 10 = 200", "category": "mul" },
+    { "id": "i7", "text": "15 + 5 = 20", "category": "add" },
+    { "id": "i8", "text": "200 ÷ 20 = 10", "category": "div" },
+    { "id": "i9", "text": "50 − 30 = 20", "category": "sub" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υπολογιστής",
+  "subtitle": "Μόνο τα μέρη του υπολογιστή!",
+  "instruction": "Σπάσε μόνο ό,τι έχει να κάνει με τον ΥΠΟΛΟΓΙΣΤΗ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Οθόνη", "correct": true, "color": "#FF6B6B" },
+    { "text": "Καρέκλα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Πληκτρολόγιο", "correct": true, "color": "#45B7D1" },
+    { "text": "Μπαλάκι", "correct": false, "color": "#96CEB4" },
+    { "text": "Ποντίκι", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κουτάλι", "correct": false, "color": "#DDA0DD" },
+    { "text": "Ταμπλέτα", "correct": true, "color": "#98D8C8" },
+    { "text": "Κούνια", "correct": false, "color": "#F7DC6F" },
+    { "text": "Κινητό", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μαξιλάρι", "correct": false, "color": "#85C1E9" }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εργαλεία Κειμένου",
+  "subtitle": "Ταξινόμησε τα εργαλεία στις σωστές κατηγορίες!",
+  "instructions": "Πάτα ← για Στοίχιση, → για Μορφοποίηση Γραμμάτων. Ταξινόμησε γρήγορα!",
+  "categories": [
+    { "id": "alignment", "name": "Στοίχιση", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "formatting", "name": "Μορφοποίηση Γραμμάτων", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Έντονη γραφή (Bold)", "category": "formatting" },
+    { "text": "Στοίχιση αριστερά", "category": "alignment" },
+    { "text": "Πλάγια γραφή (Italic)", "category": "formatting" },
+    { "text": "Στοίχιση κέντρο", "category": "alignment" },
+    { "text": "Υπογράμμιση (Underline)", "category": "formatting" },
+    { "text": "Στοίχιση δεξιά", "category": "alignment" },
+    { "text": "Αλλαγή γραμματοσειράς", "category": "formatting" },
+    { "text": "Στοίχιση όμοια", "category": "alignment" },
+    { "text": "Αλλαγή μεγέθους γραμμάτων", "category": "formatting" },
+    { "text": "Αλλαγή χρώματος γραμμάτων", "category": "formatting" },
+    { "text": "Επισήμανση κειμένου", "category": "formatting" },
+    { "text": "Στοίχιση παραγράφου", "category": "alignment" }
+  ],
+  "duration": 45
+}

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ήχος και Δράση - Scratch</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f0abfc);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#c026d3,#e879f9);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fce7f3;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#86198f;text-align:center;line-height:1.5}
+.story-scene{background:#f0fdf4;border-radius:16px;border:2px solid #86efac;padding:16px;margin-bottom:14px;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scene-emoji{font-size:5em}
+.scene-label{margin-top:10px;font-weight:700;color:#c026d3;font-size:1em}
+.sound-library{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.library-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.sound-items{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.sound-item{background:#fff;border:2px solid #fdba74;border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .2s}
+.sound-item:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sound-item.selected{border-color:#c026d3;background:#fdf4ff}
+.sound-icon{font-size:2em}
+.sound-name{font-size:.85em;font-weight:700;color:#9a3412;text-align:center}
+.matched-pairs{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px}
+.pairs-label{font-weight:700;color:#475569;margin-bottom:10px;font-size:.95em;text-align:center}
+.pair-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));grid-gap:10px}
+.pair-item{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px}
+.pair-emoji{font-size:1.8em}
+.pair-sound{font-size:1.8em}
+.pair-correct{border-color:#86efac;background:#f0fdf4}
+.btn-play{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:0 auto;transition:all .2s}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-play:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#c026d3;transform:scale(1.3)}
+@media(max-width:550px){.scene-emoji{font-size:3.5em}.sound-icon,.sound-item .pair-sound{font-size:1.6em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .sound-items > * { margin: 6px; }
+  .sound-item > * + * { margin-top: 6px; }
+  .pair-item > * + * { margin-left: 8px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔊 Ήχος και Δράση</h1>
+<p>Ταιριάξε τον κατάλληλο ήχο με κάθε δράση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch μπορούμε να προσθέσουμε ήχους στα αντικείμενά μας! Διάλεξε τον ήχο που ταιριάζει καλύτερα με κάθε περίπτωση στην ιστορία!</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="story-scene">
+<div class="scene-emoji" id="sceneEmoji">🧙‍♀️</div>
+<div class="scene-label" id="sceneLabel">Η μάγισσα αγγίζει τον βάτραχο</div>
+</div>
+
+<div class="sound-library">
+<div class="library-label">🎵 Διάλεξε τον κατάλληλο ήχο:</div>
+<div class="sound-items" id="soundItems"></div>
+</div>
+
+<div class="matched-pairs">
+<div class="pairs-label">✅ Σωστές αντιστοιχίσεις:</div>
+<div class="pair-grid" id="pairGrid"></div>
+</div>
+
+<button class="btn-play" id="playBtn" onclick="selectSound()">✅ Επιβεβαίωση Επιλογής</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentIndex=0;
+var score=0;
+var selectedSound=null;
+
+var scenarios=[
+{
+  emoji:'🧙‍♀️',
+  label:'Η μάγισσα αγγίζει τον βάτραχο',
+  sounds:['✨','🔊','🎶'],
+  correct:'✨',
+  correctName:'Μαγικό ξόρκι'
+},
+{
+  emoji:'🐸',
+  label:'Ο βάτραχος μεταμορφώνεται σε πρίγκιπα',
+  sounds:['🎊','💫','🔊'],
+  correct:'💫',
+  correctName:'Μεταμόρφωση'
+},
+{
+  emoji:'🏰',
+  label:'Ο πρίγκιπας φτάνει στο κάστρο',
+  sounds:['🎺','🎵','✨'],
+  correct:'🎺',
+  correctName:'Γιορτινή αναγγελία'
+},
+{
+  emoji:'🐍',
+  label:'Τα φίδια ακολουθούν τον ήρωα',
+  sounds:['🔊','🎭','🎶'],
+  correct:'🔊',
+  correctName:'Κρότος βημάτων'
+},
+{
+  emoji:'🌙',
+  label:'Η μάγισσα επιστρέφει στη σπηλιά τη νύχτα',
+  sounds:['🌃','✨','🔔'],
+  correct:'🌃',
+  correctName:'Νυχτερινή ήσυχία'
+}
+];
+
+var matchedResults=[];
+var allSounds=['✨','🔊','🎶','🎊','💫','🎺','🎵','🎭','🌃','🔔'];
+var soundNames={
+  '✨':'Μαγικό ξόρκι',
+  '🔊':'Κρότος βημάτων',
+  '🎶':'Μουσική',
+  '🎊':'Γιορτή',
+  '💫':'Μεταμόρφωση',
+  '🎺':'Αναγγελία',
+  '🎵':'Τραγούδι',
+  '🎭':'Δράμα',
+  '🌃':'Νύχτα',
+  '🔔':'Κουδούνι'
+};
+
+function buildDots(){
+  var container=document.getElementById('progressDots');
+  container.innerHTML='';
+  for(var i=0;i<scenarios.length;i++){
+    var dot=document.createElement('div');
+    dot.className='dot';
+    dot.id='dot-'+i;
+    container.appendChild(dot);
+  }
+}
+
+function initScenario(){
+  var scenario=scenarios[currentIndex];
+  document.getElementById('sceneEmoji').textContent=scenario.emoji;
+  document.getElementById('sceneLabel').textContent=scenario.label;
+  
+  var container=document.getElementById('soundItems');
+  container.innerHTML='';
+  for(var i=0;i<scenario.sounds.length;i++){
+    var item=document.createElement('div');
+    item.className='sound-item';
+    item.innerHTML='<div class="sound-icon">'+scenario.sounds[i]+'</div><div class="sound-name">'+soundNames[scenario.sounds[i]]+'</div>';
+    item.onclick=function(){
+      selectSoundOption(this);
+    };
+    item.dataset.sound=scenario.sounds[i];
+    container.appendChild(item);
+  }
+  
+  selectedSound=null;
+  updateDots();
+}
+
+function selectSoundOption(item){
+  var items=document.querySelectorAll('.sound-item');
+  for(var i=0;i<items.length;i++){
+    items[i].classList.remove('selected');
+  }
+  item.classList.add('selected');
+  selectedSound=item.dataset.sound;
+}
+
+function selectSound(){
+  if(!selectedSound){
+    showFeedback('❌ Διάλεξε πρώτα έναν ήχο!',false);
+    return;
+  }
+  
+  var scenario=scenarios[currentIndex];
+  var isCorrect=selectedSound===scenario.correct;
+  
+  if(isCorrect){
+    score++;
+    matchedResults.push({emoji:scenario.emoji,label:scenario.label,sound:scenario.correct,soundName:scenario.correctName});
+    updatePairGrid();
+    showFeedback('✅ Σωστά! '+scenario.correctName+' ταιριάζει με '+scenario.label+'!',true);
+    
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-ok');
+    
+    currentIndex++;
+    
+    if(currentIndex>=scenarios.length){
+      setTimeout(function(){
+        showFinalResult();
+      },1500);
+    }else{
+      setTimeout(function(){
+        document.getElementById('feedback').textContent='';
+        document.getElementById('feedback').className='feedback';
+        initScenario();
+      },1500);
+    }
+  }else{
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-wrong');
+    showFeedback('❌ Λάθος! Προσπάθησε ξανά!',false);
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+      document.getElementById('feedback').className='feedback';
+      dot.classList.remove('done-wrong');
+      dot.classList.add('current');
+      initScenario();
+    },1500);
+  }
+}
+
+function updateDots(){
+  var dots=document.querySelectorAll('.dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.remove('current');
+  }
+  document.getElementById('dot-'+currentIndex).classList.add('current');
+}
+
+function updatePairGrid(){
+  var grid=document.getElementById('pairGrid');
+  grid.innerHTML='';
+  for(var i=0;i<matchedResults.length;i++){
+    var pair=matchedResults[i];
+    var item=document.createElement('div');
+    item.className='pair-item pair-correct';
+    item.innerHTML='<div class="pair-emoji">'+pair.emoji+'</div><div class="pair-sound">'+pair.sound+'</div>';
+    grid.appendChild(item);
+  }
+}
+
+function showFinalResult(){
+  document.getElementById('sceneEmoji').textContent='🏁';
+  document.getElementById('sceneLabel').textContent='Ολοκληρώθηκε!';
+  document.getElementById('soundItems').innerHTML='';
+  document.getElementById('playBtn').style.display='none';
+  
+  if(score===scenarios.length){
+    showFeedback('🏆 Τέλεια! Ταιριάξες όλους τους ήχους σωστά!',true);
+  }else if(score>=3){
+    showFeedback('👍 Καλά! '+score+'/'+scenarios.length+' σωστά!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+scenarios.length+' σωστά. Προσπάθησε ξανά!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+buildDots();
+initScenario();
+</script>
+</body>
+</html>

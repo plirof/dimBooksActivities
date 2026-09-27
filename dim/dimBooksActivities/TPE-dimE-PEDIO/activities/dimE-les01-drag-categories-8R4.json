@@ -1,0 +1,19 @@
+{
+  "title": "Στοιχεία του Αλγόριθμου",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "input", "name": "Είσοδος Αλγορίθμου", "color": "#4CAF50" },
+    { "id": "process", "name": "Επεξεργασία", "color": "#FF9800" },
+    { "id": "output", "name": "Έξοδος Αλγορίθμου", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "i1", "text": "📖 Διάβασε το επόμενο γράμμα", "category": "input" },
+    { "id": "i2", "text": "⌨️ Χαρακτήρες από πληκτρολόγιο", "category": "input" },
+    { "id": "i3", "text": "📏 Βρες τη θέση στο αλφάβητο", "category": "process" },
+    { "id": "i4", "text": "➕ Πρόσθεσε μετατόπιση +3", "category": "process" },
+    { "id": "i5", "text": "🔄 Επανάλαβε για όλα τα γράμματα", "category": "process" },
+    { "id": "i6", "text": "🖥️ Εμφάνιση κωδικοποιημένου κειμένου", "category": "output" },
+    { "id": "i7", "text": "📝 Γράψε το νέο γράμμα", "category": "output" },
+    { "id": "i8", "text": "🔤 Το αρχικό κείμενο", "category": "input" }
+  ]
+}

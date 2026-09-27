@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Δικτυακός Τόπος",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο λέξεις ΠΟΥ ΒΡΙΣΚΟΝΤΑΙ ΣΕ ΔΙΚΤΥΑΚΟ ΤΟΠΟ ΣΧΟΛΕΙΟΥ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Ανακοινώσεις", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπανάνα", "correct": false, "color": "#f44336"},
+    {"text": "Εκπαιδευτικοί", "correct": true, "color": "#2196F3"},
+    {"text": "Τραπέζι", "correct": false, "color": "#FF9800"},
+    {"text": "Δράσεις", "correct": true, "color": "#9C27B0"},
+    {"text": "Καρέκλα", "correct": false, "color": "#E91E63"},
+    {"text": "Προγράμματα", "correct": true, "color": "#00BCD4"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FFC107"},
+    {"text": "Επικοινωνία", "correct": true, "color": "#795548"},
+    {"text": "Μολύβι", "correct": false, "color": "#607D8B"}
+  ]
+}

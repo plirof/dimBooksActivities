@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Δικτυακός Τόπος",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Website = δικτυακός τόπος", "category": "swsto"},
+    {"text": "Ιστοσελίδα = δικτυακός τόπος", "category": "lathos"},
+    {"text": "Browser = φυλλομετρητής", "category": "swsto"},
+    {"text": "Φυλλομετρητής = συσκευή", "category": "lathos"},
+    {"text": "Webpage = ιστοσελίδα", "category": "swsto"},
+    {"text": "Βιβλίο = ίδιο με website", "category": "lathos"},
+    {"text": "Χρειάζεσαι σύνδεση στο διαδίκτυο", "category": "swsto"},
+    {"text": "Διαβάζεις ιστοσελίδες μόνο με σειρά", "category": "lathos"},
+    {"text": "Ο δικτυακός τόπος έχει πολλές ιστοσελίδες", "category": "swsto"},
+    {"text": "Φυλλομετρητής είναι το ποντίκι", "category": "lathos"}
+  ],
+  "duration": 30
+}

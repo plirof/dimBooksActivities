@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιοποίηση",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεδομένα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αποθηκεύονται", "error": false, "correct": "", "feedback": "" },
+        { "text": "με", "error": false, "correct": "", "feedback": "" },
+        { "text": "τριαδικά", "error": true, "correct": "δυαδικά", "feedback": "Τα δεδομένα αποθηκεύονται με ΔΥΑΔΙΚΑ ψηφία (0 και 1)" },
+        { "text": "ψηφία.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Κάθε", "error": false, "correct": "", "feedback": "" },
+        { "text": "γράμμα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντιστοιχίζεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "δέκα", "error": true, "correct": "πέντε", "feedback": "Στον πίνακα κάθε γράμμα αντιστοιχίζεται σε ΠΕΝΤΕ δυαδικά ψηφία" },
+        { "text": "δυαδικά", "error": false, "correct": "", "feedback": "" },
+        { "text": "ψηφία.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "Α", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντιστοιχεί", "error": false, "correct": "", "feedback": "" },
+        { "text": "στο", "error": false, "correct": "", "feedback": "" },
+        { "text": "00000.", "error": true, "correct": "00001", "feedback": "Το Α αντιστοιχεί στο 00001, όχι 00000" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "0", "error": false, "correct": "", "feedback": "" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "1", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντιστοιχούν", "error": false, "correct": "", "feedback": "" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "φωτεινά", "error": true, "correct": "ηλεκτρικά", "feedback": "Τα 0 και 1 αντιστοιχούν σε ΗΛΕΚΤΡΙΚΑ σήματα" },
+        { "text": "σήματα.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

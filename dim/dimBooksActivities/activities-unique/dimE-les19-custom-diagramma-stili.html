@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ραβδόγραμμα | Μάθημα 19</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#eff6ff,#bfdbfe);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#1e3a5f;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#3b82f6;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#1e3a5f;font-size:.75rem;font-weight:700;border:1px solid #93c5fd;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:640px;width:100%}
+.task{font-size:.78rem;color:#334155;line-height:1.5;margin-bottom:10px;background:#eff6ff;padding:10px;border-radius:10px;border-left:3px solid #3b82f6}
+.chart-area{position:relative;width:100%;height:260px;border:2px solid #e2e8f0;border-radius:12px;background:#fafafa;margin:8px 0;display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:30px 16px 40px 50px}
+.y-axis{position:absolute;left:8px;top:20px;bottom:36px;display:flex;flex-direction:column-reverse;justify-content:space-between;font-size:.6rem;color:#64748b}
+.x-axis{position:absolute;bottom:4px;left:50px;right:16px;display:flex;justify-content:space-around;font-size:.65rem;color:#334155;font-weight:600}
+.grid-lines{position:absolute;left:40px;right:16px;top:20px;bottom:36px}
+.grid-line{position:absolute;left:0;right:0;border-top:1px dashed #e2e8f0}
+.bar{display:flex;flex-direction:column;align-items:center;flex:1;max-width:80px;cursor:pointer;transition:all .3s;position:relative}
+.bar-fill{width:100%;border-radius:6px 6px 0 0;transition:height .4s ease;position:relative}
+.bar-fill .val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:#1e293b;white-space:nowrap}
+.bar:hover .bar-fill{opacity:.85}
+.slider-row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:.72rem}
+.slider-row label{min-width:80px;font-weight:600;color:#334155}
+.slider-row input{flex:1}
+.slider-row .sval{min-width:30px;text-align:right;font-weight:700;color:#1e3a5f}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#3b82f6;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s}
+.check-btn:hover{background:#2563eb}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.8rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer}
+.nav-prev{background:#1e3a5f22;color:#1e3a5f}
+.nav-next{background:#3b82f6;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .chart-area > * + * { margin-left: 12px; }
+  .slider-row > * + * { margin-left: 8px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Φτιάξε Ραβδόγραμμα (Διάγραμμα Στήλη)</h1>
+<p class="subtitle">Άλλαξε το ύψος των στηλών για να ταιριάζει στα δεδομένα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Άσκηση:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" onclick="prevQ()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" onclick="nextQ()">Επόμ. ▶</button>
+</div>
+<script>
+var exercises=[
+{
+title:'Ψηφοφορία για Εκδρομή',
+desc:'Τα παιδιά ψήφισαν: Μουσείο 12 ψήφοι, Παραλία 8 ψήφοι. Χρησιμοποίησε τους κυλίστες για να φτιάξεις το ραβδόγραμμα!',
+items:[
+{name:'Μουσείο',value:12,color:'#3b82f6'},
+{name:'Παραλία',value:8,color:'#f59e0b'}
+],
+maxVal:16
+},
+{
+title:'Ελεύθερος Χρόνος',
+desc:'50 παιδιά απάντησαν τι κάνουν ελεύθερο χρόνο. Φτιάξε το ραβδόγραμμα!',
+items:[
+{name:'Μουσική',value:10,color:'#8b5cf6'},
+{name:'Τηλεόραση',value:6,color:'#ef4444'},
+{name:'Παιχνίδι',value:16,color:'#10b981'},
+{name:'Βόλτα',value:14,color:'#f97316'},
+{name:'Βιβλίο',value:4,color:'#06b6d4'}
+],
+maxVal:20
+},
+{
+title:'Κόστος Εκδρομών',
+desc:'Το κόστος λεωφορείου για 3 τάξεις. Φτιάξε το διάγραμμα!',
+items:[
+{name:'Δήμοτική Δ\'',value:110,color:'#3b82f6'},
+{name:'Δήμοτική Ε\'',value:100,color:'#10b981'},
+{name:'Δήμοτική ΣΤ\'',value:120,color:'#f59e0b'}
+],
+maxVal:140
+}
+];
+var curQ=0;
+var pts=0;
+var answered=false;
+var sliderVals=[];
+
+function initSliders(){
+var ex=exercises[curQ];
+sliderVals=ex.items.map(function(it){return 0;});
+}
+
+function render(){
+var ex=exercises[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+if(sliderVals.length!==ex.items.length)initSliders();
+var main=document.getElementById('main');
+var h='';
+h+='<div class="task">📋 '+ex.desc+'</div>';
+h+='<div class="chart-area" id="chartArea">';
+h+='<div class="y-axis">';
+for(var i=0;i<=4;i++){
+var v=Math.round(ex.maxVal*i/4);
+h+='<span>'+v+'</span>';
+}
+h+='</div>';
+h+='<div class="grid-lines">';
+for(var i=1;i<=4;i++){
+h+='<div class="grid-line" style="bottom:'+((i/4)*100)+'%"></div>';
+}
+h+='</div>';
+for(var i=0;i<ex.items.length;i++){
+var pct=ex.maxVal>0?(sliderVals[i]/ex.maxVal*100):0;
+if(pct>100)pct=100;
+h+='<div class="bar">';
+h+='<div class="bar-fill" style="height:'+Math.max(pct,2)+'%;background:'+ex.items[i].color+'"><span class="val">'+sliderVals[i]+'</span></div>';
+h+='</div>';
+}
+h+='<div class="x-axis">';
+for(var i=0;i<ex.items.length;i++){
+h+='<span>'+ex.items[i].name+'</span>';
+}
+h+='</div>';
+h+='</div>';
+for(var i=0;i<ex.items.length;i++){
+h+='<div class="slider-row"><label>'+ex.items[i].name+'</label><input type="range" min="0" max="'+ex.maxVal+'" value="'+sliderVals[i]+'" oninput="updateSlider('+i+',this.value)"><span class="sval">'+sliderVals[i]+'</span></div>';
+}
+if(!answered){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Διαγράμματος</button>';
+}else{
+var correct=checkAll();
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Μπράβο! Το διάγραμμα είναι σωστό!':'❌ Προσπάθησε ξανά! Κοίταξε τα σωστά δεδομένα.')+'</div>';
+if(correct){
+h+='<button class="check-btn" onclick="nextQ()" style="background:#10b981">Επόμενη Άσκηση ▶</button>';
+}else{
+h+='<button class="check-btn" onclick="retry()">Ξαναδοκίμασε</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function updateSlider(idx,val){
+sliderVals[idx]=parseInt(val);
+render();
+}
+
+function checkAll(){
+var ex=exercises[curQ];
+for(var i=0;i<ex.items.length;i++){
+if(sliderVals[i]!==ex.items[i].value)return false;
+}
+return true;
+}
+
+function checkAnswer(){
+if(answered)return;
+var correct=checkAll();
+if(correct)pts+=10;
+answered=true;
+document.getElementById('pts').textContent=pts;
+render();
+}
+
+function retry(){
+answered=false;
+render();
+}
+
+function nextQ(){
+if(curQ<exercises.length-1){
+curQ++;
+answered=false;
+initSliders();
+render();
+}
+}
+
+function prevQ(){
+if(curQ>0){
+curQ--;
+answered=false;
+initSliders();
+render();
+}
+}
+
+initSliders();
+render();
+</script>
+</body>
+</html>

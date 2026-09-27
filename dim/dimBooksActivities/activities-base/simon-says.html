@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ακολουθία Χρωμάτων</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 50%,#f6d365 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.15);padding:30px;text-align:center}
+h1{color:#7b1fa2;font-size:1.8rem;margin-bottom:5px}
+h2{color:#9c27b0;font-size:1.1rem;margin-bottom:20px;font-weight:400}
+.start-btn,.restart-btn{background:linear-gradient(135deg,#7b1fa2,#e91e63);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.2rem;cursor:pointer;box-shadow:0 5px 15px rgba(123,31,162,.3);transition:transform .2s,box-shadow .2s}
+.start-btn:hover,.restart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(123,31,162,.4)}
+.pad-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:480px;margin:20px auto}
+.pad{width:100%;aspect-ratio:1;border-radius:24px;cursor:pointer;transition:all .15s;border:5px solid rgba(255,255,255,.4);box-shadow:0 6px 20px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent}
+.pad:hover{transform:scale(1.03)}
+.pad:active{transform:scale(0.95)}
+.pad.lit{transform:scale(1.08);box-shadow:0 0 30px rgba(255,255,255,.6),0 0 60px currentColor;border-color:#fff}
+.pad.disabled{pointer-events:none;opacity:.6}
+@media(max-width:500px){.pad-grid{max-width:90vw;gap:14px}}
+.info-bar{display:flex;justify-content:space-between;margin-bottom:10px;font-size:.95rem;color:#666}
+.round-display{font-size:1.3rem;font-weight:700;color:#7b1fa2;margin:10px 0}
+.feedback{font-size:1.1rem;font-weight:600;margin:10px 0;min-height:30px}
+.feedback.ok{color:#4caf50}
+.feedback.fail{color:#f44336}
+.hidden{display:none}
+.end-score{font-size:3rem;color:#7b1fa2;font-weight:700;margin:15px 0}
+.status{font-size:1rem;color:#999;margin:8px 0}
+</style>
+<script>
+(function(){var m=navigator.userAgent.match(/Chrome\/(\d+)/);if(m&&parseInt(m[1])<=62){var s=document.createElement('style');s.textContent='.pad{height:0;padding-bottom:100%!important;position:relative}';document.head.appendChild(s)}})();
+</script>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div id="error" class="hidden" style="color:#f44336;font-size:1.1rem;padding:30px"></div>
+<div id="startScreen">
+<h1 id="gameTitle">Ακολουθία Χρωμάτων</h1>
+<h2 id="gameSubtitle">Θυμήσου και επανάλαβε!</h2>
+<p style="color:#666;margin-bottom:20px">Ο υπολογιστής θα δείξει μια ακολουθία χρωμάτων.<br>Πρόσεξε και επανάλαβε τα χρώματα με τη σειρά!</p>
+<button class="start-btn" onclick="startGame()">▶ Έναρξη</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="info-bar"><span id="roundInfo"></span><span id="scoreInfo"></span></div>
+<div class="feedback" id="feedback"></div>
+<div class="status" id="statusMsg">Πρόσεξε...</div>
+<div class="pad-grid" id="padGrid"></div>
+<div class="round-display" id="roundDisplay"></div>
+</div>
+<div id="endScreen" class="hidden">
+<h1>Τέλος Παιχνιδιού!</h1>
+<div class="end-score" id="endScore"></div>
+<p id="endMsg" style="font-size:1.1rem;color:#666;margin-bottom:20px"></p>
+<button class="restart-btn" onclick="restartGame()">🔄 Ξανά!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+let gameData=null,sequence=[],playerIndex=0,round=0,playing=false,acceptingInput=false;
+if(!dataFile){document.getElementById('error').textContent='Δεν βρέθηκε αρχείο δεδομένων. Χρησιμοποίησε ?data=file.json';document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')}else{fetch(dataFile).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(d=>{gameData=d;document.getElementById('gameTitle').textContent=esc(d.title||'Ακολουθία Χρωμάτων');document.getElementById('gameSubtitle').textContent=esc(d.subtitle||'')}).catch(()=>{document.getElementById('error').textContent='Σφάλμα φόρτωσης δεδομένων: '+esc(dataFile);document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')})}
+function buildPads(){const grid=document.getElementById('padGrid');grid.innerHTML='';gameData.colors.forEach((color,i)=>{const pad=document.createElement('div');pad.className='pad disabled';pad.style.backgroundColor=color;pad.style.color=color;pad.dataset.index=i;pad.onclick=()=>handlePadClick(i);grid.appendChild(pad)})}
+function startGame(){sequence=[];round=0;document.getElementById('startScreen').classList.add('hidden');document.getElementById('endScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');buildPads();nextRound()}
+function nextRound(){const maxRounds=gameData.maxRounds||10;if(round>=maxRounds){endGame();return}const startLen=gameData.startLength||2;const newColor=Math.floor(Math.random()*gameData.colors.length);sequence.push(newColor);if(sequence.length<startLen){for(let i=sequence.length;i<startLen;i++){sequence.push(Math.floor(Math.random()*gameData.colors.length))}}round++;document.getElementById('roundInfo').textContent='Γύρος: '+round;document.getElementById('scoreInfo').textContent='Σκορ: '+(round-1);document.getElementById('roundDisplay').textContent='Επίπεδο '+round;document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';document.getElementById('statusMsg').textContent='Πρόσεξε...';acceptingInput=false;setPadsDisabled(true);showSequence()}
+function showSequence(){let i=0;const speed=gameData.speed||800;const pads=document.querySelectorAll('.pad');const timer=setInterval(()=>{if(i>=sequence.length){clearInterval(timer);setTimeout(()=>{acceptingInput=true;playerIndex=0;setPadsDisabled(false);document.getElementById('statusMsg').textContent='Η σειρά σου!'},400);return}lightPad(sequence[i]);i++},speed)}
+function lightPad(idx){const pads=document.querySelectorAll('.pad');const speed=gameData.speed||800;pads[idx].classList.add('lit');setTimeout(()=>{pads[idx].classList.remove('lit')},speed*0.6)}
+function setPadsDisabled(disabled){document.querySelectorAll('.pad').forEach(p=>{if(disabled)p.classList.add('disabled');else p.classList.remove('disabled')})}
+function handlePadClick(idx){if(!acceptingInput)return;lightPad(idx);if(idx===sequence[playerIndex]){playerIndex++;if(playerIndex>=sequence.length){acceptingInput=false;setPadsDisabled(true);document.getElementById('feedback').textContent='Σωστό! 🎉';document.getElementById('feedback').className='feedback ok';document.getElementById('statusMsg').textContent='Μπράβο!';setTimeout(()=>nextRound(),1200)}}else{acceptingInput=false;setPadsDisabled(true);document.getElementById('feedback').textContent='Λάθος! 😢';document.getElementById('feedback').className='feedback fail';document.getElementById('statusMsg').textContent='Το σωστό ήταν: '+esc(gameData.labels[sequence[playerIndex]]);setTimeout(()=>endGame(),2000)}}
+function endGame(){document.getElementById('gameScreen').classList.add('hidden');document.getElementById('endScreen').classList.remove('hidden');document.getElementById('endScore').textContent=(round-1)+' / '+(gameData.maxRounds||10);const s=round-1;if(s>=(gameData.maxRounds||10))document.getElementById('endMsg').textContent='Τέλεια μνήμη! Είσαι αξιοθαύμαστος! 🌟';else if(s>=5)document.getElementById('endMsg').textContent='Πολύ καλά! Μπράβο! 😊';else document.getElementById('endMsg').textContent='Δοκίμασε ξανά, μπορείς καλύτερα! 💪'}
+function restartGame(){document.getElementById('endScreen').classList.add('hidden');document.getElementById('startScreen').classList.remove('hidden')}
+</script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δρομολόγηση Δεδομένων - Router</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#dbeafe;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#075985;text-align:center;line-height:1.5}
+.network-map{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px;position:relative;min-height:200px}
+.device{position:absolute;font-size:2.5em;transition:all .3s;z-index:10}
+.device.router{font-size:3em;top:50%;left:50%;transform:translate(-50%,-50%)}
+.connection-line{position:absolute;height:4px;background:#e2e8f0;border-radius:2px;transform-origin:left center;transition:all .3s}
+.connection-line.active{background:#4ade80}
+.packet{position:absolute;font-size:1.5em;z-index:20;transition:all .5s ease}
+.packet-container{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.source-selector{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.selector-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.device-options{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.device-option{background:#fff;border:2px solid #fdba74;border-radius:10px;padding:10px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.device-option:hover{transform:scale(1.05)}
+.device-option.selected{border-color:#0369a1;background:#e0f2fe}
+.device-option-emoji{font-size:1.5em}
+.btn-send{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-send:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-send:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#0369a1;margin-bottom:12px}
+@media(max-width:550px){.device{font-size:2em}.device.router{font-size:2.5em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .device-options > * { margin: 5px; }
+  .device-option > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌐 Δρομολόγηση Δεδομένων</h1>
+<p>Βοήθησε το δρομολογητή να στείλει τα δεδομένα σωστά!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Ο δρομολογητής είναι σαν τροχονόμος! Αποφασίζει ποια είναι η καλύτερη διαδρομή για τα δεδομένα στο δίκτυο!</div>
+
+<div class="score-display" id="scoreDisplay">Επιτυχίες: 0 / 3</div>
+
+<div class="network-map" id="networkMap">
+<div class="packet-container" id="packetContainer"></div>
+<div class="device router">📡</div>
+<div class="device" id="dev1" style="top:20%;left:20%">💻</div>
+<div class="device" id="dev2" style="top:20%;right:20%">📱</div>
+<div class="device" id="dev3" style="bottom:20%;left:30%">🖨️</div>
+<div class="device" id="dev4" style="bottom:20%;right:30%">📺</div>
+</div>
+
+<div class="source-selector">
+<div class="selector-label">🎯 Ποια συσκευή θέλει να στείλει δεδομένα;</div>
+<div class="device-options" id="sourceOptions">
+<div class="device-option" data-device="1" onclick="selectSource(this)">
+<div class="device-option-emoji">💻</div>
+<div>Υπολογιστής</div>
+</div>
+<div class="device-option" data-device="2" onclick="selectSource(this)">
+<div class="device-option-emoji">📱</div>
+<div>Κινητό</div>
+</div>
+<div class="device-option" data-device="3" onclick="selectSource(this)">
+<div class="device-option-emoji">🖨️</div>
+<div>Εκτυπωτής</div>
+</div>
+<div class="device-option" data-device="4" onclick="selectSource(this)">
+<div class="device-option-emoji">📺</div>
+<div>Τηλεόραση</div>
+</div>
+</div>
+</div>
+
+<div class="source-selector">
+<div class="selector-label">🎯 Σε ποια συσκευή πρέπει να φτάσουν;</div>
+<div class="device-options" id="destOptions">
+<div class="device-option" data-device="1" onclick="selectDest(this)">
+<div class="device-option-emoji">💻</div>
+<div>Υπολογιστής</div>
+</div>
+<div class="device-option" data-device="2" onclick="selectDest(this)">
+<div class="device-option-emoji">📱</div>
+<div>Κινητό</div>
+</div>
+<div class="device-option" data-device="3" onclick="selectDest(this)">
+<div class="device-option-emoji">🖨️</div>
+<div>Εκτυπωτής</div>
+</div>
+<div class="device-option" data-device="4" onclick="selectDest(this)">
+<div class="device-option-emoji">📺</div>
+<div>Τηλεόραση</div>
+</div>
+</div>
+</div>
+
+<button class="btn-send" id="sendBtn" onclick="sendPacket()" disabled>📤 Στείλ Δεδομένα</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var score=0;
+var sourceDevice=null;
+var destDevice=null;
+var isSending=false;
+
+var scenarios=[
+  {source:1,dest:2,reason:'Ο υπολογιστής στέλνει στο κινητό'},
+  {source:2,dest:3,reason:'Το κινητό στέλνει στην εκτυπωτή'},
+  {source:4,dest:1,reason:'Η τηλεόραση στέλνει στον υπολογιστή'}
+];
+var currentScenario=0;
+
+function selectSource(btn){
+  if(isSending)return;
+  
+  var options=document.querySelectorAll('#sourceOptions .device-option');
+  for(var i=0;i<options.length;i++){
+    options[i].classList.remove('selected');
+  }
+  btn.classList.add('selected');
+  sourceDevice=parseInt(btn.dataset.device);
+  
+  checkCanSend();
+}
+
+function selectDest(btn){
+  if(isSending)return;
+  
+  var options=document.querySelectorAll('#destOptions .device-option');
+  for(var i=0;i<options.length;i++){
+    options[i].classList.remove('selected');
+  }
+  btn.classList.add('selected');
+  destDevice=parseInt(btn.dataset.device);
+  
+  checkCanSend();
+}
+
+function checkCanSend(){
+  var canSend=sourceDevice!==null&&destDevice!==null&&sourceDevice!==destDevice;
+  document.getElementById('sendBtn').disabled=!canSend;
+}
+
+function sendPacket(){
+  if(isSending)return;
+  
+  var scenario=scenarios[currentScenario];
+  var isCorrect=sourceDevice===scenario.source&&destDevice===scenario.dest;
+  
+  isSending=true;
+  document.getElementById('sendBtn').disabled=true;
+  
+  var sourcePos=getDevicePosition(sourceDevice);
+  var destPos=getDevicePosition(destDevice);
+  var routerPos=getDevicePosition(0);
+  
+  var packet=createPacket('📦');
+  
+  animatePacket(packet,sourcePos,routerPos,function(){
+    animatePacket(packet,routerPos,destPos,function(){
+      document.getElementById('packetContainer').innerHTML='';
+      
+      if(isCorrect){
+        score++;
+        showFeedback('✅ Σωστά! '+scenario.reason,true);
+      }else{
+        showFeedback('❌ Λάθος! '+scenario.reason,false);
+      }
+      
+      document.getElementById('scoreDisplay').textContent='Επιτυχίες: '+score+' / '+scenarios.length;
+      
+      setTimeout(function(){
+        document.getElementById('feedback').textContent='';
+        document.getElementById('feedback').className='feedback';
+        resetSelection();
+        
+        currentScenario++;
+        if(currentScenario>=scenarios.length){
+          showFinalResult();
+        }
+      },1500);
+    });
+  });
+}
+
+function getDevicePosition(deviceNum){
+  var map=document.getElementById('networkMap');
+  var mapRect=map.getBoundingClientRect();
+  
+  if(deviceNum===0){
+    return {x:mapRect.width/2,y:mapRect.height/2};
+  }
+  
+  var device=document.getElementById('dev'+deviceNum);
+  var rect=device.getBoundingClientRect();
+  
+  return {
+    x:rect.left-mapRect.left+rect.width/2,
+    y:rect.top-mapRect.top+rect.height/2
+  };
+}
+
+function createPacket(emoji){
+  var container=document.getElementById('packetContainer');
+  var packet=document.createElement('div');
+  packet.className='packet';
+  packet.textContent=emoji;
+  container.appendChild(packet);
+  return packet;
+}
+
+function animatePacket(packet,fromPos,toPos,callback){
+  packet.style.left=fromPos.x+'px';
+  packet.style.top=fromPos.y+'px';
+  packet.style.transform='translate(-50%,-50%)';
+  
+  setTimeout(function(){
+    packet.style.left=toPos.x+'px';
+    packet.style.top=toPos.y+'px';
+  },50);
+  
+  setTimeout(function(){
+    if(callback)callback();
+  },600);
+}
+
+function resetSelection(){
+  sourceDevice=null;
+  destDevice=null;
+  isSending=false;
+  
+  var options=document.querySelectorAll('.device-option');
+  for(var i=0;i<options.length;i++){
+    options[i].classList.remove('selected');
+  }
+  
+  document.getElementById('sendBtn').disabled=true;
+}
+
+function showFinalResult(){
+  document.getElementById('networkMap').innerHTML='<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4em">🏆</div>';
+  document.getElementById('sourceOptions').innerHTML='';
+  document.getElementById('destOptions').innerHTML='';
+  document.getElementById('sendBtn').style.display='none';
+  
+  if(score===scenarios.length){
+    showFeedback('🏆 Τέλεια! Είσαι expert στην δρομολόγηση!',true);
+  }else if(score>=2){
+    showFeedback('👍 Καλά! '+score+'/'+scenarios.length+' σωστά!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+scenarios.length+' σωστά. Πρακτική περισσότερο!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+</script>
+</body>
+</html>

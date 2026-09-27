@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Δίκτυα και Πρωτόκολλα",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τις λέξεις που σχετίζονται με δίκτυα και πρωτόκολλα",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Πάροχος", "correct": true, "color": "#4CAF50" },
+    { "text": "TCP/IP", "correct": true, "color": "#2196F3" },
+    { "text": "HTTP", "correct": true, "color": "#FF9800" },
+    { "text": "IP address", "correct": true, "color": "#9C27B0" },
+    { "text": "MAC", "correct": true, "color": "#00BCD4" },
+    { "text": "FTP", "correct": true, "color": "#8BC34A" },
+    { "text": "SMTP", "correct": true, "color": "#FF5722" },
+    { "text": "Mbps", "correct": true, "color": "#3F51B5" },
+    { "text": "Κηπουρική", "correct": false, "color": "#f44336" },
+    { "text": "Μαγειρική", "correct": false, "color": "#795548" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#607D8B" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#E91E63" }
+  ]
+}

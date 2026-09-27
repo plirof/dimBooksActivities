@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Φίλτρα Δεδομένων",
+  "subtitle": "Πιάσε τις σωστές έννοιες των φίλτρων",
+  "instructions": "Πιάσε τις λέξεις σχετικές με τα φίλτρα δεδομένων",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Φίλτρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αυτόματο φίλτρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Επικεφαλίδα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Βελάκι",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εντάξει",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Επιλογή τιμής",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Μεταβλητή",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

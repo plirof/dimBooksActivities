@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μέρη Άρθρου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ede9fe,#a78bfa);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f5f3ff;border-radius:12px;border-left:4px solid #8b5cf6;padding:10px 14px;font-size:.85em;color:#3b0764;line-height:1.5}
+.info b{color:#5b21b6}
+.game-area{background:#f5f3ff;border-radius:16px;border:2px solid #ddd6fe;padding:16px;min-height:300px}
+.article-sample{background:#fff;border-radius:14px;border:2px solid #e2e8f0;overflow:hidden;margin-bottom:16px}
+.as-header{padding:12px 16px;border-bottom:1px solid #e2e8f0}
+.as-header .as-title{font-size:1.1em;font-weight:700;color:#1e293b}
+.as-meta{font-size:.75em;color:#94a3b8;margin-top:4px;display:flex;gap:10px}
+.as-body{padding:12px 16px;font-size:.88em;color:#374151;line-height:1.7}
+.as-body b{color:#1e293b}
+.as-body i{color:#6b7280}
+.as-footer{padding:8px 16px;border-top:1px solid #f1f5f9;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.as-tag{font-size:.75em;padding:3px 10px;background:#f5f3ff;color:#5b21b6;border-radius:20px;border:1px solid #ddd6fe}
+.quiz-zone{margin-top:8px}
+.quiz-zone h3{color:#5b21b6;font-size:.95em;margin-bottom:10px;text-align:center}
+.quiz-options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.quiz-opt{padding:10px 18px;border:2px solid #e2e8f0;border-radius:50px;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s;background:#fff}
+.quiz-opt:hover{border-color:#8b5cf6;background:#f5f3ff}
+.quiz-opt.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.quiz-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
+.quiz-opt.disabled{pointer-events:none;opacity:.6}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#5b21b6}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:#fff}
+.btn-next:hover{transform:scale(1.05)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.quiz-opt{padding:8px 14px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .as-meta > * + * { margin-left: 10px; }
+  .as-footer > * { margin: 3px; }
+  .quiz-options > * { margin: 4px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🧩 Μέρη ενός Άρθρου</h1>
+<p>Αναγνώρισε τα μέρη ενός άρθρου ιστολογίου!</p>
+</div>
+<div class="area">
+<div class="info">💡 Ένα άρθρο στο ιστολόγιο έχει: <b>τίτλο</b> (τι μιλάει), <b>περιεχόμενο</b> (το κείμενο), <b>ημερομηνία</b> (πότε γράφτηκε), <b>ετικέτες</b> (#tags) και <b>κατηγορία</b> (θέμα). Μπορεί να έχει <b>έντονα</b> και <i>πλάγια</i> γράμματα.</div>
+<div class="score-bar">⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="game-area">
+<div class="article-sample" id="articleSample"></div>
+<div class="quiz-zone" id="quizZone"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var articles=[
+{
+title:'Η Εκδρομή μας στο Μουσείο',
+date:'10 Μαρτίου 2026',
+category:'Project',
+body:'Χθες πήγαμε εκδρομή στο <b>Αρχαιολογικό Μουσείο</b>. Είδαμε πολλά ενδιαφέροντα εκθέματα. Το πιο εντυπωσιακό ήταν ο <b>χρυσός δακτύλιος</b> των Μυκηνών! Μαθαμε πολλά για την ιστορία μας.',
+tags:['εκδρομή','μουσείο','ιστορία']
+},
+{
+title:'Το Πείραμά μας στα Φυσικά',
+date:'22 Φεβρουαρίου 2026',
+category:'Σχολείο',
+body:'Σήμερα κάναμε ένα <b>πείραμα</b> στο μάθημα των Φυσικών. Φτιάξαμε ηφαίστειο με <i>μαγειρική σόδα</i> και <i>ξύδι</i>. Η αντίδραση ήταν <b>εντυπωσιακή</b>! Μαθαμε για τα ηφαίστεια.',
+tags:['φυσικά','πείραμα','ηφαίστειο']
+},
+{
+title:'Διαγωνισμός Ζωγραφικής',
+date:'5 Απριλίου 2026',
+category:'Τέχνη',
+body:'Το σχολείο μας διοργανώνει <b>διαγωνισμό ζωγραφικής</b> με θέμα «Η άνοιξη». Θα ζωγραφίσω <i>λουλούδια</i> και <i>πεταλούδες</i> στον κήπο μου. Η δευτερολέπτη θα είναι 15 Απριλίου.',
+tags:['ζωγραφική','διαγωνισμός','τέχνη']
+}
+];
+
+var questions=[
+{
+article:0,
+question:'Ποιο είναι το στοιχείο με <b>έντονα γράμματα</b> στο άρθρο;',
+highlight:'bold',
+options:['Αρχαιολογικό Μουσείο','χθες','10 Μαρτίου'],
+correct:0,
+explain:'Τα <b>έντονα γράμματα</b> (bold) τονίζουν σημαντικές λέξεις!'
+},
+{
+article:1,
+question:'Ποιες λέξεις είναι με <i>πλάγια γράμματα</i> (italic);',
+highlight:'italic',
+options:['πείραμα','μαγειρική σόδα και ξύδι','ηφαίστεια'],
+correct:1,
+explain:'Τα <i>πλάγια γράμματα</i> (italic) χρησιμοποιούνται για έμφαση ή ξένες λέξεις!'
+},
+{
+article:0,
+question:'Ποιες είναι οι ετικέτες (tags) του άρθρου;',
+highlight:'tags',
+options:['εκδρομή, μουσείο, ιστορία','Project','10 Μαρτίου'],
+correct:0,
+explain:'Οι ετικέτες (tags) ξεκινούν με # και βοηθούν στην αναζήτηση!'
+},
+{
+article:1,
+question:'Ποια είναι η κατηγορία του άρθρου;',
+highlight:'category',
+options:['Φυσικά','Σχολείο','Πείραμα'],
+correct:1,
+explain:'Η κατηγορία ομαδοποιεί τα άρθρα ανά θέμα!'
+},
+{
+article:2,
+question:'Ποια είναι η ημερομηνία δημοσίευσης;',
+highlight:'date',
+options:['5 Απριλίου 2026','15 Απριλίου','22 Φεβρουαρίου 2026'],
+correct:0,
+explain:'Η ημερομηνία δείχνει πότε γράφτηκε το άρθρο!'
+},
+{
+article:2,
+question:'Ποιο είναι το θέμα του άρθρου;',
+highlight:'title',
+options:['Διαγωνισμός Ζωγραφικής','Λουλούδια και Πεταλούδες','Η Άνοιξη'],
+correct:0,
+explain:'Ο τίτλος δείχνει το κύριο θέμα του άρθρου!'
+},
+{
+article:0,
+question:'Τι περιέχει το «περιεχόμενο» του άρθρου;',
+highlight:'body',
+options:['Το κείμενο που περιγράφει την εκδρομή','#εκδρομή #μουσείο','Αρχαιολογικό Μουσείο'],
+correct:0,
+explain:'Το περιεχόμενο είναι το βασικό κείμενο του άρθρου!'
+}
+];
+
+var currentQ=0;
+var score=0;
+var locked=false;
+
+function renderArticle(idx){
+var a=articles[idx];
+var el=document.getElementById('articleSample');
+var html='<div class="as-header"><div class="as-title">'+a.title+'</div><div class="as-meta"><span>📅 '+a.date+'</span><span>📁 '+a.category+'</span></div></div>';
+html+='<div class="as-body">'+a.body+'</div>';
+html+='<div class="as-footer">';
+for(var i=0;i<a.tags.length;i++){
+html+='<span class="as-tag">#'+a.tags[i]+'</span>';
+}
+html+='</div>';
+el.innerHTML=html;
+}
+
+function renderQuestion(){
+var q=questions[currentQ];
+locked=false;
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+renderArticle(q.article);
+highlightPart(q.highlight);
+
+var zone=document.getElementById('quizZone');
+var html='<h3>❓ Ερώτηση '+(currentQ+1)+'/'+questions.length+'</h3>';
+html+='<p style="text-align:center;font-size:.9em;color:#1e293b;margin-bottom:10px;line-height:1.5">'+q.question+'</p>';
+html+='<div class="quiz-options" id="quizOpts">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="quiz-opt" data-idx="'+i+'" onclick="answer(this)">'+q.options[i]+'</div>';
+}
+html+='</div>';
+zone.innerHTML=html;
+}
+
+function highlightPart(part){
+var el=document.getElementById('articleSample');
+if(part==='bold'){
+var bolds=el.querySelectorAll('.as-body b');
+for(var i=0;i<bolds.length;i++){bolds[i].style.background='#fef08a';bolds[i].style.padding='2px 4px';bolds[i].style.borderRadius='4px';}
+}else if(part==='italic'){
+var italics=el.querySelectorAll('.as-body i');
+for(var i=0;i<italics.length;i++){italics[i].style.background='#ddd6fe';italics[i].style.padding='2px 4px';italics[i].style.borderRadius='4px';}
+}else if(part==='tags'){
+var tags=el.querySelectorAll('.as-tag');
+for(var i=0;i<tags.length;i++){tags[i].style.background='#fef08a';tags[i].style.borderColor='#f59e0b';}
+}else if(part==='category'){
+var meta=el.querySelectorAll('.as-meta span');
+if(meta.length>1){meta[1].style.background='#fef08a';meta[1].style.padding='2px 8px';meta[1].style.borderRadius='10px';}
+}else if(part==='date'){
+var meta=el.querySelectorAll('.as-meta span');
+if(meta.length>0){meta[0].style.background='#fef08a';meta[0].style.padding='2px 8px';meta[0].style.borderRadius='10px';}
+}else if(part==='title'){
+el.querySelector('.as-title').style.background='#fef08a';el.querySelector('.as-title').style.padding='4px 8px';el.querySelector('.as-title').style.borderRadius='6px';
+}else if(part==='body'){
+el.querySelector('.as-body').style.background='#fef9c3';el.querySelector('.as-body').style.border='2px dashed #f59e0b';el.querySelector('.as-body').style.borderRadius='8px';
+}
+}
+
+function answer(el){
+if(locked)return;
+locked=true;
+var q=questions[currentQ];
+var chosen=parseInt(el.dataset.idx);
+var opts=document.querySelectorAll('.quiz-opt');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.add('disabled');
+if(parseInt(opts[i].dataset.idx)===q.correct)opts[i].classList.add('correct');
+}
+if(chosen===q.correct){
+score++;
+el.classList.add('correct');
+showFeedback('✅ Σωστό! '+q.explain,true);
+}else{
+el.classList.add('wrong');
+showFeedback('❌ '+q.explain,false);
+}
+document.getElementById('scoreDisplay').textContent=score;
+document.getElementById('nextBtn').disabled=false;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.innerHTML=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextQuestion(){
+currentQ++;
+if(currentQ>=questions.length){showResult();}
+else{renderQuestion();}
+}
+
+function showResult(){
+var pct=Math.round(score/questions.length*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+document.getElementById('quizZone').innerHTML='<div style="text-align:center;padding:16px"><div style="font-size:2em">'+stars+'</div><h3 style="color:#5b21b6;margin:8px 0">'+score+'/'+questions.length+'</h3><p style="color:#64748b;font-size:.9em">'+(pct>=80?'Μπράβο! Αναγνωρίζεις τα μέρη ενός άρθρου!':'Συνέχισε! Θα τα μάθεις όλα!')+'</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentQ=0;score=0;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('nextBtn').style.display='inline-block';
+renderQuestion();
+}
+
+document.getElementById('totalDisplay').textContent=questions.length;
+renderQuestion();
+</script>
+</body>
+</html>

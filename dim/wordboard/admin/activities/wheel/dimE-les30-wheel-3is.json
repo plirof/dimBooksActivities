@@ -1,0 +1,26 @@
+{
+    "id": "dimE-les30-wheel-3is",
+    "title": "Creative Commons - Άδειες χρήσης - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Creative Commons",
+            "CC-BY",
+            "NC",
+            "ND",
+            "SA",
+            "Αναφορά πηγής",
+            "Πνευματικά δικαιώματα",
+            "Νόμιμη χρήση",
+            "Δημιουργός",
+            "Κοινή χρήση"
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les30",
+        "creativecommons"
+    ]
+}

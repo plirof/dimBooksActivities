@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Μορφές Ψηφιακού Περιεχομένου",
+  "subtitle": "Πιάσε τα σωστά είδη ψηφιακού περιεχομένου!",
+  "instructions": "Πιάσε τα αντικείμενα που είναι είδη ψηφιακού περιεχομένου. Απόφυγε τα λάθος.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Κείμενο", "correct": true, "color": "#4caf50" },
+    { "text": "Εικόνα", "correct": true, "color": "#2196f3" },
+    { "text": "Βίντεο", "correct": true, "color": "#ff9800" },
+    { "text": "Ήχος", "correct": true, "color": "#9c27b0" },
+    { "text": "Χαρτί", "correct": false, "color": "#f44336" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Φωτογραφία", "correct": true, "color": "#00bcd4" },
+    { "text": "Ηχογράφηση", "correct": true, "color": "#8bc34a" },
+    { "text": "Μαρκαδόρος", "correct": false, "color": "#f44336" },
+    { "text": "Παρουσίαση", "correct": true, "color": "#e91e63" }
+  ]
+}

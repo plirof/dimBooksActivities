@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 6.3 - Πειραματίσου με τα βήματα! ⚽</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 50%, #4facfe 100%);
+    padding: 12px;
+    color: #333;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 22px 18px 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.6rem; margin-bottom: 6px; }
+  .header p { font-size: 1.05rem; opacity: .92; }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .court {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid #e0e0e0;
+  }
+  .court-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: rgba(0,0,0,.12);
+    border-radius: 2px;
+  }
+
+  .kid {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    user-select: none;
+    -webkit-user-select: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+  }
+  .kid-left { left: 10px; }
+  .kid-right { right: 10px; }
+
+  .ball {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.4rem;
+    transition: left 0.12s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,.2));
+  }
+  .ball.bounce {
+    animation: ballBounce 0.12s ease;
+  }
+  @keyframes ballBounce {
+    0%   { transform: translate(-50%, -50%) scale(1); }
+    50%  { transform: translate(-50%, -50%) scale(1.3); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+  }
+
+  .scratch-program {
+    background: #fff9db;
+    border: 2px dashed #f0c040;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .scratch-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #6b5900;
+    margin-bottom: 12px;
+  }
+  .scratch-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  .scratch-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,.15);
+    flex-wrap: wrap;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .block-move-right {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+  }
+  .block-move-left {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+  .block-repeat {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+  }
+  .block-value {
+    background: #fff;
+    color: #333;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-weight: 800;
+    min-width: 32px;
+    text-align: center;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.1);
+  }
+  .scratch-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 16px;
+  }
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .control-label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #555;
+  }
+  .control-input {
+    width: 70px;
+    height: 50px;
+    border: 3px solid #e0e0e0;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .2s;
+    color: #333;
+  }
+  .control-input:focus { border-color: #764ba2; }
+
+  .run-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    transition: transform .15s, box-shadow .2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .run-btn:hover { transform: scale(1.05); box-shadow: 0 8px 28px rgba(102,126,234,.5); }
+  .run-btn:active { transform: scale(.96); }
+  .run-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+  .status-bar {
+    text-align: center;
+    padding: 12px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 12px;
+    transition: all .3s;
+  }
+  .status-bar.running {
+    background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+    color: #2e7d32;
+  }
+  .status-bar.idle {
+    background: #f5f5f5;
+    color: #999;
+  }
+  .status-bar.done {
+    background: linear-gradient(135deg, #fff9db, #ffe0b2);
+    color: #e65100;
+  }
+
+  .direction-indicator {
+    display: inline-block;
+    font-size: 1.4rem;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.25rem; }
+    .header p { font-size: .92rem; }
+    .court { height: 120px; }
+    .kid { font-size: 2.2rem; }
+    .ball { font-size: 1.8rem; }
+    .scratch-block { font-size: .92rem; padding: 8px 12px; }
+    .controls { gap: 10px; }
+    .control-input { width: 60px; height: 44px; font-size: 1.2rem; }
+    .run-btn { padding: 12px 24px; font-size: 1.1rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .scratch-blocks > * + * { margin-top: 8px; }
+  .scratch-block > * { margin: 3px; }
+  .scratch-row > * { margin: 3px; }
+  .controls > * { margin: 7px; }
+  .control-group > * + * { margin-top: 6px; }
+  @media (max-width: 480px){
+    .controls > * { margin: 5px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>⚽ Πειραματίσου με τα βήματα!</h1>
+    <p>Άλλαξε τους αριθμούς και δες πώς κινείται η μπάλα!</p>
+  </div>
+
+  <div class="card">
+    <div class="court" id="court">
+      <div class="court-line"></div>
+      <div class="kid kid-left">👧</div>
+      <div class="kid kid-right">👦</div>
+      <div class="ball" id="ball">⚽</div>
+    </div>
+  </div>
+
+  <div class="scratch-program">
+    <div class="scratch-title">🧩 Πρόγραμμα ScratchJr</div>
+    <div class="scratch-blocks">
+      <div class="scratch-row">
+        <div class="scratch-block block-move-right">
+          ΚΙΝΗΣΟΥ ΔΕΞΙΑ
+          <span class="block-value" id="blockStepsRight">3</span>
+        </div>
+        <div class="scratch-block block-repeat">
+          ΕΠΑΝΑΛΑΒΕ
+          <span class="block-value" id="blockRepsRight">2</span>
+        </div>
+      </div>
+      <div class="scratch-row">
+        <div class="scratch-block block-move-left">
+          ΚΙΝΗΣΟΥ ΑΡΙΣΤΕΡΑ
+          <span class="block-value" id="blockStepsLeft">3</span>
+        </div>
+        <div class="scratch-block block-repeat">
+          ΕΠΑΝΑΛΑΒΕ
+          <span class="block-value" id="blockRepsLeft">2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <div class="control-group">
+        <span class="control-label">👣 Βήματα</span>
+        <input type="number" class="control-input" id="stepsInput" min="1" max="10" value="3">
+      </div>
+      <div class="control-group">
+        <span class="control-label">🔁 Επαναλήψεις</span>
+        <input type="number" class="control-input" id="repsInput" min="1" max="10" value="2">
+      </div>
+      <button class="run-btn" id="runBtn" onclick="runProgram()">▶ Εκτέλεση</button>
+    </div>
+    <div class="status-bar idle" id="statusBar">
+      Πάτα ▶ Εκτέλεση για να ξεκινήσεις!
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var stepsInput = document.getElementById('stepsInput');
+  var repsInput = document.getElementById('repsInput');
+  var ball = document.getElementById('ball');
+  var statusBar = document.getElementById('statusBar');
+  var runBtn = document.getElementById('runBtn');
+  var isRunning = false;
+
+  function clampInput(input) {
+    var v = parseInt(input.value, 10);
+    if (isNaN(v) || v < 1) v = 1;
+    if (v > 10) v = 10;
+    input.value = v;
+    return v;
+  }
+
+  function updateBlocks() {
+    var s = clampInput(stepsInput);
+    var r = clampInput(repsInput);
+    document.getElementById('blockStepsRight').textContent = s;
+    document.getElementById('blockRepsRight').textContent = r;
+    document.getElementById('blockStepsLeft').textContent = s;
+    document.getElementById('blockRepsLeft').textContent = r;
+  }
+
+  stepsInput.addEventListener('input', updateBlocks);
+  repsInput.addEventListener('input', updateBlocks);
+
+  function resetBall() {
+    var court = document.getElementById('court');
+    var courtW = court.offsetWidth;
+    var startX = courtW / 2;
+    ball.style.left = startX + 'px';
+  }
+  resetBall();
+  window.addEventListener('resize', function() {
+    if (!isRunning) resetBall();
+  });
+
+  function runProgram() {
+    if (isRunning) return;
+
+    var steps = clampInput(stepsInput);
+    var reps = clampInput(repsInput);
+
+    isRunning = true;
+    runBtn.disabled = true;
+    resetBall();
+
+    var court = document.getElementById('court');
+    var courtW = court.offsetWidth;
+    var kidLeftX = 50;
+    var kidRightX = courtW - 50;
+    var usableWidth = kidRightX - kidLeftX;
+    var stepPx = usableWidth / 10;
+
+    var centerX = courtW / 2;
+
+    statusBar.className = 'status-bar running';
+    statusBar.textContent = '🏃 Εκτέλεση σε εξέλιξη...';
+
+    var totalMovesRight = steps * reps;
+    var totalMovesLeft = steps * reps;
+    var moves = [];
+    var pos = centerX;
+
+    for (var i = 0; i < totalMovesRight; i++) {
+      pos = Math.min(pos + stepPx, kidRightX);
+      moves.push({ x: pos, dir: 'right' });
+    }
+    for (var j = 0; j < totalMovesLeft; j++) {
+      pos = Math.max(pos - stepPx, kidLeftX);
+      moves.push({ x: pos, dir: 'left' });
+    }
+
+    var moveIndex = 0;
+    var speed = Math.max(80, 300 - moves.length * 8);
+
+    function doMove() {
+      if (moveIndex >= moves.length) {
+        isRunning = false;
+        runBtn.disabled = false;
+        statusBar.className = 'status-bar done';
+        statusBar.textContent = '✅ Τέλος! Άλλαξε τους αριθμούς και ξαναδοκίμασε!';
+        return;
+      }
+
+      var move = moves[moveIndex];
+      ball.style.left = move.x + 'px';
+
+      ball.classList.remove('bounce');
+      void ball.offsetWidth;
+      ball.classList.add('bounce');
+
+      var dirEmoji = move.dir === 'right' ? '➡️' : '⬅️';
+      statusBar.textContent = dirEmoji + ' Βήμα ' + (moveIndex + 1) + ' από ' + moves.length;
+
+      moveIndex++;
+      setTimeout(doMove, speed);
+    }
+
+    setTimeout(doMove, 200);
+  }
+
+  updateBlocks();
+</script>
+
+</body>
+</html>

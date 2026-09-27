@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Ασφάλεια στο Διαδίκτυο",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τις λέξεις που σχετίζονται με την ασφάλεια και το IoT",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Hacking", "correct": true, "color": "#f44336" },
+    { "text": "Phishing", "correct": true, "color": "#2196F3" },
+    { "text": "Antivirus", "correct": true, "color": "#4CAF50" },
+    { "text": "Malware", "correct": true, "color": "#FF9800" },
+    { "text": "IoT", "correct": true, "color": "#9C27B0" },
+    { "text": "Κωδικός", "correct": true, "color": "#00BCD4" },
+    { "text": "Έξυπνο σπίτι", "correct": true, "color": "#8BC34A" },
+    { "text": "Cyberbullying", "correct": true, "color": "#FF5722" },
+    { "text": "Κηπουρική", "correct": false, "color": "#795548" },
+    { "text": "Μαγειρική", "correct": false, "color": "#607D8B" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#E91E63" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#3F51B5" }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Σύμβολα Πράξεων",
+  "subtitle": "Πιάσε τα σωστά σύμβολα",
+  "instructions": "Πιάσε μόνο σωστά σύμβολα αριθμητικών πράξεων!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "+ Πρόσθεση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "- Αφαίρεση",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "# Σύμβολο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "* Πολλαπλασιασμός",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "@ Άθροισμα",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "/ Διαίρεση",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Έλεγχος λαθών",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "! Παράγοντας",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Εμφωλευμένη",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "& Σύνδεση",
+      "correct": false,
+      "color": "#FF5722"
+    }
+  ]
+}

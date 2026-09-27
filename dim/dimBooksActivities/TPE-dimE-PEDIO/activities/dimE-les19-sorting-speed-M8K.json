@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Διαγράμματα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "ravdo", "name": "Ραβδόγραμμα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "pita", "name": "Διάγραμμα Πίτα", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Στήλες (ράβδοι)", "category": "ravdo"},
+    {"text": "Στρογγυλό σχήμα", "category": "pita"},
+    {"text": "Διάγραμμα στήλη", "category": "ravdo"},
+    {"text": "Υπόμνημα", "category": "pita"},
+    {"text": "Κάθετες μπάρες", "category": "ravdo"},
+    {"text": "Κομμάτια πίτας", "category": "pita"},
+    {"text": "Σύγκριση ποσοτήτων", "category": "ravdo"},
+    {"text": "Διαφορετικά χρώματα", "category": "pita"},
+    {"text": "Ετικέτες δεδομένων", "category": "pita"},
+    {"text": "Ύψος = τιμή δεδομένων", "category": "ravdo"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 12,
+  unit: "Ενότητα 2: Υπολογιστικά συστήματα – Ψηφιακές συσκευές – Δίκτυα",
+  slides: [
+    { type:"title", title:"Μάθημα 12ο: Ποιον υπολογιστή να διαλέξω;" },
+    { type:"concept", text:"Υπάρχουν πολλά είδη υπολογιστών. Ανάλογα με τον σκοπό της χρήσης και τις ανάγκες μας, επιλέγουμε το κατάλληλο είδος υπολογιστή." },
+    { type:"concept", text:"Η ταμπλέτα και το έξυπνο κινητό τηλέφωνο λέγονται κινητές συσκευές, επειδή είναι μικρές και ελαφριές. Τα παίρνουμε εύκολα μαζί μας όταν μετακινούμαστε ή όταν ταξιδεύουμε." },
+    { type:"list", title:"Χαρακτηριστικά κινητών συσκευών", items:["Ενσωματωμένη κάμερα, μικρόφωνο και ηχεία","Σύνδεση στο διαδίκτυο με Wi-Fi","Οθόνη αφής με εικονικό πληκτρολόγιο","Χρησιμοποιούνται για ψυχαγωγία και ενημέρωση"] },
+    { type:"concept", text:"Πολλές επιλογές έχουμε και στα αποθηκευτικά μέσα. Εκτός από τον δίσκο αποθήκευσης που βρίσκεται μέσα στον υπολογιστή, μπορούμε να συνδέσουμε και εξωτερικό δίσκο αποθήκευσης." },
+    { type:"concept", text:"Οι πιο συνηθισμένοι τύποι δίσκων αποθήκευσης είναι ο σκληρός δίσκος HDD και ο μαλακός δίσκος SSD. Ο δίσκος SSD λειτουργεί πιο γρήγορα από τον HDD." },
+    { type:"concept", text:"Πολύ εύκολος τρόπος για τη μεταφορά αρχείων είναι η μνήμη φλας. Είναι μικρή, ελαφριά, φτηνή και με μικρότερη χωρητικότητα αποθήκευσης από τον δίσκο." },
+    { type:"concept", text:"Οι κάρτες μνήμης είναι διαδεδομένα μέσα αποθήκευσης. Τις χρησιμοποιούμε κυρίως σε κάμερες, φωτογραφικές μηχανές και κινητά τηλέφωνα." },
+    { type:"concept", text:"Όλα τα μέσα αποθήκευσης είναι εξαρτήματα που μπορεί να χαλάσουν. Συνηθίζουμε να αντιγράφουμε τα αρχεία μας για ασφάλεια." },
+    { type:"list", title:"Μέσα αποθήκευσης", items:["Εσωτερικός δίσκος αποθήκευσης: HDD ή SSD","Εξωτερικός δίσκος αποθήκευσης","Μνήμη φλας","Κάρτες μνήμης"] },
+    { type:"concept", text:"Υπάρχουν ψηφιακές συσκευές που τις «φοράμε» και λέγονται φορετές. Παραδείγματα: έξυπνο ρολόι, έξυπνο βραχιόλι, έξυπνα γυαλιά." },
+    { type:"practice", title:"Συζητήστε", items:["Ποιον υπολογιστή προτιμάτε και γιατί;","Ποια μέσα αποθήκευσης γνωρίζετε;","Γιατί είναι σημαντικό να κάνουμε αντίγραφα αρχείων;"] },
+    { type:"assessment", check:"Μπορώ να περιγράφω τα χαρακτηριστικά διαφορετικών ειδών υπολογιστών και τα μέσα αποθήκευσης", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 2: Υπολογιστικά συστήματα – Ψηφιακές συσκευές – Δίκτυα. Μάθημα 12ο: Ποιον υπολογιστή να διαλέξω;",
+  "Υπάρχουν πολλά είδη υπολογιστών. Ανάλογα με τον σκοπό της χρήσης και τις ανάγκες μας, επιλέγουμε το κατάλληλο είδος υπολογιστή.",
+  "Η ταμπλέτα και το έξυπνο κινητό τηλέφωνο λέγονται κινητές συσκευές, επειδή είναι μικρές και ελαφριές. Τα παίρνουμε εύκολα μαζί μας όταν μετακινούμαστε ή όταν ταξιδεύουμε.",
+  "Χαρακτηριστικά κινητών συσκευών. Ενσωματωμένη κάμερα, μικρόφωνο και ηχεία. Σύνδεση στο διαδίκτυο με Wi-Fi. Οθόνη αφής με εικονικό πληκτρολόγιο. Χρησιμοποιούνται για ψυχαγωγία και ενημέρωση",
+  "Πολλές επιλογές έχουμε και στα αποθηκευτικά μέσα. Εκτός από τον δίσκο αποθήκευσης που βρίσκεται μέσα στον υπολογιστή, μπορούμε να συνδέσουμε και εξωτερικό δίσκο αποθήκευσης.",
+  "Οι πιο συνηθισμένοι τύποι δίσκων αποθήκευσης είναι ο σκληρός δίσκος HDD και ο μαλακός δίσκος SSD. Ο δίσκος SSD λειτουργεί πιο γρήγορα από τον HDD.",
+  "Πολύ εύκολος τρόπος για τη μεταφορά αρχείων είναι η μνήμη φλας. Είναι μικρή, ελαφριά, φτηνή και με μικρότερη χωρητικότητα αποθήκευσης από τον δίσκο.",
+  "Οι κάρτες μνήμης είναι διαδεδομένα μέσα αποθήκευσης. Τις χρησιμοποιούμε κυρίως σε κάμερες, φωτογραφικές μηχανές και κινητά τηλέφωνα.",
+  "Όλα τα μέσα αποθήκευσης είναι εξαρτήματα που μπορεί να χαλάσουν. Συνηθίζουμε να αντιγράφουμε τα αρχεία μας για ασφάλεια.",
+  "Μέσα αποθήκευσης. Εσωτερικός δίσκος αποθήκευσης: HDD ή SSD. Εξωτερικός δίσκος αποθήκευσης. Μνήμη φλας. Κάρτες μνήμης",
+  "Υπάρχουν ψηφιακές συσκευές που τις «φοράμε» και λέγονται φορετές. Παραδείγματα: έξυπνο ρολόι, έξυπνο βραχιόλι, έξυπνα γυαλιά.",
+  "Συζητήστε. Ποιον υπολογιστή προτιμάτε και γιατί; Ποια μέσα αποθήκευσης γνωρίζετε; Γιατί είναι σημαντικό να κάνουμε αντίγραφα αρχείων;",
+  "Μπορώ να περιγράφω τα χαρακτηριστικά διαφορετικών ειδών υπολογιστών και τα μέσα αποθήκευσης. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

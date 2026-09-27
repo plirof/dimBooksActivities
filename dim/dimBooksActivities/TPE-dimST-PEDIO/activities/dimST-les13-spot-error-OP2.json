@@ -1,0 +1,54 @@
+{
+  "title": "Βρες τα Λάθη: Ρυθμίσεις Υπολογιστή",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Για", "error": false },
+        { "text": "να", "error": false },
+        { "text": "εγκαταστήσεις", "error": false },
+        { "text": "εφαρμογή", "error": false },
+        { "text": "πηγαίνεις", "error": false },
+        { "text": "στο", "error": false },
+        { "text": "διαδίκτυο", "error": true, "correct": "αποθετήριο (Store)", "feedback": "Οι εφαρμογές βρίσκονται στο αποθετήριο λογισμικού (Store)" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Αν", "error": false },
+        { "text": "έχει", "error": false },
+        { "text": "κολλήσει", "error": false },
+        { "text": "ο", "error": false },
+        { "text": "υπολογιστής", "error": false },
+        { "text": "πατάς", "error": false },
+        { "text": "το", "error": false },
+        { "text": "κουμπί", "error": false },
+        { "text": "εκκίνησης", "error": true, "correct": "Alt+Ctrl+Delete πρώτα", "feedback": "Πρώτα Alt+Ctrl+Delete. Το κουμπί εκκίνησης μόνο ως τελευταία λύση" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Όταν", "error": false },
+        { "text": "ένας", "error": false },
+        { "text": "ιός", "error": false },
+        { "text": "μολύνει", "error": false },
+        { "text": "τον", "error": false },
+        { "text": "υπολογιστή", "error": false },
+        { "text": "συνεχίζεις", "error": true, "correct": "σταματάς αμέσως", "feedback": "Πρέπει αμέσως να χρησιμοποιήσεις αντι-ιική προστασία" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Αν", "error": false },
+        { "text": "χάσεις", "error": false },
+        { "text": "αρχεία", "error": false },
+        { "text": "από", "error": false },
+        { "text": "τον", "error": false },
+        { "text": "δίσκο", "error": false },
+        { "text": "κάνεις", "error": false },
+        { "text": "νέα", "error": false },
+        { "text": "αποθήκευση", "error": true, "correct": "κανένα αποθήκευση, απευθύνεσαι σε τεχνικό", "feedback": "Μην κάνεις νέα αποθήκευση. Απευθύνσου σε τεχνικό." }
+      ]
+    }
+  ]
+}

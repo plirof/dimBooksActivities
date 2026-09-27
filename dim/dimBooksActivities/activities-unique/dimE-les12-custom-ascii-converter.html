@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII Converter | Μάθημα 12</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.4rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:20px;}
+.section{background:#f8f9ff;border-radius:14px;padding:16px;margin-bottom:14px;border:2px solid #e8eaf6;}
+.section-title{font-size:1rem;font-weight:700;color:#4527a0;margin-bottom:10px;text-align:center;}
+.converter{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:12px 0;}
+.conv-step{background:#fff;border-radius:12px;padding:12px 16px;text-align:center;min-width:70px;box-shadow:0 2px 8px rgba(0,0,0,.08);border:2px solid #e0e0e0;}
+.conv-step .lbl{font-size:.7rem;color:#888;font-weight:600;margin-bottom:4px;}
+.conv-step .val{font-size:1.4rem;font-weight:800;color:#4527a0;font-family:monospace;}
+.conv-arrow{font-size:1.3rem;color:#764ba2;font-weight:700;}
+.input-row{display:flex;gap:10px;align-items:center;justify-content:center;margin:12px 0;flex-wrap:wrap;}
+.input-row input{width:60px;height:50px;text-align:center;font-size:1.4rem;font-weight:700;border:3px solid #667eea;border-radius:12px;outline:none;text-transform:uppercase;}
+.input-row input:focus{border-color:#764ba2;box-shadow:0 0 12px rgba(118,75,162,.3);}
+.bit-row{display:flex;gap:6px;justify-content:center;margin:12px 0;flex-wrap:wrap;}
+.bit{width:48px;height:64px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #ddd;background:#fff;transition:all .2s;user-select:none;}
+.bit.on{background:linear-gradient(135deg,#667eea,#764ba2);border-color:#4527a0;box-shadow:0 4px 12px rgba(102,126,234,.4);}
+.bit .pos{font-size:.6rem;color:#999;font-weight:600;}
+.bit.on .pos{color:#e0d0ff;}
+.bit .bv{font-size:1.4rem;font-weight:800;color:#ccc;}
+.bit.on .bv{color:#fff;}
+.table-wrap{max-height:200px;overflow-y:auto;border-radius:10px;border:2px solid #e8eaf6;}
+table{width:100%;border-collapse:collapse;font-size:.8rem;}
+th{background:#667eea;color:#fff;padding:6px;position:sticky;top:0;}
+td{padding:5px 8px;text-align:center;border-bottom:1px solid #eee;}
+tr:hover td{background:#f3e5f5;}
+tr.active td{background:#e8eaf6;font-weight:700;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .converter > * { margin: 6px; }
+  .input-row > * { margin: 5px; }
+  .bit-row > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💻 ASCII Converter</h1>
+<p class="subtitle">Γράμμα → Αριθμός → 8-bit Δυαδικό</p>
+<div class="container">
+<div class="section">
+<div class="section-title">🔤 Γράψε ένα γράμμα (Ελληνικό ή Αγγλικό)</div>
+<div class="input-row"><input type="text" id="inp" maxlength="1" placeholder="A" oninput="convert()"></div>
+<div class="converter" id="chain"></div>
+<div class="bit-row" id="bits"></div>
+</div>
+<div class="section">
+<div class="section-title">📋 Πίνακας ASCII (A-Z)</div>
+<div class="table-wrap"><table id="tbl"></table></div>
+</div>
+</div>
+<script>
+var EN='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var GR='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+function toBin8(n){var s='';for(var i=7;i>=0;i--)s+=(n>>i)&1;return s;}
+function buildTable(){
+var t=document.getElementById('tbl');
+var h='<tr><th>Γράμμα</th><th>ASCII</th><th>Δυαδικό (8-bit)</th><th>Γράμμα</th><th>ASCII</th><th>Δυαδικό (8-bit)</th></tr>';
+for(var i=0;i<13;i++){var j=i+13;
+h+='<tr><td>'+String.fromCharCode(65+i)+'</td><td>'+(65+i)+'</td><td style="font-family:monospace">'+toBin8(65+i)+'</td>';
+h+='<td>'+String.fromCharCode(65+j)+'</td><td>'+(65+j)+'</td><td style="font-family:monospace">'+toBin8(65+j)+'</td></tr>';}
+t.innerHTML=h;
+}
+function highlightRow(code){
+var rows=document.querySelectorAll('#tbl tr');rows.forEach(function(r){r.classList.remove('active');});
+var idx=code-65;if(idx>=0&&idx<13&&rows[idx+1])rows[idx+1].classList.add('active');
+else if(idx>=13&&idx<26&&rows[idx-12])rows[idx-12].classList.add('active');
+}
+function convert(){
+var ch=document.getElementById('inp').value;
+var chain=document.getElementById('chain');var bits=document.getElementById('bits');
+if(!ch){chain.innerHTML='<div style="color:#999;padding:10px;">Περιμένουμε γράμμα...</div>';bits.innerHTML='';highlightRow(-1);return;}
+var code=ch.charCodeAt(0);var bin=toBin8(code);
+chain.innerHTML='<div class="conv-step"><div class="lbl">Γράμμα</div><div class="val">'+ch+'</div></div>'
++'<div class="conv-arrow">→</div><div class="conv-step"><div class="lbl">ASCII Κωδικός</div><div class="val">'+code+'</div></div>'
++'<div class="conv-arrow">→</div><div class="conv-step"><div class="lbl">8-bit Δυαδικό</div><div class="val" style="font-size:1rem;letter-spacing:2px">'+bin+'</div></div>';
+bits.innerHTML='';
+for(var i=0;i<8;i++){
+var b=document.createElement('div');b.className='bit'+(bin[i]==='1'?' on':'');
+b.innerHTML='<div class="pos">Bit '+(8-i)+'</div><div class="bv">'+bin[i]+'</div>';bits.appendChild(b);
+}
+highlightRow(code>=65&&code<=90?code:-1);
+}
+buildTable();convert();
+</script>
+</body>
+</html>

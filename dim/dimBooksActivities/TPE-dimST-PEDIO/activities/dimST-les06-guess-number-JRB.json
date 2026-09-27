@@ -1,0 +1,9 @@
+{
+  "title": "Παίξε 5 Φορές — Καταγραφή & Μέσος Όρος",
+  "subtitle": "Παίξε 5 γύρους, καταγράψε τις προσπάθειες και βρες τον μέσο όρο!",
+  "range": 10,
+  "rounds": 5,
+  "showTable": true,
+  "showAverage": true,
+  "showStars": true
+}

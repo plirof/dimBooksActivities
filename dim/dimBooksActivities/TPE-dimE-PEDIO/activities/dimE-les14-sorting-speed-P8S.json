@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: LAN vs WAN",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "lan", "name": "LAN (Τοπικό)", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "wan", "name": "WAN (Ευρείας Περιοχής)", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Καλύπτει ένα κτίριο", "category": "lan"},
+    {"text": "Συνδέει συσκευές σε σπίτι", "category": "lan"},
+    {"text": "Μικρή γεωγραφική εμβέλεια", "category": "lan"},
+    {"text": "Κοινή χρήση εκτυπωτή", "category": "lan"},
+    {"text": "Γρήγορη μεταφορά δεδομένων", "category": "lan"},
+    {"text": "Καλύπτει πόλεις και χώρες", "category": "wan"},
+    {"text": "Συνδέει πολλά τοπικά δίκτυα", "category": "wan"},
+    {"text": "Μεγάλη γεωγραφική εμβέλεια", "category": "wan"},
+    {"text": "Διαδίκτυο", "category": "wan"},
+    {"text": "Σύνθετη τεχνολογία", "category": "wan"}
+  ],
+  "duration": 30
+}

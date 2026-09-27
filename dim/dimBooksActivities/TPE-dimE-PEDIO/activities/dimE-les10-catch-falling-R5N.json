@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Μηνύματα",
+  "subtitle": "Πιάσε τις σωστές εντολές των μηνυμάτων!",
+  "instructions": "Πιάσε τις εντολές που σχετίζονται με τα μηνύματα!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Στείλε", "correct": true, "color": "#4CAF50" },
+    { "text": "Όταν λάβω", "correct": true, "color": "#2196F3" },
+    { "text": "Μήνυμα", "correct": true, "color": "#FF9800" },
+    { "text": "Επικοινωνία", "correct": true, "color": "#9C27B0" },
+    { "text": "Συγχρονισμός", "correct": true, "color": "#00BCD4" },
+    { "text": "Βολή", "correct": true, "color": "#E91E63" },
+    { "text": "Εμφάνιση", "correct": true, "color": "#8BC34A" },
+    { "text": "Εξαφάνιση", "correct": true, "color": "#3F51B5" },
+    { "text": "Αντιγραφή δίσκου", "correct": false, "color": "#F44336" },
+    { "text": "Μορφοποίηση κειμένου", "correct": false, "color": "#795548" }
+  ]
+}

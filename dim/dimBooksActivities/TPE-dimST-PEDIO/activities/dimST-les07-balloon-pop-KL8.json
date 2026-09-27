@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Επίπεδα Δυσκολίας",
+  "subtitle": "Σπάσε μόνο τα στοιχεία που σχετίζονται με τα επίπεδα",
+  "instruction": "Σπάσε τα μπαλόνια που περιγράφουν σωστές έννοιες του μαθήματος",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Επίπεδο δυσκολίας",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εμφωλευμένη εντολή",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ζωγραφική καμβά",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ηχητικά εφέ",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Γραφικά εφέ",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Γεωγραφικός χάρτης",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Εντολή επανάληψης",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ιστορία αρχαία",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Αλλαγή ενδυμασίας",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Μουσική συμφωνία",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

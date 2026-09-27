@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Το Ποντίκι",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ποντίκι", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "τρία", "error": true, "correct": "δύο", "feedback": "Το ποντίκι έχει ΔΥΟ πλήκτρα, όχι τρία!"},
+        {"text": "πλήκτρα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ροδέλα", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στα", "error": true, "correct": "στη μέση", "feedback": "Η ροδέλα βρίσκεται στη ΜΕΣΗ του ποντικιού!"},
+        {"text": "πλάι", "error": false},
+        {"text": "του", "error": false},
+        {"text": "ποντικιού.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βάζω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": false},
+        {"text": "πάνω", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "τζάμι", "error": true, "correct": "μαουσπάτ", "feedback": "Δεν βάζουμε το ποντίκι σε γυάλινη επιφάνεια!"},
+        {"text": "!", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κρατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": false},
+        {"text": "με", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "πόδια", "error": true, "correct": "χέρια", "feedback": "Κρατάμε το ποντίκι με τα ΧΕΡΙΑ μας!"},
+        {"text": "μου.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Εναλλακτική Αναζήτηση",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Αντίστροφη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αντιστροφή",
+          "error": true,
+          "correct": "Αντίστροφη",
+          "feedback": "Το σωστό είναι 'Αντίστροφη'"
+        },
+        {
+          "text": "Μεταφόρτωση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Μικρόφωνο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Μικροθώνιο",
+          "error": true,
+          "correct": "Μικρόφωνο",
+          "feedback": "Το σωστό είναι 'Μικρόφωνο' με 'φ'"
+        },
+        {
+          "text": "Σάρωση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Περιεχόμενο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Φωνητική",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Περιεχόμερο",
+          "error": true,
+          "correct": "Περιεχόμενο",
+          "feedback": "Το σωστό είναι 'Περιεχόμενο' με 'ν'"
+        },
+        {
+          "text": "Εικόνα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Εικόννα",
+          "error": true,
+          "correct": "Εικόνα",
+          "feedback": "Το σωστό είναι 'Εικόνα' με ένα 'ν'"
+        },
+        {
+          "text": "Κώδικας",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

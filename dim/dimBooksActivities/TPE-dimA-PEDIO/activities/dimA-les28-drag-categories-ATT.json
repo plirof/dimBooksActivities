@@ -1,0 +1,53 @@
+{
+  "title": "Εργαλεία ζωγραφικής",
+  "subtitle": "Ταίριαξε κάθε εργαλείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "pencil",
+      "name": "ΜΟΛΥΒΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "color",
+      "name": "ΧΡΩΜΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "thick",
+      "name": "ΠΑΧΟΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Γραμμή",
+      "category": "pencil"
+    },
+    {
+      "id": "item2",
+      "text": "Πλήρωση",
+      "category": "color"
+    },
+    {
+      "id": "item3",
+      "text": "Λεπτό",
+      "category": "thick"
+    },
+    {
+      "id": "item4",
+      "text": "Πινελιά",
+      "category": "pencil"
+    },
+    {
+      "id": "item5",
+      "text": "Παλέτα",
+      "category": "color"
+    },
+    {
+      "id": "item6",
+      "text": "Χοντρό",
+      "category": "thick"
+    }
+  ]
+}

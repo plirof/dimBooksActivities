@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάλεξε τις Σωστές Λέξεις-Κλειδιά</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:720px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f5f3ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#6d28d9;text-align:center;line-height:1.5}
+.progress-bar{display:flex;justify-content:center;gap:6px;margin-bottom:12px}
+.progress-dot{width:16px;height:16px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.progress-dot.done-ok{background:#4ade80}
+.progress-dot.done-wrong{background:#f87171}
+.progress-dot.current{background:#8b5cf6;transform:scale(1.3)}
+.score-display{text-align:center;font-size:.9em;color:#6d28d9;margin-bottom:8px;font-weight:600}
+.question-area{background:#f5f3ff;border-radius:16px;border:2px solid #ddd6fe;padding:20px;margin-bottom:14px;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.q-emoji{font-size:2.5em;margin-bottom:8px}
+.q-text{font-size:1.1em;font-weight:600;color:#4c1d95;max-width:500px;line-height:1.5;margin-bottom:6px}
+.q-hint{font-size:.85em;color:#7c3aed;background:#ede9fe;padding:4px 14px;border-radius:30px}
+.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.btn-choice{padding:14px 20px;border:2px solid #ddd6fe;border-radius:16px;font-size:.95em;font-weight:600;cursor:pointer;transition:all .2s;background:#fff;color:#4c1d95;text-align:left;display:flex;align-items:center;gap:10px}
+.btn-choice:hover{transform:translateX(4px);border-color:#8b5cf6;background:#ede9fe}
+.btn-choice.selected{background:#ede9fe;border-color:#7c3aed}
+.btn-choice.correct{border-color:#16a34a;background:#f0fdf4;color:#166534}
+.btn-choice.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.btn-choice:disabled{cursor:default;transform:none!important}
+.btn-next{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;transition:all .2s;display:none;margin:10px auto 0}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(124,58,237,.4)}
+.feedback{text-align:center;font-size:1em;font-weight:600;margin-top:8px;min-height:32px;padding:8px 12px;border-radius:12px}
+.feedback.ok{color:#16a34a;background:#f0fdf4}
+.feedback.fail{color:#dc2626;background:#fef2f2}
+.btn-reset-wrap{text-align:center;margin-top:10px}
+.btn-reset{padding:10px 28px;border:none;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;background:#f0f0f0;color:#555;transition:all .2s}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:550px){.q-text{font-size:1em}.btn-choice{font-size:.88em;padding:12px 14px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .progress-bar > * + * { margin-left: 6px; }
+  .choices > * + * { margin-top: 10px; }
+  .btn-choice > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔑 Διάλεξε τις Σωστές Λέξεις-Κλειδιά</h1>
+<p>Για κάθε ερώτημα, επίλεξε τις καλύτερες λέξεις-κλειδιά για αναζήτηση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Οι λέξεις-κλειδιά πρέπει να είναι <b>συγκεκριμένες</b> και <b>ακριβείς</b> για να βρεις τα καλύτερα αποτελέσματα!</div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="score-display" id="scoreDisplay">Ερώτηση: 0 / 8</div>
+<div class="question-area" id="questionArea">
+<div class="q-emoji" id="qEmoji">🌍</div>
+<div class="q-text" id="qText">Πάτα «Αρχή» για να ξεκινήσεις!</div>
+</div>
+<div class="choices" id="choicesArea"></div>
+<div class="feedback" id="feedback"></div>
+<button class="btn-next" id="btnNext" onclick="nextQ()">⏭️ Επόμενο</button>
+<div class="btn-reset-wrap">
+<button class="btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var questions=[
+{
+emoji:'🐪',
+text:'Θέλεις να μάθεις ποια ζώα ζουν στην έρημο Σαχάρα.',
+options:['«έρημος ζώα»','«Σαχάρα ζώα έρημος»','«κατοικίδια έρημος»'],
+correct:1,
+explain:'Οι καλύτερες λέξεις-κλειδιά είναι «Σαχάρα ζώα έρημος» — συγκεκριμένες και ακριβείς!'
+},
+{
+emoji:'🏀',
+text:'Θέλεις να βρεις πληροφορίες για τους κανόνες του μπάσκετ.',
+options:['«μπάσκετ»','«κανόνες μπάσκετ»','«αθλήματα»'],
+correct:1,
+explain:'Το «κανόνες μπάσκετ» είναι πιο συγκεκριμένο από το απλό «μπάσκετ»!'
+},
+{
+emoji:'🇬🇷',
+text:'Θέλεις να μάθεις πόσος είναι ο πληθυσμός της Ελλάδας.',
+options:['«Ελλάδα»','«πληθυσμός Ελλάδας 2025»','«χώρες του κόσμου»'],
+correct:1,
+explain:'Το «πληθυσμός Ελλάδας 2025» δίνει ακριβές αποτέλεσμα με έτος!'
+},
+{
+emoji:'🌊',
+text:'Θέλεις να μάθεις για την κλιματική αλλαγή και τις πλημμύρες.',
+options:['«καιρός σήμερα»','«κλιματική αλλαγή πλημμύρες»','«φυσικά φαινόμενα»'],
+correct:1,
+explain:'Το «κλιματική αλλαγή πλημμύρες» συνδυάζει τις δύο βασικές έννοιες!'
+},
+{
+emoji:'💻',
+text:'Θέλεις να μάθεις πώς λειτουργεί ένας φυλλομετρητής (browser).',
+options:['«υπολογιστής»','«πώς λειτουργεί φυλλομετρητής»','«ίντερνετ»'],
+correct:1,
+explain:'Το «πώς λειτουργεί φυλλομετρητής» περιγράφει ακριβώς αυτό που ψάχνεις!'
+},
+{
+emoji:'🌋',
+text:'Θέλεις να ετοιμάσεις εργασία για τα ηφαίστεια της Ιταλίας.',
+options:['«ηφαίστεια Ιταλίας»','«Ευρώπη»','«βουνά Ιταλίας»'],
+correct:0,
+explain:'Το «ηφαίστεια Ιταλίας» είναι ακριβές και συγκεκριμένο!'
+},
+{
+emoji:'🐬',
+text:'Θέλεις να μάθεις για τα δελφίνια και την επικοινωνία τους.',
+options:['«ζώα θάλασσας»','«δελφίνια επικοινωνία»','«ψάρια»'],
+correct:1,
+explain:'Το «δελφίνια επικοινωνία» στοχεύει ακριβώς σε αυτό που ψάχνεις!'
+},
+{
+emoji:'📜',
+text:'Θέλεις να μάθεις ποιος ήταν ο πρώτος φυλλομετρητής στην ιστορία.',
+options:['«διαδίκτυο»','«ιστορία υπολογιστών»','«πρώτος φυλλομετρητής ιστορία»'],
+correct:2,
+explain:'Το «πρώτος φυλλομετρητής ιστορία» δίνει τα πιο σχετικά αποτελέσματα!'
+}
+];
+
+var currentIndex=0,score=0,answered=false;
+
+function buildProgress(){
+var bar=document.getElementById('progressBar');bar.innerHTML='';
+for(var i=0;i<questions.length;i++){var d=document.createElement('div');d.className='progress-dot';d.id='pdot-'+i;bar.appendChild(d);}
+}
+
+function showQuestion(){
+if(currentIndex>=questions.length){showFinal();return;}
+var q=questions[currentIndex];
+document.getElementById('qEmoji').textContent=q.emoji;
+document.getElementById('qText').textContent=q.text;
+document.getElementById('scoreDisplay').textContent='Ερώτηση: '+(currentIndex+1)+' / '+questions.length;
+document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';
+document.getElementById('btnNext').style.display='none';
+answered=false;
+var dots=document.querySelectorAll('.progress-dot');
+for(var i=0;i<dots.length;i++)dots[i].classList.remove('current');
+document.getElementById('pdot-'+currentIndex).classList.add('current');
+var area=document.getElementById('choicesArea');area.innerHTML='';
+for(var j=0;j<q.options.length;j++){
+var btn=document.createElement('button');
+btn.className='btn-choice';btn.dataset.index=j;
+btn.innerHTML='<span>'+(j+1)+'.</span><span>'+q.options[j]+'</span>';
+btn.onclick=function(){if(!answered)pick(parseInt(this.dataset.index));};
+area.appendChild(btn);
+}
+}
+
+function pick(idx){
+answered=true;
+var q=questions[currentIndex];
+var correct=idx===q.correct;
+if(correct)score++;
+var btns=document.querySelectorAll('.btn-choice');
+for(var i=0;i<btns.length;i++){btns[i].disabled=true;
+if(i===q.correct)btns[i].classList.add('correct');
+else if(i===idx&&!correct)btns[i].classList.add('wrong');
+}
+var dot=document.getElementById('pdot-'+currentIndex);
+dot.classList.remove('current');dot.classList.add(correct?'done-ok':'done-wrong');
+var fb=document.getElementById('feedback');
+fb.textContent=correct?'✅ Σωστά! '+q.explain:'❌ Λάθος. '+q.explain;
+fb.className='feedback '+(correct?'ok':'fail');
+document.getElementById('btnNext').style.display='block';
+}
+
+function nextQ(){currentIndex++;showQuestion();}
+
+function showFinal(){
+document.getElementById('qEmoji').textContent='🏁';
+document.getElementById('qText').textContent='Ολοκληρώθηκε!';
+document.getElementById('scoreDisplay').textContent='Αποτέλεσμα: '+score+' / '+questions.length;
+document.getElementById('choicesArea').innerHTML='';document.getElementById('btnNext').style.display='none';
+var fb=document.getElementById('feedback');
+if(score===questions.length){fb.textContent='🎉 Τέλεια! Είσαι ειδικός στις λέξεις-κλειδιά! 🔑';fb.className='feedback ok';}
+else if(score>=6){fb.textContent='👍 Καλή δουλειά! '+score+'/'+questions.length+' — θυμήσου: συγκεκριμένες και ακριβείς λέξεις!';fb.className='feedback ok';}
+else{fb.textContent='🔍 '+score+'/'+questions.length+' σωστά. Διάλεγε πάντα τις πιο συγκεκριμένες λέξεις!';fb.className='feedback fail';}
+}
+
+function resetGame(){currentIndex=0;score=0;
+for(var i=0;i<questions.length;i++){var d=document.getElementById('pdot-'+i);if(d)d.className='progress-dot';}
+document.getElementById('btnNext').style.display='none';document.getElementById('feedback').className='feedback';document.getElementById('feedback').textContent='';
+showQuestion();}
+
+buildProgress();showQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+{
+  "title": "Βρες τα Λάθη: Αλγόριθμοι",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Ο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "αλγόριθμος",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "μια",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τυχαία",
+          "error": true,
+          "correct": "συγκεκριμένη",
+          "feedback": "Η σειρά βημάτων είναι ΣΥΓΚΕΚΡΙΜΕΝΗ, όχι τυχαία"
+        },
+        {
+          "text": "σειρά",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "βημάτων",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Γράψε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εισόδου",
+          "error": true,
+          "correct": "εξόδου",
+          "feedback": "Η εντολή Γράψε είναι εντολή ΕΞΟΔΟΥ, όχι εισόδου"
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Διάβασε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "σημαίνει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εμφάνιση",
+          "error": true,
+          "correct": "πληκτρολόγηση",
+          "feedback": "Η εντολή Διάβασε σημαίνει ΠΛΗΚΤΡΟΛΟΓΗΣΗ, όχι εμφάνιση"
+        },
+        {
+          "text": "με",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "το",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πληκτρολόγιο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

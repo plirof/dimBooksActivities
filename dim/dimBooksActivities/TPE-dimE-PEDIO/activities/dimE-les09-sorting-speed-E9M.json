@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Παράλληλες Ακολουθίες",
+  "subtitle": "Ταξινόμησε γρήγορα τις εντολές!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "par", "name": "Παράλληλη Εκτέλεση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "dup", "name": "Διπλασιασμός / Αντιγραφή", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Δύο σενάρια ίδιου συμβάντος", "category": "par"},
+    {"text": "Χορός και μουσική μαζί", "category": "par"},
+    {"text": "Κοινό συμβάν", "category": "par"},
+    {"text": "Ταυτόχρονη εκτέλεση", "category": "par"},
+    {"text": "Δεξί κλικ διπλασιασμός", "category": "dup"},
+    {"text": "Αντίγραφο χαρακτήρα", "category": "dup"},
+    {"text": "Σύρσιμο μπλοκ σε μορφή", "category": "dup"},
+    {"text": "Αντιγραφή σεναρίων", "category": "dup"},
+    {"text": "Πράσινη σημαία", "category": "par"},
+    {"text": "Νέα μορφή χορευτή", "category": "dup"}
+  ],
+  "duration": 30
+}

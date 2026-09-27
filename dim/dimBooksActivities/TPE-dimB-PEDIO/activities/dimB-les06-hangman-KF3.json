@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: Προγραμματίζω με Επανάληψη",
+  "subtitle": "Μάντεψε τις λέξεις!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΜΠΑΛΑ", "hint": "Πηγαίνει από το ένα παιδί στο άλλο", "category": "ScratchJr" },
+    { "word": "ΠΗΔΑ", "hint": "Κάνει την κίνηση ενδιαφέρουσα", "category": "Εντολή" },
+    { "word": "ΤΑΧΥΤΗΤΑ", "hint": "Κάνει την μπάλα πιο γρήγορη", "category": "Εντολή" },
+    { "word": "ΕΞΑΓΩΝΟ", "hint": "Κόκκινο, σταματάει το πρόγραμμα", "category": "ScratchJr" },
+    { "word": "ΗΡΩΑΣ", "hint": "Ο χαρακτήρας στο ScratchJr", "category": "ScratchJr" },
+    { "word": "ΣΚΗΝΙΚΟ", "hint": "Το φόντο του έργου στο ScratchJr", "category": "ScratchJr" }
+  ]
+}

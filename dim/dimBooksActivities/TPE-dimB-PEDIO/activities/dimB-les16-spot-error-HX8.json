@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Σωστή Αποθήκευση",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Φάκελος", "error": false, "correct": "", "feedback": "" },
+        { "text": "Βάζω", "error": false, "correct": "", "feedback": "" },
+        { "text": "ολα", "error": true, "correct": "όλα", "feedback": "Λείπει ο τόνος" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αρχεία", "error": false, "correct": "", "feedback": "" },
+        { "text": "στον", "error": false, "correct": "", "feedback": "" },
+        { "text": "ιδιο", "error": true, "correct": "ίδιο", "feedback": "Λείπει ο τόνος" },
+        { "text": "φάκελο", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "τοπικός", "error": false, "correct": "", "feedback": "" },
+        { "text": "δίσκος", "error": false, "correct": "", "feedback": "" },
+        { "text": "ονμαζεται", "error": true, "correct": "ονομάζεται", "feedback": "Λάθος ορθογραφία και λείπει ο τόνος" },
+        { "text": "C:", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "μνημη", "error": true, "correct": "μνήμη", "feedback": "Λείπει ο τόνος" },
+        { "text": "φλας", "error": false, "correct": "", "feedback": "" },
+        { "text": "ονομάζεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ε:", "error": false, "correct": "", "feedback": "" },
+        { "text": "η", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ζ:", "error": true, "correct": "F:", "feedback": "Το γράμμα δίσκου είναι F: όχι Z:" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: micro:bit",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "μίκρομπιτ", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μεγάλο", "error": true, "correct": "μικρό", "feedback": "Το micro:bit είναι ΜΙΚΡΟ, όχι μεγάλο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Έχει", "error": false},
+        {"text": "οθόνη", "error": true, "correct": "φωτάκια", "feedback": "Το micro:bit έχει φωτάκια, όχι οθόνη!"},
+        {"text": "που", "error": false},
+        {"text": "ανάβουν.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εντολή", "error": false},
+        {"text": "για", "error": false},
+        {"text": "πάντα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "στις", "error": false},
+        {"text": "κόκκινες", "error": true, "correct": "μπλε", "feedback": "Η εντολή για πάντα είναι μπλε!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πάτα", "error": false},
+        {"text": "Λήψη", "error": false},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σβήσεις", "error": true, "correct": "μεταφέρεις", "feedback": "Πατάμε Λήψη για να μεταφέρουμε, όχι να σβήσουμε!"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Μονοπάτι",
+  "subtitle": "Πιάσε λέξεις για το μονοπάτι!",
+  "instructions": "Πιάσε μόνο τις λέξεις για το ΜΟΝΟΠΑΤΙ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Πάπια", "correct": true, "color": "#4CAF50"},
+    {"text": "Αυτοκίνητο", "correct": false, "color": "#f44336"},
+    {"text": "Εμπόδιο", "correct": true, "color": "#2196F3"},
+    {"text": "Ψυγείο", "correct": false, "color": "#FF9800"},
+    {"text": "Λιμνούλα", "correct": true, "color": "#9C27B0"},
+    {"text": "Καναπές", "correct": false, "color": "#E91E63"},
+    {"text": "Μονοπάτι", "correct": true, "color": "#009688"},
+    {"text": "Τηλεόραση", "correct": false, "color": "#FFC107"},
+    {"text": "Πλάνο", "correct": true, "color": "#795548"},
+    {"text": "Κουζίνα", "correct": false, "color": "#607D8B"}
+  ]
+}

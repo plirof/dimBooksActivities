@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: Άρθρα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "άρθρα", "error": false},
+        {"text": "οργανώνονται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Οργανώνονται χρονολογικά Ή θεματικά!"},
+        {"text": "χρονολογικά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ετικέτα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "μεγάλο", "error": true, "correct": "", "feedback": "Η ετικέτα είναι ΜΙΑ ΛΕΞΗ, όχι μεγάλο κείμενο!"},
+        {"text": "κείμενο.", "error": true, "correct": "λέξη", "feedback": "Η ετικέτα είναι ΜΙΑ χαρακτηριστική ΛΕΞΗ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "άρθρο", "error": false},
+        {"text": "περιέχει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Το άρθρο περιέχει κείμενο, εικόνες, βίντεο, ήχο ΚΑΙ συνδέσμους!"},
+        {"text": "κείμενο.", "error": true, "correct": "κείμενο, εικόνες, βίντεο και άλλα", "feedback": "Περιέχει και εικόνες, βίντεο, ήχο, συνδέσμους!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "δημοσίευση", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "αποθήκευση.", "error": true, "correct": "δημοσίευση", "feedback": "Πατάω ΔΗΜΟΣΙΕΥΣΗ για να βγει το άρθρο!"}
+      ]
+    }
+  ]
+}

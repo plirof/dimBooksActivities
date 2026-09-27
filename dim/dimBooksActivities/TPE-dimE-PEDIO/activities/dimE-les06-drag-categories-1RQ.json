@@ -1,0 +1,17 @@
+{
+  "title": "Πρόβλημα ή Λύση;",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "problem", "name": "Πρόβλημα Παιχνιδιού", "color": "#F44336" },
+    { "id": "solution", "name": "Λύση", "color": "#4CAF50" }
+  ],
+  "items": [
+    { "id": "p1", "text": "Οι ήρωες κινούνται μετά πόντους = 10", "category": "problem" },
+    { "id": "p2", "text": "Ζωές μειώνονται κάτω από το 0", "category": "problem" },
+    { "id": "p3", "text": "Αστερίας σταματά πριν πόντοι = 10", "category": "problem" },
+    { "id": "s1", "text": "Επανάλαβε ώσπου (πόντοι=10 Ή ζωές=0)", "category": "solution" },
+    { "id": "s2", "text": "Σύνθετη λογική έκφραση με Ή", "category": "solution" },
+    { "id": "s3", "text": "Αντικατάσταση «για πάντα» με «ώσπου»", "category": "solution" },
+    { "id": "s4", "text": "Όλα τα sprites με ίδια συνθήκη", "category": "solution" }
+  ]
+}

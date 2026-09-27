@@ -1,0 +1,104 @@
+{
+  "templates": [
+    {
+      "id": "computer_wheel_programs_001",
+      "name": "Προγράμματα υπολογιστή",
+      "description": "Πες τη χρήση του προγράμματος",
+      "category": "computer_wheel",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "segments": [
+        "Word - Γράψιμο κειμένου",
+        "Excel - Λογαριασμοί",
+        "Paint - Ζωγραφική",
+        "Calculator - Μαθηματικά",
+        "Browser - Ίντερνετ",
+        "Notepad - Απλό κείμενο",
+        "Media Player - Μουσική",
+        "Games - Παιχνίδια",
+        "Email - Μηνύματα",
+        "Photos - Φωτογραφίες"
+      ]
+    },
+    {
+      "id": "computer_wheel_parts_001",
+      "name": "Μέρη του υπολογιστή",
+      "description": "Πες τι κάνει αυτό το μέρος",
+      "category": "computer_wheel",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "segments": [
+        "Οθόνη - Βλέπουμε εικόνες",
+        "Πληκτρολόγιο - Γράφουμε",
+        "Ποντίκι - Κάνουμε κλικ",
+        "Σκληρός δίσκος - Αποθηκεύουμε",
+        "Εκτυπωτής - Εκτυπώνουμε",
+        "Ηχεία - Ακούμε ήχο",
+        "Μικρόφωνο - Μιλάμε",
+        "Κάμερα - Βγάζουμε φωτογραφίες",
+        "Τροφοδοτικό - Δίνει ρεύμα",
+        "Ανεμιστήρας - Δροσίζει"
+      ]
+    },
+    {
+      "id": "computer_wheel_rules_001",
+      "name": "Κανόνες ασφαλείας",
+      "description": "Τι πρέπει να κάνεις στον υπολογιστή",
+      "category": "computer_wheel",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "rules", "greek", "elementary"],
+      "segments": [
+        "Πλύνε τα χέρια πριν",
+        "Μην τρως δίπλα",
+        "Κάθεσαι σωστά",
+        "Μην ανοίγεις άγνωστα",
+        "Πες στους γονείς για όλα",
+        "Μην δίνεις κωδικούς",
+        "Κάνε διαλείμματα",
+        "Μην κάθεσαι πολλή ώρα",
+        "Χρησιμοποίεσε δικούς σου κωδικούς",
+        "Σβήσε σωστά τον υπολογιστή"
+      ]
+    },
+    {
+      "id": "computer_wheel_keyboard_001",
+      "name": "Πλήκτρα υπολογιστή",
+      "description": "Για τι χρησιμεύει αυτό το πλήκτρο",
+      "category": "computer_wheel",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "segments": [
+        "Enter - Επιβεβαίωση",
+        "Escape - Ακύρωση",
+        "Space - Κενό",
+        "Backspace - Σβήσιμο",
+        "Delete - Διαγραφή",
+        "Shift - Κεφαλαία",
+        "Tab - Επόμενο πεδίο",
+        "Ctrl - Συντόμευση",
+        "Alt - Εναλλακτικό",
+        "Caps Lock - Κλειδώνει κεφαλαία"
+      ]
+    },
+    {
+      "id": "computer_wheel_internet_001",
+      "name": "Ίντερνετ",
+      "description": "Τι σημαίνει αυτό στο ίντερνετ",
+      "category": "computer_wheel",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "segments": [
+        "www - Παγκόσμιος ιστός",
+        "com - Εμπορική σελίδα",
+        "org - Οργανισμός",
+        "edu - Εκπαιδευτική",
+        "email - Ηλεκτρονικό ταχυδρομείο",
+        "link - Σύνδεσμος",
+        "search - Αναζήτηση",
+        "browser - Πρόγραμμα περιήγησης",
+        "password - Κωδικός",
+        "username - Όνομα χρήστη"
+      ]
+    }
+  ]
+}

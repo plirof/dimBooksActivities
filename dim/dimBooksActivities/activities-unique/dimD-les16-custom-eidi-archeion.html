@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Είδη Αρχείων - Ταιριάζω την Επέκταση</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:900px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fffbeb;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#92400e;text-align:center;line-height:1.5}
+.match-board{display:flex;gap:16px;margin-bottom:16px}
+.match-col{flex:1}
+.match-col h3{text-align:center;padding:8px;border-radius:12px;font-size:.9em;font-weight:700;margin-bottom:10px;color:#fff}
+.col-types h3{background:linear-gradient(135deg,#92400e,#b45309)}
+.col-exts h3{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.type-slots{display:flex;flex-direction:column;gap:10px}
+.type-slot{padding:14px;border:2px dashed #d4d4d4;border-radius:14px;min-height:56px;display:flex;align-items:center;gap:10px;background:#fafafa;transition:all .3s}
+.type-slot .slot-emoji{font-size:1.5em;flex-shrink:0}
+.type-slot .slot-label{font-size:.95em;font-weight:600;color:#334155}
+.type-slot .slot-drop{flex:1;min-height:36px;border:2px dashed #e5e7eb;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85em;color:#9ca3af;padding:4px 8px;transition:all .3s}
+.type-slot .slot-drop.filled{border-style:solid;border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600}
+.type-slot .slot-drop.drag-over{border-color:#f59e0b;background:#fef3c7}
+.ext-pool-area{background:#fafafa;border-radius:16px;border:2px solid #e5e7eb;padding:15px;margin-top:4px}
+.ext-pool-area h3{text-align:center;color:#6d28d9;margin-bottom:10px;font-size:.95em}
+.ext-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px}
+.ext-card{padding:10px 18px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:14px;cursor:grab;font-size:1.05em;font-weight:700;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);user-select:none;touch-action:none;color:#6d28d9}
+.ext-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(109,40,217,.15);border-color:#8b5cf6}
+.ext-card:active{cursor:grabbing}
+.ext-card.dragging{opacity:.35}
+.ext-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(146,64,14,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.match-board{flex-direction:column}.ext-card{font-size:.9em;padding:8px 14px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .match-board > * + * { margin-left: 16px; }
+  .type-slots > * + * { margin-top: 10px; }
+  .type-slot > * + * { margin-left: 10px; }
+  .ext-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📁 Είδη Αρχείων: Ταιριάζω την Επέκταση</h1>
+<p>Σύρε κάθε επέκταση αρχείου στο σωστό είδος περιεχομένου!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Κάθε ψηφιακό αρχείο έχει επέκταση</b> που δείχνει τι είδους περιεχόμενο περιέχει. π.χ. .jpg = εικόνα, .mp4 = βίντεο. Μπορείς να τα ταιριάξεις;</div>
+<div class="match-board">
+<div class="match-col col-types">
+<h3>📂 Είδος Περιεχομένου</h3>
+<div class="type-slots" id="typeSlots"></div>
+</div>
+<div class="match-col col-exts">
+<h3>🏷️ Επεκτάσεις</h3>
+<div class="type-slots" id="extSlots"></div>
+</div>
+</div>
+<div class="ext-pool-area">
+<h3>🧩 Οι επεκτάσεις — σύρε την κάθε μία στη σωστή θέση</h3>
+<div class="ext-pool" id="extPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var types=[
+{id:'image',label:'Εικόνα',emoji:'🖼️',exts:['.jpg','.png','.gif']},
+{id:'video',label:'Βίντεο',emoji:'🎬',exts:['.mp4','.avi']},
+{id:'audio',label:'Ήχος',emoji:'🎵',exts:['.mp3','.wav']},
+{id:'text',label:'Κείμενο',emoji:'📝',exts:['.odt','.txt']}
+];
+
+var allExts=[];
+for(var i=0;i<types.length;i++){
+for(var j=0;j<types[i].exts.length;j++){
+allExts.push({ext:types[i].exts[j],typeId:types[i].id});
+}
+}
+
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function buildSlots(){
+var slotsContainer=document.getElementById('typeSlots');
+var extSlotsContainer=document.getElementById('extSlots');
+slotsContainer.innerHTML='';
+extSlotsContainer.innerHTML='';
+for(var i=0;i<types.length;i++){
+var t=types[i];
+var row=document.createElement('div');
+row.className='type-slot';
+row.innerHTML='<span class="slot-emoji">'+t.emoji+'</span><span class="slot-label">'+t.label+'</span>';
+slotsContainer.appendChild(row);
+var dropRow=document.createElement('div');
+dropRow.className='type-slot';
+var dropZone=document.createElement('div');
+dropZone.className='slot-drop';
+dropZone.id='drop-'+t.id;
+dropZone.dataset.typeId=t.id;
+dropZone.textContent='Επέκταση αρχείου';
+dropZone.ondragover=function(e){if(dragItem)e.preventDefault();this.classList.add('drag-over');};
+dropZone.ondragleave=function(e){this.classList.remove('drag-over');};
+dropZone.ondrop=function(e){e.preventDefault();this.classList.remove('drag-over');if(!dragItem)return;tryPlace(dragItem,this.dataset.typeId);};
+dropRow.appendChild(dropZone);
+extSlotsContainer.appendChild(dropRow);
+}
+}
+
+function initPool(){
+var pool=document.getElementById('extPool');
+pool.innerHTML='';
+var shuffled=shuffle(allExts.slice());
+for(var i=0;i<shuffled.length;i++){
+var ext=shuffled[i];
+var card=document.createElement('div');
+card.className='ext-card';
+card.setAttribute('draggable','true');
+card.dataset.ext=ext.ext;
+card.dataset.typeId=ext.typeId;
+card.textContent=ext.ext;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',el.dataset.ext);
+}
+
+function dragEnd(e,el){
+el.classList.remove('dragging');
+dragItem=null;
+clearDragOver();
+}
+
+function touchStart(e,el){dragItem=el;el.classList.add('dragging');}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){
+var zone=elUnder.classList.contains('slot-drop')?elUnder:elUnder.closest('.slot-drop');
+if(zone&&!zone.classList.contains('filled')){zone.classList.add('drag-over');dragItem.dataset.targetZone=zone.id;}
+else{dragItem.dataset.targetZone='';}
+}else{dragItem.dataset.targetZone='';}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');
+clearDragOver();
+if(el.dataset.targetZone){
+var zone=document.getElementById(el.dataset.targetZone);
+if(zone&&!zone.classList.contains('filled')){tryPlace(el,zone.dataset.typeId);}
+}
+el.dataset.targetZone='';
+}
+
+function clearDragOver(){
+var zones=document.querySelectorAll('.slot-drop');
+for(var i=0;i<zones.length;i++)zones[i].classList.remove('drag-over');
+}
+
+function tryPlace(card,typeId){
+var extTypeId=card.dataset.typeId;
+var dropZone=document.getElementById('drop-'+typeId);
+if(dropZone.classList.contains('filled'))return;
+placements[card.dataset.ext]=typeId;
+card.classList.add('placed');
+dropZone.classList.add('filled');
+dropZone.textContent=card.dataset.ext;
+dropZone.dataset.placedExt=card.dataset.ext;
+dropZone.dataset.placedType=extTypeId;
+var allPlaced=document.querySelectorAll('.ext-card.placed').length;
+document.getElementById('checkBtn').disabled=allPlaced<allExts.length;
+}
+
+function checkAnswers(){
+var correct=0;
+var total=allExts.length;
+var drops=document.querySelectorAll('.slot-drop.filled');
+for(var i=0;i<drops.length;i++){
+var placedExt=drops[i].dataset.placedExt;
+var placedType=drops[i].dataset.placedType;
+var zoneType=drops[i].dataset.typeId;
+if(placedType===zoneType)correct++;
+}
+if(correct===total){
+showFeedback('🎉 Τέλεια! Όλες οι επεκτάσεις ταιριάχτηκαν σωστά! Ξέρεις τα αρχεία σου! 📁✅',true);
+}else{
+showFeedback('🔍 '+correct+'/'+total+' σωστά. Κάποιες επεκτάσεις μπήκαν λάθος — δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},4000);
+}
+
+function resetGame(){
+placements={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+document.getElementById('checkBtn').disabled=true;
+buildSlots();
+initPool();
+}
+
+buildSlots();
+initPool();
+document.getElementById('checkBtn').disabled=true;
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πρότυπα & Θέματα | Μάθημα 24</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#faf5ff,#c084fc);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#581c87;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#7c3aed;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#581c87;font-size:.75rem;font-weight:700;border:1px solid #c084fc;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.theme-card{background:#faf5ff;border:2px solid #d8b4fe;border-radius:12px;padding:10px;margin:8px 0}
+.theme-title{font-size:.8rem;font-weight:700;color:#581c87;text-align:center;margin-bottom:8px}
+.theme-icon{font-size:1.4rem;text-align:center;margin-bottom:4px}
+.template-opts{display:grid;grid-template-columns:1fr 1fr;grid-gap:6px}
+.tpl-opt{padding:8px;border:2px solid #e2e8f0;border-radius:10px;font-size:.68rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;text-align:center}
+.tpl-opt:hover{border-color:#7c3aed;background:#faf5ff}
+.tpl-opt.selected{border-color:#7c3aed;background:#ede9fe;color:#581c87;font-weight:700}
+.tpl-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.tpl-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.tpl-opt.disabled{pointer-events:none;opacity:.6}
+.info-text{font-size:.68rem;color:#64748b;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#7c3aed;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#6d28d9}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #7c3aed;border-radius:10px;background:transparent;color:#7c3aed;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#faf5ff}
+.final{background:#ede9fe;border-radius:14px;padding:14px;text-align:center;margin:8px 0}
+.final-score{font-size:1.2rem;font-weight:700;color:#581c87}
+.final-msg{font-size:.78rem;color:#6d28d9;margin-top:4px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎨 Πρότυπα & Θέματα</h1>
+<p class="subtitle">Διάλεξε το πιο κατάλληλο πρότυπο για κάθε θέμα παρουσίασης!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Θέμα:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var themes=[
+{
+title:'Γιορτή Απόφοιτησης Σχολείου',
+icon:'🎓',
+templates:['Επίσημο σκούρο μπλε με χρυσά γράμματα','Χρωματιστό με γεωμετρικά σχήματα','Λευκό με μαύρες γραμμές','Πράσινο με φύλλα δέντρων'],
+correct:0,
+explain:'Το επίσημο σκούρο μπλε με χρυσά γράμματα ταιριάζει σε γιορτή και τελετή.'
+},
+{
+title:'Τα Ζώα του Δάσους',
+icon:'🦊',
+templates:['Κόκκινο με καρδιές','Πράσινο με φύλλα δέντρων','Γαλάζιο με κύματα','Μαύρο με αστέρια'],
+correct:1,
+explain:'Το πράσινο με φύλλα δέντρων ταιριάζει στο θέμα φύσης και δάσους.'
+},
+{
+title:'Η Θάλασσα και η Ζωή σε Αυτήν',
+icon:'🐠',
+templates:['Κίτρινο με ήλιο','Γαλάζιο με κύματα','Μωβ με αστέρια','Καφέ με βουνά'],
+correct:1,
+explain:'Το γαλάζιο με κύματα αντιπροσωπεύει τη θάλασσα τέλεια!'
+},
+{
+title:'Το Διάστημα',
+icon:'🚀',
+templates:['Πράσινο με δέντρα','Μαύρο με αστέρια','Κόκκινο με φλόγες','Λευκό με τετράγωνα'],
+correct:1,
+explain:'Το μαύρο με αστέρια θυμίζει τον νυχτερινό ουρανό και το διάστημα.'
+},
+{
+title:'Υγιεινή Διατροφή',
+icon:'🥗',
+templates:['Μαύρο με κεραυνούς','Κόκκινο με καρδιές','Πράσινο με φρούτα και λαχανικά','Γαλάζιο με σταγόνες'],
+correct:2,
+explain:'Το πράσινο με φρούτα και λαχανικά ταιριάζει στο θέμα διατροφής.'
+},
+{
+title:'Χριστούγεννα στον Κόσμο',
+icon:'🎄',
+templates:['Πράσινο με χρυσά στολίδια και χιόνι','Γαλάζιο με ψάρια','Καφέ με βιβλία','Γκρι με γραφήματα'],
+correct:0,
+explain:'Τα χρώματα των Χριστουγέννων είναι πράσινο, χρυσό και λευκό (χιόνι)!'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false,done=0;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var t=themes[curQ];
+var main=document.getElementById('main');
+var h='';
+if(done<themes.length){
+h+='<div class="theme-card">';
+h+='<div class="theme-icon">'+t.icon+'</div>';
+h+='<div class="theme-title">'+t.title+'</div>';
+h+='<p class="info-text">Ποιο πρότυπο διάταξης ταιριάζει καλύτερα;</p>';
+h+='<div class="template-opts">';
+for(var i=0;i<t.templates.length;i++){
+var cls='tpl-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===t.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+t.templates[i]+'</div>';
+}
+h+='</div></div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===t.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστά! '+t.explain:'❌ '+t.explain)+'</div>';
+if(curQ<themes.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Θέμα ▶</button>';
+}else{
+done=themes.length;
+h+='<div class="final"><div class="final-score">Αποτέλεσμα: '+pts+'/'+themes.length*10+'</div><div class="final-msg">'+(pts>=50?'🎉 Εξαιρετικά! Ξέρεις να διαλέγεις πρότυπα!':'💡 Ξαναδοκίμασε για να μάθεις περισσότερα!')+'</div></div>';
+}
+}
+}else{
+h+='<div class="final"><div class="final-score">Τελικό Αποτέλεσμα: '+pts+'/'+themes.length*10+'</div><div class="final-msg">'+(pts>=50?'🎉 Εξαιρετικά!':'💡 Συνέχισε την προσπάθεια!')+'</div></div>';
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<themes.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "title": "Διάγραμμα Ροής: Αποστολή Email",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Πώς στέλνω ένα email",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Ανοίγω την εφαρμογή email"},
+    {"id": 2, "type": "action", "text": "Γράφω τη διεύθυνση του παραλήπτη"},
+    {"id": 3, "type": "action", "text": "Γράφω το μήνυμά μου"},
+    {"id": 4, "type": "action", "text": "Προσθέτω αρχεία αν χρειάζεται"},
+    {"id": 5, "type": "action", "text": "Πατάω αποστολή"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5]
+}

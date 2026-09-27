@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Χαρακτηριστικά Website",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΣΩΣΤΕΣ ΠΡΟΤΑΣΕΙΣ για δικτυακούς τόπους! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "URL = διεύθυνση", "correct": true, "color": "#4CAF50"},
+    {"text": "URL = εικόνα", "correct": false, "color": "#f44336"},
+    {"text": "Μενού = σύνδεσμοι", "correct": true, "color": "#2196F3"},
+    {"text": "Μενού = φαγητό", "correct": false, "color": "#FF9800"},
+    {"text": "Ιδιοκτήτης = διαχειριστής", "correct": true, "color": "#9C27B0"},
+    {"text": "Ιδιοκτήτης = επισκέπτης", "correct": false, "color": "#E91E63"},
+    {"text": "Δομή = οργάνωση", "correct": true, "color": "#00BCD4"},
+    {"text": "Δομή = χρώμα", "correct": false, "color": "#FFC107"},
+    {"text": "Σύνδεσμος = πλοήγηση", "correct": true, "color": "#795548"},
+    {"text": "Σύνδεσμος = κλώνος", "correct": false, "color": "#607D8B"}
+  ]
+}

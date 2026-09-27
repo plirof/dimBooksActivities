@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 4ο: Κατασκευή απλού παιχνιδιού στο Scratch</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a1628;color:#222;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+.topbar{background:linear-gradient(135deg,#00598a,#0077b6);color:#fff;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;height:46px;flex-shrink:0}
+.topbar .left{display:flex;align-items:center;gap:10px}
+.topbar .badge{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+.topbar h1{font-size:14px}
+.topbar .counter{font-size:13px;opacity:.8}
+.pbar{height:3px;background:#1a2a40;flex-shrink:0}
+.pbar-fill{height:100%;background:linear-gradient(90deg,#00598a,#00b4d8);transition:width .3s}
+.stage{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:20px}
+.slide{display:none;max-width:860px;width:100%;background:#fff;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,.4);padding:40px 50px;animation:fadeIn .3s}
+.slide.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide h2{color:#00598a;font-size:24px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #00b4d8}
+.slide h3{color:#0077b6;font-size:18px;margin:18px 0 10px}
+.slide p{line-height:1.7;margin-bottom:12px;font-size:15px}
+.slide ul{margin:10px 0 14px 24px;line-height:1.8;font-size:15px}
+.slide ul li{margin-bottom:4px}
+.slide .box{background:#e8f4fd;border-left:4px solid #00598a;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0}
+.slide .box.orange{background:#fff3e0;border-left-color:#e65100}
+.slide .box.green{background:#e8f5e9;border-left-color:#2e7d32}
+.slide .algo{background:#f5f5f5;border:1px solid #ddd;border-radius:8px;padding:18px 22px;margin:14px 0;font-family:'Courier New',monospace;font-size:14px;line-height:1.9}
+.slide .indent{padding-left:24px}
+.slide .keyword{color:#00598a;font-weight:700}
+.slide .step-num{display:inline-block;background:#00598a;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:14px;font-weight:700;margin-right:8px}
+.navbar{background:#0f1b2d;height:52px;display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0}
+.nbtn{background:#00598a;border:none;color:#fff;padding:7px 20px;border-radius:6px;cursor:pointer;font-size:14px;transition:background .2s}
+.nbtn:hover{background:#0077b6}
+.nbtn:disabled{opacity:.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="left"><span class="badge">Μάθημα 4ο</span><h1>Κατασκευή απλού παιχνιδιού στο Scratch</h1></div>
+<span class="counter"><span id="cur">1</span> / <span id="tot"></span></span>
+</div>
+<div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+<div class="stage">
+
+<div class="slide active">
+<h2>Μάθημα 4ο: Κατασκευή απλού παιχνιδιού στο Scratch</h2>
+<div class="box green"><strong>Στόχοι μαθήματος:</strong>
+<ul>
+<li>Να φτιάχνεις ένα απλό παιχνίδι στο Scratch</li>
+<li>Να προγραμματίζεις τους ήρωες του παιχνιδιού</li>
+<li>Να χρησιμοποιείς τον τελεστή άρνησης «όχι» (δεν)</li>
+</ul></div>
+</div>
+
+<div class="slide">
+<h2>Τι είναι ένα παιχνίδι στον υπολογιστή;</h2>
+<p>Ένα παιχνίδι είναι μια <strong>εφαρμογή</strong> όπου μπορούμε να ελέγχουμε ήρωες και να πετυχαίνουμε στόχους. Στον προγραμματισμό παιχνιδιών, φτιάχνουμε <strong>κανόνες, κινήσεις και αντιδράσεις</strong> για τους ήρωες.</p>
+<p>Με το Scratch μπορούμε να δημιουργήσουμε τα δικά μας παιχνίδια επιλέγοντας τους ήρωές μας αλλά και πολλά άλλα.</p>
+<div class="box">
+<strong>Κάθε παιχνίδι έχει:</strong> Αρχή, μέση και τέλος – όπως μια μικρή ιστορία. Διάλεξε με φαντασία τη δική σου ιστορία για να φτιάξεις το παιχνίδι σου.
+</div>
+<p>Θα χρειαστείς εντολές προγραμματισμού από προηγούμενες τάξεις (εντολές επανάληψης, επιλογής, συμβάντα) ενώ θα μάθεις και αρκετές καινούριες.</p>
+</div>
+
+<div class="slide">
+<h2>Δημιουργία έργου στο Scratch</h2>
+<p><strong>Ιστορία:</strong> Η Έλλη πάει στην Ε΄ Δημοτικού και ονειρεύεται να γίνει θαλάσσια βιολόγος. Της αρέσει να βουτάει στον βυθό και να φωτογραφίζει ζώα και φυτά. Ένα από τα αγαπημένα της είδη είναι ο αστερίας.</p>
+<p><strong>Βοήθησε την Έλλη</strong> να τραβήξει δέκα φωτογραφίες του θαλάσσιου αστερία φτιάχνοντας ένα παιχνίδι στο Scratch!</p>
+<h3>Βήματα:</h3>
+<ul>
+<li><span class="step-num">1</span>Δημιούργησε ένα <strong>νέο έργο</strong> και βάλε ως υπόβαθρο τον <strong>βυθό</strong></li>
+<li><span class="step-num">2</span>Πρόσθεσε τα αντικείμενα: <strong>δύτης</strong> (Έλλη) και <strong>Αστερίας</strong></li>
+<li><span class="step-num">3</span>Δώσε σωστά ονόματα: «Έλλη» και «Αστερίας»</li>
+<li><span class="step-num">4</span>Μείωσε το μέγεθος του Αστερία από το 100 στο <strong>50</strong></li>
+</ul>
+</div>
+
+<div class="slide">
+<h2>Προγραμματισμός κίνησης της Έλλης</h2>
+<p>Θέλουμε η Έλλη να κολυμπάει στον βυθό <strong>ακολουθώντας το ποντίκι</strong> του υπολογιστή.</p>
+<h3>Εντολές:</h3>
+<ul>
+<li>Χρησιμοποίησε την εντολή <span class="keyword">«πήγαινε στον δείκτη του ποντικιού»</span> μέσα σε μία εντολή «για πάντα»</li>
+<li>Η Έλλη όμως δεν κινείται, απλώς περιστρέφεται. Πρόσθεσε και την εντολή <span class="keyword">«κινήσου 10 βήματα»</span></li>
+</ul>
+<div class="box orange">
+<strong>Πρόβλημα:</strong> Όταν ο δείκτης του ποντικιού ακουμπάει την Έλλη, αυτή <strong>τρεμοπαίζει</strong>. Γιατί συμβαίνει αυτό;
+</div>
+</div>
+
+<div class="slide">
+<h2>Τελεστής άρνησης «όχι»</h2>
+<p>Για να διορθώσουμε το πρόβλημα του τρεμοπαίγματος, θα χρησιμοποιήσουμε τον <span class="keyword">τελεστή άρνησης «όχι»</span> από την πράσινη κατηγορία.</p>
+<div class="box">
+<strong>Ο τελεστής «όχι»:</strong> Παίρνει μία συνθήκη και την <strong>αντιστρέφει</strong>. Αν είναι αλήθεια την κάνει ψέμα και αν είναι ψέμα την κάνει αλήθεια.
+</div>
+<h3>Λύση:</h3>
+<ul>
+<li>Βρες τη συνθήκη <span class="keyword">«αγγίζει δείκτη ποντικιού;»</span></li>
+<li>Βάλε τη μέσα στον τελεστή <span class="keyword">«όχι»</span></li>
+<li>Δημιούργησε εντολή <strong>«Εάν δεν αγγίζει δείκτη ποντικιού, τότε κινήσου»</strong></li>
+</ul>
+<p>Δοκίμασε το πρόγραμμά σου κάνοντας κλικ στην πράσινη σημαία!</p>
+</div>
+
+<div class="slide">
+<h2>Αλγόριθμος Αστερία</h2>
+<p>Ο Αστερίας κρύβεται και εμφανίζεται συνεχώς στον βυθό. Μόνο όταν εμφανίζεται μπορεί να τον φωτογραφίσει η Έλλη.</p>
+<div class="algo">
+<strong>Αλγόριθμος Αστερία</strong><br>
+Όταν γίνει κλικ στην πράσινη σημαία<br>
+<div class="indent">Επανάλαβε 10 φορές</div>
+<div class="indent"><div class="indent">Εξαφανίσου</div></div>
+<div class="indent"><div class="indent">Περίμενε 1 δευτερόλεπτο</div></div>
+<div class="indent"><div class="indent">Πήγαινε σε μία τυχαία θέση του βυθού</div></div>
+<div class="indent"><div class="indent">Εμφανίσου</div></div>
+<div class="indent"><div class="indent">Περίμενε 1 δευτερόλεπτο</div></div>
+<div class="indent"><div class="indent">Εξαφανίσου</div></div>
+</div>
+<p>Προσπάθησε να φτιάξεις το πρόγραμμα του Αστερίου βάζοντας στη σειρά τις κατάλληλες εντολές σύμφωνα με τον παραπάνω αλγόριθμο.</p>
+</div>
+
+<div class="slide">
+<h2>Προσθήκη ήχου</h2>
+<p>Μπορείς να βάλεις έναν <strong>ήχο</strong> να ακούγεται κάθε φορά που ο Αστερίας αγγίζει την Έλλη.</p>
+<ul>
+<li>Δες στους διαθέσιμους ήχους του Αστερία από την <strong>καρτέλα «Ήχοι»</strong></li>
+<li>Για να ακούσεις τον ήχο, πάτα πάνω στο κουμπί αναπαραγωγής (play)</li>
+<li>Βάλε τον ήχο μέσα σε μία εντολή <span class="keyword">«Εάν… τότε»</span> με συνθήκη «αγγίζει την Έλλη»</li>
+<li>Η εντολή πρέπει να είναι <strong>μέσα στην εντολή επανάληψης</strong> του Αστερία</li>
+</ul>
+<div class="box green">
+<strong>Μην ξεχάσεις!</strong> Αποθήκευσε το έργο σου με το κατάλληλο όνομα.
+</div>
+</div>
+
+<div class="slide">
+<h2>Τι έμαθα;</h2>
+<div class="box green">
+<strong>Σύνοψη μαθήματος:</strong>
+<ul>
+<li>Ένα παιχνίδι έχει <strong>αρχή, μέση και τέλος</strong> σαν μια μικρή ιστορία</li>
+<li>Χρησιμοποιούμε εντολές <strong>κίνησης</strong> για να κινούνται οι ήρωες</li>
+<li>Ο τελεστής <strong>«όχι»</strong> (άρνηση) αντιστρέφει μια συνθήκη</li>
+<li>Μετατρέπουμε έναν <strong>αλγόριθμο σε πρόγραμμα</strong> βάζοντας εντολές στη σειρά</li>
+<li>Προσθέτουμε <strong>ήχους</strong> για να γίνει το παιχνίδι πιο ενδιαφέρον</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navbar">
+<button class="nbtn" id="prevBtn" onclick="go(-1)">◀ Προηγούμενο</button>
+<button class="nbtn" id="nextBtn" onclick="go(1)">Επόμενο ▶</button>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');let c=0;
+document.getElementById('tot').textContent=slides.length;
+function show(i){c=Math.max(0,Math.min(i,slides.length-1));slides.forEach((s,j)=>{s.classList.toggle('active',j===c)});document.getElementById('cur').textContent=c+1;document.getElementById('pbar').style.width=((c+1)/slides.length*100)+'%';document.getElementById('prevBtn').disabled=c===0;document.getElementById('nextBtn').disabled=c===slides.length-1}
+function go(d){show(c+d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}if(e.key==='Home'){e.preventDefault();show(0)}if(e.key==='End'){e.preventDefault();show(slides.length-1)}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?go(1):go(-1)}});
+show(0);
+</script>
+</body>
+</html>

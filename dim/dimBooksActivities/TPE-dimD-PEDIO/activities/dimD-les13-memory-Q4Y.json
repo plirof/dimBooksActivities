@@ -1,0 +1,13 @@
+{
+  "title": "Εφαρμογές και Περιγραφές",
+  "subtitle": "Βρες την περιγραφή κάθε εφαρμογής",
+  "columns": 4,
+  "pairs": [
+    { "cardA": "🐱 Scratch", "cardB": "Προγραμματισμός παιχνιδιών" },
+    { "cardA": "🦊 Firefox", "cardB": "Πλοήγηση στο διαδίκτυο" },
+    { "cardA": "🐧 TuxPaint", "cardB": "Ζωγραφική για παιδιά" },
+    { "cardA": "📝 LibreOffice Writer", "cardB": "Γράψιμο κειμένων" },
+    { "cardA": "📊 LibreOffice Calc", "cardB": "Υπολογιστικά φύλλα" },
+    { "cardA": "🖼️ LibreOffice Impress", "cardB": "Δημιουργία παρουσιάσεων" }
+  ]
+}

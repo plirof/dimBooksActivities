@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Το Πληκτρολόγιο",
+  "subtitle": "Πιάστε λέξεις για πληκτρολόγιο!",
+  "instructions": "Πιάσε μόνο λέξεις του ΠΛΗΚΤΡΟΛΟΓΙΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Γράμματα", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάνιο", "correct": false, "color": "#f44336"},
+    {"text": "Αριθμοί", "correct": true, "color": "#2196F3"},
+    {"text": "Καρέκλα", "correct": false, "color": "#FF9800"},
+    {"text": "Κέρσορας", "correct": true, "color": "#9C27B0"},
+    {"text": "Ψυγείο", "correct": false, "color": "#E91E63"},
+    {"text": "Πλήκτρο", "correct": true, "color": "#009688"},
+    {"text": "Κουρτίνα", "correct": false, "color": "#FFC107"},
+    {"text": "Λέξη", "correct": true, "color": "#795548"},
+    {"text": "Κρεβάτι", "correct": false, "color": "#607D8B"},
+    {"text": "Κουμπί", "correct": true, "color": "#3F51B5"},
+    {"text": "Νεροχύτης", "correct": false, "color": "#8BC34A"}
+  ]
+}

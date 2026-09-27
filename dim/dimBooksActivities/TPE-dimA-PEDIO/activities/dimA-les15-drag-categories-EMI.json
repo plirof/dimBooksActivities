@@ -1,0 +1,68 @@
+{
+  "title": "Αρχεία σε φακέλους",
+  "subtitle": "Ταίριαξε κάθε αρχείο στον σωστό φάκελο",
+  "categories": [
+    {
+      "id": "pics",
+      "name": "ΕΙΚΟΝΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "audio",
+      "name": "ΗΧΟΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖼️ Φωτογραφία",
+      "category": "pics"
+    },
+    {
+      "id": "item2",
+      "text": "🎥 Ταινία",
+      "category": "video"
+    },
+    {
+      "id": "item3",
+      "text": "🎵 Τραγούδι",
+      "category": "audio"
+    },
+    {
+      "id": "item4",
+      "text": "📝 Έγγραφο",
+      "category": "text"
+    },
+    {
+      "id": "item5",
+      "text": "📷 Selfie",
+      "category": "pics"
+    },
+    {
+      "id": "item6",
+      "text": "🎬 Βίντεο κλιπ",
+      "category": "video"
+    },
+    {
+      "id": "item7",
+      "text": "🎤 Ηχογράφηση",
+      "category": "audio"
+    },
+    {
+      "id": "item8",
+      "text": "📄 Παραγγελία",
+      "category": "text"
+    }
+  ]
+}

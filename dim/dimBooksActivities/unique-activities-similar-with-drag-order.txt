@@ -1,0 +1,136 @@
+# Δραστηριότητες activities-unique/ παρόμοιες με drag-order.html
+# Base: activities-base/drag-order.html?data=../TPE-dimA-PEDIO/activities/dimA-les01-drag-order-DT5.json
+# (Drag & drop αναδιάταξη βημάτων σε λίστα, με αρίθμηση, κουμπί ελέγχου, και έλεγχο σειράς)
+#
+# ΕΠΙΠΕΔΟ 1 — Πιο παρόμοιες (σύρε και άφησε σε αριθμημένες θέσεις + έλεγχος σειράς)
+# ----------------------------------------------------------------------
+
+dimD-les19-custom-stoliose-xarti.html
+  - Σύρε βήματα από πισίνα σε αριθμημένες θέσεις (step-slot, step-num)
+  - "Βάλε τα βήματα στη σωστή σειρά"
+  - Κουμπί "Έλεγχος" που ελέγχει τη σειρά στοιχείο-προς-στοιχείο
+  - Touch support (touchstart/touchmove/touchend + elementFromPoint)
+  - Διαφορά: drag από πισίνα σε slots, όχι in-list reordering
+
+# ΕΠΙΠΕΔΟ 2 — Σειροθέτηση με κλικ (ίδια έννοια, διαφορετική αλληλεπίδραση)
+# ----------------------------------------------------------------------
+
+dimE-les26-custom-ergasies-e-me.html
+  - "Βάλε τα βήματα στη σωστή σειρά!"
+  - "Έλεγχος Σειράς", shuffled steps, element-by-element comparison
+  - step-num, σωστό/λάθος ανατροφοδότηση ανά στοιχείο
+  - Κλικ για προσθήκη στη σειρά (όχι drag)
+
+dimE-les07-custom-allagi-ypobathrou.html
+  - "Βάλε τα βήματα στη σωστή σειρά"
+  - "Έλεγχος Σειράς", shuffled steps, element-by-element validation
+  - Κλικ σε βήματα με σωστή σειρά σε numbered slots
+
+dimB-les22-custom-sosti-seira.html
+  - "Βάλε τα βήματα στη σωστή σειρά"
+  - Κλικ σε βήματα → τοποθέτηση σε θέσεις (pos-row, pos-label)
+  - Αυτόματος έλεγχος σειράς, step-row.correct-pos / .wrong-pos
+
+dimB-les15-custom-anoigo-to-archeio.html
+  - "Βάλε τα βήματα στη σωστή σειρά"
+  - Ίδιο μοτίβο με dimB-les22 (κλικ σε βήματα → θέσεις)
+  - element-by-element comparison
+
+dimB-les16-custom-apothikeusi-vimata.html
+  - Ίδιο pattern με dimB-les22 / dimB-les15
+  - Βήματα αποθήκευσης αρχείου, κλικ σε σωστή σειρά
+
+dimA-les01-custom-syntagi-vimaton.html
+  - "Βάλε τα βήματα στη σωστή σειρά"
+  - Κλικ σε βήματα με τη σωστή σειρά, shuffled steps
+  - Πολλαπλά σενάρια, step-num
+
+dimA-les02-custom-koulourakia.html
+  - "Βάλε τις οδηγίες στη σωστή σειρά"
+  - Κλικ σε οδηγίες για να φτιαχτεί η σειρά
+  - step ordering με ελέγχους
+
+dimA-les02-custom-aeroplanaki.html
+  - "Βάλε τις οδηγίες στη σωστή σειρά"
+  - Πλοήγηση με Επόμενο/Πίσω για ταξινόμηση οδηγιών
+  - "Τέλος! Έλεγχος" κουμπί
+
+dimA-les03-custom-ennes-entoles.html
+  - "Βάλε τα βελάκια στη σωστή σειρά"
+  - Τοποθέτηση εντολών-βελάκια σε σειρά για πρόγραμμα
+  - "Έλεγχος" κουμπί
+
+dimST-les10-custom-megisti-elachisti.html
+  - "Τοποθέτησε τα βήματα στη σωστή σειρά"
+  - Πισίνα με βήματα, κλικ για τοποθέτηση σε αλγόριθμο
+  - "Έλεγχος Σειράς", step validation
+
+dimD-les01-custom-xtise-algorithmo.html
+  - "Διάλεξε τα σωστά βήματα και βάλτα στη σωστή σειρά!"
+  - Επιλογή βημάτων από πισίνα, κουμπιά moveUp/moveDown
+  - "Έλεγχος Αλγορίθμου", element-by-element comparison
+
+dimD-les06-custom-akolouthia-entdyemasion.html
+  - Σειρά ενδυμασιών σε timeline slots (κλικ)
+  - "Έλεγχος" κουμπί, sequential order validation
+
+# ΕΠΙΠΕΔΟ 3 — Drag-and-drop για αντιστοίχιση/κατηγοριοποίηση (όχι σειρά)
+# ----------------------------------------------------------------------
+
+dimD-les15-custom-threat-sort.html
+  - drag threats σε threat/safe categories
+  - draggable + touch support
+  - ΔΕΝ έχει σειρά, αλλά drag υποδομή
+
+dimD-les16-custom-eidi-archeion.html
+  - drag file extensions σε types (matching)
+  - draggable, touch support
+  - ΔΕΝ έχει ordering
+
+dimD-les17-custom-dentro-fakelon.html
+  - drag items σε folder tree hierarchy
+  - draggable, touch support
+  - Ιεραρχία, όχι γραμμική σειρά
+
+dimD-les20-custom-browser-ergaleia.html
+  - drag browser tools σε functions
+  - draggable, touch support
+  - Matching, όχι ordering
+
+dimC-les15-custom-ierarxikos-xartis.html
+  - drag items σε ιεραρχικό χάρτη
+  - draggable, touch support
+
+dimC-les15-custom-xartis-istou.html
+  - drag items σε εννοιολογικό χάρτη
+  - draggable, touch support
+
+dimC-les16-custom-xartis-upologistikou.html
+  - drag computer parts σε θέσεις
+  - draggable, touch support
+
+dimC-les18-custom-sygrisi-biblioy.html
+  - drag items σε web/book slots
+  - draggable, touch support
+
+dimC-les23-custom-xaraktiras-e-me.html
+  - drag items σε good/bad trait slots
+  - draggable, touch support
+
+dimC-les24-custom-idi-istologion.html
+  - drag items σε blog type slots
+  - draggable, touch support
+
+dimE-les16-custom-syllogi-dedomenon.html
+  - drag data items σε collection slots
+  - draggable, touch support
+  - Pool-based, όχι ordering
+
+dimB-les16-custom-act3.html
+  - drag files σε folders
+  - draggable, touch support
+
+dimC-les25-custom-act3.html
+  - draggable emojis για ελεύθερη τοποθέτηση
+  - draggable="true" με dragstart
+  - Χωρίς ordering ή slots

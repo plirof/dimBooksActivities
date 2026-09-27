@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Φύση ή Τέχνη;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Φύση ή Τέχνη;",
+  "categories": [
+    {"id": "fysi", "name": "Φύση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "texni", "name": "Τέχνη", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πεταλούδες", "category": "fysi"},
+    {"text": "Ιπτάμενα Ψάρια Εσέρ", "category": "texni"},
+    {"text": "Κέλυφος", "category": "fysi"},
+    {"text": "Παρθενώνας", "category": "texni"},
+    {"text": "Φολίδες φιδιού", "category": "fysi"},
+    {"text": "Ψηφιδωτό", "category": "texni"},
+    {"text": "Κρύσταλλοι", "category": "fysi"},
+    {"text": "Γεωμετρικά σχέδια", "category": "texni"}
+  ],
+  "duration": 30
+}

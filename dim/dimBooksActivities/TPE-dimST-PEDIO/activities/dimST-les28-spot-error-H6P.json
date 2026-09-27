@@ -1,0 +1,62 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακές Υπηρεσίες",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ψηφιακές", "error": false},
+        {"text": "υπηρεσίες", "error": false},
+        {"text": "βρίσκονται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "ΔΕΝ είναι μόνο στον υπολογιστή! Μπορείς να τις χρησιμοποιήσεις και από tablet/κινητό!"},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "θυρίδα", "error": false},
+        {"text": "πολίτη", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "ταχυδρομείο", "error": true, "correct": "ψηφιακό γραμματοκιβώτιο", "feedback": "Η θυρίδα πολίτη είναι ΨΗΦΙΑΚΟ ΓΡΑΜΜΑΤΟΚΙΒΩΤΙΟ, όχι ταχυδρομείο!"},
+        {"text": "ταχυδρομείου", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "chatbot", "error": false},
+        {"text": "δεν", "error": true, "correct": "μπορεί", "feedback": "Ο chatbot ΜΠΟΡΕΙ να κατανοεί ερωτήματα με τεχνητή νοημοσύνη!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κατανοήσει", "error": false},
+        {"text": "ερωτήματα", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κλείσεις", "error": false},
+        {"text": "ραντεβού", "error": false},
+        {"text": "πηγαίνεις", "error": false},
+        {"text": "φυσικά", "error": true, "correct": "ηλεκτρονικά", "feedback": "Το ραντεβού κλείνει ΗΛΕΚΤΡΟΝΙΚΑ μέσω gov.gr!"},
+        {"text": "στον", "error": false},
+        {"text": "δήμο", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "τεχνητή", "error": false},
+        {"text": "νοημοσύνη", "error": false},
+        {"text": "δεν", "error": true, "correct": "μπορεί", "feedback": "Η τεχνητή νοημοσύνη ΜΠΟΡΕΙ να μαθαίνει, να θυμάται και να λύνει προβλήματα!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "μάθει", "error": false}
+      ]
+    }
+  ]
+}

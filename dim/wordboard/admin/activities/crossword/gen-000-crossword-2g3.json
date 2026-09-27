@@ -1,0 +1,62 @@
+{
+    "id": "gen-000-crossword-2g3",
+    "title": "Simple Crossword",
+    "type": "crossword",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "grid": [
+            [
+                "R",
+                "E",
+                "D"
+            ],
+            [
+                "#",
+                "#",
+                "#"
+            ],
+            [
+                "C",
+                "A",
+                "T"
+            ],
+            [
+                "#",
+                "#",
+                "#"
+            ],
+            [
+                "S",
+                "U",
+                "N"
+            ]
+        ],
+        "words": [
+            {
+                "number": 1,
+                "direction": "across",
+                "clue": "Warm color",
+                "answer": "RED",
+                "row": 0,
+                "col": 0
+            },
+            {
+                "number": 2,
+                "direction": "across",
+                "clue": "Feline pet",
+                "answer": "CAT",
+                "row": 2,
+                "col": 0
+            },
+            {
+                "number": 3,
+                "direction": "across",
+                "clue": "Bright star in day",
+                "answer": "SUN",
+                "row": 4,
+                "col": 0
+            }
+        ]
+    }
+}

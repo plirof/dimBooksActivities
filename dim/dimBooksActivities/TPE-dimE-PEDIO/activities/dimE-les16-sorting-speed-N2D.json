@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ιδιότητες Αρχείου",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "datacollect", "name": "Συλλογή Δεδομένων", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "fileprop", "name": "Ιδιότητα Αρχείου", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ερωτηματολόγιο", "category": "datacollect"},
+    {"text": "Παρατήρηση", "category": "datacollect"},
+    {"text": "Διαδίκτυο", "category": "datacollect"},
+    {"text": "Στατιστική Υπηρεσία", "category": "datacollect"},
+    {"text": "Έρευνα τάξης", "category": "datacollect"},
+    {"text": "Μέγεθος", "category": "fileprop"},
+    {"text": "Ημερομηνία δημιουργίας", "category": "fileprop"},
+    {"text": "Φάκελος", "category": "fileprop"},
+    {"text": "Τελευταία τροποποίηση", "category": "fileprop"},
+    {"text": "Τύπος αρχείου", "category": "fileprop"}
+  ],
+  "duration": 30
+}

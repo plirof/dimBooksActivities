@@ -1,0 +1,43 @@
+{
+    "id": "dimD-les17-groupsort-osn",
+    "title": "Μεγέθη και διαχείριση αρχείων - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "groups": [
+            {
+                "name": "Αρχεία εικόνας",
+                "items": [
+                    "JPEG",
+                    "PNG",
+                    "GIF"
+                ]
+            },
+            {
+                "name": "Αρχεία ήχου",
+                "items": [
+                    "MP3",
+                    "WAV"
+                ]
+            },
+            {
+                "name": "Αρχεία βίντεο",
+                "items": [
+                    "MP4"
+                ]
+            },
+            {
+                "name": "Αρχεία κειμένου",
+                "items": [
+                    "ODT"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les17",
+        "αρχεία"
+    ]
+}

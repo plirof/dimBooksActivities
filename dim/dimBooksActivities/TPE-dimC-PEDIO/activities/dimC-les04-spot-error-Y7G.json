@@ -1,0 +1,65 @@
+{
+  "title": "Βρες τα Λάθη: Scratch",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "προγράμματα", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "Scratch", "error": false},
+        {"text": "ονομάζονται", "error": false},
+        {"text": "ζωγραφιές.", "error": true, "correct": "σενάρια", "feedback": "Τα προγράμματα στο Scratch ονομάζονται σενάρια (scripts), όχι ζωγραφιές!"},
+        {"text": "", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εντολές", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "Scratch", "error": false},
+        {"text": "ονομάζονται", "error": false},
+        {"text": "σεναρία.", "error": true, "correct": "πλακίδια", "feedback": "Οι εντολές ονομάζονται πλακίδια (blocks), όχι σεναρία!"},
+        {"text": "", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "γατούλα", "error": false},
+        {"text": "εμφανίζεται", "error": false},
+        {"text": "στην", "error": true, "correct": "στο", "feedback": "Η γατούλα εμφανίζεται στο κέντρο ΤΗΣ ΣΚΗΝΗΣ!"},
+        {"text": "κέντρο", "error": false},
+        {"text": "της", "error": false},
+        {"text": "σκηνής.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "χρώμα", "error": false},
+        {"text": "της", "error": false},
+        {"text": "κάθε", "error": false},
+        {"text": "εντολής", "error": false},
+        {"text": "δείχνει", "error": false},
+        {"text": "το", "error": false},
+        {"text": "μέγεθος", "error": true, "correct": "την κατηγορία", "feedback": "Το χρώμα δείχνει την ΚΑΤΗΓΟΡΙΑ, όχι το μέγεθος!"},
+        {"text": "που", "error": false},
+        {"text": "ανήκει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βασικό", "error": false},
+        {"text": "συμβάν", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "Scratch", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κόκκινο", "error": true, "correct": "πράσινο", "feedback": "Το βασικό συμβάν είναι η ΠΡΑΣΙΝΗ σημαία, όχι η κόκκινη!"},
+        {"text": "σημαία.", "error": false}
+      ]
+    }
+  ]
+}

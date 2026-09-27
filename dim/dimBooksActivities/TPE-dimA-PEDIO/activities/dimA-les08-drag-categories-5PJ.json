@@ -1,0 +1,58 @@
+{
+  "title": "Ρομπότ στη σωστή δουλειά",
+  "subtitle": "Σύρε κάθε ρομπότ στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "scuba",
+      "name": "ΣΚΟΥΠΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "industrial",
+      "name": "ΒΙΟΜΗΧΑΝΙΚΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "space",
+      "name": "ΔΙΑΣΤΗΜΙΚΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "mail",
+      "name": "ΤΑΧΥΔΡΟΜΙΚΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🧹 Καθαρίζει σπίτια",
+      "category": "scuba"
+    },
+    {
+      "id": "item2",
+      "text": "🔩 Φτιάχνει αυτοκίνητα",
+      "category": "industrial"
+    },
+    {
+      "id": "item3",
+      "text": "🚀 Εξερευνά διάστημα",
+      "category": "space"
+    },
+    {
+      "id": "item4",
+      "text": "📦 Φέρνει πακέτα",
+      "category": "mail"
+    },
+    {
+      "id": "item5",
+      "text": "🏠 Εισέρχεται δωμάτια",
+      "category": "scuba"
+    },
+    {
+      "id": "item6",
+      "text": "🛸 Πηγαίνει σε άλλους πλανήτες",
+      "category": "space"
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ρυθμίσεις Λειτουργικού</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f0abfc);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#be185d,#f0abfc);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fce7f3;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#86198f;text-align:center;line-height:1.5}
+.desktop-simulation{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px}
+.sim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sim-time{font-size:.9em;color:#64748b}
+.sim-icons{display:flex;gap:15px}
+.sim-icon{font-size:1.5em;cursor:pointer;transition:all .2s}
+.sim-icon:hover{transform:scale(1.1)}
+.sim-icon.disabled{opacity:.3;cursor:not-allowed}
+.sim-wallpaper{height:180px;border-radius:12px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:3em;position:relative;transition:all .3s}
+.taskbar{background:#1e293b;border-radius:8px;padding:10px;margin-top:10px;display:flex;align-items:center;gap:12px}
+.taskbar-icon{font-size:1.8em}
+.taskbar-start{background:#3b82f6;border-radius:6px;padding:8px 14px;color:#fff;font-weight:700}
+.settings-panel{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.settings-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.setting-item{background:#fff;border:2px solid #fdba74;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.setting-item:hover{transform:scale(1.02)}
+.setting-item.completed{border-color:#22c55e;background:#f0fdf4}
+.setting-icon{font-size:2em}
+.setting-desc{flex:1}
+.setting-title{font-weight:700;color:#475569;font-size:.95em}
+.setting-desc-text{font-size:.85em;color:#64748b}
+.setting-check{font-size:1.8em;color:#22c55e;display:none}
+.setting-item.completed .setting-check{display:block}
+.btn-check{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#be185d;transform:scale(1.3)}
+@media(max-width:550px){.sim-wallpaper{height:140px;font-size:2.2em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .sim-icons > * + * { margin-left: 15px; }
+  .taskbar > * + * { margin-left: 12px; }
+  .setting-item > * + * { margin-left: 12px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>⚙️ Ρυθμίσεις Λειτουργικού</h1>
+<p>Βρες και ενεργοποίησε τις σωστές ρυθμίσεις!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Το λειτουργικό σύστημα ελέγχει τα πάντα! Μπορούμε να αλλάζουμε ρυθμίσεις οθόνης, φόντου, φωτεινότητα και πολλά άλλα!</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="desktop-simulation">
+<div class="sim-header">
+<div class="sim-time" id="simTime">14:35</div>
+<div class="sim-icons">
+<div class="sim-icon" id="wifiIcon" onclick="checkWifi()">📶</div>
+<div class="sim-icon" id="batteryIcon" onclick="checkBattery()">🔋</div>
+<div class="sim-icon" id="volumeIcon" onclick="checkVolume()">🔊</div>
+</div>
+</div>
+<div class="sim-wallpaper" id="simWallpaper">🏠</div>
+<div class="taskbar">
+<div class="taskbar-start">▶️</div>
+<div class="taskbar-icon">📁</div>
+<div class="taskbar-icon">🌐</div>
+<div class="taskbar-icon">🎮</div>
+</div>
+</div>
+
+<div class="settings-panel">
+<div class="settings-label">🎯 Ρυθμίσεις για ενεργοποίηση:</div>
+<div id="settingsList"></div>
+</div>
+
+<button class="btn-check" id="checkBtn" onclick="checkSettings()">✅ Έλεγχος Ρυθμίσεων</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentChallenge=0;
+var completedSettings=0;
+var settingsEnabled={};
+
+var challenges=[
+{
+  id:'wifi',
+  icon:'📶',
+  title:'Ενεργοποίηση Wi-Fi',
+  desc:'Σύνδεση ασύρματα στο διαδίκτυο',
+  action:function(){
+    var icon=document.getElementById('wifiIcon');
+    icon.style.opacity='1';
+    icon.style.textShadow='0 0 10px #22c55e';
+  }
+},
+{
+  id:'brightness',
+  icon:'💡',
+  title:'Αύξηση φωτεινότητας',
+  desc:'Φωτεινότερη οθόνη',
+  action:function(){
+    var wallpaper=document.getElementById('simWallpaper');
+    wallpaper.style.filter='brightness(1.5)';
+  }
+},
+{
+  id:'wallpaper',
+  icon:'🖼️',
+  title:'Αλλαγή φόντου',
+  desc:'Διαφορετική εικόνα',
+  action:function(){
+    var wallpaper=document.getElementById('simWallpaper');
+    wallpaper.textContent='🌟';
+    wallpaper.style.background='linear-gradient(135deg,#f093fb,#f5576c)';
+  }
+},
+{
+  id:'resolution',
+  icon:'📺',
+  title:'Ανάλυση οθόνης',
+  desc:'Πολλά εικονοστοιχεία',
+  action:function(){
+    var wallpaper=document.getElementById('simWallpaper');
+    wallpaper.style.backgroundSize='150% 150%';
+  }
+}
+];
+
+function buildDots(){
+  var container=document.getElementById('progressDots');
+  container.innerHTML='';
+  for(var i=0;i<challenges.length;i++){
+    var dot=document.createElement('div');
+    dot.className='dot';
+    dot.id='dot-'+i;
+    container.appendChild(dot);
+  }
+}
+
+function initChallenge(){
+  var challenge=challenges[currentChallenge];
+  
+  var settingsList=document.getElementById('settingsList');
+  settingsList.innerHTML='';
+  
+  for(var i=0;i<challenges.length;i++){
+    var item=document.createElement('div');
+    item.className='setting-item';
+    if(settingsEnabled[challenges[i].id]){
+      item.classList.add('completed');
+    }
+    
+    var checkDisplay=settingsEnabled[challenges[i].id]?'block':'none';
+    
+    item.innerHTML='<div class="setting-icon">'+challenges[i].icon+'</div><div class="setting-desc"><div class="setting-title">'+challenges[i].title+'</div><div class="setting-desc-text">'+challenges[i].desc+'</div></div><div class="setting-check">✅</div>';
+    
+    if(!settingsEnabled[challenges[i].id]){
+      item.onclick=function(){
+        enableSetting(i);
+      };
+    }
+    
+    settingsList.appendChild(item);
+  }
+  
+  updateDots();
+  document.getElementById('checkBtn').disabled=true;
+}
+
+function enableSetting(index){
+  var challenge=challenges[index];
+  
+  if(!settingsEnabled[challenge.id]){
+    settingsEnabled[challenge.id]=true;
+    completedSettings++;
+    
+    challenge.action();
+    initChallenge();
+    
+    if(completedSettings===challenges.length){
+      document.getElementById('checkBtn').disabled=false;
+    }
+  }
+}
+
+function checkSettings(){
+  var isAllCompleted=completedSettings===challenges.length;
+  
+  if(isAllCompleted){
+    showFeedback('🎉 Τέλεια! Ενεργοποίησες όλες τις ρυθμίσεις!',true);
+    
+    setTimeout(function(){
+      resetSettings();
+    },2000);
+  }else{
+    showFeedback('❌ Ενεργοποίησε πρώτα όλες τις ρυθμίσεις!',false);
+  }
+}
+
+function resetSettings(){
+  currentChallenge=0;
+  completedSettings=0;
+  settingsEnabled={};
+  
+  document.getElementById('simWallpaper').style.filter='';
+  document.getElementById('simWallpaper').style.backgroundSize='100% 100%';
+  document.getElementById('simWallpaper').style.background='linear-gradient(135deg,#667eea,#764ba2)';
+  document.getElementById('simWallpaper').textContent='🏠';
+  
+  document.getElementById('wifiIcon').style.opacity='.5';
+  document.getElementById('wifiIcon').style.textShadow='';
+  
+  for(var i=0;i<challenges.length;i++){
+    var dot=document.getElementById('dot-'+i);
+    dot.classList.remove('done-ok');
+  }
+  
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  
+  initChallenge();
+}
+
+function updateDots(){
+  var dots=document.querySelectorAll('.dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.remove('current');
+    if(settingsEnabled[challenges[i].id]){
+      dots[i].classList.add('done-ok');
+    }
+  }
+}
+
+function checkWifi(){
+  if(settingsEnabled['wifi']){
+    showFeedback('✅ Το Wi-Fi είναι ενεργοποιημένο!',true);
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+    },1500);
+  }else{
+    showFeedback('❌ Το Wi-Fi δεν είναι ενεργοποιημένο!',false);
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+    },1500);
+  }
+}
+
+function checkBattery(){
+  showFeedback('🔋 Η μπαταρία είναι στο 85%!',true);
+  setTimeout(function(){
+    document.getElementById('feedback').textContent='';
+  },1500);
+}
+
+function checkVolume(){
+  showFeedback('🔊 Ο ήχος είναι στο 70%!',true);
+  setTimeout(function(){
+    document.getElementById('feedback').textContent='';
+  },1500);
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+buildDots();
+initChallenge();
+</script>
+</body>
+</html>

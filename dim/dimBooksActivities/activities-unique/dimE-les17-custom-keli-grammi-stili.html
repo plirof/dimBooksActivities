@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κελί, Γραμμή, Στήλη | Μάθημα 17</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#dcfce7);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#166534;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#4ade80;font-size:.72rem;text-align:center;margin-bottom:8px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#166534;font-size:.75rem;font-weight:700;border:1px solid #bbf7d0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.main{max-width:650px;width:100%}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:16px;margin-bottom:10px}
+.instruction{background:#f0fdf4;border-radius:12px;padding:10px 14px;border-left:4px solid #22c55e;font-size:.78rem;color:#166534;line-height:1.5;margin-bottom:12px}
+.sheet-container{overflow-x:auto;margin-bottom:10px}
+.sheet{display:grid;grid-template-columns:44px repeat(5,1fr);grid-gap:2px;min-width:400px}
+.sheet .cell{display:flex;align-items:center;justify-content:center;padding:8px 4px;font-size:.7rem;background:#f8fafc;border-radius:4px;border:2px solid transparent;font-weight:600;color:#1e293b;cursor:pointer;transition:all .15s;min-height:36px;text-align:center}
+.sheet .cell.col-header{background:#dcfce7;color:#166534;font-weight:700;cursor:default}
+.sheet .cell.row-header{background:#dcfce7;color:#166534;font-weight:700;cursor:default}
+.sheet .cell:hover{border-color:#86efac;background:#f0fdf4}
+.sheet .cell.highlight{border-color:#22c55e!important;background:#bbf7d0!important;transform:scale(1.05)}
+.sheet .cell.selected{border-color:#6366f1!important;background:#e0e7ff!important}
+.sheet .cell.clicked{border-color:#f59e0b!important;background:#fef3c7!important}
+.answer-area{background:#f8fafc;border-radius:12px;padding:12px;margin-top:10px;text-align:center}
+.answer-area .q-text{color:#1e293b;font-size:.78rem;font-weight:600;margin-bottom:8px}
+.options{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.opt-btn{padding:8px 16px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;color:#1e293b;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s}
+.opt-btn:hover{border-color:#6366f1;background:#eef2ff}
+.opt-btn.correct{border-color:#22c55e;background:#f0fdf4;color:#16a34a}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.opt-btn:disabled{cursor:default;opacity:.7}
+.explain-box{display:none;margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.7rem;line-height:1.5}
+.explain-box.show{display:block}
+.explain-box.ok{background:#f0fdf4;color:#16a34a;border-left:3px solid #22c55e}
+.explain-box.bad{background:#fef2f2;color:#dc2626;border-left:3px solid #ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#16653422;color:#166534}
+.nav-next{background:#22c55e;color:#fff}
+.legend{display:flex;gap:12px;justify-content:center;font-size:.65rem;color:#64748b;margin-bottom:8px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:4px}
+.legend-dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+.free-mode-btn{padding:6px 14px;border:2px solid #22c55e;border-radius:8px;background:#fff;color:#166534;font-size:.68rem;font-weight:600;cursor:pointer;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .options > * { margin: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+  .legend > * { margin: 6px; }
+  .legend-item > * + * { margin-left: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Κελί, Γραμμή, Στήλη</h1>
+<p class="subtitle">Εξερεύνησε τα μέρη ενός υπολογιστικού φύλλου!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ερώτηση:</span> <span id="qNum">1</span>/8</span>
+</div>
+<div class="main" id="main"></div>
+<script>
+var questions=[
+{
+q:'Ποιο είναι το όνομα του επιλεγμένου κελιού (με πορτοκαλί περίγραμμα);',
+highlight:{row:3,col:2},
+options:['B3','C2','Γ3','3B'],
+correct:0,
+explain:'Το κελί Β3 βρίσκεται στη στήλη Β και γραμμή 3. Στήλες = γράμματα, Γραμμές = αριθμοί.'
+},
+{
+q:'Ποια γραμμή είναι επιλεγμένη (γραμμή 4);',
+highlight:{row:4,col:null,type:'row'},
+options:['Στήλη D','Γραμμή 4','Κελί Α4','Σειρά Δ'],
+correct:1,
+explain:'Η γραμμή 4 είναι η 4η οριζόντια σειρά κελιών. Οι γραμμές αριθμούνται: 1, 2, 3, 4...'
+},
+{
+q:'Ποια στήλη είναι επιλεγμένη (στήλη C);',
+highlight:{row:null,col:3,type:'col'},
+options:['Γραμμή C','Στήλη C','Κελί C','Στήλη 3'],
+correct:1,
+explain:'Η στήλη C είναι η 3η κάθετη σειρά κελιών. Οι στήλες ονομάζονται: A, B, C, D...'
+},
+{
+q:'Ποιο κελί είναι ΕΝΕΡΓΟ (έχει έντονο μαύρο περίγραμμα);',
+highlight:{row:1,col:1},
+options:['A1','Β1','1Α','B2'],
+correct:0,
+explain:'Το ενεργό κελί A1 βρίσκεται πάνω αριστερά. Το όνομά του φαίνεται και πάνω από τις στήλες!'
+},
+{
+q:'Ποιο είναι το όνομα του κελιού στη στήλη D, γραμμή 6;',
+highlight:{row:6,col:4},
+options:['D6','6D','Δ6','D,6'],
+correct:0,
+explain:'Το κελί D6: ΠΡΩΤΑ το γράμμα της στήλης (D), ΜΕΤΑ τον αριθμό της γραμμής (6).'
+},
+{
+q:'Πόσα κελιά έχει η περιοχή Α1:Β3;',
+highlight:{range:'A1:B3'},
+options:['2 κελιά','4 κελιά','6 κελιά','8 κελιά'],
+correct:2,
+explain:'Η περιοχή A1:B3 έχει 2 στήλες (Α, Β) × 3 γραμμές (1, 2, 3) = 6 κελιά!'
+},
+{
+q:'Σε ποια στήλη και γραμμή βρίσκεται το κελί με την τιμή "16";',
+highlight:{row:3,col:3,type:'find',data:[['Όνομα','Πόντοι','Επίπεδο'],['Μαρία','20','2'],['Γιάννης','15','1'],['Ελένη','16','3']]},
+options:['C3','B4','C4','Γ4'],
+correct:2,
+explain:'Η Ελένη είναι στη γραμμή 4 (δεύτερη γραμμή δεδομένων), και "16" είναι στη στήλη C. Άρα C4!'
+},
+{
+q:'Ποια είναι η διαφορά ανάμεσα σε στήλη και γραμμή;',
+highlight:{},
+options:['Δεν υπάρχει διαφορά','Στήλη=κάθετη, Γραμμή=οριζόντια','Στήλη=οριζόντια, Γραμμή=κάθετη','Στήλες=αριθμοί, Γραμμές=γράμματα'],
+correct:1,
+explain:'Οι στήλες είναι ΚΑΘΕΤΕΣ (πάνω-κάτω, ονόματα με γράμματα A,B,C...). Οι γραμμές είναι ΟΡΙΖΟΝΤΙΕΣ (αριστερά-δεξιά, ονόματα με αριθμούς 1,2,3...).'
+}
+];
+var currentQ=0;
+var pts=0;
+var answered={};
+function render(){
+var q=questions[currentQ];
+document.getElementById('qNum').textContent=currentQ+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="legend"><span class="legend-item"><span class="legend-dot" style="background:#bbf7d0;border:2px solid #22c55e"></span> Επιλεγμένο</span><span class="legend-item"><span class="legend-dot" style="background:#e0e7ff;border:2px solid #6366f1"></span> Κάνε κλικ</span></div>';
+h+='<div class="instruction">🔍 '+q.q+'</div>';
+h+='<div class="sheet-container"><div class="sheet">';
+var rows=7,cols=6;
+for(var r=0;r<rows;r++){
+for(var c=0;c<cols;c++){
+var cellClass='cell';
+var cellContent='';
+if(r===0&&c===0){cellClass+=' corner';cellContent='';}
+else if(r===0){cellClass+=' col-header';cellContent=String.fromCharCode(64+c);}
+else if(c===0){cellClass+=' row-header';cellContent=r;}
+else if(q.highlight.type==='find'&&q.highlight.data){
+var rowData=q.highlight.data[r-1];
+if(rowData&&c-1<rowData.length){
+cellContent=rowData[c-1];
+var isHighlighted=q.highlight.data[r-1]&&c-1<q.highlight.data[r-1].length;
+if(isHighlighted&&q.highlight.row===r&&q.highlight.col===c){
+cellClass+=' highlight';
+}if(isHighlighted&&q.highlight.range){
+var rangeParts=q.highlight.range.split(':');
+var startCol=rangeParts[0].charCodeAt(0)-64,startRow=parseInt(rangeParts[0].substring(1));
+var endCol=rangeParts[1].charCodeAt(0)-64,endRow=parseInt(rangeParts[1].substring(1));
+if(c>=startCol&&c<=endCol&&r>=startRow&&r<=endRow){
+cellClass+=' highlight';
+}
+}
+}else{
+cellContent='';
+}
+}else{
+if(q.highlight.type==='find'){
+cellContent='';
+}else if(q.highlight.range){
+var rangeParts=q.highlight.range.split(':');
+var startCol=rangeParts[0].charCodeAt(0)-64,startRow=parseInt(rangeParts[0].substring(1));
+var endCol=rangeParts[1].charCodeAt(0)-64,endRow=parseInt(rangeParts[1].substring(1));
+if(c>=startCol&&c<=endCol&&r>=startRow&&r<=endRow){
+cellClass+=' highlight';
+}
+cellContent=r+','+c;
+}else if(q.highlight.type==='row'){
+if(r===q.highlight.row){cellClass+=' highlight';}
+cellContent=r+','+c;
+}else if(q.highlight.type==='col'){
+if(c===q.highlight.col){cellClass+=' highlight';}
+cellContent=r+','+c;
+}else{
+if(r===q.highlight.row&&c===q.highlight.col){cellClass+=' highlight';}
+cellContent=r+','+c;
+}
+}
+var cellId='cell'+r+'_'+c;
+h+='<div class="'+cellClass+'" id="'+cellId+'" onclick="clickCell('+r+','+c+')">'+cellContent+'</div>';
+}
+}
+h+='</div></div>';
+h+='<div class="answer-area">';
+h+='<div class="q-text">✏️ Επίλεξε την απάντηση:</div>';
+h+='<div class="options">';
+for(var i=0;i<q.options.length;i++){
+var cls='opt-btn';
+if(answered[currentQ]!==undefined){
+cls+=i===q.correct?' correct':'';
+cls+=i===answered[currentQ]&&i!==q.correct?' wrong':'';
+}
+h+='<button class="'+cls+'" onclick="answer('+i+')"'+(answered[currentQ]!==undefined?' disabled':'')+'>'+String.fromCharCode(945+i)+'. '+q.options[i]+'</button>';
+}
+h+='</div>';
+if(answered[currentQ]!==undefined){
+h+='<div class="explain-box show '+(answered[currentQ]===q.correct?'ok':'bad')+'">'+(answered[currentQ]===q.correct?'✅ ':'❌ ')+q.explain+'</div>';
+}
+h+='</div></div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevQ()"'+(currentQ===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextQ()"'+(currentQ===questions.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function clickCell(r,c){
+var el=document.getElementById('cell'+r+'_'+c);
+if(!el)return;
+el.classList.add('clicked');
+setTimeout(function(){el.classList.remove('clicked');},400);
+}
+function answer(idx){
+if(answered[currentQ]!==undefined)return;
+answered[currentQ]=idx;
+var q=questions[currentQ];
+if(idx===q.correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+}
+render();
+}
+function prevQ(){if(currentQ>0){currentQ--;render();}}
+function nextQ(){if(currentQ<questions.length-1){currentQ++;render();}}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είσοδος ή Έξοδος;",
+  "subtitle": "Ταξινόμησε κάθε συσκευή",
+  "instructions": "Πάτα αριστερό βέλος για Είσοδο, δεξιό για Έξοδο",
+  "categories": [
+    { "id": "input", "name": "Συσκευή Εισόδου", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "output", "name": "Συσκευή Εξόδου", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Πληκτρολόγιο", "category": "input" },
+    { "text": "Οθόνη", "category": "output" },
+    { "text": "Ποντίκι", "category": "input" },
+    { "text": "Ηχεία", "category": "output" },
+    { "text": "Μικρόφωνο", "category": "input" },
+    { "text": "Εκτυπωτής", "category": "output" },
+    { "text": "Κάμερα", "category": "input" },
+    { "text": "Προβολέας", "category": "output" },
+    { "text": "Σαρωτής", "category": "input" },
+    { "text": "Ακουστικά", "category": "output" }
+  ],
+  "duration": 30
+}

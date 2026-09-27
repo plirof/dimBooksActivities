@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξινόμηση Δεδομένων | Μάθημα 18</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:750px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.task-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #6366f1}
+.task-box .t-icon{font-size:1.1rem;display:block;margin-bottom:2px}
+.task-box .t-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.data-table-wrap{overflow-x:auto;border-radius:10px;border:2px solid #334155;margin-bottom:8px}
+.data-table{width:100%;border-collapse:collapse;font-size:.65rem;min-width:400px}
+.data-table th{background:#1e293b;padding:6px 8px;border:1px solid #334155;font-weight:700;color:#fbbf24;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.data-table th:hover{background:#334155}
+.data-table th .sort-icon{font-size:.55rem;color:#64748b;margin-left:4px}
+.data-table td{padding:5px 8px;border:1px solid #1e293b;color:#e2e8f0;text-align:center}
+.data-table tr:nth-child(even) td{background:#0f172a66}
+.data-table tr.correct td{background:#22c55e11;color:#4ade80}
+.data-table tr.wrong td{background:#ef444422;color:#f87171}
+.sort-controls{display:flex;gap:4px;justify-content:center;padding:6px;background:#0f172a;border-top:1px solid #334155;flex-wrap:wrap}
+.sort-btn{padding:5px 12px;border:none;border-radius:6px;font-size:.62rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#94a3b8}
+.sort-btn:hover{background:#475569;color:#e2e8f0}
+.sort-btn.active{background:#6366f1;color:#fff}
+.q-area{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.q-row{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px;flex-wrap:wrap}
+.q-row .q-text{color:#e2e8f0;font-size:.65rem;flex:1;min-width:120px}
+.q-row .q-opts{display:flex;gap:3px}
+.q-row .q-btn{padding:3px 8px;border:1px solid #475569;border-radius:6px;background:#0f172a;color:#94a3b8;font-size:.58rem;cursor:pointer}
+.q-row .q-btn.selected{background:#6366f1;color:#fff;border-color:#6366f1}
+.q-row .q-btn.correct{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.q-row .q-btn.wrong{background:#ef444422;color:#f87171;border-color:#ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .sort-controls > * { margin: 2px; }
+  .q-area > * + * { margin-top: 6px; }
+  .q-row > * { margin: 3px; }
+  .q-row .q-opts > * + * { margin-left: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔢 Ταξινόμηση Δεδομένων</h1>
+<p class="subtitle">Ταξινόμησε τα δεδομένα και απάντησε στις ερωτήσεις!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σετ:</span> <span id="dsNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var datasets=[
+{
+icon:'🌡️',title:'Θερμοκρασίες Πόλεων',
+desc:'Ταξινόμησε τις πόλεις ανάλογα με τη θερμοκρασία τους.',
+headers:['Πόλη','Θερμοκρασία (°C)','Άνεμος (km/h)'],
+data:[['Αθήνα',28,12],['Θεσσαλονίκη',25,18],['Πάτρα',27,10],['Ηράκλειο',30,15],['Ιωάννινα',22,8],['Ρόδος',29,14]],
+sortCol:1,
+questions:[
+{q:'Ποια πόλη έχει την υψηλότερη θερμοκρασία;',opts:['Αθήνα','Ηράκλειο','Ρόδος','Πάτρα'],correct:1},
+{q:'Ποια πόλη έχει τη χαμηλότερη θερμοκρασία;',opts:['Αθήνα','Θεσσαλονίκη','Ιωάννινα','Πάτρα'],correct:2},
+{q:'Μετά από φθίνουσα ταξινόμηση θερμοκρασίας, ποια είναι η 2η πόλη;',opts:['Αθήνα','Ηράκλειο','Ρόδος','Πάτρα'],correct:2}
+],
+hint:'Αύξουσα = από το μικρότερο στο μεγαλύτερο. Φθίνουσα = από το μεγαλύτερο στο μικρότερο.'
+},
+{
+icon:'💨',title:'Ταχύτητα Ανέμου',
+desc:'Ταξινόμησε τις πόλεις με βάση την ταχύτητα ανέμου.',
+headers:['Πόλη','Θερμοκρασία (°C)','Άνεμος (km/h)'],
+data:[['Αθήνα',28,12],['Θεσσαλονίκη',25,18],['Πάτρα',27,10],['Ηράκλειο',30,15],['Ιωάννινα',22,8],['Ρόδος',29,14]],
+sortCol:2,
+questions:[
+{q:'Ποια πόλη έχει τον ισχυρότερο άνεμο;',opts:['Αθήνα','Θεσσαλονίκη','Πάτρα','Ιωάννινα'],correct:1},
+{q:'Ποια πόλη έχει τον ασθενέστερο άνεμο;',opts:['Ηράκλειο','Θεσσαλονίκη','Ιωάννινα','Ρόδος'],correct:2},
+{q:'Αύξουσα ταξινόμηση ανέμου: ποια πόλη είναι 3η;',opts:['Πάτρα','Αθήνα','Ρόδος','Ηράκλειο'],correct:0}
+],
+hint:'Πάτα στην επικεφαλίδα "Άνεμος" για ταξινόμηση. Δοκίμασε και αύξουσα και φθίνουσα.'
+},
+{
+icon:'🌧️',title:'Φαινόμενα & Πίεση',
+desc:'Ταξινόμησε κατά φαινόμενο ή πίεση για να βρεις απαντήσεις.',
+headers:['Πόλη','Φαινόμενο','Πίεση (hPa)'],
+data:[['Αθήνα','Βροχή',1013],['Θεσσαλονίκη','Αίθριος',1015],['Πάτρα','Συννεφιά',1010],['Ηράκλειο','Αίθριος',1018],['Ιωάννινα','Βροχή',1008],['Ρόδος','Συννεφιά',1012]],
+sortCol:2,
+questions:[
+{q:'Ποια πόλη έχει την υψηλότερη πίεση;',opts:['Αθήνα','Θεσσαλονίκη','Ηράκλειο','Ρόδος'],correct:2},
+{q:'Ποια πόλη έχει τη χαμηλότερη πίεση;',opts:['Πάτρα','Ιωάννινα','Θεσσαλονίκη','Αθήνα'],correct:1},
+{q:'Πόσες πόλεις έχουν «Βροχή»;',opts:['1','2','3','4'],correct:1}
+],
+hint:'Η πίεση μετριέται σε hPa (εκατοπασκάλ). Φυσιολογικές τιμές: 1000-1020 hPa.'
+},
+{
+icon:'📏',title:'Υψόμετρο Πόλεων',
+desc:'Ταξινόμησε τις πόλεις με βάση το υψόμετρό τους.',
+headers:['Πόλη','Υψόμετρο (m)','Πληθυσμός'],
+data:[['Αθήνα',80,3000000],['Θεσσαλονίκη',20,1000000],['Πάτρα',10,300000],['Ιωάννινα',480,100000],['Λάρισα',70,200000],['Τρίπολη',650,50000]],
+sortCol:1,
+questions:[
+{q:'Ποια πόλη έχει το μεγαλύτερο υψόμετρο;',opts:['Αθήνα','Ιωάννινα','Τρίπολη','Λάρισα'],correct:2},
+{q:'Αύξουσα υψομέτρου: ποια πόλη είναι πρώτη;',opts:['Αθήνα','Θεσσαλονίκη','Πάτρα','Λάρισα'],correct:2},
+{q:'Πόσες πόλεις είναι σε υψόμετρο >100m;',opts:['1','2','3','4'],correct:1}
+],
+hint:'Αύξουσα = από το μικρότερο υψόμετρο (Πάτρα 10m) στο μεγαλύτερο (Τρίπολη 650m).'
+},
+{
+icon:'👥',title:'Πληθυσμός Πόλεων',
+desc:'Ταξινόμησε τις πόλεις με βάση τον πληθυσμό.',
+headers:['Πόλη','Υψόμετρο (m)','Πληθυσμός'],
+data:[['Αθήνα',80,3000000],['Θεσσαλονίκη',20,1000000],['Πάτρα',10,300000],['Ιωάννινα',480,100000],['Λάρισα',70,200000],['Τρίπολη',650,50000]],
+sortCol:2,
+questions:[
+{q:'Ποια πόλη έχει τον μεγαλύτερο πληθυσμό;',opts:['Θεσσαλονίκη','Αθήνα','Πάτρα','Λάρισα'],correct:1},
+{q:'Φθίνουσα πληθυσμού: ποια είναι 3η;',opts:['Πάτρα','Λάρισα','Ιωάννινα','Τρίπολη'],correct:0},
+{q:'Ποια πόλη έχει πληθυσμό μικρότερο από 150.000;',opts:['Πάτρα','Λάρισα','Ιωάννινα & Τρίπολη','Αθήνα'],correct:2}
+],
+hint:'Φθίνουσα = από τον μεγαλύτερο πληθυσμό (πρώτα Αθήνα 3.000.000) στον μικρότερο.'
+},
+{
+icon:'📊',title:'Σύνθετη Ανάλυση',
+desc:'Χρησιμοποίησε ταξινόμηση και παρατήρηση για να απαντήσεις.',
+headers:['Πόλη','Θερμοκρασία (°C)','Υγρασία (%)'],
+data:[['Αθήνα',28,45],['Θεσσαλονίκη',25,55],['Πάτρα',27,60],['Ηράκλειο',30,40],['Ιωάννινα',22,70],['Ρόδος',29,50]],
+sortCol:1,
+questions:[
+{q:'Ποια πόλη έχει τη χαμηλότερη υγρασία;',opts:['Αθήνα','Ηράκλειο','Ρόδος','Ιωάννινα'],correct:1},
+{q:'Ποια πόλη έχει την υψηλότερη υγρασία;',opts:['Θεσσαλονίκη','Πάτρα','Ιωάννινα','Ρόδος'],correct:2},
+{q:'Πάτησε στην επικεφαλίδα "Υγρασία" για φθίνουσα. Ποια πόλη είναι 2η;',opts:['Αθήνα','Θεσσαλονίκη','Πάτρα','Ρόδος'],correct:2}
+],
+hint:'Μπορείς να ταξινομήσεις με βάση οποιαδήποτε στήλη. Κάθε ταξινόμηση δίνει διαφορετική εικόνα!'
+}
+];
+var current=0;
+var pts=0;
+var sortOrder={};
+var selectedQs={};
+var checked=false;
+function render(){
+var ds=datasets[current];
+checked=false;
+selectedQs={};
+sortOrder={};
+document.getElementById('dsNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+ds.icon+' '+ds.title+'</div>';
+h+='<div class="task-box"><span class="t-icon">📋</span><div class="t-text">'+ds.desc+'</div></div>';
+h+='<div class="data-table-wrap">';
+h+='<table class="data-table"><thead><tr>';
+for(var hd=0;hd<ds.headers.length;hd++){
+var isSort=sortOrder[hd];
+var arrow=isSort!==undefined?(isSort?' ▲':' ▼'):'';
+h+='<th onclick="sortBy('+hd+')">'+ds.headers[hd]+'<span class="sort-icon">'+arrow+'</span></th>';
+}
+h+='</tr></thead><tbody id="tableBody">';
+var sorted=getSortedData();
+for(var r=0;r<sorted.length;r++){
+h+='<tr>';
+for(var c=0;c<sorted[r].length;c++){
+h+='<td>'+sorted[r][c]+'</td>';
+}
+h+='</tr>';
+}
+h+='</tbody></table>';
+h+='<div class="sort-controls">';
+h+='<button class="sort-btn" onclick="sortBy('+ds.sortCol+')">📶 Ταξινόμηση στήλης "'+ds.headers[ds.sortCol]+'"</button>';
+h+='</div>';
+h+='</div>';
+h+='<div class="q-area" id="qArea">';
+for(var q=0;q<ds.questions.length;q++){
+var qq=ds.questions[q];
+h+='<div class="q-row">';
+h+='<span class="q-text">'+(q+1)+'. '+qq.q+'</span>';
+h+='<div class="q-opts">';
+for(var o=0;o<qq.opts.length;o++){
+var sel=(selectedQs[q]===o?' selected':'');
+h+='<div class="q-btn'+sel+'" id="qbtn_'+q+'_'+o+'" onclick="selectQ('+q+','+o+')">'+qq.opts[o]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος Απαντήσεων</button></div>';
+h+='<div class="hint-box">💡 '+ds.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function getSortedData(){
+var ds=datasets[current];
+var data=ds.data.map(function(row){return row.slice();});
+var sortCols=Object.keys(sortOrder);
+if(sortCols.length>0){
+var col=parseInt(sortCols[0]);
+var dir=sortOrder[col];
+data.sort(function(a,b){
+var va=a[col],vb=b[col];
+if(typeof va==='string'&&typeof vb==='string'){return dir*(va.localeCompare(vb));}
+return dir*(va-vb);
+});
+}
+return data;
+}
+function sortBy(col){
+if(checked)return;
+if(sortOrder[col]!==undefined){
+sortOrder[col]=sortOrder[col]===1?-1:1;
+}else{
+var keys=Object.keys(sortOrder);
+for(var i=0;i<keys.length;i++)delete sortOrder[keys[i]];
+sortOrder[col]=1;
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+render();
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevDs()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextDs()"'+(current===datasets.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectQ(qIdx,optIdx){
+if(checked)return;
+selectedQs[qIdx]=optIdx;
+var ds=datasets[current];
+for(var o=0;o<ds.questions[qIdx].opts.length;o++){
+var el=document.getElementById('qbtn_'+qIdx+'_'+o);
+if(el)el.classList.toggle('selected',o===optIdx);
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkAnswers(){
+var ds=datasets[current];
+var allAnswered=true;
+for(var q=0;q<ds.questions.length;q++){
+if(selectedQs[q]===undefined){allAnswered=false;break;}
+}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Απάντησε σε όλες τις ερωτήσεις!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var q2=0;q2<ds.questions.length;q2++){
+var correct=ds.questions[q2].correct;
+var btn=document.getElementById('qbtn_'+q2+'_'+selectedQs[q2]);
+if(btn){btn.classList.remove('selected');btn.classList.add(selectedQs[q2]===correct?'correct':'wrong');btn.style.pointerEvents='none';}
+var correctBtn=document.getElementById('qbtn_'+q2+'_'+correct);
+if(correctBtn)correctBtn.classList.add('correct');
+if(selectedQs[q2]!==correct)allCorrect=false;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι απαντήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες απαντήσεις είναι λάθος. Τα πράσινα είναι σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevDs(){if(current>0){current--;render();}}
+function nextDs(){if(current<datasets.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Είδη Υπολογιστών",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με χαρακτηριστικά σωστά για κινητές συσκευές",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Οθόνη αφής", "correct": true, "color": "#4caf50" },
+    { "text": "Μεγάλη οθόνη γραφείου", "correct": false, "color": "#f44336" },
+    { "text": "Ενσωματωμένη κάμερα", "correct": true, "color": "#2196f3" },
+    { "text": "Μικρή και ελαφριά", "correct": true, "color": "#ff9800" },
+    { "text": "Δεν έχουμε Wi-Fi", "correct": false, "color": "#9c27b0" },
+    { "text": "Σύνδεση Wi-Fi", "correct": true, "color": "#00bcd4" },
+    { "text": "Ηχεία ενσωματωμένα", "correct": true, "color": "#8bc34a" },
+    { "text": "Χρειάζεται καλώδιο πάντα", "correct": false, "color": "#ff5722" },
+    { "text": "Εικονικό πληκτρολόγιο", "correct": true, "color": "#607d8b" },
+    { "text": "Δεν βγάζει φωτογραφίες", "correct": false, "color": "#e91e63" },
+    { "text": "Μικρόφωνο ενσωματωμένο", "correct": true, "color": "#3f51b5" },
+    { "text": "Μόνο για γραφείο", "correct": false, "color": "#795548" }
+  ]
+}

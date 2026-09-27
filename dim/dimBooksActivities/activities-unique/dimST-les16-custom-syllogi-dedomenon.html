@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συλλογή Δεδομένων | Μάθημα 16</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:650px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.research-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.research-box .r-icon{font-size:1.2rem;display:block;margin-bottom:2px}
+.research-box .r-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.respondent-area{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px}
+.resp-btn{padding:8px 14px;border:2px solid #334155;border-radius:10px;background:#1e293b;color:#e2e8f0;font-size:.68rem;font-weight:600;cursor:pointer;transition:all .2s}
+.resp-btn:hover{border-color:#6366f1;transform:translateY(-2px)}
+.resp-btn.answered{border-color:#22c55e;background:#22c55e11;color:#4ade80}
+.resp-btn .resp-icon{font-size:1.1rem;display:block;text-align:center}
+.resp-btn .resp-name{font-size:.6rem}
+.form-sim{background:#0f172a;border-radius:10px;border:1px solid #334155;overflow:hidden;margin-bottom:8px}
+.form-header{background:#1e293b;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #334155}
+.form-header .fh-icon{font-size:1rem}
+.form-header .fh-title{color:#e2e8f0;font-size:.7rem;font-weight:600}
+.form-body{padding:12px}
+.form-q{font-size:.72rem;color:#e2e8f0;font-weight:600;margin-bottom:6px}
+.form-opts{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.form-opt{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;cursor:pointer;transition:all .2s}
+.form-opt:hover{background:#1e293b}
+.form-opt input[type=radio]{accent-color:#6366f1}
+.form-opt label{color:#e2e8f0;font-size:.65rem;cursor:pointer}
+.form-submit{padding:6px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;font-size:.65rem;font-weight:700;cursor:pointer}
+.form-submit:disabled{opacity:.4;cursor:default}
+.data-table-wrap{overflow-x:auto;margin-top:8px;border-radius:10px;border:1px solid #334155}
+.data-table{width:100%;border-collapse:collapse;font-size:.62rem}
+.data-table th{background:#1e293b;color:#fbbf24;padding:5px 6px;text-align:left;font-weight:700;border-bottom:2px solid #334155}
+.data-table td{padding:4px 6px;color:#e2e8f0;border-bottom:1px solid #1e293b}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .respondent-area > * { margin: 3px; }
+  .form-header > * + * { margin-left: 6px; }
+  .form-opts > * + * { margin-top: 4px; }
+  .form-opt > * + * { margin-left: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Συλλογή Δεδομένων Έρευνας</h1>
+<p class="subtitle">Πάρε συνεντεύξεις από συμμαθητές και κατέγραψε τα δεδομένα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Έρευνα:</span> <span id="rsNum">1</span>/6</span>
+<span class="sc"><span class="sl">Απαντήσεις:</span> <span id="ansCount">0</span></span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var researches=[
+{
+icon:'⚽',question:'Ποιο είναι το αγαπημένο σου άθλημα;',
+options:['Ποδόσφαιρο','Μπάσκετ','Βόλεϊ','Κολύμβηση'],
+people:[{name:'Μαρία',answer:0},{name:'Γιώργος',answer:2},{name:'Αννα',answer:0},{name:'Δημήτρης',answer:3},{name:'Ελένη',answer:1}],
+hint:'Συνέλεξε απαντήσεις από όλους τους συμμαθητές σου. Κάθε άτομο δίνει μία απάντηση.'
+},
+{
+icon:'🎵',question:'Τι είδος μουσικής προτιμάς;',
+options:['Pop','Rock','Κλασική','Ελληνική'],
+people:[{name:'Κώστας',answer:0},{name:'Νίκη',answer:3},{name:'Πέτρος',answer:1},{name:'Σοφία',answer:0},{name:'Αλέξης',answer:2}],
+hint:'Μόλις συλλέξεις όλες τις απαντήσεις, μπορείς να δεις τα αποτελέσματα.'
+},
+{
+icon:'📚',question:'Πόση ώρα διαβάζεις καθημερινά;',
+options:['Καθόλου','30 λεπτά','1 ώρα','Πάνω από 2 ώρες'],
+people:[{name:'Φωτεινή',answer:2},{name:'Ηλίας',answer:0},{name:'Χαρά',answer:3},{name:'Μάνος',answer:1},{name:'Ρένα',answer:2}],
+hint:'Κάθε απάντηση καταγράφεται σε έναν πίνακα δεδομένων για ανάλυση.'
+},
+{
+icon:'🍕',question:'Τι φαγητό προτιμάς για πάρτι;',
+options:['Πίτσα','Σουβλάκι','Μακαρόνια','Αλλεπάλληλες'],
+people:[{name:'Βασίλης',answer:0},{name:'Τζένη',answer:1},{name:'Ορέστης',answer:0},{name:'Λουίζα',answer:2},{name:'Φίλιππος',answer:3}],
+hint:'Μπορείς να χρησιμοποιήσεις ψηφιακή φόρμα (π.χ. e-me) για αυτόματη καταμέτρηση.'
+},
+{
+icon:'🎮',question:'Πόση ώρα παίζεις παιχνίδια καθημερινά;',
+options:['Καθόλου','Έως 1 ώρα','1-3 ώρες','Πάνω από 3 ώρες'],
+people:[{name:'Στέλιος',answer:2},{name:'Μαρίνα',answer:1},{name:'Τάσος',answer:3},{name:'Κατερίνα',answer:1},{name:'Παύλος',answer:2}],
+hint:'Τα δεδομένα μπορούν να μεταφερθούν σε υπολογιστικό φύλλο για δημιουργία διαγραμμάτων.'
+},
+{
+icon:'🐾',question:'Έχεις κατοικίδιο; Τι;',
+options:['Σκύλο','Γάτα','Άλλο','Δεν έχω'],
+people:[{name:'Ιωάννα',answer:0},{name:'Σπύρος',answer:3},{name:'Ειρήνη',answer:1},{name:'Αντρέας',answer:0},{name:'Ναταλία',answer:2}],
+hint:'Η συλλογή δεδομένων είναι το πρώτο βήμα για κάθε έρευνα!'
+}
+];
+var current=0;
+var pts=0;
+var answered={};
+var selectedAnswer={};
+var collected=false;
+function render(){
+var r=researches[current];
+answered={};
+collected=false;
+document.getElementById('rsNum').textContent=current+1;
+document.getElementById('ansCount').textContent='0';
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+r.icon+' Έρευνα '+(current+1)+'</div>';
+h+='<div class="research-box"><span class="r-icon">📋</span><div class="r-text">Θέμα: <strong>'+r.question+'</strong> — Πάρε συνέντευξη από όλους τους συμμαθητές!</div></div>';
+h+='<div class="respondent-area" id="respArea">';
+for(var p=0;p<r.people.length;p++){
+h+='<div class="resp-btn" id="resp'+p+'" onclick="startInterview('+p+')"><span class="resp-icon">👤</span><span class="resp-name">'+r.people[p].name+'</span></div>';
+}
+h+='</div>';
+h+='<div class="form-sim" id="formSim">';
+h+='<div class="form-header"><span class="fh-icon">📝</span><span class="fh-title">Φόρμα: '+r.question+'</span></div>';
+h+='<div class="form-body" id="formBody">';
+h+='<div class="form-q">👤 Ερωτώμενος: <span id="interviewee" style="color:#fbbf24">—</span></div>';
+h+='<div class="form-opts" id="formOpts">';
+for(var o=0;o<r.options.length;o++){
+h+='<div class="form-opt"><input type="radio" name="fopt" value="'+o+'" id="fo'+o+'"><label for="fo'+o+'">'+r.options[o]+'</label></div>';
+}
+h+='</div>';
+h+='<button class="form-submit" id="submitBtn" onclick="submitAnswer()">💾 Καταγραφή Απάντησης</button>';
+h+='</div>';
+h+='</div>';
+h+='<div class="data-table-wrap" id="tableWrap" style="display:none"><table class="data-table"><thead><tr><th>#</th><th>Όνομα</th><th>Απάντηση</th></tr></thead><tbody id="tableBody"></tbody></table></div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkCollection()">✅ Ολοκλήρωση Συλλογής</button></div>';
+h+='<div class="hint-box">💡 '+r.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevRs()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextRs()"'+(current===researches.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+var currentPerson=null;
+function startInterview(idx){
+if(collected)return;
+if(answered[idx]){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Ο/Η '+researches[current].people[idx].name+' έχει ήδη απαντήσει!';
+fb.className='feedback fail';
+return;
+}
+currentPerson=idx;
+document.getElementById('interviewee').textContent=researches[current].people[idx].name;
+var radios=document.querySelectorAll('input[name=fopt]');
+for(var i=0;i<radios.length;i++)radios[i].checked=false;
+document.getElementById('submitBtn').disabled=false;
+var fb=document.getElementById('feedback');
+fb.textContent='';
+fb.className='feedback';
+}
+function submitAnswer(){
+if(currentPerson===null){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Επίλεξε πρώτα έναν συμμαθητή!';
+fb.className='feedback fail';
+return;
+}
+var radios=document.querySelectorAll('input[name=fopt]');
+var selected=null;
+for(var i=0;i<radios.length;i++){
+if(radios[i].checked){selected=i;break;}
+}
+if(selected===null){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Επίλεξε μία απάντηση!';
+fb.className='feedback fail';
+return;
+}
+var r=researches[current];
+answered[currentPerson]=selected;
+var el=document.getElementById('resp'+currentPerson);
+if(el)el.classList.add('answered');
+document.getElementById('interviewee').textContent='—';
+document.getElementById('submitBtn').disabled=true;
+currentPerson=null;
+var count=Object.keys(answered).length;
+document.getElementById('ansCount').textContent=count;
+updateTable();
+var fb=document.getElementById('feedback');
+if(count===r.people.length){
+fb.textContent='🎉 Συγκέντρωσες όλες τις απαντήσεις! Πάτα "Ολοκλήρωση Συλλογής".';
+fb.className='feedback ok';
+}else{
+fb.textContent='✅ Απάντηση καταγράφηκε! Απομένουν '+(r.people.length-count)+' συμμαθητές.';
+fb.className='feedback';
+}
+}
+function updateTable(){
+var r=researches[current];
+var keys=Object.keys(answered);
+if(keys.length===0){
+document.getElementById('tableWrap').style.display='none';
+return;
+}
+document.getElementById('tableWrap').style.display='block';
+var tbody=document.getElementById('tableBody');
+var h='';
+for(var i=0;i<r.people.length;i++){
+if(answered[i]!==undefined){
+h+='<tr><td>'+(i+1)+'</td><td>'+r.people[i].name+'</td><td>'+r.options[answered[i]]+'</td></tr>';
+}
+}
+tbody.innerHTML=h;
+}
+function checkCollection(){
+var r=researches[current];
+var count=Object.keys(answered).length;
+if(count<r.people.length){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Πρέπει να πάρεις συνέντευξη από όλους ('+count+'/'+r.people.length+')!';
+fb.className='feedback fail';
+return;
+}
+var correct=true;
+for(var i=0;i<r.people.length;i++){
+if(answered[i]!==r.people[i].answer){correct=false;break;}
+}
+collected=true;
+document.getElementById('checkBtn').disabled=true;
+var fb=document.getElementById('feedback');
+if(correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Συνέλεξες σωστά όλα τα δεδομένα!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ Οι απαντήσεις δεν είναι όλες σωστές. Δοκίμασε ξανά με Προηγούμενο/Επόμενο.';
+fb.className='feedback fail';
+}
+}
+function prevRs(){if(current>0){current--;render();}}
+function nextRs(){if(current<researches.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

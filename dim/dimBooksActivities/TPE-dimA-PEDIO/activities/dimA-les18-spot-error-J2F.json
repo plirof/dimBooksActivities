@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Μεγαλώνω τον Χάρτη",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πάνω", "error": false},
+        {"text": "στις", "error": false},
+        {"text": "γραμμές", "error": false},
+        {"text": "ζωγραφίζω", "error": true, "correct": "γράφω", "feedback": "Πάνω στις γραμμές γράφουμε λέξεις, δεν ζωγραφίζουμε!"},
+        {"text": "λέξεις.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "αγελάδα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "κατοικίδιο", "error": true, "correct": "ζώο φάρμας", "feedback": "Η αγελάδα είναι ζώο φάρμας, όχι κατοικίδιο!"},
+        {"text": "ζώο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αλλάξω", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "χάρτη", "error": false},
+        {"text": "χρησιμοποιώ", "error": false},
+        {"text": "μαρκαδόρους", "error": true, "correct": "μολύβι και γόμα", "feedback": "Πρώτα μολύβι και γόμα, μαρκαδόρους στο τέλος!"},
+        {"text": "πρώτα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "σκύλος", "error": false},
+        {"text": "και", "error": false},
+        {"text": "η", "error": false},
+        {"text": "γάτα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ζώα", "error": false},
+        {"text": "δάσους.", "error": true, "correct": "κατοικίδια", "feedback": "Ο σκύλος και η γάτα είναι κατοικίδια, όχι ζώα δάσους!"}
+      ]
+    }
+  ]
+}

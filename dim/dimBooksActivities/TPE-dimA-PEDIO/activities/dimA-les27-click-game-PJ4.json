@@ -1,0 +1,14 @@
+{
+  "title": "Σελιδοδείκτης!",
+  "subtitle": "Κάνε κλικ στο αστεράκι για σελιδοδείκτη",
+  "instructions": "Βρες το αστέρι ⭐ και κάνε κλικ!",
+  "duration": 20,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "⭐", "color": "#FFF9C4" },
+    { "label": "🔍", "color": "#E0E0E0" },
+    { "label": "🏠", "color": "#E0E0E0" },
+    { "label": "⚙️", "color": "#E0E0E0" }
+  ]
+}

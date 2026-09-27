@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κωδικοποίηση Εικόνας - Run-Length</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f3e8ff,#d8b4fe);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f3e8ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#6b21a8;text-align:center;line-height:1.5}
+.image-display{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px}
+.image-grid{display:grid;grid-template-columns:repeat(10,1fr);grid-gap:2px;max-width:400px;margin:0 auto}
+.pixel-cell{aspect-ratio:1;background:#fff;border:1px solid #e2e8f0;border-radius:2px;font-size:1em;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.pixel-cell:hover{transform:scale(1.1)}
+.pixel-cell.color1{background:#fef3c7}
+.pixel-cell.color2{background:#86efac}
+.pixel-cell.color3{background:#93c5fd}
+.encoding-area{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.encoding-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.encoding-output{background:#fff;border:2px solid #fdba74;border-radius:10px;padding:12px;font-family:monospace;font-size:.95em;min-height:50px;word-break:break-all}
+.color-legend{background:#e0f2fe;border-radius:12px;padding:14px;margin-bottom:14px}
+.legend-label{font-weight:700;color:#0369a1;margin-bottom:10px;font-size:.95em;text-align:center}
+.legend-items{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.9em;color:#475569}
+.legend-color{width:24px;height:24px;border-radius:4px;border:1px solid #e2e8f0}
+.btn-encode{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-encode:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-check{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;border:none;border-radius:50px;padding:10px 24px;font-size:.95em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(59,130,246,.4)}
+.btn-reset{background:#f0f0f0;color:#555;border:none;border-radius:50px;padding:10px 24px;font-size:.9em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.target-code{background:#fce7f3;border-radius:12px;padding:14px;margin-bottom:14px}
+.target-label{font-weight:700;color:#be185d;margin-bottom:8px;font-size:.95em;text-align:center}
+.target-value{background:#fff;border:2px solid #f0abfc;border-radius:10px;padding:10px;font-family:monospace;font-size:.9em;text-align:center}
+@media(max-width:550px){.image-grid{max-width:300px}.pixel-cell{font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .legend-items > * { margin: 6px; }
+  .legend-item > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🖼️ Κωδικοποίηση Εικόνας</h1>
+<p>Κωδικοποίησε την εικόνα με τη μέθοδο Run-Length!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στην κωδικοποίηση Run-Length, γράφουμε τον αριθμό των συνεχόμενων εικονοστοιχείων με το ίδιο χρώμα! Παράδειγμα: 3κίτρινο, 2πράσινο...</div>
+
+<div class="target-code">
+<div class="target-label">🎯 Στόχος: Δημιούργησε την εικόνα:</div>
+<div class="target-value" id="targetCode">1 2 3 2 1 2 3 2 1 2 3 2 1 2 3 2</div>
+</div>
+
+<div class="image-display">
+<div class="image-grid" id="imageGrid"></div>
+</div>
+
+<div class="color-legend">
+<div class="legend-label">🎨 Χρώματα:</div>
+<div class="legend-items">
+<div class="legend-item"><div class="legend-color" style="background:#fef3c7"></div>1: Κίτρινο</div>
+<div class="legend-item"><div class="legend-color" style="background:#86efac"></div>2: Πράσινο</div>
+<div class="legend-item"><div class="legend-color" style="background:#93c5fd"></div>3: Μπλε</div>
+</div>
+</div>
+
+<div class="encoding-area">
+<div class="encoding-label">📊 Κωδικοποίηση εικόνας:</div>
+<div class="encoding-output" id="encodingOutput">Κάνε κλικ στα εικονοστοιχεία...</div>
+</div>
+
+<button class="btn-encode" onclick="encodeImage()">🔢 Κωδικοποίηση</button>
+<button class="btn-check" onclick="checkCode()">✅ Έλεγχος</button>
+<button class="btn-reset" onclick="resetImage()">🔄 Καθαρισμός</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var gridSize=10;
+var image=[];
+var targetCode=[1,2,3,2,1,2,3,2,1,2,3,2,1,2,3,2];
+var targetName='alternating pattern';
+
+function initImage(){
+  image=[];
+  for(var i=0;i<gridSize;i++){
+    image[i]=0;
+  }
+  buildGrid();
+}
+
+function buildGrid(){
+  var container=document.getElementById('imageGrid');
+  container.innerHTML='';
+  container.style.gridTemplateColumns='repeat('+gridSize+',1fr)';
+  
+  for(var i=0;i<gridSize;i++){
+    var cell=document.createElement('div');
+    cell.className='pixel-cell';
+    cell.id='pixel-'+i;
+    cell.onclick=function(){
+      cyclePixel(this);
+    };
+    container.appendChild(cell);
+  }
+}
+
+function cyclePixel(cell){
+  var index=parseInt(cell.id.split('-')[1]);
+  image[index]=(image[index]+1)%4;
+  
+  cell.className='pixel-cell';
+  if(image[index]===1)cell.classList.add('color1');
+  else if(image[index]===2)cell.classList.add('color2');
+  else if(image[index]===3)cell.classList.add('color3');
+  
+  document.getElementById('encodingOutput').textContent='Κάνε κλικ στα εικονοστοιχεία...';
+}
+
+function encodeImage(){
+  if(image.filter(function(v){return v}).length===0){
+    document.getElementById('encodingOutput').textContent='Δεν υπάρχουν χρώματα!';
+    return;
+  }
+  
+  var code=[];
+  var currentColor=image[0];
+  var count=1;
+  
+  for(var i=1;i<image.length;i++){
+    if(image[i]===currentColor){
+      count++;
+    }else{
+      code.push(count);
+      code.push(currentColor);
+      currentColor=image[i];
+      count=1;
+    }
+  }
+  code.push(count);
+  code.push(currentColor);
+  
+  document.getElementById('encodingOutput').textContent=code.join(' ');
+}
+
+function checkCode(){
+  var output=document.getElementById('encodingOutput').textContent;
+  if(output==='Δεν υπάρχουν χρώματα!'||output==='Κάνε κλικ στα εικονοστοιχεία...'){
+    showFeedback('❌ Κωδικοποίησε πρώτα την εικόνα!',false);
+    return;
+  }
+  
+  var userCode=output.split(' ').map(Number);
+  var isCorrect=true;
+  
+  for(var i=0;i<userCode.length;i++){
+    if(userCode[i]!==targetCode[i]){
+      isCorrect=false;
+      break;
+    }
+  }
+  
+  if(isCorrect){
+    showFeedback('🎉 Σωστά! Κωδικοποίησες σωστά την εικόνα!',true);
+  }else{
+    showFeedback('❌ Η κωδικοποίηση δεν είναι σωστή. Προσπάθησε ξανά!',false);
+  }
+}
+
+function resetImage(){
+  initImage();
+  document.getElementById('encodingOutput').textContent='Κάνε κλικ στα εικονοστοιχεία...';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+initImage();
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '1')) return;
+  var F = [['.pixel-cell', 1]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+</body>
+</html>

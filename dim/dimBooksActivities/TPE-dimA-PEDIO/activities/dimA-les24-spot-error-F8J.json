@@ -1,0 +1,53 @@
+{
+  "title": "Βρες τα Λάθη: Κεφαλαία και Αριθμοί",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "κεφαλαία", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Enter", "error": true, "correct": "Caps Lock", "feedback": "Για κεφαλαία πατάω το CAPS LOCK, όχι Enter!"},
+        {"text": "πλήκτρο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Backspace", "error": false},
+        {"text": "σβήνει", "error": false},
+        {"text": "δύο", "error": true, "correct": "ένα", "feedback": "Το Backspace σβήνει ΕΝΑ γράμμα κάθε φορά!"},
+        {"text": "γράμμα", "error": false},
+        {"text": "κάθε", "error": false},
+        {"text": "φορά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όταν", "error": false},
+        {"text": "είναι", "error": false},
+        {"text":"ενεργό", "error": false},
+        {"text": "το", "error": false},
+        {"text": "Caps Lock,", "error": false},
+        {"text": "δεν", "error": true, "correct": "ανάβει", "feedback": "Όταν είναι ενεργό το Caps Lock, ΑΝΑΒΕΙ το λαμπάκι!"},
+        {"text": "ανάβει", "error": false},
+        {"text": "το", "error": false},
+        {"text": "λαμπάκι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράψω", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "αριθμό", "error": false},
+        {"text": "3", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "γράμματα", "error": true, "correct": "αριθμητικά", "feedback": "Για αριθμούς πατάω τα ΑΡΙΘΜΗΤΙΚΑ πλήκτρα!"},
+        {"text": "πλήκτρα.", "error": false}
+      ]
+    }
+  ]
+}

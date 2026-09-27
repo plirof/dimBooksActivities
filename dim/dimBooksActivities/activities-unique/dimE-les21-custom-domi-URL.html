@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δομή URL | Μάθημα 21</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ecfeff,#a5f3fc);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#134e4a;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#0891b2;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#134e4a;font-size:.75rem;font-weight:700;border:1px solid #67e8f9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.task{font-size:.78rem;color:#334155;line-height:1.5;margin-bottom:10px;background:#ecfeff;padding:10px;border-radius:10px;border-left:3px solid #0891b2}
+.url-display{display:flex;flex-wrap:wrap;align-items:center;gap:4px;background:#f8fafc;border:2px solid #67e8f9;border-radius:12px;padding:10px;margin:8px 0;min-height:44px}
+.url-part{padding:6px 12px;border-radius:8px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;user-select:none}
+.url-part:hover{transform:scale(1.05)}
+.url-part.proto{background:#dbeafe;color:#1e40af;border:2px solid #93c5fd}
+.url-part.domain{background:#dcfce7;color:#14532d;border:2px solid #86efac}
+.url-part.tld{background:#fef3c7;color:#92400e;border:2px solid #fde68a}
+.url-part.path{background:#f3e8ff;color:#6b21a8;border:2px solid #d8b4fe}
+.url-slot{padding:6px 12px;border:2px dashed #d1d5db;border-radius:8px;font-size:.7rem;color:#94a3b8;min-width:60px;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center}
+.url-slot.filled{border-style:solid}
+.url-slot.proto{border-color:#93c5fd}
+.url-slot.domain{border-color:#86efac}
+.url-slot.tld{border-color:#fde68a}
+.url-slot.path{border-color:#d8b4fe}
+.parts-bin{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.info-box{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.info-chip{padding:6px 10px;border-radius:8px;font-size:.6rem;font-weight:700;display:flex;align-items:center;gap:4px}
+.info-chip.proto{background:#dbeafe;color:#1e40af}
+.info-chip.domain{background:#dcfce7;color:#14532d}
+.info-chip.tld{background:#fef3c7;color:#92400e}
+.info-chip.path{background:#f3e8ff;color:#6b21a8}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#0891b2;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#0e7490}
+.check-btn:disabled{background:#94a3b8;cursor:default}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #0891b2;border-radius:10px;background:transparent;color:#0891b2;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#ecfeff}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer}
+.nav-prev{background:#134e4a22;color:#134e4a}
+.nav-next{background:#0891b2;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .url-display > * { margin: 2px; }
+  .parts-bin > * { margin: 3px; }
+  .info-box > * { margin: 5px; }
+  .info-chip > * + * { margin-left: 4px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔗 Δομή Διεύθυνσης URL</h1>
+<p class="subtitle">Συναρμολόγησε σωστά τα μέρη μιας διεύθυνσης ιστοσελίδας!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" onclick="prevQ()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" onclick="nextQ()">Επόμ. ▶</button>
+</div>
+<script>
+var challenges=[
+{
+desc:'Φτιάξε τη διεύθυνση του e-me (εκπαιδευτική πλατφόρμα).',
+slots:[
+{type:'proto',label:'Πρωτόκολλο'},
+{type:'domain',label:'Όνομα'},
+{type:'tld',label:'Κατάληξη'}
+],
+parts:[
+{text:'https://',type:'proto'},
+{text:'e-me.edu',type:'domain'},
+{text:'.gr/',type:'tld'}
+],
+answer:['https://','e-me.edu','.gr/'],
+result:'https://e-me.edu.gr/',
+explanation:'edu = εκπαίδευση, gr = Ελλάδα'
+},
+{
+desc:'Φτιάξε τη διεύθυνση του ψηφιακού βοηθού του κράτους.',
+slots:[
+{type:'proto',label:'Πρωτόκολλο'},
+{type:'domain',label:'Όνομα'},
+{type:'tld',label:'Κατάληξη'}
+],
+parts:[
+{text:'https://',type:'proto'},
+{text:'gov',type:'domain'},
+{text:'.gr/',type:'tld'}
+],
+answer:['https://','gov','.gr/'],
+result:'https://gov.gr/',
+explanation:'gov = κυβέρνηση, gr = Ελλάδα'
+},
+{
+desc:'Φτιάξε τη διεύθυνση της Βικιπαίδειας (οργανισμός).',
+slots:[
+{type:'proto',label:'Πρωτόκολλο'},
+{type:'domain',label:'Όνομα'},
+{type:'tld',label:'Κατάληξη'}
+],
+parts:[
+{text:'https://',type:'proto'},
+{text:'www.wikipedia',type:'domain'},
+{text:'.org/',type:'tld'}
+],
+answer:['https://','www.wikipedia','.org/'],
+result:'https://www.wikipedia.org/',
+explanation:'org = οργανισμός'
+},
+{
+desc:'Φτιάξε τη διεύθυνση του YouTube (εταιρεία).',
+slots:[
+{type:'proto',label:'Πρωτόκολλο'},
+{type:'domain',label:'Όνομα'},
+{type:'tld',label:'Κατάληξη'}
+],
+parts:[
+{text:'https://',type:'proto'},
+{text:'www.youtube',type:'domain'},
+{text:'.com/',type:'tld'}
+],
+answer:['https://','www.youtube','.com/'],
+result:'https://www.youtube.com/',
+explanation:'com = εταιρεία (commercial)'
+},
+{
+desc:'Φτιάξε τη διεύθυνση του Φωτόδεντρου (εκπαίδευση, Ελλάδα).',
+slots:[
+{type:'proto',label:'Πρωτόκολλο'},
+{type:'domain',label:'Όνομα'},
+{type:'tld',label:'Κατάληξη'}
+],
+parts:[
+{text:'https://',type:'proto'},
+{text:'photodentro.edu',type:'domain'},
+{text:'.gr/',type:'tld'}
+],
+answer:['https://','photodentro.edu','.gr/'],
+result:'https://photodentro.edu.gr/',
+explanation:'edu = εκπαίδευση, gr = Ελλάδα'
+}
+];
+var curQ=0;
+var pts=0;
+var placed=[];
+var available=[];
+var answered=false;
+
+function initQ(){
+var ch=challenges[curQ];
+placed=new Array(ch.slots.length).fill(null);
+available=ch.parts.map(function(p){return{text:p.text,type:p.type};});
+answered=false;
+}
+
+function render(){
+var ch=challenges[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+if(placed.length!==ch.slots.length)initQ();
+var main=document.getElementById('main');
+var h='';
+h+='<div class="task">📋 '+ch.desc+'</div>';
+h+='<div class="info-box">';
+h+='<span class="info-chip proto">🔒 Πρωτόκολλο</span>';
+h+='<span class="info-chip domain">🌐 Όνομα</span>';
+h+='<span class="info-chip tld">📍 Κατάληξη</span>';
+h+='</div>';
+h+='<div class="url-display" id="urlDisplay">';
+for(var i=0;i<ch.slots.length;i++){
+var s=ch.slots[i];
+if(placed[i]){
+h+='<span class="url-slot filled '+s.type+'" onclick="removePart('+i+')">'+placed[i].text+'</span>';
+}else{
+h+='<span class="url-slot '+s.type+'">'+s.label+'</span>';
+}
+}
+h+='</div>';
+h+='<div class="parts-bin">';
+for(var i=0;i<available.length;i++){
+if(available[i]){
+h+='<span class="url-part '+available[i].type+'" onclick="placePart('+i+')">'+available[i].text+'</span>';
+}
+}
+h+='</div>';
+var allPlaced=placed.every(function(p){return p!==null;});
+if(!answered){
+h+='<button class="check-btn" onclick="checkAnswer()"'+(allPlaced?'':' disabled')+'>✓ Έλεγχος</button>';
+}else{
+var correct=true;
+for(var i=0;i<ch.answer.length;i++){
+if(!placed[i]||placed[i].text!==ch.answer[i]){correct=false;break;}
+}
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Μπράβο! Η διεύθυνση είναι: '+ch.result:'❌ Η σωστή διεύθυνση: '+ch.result)+' — '+ch.explanation+'</div>';
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόκληση ▶</button>';
+}
+main.innerHTML=h;
+}
+
+function placePart(idx){
+if(answered)return;
+var ch=challenges[curQ];
+var part=available[idx];
+if(!part)return;
+for(var i=0;i<ch.slots.length;i++){
+if(!placed[i]&&ch.slots[i].type===part.type){
+placed[i]={text:part.text,type:part.type};
+available[idx]=null;
+break;
+}
+}
+render();
+}
+
+function removePart(slotIdx){
+if(answered)return;
+var p=placed[slotIdx];
+if(!p)return;
+for(var i=0;i<available.length;i++){
+if(!available[i]){
+available[i]=p;
+break;
+}
+}
+placed[slotIdx]=null;
+render();
+}
+
+function checkAnswer(){
+answered=true;
+render();
+}
+
+function nextQ(){
+if(curQ<challenges.length-1){
+curQ++;
+initQ();
+render();
+}
+}
+
+function prevQ(){
+if(curQ>0){
+curQ--;
+initQ();
+render();
+}
+}
+
+initQ();
+render();
+</script>
+</body>
+</html>

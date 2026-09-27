@@ -1,0 +1,40 @@
+{
+    "id": "dimC-les04-match-weq",
+    "title": "Γνωριμία με το Scratch - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "Αντικείμενα",
+                "right": "Μορφές ή χαρακτήρες (sprites)"
+            },
+            {
+                "left": "Εντολές",
+                "right": "Πλακίδια (blocks)"
+            },
+            {
+                "left": "Προγράμματα",
+                "right": "Σενάρια ή κώδικας (scripts)"
+            },
+            {
+                "left": "Γεγονότα",
+                "right": "Συμβάντα (events)"
+            },
+            {
+                "left": "Χρώμα εντολής",
+                "right": "Δείχνει σε ποια κατηγορία ανήκει"
+            },
+            {
+                "left": "Πράσινη σημαία",
+                "right": "Εκκίνηση προγράμματος στο Scratch"
+            }
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les04",
+        "Scratch"
+    ]
+}

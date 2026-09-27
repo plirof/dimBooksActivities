@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταίριαξε τις Εντολές 🎮</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #00bcd4, #0097a7);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(0,188,212,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #0097a7; }
+  .round { font-size: .9rem; color: #888; }
+  .challenge-box {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 20px;
+    margin-bottom: 14px; text-align: center;
+  }
+  .challenge-title { font-size: 1.2rem; font-weight: 700; color: #2d3436; margin-bottom: 10px; }
+  .path-display {
+    display: flex; gap: 4px; justify-content: center; flex-wrap: wrap;
+    background: #f5f5f5; border-radius: 12px; padding: 12px;
+    margin-bottom: 10px;
+  }
+  .path-step {
+    width: 44px; height: 44px;
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 1.4rem;
+    background: #fff; border: 2px solid #e0e0e0;
+  }
+  .path-step.active { border-color: #00bcd4; background: #e0f7fa; }
+  .challenge-hint {
+    font-size: 1rem; color: #666; margin-bottom: 8px;
+  }
+  .mini-grid {
+    display: inline-grid; grid-gap: 2px; margin-bottom: 10px;
+  }
+  .mini-grid .mcell {
+    width: 36px; height: 36px;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+  }
+  .mini-grid .mcell.start { background: #fff9c4; }
+  .mini-grid .mcell.goal { background: #c8e6c9; }
+  .mini-grid .mcell.path-cell { background: #bbdefb; }
+  .commands-area {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .cmd-chip {
+    padding: 10px 14px; border: 3px solid #e0e0e0;
+    border-radius: 12px; background: #fff;
+    font-size: 1.3rem; cursor: pointer;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    transition: all .2s; display: flex; align-items: center; gap: 4px;
+  }
+  .cmd-chip:hover { border-color: #00bcd4; transform: scale(1.05); }
+  .cmd-chip:active { transform: scale(.95); }
+  .cmd-chip.used { opacity: .3; pointer-events: none; }
+  .cmd-chip.selected { border-color: #00bcd4; background: #e0f7fa; }
+  .answer-slots {
+    display: flex; gap: 4px; justify-content: center; flex-wrap: wrap;
+    background: #f0f8ff; border-radius: 12px; padding: 10px;
+    margin-bottom: 12px; min-height: 50px;
+  }
+  .ans-slot {
+    width: 48px; height: 48px;
+    border: 2px dashed #90caf9; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; cursor: pointer;
+    transition: all .2s;
+  }
+  .ans-slot.filled {
+    border-style: solid; border-color: #00bcd4;
+    background: #e0f7fa;
+  }
+  .ans-slot.highlight { border-color: #f44336; background: #ffebee; }
+  .action-buttons {
+    display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-action {
+    border: none; border-radius: 14px; padding: 10px 24px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+  }
+  .btn-action:active { transform: scale(.95); }
+  .btn-action:disabled { opacity: .5; cursor: default; transform: none; }
+  .btn-check {
+    background: linear-gradient(135deg, #00bcd4, #0097a7);
+    color: #fff;
+  }
+  .btn-clear-slots { background: #ffcdd2; color: #c62828; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #00bcd4, #0097a7);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(0,188,212,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.15rem; }
+    .cmd-chip { font-size: 1.1rem; padding: 8px 12px; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .path-display > * { margin: 2px; }
+  .commands-area > * { margin: 3px; }
+  .cmd-chip > * + * { margin-left: 4px; }
+  .answer-slots > * { margin: 2px; }
+  .action-buttons > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎮 Ταίριαξε τις Εντολές</h1>
+    <p>Βάλε τα βελάκια στη σωστή σειρά!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="challenge-box">
+      <div class="challenge-title" id="challengeTitle">🐣 Το παπάκι πάει στη λιμνούλα</div>
+      <div class="mini-grid" id="miniGrid"></div>
+      <div class="challenge-hint" id="challengeHint">Πάτα τα βελάκια για να φτιάξεις το πρόγραμμα!</div>
+    </div>
+    <div class="answer-slots" id="answerSlots"></div>
+    <div class="commands-area" id="commandsArea"></div>
+    <div class="action-buttons">
+      <button class="btn-action btn-clear-slots" onclick="clearSlots()">🗑️ Ξανά</button>
+      <button class="btn-action btn-check" onclick="checkAnswer()">✅ Έλεγχος</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var challenges = [
+    {
+      title: '🐣 Το παπάκι πάει στη λιμνούλα',
+      grid: [
+        ['🐣', '', '', ''],
+        ['', '🌿', '', ''],
+        ['', '', '', ''],
+        ['', '', '', '🌊']
+      ],
+      answer: ['right', 'right', 'right', 'down', 'down', 'down']
+    },
+    {
+      title: '🐸 Ο βάτραχος πάει στη λιμνούλα',
+      grid: [
+        ['🐸', '', '🌿', ''],
+        ['', '', '', ''],
+        ['', '', '', ''],
+        ['', '🌊', '', '']
+      ],
+      answer: ['right', 'down', 'down', 'down']
+    },
+    {
+      title: '🐝 Η μέλισσα πάει στο λουλούδι',
+      grid: [
+        ['', '🐝', '', ''],
+        ['', '', '🌿', ''],
+        ['', '', '', ''],
+        ['🌸', '', '', '']
+      ],
+      answer: ['left', 'down', 'down', 'down']
+    },
+    {
+      title: '🐢 Η χελώνα πάει στη θάλασσα',
+      grid: [
+        ['🐢', '', '', ''],
+        ['🌿', '', '', ''],
+        ['', '', '', ''],
+        ['', '', '🌊', '']
+      ],
+      answer: ['right', 'down', 'down', 'right', 'down']
+    }
+  ];
+
+  var currentChallenge = 0, score = 0, animating = false;
+  var userAnswer = [];
+
+  function startGame() {
+    currentChallenge = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadChallenge();
+  }
+
+  function loadChallenge() {
+    if (currentChallenge >= challenges.length) { showResult(); return; }
+    animating = false;
+    enableButtons(true);
+    var ch = challenges[currentChallenge];
+    document.getElementById('challengeTitle').textContent = ch.title;
+    document.getElementById('roundDisplay').textContent = (currentChallenge + 1) + '/' + challenges.length;
+    document.getElementById('feedback').className = 'feedback';
+
+    renderMiniGrid(ch.grid);
+    userAnswer = [];
+    renderAnswerSlots(ch.answer.length);
+    renderCommands(ch.answer);
+  }
+
+  function renderMiniGrid(gridData) {
+    var grid = document.getElementById('miniGrid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + gridData[0].length + ', 36px)';
+    for (var r = 0; r < gridData.length; r++) {
+      for (var c = 0; c < gridData[r].length; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'mcell';
+        cell.setAttribute('data-r', r);
+        cell.setAttribute('data-c', c);
+        var val = gridData[r][c];
+        if (val === '🐣' || val === '🐸' || val === '🐝' || val === '🐢') cell.classList.add('start');
+        else if (val === '🌊' || val === '🌸') cell.classList.add('goal');
+        else if (val === '') cell.textContent = '';
+        cell.textContent = val;
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function renderAnswerSlots(len) {
+    var container = document.getElementById('answerSlots');
+    container.innerHTML = '';
+    for (var i = 0; i < len; i++) {
+      var slot = document.createElement('div');
+      slot.className = 'ans-slot';
+      slot.setAttribute('data-idx', i);
+      slot.addEventListener('click', function() {
+        if (animating) return;
+        var idx = parseInt(this.getAttribute('data-idx'));
+        if (this.classList.contains('filled')) {
+          var removed = userAnswer[idx];
+          userAnswer[idx] = null;
+          this.classList.remove('filled');
+          this.textContent = '';
+          var chips = document.querySelectorAll('.cmd-chip');
+          for (var c = 0; c < chips.length; c++) {
+            if (chips[c].getAttribute('data-dir') === removed && chips[c].classList.contains('used')) {
+              chips[c].classList.remove('used');
+              break;
+            }
+          }
+          var nextIdx = -1;
+          for (var j = idx + 1; j < userAnswer.length; j++) {
+            if (userAnswer[j] != null) {
+              var slotJ = document.querySelector('.ans-slot[data-idx="' + j + '"]');
+              var dirJ = userAnswer[j];
+              userAnswer[idx] = dirJ;
+              userAnswer[j] = null;
+              this.textContent = slotJ.textContent;
+              slotJ.textContent = '';
+              slotJ.classList.remove('filled');
+              this.classList.add('filled');
+              break;
+            }
+          }
+        }
+      });
+      container.appendChild(slot);
+    }
+  }
+
+  function renderCommands(answer) {
+    var container = document.getElementById('commandsArea');
+    container.innerHTML = '';
+    var count = { 'up': 0, 'down': 0, 'left': 0, 'right': 0 };
+    for (var i = 0; i < answer.length; i++) count[answer[i]]++;
+
+    var dirs = ['up', 'down', 'left', 'right'];
+    var arrows = { 'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️' };
+
+    for (var d = 0; d < dirs.length; d++) {
+      var dir = dirs[d];
+      for (var n = 0; n < count[dir]; n++) {
+        (function(direction) {
+          var chip = document.createElement('div');
+          chip.className = 'cmd-chip';
+          chip.setAttribute('data-dir', direction);
+          chip.textContent = arrows[direction];
+          chip.addEventListener('click', function() {
+            if (animating) return;
+            if (this.classList.contains('used')) return;
+            var slots = document.querySelectorAll('.ans-slot');
+            var idx = -1;
+            for (var s = 0; s < slots.length; s++) {
+              if (!slots[s].classList.contains('filled')) { idx = s; break; }
+            }
+            if (idx === -1) return;
+            userAnswer[idx] = direction;
+            slots[idx].textContent = arrows[direction];
+            slots[idx].classList.add('filled');
+            this.classList.add('used');
+          });
+          container.appendChild(chip);
+        })(dir);
+      }
+    }
+  }
+
+  function clearSlots() {
+    if (animating) return;
+    var ch = challenges[currentChallenge];
+    userAnswer = [];
+    renderAnswerSlots(ch.answer.length);
+    renderCommands(ch.answer);
+    renderMiniGrid(ch.grid);
+    document.getElementById('feedback').className = 'feedback';
+  }
+
+  function enableButtons(enabled) {
+    var btns = document.querySelectorAll('.btn-action');
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = !enabled;
+  }
+
+  function simulatePath(gridData, dirs) {
+    var starts = ['🐣', '🐸', '🐝', '🐢'], goals = ['🌊', '🌸'];
+    var sr = -1, sc = -1, gr = -1, gc = -1;
+    for (var r = 0; r < gridData.length; r++) {
+      for (var c = 0; c < gridData[r].length; c++) {
+        var v = gridData[r][c];
+        if (starts.indexOf(v) !== -1) { sr = r; sc = c; }
+        if (goals.indexOf(v) !== -1) { gr = r; gc = c; }
+      }
+    }
+    var pr = sr, pc = sc;
+    for (var i = 0; i < dirs.length; i++) {
+      var d = dirs[i];
+      if (d === 'up') pr--;
+      else if (d === 'down') pr++;
+      else if (d === 'left') pc--;
+      else if (d === 'right') pc++;
+      if (pr < 0 || pr >= gridData.length || pc < 0 || pc >= gridData[0].length) return 'off';
+    }
+    return (pr === gr && pc === gc) ? 'ok' : 'miss';
+  }
+
+  function cellAt(r, c) {
+    return document.querySelector('.mcell[data-r="' + r + '"][data-c="' + c + '"]');
+  }
+
+  function checkAnswer() {
+    if (animating) return;
+    var ch = challenges[currentChallenge];
+    var fb = document.getElementById('feedback');
+
+    var allFilled = true;
+    var slots = document.querySelectorAll('.ans-slot');
+    for (var i = 0; i < slots.length; i++) {
+      if (!slots[i].classList.contains('filled')) { allFilled = false; break; }
+    }
+
+    if (!allFilled) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Βάλε όλα τα βελάκια πρώτα!';
+      return;
+    }
+
+    var outcome = simulatePath(ch.grid, userAnswer);
+    animating = true;
+    enableButtons(false);
+    fb.className = 'feedback';
+    renderMiniGrid(ch.grid);
+    animateWalk(ch, outcome);
+  }
+
+  function animateWalk(ch, outcome) {
+    var gridData = ch.grid;
+    var starts = ['🐣', '🐸', '🐝', '🐢'], goals = ['🌊', '🌸'];
+    var pr = -1, pc = -1, gr = -1, gc = -1, animal = '';
+    for (var r = 0; r < gridData.length; r++) {
+      for (var c = 0; c < gridData[r].length; c++) {
+        var v = gridData[r][c];
+        if (starts.indexOf(v) !== -1) { pr = r; pc = c; animal = v; }
+        if (goals.indexOf(v) !== -1) { gr = r; gc = c; }
+      }
+    }
+
+    var i = 0;
+    var timer = setInterval(function() {
+      if (i >= userAnswer.length) { finishWalk(); return; }
+      var d = userAnswer[i++];
+      var nr = pr, nc = pc;
+      if (d === 'up') nr--;
+      else if (d === 'down') nr++;
+      else if (d === 'left') nc--;
+      else if (d === 'right') nc++;
+
+      var fromCell = cellAt(pr, pc);
+      var orig = gridData[pr][pc];
+      fromCell.textContent = (starts.indexOf(orig) !== -1) ? '' : orig;
+      if (!(pr === gr && pc === gc)) fromCell.classList.add('path-cell');
+
+      if (nr < 0 || nr >= gridData.length || nc < 0 || nc >= gridData[0].length) { finishWalk(); return; }
+
+      cellAt(nr, nc).textContent = animal;
+      pr = nr; pc = nc;
+    }, 420);
+
+    function finishWalk() {
+      clearInterval(timer);
+      var fb = document.getElementById('feedback');
+      if (pr === gr && pc === gc) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        fb.className = 'feedback correct';
+        fb.textContent = '✅ Μπράβο! ' + ch.title + ' — σωστό πρόγραμμα!';
+        setTimeout(function() {
+          currentChallenge++;
+          loadChallenge();
+        }, 1600);
+      } else {
+        animating = false;
+        enableButtons(true);
+        fb.className = 'feedback wrong';
+        fb.textContent = outcome === 'off'
+          ? '❌ Ωχ! Ο φίλος μας έπεσε έξω από τον πίνακα! Δοκίμασε ξανά!'
+          : '❌ Ωχ! Δεν έφτασε στον προορισμό του. Δοκίμασε ξανά!';
+      }
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = challenges.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Είσαι εξπέρ στις εντολές!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

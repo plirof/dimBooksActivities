@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Εννοιολογικός Χάρτης",
+  "subtitle": "Πιάσε λέξεις για τον χάρτη!",
+  "instructions": "Πιάσε μόνο λέξεις για τον ΕΝΝΟΙΟΛΟΓΙΚΟ ΧΑΡΤΗ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Ζώα", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάλα", "correct": false, "color": "#f44336"},
+    {"text": "Κατοικίδια", "correct": true, "color": "#2196F3"},
+    {"text": "Κουζίνα", "correct": false, "color": "#FF9800"},
+    {"text": "Δάσος", "correct": true, "color": "#9C27B0"},
+    {"text": "Καρέκλα", "correct": false, "color": "#E91E63"},
+    {"text": "Φάρμα", "correct": true, "color": "#009688"},
+    {"text": "Ποτήρι", "correct": false, "color": "#FFC107"},
+    {"text": "Σχήμα", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"},
+    {"text": "Γραμμή", "correct": true, "color": "#3F51B5"},
+    {"text": "Τραπέζι", "correct": false, "color": "#8BC34A"}
+  ]
+}

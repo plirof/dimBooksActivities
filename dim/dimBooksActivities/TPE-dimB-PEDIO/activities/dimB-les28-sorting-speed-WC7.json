@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αποστολή ή Λήψη;",
+  "subtitle": "Ταξινόμησε τις ενέργειες",
+  "instructions": "Βάλε κάθε ενέργεια στη σωστή κατηγορία",
+  "categories": [
+    { "id": "stelno", "name": "Αποστολή", "color": "#2196F3", "key": "A" },
+    { "id": "lamvano", "name": "Λήψη", "color": "#f44336", "key": "L" }
+  ],
+  "items": [
+    { "text": "Επιλέγω γρήγορο μήνυμα", "category": "stelno" },
+    { "text": "Βλέπω αριθμό στο φακελάκι", "category": "lamvano" },
+    { "text": "Γράφω το μήνυμα", "category": "stelno" },
+    { "text": "Διαβάζω μήνυμα", "category": "lamvano" },
+    { "text": "Πατάω Αποστολή", "category": "stelno" },
+    { "text": "Πατάω Απάντηση", "category": "lamvano" },
+    { "text": "Επιλέγω παραλήπτη", "category": "stelno" },
+    { "text": "Βλέπω ποιος το έστειλε", "category": "lamvano" },
+    { "text": "Γράφω κείμενο απάντησης", "category": "stelno" },
+    { "text": "Άνοιγμα νέου μηνύματος", "category": "lamvano" }
+  ],
+  "duration": 30
+}

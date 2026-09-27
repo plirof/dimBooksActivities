@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Επεξεργασία Αντικειμένων",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Κάνω", "error": false, "correct": "", "feedback": "" },
+        { "text": "κλικ", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "σβήσω", "error": true, "correct": "επιλέξω", "feedback": "Κλικ κάνω για επιλογή, όχι σβήσιμο" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντικειμενο", "error": true, "correct": "αντικείμενο", "feedback": "Λείπει ο τόνος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "πλαισιο", "error": true, "correct": "πλαίσιο", "feedback": "Λείπει ο τόνος" },
+        { "text": "εμφανίζεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "οταν", "error": true, "correct": "όταν", "feedback": "Λείπει ο τόνος" },
+        { "text": "επιλέγω", "error": false, "correct": "", "feedback": "" },
+        { "text": "ένα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντικείμενο", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τραβάω", "error": false, "correct": "", "feedback": "" },
+        { "text": "τις", "error": false, "correct": "", "feedback": "" },
+        { "text": "κουκκιδες", "error": true, "correct": "κουκκίδες", "feedback": "Λείπει ο τόνος" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "γυρισω", "error": true, "correct": "γυρίσω", "feedback": "Λείπει ο τόνος" }
+      ]
+    }
+  ]
+}

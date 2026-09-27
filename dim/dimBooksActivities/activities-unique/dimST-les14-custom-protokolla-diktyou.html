@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πρωτόκολλα Δικτύου | Μάθημα 14</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:750px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.protocol-grid{display:flex;flex-direction:column;gap:8px}
+.p-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#1e293b;border-radius:10px;border:1px solid #334155;flex-wrap:wrap}
+.p-icon{font-size:1.3rem;min-width:32px;text-align:center}
+.p-name{color:#fbbf24;font-size:.72rem;font-weight:700;min-width:70px}
+.p-desc{color:#64748b;font-size:.62rem;flex:1;min-width:80px}
+.p-slot{min-width:80px;padding:5px 10px;background:#0f172a;border:2px dashed #475569;border-radius:8px;text-align:center;font-size:.6rem;color:#64748b;font-weight:600;cursor:pointer;transition:all .2s;min-height:30px;display:flex;align-items:center;justify-content:center}
+.p-slot.filled{border-color:#6366f1;border-style:solid;color:#e2e8f0;background:#1e1b4b}
+.p-slot.filled.correct{border-color:#22c55e;background:#22c55e11;color:#4ade80}
+.p-slot.filled.wrong{border-color:#ef4444;background:#ef444422;color:#f87171}
+.pool-area{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px;background:#1e293b;border-radius:10px;margin-top:6px;min-height:44px}
+.pool-item{padding:5px 10px;border-radius:8px;font-size:.62rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#e2e8f0;border:2px solid #475569}
+.pool-item:hover{border-color:#6366f1;transform:translateY(-2px)}
+.pool-item.selected{border-color:#a78bfa;background:#1e1b4b}
+.pool-item.placed{opacity:.35;cursor:default}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .protocol-grid > * + * { margin-top: 8px; }
+  .p-row > * { margin: 4px; }
+  .pool-area > * { margin: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🌐 Πρωτόκολλα Επικοινωνίας</h1>
+<p class="subtitle">Αντιστοίχισε κάθε πρωτόκολλο με τη χρήση του!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Επίπεδο:</span> <span id="lvlNum">1</span>/8</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var levels=[
+{
+icon:'🌐',title:'TCP/IP',desc:'Το βασικό πρωτόκολλο του διαδικτύου',
+slots:['Πλήρες όνομα','Ρόλος'],
+specs:[{text:'Transmission Control Protocol / Internet Protocol',key:0},{text:'Βασική επικοινωνία δικτύου',key:1}],
+correct:[0,1],
+hint:'Το TCP/IP είναι η «γλώσσα» του διαδικτύου. Όλες οι συσκευές το «μιλούν» για να επικοινωνήσουν.'
+},
+{
+icon:'🔒',title:'HTTPS',desc:'Ασφαλής πρόσβαση σε ιστοσελίδες',
+slots:['Πλήρες όνομα','Χρήση'],
+specs:[{text:'HyperText Transfer Protocol Secure',key:0},{text:'Ασφαλής περιήγηση στο web',key:1}],
+correct:[0,1],
+hint:'Το HTTPS είναι η ασφαλής έκδοση του HTTP. Το γνώρισμα «κλειδαριάς» στη γραμμή διευθύνσεων.'
+},
+{
+icon:'📧',title:'SMTP',desc:'Αποστολή email',
+slots:['Πλήρες όνομα','Χρήση'],
+specs:[{text:'Simple Mail Transfer Protocol',key:0},{text:'Αποστολή μηνυμάτων email',key:1}],
+correct:[0,1],
+hint:'Όταν στέλνεις ένα email, το SMTP αναλαμβάνει να το παραδώσει στον παραλήπτη.'
+},
+{
+icon:'📥',title:'POP3',desc:'Λήψη email',
+slots:['Τύπος','Χρήση'],
+specs:[{text:'Post Office Protocol v3',key:0},{text:'Λήψη email από διακομιστή',key:1}],
+correct:[0,1],
+hint:'Το POP3 κατεβάζει τα email από τον διακομιστή στον υπολογιστή σου για να τα διαβάσεις χωρίς σύνδεση.'
+},
+{
+icon:'📁',title:'FTP',desc:'Μεταφορά αρχείων',
+slots:['Πλήρες όνομα','Χρήση'],
+specs:[{text:'File Transfer Protocol',key:0},{text:'Μεταφορά αρχείων μέσω δικτύου',key:1}],
+correct:[0,1],
+hint:'Το FTP χρησιμοποιείται για ανέβασμα/κατέβασμα αρχείων από διακομιστές.'
+},
+{
+icon:'🏠',title:'IP διεύθυνση',desc:'Η διεύθυνση της συσκευής στο δίκτυο',
+slots:['Τύπος IPv4','Τύπος IPv6'],
+specs:[{text:'192.168.1.1',key:0},{text:'2001:db8::1',key:1}],
+correct:[0,1],
+hint:'Η IPv4 είναι η κλασική μορφή (4 αριθμοί). Η IPv6 είναι νεότερη, με περισσότερες διευθύνσεις.'
+},
+{
+icon:'🔤',title:'MAC Address',desc:'Μοναδικός κωδικός κάθε συσκευής',
+slots:['Μορφή','Χαρακτηριστικό'],
+specs:[{text:'00:1A:2B:3C:4D:5E',key:0},{text:'Μοναδικός εργοστασιακός κωδικός',key:1}],
+correct:[0,1],
+hint:'Κάθε κάρτα δικτύου έχει μοναδική MAC διεύθυνση που δίνεται από το εργοστάσιο.'
+},
+{
+icon:'📶',title:'Πάροχοι (Providers)',desc:'Εταιρείες που παρέχουν σύνδεση',
+slots:['Τύπος σύνδεσης','Μονάδα ταχύτητας'],
+specs:[{text:'Οπτική ίνα',key:0},{text:'Mbps (Megabits/sec)',key:1}],
+correct:[0,1],
+hint:'Η οπτική ίνα είναι η ταχύτερη τεχνολογία. Η ταχύτητα μετριέται σε Mbps ή Gbps.'
+}
+];
+var current=0;
+var pts=0;
+var placed={};
+var checked=false;
+var selectedItem=null;
+function render(){
+var lv=levels[current];
+checked=false;
+placed={};
+selectedItem=null;
+document.getElementById('lvlNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+lv.icon+' '+lv.title+'</div>';
+h+='<div style="color:#64748b;font-size:.68rem;margin-bottom:8px">'+lv.desc+'</div>';
+h+='<div class="protocol-grid">';
+for(var i=0;i<lv.slots.length;i++){
+h+='<div class="p-row">';
+h+='<div class="p-name" style="min-width:auto;font-size:.65rem;color:#94a3b8">'+lv.slots[i]+'</div>';
+h+='<div class="p-slot" id="slot'+i+'" onclick="clickSlot('+i+')">'+(placed[i]!==undefined?lv.specs[placed[i]].text:'⬤')+'</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div class="pool-area" id="poolArea">';
+var used=[];
+for(var key in placed){used.push(placed[key]);}
+for(var j=0;j<lv.specs.length;j++){
+var isUsed=used.indexOf(j)>=0;
+h+='<div class="pool-item'+(isUsed?' placed':'')+(selectedItem===j?' selected':'')+'" id="pool'+j+'" onclick="clickPool('+j+')">'+lv.specs[j].text+'</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkMatch()">✅ Έλεγχος</button></div>';
+h+='<div class="hint-box">💡 '+lv.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevLvl()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextLvl()"'+(current===levels.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function clickPool(idx){
+if(checked)return;
+var el=document.getElementById('pool'+idx);
+if(!el||el.classList.contains('placed'))return;
+selectedItem=selectedItem===idx?null:idx;
+var chips=document.querySelectorAll('.pool-item');
+for(var i=0;i<chips.length;i++){if(i!==idx)chips[i].classList.remove('selected');}
+el.classList.toggle('selected');
+}
+function clickSlot(slotIdx){
+if(checked)return;
+if(selectedItem===null)return;
+if(placed[slotIdx]!==undefined){
+var oldIdx=placed[slotIdx];
+var old=document.getElementById('pool'+oldIdx);
+if(old)old.classList.remove('placed');
+}
+placed[slotIdx]=selectedItem;
+var el=document.getElementById('pool'+selectedItem);
+if(el){el.classList.add('placed');el.classList.remove('selected');}
+selectedItem=null;
+renderSlots();
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function renderSlots(){
+var lv=levels[current];
+for(var i=0;i<lv.slots.length;i++){
+var el=document.getElementById('slot'+i);
+if(!el)continue;
+if(placed[i]!==undefined){el.textContent=lv.specs[placed[i]].text;el.classList.add('filled');}
+else{el.innerHTML='⬤';el.classList.remove('filled','correct','wrong');}
+}
+}
+function checkMatch(){
+var lv=levels[current];
+var allFilled=true;
+for(var i=0;i<lv.slots.length;i++){if(placed[i]===undefined){allFilled=false;break;}}
+if(!allFilled){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Τοποθέτησε όλα τα χαρακτηριστικά!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var j=0;j<lv.correct.length;j++){
+var slotEl=document.getElementById('slot'+j);
+if(placed[j]!==lv.correct[j]){allCorrect=false;if(slotEl){slotEl.classList.remove('correct');slotEl.classList.add('wrong');}}
+else{if(slotEl){slotEl.classList.remove('wrong');slotEl.classList.add('correct');}}
+}
+var fb=document.getElementById('feedback');
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Σωστή αντιστοίχιση!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ Κάποιες αντιστοιχίσεις είναι λάθος. Πάτα πάνω στις θέσεις για να τις αδειάσεις και δοκίμασε ξανά!';
+fb.className='feedback fail';
+}
+}
+function prevLvl(){if(current>0){current--;render();}}
+function nextLvl(){if(current<levels.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

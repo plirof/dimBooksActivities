@@ -1,0 +1,22 @@
+{
+  "title": "Ταξινόμηση: Σελιδοδείκτης ή Σχολιασμός;",
+  "subtitle": "Τι κάνω;",
+  "instructions": "Πάτα: ΣΕΛΙΔΟΔΕΙΚΤΗΣ ή ΣΧΟΛΙΑΣΜΟΣ",
+  "categories": [
+    {"id": "selido", "name": "Σελιδοδείκτης", "color": "#FFC107", "key": "ArrowLeft"},
+    {"id": "sxo", "name": "Σχολιασμός", "color": "#E91E63", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αστεράκι", "category": "selido"},
+    {"text": "Γράφω σχόλιο", "category": "sxo"},
+    {"text": "Ολοκληρώθηκε", "category": "selido"},
+    {"text": "Καρδούλα", "category": "sxo"},
+    {"text": "Μαγικό σημάδι", "category": "selido"},
+    {"text": "Πατάω Enter", "category": "sxo"},
+    {"text": "Αλλάζω όνομα", "category": "selido"},
+    {"text": "Ανάρτηση", "category": "sxo"},
+    {"text": "Βρίσκω εύκολα τη σελίδα", "category": "selido"},
+    {"text": "Αντιδρώ με σύμβολο", "category": "sxo"}
+  ],
+  "duration": 30
+}

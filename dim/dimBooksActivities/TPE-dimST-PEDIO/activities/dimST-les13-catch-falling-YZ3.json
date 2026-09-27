@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Ρυθμίσεις Υπολογιστή",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τις λέξεις που σχετίζονται με ρυθμίσεις και αντιμετώπιση προβλημάτων",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Ρυθμίσεις", "correct": true, "color": "#4CAF50" },
+    { "text": "Εγκατάσταση", "correct": true, "color": "#2196F3" },
+    { "text": "Απεγκατάσταση", "correct": true, "color": "#FF9800" },
+    { "text": "Κέντρο ελέγχου", "correct": true, "color": "#9C27B0" },
+    { "text": "Αντι-ιική", "correct": true, "color": "#00BCD4" },
+    { "text": "Router", "correct": true, "color": "#8BC34A" },
+    { "text": "Store", "correct": true, "color": "#FF5722" },
+    { "text": "Επανεκκίνηση", "correct": true, "color": "#3F51B5" },
+    { "text": "Ψήσιμο", "correct": false, "color": "#f44336" },
+    { "text": "Κηπουρική", "correct": false, "color": "#795548" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#607D8B" },
+    { "text": "Μαγειρική", "correct": false, "color": "#E91E63" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Περιεχόμενο Άρθρου",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΤΙ ΜΠΟΡΕΙ ΝΑ ΕΧΕΙ ΕΝΑ ΑΡΘΡΟ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Κείμενο", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Εικόνες", "correct": true, "color": "#2196F3"},
+    {"text": "Γλάστρα", "correct": false, "color": "#FF9800"},
+    {"text": "Βίντεο", "correct": true, "color": "#9C27B0"},
+    {"text": "Σφυρί", "correct": false, "color": "#E91E63"},
+    {"text": "Σύνδεσμοι", "correct": true, "color": "#00BCD4"},
+    {"text": "Μπογιά", "correct": false, "color": "#FFC107"},
+    {"text": "Ήχος", "correct": true, "color": "#795548"},
+    {"text": "Κάβουρας", "correct": false, "color": "#607D8B"}
+  ]
+}

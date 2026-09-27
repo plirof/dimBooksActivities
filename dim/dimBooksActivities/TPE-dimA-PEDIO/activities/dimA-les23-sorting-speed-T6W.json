@@ -1,0 +1,25 @@
+{
+  "title": "Ταξινόμηση: Γράμμα ή Αριθμός;",
+  "subtitle": "Τι πατάω;",
+  "instructions": "Πάτα: ΓΡΑΜΜΑ ή ΑΡΙΘΜΟΣ ή ΑΛΛΟ",
+  "categories": [
+    {"id": "gramma", "name": "Γράμμα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "arithmos", "name": "Αριθμός", "color": "#2196F3", "key": "ArrowUp"},
+    {"id": "allo", "name": "Άλλο πλήκτρο", "color": "#FF9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Α", "category": "gramma"},
+    {"text": "3", "category": "arithmos"},
+    {"text": "Enter", "category": "allo"},
+    {"text": "Μ", "category": "gramma"},
+    {"text": "7", "category": "arithmos"},
+    {"text": "Space", "category": "allo"},
+    {"text": "Ω", "category": "gramma"},
+    {"text": "9", "category": "arithmos"},
+    {"text": "Shift", "category": "allo"},
+    {"text": "Κ", "category": "gramma"},
+    {"text": "1", "category": "arithmos"},
+    {"text": "Backspace", "category": "allo"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Καταγραφή Δεδομένων",
+  "subtitle": "Σπάσε μόνο τα στοιχεία της καταγραφής",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με την καταγραφή δεδομένων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Καταγραφή δεδομένων",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Datalogger",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Μπάσκετ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Πίνακας στηλών",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Πείραμα",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "MY_DATA αρχείο",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Υπολογιστικό φύλλο",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Κήπος",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

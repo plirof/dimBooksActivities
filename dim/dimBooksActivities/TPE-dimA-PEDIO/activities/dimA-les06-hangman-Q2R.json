@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: ScratchJr",
+  "subtitle": "Μάντεψε τις λέξεις!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΠΡΟΓΡΑΜΜΑ", "hint": "Το φτιάχνουμε στον υπολογιστή", "category": "Λέξεις" },
+    { "word": "ΗΡΩΑΣ", "hint": "Ο χαρακτήρας που κινείται", "category": "ScratchJr" },
+    { "word": "ΕΝΤΟΛΗ", "hint": "Λέμε στον ήρωα τι να κάνει", "category": "ScratchJr" },
+    { "word": "ΣΚΗΝΙΚΟ", "hint": "Η εικόνα στο φόντο", "category": "ScratchJr" },
+    { "word": "ΒΗΜΑ", "hint": "Κάθε κομμάτι του προγράμματος", "category": "Λέξεις" },
+    { "word": "ΕΡΓΟ", "hint": "Αυτό που φτιάχνουμε στο ScratchJr", "category": "ScratchJr" }
+  ]
+}

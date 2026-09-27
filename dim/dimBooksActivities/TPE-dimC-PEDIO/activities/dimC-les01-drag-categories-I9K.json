@@ -1,0 +1,48 @@
+{
+  "title": "Σενάρια → ενέργειες",
+  "subtitle": "Τι μπορείς και τι δεν μπορείς να κάνεις;",
+  "categories": [
+    {
+      "id": "can",
+      "name": "ΜΠΟΡΕΙΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "cant",
+      "name": "ΔΕΝ ΜΠΟΡΕΙΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🌧️ Απενεργοποίηση στο βρέχος",
+      "category": "cant"
+    },
+    {
+      "id": "item2",
+      "text": "🔋 Φόρτιση όταν χρειάζεται",
+      "category": "can"
+    },
+    {
+      "id": "item3",
+      "text": "📱 Παιχνίδι 3 ώρες",
+      "category": "cant"
+    },
+    {
+      "id": "item4",
+      "text": "✉️ Αποστολή email",
+      "category": "can"
+    },
+    {
+      "id": "item5",
+      "text": "🌙 Υπολογιστής ανοιχτός τη νύχτα",
+      "category": "cant"
+    },
+    {
+      "id": "item6",
+      "text": "🔒 Ισχυρός κωδικός",
+      "category": "can"
+    }
+  ]
+}

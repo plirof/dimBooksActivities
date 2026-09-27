@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v003 260520 - opponent has only 75% chance to score
+v002 260519 - Fixed unicode
+v001 260519 - soccer quiz game, adapted from basketball
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Soccer Game Κουίζ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{width:100%;height:100%;position:relative;background:#1a472a}
+
+.scene{width:100%;height:100%;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#1a472a 0%,#2d6b3f 28%,#3a8c4e 30%,#45a058 100%)}
+
+.field{position:absolute;bottom:0;width:100%;height:70%;
+  background:repeating-linear-gradient(90deg,#3a8c4e 0px,#45a058 30px,#3a8c4e 60px,#45a058 90px);
+  background-size:120px 100%}
+
+.field-lines{position:absolute;top:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.penalty-box{position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:22%;
+  border:2px solid rgba(255,255,255,0.22);border-top:none}
+.goal-box{position:absolute;top:0;left:50%;transform:translateX(-50%);width:26%;height:12%;
+  border:2px solid rgba(255,255,255,0.22);border-top:none}
+.pen-spot{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);
+  width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.22)}
+.pen-arc{position:absolute;top:14%;left:50%;transform:translateX(-50%);width:26%;padding-bottom:10%;
+  border:2px solid rgba(255,255,255,0.18);border-radius:50%;clip-path:inset(0 0 50% 0)}
+.hw-line{position:absolute;top:48%;left:0;width:100%;height:2px;background:rgba(255,255,255,0.18)}
+.center-circ{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);
+  width:16%;padding-bottom:16%;border:2px solid rgba(255,255,255,0.18);border-radius:50%}
+.center-spot{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);
+  width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.22)}
+
+.goal-wrap{position:absolute;top:2%;left:50%;transform:translateX(-50%);z-index:5}
+.goal-frame{width:150px;height:52px;position:relative;
+  border:5px solid #eee;border-bottom:none;border-radius:4px 4px 0 0;
+  box-shadow:inset 0 0 10px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.3)}
+.goal-frame.celebrate{box-shadow:0 0 15px rgba(255,215,0,0.6),0 0 30px rgba(255,215,0,0.3);transition:box-shadow .3s}
+.goal-net{position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,0.14) 9px,rgba(255,255,255,0.14) 10px),
+    repeating-linear-gradient(0deg,transparent,transparent 9px,rgba(255,255,255,0.14) 9px,rgba(255,255,255,0.14) 10px);
+  pointer-events:none}
+.goal-net.ripple{animation:netRipple .5s ease-out}
+@keyframes netRipple{0%{transform:scaleY(1)}30%{transform:scaleY(1.15) translateY(3px)}60%{transform:scaleY(0.9)}100%{transform:scaleY(1)}}
+
+.scoreboard{
+  position:absolute;top:0;right:0;
+  background:linear-gradient(180deg,#0d0d0d,#1a1a1a,#222);
+  border:3px solid #FFD700;border-right:none;
+  border-radius:0 0 0 14px;
+  color:#fff;padding:6px 6px 6px 10px;
+  display:flex;align-items:center;gap:6px;
+  z-index:3;
+  box-shadow:0 4px 30px rgba(0,0,0,0.8),0 0 50px rgba(255,215,0,0.1),inset 0 1px 0 rgba(255,215,0,0.15);
+  max-width:52%;justify-content:center}
+.sb-team{text-align:center;min-width:42px}
+.sb-team-name{font-size:7px;opacity:.6;text-transform:uppercase;letter-spacing:1px;margin-bottom:1px}
+.sb-team-score{font-size:26px;font-weight:900;color:#FFD700;line-height:1;
+  text-shadow:0 0 10px rgba(255,215,0,0.4),0 1px 2px rgba(0,0,0,0.5)}
+.sb-center{text-align:center;padding:0 4px;min-width:48px}
+.sb-timer{font-size:20px;font-weight:700;color:#ff4444;font-family:'Courier New',Courier,monospace;
+  text-shadow:0 0 8px rgba(255,60,60,0.5);line-height:1;letter-spacing:1px}
+.sb-timer.low{animation:timerPulse .5s infinite}
+@keyframes timerPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.08)}}
+.sb-qtr{font-size:7px;opacity:.45;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.sb-divider{width:2px;height:32px;background:linear-gradient(180deg,rgba(255,215,0,0.1),rgba(255,215,0,0.35),rgba(255,215,0,0.1));border-radius:1px}
+
+.opp-notify{
+  position:absolute;top:45%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:linear-gradient(135deg,rgba(180,0,0,0.95),rgba(100,0,0,0.97));
+  color:#fff;padding:16px 30px;border-radius:16px;
+  font-size:18px;font-weight:800;z-index:30;pointer-events:none;
+  opacity:0;transition:transform .35s cubic-bezier(.17,.67,.29,1.4),opacity .3s;
+  text-align:center;border:2px solid rgba(255,80,80,0.6);
+  box-shadow:0 0 40px rgba(255,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.1);
+  text-shadow:1px 1px 3px rgba(0,0,0,0.5);line-height:1.4}
+.opp-notify.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.opp-notify .opp-pts{font-size:30px;color:#ff6666;display:block;margin-top:6px;
+  text-shadow:0 0 10px rgba(255,100,100,0.5)}
+
+.player{position:absolute;width:36px;height:48px;z-index:10;
+  transform:translate(-50%,-50%);transition:transform .3s}
+.p-body{position:relative;width:100%;height:100%}
+.p-head{position:absolute;top:2px;left:50%;transform:translateX(-50%);
+  width:13px;height:13px;border-radius:50%;
+  background:linear-gradient(180deg,#ffcc80,#ffb74d);border:1.5px solid #e65100}
+.p-torso{position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:15px;height:12px;border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:7px;font-weight:bold;color:#fff;line-height:1}
+.player.off .p-torso{background:linear-gradient(180deg,#1565c0,#0d47a1);border:1px solid #42a5f5}
+.player.off .p-arm-l,.player.off .p-arm-r{background:linear-gradient(180deg,#1565c0,#0d47a1)}
+.player.def .p-torso{background:linear-gradient(180deg,#c62828,#8e0000);border:1px solid #ef5350}
+.player.def .p-arm-l,.player.def .p-arm-r{background:linear-gradient(180deg,#c62828,#8e0000)}
+.player.gk .p-torso{background:linear-gradient(180deg,#f9a825,#f57f17);border:1px solid #fdd835}
+.player.gk .p-arm-l,.player.gk .p-arm-r{background:linear-gradient(180deg,#f9a825,#f57f17)}
+.p-arm-l,.p-arm-r{position:absolute;top:14px;width:6px;height:14px;border-radius:2px;
+  transform-origin:top center;transition:transform .25s ease-out}
+.p-arm-l{left:3px;transform:rotate(15deg)}
+.p-arm-r{right:3px;transform:rotate(-15deg)}
+.p-legs{position:absolute;top:25px;left:50%;transform:translateX(-50%);width:15px;height:17px}
+.p-leg-l,.p-leg-r{position:absolute;top:0;width:7px;height:17px;border-radius:2px;
+  transform-origin:top center;background:linear-gradient(180deg,#fff,#e0e0e0);
+  transition:transform .25s ease-out}
+.p-leg-l{left:0}.p-leg-r{right:0}
+.player.ready{animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(255,255,0,0.4))}50%{filter:drop-shadow(0 0 12px rgba(255,255,0,0.8))}}
+.player.ball-marker .p-arm-r::after{content:'';position:absolute;bottom:-3px;left:50%;
+  transform:translateX(-50%);width:9px;height:9px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff,#ccc);border:1px solid #999;z-index:2}
+.player.kicking .p-leg-r{transform:rotate(-70deg)}
+.player.kicking .p-arm-l{transform:rotate(-30deg)}
+.player.kicking .p-arm-r{transform:rotate(30deg)}
+.player.gk.dive-left .p-body{animation:gkDiveL .5s ease-out forwards}
+.player.gk.dive-right .p-body{animation:gkDiveR .5s ease-out forwards}
+@keyframes gkDiveL{0%{transform:rotate(0) translateX(0)}100%{transform:rotate(-35deg) translateX(-20px)}}
+@keyframes gkDiveR{0%{transform:rotate(0) translateX(0)}100%{transform:rotate(35deg) translateX(20px)}}
+
+.ball{position:absolute;width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff,#e8e8e8);
+  border:2px solid #666;box-shadow:2px 2px 4px rgba(0,0,0,0.3);
+  z-index:12;transform:translate(-50%,-50%)}
+.ball-penta{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:9px;height:9px;background:#333;clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%)}
+.ball-seam-h{position:absolute;top:50%;left:0;width:100%;height:1.5px;background:rgba(0,0,0,0.12);transform:translateY(-50%)}
+.ball-seam-v{position:absolute;left:50%;top:0;width:1.5px;height:100%;background:rgba(0,0,0,0.12);transform:translateX(-50%)}
+.ball.gone{display:none}
+
+.ans-zone{position:absolute;transform:translate(-50%,0);
+  width:26%;max-width:180px;min-width:70px;
+  padding:8px 6px;background:rgba(33,150,243,0.2);
+  border:2px dashed rgba(100,181,246,0.6);border-radius:6px;
+  color:#fff;font-weight:600;font-size:11px;line-height:1.2;
+  cursor:pointer;text-align:center;overflow-wrap:break-word;
+  text-shadow:1px 1px 2px rgba(0,0,0,0.8);touch-action:manipulation;
+  z-index:14;transition:background .12s,border-color .12s}
+.ans-zone:active{background:rgba(33,150,243,0.5)}
+.ans-zone.off{pointer-events:none;opacity:.3}
+.ans-zone.ok{border-color:#4CAF50;background:rgba(76,175,80,0.45);border-style:solid}
+.ans-zone.no{border-color:#f44336;background:rgba(244,67,54,0.35);border-style:solid}
+
+.result{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%) scale(0);
+  font-size:42px;font-weight:900;z-index:25;pointer-events:none;opacity:0;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.6);transition:transform .25s ease-out,opacity .25s}
+.result.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.result.goal{color:#FFD700}
+.result.miss{color:#FF5252}
+
+.qarea{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:94%;max-width:540px;z-index:15;text-align:center;
+  background:rgba(0,0,0,0.65);color:#fff;padding:10px 14px;border-radius:10px 10px 0 0}
+.qarea .qnum{font-size:10px;opacity:.45;margin-bottom:3px}
+.qarea .qt{font-size:14px;line-height:1.3;margin-bottom:6px}
+.qarea .ctrls{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.qarea .fb{font-size:12px;flex:1;display:none;text-align:left}
+.qarea .fb.ok{color:#8BC34A;display:block}
+.qarea .fb.no{color:#FF5252;display:block}
+.nbtn{display:none;padding:7px 18px;background:linear-gradient(135deg,#1565c0,#0d47a1);
+  color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;
+  touch-action:manipulation;white-space:nowrap}
+.nbtn:active{opacity:.85}
+
+.loading,.error-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#fff;font-size:1.1em;text-align:center;text-shadow:1px 1px 4px rgba(0,0,0,0.5)}
+
+.final{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.88);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;z-index:50;text-align:center;padding:20px}
+.final h2{font-size:1.5em;margin-bottom:6px}
+.final .bs{font-size:3em;font-weight:900;color:#FFD700;margin:6px 0}
+.final .fm{font-size:1em;margin-bottom:14px;color:#ccc}
+.rbtn{padding:11px 32px;background:linear-gradient(135deg,#1565c0,#0d47a1);
+  color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;touch-action:manipulation}
+
+@media(min-width:500px){
+  .player{width:44px;height:60px}
+  .p-head{width:16px;height:16px;top:2px}
+  .p-torso{width:19px;height:15px;top:17px;font-size:9px}
+  .p-arm-l,.p-arm-r{width:7px;height:17px;top:17px}
+  .p-arm-l{left:4px}.p-arm-r{right:4px}
+  .p-legs{width:19px;height:20px;top:31px}
+  .p-leg-l,.p-leg-r{width:8px;height:20px}
+  .player.ball-marker .p-arm-r::after{width:11px;height:11px}
+  .ball{width:32px;height:32px}
+  .ans-zone{font-size:13px;padding:9px 10px;max-width:220px}
+  .scoreboard{padding:10px 10px 12px 24px;gap:16px;border-radius:0 0 0 18px}
+  .sb-team-score{font-size:46px}
+  .sb-timer{font-size:32px}
+  .sb-team-name{font-size:10px}
+  .sb-team{min-width:70px}
+  .sb-center{min-width:70px;padding:0 8px}
+  .sb-divider{height:54px}
+  .qarea .qt{font-size:16px}.result{font-size:56px}
+  .goal-wrap{top:3%}
+  .goal-frame{width:200px;height:68px}
+  .opp-notify{font-size:22px;padding:20px 40px}
+  .opp-notify .opp-pts{font-size:36px}
+}
+@media(max-height:500px){
+  .player{width:28px;height:38px}
+  .p-head{width:10px;height:10px;top:1px;border-width:1px}
+  .p-torso{width:12px;height:10px;top:10px;font-size:5px}
+  .p-arm-l,.p-arm-r{width:5px;height:11px;top:10px}
+  .p-arm-l{left:2px}.p-arm-r{right:2px}
+  .p-legs{width:12px;height:14px;top:19px}
+  .p-leg-l,.p-leg-r{width:5px;height:14px}
+  .player.ball-marker .p-arm-r::after{width:7px;height:7px}
+  .ball{width:20px;height:20px}
+  .scoreboard{padding:3px 3px 3px 6px;gap:4px;max-width:42%;border-width:2px;border-radius:0 0 0 10px}
+  .sb-team-score{font-size:20px}
+  .sb-timer{font-size:14px;letter-spacing:0}
+  .sb-team{min-width:32px}
+  .sb-center{min-width:36px;padding:0 2px}
+  .sb-divider{height:24px}
+  .sb-team-name{font-size:6px;letter-spacing:.5px}
+  .qarea{padding:6px 10px}.qarea .qt{font-size:11px}
+  .ans-zone{font-size:9px;padding:5px 4px;min-width:55px}
+  .result{font-size:28px}
+  .scene{background:linear-gradient(180deg,#1a472a 0%,#2d6b3f 22%,#3a8c4e 24%,#45a058 100%)}
+  .goal-frame{width:110px;height:38px}
+  .opp-notify{font-size:13px;padding:10px 16px}
+  .opp-notify .opp-pts{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">Φόρτωση...</div></div>
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+var params=new URLSearchParams(window.location.search);
+var dataFile=params.get('data');
+var app=document.getElementById('app');
+
+if(!dataFile){
+  app.innerHTML='<div class="error-msg">Δεν βρέθηκε αρχείο δεδομένων.<br>?data=αρχείο.json</div>';
+  throw new Error('No data');
+}
+
+fetch(dataFile).then(function(r){if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(function(data){
+
+var questions=data.questions.slice();
+if(!questions.length){app.innerHTML='<div class="error-msg">Δεν βρέθηκαν ερωτήσεις.</div>';return}
+
+var SLOTS=['a2','a3','a4','a5'];
+var POINTS={a2:1,a3:1,a4:1,a5:1};
+var SLOT_LABELS={a2:'ST',a3:'LW',a4:'RW',a5:'AM'};
+
+var POS={
+  a1:{t:58,l:50},
+  a2:{t:33,l:50},
+  a3:{t:37,l:14},
+  a4:{t:37,l:86},
+  a5:{t:44,l:36},
+  d1:{t:12,l:50},
+  d2:{t:24,l:35},
+  d3:{t:24,l:65},
+  d4:{t:28,l:12},
+  d5:{t:28,l:88}
+};
+
+var ANS={
+  a2:{t:39,l:52},
+  a3:{t:43,l:16},
+  a4:{t:43,l:84},
+  a5:{t:50,l:34}
+};
+
+var cur=0,playerScore=0,opponentScore=0,correctCount=0,answered=false;
+var totalTime=questions.length*10;
+var timeLeft=totalTime;
+var gameOver=false;
+
+function fmtTime(s){
+  s=Math.max(0,s);
+  var m=Math.floor(s/60);
+  var ss=s%60;
+  return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;
+}
+
+function updateTimerDisplay(){
+  var el=document.getElementById('sb-timer');
+  if(el){
+    el.textContent=fmtTime(timeLeft);
+    if(timeLeft<=30)el.classList.add('low');
+    else el.classList.remove('low');
+  }
+}
+
+function updateScoreDisplay(){
+  var ps=document.getElementById('sb-pscore');
+  var os=document.getElementById('sb-oscore');
+  if(ps)ps.textContent=playerScore;
+  if(os)os.textContent=opponentScore;
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function buildPlayers(activeSlots){
+  var h='',keys=['a1','a2','a3','a4','a5','d1','d2','d3','d4','d5'];
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i],p=POS[k];
+    var cls=k[0]==='a'?'off':(k==='d1'?'gk':'def');
+    var rdy=activeSlots.indexOf(k)>=0?' ready':'';
+    var bm=k==='a1'?' ball-marker':'';
+    var num=k[1];
+    h+='<div class="player '+cls+rdy+bm+'" id="p_'+k+'" style="top:'+p.t+'%;left:'+p.l+'%">'+
+      '<div class="p-body"><div class="p-head"></div>'+
+      '<div class="p-torso">'+num+'</div>'+
+      '<div class="p-arm-l"></div><div class="p-arm-r"></div>'+
+      '<div class="p-legs"><div class="p-leg-l"></div><div class="p-leg-r"></div></div>'+
+      '</div></div>';
+  }
+  return h;
+}
+
+function prepItems(q){
+  var isTF=q.type==='tf';
+  var items;
+  if(isTF){
+    var cv=(q.answer!==undefined?q.answer:q.correct).toString();
+    items=[{label:'✓ ΑΛΗΘΕΙΑ',val:'true'},{label:'✗ ΨΕΜΑΤΑ',val:'false'}];
+    items.sort(function(){return Math.random()-.5});
+    for(var i=0;i<items.length;i++) items[i].ok=items[i].val===cv;
+  }else{
+    var opts=q.options.slice(0,4);
+    items=opts.map(function(o,idx){return{text:o,i:idx}});
+    items.sort(function(){return Math.random()-.5});
+    for(var i=0;i<items.length;i++) items[i].ok=items[i].i===q.correctIndex;
+  }
+  return items;
+}
+
+function buildAnswers(items){
+  var n=items.length;
+  var si=shuffle([0,1,2,3]).slice(0,n);
+  var activeSlots=[];
+  var h='';
+  for(var i=0;i<n;i++){
+    var slot=SLOTS[si[i]];
+    activeSlots.push(slot);
+    var ap=ANS[slot];
+    var isTF=items[i].label!==undefined;
+    var disp=isTF?items[i].label:esc(items[i].text);
+    h+='<div class="ans-zone" data-ok="'+items[i].ok+'" data-shooter="'+slot+'" style="top:'+ap.t+'%;left:'+ap.l+'%" onclick="pick(this)">'+disp+'</div>';
+  }
+  return {html:h,slots:activeSlots};
+}
+
+function render(){
+  if(gameOver)return;
+  answered=false;
+  var q=questions[cur];
+  var items=prepItems(q);
+  var ans=buildAnswers(items);
+
+  app.innerHTML=
+    '<div class="scene" id="scene">'+
+      '<div class="field"></div>'+
+      '<div class="field-lines">'+
+        '<div class="penalty-box"></div>'+
+        '<div class="goal-box"></div>'+
+        '<div class="pen-spot"></div>'+
+        '<div class="pen-arc"></div>'+
+        '<div class="hw-line"></div>'+
+        '<div class="center-circ"></div>'+
+        '<div class="center-spot"></div>'+
+      '</div>'+
+      '<div class="goal-wrap" id="gwrap">'+
+        '<div class="goal-frame" id="gframe">'+
+          '<div class="goal-net" id="gnet"></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="scoreboard" id="scoreboard">'+
+        '<div class="sb-team">'+
+          '<div class="sb-team-name">Ομάδα Μας</div>'+
+          '<div class="sb-team-score" id="sb-pscore">'+playerScore+'</div>'+
+        '</div>'+
+        '<div class="sb-divider"></div>'+
+        '<div class="sb-center">'+
+          '<div class="sb-timer'+(timeLeft<=30?' low':'')+'" id="sb-timer">'+fmtTime(timeLeft)+'</div>'+
+          '<div class="sb-qtr">Ερώτ. '+(cur+1)+'/'+questions.length+'</div>'+
+        '</div>'+
+        '<div class="sb-divider"></div>'+
+        '<div class="sb-team">'+
+          '<div class="sb-team-name">Αντίπαλος</div>'+
+          '<div class="sb-team-score" id="sb-oscore">'+opponentScore+'</div>'+
+        '</div>'+
+      '</div>'+
+      buildPlayers(ans.slots)+
+      ans.html+
+      '<div class="ball" id="ball" style="top:'+POS.a1.t+'%;left:'+POS.a1.l+'%">'+
+        '<div class="ball-penta"></div>'+
+        '<div class="ball-seam-h"></div><div class="ball-seam-v"></div>'+
+      '</div>'+
+      '<div class="result" id="res"></div>'+
+      '<div class="opp-notify" id="opp-notify"></div>'+
+    '</div>'+
+    '<div class="qarea">'+
+      '<div class="qnum">Ερώτηση '+(cur+1)+'/'+questions.length+'</div>'+
+      '<div class="qt">'+esc(q.text)+'</div>'+
+      '<div class="ctrls">'+
+        '<div class="fb" id="fb"></div>'+
+        '<button class="nbtn" id="nbtn">'+(cur<questions.length-1?'Επόμενη Ερώτηση →':'Αποτέλεσμα')+'</button>'+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('nbtn').onclick=function(){
+    cur++;
+    if(cur<questions.length&&!gameOver) render();
+    else showFinal();
+  };
+}
+
+function showOpponentScored(){
+  var success=Math.random()<0.25;
+  if(success){
+    opponentScore+=1;
+  }else{
+    opponentScore=Math.max(0,opponentScore-1);
+  }
+  updateScoreDisplay();
+  var oppN=document.getElementById('opp-notify');
+  if(oppN){
+    if(success){
+      oppN.innerHTML='<span class="opp-pts">ΓΚΟΛ</span>Ο ΑΝΤΙΠΑΛΟΣ ΣΚΟΡΑΡΕ!<br>';
+    }else{
+      oppN.innerHTML='<span class="opp-pts">ΑΠΟΤΥΧΙΑ</span>Ο ΑΝΤΙΠΑΛΟΣ ΧΑΝΕΙ!<br>';
+    }
+    oppN.classList.add('show');
+  }
+  setTimeout(function(){
+    if(oppN)oppN.classList.remove('show');
+    if(!gameOver){
+      document.getElementById('nbtn').style.display='inline-block';
+    }
+  },1800);
+}
+
+window.pick=function(el){
+  if(answered||gameOver)return;
+  answered=true;
+
+  timeLeft=Math.max(0,timeLeft-10);
+  updateTimerDisplay();
+
+  var q=questions[cur];
+  var s=el.dataset.shooter;
+  var isOk=el.dataset.ok==='true';
+
+  var ball=document.getElementById('ball');
+  var scene=document.getElementById('scene');
+  var res=document.getElementById('res');
+  var fb=document.getElementById('fb');
+  var gnetEl=document.getElementById('gnet');
+  var gframeEl=document.getElementById('gframe');
+  var shooterEl=document.getElementById('p_'+s);
+  var gkEl=document.getElementById('p_d1');
+  var sceneR=scene.getBoundingClientRect();
+
+  var zones=document.querySelectorAll('.ans-zone');
+  for(var i=0;i<zones.length;i++) zones[i].classList.add('off');
+
+  var players=document.querySelectorAll('.player.ready');
+  for(var i=0;i<players.length;i++) players[i].classList.remove('ready');
+
+  var a1El=document.getElementById('p_a1');
+  a1El.classList.remove('ball-marker');
+
+  var ballR=ball.getBoundingClientRect();
+  var curX=ballR.left+ballR.width/2-sceneR.left;
+  var curY=ballR.top+ballR.height/2-sceneR.top;
+
+  ball.style.transition='none';
+  ball.style.left=curX+'px';
+  ball.style.top=curY+'px';
+  ball.style.transform='translate(-50%,-50%)';
+
+  var sR=shooterEl.getBoundingClientRect();
+  var tgtX=sR.left+sR.width/2-sceneR.left;
+  var tgtY=sR.top+sR.height/2-sceneR.top;
+
+  void ball.offsetWidth;
+  ball.style.transition='left .4s ease-out,top .4s ease-out';
+  ball.style.left=tgtX+'px';
+  ball.style.top=tgtY+'px';
+
+  setTimeout(function(){
+    if(gameOver)return;
+    var gR=gframeEl.getBoundingClientRect();
+    var goalX=gR.left+gR.width/2-sceneR.left;
+    var goalY=gR.top+gR.height*0.55-sceneR.top;
+
+    ball.style.transition='none';
+    shooterEl.classList.add('kicking');
+
+    if(isOk){
+      var cpx=(tgtX+goalX)/2;
+      var cpy=Math.min(tgtY,goalY)-sceneR.height*0.14;
+      var dur=550,st=null;
+      function arc(ts){
+        if(!st)st=ts;
+        var p=Math.min((ts-st)/dur,1);
+        var x=(1-p)*(1-p)*tgtX+2*(1-p)*p*cpx+p*p*goalX;
+        var y=(1-p)*(1-p)*tgtY+2*(1-p)*p*cpy+p*p*goalY;
+        var rot=p*540;
+        var sc=p>0.82?1-(p-0.82)/0.18*0.55:1;
+        ball.style.left=x+'px';
+        ball.style.top=y+'px';
+        ball.style.transform='translate(-50%,-50%) rotate('+rot+'deg) scale('+sc+')';
+        if(p>0.85)ball.style.zIndex='4';
+        if(p<1)requestAnimationFrame(arc);
+        else{ball.classList.add('gone');shooterEl.classList.remove('kicking')}
+      }
+      requestAnimationFrame(arc);
+
+      setTimeout(function(){
+        playerScore+=1;
+        updateScoreDisplay();
+        res.textContent='ΓΚΟΛ! ('+SLOT_LABELS[s]+')';
+        res.className='result goal show';
+        gnetEl.classList.add('ripple');
+        gframeEl.classList.add('celebrate');
+        fb.textContent=q.explanation||'Σωστό! Μπράβο!';
+        fb.className='fb ok';
+        el.classList.remove('off');
+        el.classList.add('ok');
+        correctCount++;
+        setTimeout(showOpponentScored,900);
+      },600);
+    }else{
+      var diveDir=POS[s].l<50?'dive-left':'dive-right';
+      if(Math.abs(POS[s].l-50)<20)diveDir=Math.random()>.5?'dive-left':'dive-right';
+      gkEl.classList.add(diveDir);
+
+      var cpxM=(tgtX+goalX)/2;
+      var cpyM=Math.min(tgtY,goalY)-sceneR.height*0.12;
+      var durA=480,stA=null;
+      function arcMiss(ts){
+        if(!stA)stA=ts;
+        var p=Math.min((ts-stA)/durA,1);
+        var x=(1-p)*(1-p)*tgtX+2*(1-p)*p*cpxM+p*p*goalX;
+        var y=(1-p)*(1-p)*tgtY+2*(1-p)*p*cpyM+p*p*goalY;
+        ball.style.left=x+'px';
+        ball.style.top=y+'px';
+        ball.style.transform='translate(-50%,-50%) rotate('+p*540+'deg)';
+        if(p<1)requestAnimationFrame(arcMiss);
+        else{
+          var deflDir=diveDir==='dive-left'?-1:1;
+          var deflX=goalX+deflDir*65;
+          var deflY=goalY+25;
+          var durB=350,stB=null;
+          function bounceA(ts2){
+            if(!stB)stB=ts2;
+            var p2=Math.min((ts2-stB)/durB,1);
+            var ease=1-Math.pow(1-p2,3);
+            var bx=goalX+(deflX-goalX)*ease;
+            var by=goalY+(deflY-goalY)*ease-Math.sin(p2*Math.PI)*30;
+            ball.style.left=bx+'px';
+            ball.style.top=by+'px';
+            ball.style.transform='translate(-50%,-50%) rotate('+(540+p2*360)+'deg)';
+            if(p2<1)requestAnimationFrame(bounceA);
+            else{
+              var durF=300,stF=null;
+              function fallA(ts3){
+                if(!stF)stF=ts3;
+                var p3=Math.min((ts3-stF)/durF,1);
+                var fy=by+p3*55;
+                ball.style.top=fy+'px';
+                ball.style.transform='translate(-50%,-50%) rotate('+(900+p3*200)+'deg)';
+                if(p3<1)requestAnimationFrame(fallA);
+                else{ball.classList.add('gone');shooterEl.classList.remove('kicking')}
+              }
+              requestAnimationFrame(fallA);
+            }
+          }
+          requestAnimationFrame(bounceA);
+
+          setTimeout(function(){
+            res.textContent='ΑΠΟΤΥΧΙΑ! ('+SLOT_LABELS[s]+')';
+            res.className='result miss show';
+            fb.textContent=q.explanation||'Δεν είναι σωστό.';
+            fb.className='fb no';
+            el.classList.remove('off');
+            el.classList.add('no');
+            var cz=document.querySelector('.ans-zone[data-ok="true"]');
+            if(cz){cz.classList.remove('off');cz.classList.add('ok')}
+            setTimeout(showOpponentScored,900);
+          },650);
+        }
+      }
+      requestAnimationFrame(arcMiss);
+    }
+  },450);
+};
+
+function showFinal(){
+  gameOver=true;
+  var diff=playerScore-opponentScore;
+  var msg=diff>3?'Εξαιρετικά! Διαφορά '+diff+' γκολ!':
+    diff>0?'ΝΙΚΗ! Κέρδισες με '+diff+' γκολ!':
+    diff===0?'ΙΣΟΠΑΛΙΑ! Τι αγώνας!':
+    'Ήττα με '+Math.abs(diff)+' γκολ. Δοκίμασε ξανά!';
+  var pct=questions.length>0?Math.round(correctCount/questions.length*100):0;
+  app.innerHTML='<div class="final"><h2>Τέλος Αγώνα!</h2>'+
+    '<div class="bs">'+playerScore+' – '+opponentScore+'</div>'+
+    '<div class="fm">'+correctCount+'/'+questions.length+' εύστοχα ('+pct+'%) | '+msg+'</div>'+
+    '<button class="rbtn" onclick="location.reload()">Ξαναδοκίμασε!</button></div>';
+}
+
+render();
+
+}).catch(function(err){
+  app.innerHTML='<div class="error-msg">Σφάλμα: '+esc(err.message)+'</div>';
+});
+</script>
+</body>
+</html>

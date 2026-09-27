@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αποκρυπτογράφηση | Μάθημα 1</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.5rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.9rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:20px;}
+.section{background:#f8f9ff;border-radius:14px;padding:16px;margin-bottom:14px;border:2px solid #e8eaf6;}
+.section-title{font-size:1rem;font-weight:700;color:#4527a0;margin-bottom:10px;text-align:center;}
+.challenge-box{background:linear-gradient(135deg,#fff9c4,#fff59d);border:2px solid #f9a825;border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;}
+.encrypted-word{font-size:2rem;font-weight:800;letter-spacing:8px;color:#b45309;margin:10px 0;text-align:center;}
+.key-display{font-size:1.1rem;font-weight:700;color:#5b3ea8;margin-bottom:10px;}
+.alphabet-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:10px 0;}
+.letter-cell{width:32px;height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;font-weight:700;font-size:.8rem;}
+.letter-cell .top{background:#ede9fe;color:#5b3ea8;border:1px solid #c4b5fd;border-radius:4px 4px 0 0;width:100%;text-align:center;padding:2px 0;}
+.letter-cell .bot{background:#fff3e0;color:#c2410c;border:1px solid #fdba74;border-radius:0 0 4px 4px;width:100%;text-align:center;padding:2px 0;min-height:20px;}
+.letter-cell.highlight .top,.letter-cell.highlight .bot{background:#fef08a;border-color:#facc15;}
+.input-group{margin-bottom:12px;}
+.input-group label{display:block;font-weight:700;color:#555;margin-bottom:5px;font-size:.9rem;}
+.input-group input{width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:12px;font-size:1.1rem;text-align:center;outline:none;letter-spacing:4px;text-transform:uppercase;}
+.input-group input:focus{border-color:#667eea;}
+.result-box{border-radius:12px;padding:12px;text-align:center;min-height:40px;font-size:1.1rem;font-weight:700;margin-top:8px;}
+.result-box.success{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;color:#166534;}
+.result-box.error{background:linear-gradient(135deg,#fef2f2,#fecaca);border:2px solid #f87171;color:#991b1b;}
+.btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.btn{padding:10px 20px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-success{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-warning{background:linear-gradient(135deg,#f7971e,#ffd200);color:#333;}
+.progress{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
+.prog-dot{width:36px;height:36px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#999;}
+.prog-dot.done{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.prog-dot.current{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.congrats{text-align:center;padding:20px;}
+.congrats .emoji{font-size:3rem;margin-bottom:8px;}
+.congrats h2{color:#16a34a;font-size:1.3rem;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .alphabet-row > * { margin: 2px; }
+  .btn-row > * { margin: 4px; }
+  .progress > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔓 Αποκρυπτογράφηση Μηνυμάτων</h1>
+<p class="subtitle">Βρες το κρυπτογραφημένο μήνυμα χρησιμοποιώντας το κλειδί!</p>
+<div class="container">
+<div class="progress" id="progress"></div>
+<div class="challenge-box" id="challengeBox">
+<p style="font-weight:700;color:#92400e;margin-bottom:6px;">📩 Μυστικό Μήνυμα</p>
+<div class="encrypted-word" id="encryptedWord"></div>
+<div class="key-display" id="keyDisplay"></div>
+</div>
+<div class="section">
+<div class="section-title">📋 Βοήθεια: Ο Πίνακας Αντιστοίχισης</div>
+<div class="alphabet-row" id="alphabetRow"></div>
+</div>
+<div class="input-group">
+<label>✏️ Γράψε την απάντηση (κεφαλαία):</label>
+<input type="text" id="answerInput" placeholder="Γράψε τη λέξη..." maxlength="30">
+</div>
+<div class="btn-row">
+<button class="btn btn-success" onclick="checkAnswer()">✓ Έλεγχος</button>
+<button class="btn btn-warning" onclick="useHint()">💡 Υπόδειξη</button>
+<button class="btn btn-primary" onclick="skipWord()">▶ Επόμενο</button>
+</div>
+<div class="result-box" id="result" style="display:none;"></div>
+<div id="congrats" style="display:none;" class="congrats">
+<div class="emoji">🎉</div>
+<h2>Μπράβο! Τα βρήκες όλα!</h2>
+<p style="color:#666;margin-top:8px;">Αποκρυπτογράφησες όλα τα μυστικά μηνύματα!</p>
+</div>
+</div>
+<script>
+var GREEK='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+var N=GREEK.length;
+var challenges=[
+{encrypted:'ΨΓΥΠΚΞΥ',answer:'ΣΧΟΛΕΙΟ',key:5},
+{encrypted:'ΙΡΡΙΕ',answer:'ΕΝΝΕΑ',key:4},
+{encrypted:'ΟΘΣΘΑΑΘ',answer:'ΘΑΛΑΣΣΑ',key:7},
+{encrypted:'ΗΜΔΦΝΘΗΔΦΚ',answer:'ΔΙΑΣΚΕΔΑΣΗ',key:3},
+{encrypted:'ΨΛΝΡΥ',answer:'ΦΙΛΟΣ',key:2},
+{encrypted:'ΖΝΖΟΝΤ',answer:'ΒΙΒΛΙΟ',key:4},
+{encrypted:'ΣΝΡΗ',answer:'ΜΗΛΑ',key:6},
+{encrypted:'ΖΜΒΧΚ',answer:'ΕΛΑΦΙ',key:1},
+];
+var shuffled=[];
+var current=0;
+var solvedState=[];
+function findNextUnsolved(from){for(var i=from;i<shuffled.length;i++){if(!solvedState[i])return i;}for(var i2=0;i2<from;i2++){if(!solvedState[i2])return i2;}return -1;}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function decrypt(text,key){var r='';for(var i=0;i<text.length;i++){var idx=GREEK.indexOf(text[i]);if(idx>=0){var d=idx-key;if(d<0)d+=N;r+=GREEK[d%N];}else{r+=text[i];}}return r;}
+function buildAlphabet(key){
+var row=document.getElementById('alphabetRow');row.innerHTML='';
+for(var i=0;i<N;i++){
+var cell=document.createElement('div');cell.className='letter-cell';
+var top=document.createElement('div');top.className='top';top.textContent=GREEK[i];
+var bot=document.createElement('div');bot.className='bot';bot.textContent=GREEK[(i+key)%N];
+cell.appendChild(top);cell.appendChild(bot);row.appendChild(cell);
+}}
+function showChallenge(){
+var next=findNextUnsolved(current);
+if(next===-1){document.getElementById('congrats').style.display='block';document.getElementById('challengeBox').style.display='none';document.querySelector('.input-group').style.display='none';document.querySelector('.btn-row').style.display='none';return;}
+current=next;
+document.querySelector('.input-group').style.display='';
+document.querySelector('.btn-row').style.display='';
+var ch=shuffled[current];
+document.getElementById('encryptedWord').textContent=ch.encrypted;
+document.getElementById('keyDisplay').textContent='🔑 Κλειδί: +'+ch.key;
+document.getElementById('answerInput').value='';
+document.getElementById('result').style.display='none';
+buildAlphabet(ch.key);
+updateProgress();
+}
+function updateProgress(){
+var p=document.getElementById('progress');p.innerHTML='';
+for(var i=0;i<shuffled.length;i++){
+var dot=document.createElement('div');dot.className='prog-dot';
+if(solvedState[i])dot.classList.add('done');
+else if(i===current)dot.classList.add('current');
+dot.textContent=i+1;p.appendChild(dot);
+}}
+window.checkAnswer=function(){
+var input=document.getElementById('answerInput').value.toUpperCase().trim();
+var res=document.getElementById('result');res.style.display='block';
+if(current>=shuffled.length)return;
+var ch=shuffled[current];
+if(input===ch.answer){
+res.className='result-box success';res.textContent='✅ Σωστό! «'+ch.answer+'»';
+solvedState[current]=true;current++;
+setTimeout(showChallenge,1200);
+}else{
+res.className='result-box error';res.textContent='❌ Δεν είναι σωστό. Δοκίμασε ξανά!';
+}};
+window.useHint=function(){
+if(current>=shuffled.length)return;
+var ch=shuffled[current];
+var decrypted=decrypt(ch.encrypted,ch.key);
+var hint='';for(var i=0;i<decrypted.length;i++){hint+=(i<2)?decrypted[i]:'_';}
+document.getElementById('result').style.display='block';
+document.getElementById('result').className='result-box';
+document.getElementById('result').style.background='#fff3e0';
+document.getElementById('result').style.border='2px solid #fdba74';
+document.getElementById('result').style.color='#92400e';
+document.getElementById('result').textContent='💡 Τα πρώτα γράμματα: '+hint;
+};
+window.skipWord=function(){current++;showChallenge();};
+document.getElementById('answerInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkAnswer();});
+shuffled=shuffle(challenges);
+for(var i=0;i<shuffled.length;i++)solvedState[i]=false;
+showChallenge();
+</script>
+</body>
+</html>

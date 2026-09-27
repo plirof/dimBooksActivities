@@ -1,0 +1,18 @@
+{
+  "title": "Σβήσε και Διόρθωσε!",
+  "subtitle": "Πάτα Backspace για σβήσιμο, μετά το σωστό γράμμα",
+  "instructions": "Πέφτουν γράμματα — πάτα Backspace (←) ή το σωστό γράμμα!",
+  "speed": 1.8,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "items": [
+    { "text": "Α", "key": "α" },
+    { "text": "Β", "key": "β" },
+    { "text": "Γ", "key": "γ" },
+    { "text": "Δ", "key": "δ" },
+    { "text": "←", "key": "backspace" },
+    { "text": "Ε", "key": "ε" },
+    { "text": "Ζ", "key": "ζ" },
+    { "text": "Η", "key": "η" }
+  ]
+}

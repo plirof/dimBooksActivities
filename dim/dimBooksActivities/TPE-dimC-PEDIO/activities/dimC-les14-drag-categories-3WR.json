@@ -1,0 +1,63 @@
+{
+  "title": "Αρχεία σε φακέλους",
+  "subtitle": "Ταίριαξε την κατάληξη αρχείου στον σωστό φάκελο",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "vid",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": ".jpg",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": ".mp4",
+      "category": "vid"
+    },
+    {
+      "id": "item3",
+      "text": ".txt",
+      "category": "text"
+    },
+    {
+      "id": "item4",
+      "text": ".png",
+      "category": "img"
+    },
+    {
+      "id": "item5",
+      "text": ".avi",
+      "category": "vid"
+    },
+    {
+      "id": "item6",
+      "text": ".doc",
+      "category": "text"
+    },
+    {
+      "id": "item7",
+      "text": ".gif",
+      "category": "img"
+    },
+    {
+      "id": "item8",
+      "text": ".mov",
+      "category": "vid"
+    }
+  ]
+}

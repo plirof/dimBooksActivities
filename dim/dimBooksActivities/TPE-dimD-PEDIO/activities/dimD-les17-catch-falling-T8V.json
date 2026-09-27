@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Μορφές Αρχείων",
+  "subtitle": "Πιάσε τα αρχεία με τη σωστή μορφή για κάθε τύπο!",
+  "instructions": "Πιάσε τα σωστά. Κείμενο: ODT. Ήχος: MP3, WAV. Εικόνα: JPG, PNG, GIF. Βίντεο: MP4.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "JPG", "correct": true, "color": "#4caf50" },
+    { "text": "MP4", "correct": true, "color": "#2196f3" },
+    { "text": "XYZ", "correct": false, "color": "#f44336" },
+    { "text": "WAV", "correct": true, "color": "#ff9800" },
+    { "text": "ABC", "correct": false, "color": "#f44336" },
+    { "text": "ODT", "correct": true, "color": "#9c27b0" },
+    { "text": "PNG", "correct": true, "color": "#00bcd4" },
+    { "text": "DEF", "correct": false, "color": "#f44336" },
+    { "text": "GIF", "correct": true, "color": "#8bc34a" },
+    { "text": "MP3", "correct": true, "color": "#e91e63" },
+    { "text": "QQQ", "correct": false, "color": "#f44336" },
+    { "text": "JPEG", "correct": true, "color": "#795548" }
+  ]
+}

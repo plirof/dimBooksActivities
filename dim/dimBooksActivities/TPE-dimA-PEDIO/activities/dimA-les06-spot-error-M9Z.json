@@ -1,0 +1,41 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ήρωας", "error": false},
+        {"text": "κινείται", "error": false},
+        {"text": "στα", "error": true, "correct": "στα", "feedback": "Σωστά! Αλλά δοκίμασε να βρεις άλλο λάθος!"},
+        {"text": "τετραγωνάκια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βάζω", "error": false},
+        {"text": "μια", "error": false},
+        {"text": "κούνια", "error": true, "correct": "εντολή", "feedback": "Βάζουμε εντολή, όχι κούνια!"},
+        {"text": "στον", "error": false},
+        {"text": "ήρωα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "σκηνικό", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "η", "error": false},
+        {"text": "μπανανίτσα", "error": true, "correct": "εικόνα", "feedback": "Το σκηνικό είναι η εικόνα στο φόντο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "φαντάσματα", "error": true, "correct": "βήματα", "feedback": "Κάθε πρόγραμμα έχει βήματα, όχι φαντάσματα!"}
+      ]
+    }
+  ]
+}

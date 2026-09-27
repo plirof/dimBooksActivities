@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Εφαρμογές",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΕΦΑΡΜΟΓΕΣ και ΛΟΓΙΣΜΙΚΟ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Επεξεργαστής κειμένου", "correct": true, "color": "#4CAF50"},
+    {"text": "Οθόνη", "correct": false, "color": "#f44336"},
+    {"text": "Ζωγραφική", "correct": true, "color": "#2196F3"},
+    {"text": "Πληκτρολόγιο", "correct": false, "color": "#FF9800"},
+    {"text": "Φυλλομετρητής", "correct": true, "color": "#9C27B0"},
+    {"text": "Εκτυπωτής", "correct": false, "color": "#E91E63"},
+    {"text": "Πρόγραμμα προγραμματισμού", "correct": true, "color": "#00BCD4"},
+    {"text": "Ποντίκι", "correct": false, "color": "#FFC107"},
+    {"text": "Εφαρμογή χαρτών", "correct": true, "color": "#795548"},
+    {"text": "Μνήμη", "correct": false, "color": "#607D8B"}
+  ]
+}

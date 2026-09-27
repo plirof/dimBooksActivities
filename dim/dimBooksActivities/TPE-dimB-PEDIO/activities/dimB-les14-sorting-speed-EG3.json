@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Internet ή Web;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Διαδίκτυο ή Παγκόσμιος Ιστός;",
+  "categories": [
+    {"id": "internet", "name": "Διαδίκτυο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "web", "name": "Παγκόσμιος Ιστός", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Email", "category": "internet"},
+    {"text": "Ιστοσελίδες", "category": "web"},
+    {"text": "Βιντεοκλήση", "category": "internet"},
+    {"text": "Αναζήτηση πληροφοριών", "category": "web"},
+    {"text": "Chat", "category": "internet"},
+    {"text": "Περιήγηση σελίδων", "category": "web"},
+    {"text": "Τηλεδιάσκεψη", "category": "internet"},
+    {"text": "Ακόμα και οι δύο", "category": "internet"}
+  ],
+  "duration": 30
+}

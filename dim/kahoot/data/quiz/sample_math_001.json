@@ -1,0 +1,73 @@
+{
+    "id": "sample_math_001",
+    "title": "Basic Math Challenge",
+    "description": "Test your basic math skills with addition, subtraction, multiplication, and division!",
+    "questions": [
+        {
+            "id": "698233f58d61d0.99282019",
+            "text": "What is 15 + 27?",
+            "answers": [
+                "32",
+                "42",
+                "45",
+                "52"
+            ],
+            "correct": 1,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6222.64736827",
+            "text": "What is 100 - 35?",
+            "answers": [
+                "55",
+                "65",
+                "75",
+                "85"
+            ],
+            "correct": 1,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6231.69319886",
+            "text": "What is 8 \u00d7 7?",
+            "answers": [
+                "48",
+                "54",
+                "56",
+                "64"
+            ],
+            "correct": 2,
+            "time": 25,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6243.72670307",
+            "text": "What is 72 \u00f7 8?",
+            "answers": [
+                "8",
+                "9",
+                "10",
+                "11"
+            ],
+            "correct": 1,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6254.23400240",
+            "text": "What is 25 \u00d7 4?",
+            "answers": [
+                "80",
+                "90",
+                "100",
+                "110"
+            ],
+            "correct": 2,
+            "time": 25,
+            "points": 1000
+        }
+    ],
+    "created_at": "2026-02-03 18:44:21"
+}

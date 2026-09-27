@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Τερματισμός",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τι ΣΤΑΜΑΤΑΕΙ ΤΟ ΠΑΙΧΝΙΔΙ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Πόντοι = 10", "correct": true, "color": "#4CAF50"},
+    {"text": "Κολυμπάω", "correct": false, "color": "#f44336"},
+    {"text": "Ζωές = 0", "correct": true, "color": "#2196F3"},
+    {"text": "Περπατάω", "correct": false, "color": "#FF9800"},
+    {"text": "Νίκη!", "correct": true, "color": "#9C27B0"},
+    {"text": "Βλέπω βυθό", "correct": false, "color": "#E91E63"},
+    {"text": "Ήττα!", "correct": true, "color": "#009688"},
+    {"text": "Ακούω ήχο", "correct": false, "color": "#FFC107"},
+    {"text": "Τέλος!", "correct": true, "color": "#795548"},
+    {"text": "Φωτογραφίζω", "correct": false, "color": "#607D8B"}
+  ]
+}

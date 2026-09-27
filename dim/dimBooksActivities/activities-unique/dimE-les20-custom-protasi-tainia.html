@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αλγόριθμος Πρότασης | Μάθημα 20</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fff7ed,#fed7aa);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#7c2d12;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#ea580c;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#7c2d12;font-size:.75rem;font-weight:700;border:1px solid #fdba74;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:620px;width:100%}
+.step-title{font-size:.85rem;font-weight:700;color:#7c2d12;margin-bottom:8px;text-align:center}
+.intro-box{background:#fff7ed;border:2px solid #fdba74;border-radius:12px;padding:10px;margin:8px 0;font-size:.72rem;color:#9a3412;line-height:1.5}
+.movies-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:8px;margin:8px 0}
+.movie-card{padding:10px;border-radius:12px;border:2px solid #e2e8f0;text-align:center;font-size:.7rem;transition:all .2s}
+.movie-card .m-emoji{font-size:1.6rem;display:block;margin-bottom:4px}
+.movie-card .m-title{font-weight:700;color:#1e293b;margin-bottom:4px;font-size:.72rem}
+.vote-row{display:flex;justify-content:center;gap:8px;margin-top:4px}
+.vote-btn{padding:4px 10px;border:2px solid #d1d5db;border-radius:8px;font-size:.65rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fff}
+.vote-btn:hover{transform:scale(1.05)}
+.vote-btn.yes{border-color:#10b981;background:#dcfce7;color:#065f46}
+.vote-btn.no{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.vote-btn:disabled{opacity:.5;cursor:default}
+.user-box{background:#fefce8;border:2px solid #fde047;border-radius:12px;padding:10px;margin:8px 0;text-align:center}
+.user-box .u-label{font-size:.7rem;font-weight:700;color:#713f12;margin-bottom:4px}
+.user-box .u-emoji{font-size:1.8rem}
+.algo-box{background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:10px;margin:8px 0}
+.algo-step{font-size:.72rem;color:#14532d;line-height:1.5;padding:4px 0;border-bottom:1px solid #dcfce7}
+.algo-step:last-child{border-bottom:none}
+.algo-step b{color:#065f46}
+.result-box{background:#eff6ff;border:2px solid #93c5fd;border-radius:12px;padding:10px;margin:8px 0;text-align:center}
+.result-box .r-label{font-size:.7rem;color:#1e40af;font-weight:700}
+.result-box .r-movie{font-size:1.2rem;font-weight:800;color:#1e3a5f;margin:4px 0}
+.opts-area{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.opt-btn{padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;font-size:.78rem;font-weight:600;color:#334155;cursor:pointer;transition:all .2s;text-align:left}
+.opt-btn:hover{border-color:#ea580c;background:#fff7ed}
+.opt-btn.correct{border-color:#10b981;background:#dcfce7;color:#14532d}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.opt-btn:disabled{cursor:default;opacity:.7}
+.explain{margin-top:6px;padding:8px 12px;border-radius:8px;font-size:.68rem;line-height:1.4}
+.explain.ok{background:#dcfce7;color:#14532d;border-left:3px solid #10b981}
+.explain.bad{background:#fef2f2;color:#dc2626;border-left:3px solid #ef4444}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #ea580c;border-radius:10px;background:transparent;color:#ea580c;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fff7ed}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .vote-row > * + * { margin-left: 8px; }
+  .opts-area > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎬 Αλγόριθμος Πρότασης Ταινιών</h1>
+<p class="subtitle">Βρες ποια ταινία να προτείνεις χρησιμοποιώντας τον αλγόριθμο!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var scenarios=[
+{
+title:'Ο μικρός πρίγκιπας',
+players:[
+{name:'Αλέξης',votes:{'Ο μικρός πρίγκιπας':'yes','Η Αλίκη στη χώρα των θαυμάτων':'yes','Πινόκιο':'no','Περιπέτεια στον πλανήτη Άρη':'no'}},
+{name:'Βάια',votes:{'Ο μικρός πρίγκιπας':'no','Η Αλίκη στη χώρα των θαυμάτων':'no','Πινόκιο':'yes','Περιπέτεια στον πλανήτη Άρη':'yes'}},
+{name:'Γιώργος',votes:{'Ο μικρός πρίγκιπας':'no','Η Αλίκη στη χώρα των θαυμάτων':'no','Πινόκιο':'yes','Περιπέτεια στον πλανήτη Άρη':'no'}}
+],
+newPlayer:'Δήμητρα',
+newLikes:'Η Αλίκη στη χώρα των θαυμάτων',
+movies:['Ο μικρός πρίγκιπας','Η Αλίκη στη χώρα των θαυμάτων','Πινόκιο','Περιπέτεια στον πλανήτη Άρη'],
+correctAnswer:'Ο μικρός πρίγκιπας',
+explanation:'Η Δήμητρα αρέσει «Η Αλίκη στη χώρα των θαυμάτων». Μόνο ο Αλέξης αρέσει επίσης — και του αρέσει και «Ο μικρός πρίγκιπας». Άρα προτείνουμε «Ο μικρός πρίγκιπας»!'
+},
+{
+title:'Περιπέτεια στον πλανήτη Άρη',
+players:[
+{name:'Ελένη',votes:{'Ο μικρός πρίγκιπας':'no','Η Αλίκη στη χώρα των θαυμάτων':'no','Πινόκιο':'yes','Περιπέτεια στον πλανήτη Άρη':'yes'}},
+{name:'Θοδωρής',votes:{'Ο μικρός πρίγκιπας':'yes','Η Αλίκη στη χώρα των θαυμάτων':'yes','Πινόκιο':'no','Περιπέτεια στον πλανήτη Άρη':'no'}},
+{name:'Ιωάννα',votes:{'Ο μικρός πρίγκιπας':'yes','Η Αλίκη στη χώρα των θαυμάτων':'no','Πινόκιο':'no','Περιπέτεια στον πλανήτη Άρη':'no'}}
+],
+newPlayer:'Κώστας',
+newLikes:'Πινόκιο',
+movies:['Ο μικρός πρίγκιπας','Η Αλίκη στη χώρα των θαυμάτων','Πινόκιο','Περιπέτεια στον πλανήτη Άρη'],
+correctAnswer:'Περιπέτεια στον πλανήτη Άρη',
+explanation:'Ο Κώστας αρέσει «Πινόκιο». Μόνο η Ελένη αρέσει επίσης — και της αρέσει και «Περιπέτεια στον πλανήτη Άρη». Άρα προτείνουμε «Περιπέτεια στον πλανήτη Άρη»!'
+},
+{
+title:'Η Αλίκη στη χώρα των θαυμάτων',
+players:[
+{name:'Λίζα',votes:{'Ο μικρός πρίγκιπας':'yes','Η Αλίκη στη χώρα των θαυμάτων':'no','Πινόκιο':'no','Περιπέτεια στον πλανήτη Άρη':'yes'}},
+{name:'Μάνος',votes:{'Ο μικρός πρίγκιπας':'no','Η Αλίκη στη χώρα των θαυμάτων':'yes','Πινόκιο':'yes','Περιπέτεια στον πλανήτη Άρη':'no'}},
+{name:'Νίκη',votes:{'Ο μικρός πρίγκιπας':'no','Η Αλίκη στη χώρα των θαυμάτων':'yes','Πινόκιο':'no','Περιπέτεια στον πλανήτη Άρη':'no'}}
+],
+newPlayer:'Όλγα',
+newLikes:'Ο μικρός πρίγκιπας',
+movies:['Ο μικρός πρίγκιπας','Η Αλίκη στη χώρα των θαυμάτων','Πινόκιο','Περιπέτεια στον πλανήτη Άρη'],
+correctAnswer:'Περιπέτεια στον πλανήτη Άρη',
+explanation:'Η Όλγα αρέσει «Ο μικρός πρίγκιπας». Μόνο η Λίζα αρέσει επίσης — και της αρέσει και «Περιπέτεια στον πλανήτη Άρη». Άρα προτείνουμε «Περιπέτεια στον πλανήτη Άρη»!'
+}
+];
+var curQ=0;
+var pts=0;
+var answered=null;
+
+function render(){
+var sc=scenarios[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="step-title">🎬 Σενάριο '+(curQ+1)+': '+sc.title+'</div>';
+h+='<div class="intro-box">📌 <b>Κανόνας:</b> Βρες ποια ταινία αρέσει στους παλιούς συνδρομητές που αρέσει και η ίδια ταινία με τον νέο παίκτη. Από αυτούς, βρες ποια <b>άλλη</b> ταινία αρέσει στους περισσότερους.</div>';
+h+='<div style="font-size:.72rem;font-weight:700;color:#7c2d12;margin:6px 0">📺 Παλιοί συνδρομητές:</div>';
+h+='<div class="movies-grid">';
+for(var i=0;i<sc.players.length;i++){
+var p=sc.players[i];
+h+='<div class="movie-card">';
+h+='<div class="m-title">'+p.name+'</div>';
+for(var m in p.votes){
+var icon=p.votes[m]==='yes'?'👍':'👎';
+h+='<div style="font-size:.6rem;margin:2px 0">'+icon+' '+m+'</div>';
+}
+h+='</div>';
+}
+h+='</div>';
+h+='<div class="user-box">';
+h+='<div class="u-label">🆕 Νέος συνδρομητής: '+sc.newPlayer+'</div>';
+h+='<div style="font-size:.72rem;margin:4px 0">Αρέσει: <b>'+sc.newLikes+'</b></div>';
+h+='</div>';
+h+='<div style="font-size:.78rem;font-weight:700;color:#7c2d12;margin:8px 0">❓ Ποια ταινία θα προτείνεις στον/στην '+sc.newPlayer+';</div>';
+h+='<div class="opts-area">';
+for(var i=0;i<sc.movies.length;i++){
+var m=sc.movies[i];
+var cls='opt-btn';
+if(answered){
+if(m===sc.correctAnswer)cls+=' correct';
+if(answered===m&&m!==sc.correctAnswer)cls+=' wrong';
+}
+var dis=answered?' disabled':'';
+h+='<button class="'+cls+'" onclick="answer(\''+m.replace(/'/g,"\\'")+'\')"'+dis+'>'+(String.fromCharCode(945+i))+'. '+m+'</button>';
+}
+h+='</div>';
+if(answered){
+var correct=answered===sc.correctAnswer;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="explain '+(correct?'ok':'bad')+'">'+(correct?'✅ ':'❌ ')+sc.explanation+'</div>';
+if(curQ<scenarios.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Σενάριο ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function answer(movie){
+if(answered)return;
+answered=movie;
+render();
+}
+
+function nextQ(){
+if(curQ<scenarios.length-1){
+curQ++;
+answered=null;
+render();
+}
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+I want to check these files : ../HTML/Pliroforiki_?-Dimotikou*/lessons_seperated/*.html Αυτά είναι τα μαθήματα για τις 6 ταξεις του δημοτικού. Θέλω για όλα τα μαθήματα όλων των τάξεων να δημιουργήσεις activities όλων των τύπω στο wordboard. Θέλω να μου φτιάξεις απευθείας activity json αρχεία με δραστηριότητες. Το format των json μπορείς να το βρέις απο τα ήδη υπάρχοντα json.Θέλω όλα να είναι στα ελληνικά. Τα ονόματα αρχείων θα είναι της μορφής dimX-lesZ-timestamp.json επίσης, μέσα στο json το πεδίο id θα είναι και αυτό dimX-lesZ-timestamp. πχ "id": "dimX-lesZ-69823d3d3d8f49". Επίσης, σαν tags στο json θα βάλεις τα dimX ,lesZ και μία λέξη σχετική με το αντικέιμενο του μαθήματος.  Επειδή είναι μεγάλη εργασία  έχω δημιουργήσει το αρχείο plan-wordboard-lesson-creation.md. Εκεί έχω βάλει μια λίστα των εργασιών που θα πρέπει να γίνουν. Η σειρά των εργασιών θα είναι η εξής:Για κάθε τάξη θα διαβάσεις ένα-ένα όλα τα μαθήματα. Για κάθε μάθημα θα δημιουρείς ένα json για κάθε δραστηριότητα που υποστηρίζει το wordboard. Όταν τελειώνεις με ένα μάθημα ,ενημερώνεις το αρχείο plan-wordboard-lesson-creation.md και συνεχίζεις στο επόμενο. Βάση της τρέχουσας κατάστασης έχω ολοκληρώσει τα dimC,dimD,dimE και μερικώς το dimA .  Κατάλαβες τι πρέπει να κάνεις; Πες μου τι έχει μείνει να κάνουμε για να σου πω πως θα προχωρήσεις
+
+
+
+ Κατάλαβες τι πρέπει να κάνεις; Πες μου τι έχει μείνει να κάνουμε για να σου πω πως θα προχωρήσεις.
+
+
+συνεχισε με την dimA
+
+
+
+
+Goal
+Create Wordboard activity JSON files for all lessons across all 6 grades of Greek primary school (dimA-dimST). For each lesson, 6 activity types need to be created (quiz, match, missingword, wheel, crossword, groupsort — wordsearch is deferred to the end). All content must be in Greek, extracted from HTML lesson files.
+Instructions
+- File naming: dimX-lesZZ-timestamp.json (e.g., dimA-les12-6def012c3q1.json)
+- ID field: Same as filename without .json (e.g., dimA-les12-6def012c3q1)
+- Tags: ["dimX", "lesZ", "keyword"] where keyword is one Greek word related to the lesson topic
+- Storage location: /opt/lampp/htdocs/img/wordboard/admin/activities/{type}/ where type is quiz, match, missingword, wheel, crossword, or groupsort
+- All content in Greek
+- Wordsearch deferred to the very end — only 6 types per lesson for now
+- After each lesson, update the plan file plan-wordboard-lesson-creation.md by marking it complete
+- Follow the plan in plan-wordboard-lesson-creation.md — process lessons one by one, grade by grade
+- Naming convention codes: c3=quiz, c4=match, c6=missingword, c7=wheel, c8=crossword, c9=groupsort. The timestamp portion includes these codes (e.g., 6def012c3q1 where 6def is the dimA prefix, 012 is lesson number, c3q1 means quiz type)
+Discoveries
+- The HTML lesson files are located at paths like /opt/lampp/htdocs/img/wordboard/../HTML/Pliroforiki_A-Dimotikou_pdf-web_v6.0_PEDIO/lessons_seperated/lessonXX.html (grade A has v6.0_PEDIO, grades have slightly different folder names)
+- The HTML is converted from PDF via pdftohtml, so content is in <p> tags with absolute positioning — needs manual extraction of key concepts
+- The crossword grids use # for empty cells and all-across layout (no intersections required for simplicity at this level)
+- The existing JSON format uses created_by: "admin" and created_date: "2026-04-23" consistently
+- Each dimA lesson has a specific keyword tag: χρήση (les12), δίκτυα (les13), διαδίκτυο (les14), αρχεία (les15), αποθήκευση (les16), χάρτης (les17-18), ποντίκι (les19,22), δείκτης (les20), κλικ (les21), πληκτρολόγιο (les23-25), διαδίκτυο (les26-27), ζωγραφική (les28-29), εκπαίδευση (les30)

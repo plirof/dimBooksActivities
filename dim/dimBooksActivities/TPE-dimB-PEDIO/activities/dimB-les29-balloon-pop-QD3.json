@@ -1,0 +1,21 @@
+{
+  "title": "Σπάστε τα Μπαλόνια: Τι έχει το διαδραστικό βιβλίο;",
+  "subtitle": "Σπάστε μόνο περιεχόμενο διαδραστικού βιβλίου",
+  "instruction": "Σπάστε μόνο τι περιέχει ένα διαδραστικό βιβλίο",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Κουίζ", "correct": true, "color": "#4CAF50" },
+    { "text": "Γόμα", "correct": false, "color": "#f44336" },
+    { "text": "Εικόνες", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπογιές", "correct": false, "color": "#f44336" },
+    { "text": "Παρουσίαση", "correct": true, "color": "#4CAF50" },
+    { "text": "Χάρακας", "correct": false, "color": "#f44336" },
+    { "text": "Παιχνίδια", "correct": true, "color": "#4CAF50" },
+    { "text": "Ψαλίδι", "correct": false, "color": "#f44336" }
+  ]
+}

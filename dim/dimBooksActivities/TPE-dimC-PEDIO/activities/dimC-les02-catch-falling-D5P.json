@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Αλήθεια ή Ψέματα",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τις λέξεις σχετικές με τις ΛΟΓΙΚΕΣ ΕΚΦΡΑΣΕΙΣ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Αλήθεια", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπανάνα", "correct": false, "color": "#f44336"},
+    {"text": "Ψέμα", "correct": true, "color": "#e91e63"},
+    {"text": "Ποδήλατο", "correct": false, "color": "#FF9800"},
+    {"text": "Λογική", "correct": true, "color": "#2196F3"},
+    {"text": "Καρέκλα", "correct": false, "color": "#9C27B0"},
+    {"text": "Πρόταση", "correct": true, "color": "#00BCD4"},
+    {"text": "Γάτα", "correct": false, "color": "#FFC107"},
+    {"text": "Έκφραση", "correct": true, "color": "#795548"},
+    {"text": "Μήλο", "correct": false, "color": "#607D8B"}
+  ]
+}

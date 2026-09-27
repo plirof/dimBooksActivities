@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αλγόριθμος ή Πρόγραμμα;",
+  "subtitle": "Ταξινόμησε κάθε όρο στη σωστή κατηγορία",
+  "instructions": "Πάτα αριστερό βέλος για Αλγόριθμο, δεξιό για Πρόγραμμα Scratch",
+  "categories": [
+    { "id": "algo", "name": "Αλγόριθμος", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "prog", "name": "Πρόγραμμα Scratch", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Γράφεται σε χαρτί", "category": "algo" },
+    { "text": "Χρησιμοποιεί μπλοκ εντολών", "category": "prog" },
+    { "text": "Σειρά λογικών βημάτων", "category": "algo" },
+    { "text": "Εντολή επιλογής τυχαίου", "category": "prog" },
+    { "text": "Ανθρώπινη γλώσσα", "category": "algo" },
+    { "text": "Δημιουργία μεταβλητής", "category": "prog" },
+    { "text": "Βήμα 1, Βήμα 2, ...", "category": "algo" },
+    { "text": "Μπλοκ κίνησης και εμφάνισης", "category": "prog" },
+    { "text": "Λύση προβλήματος", "category": "algo" },
+    { "text": "Χαρακτήρας ρομπότ", "category": "prog" }
+  ],
+  "duration": 30
+}

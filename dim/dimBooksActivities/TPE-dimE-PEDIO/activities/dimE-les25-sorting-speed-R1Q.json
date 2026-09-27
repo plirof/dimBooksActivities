@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ψηφιακό Περιεχόμενο",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "video", "name": "Βίντεο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "audio", "name": "Ήχος", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "YouTube", "category": "video"},
+    {"text": "Μουσική φόντου", "category": "audio"},
+    {"text": "Πλαίσιο αναπαραγωγής", "category": "video"},
+    {"text": "Εγγραφή φωνής", "category": "audio"},
+    {"text": "Κουμπί play", "category": "video"},
+    {"text": "Αρχείο mp3", "category": "audio"},
+    {"text": "Ροή εικόνας", "category": "video"},
+    {"text": "Ηχητικό εφέ", "category": "audio"},
+    {"text": "Σύνδεσμος URL", "category": "video"},
+    {"text": "Αφηγητής", "category": "audio"}
+  ],
+  "duration": 30
+}

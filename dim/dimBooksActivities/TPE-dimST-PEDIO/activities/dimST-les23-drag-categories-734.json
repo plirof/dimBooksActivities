@@ -1,0 +1,48 @@
+{
+  "title": "Σχόλια: Δημοσίευση ή Διαγραφή",
+  "subtitle": "Τα σχόλια αυτά δημοσιεύονται ή διαγράφονται;",
+  "categories": [
+    {
+      "id": "pub",
+      "name": "ΔΗΜΟΣΙΕΥΣΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "del",
+      "name": "ΔΙΑΓΡΑΦΗ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "«Ωραίο άρθρο!»",
+      "category": "pub"
+    },
+    {
+      "id": "item2",
+      "text": "«SPAM ΓΙΑΤΡΟΣ ΤΗΛ 694...»",
+      "category": "del"
+    },
+    {
+      "id": "item3",
+      "text": "«Ενδιαφέρον θέμα»",
+      "category": "pub"
+    },
+    {
+      "id": "item4",
+      "text": "«Αγόρασε τώρα!!!»",
+      "category": "del"
+    },
+    {
+      "id": "item5",
+      "text": "«Μπράβο, συνέχισε!»",
+      "category": "pub"
+    },
+    {
+      "id": "item6",
+      "text": "«ΚΛΕΨΕ ΚΩΔΙΚΟ»",
+      "category": "del"
+    }
+  ]
+}

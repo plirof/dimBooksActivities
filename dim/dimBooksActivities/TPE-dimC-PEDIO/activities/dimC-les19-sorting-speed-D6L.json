@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Χαρακτηριστικά Website",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "URL = η διεύθυνση του δικτυακού τόπου", "category": "swsto"},
+    {"text": "Ιδιοκτήτης = μόνο εταιρείες", "category": "lathos"},
+    {"text": "Μενού = σύνδεσμοι πλοήγησης", "category": "swsto"},
+    {"text": "Γραμμική δομή = υποκατηγορίες", "category": "lathos"},
+    {"text": "Δεντροειδής δομή = κατηγορίες", "category": "swsto"},
+    {"text": "URL = το όνομα του φυλλομετρητή", "category": "lathos"},
+    {"text": "Σύνδεσμος οδηγεί σε άλλη σελίδα", "category": "swsto"},
+    {"text": "Ιδιοκτήτης = κάθε επισκέπτης", "category": "lathos"},
+    {"text": "Δομή = οργάνωση ιστοσελίδων", "category": "swsto"},
+    {"text": "Μενού = μόνο εικόνες", "category": "lathos"}
+  ],
+  "duration": 30
+}

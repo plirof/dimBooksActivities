@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υπολογιστικό Φύλλο",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "ops", "name": "Σύμβολα Πράξεων", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "fmt", "name": "Μορφοποίηση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "+ Πρόσθεση", "category": "ops"},
+    {"text": "Αναδίπλωση κειμένου", "category": "fmt"},
+    {"text": "- Αφαίρεση", "category": "ops"},
+    {"text": "Στοίχιση κέντρο", "category": "fmt"},
+    {"text": "* Πολλαπλασιασμός", "category": "ops"},
+    {"text": "Μορφή νομίσματος", "category": "fmt"},
+    {"text": "/ Διαίρεση", "category": "ops"},
+    {"text": "Δεκαδικά ψηφία", "category": "fmt"},
+    {"text": "= Αρχή τύπου", "category": "ops"},
+    {"text": "Περιγράμματα", "category": "fmt"}
+  ],
+  "duration": 30
+}

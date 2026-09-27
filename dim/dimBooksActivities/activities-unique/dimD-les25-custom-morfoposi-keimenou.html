@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μορφοποίηση Κειμένου</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.instructions {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border-left: 4px solid #667eea;
+}
+.instructions-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 10px;
+font-size: 1.1rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.steps-list {
+color: #555;
+line-height: 1.8;
+}
+.toolbar {
+background: linear-gradient(135deg, #f5f7fa, #e8ecf3);
+border-radius: 12px;
+padding: 15px;
+margin-bottom: 25px;
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+justify-content: center;
+}
+.tool-btn {
+background: white;
+border: 2px solid #ddd;
+border-radius: 8px;
+padding: 10px 15px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+min-width: 50px;
+}
+.tool-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.tool-btn.active {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.alignment-tools {
+display: flex;
+gap: 10px;
+margin-bottom: 25px;
+}
+.alignment-btn {
+flex: 1;
+padding: 10px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.alignment-btn:hover {
+border-color: #667eea;
+}
+.alignment-btn.active {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.text-editor {
+background: white;
+border-radius: 12px;
+padding: 20px;
+min-height: 200px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+border: 2px solid #e0e0e0;
+}
+#editorContent {
+min-height: 150px;
+line-height: 1.8;
+color: #333;
+}
+.task-box {
+background: #fff3cd;
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 25px;
+border: 2px solid #ffc107;
+}
+.task-title {
+font-weight: bold;
+color: #856404;
+margin-bottom: 10px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.task-text {
+color: #856404;
+line-height: 1.6;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 25px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.success {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.error {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .instructions-title > * + * { margin-left: 10px; }
+  .toolbar > * { margin: 5px; }
+  .alignment-tools > * + * { margin-left: 10px; }
+  .task-title > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>✏️ Μορφοποίηση Κειμένου</h1>
+<p class="subtitle">Πληκτρολογήστε το κείμενο και εφαρμόστε τις κατάλληλες μορφοποιήσεις</p>
+
+<div class="container">
+<div class="task-box">
+<div class="task-title">📋 Ασκήση</div>
+<div class="task-text">
+1. Πληκτρολογήστε: «Η πρώτη μου μορφοποίηση κειμένου»<br>
+2. Πληκτρολογήστε το ονοματεπώνυμό σας<br>
+3. Κάντε τη λέξη «μου» έντονη (Β)<br>
+4. Υπογραμμίστε τα ονόματά σας (U)<br>
+5. Γράψτε τα επίθετά σας με πλάγια γραφή (Ι)
+</div>
+</div>
+
+<div class="toolbar">
+<button class="tool-btn" id="boldBtn" onclick="toggleFormat('bold')">B</button>
+<button class="tool-btn" id="italicBtn" onclick="toggleFormat('italic')">I</button>
+<button class="tool-btn" id="underlineBtn" onclick="toggleFormat('underline')">U</button>
+</div>
+
+<div class="text-editor">
+<div id="editorContent" contenteditable="true" placeholder="Πληκτρολογήστε εδώ το κείμενο..."></div>
+</div>
+
+<button class="btn" onclick="checkText()">✓ Ελέγξτε το Κείμενο</button>
+
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<div class="mascot">📝</div>
+
+<script>
+function toggleFormat(format) {
+const btn = document.getElementById(format + 'Btn');
+btn.classList.toggle('active');
+
+const editor = document.getElementById('editorContent');
+const selection = window.getSelection();
+
+if (selection.rangeCount > 0) {
+const range = selection.getRangeAt(0);
+const span = document.createElement('span');
+
+if (format === 'bold') {
+span.style.fontWeight = btn.classList.contains('active') ? 'bold' : 'normal';
+} else if (format === 'italic') {
+span.style.fontStyle = btn.classList.contains('active') ? 'italic' : 'normal';
+} else if (format === 'underline') {
+span.style.textDecoration = btn.classList.contains('active') ? 'underline' : 'none';
+}
+
+try {
+range.surroundContents(span);
+} catch (e) {
+const selectedText = range.toString();
+if (selectedText) {
+span.textContent = selectedText;
+range.deleteContents();
+range.insertNode(span);
+}
+}
+} else {
+editor.focus();
+}
+}
+
+function checkText() {
+const editor = document.getElementById('editorContent');
+const content = editor.textContent || editor.innerText;
+const html = editor.innerHTML;
+
+let checklist = [];
+
+const hasTitle = content.includes('Η πρώτη μου μορφοποίηση κειμένου');
+if (hasTitle) {
+checklist.push({ text: '✓ Περιέχει τον τίτλο «Η πρώτη μου μορφοποίηση κειμένου»', correct: true });
+} else {
+checklist.push({ text: '✗ Λείπει ο τίτλος «Η πρώτη μου μορφοποίηση κειμένου»', correct: false });
+}
+
+const hasMouBold = html.includes('<span') && html.includes('font-weight') && html.includes('bold');
+if (hasMouBold && content.includes('μου')) {
+checklist.push({ text: '✓ Η λέξη «μου» είναι έντονη (bold)', correct: true });
+} else if (content.includes('μου')) {
+checklist.push({ text: '✗ Η λέξη «μου» δεν είναι έντονη (bold)', correct: false });
+} else {
+checklist.push({ text: '✗ Λείπει η λέξη «μου»', correct: false });
+}
+
+const hasUnderline = html.includes('text-decoration') && html.includes('underline');
+if (hasUnderline && html.includes('text-decoration: underline')) {
+checklist.push({ text: '✓ Υπάχει υπογράμμιση', correct: true });
+} else {
+checklist.push({ text: '✗ Λείπει η υπογράμμιση', correct: false });
+}
+
+const hasItalic = html.includes('font-style') && html.includes('italic');
+if (hasItalic) {
+checklist.push({ text: '✓ Υπάχει πλάγια γραφή (italic)', correct: true });
+} else {
+checklist.push({ text: '✗ Λείπει η πλάγια γραφή (italic)', correct: false });
+}
+
+const hasName = content.length > 30;
+if (hasName) {
+checklist.push({ text: '✓ Έχετε γράψει το ονοματεπώνυμό σας', correct: true });
+} else {
+checklist.push({ text: '✗ Δεν έχετε γράψει το ονοματεπώνυμό σας', correct: false });
+}
+
+const resultBox = document.getElementById('resultBox');
+const correctCount = checklist.filter(item => item.correct).length;
+
+resultBox.className = 'result-box show ' + (correctCount >= 4 ? 'success' : 'error');
+
+let htmlContent = '<h3>' + (correctCount >= 4 ? '🎉 Πολύ καλά!' : '❌ Προσπαθήστε ξανά!') + '</h3>';
+
+if (correctCount >= 4) {
+htmlContent += '<p>Έχετε εφαρμόσει τις περισσότερες μορφοποιήσεις σωστά!</p>';
+} else {
+htmlContent += '<p>Ελέγξτε τις μορφοποιήσεις:</p>';
+}
+
+htmlContent += '<div style="text-align: left; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 10px;">';
+checklist.forEach(item => {
+htmlContent += '<div style="padding: 8px 0; color: ' + (item.correct ? '#155724' : '#721c24') + ';">' + item.text + '</div>';
+});
+htmlContent += '</div>';
+
+if (correctCount < 4) {
+htmlContent += '<p style="margin-top: 15px;">💡 Υπόδειξη: Επιλέξτε το κείμενο και μετά πατήστε τα κουμπιά μορφοποίησης!</p>';
+}
+
+resultBox.innerHTML = htmlContent;
+}
+
+document.getElementById('editorContent').addEventListener('focus', function() {
+const btns = document.querySelectorAll('.tool-btn');
+btns.forEach(btn => btn.classList.remove('active'));
+});
+</script>
+</body>
+</html>

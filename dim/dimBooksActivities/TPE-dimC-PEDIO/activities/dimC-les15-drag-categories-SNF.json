@@ -1,0 +1,48 @@
+{
+  "title": "Ιεραρχικός ή Χάρτης Ιστού",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στο σωστό είδος χάρτη",
+  "categories": [
+    {
+      "id": "hier",
+      "name": "ΙΕΡΑΡΧΙΚΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "spider",
+      "name": "ΧΑΡΤΗΣ ΙΣΤΟΥ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Δέντρο από πάνω προς κάτω",
+      "category": "hier"
+    },
+    {
+      "id": "item2",
+      "text": "Κεντρική έννοια + ακτίνες",
+      "category": "spider"
+    },
+    {
+      "id": "item3",
+      "text": "Υπο-έννοιες σε επίπεδα",
+      "category": "hier"
+    },
+    {
+      "id": "item4",
+      "text": "Γραμμές σε κάθε κατεύθυνση",
+      "category": "spider"
+    },
+    {
+      "id": "item5",
+      "text": "Οργανόγραμμα",
+      "category": "hier"
+    },
+    {
+      "id": "item6",
+      "text": "Αστεροειδής μορφή",
+      "category": "spider"
+    }
+  ]
+}

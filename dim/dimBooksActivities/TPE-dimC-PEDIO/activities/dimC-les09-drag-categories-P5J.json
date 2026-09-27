@@ -1,0 +1,53 @@
+{
+  "title": "Μέγεθος Δεδομένων",
+  "subtitle": "Ταξινόμησε τα δεδομένα στο σωστό μέγεθος",
+  "categories": [
+    {
+      "id": "kb",
+      "name": "Λίγα KB",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "mb",
+      "name": "Λίγα MB",
+      "color": "#2196F3"
+    },
+    {
+      "id": "gb",
+      "name": "Λίγα GB",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ένα κείμενο",
+      "category": "kb"
+    },
+    {
+      "id": "item2",
+      "text": "Μία φωτογραφία",
+      "category": "mb"
+    },
+    {
+      "id": "item3",
+      "text": "Ένας δίσκος αποθήκευσης",
+      "category": "gb"
+    },
+    {
+      "id": "item4",
+      "text": "Μία ασπρόμαυρη εικόνα μικρή",
+      "category": "kb"
+    },
+    {
+      "id": "item5",
+      "text": "Ένα βίντεο",
+      "category": "mb"
+    },
+    {
+      "id": "item6",
+      "text": "Ο σκληρός δίσκος υπολογιστή",
+      "category": "gb"
+    }
+  ]
+}

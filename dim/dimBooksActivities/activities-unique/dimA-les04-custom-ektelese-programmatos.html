@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εκτέλεσε το Πρόγραμμα 🐛</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 480px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(67,233,123,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #2d7d46; }
+  .round { font-size: .9rem; color: #888; }
+  .program-display {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 20px;
+    margin-bottom: 14px; text-align: center;
+  }
+  .program-display h3 { font-size: 1rem; color: #666; margin-bottom: 10px; }
+  .arrow-list {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    background: #f0fdf4; border-radius: 12px; padding: 12px;
+  }
+  .arrow-item {
+    width: 48px; height: 48px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    background: #fff; border: 2px solid #43e97b;
+    animation: fadeIn .3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: scale(1); } }
+  .path-area {
+    display: flex; justify-content: center; margin-bottom: 14px;
+  }
+  .path-grid {
+    display: inline-grid; grid-gap: 2px;
+    background: #e0e0e0; padding: 2px; border-radius: 6px;
+  }
+  .pg-cell {
+    width: 48px; height: 48px;
+    background: #fff; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; position: relative;
+    transition: background .3s;
+  }
+  .pg-cell.start-cell { background: #fff9c4; }
+  .pg-cell.goal-cell { background: #c8e6c9; }
+  .pg-cell.walked { background: #bbdefb; }
+  .pg-cell.current {
+    background: #ffe0b2;
+    box-shadow: inset 0 0 0 3px #ff9800;
+  }
+  .pg-cell { cursor: pointer; }
+  .pg-cell.guess-cell {
+    background: #fff3cd;
+    box-shadow: inset 0 0 0 3px #ff9800;
+  }
+  .guess-banner {
+    background: #fff; border: 3px dashed #43e97b; border-radius: 14px;
+    padding: 10px 14px; margin-bottom: 14px; text-align: center;
+    font-size: .95rem; font-weight: 700; color: #2d7d46;
+  }
+  .btn-execute {
+    width: 100%; border: none; border-radius: 14px;
+    padding: 14px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; box-shadow: 0 4px 14px rgba(67,233,123,.35);
+    transition: transform .15s; margin-bottom: 6px;
+  }
+  .btn-execute:active { transform: scale(.97); }
+  .btn-execute:disabled { opacity: .5; cursor: default; transform: none; }
+  .btn-next-level {
+    width: 100%; border: none; border-radius: 14px;
+    padding: 14px; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s; margin-bottom: 12px; display: none;
+  }
+  .btn-next-level:active { transform: scale(.97); }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(67,233,123,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 400px) {
+    .pg-cell { width: 40px; height: 40px; font-size: 1rem; }
+    .arrow-item { width: 40px; height: 40px; font-size: 1.2rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .arrow-list > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🐛 Εκτέλεσε το Πρόγραμμα</h1>
+    <p>Μάντεψε πού θα φτάσει και μετά εκτέλεσε το πρόγραμμα!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="program-display">
+      <h3 id="pgTitle">📋 Το πρόγραμμα της σαρανταποδαρούσας</h3>
+      <div class="arrow-list" id="arrowList"></div>
+    </div>
+    <div class="guess-banner" id="guessBanner">🎯 Διάβασε το πρόγραμμα και πάτα το κελί όπου πιστεύεις ότι θα φτάσει η σαρανταποδαρούσα!</div>
+    <div class="path-area">
+      <div class="path-grid" id="pathGrid"></div>
+    </div>
+    <button class="btn-execute" id="btnExecute" onclick="startExecution()">▶️ Εκτέλεσε τις εντολές!</button>
+    <button class="btn-next-level" id="btnNext" onclick="nextLevel()">➡️ Επόμενο!</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var levels = [
+    {
+      grid: [
+        ['🐛', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', '🌺']
+      ],
+      arrows: ['➡️', '➡️', '➡️', '➡️', '⬇️', '⬇️', '⬇️'],
+      dirs: ['right', 'right', 'right', 'right', 'down', 'down', 'down']
+    },
+    {
+      grid: [
+        ['', '🐛', '', ''],
+        ['', '', '', ''],
+        ['', '', '🌺', ''],
+        ['', '', '', '']
+      ],
+      arrows: ['⬇️', '⬇️', '➡️'],
+      dirs: ['down', 'down', 'right']
+    },
+    {
+      grid: [
+        ['', '', '', '🐛', ''],
+        ['', '🌿', '', '', ''],
+        ['', '', '', '', ''],
+        ['🌺', '', '', '', '']
+      ],
+      arrows: ['⬇️', '⬇️', '⬇️', '⬅️', '⬅️', '⬅️'],
+      dirs: ['down', 'down', 'down', 'left', 'left', 'left']
+    },
+    {
+      grid: [
+        ['', '', '', '🐛'],
+        ['', '🌿', '', ''],
+        ['', '', '', ''],
+        ['', '', '🌺', '']
+      ],
+      arrows: ['⬅️', '⬇️', '⬇️', '⬇️'],
+      dirs: ['left', 'down', 'down', 'down']
+    }
+  ];
+
+  var currentLevel = 0, score = 0;
+  var executing = false;
+  var predicting = true;
+  var predR = -1, predC = -1;
+  var startR, startC;
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    executing = false;
+    predicting = true;
+    predR = -1; predC = -1;
+    var lv = levels[currentLevel];
+    document.getElementById('roundDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('pgTitle').textContent = '📋 Πρόγραμμα ' + (currentLevel + 1);
+    document.getElementById('guessBanner').textContent = '🎯 Διάβασε τις εντολές και πάτα το κελί όπου θα καταλήξει η σαρανταποδαρούσα! Το λουλούδι κρύβεται — θα φανεί στο τέλος!';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnExecute').style.display = 'block';
+    document.getElementById('btnExecute').disabled = true;
+    document.getElementById('btnNext').style.display = 'none';
+
+    var arrowList = document.getElementById('arrowList');
+    arrowList.innerHTML = '';
+    for (var i = 0; i < lv.arrows.length; i++) {
+      var item = document.createElement('div');
+      item.className = 'arrow-item';
+      item.textContent = lv.arrows[i];
+      item.setAttribute('data-idx', i);
+      arrowList.appendChild(item);
+    }
+
+    for (var r = 0; r < lv.grid.length; r++) {
+      for (var c = 0; c < lv.grid[r].length; c++) {
+        if (lv.grid[r][c] === '🐛') { startR = r; startC = c; }
+      }
+    }
+
+    renderPathGrid(lv.grid);
+  }
+
+  function renderPathGrid(gridData) {
+    var grid = document.getElementById('pathGrid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + gridData[0].length + ', 48px)';
+    for (var r = 0; r < gridData.length; r++) {
+      for (var c = 0; c < gridData[r].length; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'pg-cell';
+        cell.setAttribute('data-r', r);
+        cell.setAttribute('data-c', c);
+        (function(rr, cc) {
+          cell.addEventListener('click', function() { makeGuess(rr, cc); });
+        })(r, c);
+        var val = gridData[r][c];
+        if (val === '🐛') { cell.classList.add('start-cell'); cell.textContent = '🐛'; }
+        else if (val === '🌺') {
+          if (!predicting) { cell.classList.add('goal-cell'); cell.textContent = '🌺'; }
+        }
+        else if (val === '🌿') { cell.textContent = '🌿'; }
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function makeGuess(r, c) {
+    if (executing || !predicting) return;
+    predR = r; predC = c;
+    renderPathGrid(levels[currentLevel].grid);
+    var cell = document.querySelector('.pg-cell[data-r="' + r + '"][data-c="' + c + '"]');
+    if (cell) {
+      cell.textContent = '🎯';
+      cell.classList.add('guess-cell');
+    }
+    document.getElementById('btnExecute').disabled = false;
+    document.getElementById('guessBanner').textContent = '👌 Καλή πρόβλεψη! Πάτα «Εκτέλεσε τις Εντολές!» για να δεις αν είχες δίκιο!';
+  }
+
+  function startExecution() {
+    if (executing) return;
+    if (predR < 0) return;
+    executing = true;
+    predicting = false;
+    document.getElementById('btnExecute').disabled = true;
+    document.getElementById('guessBanner').textContent = '👀 Η σαρανταποδαρούσα εκτελεί το πρόγραμμα βήμα-βήμα…';
+
+    var lv = levels[currentLevel];
+    var cells = document.querySelectorAll('.pg-cell');
+
+    var r = startR, c = startC;
+    var arrowItems = document.querySelectorAll('.arrow-item');
+    var idx = 0;
+
+    function step() {
+      if (idx >= lv.dirs.length) {
+        var fb = document.getElementById('feedback');
+        var atGoal = lv.grid[r] && lv.grid[r][c] === '🌺';
+        var guessed = atGoal && predR === r && predC === c;
+        if (atGoal) {
+          document.getElementById('btnNext').style.display = 'block';
+          var fcell = document.querySelector('.pg-cell[data-r="' + r + '"][data-c="' + c + '"]');
+          if (fcell) { fcell.textContent = '🌺'; fcell.classList.add('goal-cell'); }
+          if (guessed) {
+            score++;
+            document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+            fb.className = 'feedback correct';
+            fb.textContent = '✅ Σωστή πρόβλεψη! Η σαρανταποδαρούσα έφτασε ακριβώς εκεί που μάντεψες! 🎉';
+            document.getElementById('guessBanner').textContent = '🏆 Μπράβο, το μάντεψες!';
+          } else {
+            fb.className = 'feedback wrong';
+            fb.textContent = '❌ Ωχ! Το μάντεψες αλλού — η σαρανταποδαρούσα έφτασε στο λουλούδι! Δες τη διαδρομή.';
+            document.getElementById('guessBanner').textContent = '👀 Δες πώς κατέληξε η διαδρομή στο λουλούδι!';
+            var gcell = document.querySelector('.pg-cell[data-r="' + predR + '"][data-c="' + predC + '"]');
+            if (gcell) { gcell.textContent = '🎯'; gcell.classList.add('guess-cell'); }
+          }
+        } else {
+          fb.className = 'feedback wrong';
+          fb.textContent = '❌ Ωχ! Δεν έφτασε στο λουλούδι. Προσπάθησε ξανά!';
+          document.getElementById('btnExecute').disabled = false;
+          executing = false;
+        }
+        return;
+      }
+
+      var dir = lv.dirs[idx];
+      if (dir === 'up') r--;
+      else if (dir === 'down') r++;
+      else if (dir === 'left') c--;
+      else if (dir === 'right') c++;
+
+      if (r < 0 || r >= lv.grid.length || c < 0 || c >= lv.grid[0].length || lv.grid[r][c] === '🌿') {
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback wrong';
+        fb.textContent = '❌ Ωχ! Η σαρανταποδαρούσα χτύπησε! Δοκίμασε από την αρχή.';
+        document.getElementById('btnExecute').disabled = false;
+        executing = false;
+        return;
+      }
+
+      arrowItems[idx].style.borderColor = '#ff9800';
+      arrowItems[idx].style.background = '#fff3e0';
+
+      for (var i = 0; i < cells.length; i++) {
+        var cr = parseInt(cells[i].getAttribute('data-r'));
+        var cc = parseInt(cells[i].getAttribute('data-c'));
+        if (cr === r && cc === c) {
+          cells[i].classList.add('walked');
+          if (lv.grid[r][c] !== '🌺') cells[i].textContent = '🐛';
+        }
+        if (cr === startR && cc === startC && (startR !== r || startC !== c)) {
+          cells[i].textContent = '';
+          cells[i].classList.remove('start-cell');
+        }
+      }
+
+      idx++;
+      setTimeout(step, 600);
+    }
+
+    setTimeout(step, 400);
+  }
+
+  function nextLevel() {
+    currentLevel++;
+    loadLevel();
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Μαντεύεις σωστά κάθε πρόγραμμα!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Διάβασες πολύ καλά τις εντολές!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

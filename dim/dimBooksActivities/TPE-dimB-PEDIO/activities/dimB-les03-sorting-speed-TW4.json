@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Με ή Χωρίς Επανάληψη;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Με Επανάληψη ή Χωρίς;",
+  "categories": [
+    {"id": "me", "name": "Με Επανάληψη", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "xoris", "name": "Χωρίς", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Επανάλαβε 4 φορές", "category": "me"},
+    {"text": "Μπροστά, Μπροστά, Μπροστά", "category": "xoris"},
+    {"text": "Κουτάκι με αριθμό", "category": "me"},
+    {"text": "Μια-μια εντολές", "category": "xoris"},
+    {"text": "Λιγότερες εντολές", "category": "me"},
+    {"text": "Πολλές γραμμές κώδικα", "category": "xoris"},
+    {"text": "Σύντομο πρόγραμμα", "category": "me"},
+    {"text": "8 εντολές ξεχωριστά", "category": "xoris"}
+  ],
+  "duration": 30
+}

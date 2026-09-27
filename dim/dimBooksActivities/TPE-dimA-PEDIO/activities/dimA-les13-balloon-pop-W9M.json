@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δίκτυο",
+  "subtitle": "Μόνο ό,τι χρειάζεται το δίκτυο!",
+  "instruction": "Σπάσε μόνο ό,τι ανήκει στο ΔΙΚΤΥΟ ΥΠΟΛΟΓΙΣΤΩΝ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Καλώδιο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μολύβι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Οθόνη", "correct": true, "color": "#45B7D1" },
+    { "text": "Κουβάς", "correct": false, "color": "#96CEB4" },
+    { "text": "Υπολογιστής", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Πληκτρολόγιο", "correct": true, "color": "#98D8C8" },
+    { "text": "Κουβέρτα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ποντίκι", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μπάλα", "correct": false, "color": "#85C1E9" }
+  ]
+}

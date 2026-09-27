@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Σχήμα ή Εργαλείο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Σχήμα ή Εργαλείο;",
+  "categories": [
+    {"id": "schima", "name": "Σχήμα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "ergaleio", "name": "Εργαλείο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κύκλος", "category": "schima"},
+    {"text": "Γόμα", "category": "ergaleio"},
+    {"text": "Τετράγωνο", "category": "schima"},
+    {"text": "Αναίρεση", "category": "ergaleio"},
+    {"text": "Έλλειψη", "category": "schima"},
+    {"text": "Γέμισμα", "category": "ergaleio"},
+    {"text": "Ορθογώνιο", "category": "schima"},
+    {"text": "Μολύβι", "category": "ergaleio"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 28 - Δραστηριότητα 1: Εισερχόμενα - Απάντηση</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{text-align:center;color:#fff;margin-bottom:10px;font-size:1.5rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;margin-bottom:20px}
+.progress-wrap{margin-bottom:18px}
+.progress-label{font-size:.85rem;color:#555;margin-bottom:6px;font-weight:700}
+.progress-bar-outer{background:#e0e0e0;border-radius:15px;height:28px;overflow:hidden}
+.progress-bar-inner{height:100%;background:linear-gradient(90deg,#4facfe,#00f2fe);border-radius:15px;transition:width .5s;width:0}
+.nav-tabs{display:flex;gap:8px;margin-bottom:18px}
+.nav-tab{flex:1;padding:10px;border:2px solid #4facfe;background:#fff;color:#4facfe;border-radius:12px;font-size:.95rem;cursor:pointer;font-weight:700;text-align:center;transition:all .3s}
+.nav-tab:hover{background:#e3f2fd}
+.nav-tab.active{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;border-color:transparent}
+.inbox-view,.reading-view{display:none}
+.inbox-view.active,.reading-view.active{display:block}
+.inbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.inbox-header h2{font-size:1.1rem;color:#333}
+.badge{background:#f44336;color:#fff;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700}
+.msg-row{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;transition:all .3s;border:2px solid transparent}
+.msg-row:hover{background:#f0f8ff;border-color:#4facfe}
+.msg-row.replied{opacity:.7;border-left:4px solid #4caf50}
+.msg-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0}
+.msg-avatar.m1{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.msg-avatar.m2{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.msg-info{flex:1;min-width:0}
+.msg-from{font-weight:700;color:#333;font-size:.95rem}
+.msg-subject{color:#4facfe;font-size:.85rem}
+.msg-preview{color:#999;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-status{font-size:.7rem;color:#2e7d32;font-weight:700;flex-shrink:0}
+.reading-content{padding:10px 0}
+.back-btn{padding:8px 18px;background:#fff;color:#4facfe;border:2px solid #4facfe;border-radius:10px;cursor:pointer;font-weight:700;font-size:.9rem;margin-bottom:16px;transition:all .3s}
+.back-btn:hover{background:#e3f2fd}
+.read-from{font-weight:700;font-size:1.05rem;margin-bottom:4px}
+.read-subject{color:#4facfe;font-size:1rem;margin-bottom:14px;font-weight:700}
+.read-body{color:#444;line-height:1.6;margin-bottom:18px;padding:14px;background:#f8f9fa;border-radius:12px}
+.reply-section{background:#e3f2fd;border-radius:14px;padding:16px;margin-top:10px}
+.reply-section h4{color:#1565c0;margin-bottom:10px}
+.reply-area{width:100%;padding:12px;border:2px solid #90caf9;border-radius:12px;font-size:1rem;font-family:inherit;resize:vertical;min-height:80px;transition:border-color .3s}
+.reply-area:focus{outline:none;border-color:#1565c0}
+.reply-send{margin-top:10px;padding:12px 24px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(79,172,254,.4);transition:transform .2s}
+.reply-send:hover{transform:scale(1.03)}
+.reply-send:disabled{opacity:.5;cursor:default;transform:none}
+.reply-confirmation{background:#e8f5e9;color:#2e7d32;padding:10px;border-radius:10px;font-weight:700;margin-top:10px;display:none}
+.sent-section{display:none;margin-top:10px}
+.sent-section h3{color:#1565c0;margin-bottom:10px}
+.sent-item{background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:8px;border-left:4px solid #4facfe}
+.sent-item .sent-to{font-weight:700;font-size:.9rem}
+.sent-item .sent-text{color:#555;font-size:.85rem;margin-top:4px}
+.sent-item .sent-time{font-size:.7rem;color:#999;margin-top:4px}
+.congrats{display:none;text-align:center;padding:30px}
+.congrats h2{color:#2e7d32;font-size:1.5rem;margin-bottom:10px}
+.congrats p{color:#555;font-size:1.1rem}
+.congrats .big-emoji{font-size:4rem;margin-bottom:10px}
+@media(max-width:600px){.container{padding:15px}h1{font-size:1.2rem}.msg-row{padding:10px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .nav-tabs > * + * { margin-left: 8px; }
+  .msg-row > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📬 Μάθημα 28 - Δραστηριότητα 1</h1>
+<div class="container" id="mainArea">
+<div class="progress-wrap">
+<div class="progress-label" id="progLabel">Απάντησε σε 2 μηνύματα (0/2)</div>
+<div class="progress-bar-outer"><div class="progress-bar-inner" id="progBar"></div></div>
+</div>
+<div class="nav-tabs">
+<button class="nav-tab active" id="navInbox" onclick="showView('inbox')">📥 Εισερχόμενα</button>
+<button class="nav-tab" id="navSent" onclick="showView('sent')">📤 Σταλθέντα</button>
+</div>
+
+<div class="inbox-view active" id="inboxView">
+<div class="inbox-header">
+<h2>📥 Εισερχόμενα</h2>
+<span class="badge" id="unreadBadge">2 νέα</span>
+</div>
+<div id="inboxList"></div>
+</div>
+
+<div class="reading-view" id="readingView">
+<button class="back-btn" onclick="showView('inbox')">⬅️ Πίσω στα εισερχόμενα</button>
+<div class="reading-content" id="readingContent"></div>
+</div>
+
+<div class="sent-section" id="sentView">
+<h3>📤 Σταλθέντα</h3>
+<div id="sentList"></div>
+</div>
+</div>
+
+<div class="container congrats" id="congratsArea">
+<div class="big-emoji">🎉</div>
+<h2>Μπράβο! Συγχαρητήρια!</h2>
+<p>Διάβασες και απάντησες σε όλα τα μηνύματα! 📬<br>Τώρα ξέρεις πώς λειτουργούν τα μηνύματα στο e-me!</p>
+</div>
+
+<script>
+var messages=[
+{id:0,from:'κυρία Μαρία',initial:'Μ',subject:'Υπενθύμιση εργασίας',body:'Μην ξεχάσεις να φέρεις την εργασία σου αύριο!',avatarClass:'m1',read:false,replied:false},
+{id:1,from:'Γιάννης',initial:'Γ',subject:'Παιχνίδι',body:'Θέλεις να παίξουμε στο διάλειμμα;',avatarClass:'m2',read:false,replied:false}
+];
+var sentReplies=[];
+var replyCount=0;
+var currentReading=null;
+
+function renderInbox(){
+var list=document.getElementById('inboxList');
+list.innerHTML='';
+var unread=0;
+messages.forEach(function(m){
+if(!m.read)unread++;
+var row=document.createElement('div');
+row.className='msg-row'+(m.replied?' replied':'');
+row.onclick=function(){openMessage(m.id)};
+
+var av=document.createElement('div');
+av.className='msg-avatar '+m.avatarClass;
+av.textContent=m.initial;
+
+var info=document.createElement('div');
+info.className='msg-info';
+var fromDiv=document.createElement('div');fromDiv.className='msg-from';fromDiv.textContent=m.from;
+var subjDiv=document.createElement('div');subjDiv.className='msg-subject';subjDiv.textContent=m.subject;
+var prevDiv=document.createElement('div');prevDiv.className='msg-preview';prevDiv.textContent=m.body;
+info.appendChild(fromDiv);info.appendChild(subjDiv);info.appendChild(prevDiv);
+
+row.appendChild(av);row.appendChild(info);
+
+if(m.replied){
+var st=document.createElement('div');st.className='msg-status';st.textContent='Απαντημένο ✓';
+row.appendChild(st);
+}
+
+list.appendChild(row);
+});
+
+var badge=document.getElementById('unreadBadge');
+badge.textContent=unread+' νέα';
+if(unread===0)badge.style.display='none';else badge.style.display='inline-block';
+}
+
+function openMessage(id){
+var m=messages[id];
+m.read=true;
+currentReading=id;
+showView('reading');
+
+var content=document.getElementById('readingContent');
+content.innerHTML='';
+
+var fromD=document.createElement('div');fromD.className='read-from';fromD.textContent='Από: '+m.from;
+var subjD=document.createElement('div');subjD.className='read-subject';subjD.textContent='📝 '+m.subject;
+var bodyD=document.createElement('div');bodyD.className='read-body';bodyD.textContent=m.body;
+content.appendChild(fromD);content.appendChild(subjD);content.appendChild(bodyD);
+
+if(m.replied){
+var conf=document.createElement('div');conf.className='reply-confirmation';conf.style.display='block';conf.textContent='✅ Έχεις απαντήσει σε αυτό το μήνυμα.';
+content.appendChild(conf);
+} else {
+var replyDiv=document.createElement('div');replyDiv.className='reply-section';replyDiv.id='replySection'+id;
+var h4=document.createElement('h4');h4.textContent='💬 Απάντηση:';
+var ta=document.createElement('textarea');ta.className='reply-area';ta.id='replyArea'+id;ta.placeholder='Γράψε την απάντησή σου...';
+var btn=document.createElement('button');btn.className='reply-send';btn.textContent='📤 Αποστολή';btn.onclick=function(){sendReply(id)};
+replyDiv.appendChild(h4);replyDiv.appendChild(ta);replyDiv.appendChild(btn);
+content.appendChild(replyDiv);
+
+var conf2=document.createElement('div');conf2.className='reply-confirmation';conf2.id='replyConf'+id;
+content.appendChild(conf2);
+}
+}
+
+function sendReply(id){
+var ta=document.getElementById('replyArea'+id);
+var text=ta.value.trim();
+if(!text){alert('Γράψε μια απάντηση πρώτα! 😊');return}
+var m=messages[id];
+m.replied=true;
+replyCount++;
+var now=new Date();
+var timeStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+sentReplies.push({to:m.from,text:text,time:timeStr});
+
+document.getElementById('replySection'+id).style.display='none';
+var conf=document.getElementById('replyConf'+id);
+conf.style.display='block';conf.textContent='✅ Η απάντησή σου στάλθηκε!';
+
+updateProgress();
+renderSentList();
+}
+
+function updateProgress(){
+document.getElementById('progBar').style.width=(replyCount/2*100)+'%';
+document.getElementById('progLabel').textContent='Απάντησε σε 2 μηνύματα ('+replyCount+'/2)';
+if(replyCount>=2){
+setTimeout(function(){
+document.getElementById('mainArea').style.display='none';
+document.getElementById('congratsArea').style.display='block';
+},800);
+}
+}
+
+function renderSentList(){
+var list=document.getElementById('sentList');
+list.innerHTML='';
+if(sentReplies.length===0){list.innerHTML='<p style="color:#999;font-style:italic">Δεν έχεις στείλει απαντήσεις ακόμα.</p>';return}
+sentReplies.forEach(function(r){
+var d=document.createElement('div');d.className='sent-item';
+var toD=document.createElement('div');toD.className='sent-to';toD.textContent='📧 Προς: '+r.to;
+var txtD=document.createElement('div');txtD.className='sent-text';txtD.textContent=r.text;
+var timeD=document.createElement('div');timeD.className='sent-time';timeD.textContent='🕐 '+r.time;
+d.appendChild(toD);d.appendChild(txtD);d.appendChild(timeD);
+list.appendChild(d);
+});
+}
+
+function showView(view){
+document.getElementById('inboxView').classList.remove('active');
+document.getElementById('readingView').classList.remove('active');
+document.getElementById('sentView').style.display='none';
+document.getElementById('navInbox').classList.remove('active');
+document.getElementById('navSent').classList.remove('active');
+
+if(view==='inbox'){
+document.getElementById('inboxView').classList.add('active');
+document.getElementById('navInbox').classList.add('active');
+renderInbox();
+}else if(view==='reading'){
+document.getElementById('readingView').classList.add('active');
+document.getElementById('navInbox').classList.add('active');
+}else if(view==='sent'){
+document.getElementById('sentView').style.display='block';
+document.getElementById('navSent').classList.add('active');
+renderSentList();
+}
+}
+
+renderInbox();
+renderSentList();
+</script>
+</body>
+</html>

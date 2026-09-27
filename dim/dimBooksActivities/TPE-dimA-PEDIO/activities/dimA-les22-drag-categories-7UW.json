@@ -1,0 +1,53 @@
+{
+  "title": "Ενέργειες ποντικιού",
+  "subtitle": "Ταίριαξε κάθε ενέργεια στο σωστό κουμπί",
+  "categories": [
+    {
+      "id": "right",
+      "name": "ΔΕΞΙ ΚΛΙΚ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wheel",
+      "name": "ΡΟΔΕΛΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "drag",
+      "name": "DRAG",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Λίστα επιλογών",
+      "category": "right"
+    },
+    {
+      "id": "item2",
+      "text": "Κύλιση σελίδας",
+      "category": "wheel"
+    },
+    {
+      "id": "item3",
+      "text": "Μεταφορά αρχείου",
+      "category": "drag"
+    },
+    {
+      "id": "item4",
+      "text": "Ιδιότητες",
+      "category": "right"
+    },
+    {
+      "id": "item5",
+      "text": "Μεγέθυνση/σμίκρυνση",
+      "category": "wheel"
+    },
+    {
+      "id": "item6",
+      "text": "Αλλαγή θέσης",
+      "category": "drag"
+    }
+  ]
+}

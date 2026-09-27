@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είδη Επικοινωνίας",
+  "subtitle": "Ταξινόμησε τις λειτουργίες στις σωστές κατηγορίες!",
+  "instructions": "Πάτα ← για Κλήση Ήχου, → για Βιντεοκλήση!",
+  "categories": [
+    { "id": "audio", "name": "Κλήση Ήχου", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "video", "name": "Βιντεοκλήση", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Χρειάζεται μόνο μικρόφωνο", "category": "audio" },
+    { "text": "Χρειάζεται μικρόφωνο και κάμερα", "category": "video" },
+    { "text": "Ακούγεται η φωνή", "category": "audio" },
+    { "text": "Φαίνομαι στην οθόνη", "category": "video" },
+    { "text": "Ένας προς έναν", "category": "audio" },
+    { "text": "Μπορώ να δω τον άλλον", "category": "video" },
+    { "text": "Δεν χρειάζεται κάμερα", "category": "audio" },
+    { "text": "Ο άλλος βλέπει το πρόσωπό μου", "category": "video" },
+    { "text": "Τερματίζεται με κόκκινο κουμπί", "category": "video" },
+    { "text": "Πρέπει να αποδεχτεί την κλήση", "category": "audio" },
+    { "text": "Εικονική επικοινωνία", "category": "video" },
+    { "text": "Μπορώ να μοιραστώ οθόνη", "category": "video" }
+  ],
+  "duration": 45
+}

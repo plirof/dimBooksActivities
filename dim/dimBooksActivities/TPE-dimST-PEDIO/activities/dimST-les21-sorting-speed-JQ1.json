@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τύποι Αναζήτησης",
+  "subtitle": "Ταξινόμησε κάθε τρόπο αναζήτησης",
+  "instructions": "Πάτα αριστερά για αναζήτηση εικόνας, δεξιά για φωνητική",
+  "categories": [
+    {
+      "id": "image",
+      "name": "Αναζήτηση Εικόνας",
+      "color": "#2196F3",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "voice",
+      "name": "Φωνητική Αναζήτηση",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Μεταφόρτωση εικόνας", "category": "image" },
+    { "text": "Μικρόφωνο", "category": "voice" },
+    { "text": "Drag and drop", "category": "image" },
+    { "text": "Φωνητική εντολή", "category": "voice" },
+    { "text": "Επικόλληση URL", "category": "image" },
+    { "text": "Ομιλία στη συσκευή", "category": "voice" },
+    { "text": "Αντίστροφη αναζήτηση", "category": "image" },
+    { "text": "Καταγραφή ερωτήματος", "category": "voice" },
+    { "text": "Δεξί κλικ στην εικόνα", "category": "image" },
+    { "text": "Κουμπί μικροφώνου", "category": "voice" },
+    { "text": "Εντοπισμός πηγής εικόνας", "category": "image" },
+    { "text": "Λέω το θέμα αναζήτησης", "category": "voice" }
+  ],
+  "duration": 45
+}

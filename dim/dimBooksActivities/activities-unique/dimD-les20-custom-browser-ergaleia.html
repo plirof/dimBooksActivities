@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εργαλεία Φυλλομετρητή</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#e0e7ff);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:960px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#1e40af;text-align:center;line-height:1.5}
+.columns{display:flex;gap:10px;flex-wrap:wrap}
+.col{flex:1;min-width:160px;background:#f8faff;border-radius:16px;border:2px dashed #bfdbfe;padding:10px;display:flex;flex-direction:column}
+.col-header{text-align:center;padding:8px;border-radius:12px;font-weight:700;font-size:.85em;margin-bottom:8px;color:#fff}
+.col-menu .col-header{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.col-tab .col-header{background:linear-gradient(135deg,#0891b2,#06b6d4)}
+.col-bookmark .col-header{background:linear-gradient(135deg,#d97706,#f59e0b)}
+.col-keyword .col-header{background:linear-gradient(135deg,#7c3aed,#8b5cf6)}
+.drop-zone{flex:1;min-height:150px;border-radius:12px;padding:6px;display:flex;flex-direction:column;gap:6px}
+.drop-zone.drag-over{background:#eff6ff}
+.pool-area{background:#f8faff;border-radius:16px;border:2px solid #bfdbfe;padding:15px;margin-top:14px}
+.pool-area h3{text-align:center;color:#1e40af;margin-bottom:10px;font-size:1em}
+.item-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:50px}
+.item-card{padding:8px 14px;background:#fff;border:2px solid #bfdbfe;border-radius:14px;cursor:grab;font-size:.85em;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);user-select:none;touch-action:none}
+.item-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.item-card:active{cursor:grabbing}
+.item-card.dragging{opacity:.35}
+.item-card.placed{display:none}
+.placed-item{padding:6px 10px;border-radius:8px;font-size:.82em;margin-bottom:2px;line-height:1.3}
+.placed-item.in-menu{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.placed-item.in-tab{background:#ecfeff;border:1px solid #a5f3fc;color:#0891b2}
+.placed-item.in-bookmark{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.placed-item.in-keyword{background:#f5f3ff;border:1px solid #ddd6fe;color:#6d28d9}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(30,64,175,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#1e40af}
+@media(max-width:700px){.columns{gap:8px}.col{min-width:45%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .columns > * { margin: 5px; }
+  .drop-zone > * + * { margin-top: 6px; }
+  .item-pool > * { margin: 4px; }
+  .controls > * + * { margin-left: 15px; }
+  @media(max-width:700px){
+    .columns > * { margin: 4px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌐 Εργαλεία Φυλλομετρητή</h1>
+<p>Ταξινόμησε κάθε ενέργεια στη σωστή κατηγορία!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Ο φυλλομετρητής έχει πολλές λειτουργίες: <b>μενού επιλογών</b>, <b>καρτέλες (tabs)</b>, <b>σελιδοδείκτες (bookmarks)</b>, και <b>λέξεις-κλειδιά</b> για αναζήτηση. Μπορείς να τις ξεχωρίσεις;</div>
+<div class="score-bar" id="scoreBar">Τοποθετημένα: 0 / 12</div>
+<div class="columns">
+<div class="col col-menu">
+<div class="col-header">☰ Μενού Επιλογών</div>
+<div class="drop-zone" id="dropMenu" data-category="menu"></div>
+</div>
+<div class="col col-tab">
+<div class="col-header">📑 Καρτέλες (Tabs)</div>
+<div class="drop-zone" id="dropTab" data-category="tab"></div>
+</div>
+<div class="col col-bookmark">
+<div class="col-header">⭐ Σελιδοδείκτες</div>
+<div class="drop-zone" id="dropBookmark" data-category="bookmark"></div>
+</div>
+<div class="col col-keyword">
+<div class="col-header">🔑 Λέξεις-Κλειδιά</div>
+<div class="drop-zone" id="dropKeyword" data-category="keyword"></div>
+</div>
+</div>
+<div class="pool-area">
+<h3>📋 Ενέργειες — σύρε την κάθε μία στη σωστή κατηγορία</h3>
+<div class="item-pool" id="itemPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var items=[
+{id:0,text:'Εκτύπωση σελίδας',category:'menu',emoji:'🖨️'},
+{id:1,text:'Αλλαγή μεγέθους (ζουμ)',category:'menu',emoji:'🔍'},
+{id:2,text:'Εύρεση λέξης στη σελίδα',category:'menu',emoji:'📌'},
+{id:3,text:'Άνοιγμα συνδέσμου σε νέα καρτέλα',category:'tab',emoji:'🔗'},
+{id:4,text:'Κλείσιμο καρτέλας',category:'tab',emoji:'❌'},
+{id:5,text:'Εναλλαγή μεταξύ ανοιχτών σελίδων',category:'tab',emoji:'🔄'},
+{id:6,text:'Αποθήκευση αγαπημένης ιστοσελίδας',category:'bookmark',emoji:'⭐'},
+{id:7,text:'Εμφάνιση γραμμής σελιδοδεικτών',category:'bookmark',emoji:'📂'},
+{id:8,text:'Οργάνωση σελιδοδεικτών σε φακέλους',category:'bookmark',emoji:'📁'},
+{id:9,text:'«πληθυσμός Ελλάδας»',category:'keyword',emoji:'🇬🇷'},
+{id:10,text:'«ζώα ερήμου»',category:'keyword',emoji:'🐪'},
+{id:11,text:'«ιστορία φυλλομετρητών»',category:'keyword',emoji:'📜'}
+];
+
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initPool(){
+var pool=document.getElementById('itemPool');
+pool.innerHTML='';
+var order=shuffle(items.slice());
+for(var i=0;i<order.length;i++){
+var it=order[i];
+var card=document.createElement('div');
+card.className='item-card';
+card.setAttribute('draggable','true');
+card.dataset.itemId=it.id;
+card.innerHTML=it.emoji+' '+it.text;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function updateScoreBar(){
+var count=Object.keys(placements).length;
+document.getElementById('scoreBar').textContent='Τοποθετημένα: '+count+' / '+items.length;
+document.getElementById('checkBtn').disabled=count<items.length;
+}
+
+function dragStart(e,el){dragItem=el;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',el.dataset.itemId);}
+function dragEnd(e,el){el.classList.remove('dragging');dragItem=null;clearDragOver();}
+function touchStart(e,el){dragItem=el;el.classList.add('dragging');}
+function touchMove(e,el){e.preventDefault();var t=e.touches[0];var u=document.elementFromPoint(t.clientX,t.clientY);clearDragOver();if(u){var z=u.classList.contains('drop-zone')?u:u.closest('.drop-zone');if(z){z.classList.add('drag-over');dragItem.dataset.targetZone=z.id;}else{dragItem.dataset.targetZone='';}}else{dragItem.dataset.targetZone='';}}
+function touchEnd(e,el){el.classList.remove('dragging');clearDragOver();if(el.dataset.targetZone){tryPlace(el,el.dataset.targetZone);}el.dataset.targetZone='';}
+function clearDragOver(){var z=document.querySelectorAll('.drop-zone');for(var i=0;i<z.length;i++)z[i].classList.remove('drag-over');}
+document.addEventListener('dragover',function(e){if(dragItem){var z=e.target.classList.contains('drop-zone')?e.target:e.target.closest('.drop-zone');if(z)e.preventDefault();}});
+document.addEventListener('drop',function(e){e.preventDefault();if(!dragItem)return;var z=e.target.classList.contains('drop-zone')?e.target:e.target.closest('.drop-zone');if(z)tryPlace(dragItem,z.id);});
+
+function tryPlace(card,zoneId){
+var itemId=parseInt(card.dataset.itemId);
+var catMap={dropMenu:'menu',dropTab:'tab',dropBookmark:'bookmark',dropKeyword:'keyword'};
+var category=catMap[zoneId];
+if(placements[itemId]!==undefined){var prevCat=placements[itemId];document.querySelector('.placed-item[data-item-id="'+itemId+'"]').remove();}
+placements[itemId]=category;
+card.classList.add('placed');
+var zone=document.getElementById(zoneId);
+var item=items[itemId];
+var div=document.createElement('div');
+var clsMap={menu:'in-menu',tab:'in-tab',bookmark:'in-bookmark',keyword:'in-keyword'};
+div.className='placed-item '+clsMap[category];
+div.innerHTML=item.emoji+' '+item.text;
+div.dataset.itemId=itemId;
+zone.appendChild(div);
+updateScoreBar();
+}
+
+function checkAnswers(){
+var correct=0;
+for(var i=0;i<items.length;i++){
+if(placements[i]===items[i].category)correct++;
+}
+if(correct===items.length){
+showFeedback('🎉 Μπράβο! Γνωρίζεις όλες τις λειτουργίες του φυλλομετρητή! 🌟',true);
+}else{
+showFeedback('🔍 '+correct+'/'+items.length+' σωστά. Δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,ok){var el=document.getElementById('feedback');el.textContent=msg;el.className='feedback '+(ok?'ok':'fail');if(ok)setTimeout(function(){el.className='feedback';},4000);}
+
+function resetGame(){
+placements={};document.getElementById('feedback').className='feedback';document.getElementById('feedback').textContent='';
+var z=document.querySelectorAll('.drop-zone');for(var i=0;i<z.length;i++)z[i].innerHTML='';
+initPool();updateScoreBar();
+}
+
+initPool();updateScoreBar();
+</script>
+</body>
+</html>

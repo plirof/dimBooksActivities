@@ -1,0 +1,64 @@
+{
+  "title": "Βρες τα Λάθη: Τεχνητή Νοημοσύνη",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "τεχνητή", "error": false},
+        {"text": "νοημοσύνη", "error": false},
+        {"text": "μιμείται", "error": false},
+        {"text": "την", "error": false},
+        {"text": "ζωική", "error": true, "correct": "ανθρώπινη", "feedback": "Η ΤΝ μιμείται την ΑΝΘΡΩΠΙΝΗ σκέψη, όχι τη ζωική!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μηχανική", "error": false},
+        {"text": "μάθηση", "error": false},
+        {"text": "χρησιμοποιεί", "error": false},
+        {"text": "ελάχιστα", "error": true, "correct": "μεγάλο όγκο", "feedback": "Η μηχανική μάθηση χρειάζεται ΜΕΓΑΛΟ ΟΓΚΟ δεδομένων!"},
+        {"text": "δεδομένα", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εφαρμογή", "error": false},
+        {"text": "αναγνωρίζει", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "διαφορετικά", "error": true, "correct": "κοινά", "feedback": "Η εφαρμογή αναγνωρίζει τα ΚΟΙΝΑ στοιχεία, όχι τα διαφορετικά!"},
+        {"text": "στοιχεία", "error": false},
+        {"text": "στα", "error": false},
+        {"text": "δεδομένα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όσο", "error": false},
+        {"text": "περισσότερα", "error": false},
+        {"text": "δεδομένα", "error": false},
+        {"text": "τόσο", "error": false},
+        {"text": "χειρότερες", "error": true, "correct": "καλύτερες", "feedback": "Περισσότερα δεδομένα = ΚΑΛΥΤΕΡΕΣ αποφάσεις!"},
+        {"text": "αποφάσεις", "error": false},
+        {"text": "παίρνει", "error": false},
+        {"text": "η", "error": false},
+        {"text": "εφαρμογή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ψηφιακός", "error": false},
+        {"text": "βοηθός", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Ο ψηφιακός βοηθός ΜΠΟΡΕΙ να απαντήσει σε ερωτήσεις!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "απαντήσει", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "ερωτήσεις.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Διαγράμματα",
+  "subtitle": "Ταξινόμησε τις λέξεις στους σωστούς τύπους",
+  "instructions": "Πάτα αριστερά ή δεξιά για να ταξινομήσεις",
+  "categories": [
+    {
+      "id": "pie",
+      "name": "Διάγραμμα Πίτα",
+      "color": "#FF9800",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "bar",
+      "name": "Διάγραμμα Στήλης",
+      "color": "#2196F3",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Ποσοστά", "category": "pie" },
+    { "text": "Κυκλικό", "category": "pie" },
+    { "text": "Φέτες", "category": "pie" },
+    { "text": "Σύγκριση", "category": "bar" },
+    { "text": "Ορθογώνιες μπάρες", "category": "bar" },
+    { "text": "Τιμές", "category": "bar" },
+    { "text": "Κατηγορίες", "category": "bar" },
+    { "text": "Μερίδια", "category": "pie" },
+    { "text": "Ύψη στηλών", "category": "bar" },
+    { "text": "Τόσο τοις εκατό", "category": "pie" },
+    { "text": "Μπάρες", "category": "bar" },
+    { "text": "Κύκλος", "category": "pie" }
+  ],
+  "duration": 45
+}

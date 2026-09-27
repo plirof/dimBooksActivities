@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Συμμετοχή ή Δημιουργία;",
+  "subtitle": "Ταξινόμησε κάθε ενέργεια",
+  "instructions": "Πάτα αριστερά για συμμετοχή, δεξιά για δημιουργία",
+  "categories": [
+    {
+      "id": "participate",
+      "name": "Συμμετοχή",
+      "color": "#2196F3",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "create",
+      "name": "Δημιουργία",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Απαντάω σε συζήτηση", "category": "participate" },
+    { "text": "Φτιάχνω νέο νήμα", "category": "create" },
+    { "text": "Γράφω μήνυμα", "category": "participate" },
+    { "text": "Δημιουργώ φόρουμ", "category": "create" },
+    { "text": "Πατάω Καταχώριση", "category": "participate" },
+    { "text": "Ζητώ ενεργοποίηση ιστολογίου", "category": "create" },
+    { "text": "Επεξεργάζομαι απάντηση", "category": "participate" },
+    { "text": "Βάζω τίτλο και περιγραφή", "category": "create" },
+    { "text": "Σχολιάζω άλλους", "category": "participate" },
+    { "text": "Πατάω Δημοσίευση", "category": "create" },
+    { "text": "Διαβάζω νήμα συζήτησης", "category": "participate" },
+    { "text": "Επικολλάω κωδικό φόρουμ", "category": "create" }
+  ],
+  "duration": 45
+}

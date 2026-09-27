@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Είσοδος ή Έξοδος;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Είσοδος ή Έξοδος;",
+  "categories": [
+    {"id": "eisodos", "name": "Είσοδος", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "exodos", "name": "Έξοδος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κείμενο", "category": "eisodos"},
+    {"text": "Εικόνα στην οθόνη", "category": "exodos"},
+    {"text": "Αριθμοί", "category": "eisodos"},
+    {"text": "Ήχος από ηχεία", "category": "exodos"},
+    {"text": "Φωτογραφία", "category": "eisodos"},
+    {"text": "Εκτύπωση", "category": "exodos"},
+    {"text": "Πληκτρολόγηση", "category": "eisodos"},
+    {"text": "Βίντεο", "category": "exodos"}
+  ],
+  "duration": 30
+}

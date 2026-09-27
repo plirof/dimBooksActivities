@@ -1,0 +1,43 @@
+{
+  "title": "Βρες τα Λάθη: Ιστορία",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "πύραυλος", "error": false},
+        {"text": "πετάει", "error": false},
+        {"text": "χαμηλά", "error": true, "correct": "ψηλά", "feedback": "Ο πύραυλος πετάει ψηλά, όχι χαμηλά!"},
+        {"text": "στο", "error": false},
+        {"text": "διάστημα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αστροναύτης", "error": false},
+        {"text": "πηγαίνει", "error": false},
+        {"text": "στην", "error": true, "correct": "στο", "feedback": "Πάμε ΣΤΟ φεγγάρι, όχι ΣΤΗΝ!"},
+        {"text": "φεγγάρι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "την", "error": false},
+        {"text": "εντολή", "error": false},
+        {"text": "εξηφανίσου", "error": true, "correct": "εμφανίσου", "feedback": "Λάθος! Η εντολή λέγεται ΕΞΑΦΑΝΙΣΟΥ, αλλά εδώ θέλουμε ΕΜΦΑΝΙΣΟΥ!"},
+        {"text": "φαίνομαι!", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "ScratchJr", "error": false},
+        {"text": "φτιάχνω", "error": false},
+        {"text": "ένα", "error": true, "correct": "μια", "feedback": "Λέμε ΜΙΑ ιστορία, όχι ΕΝΑ!"},
+        {"text": "ιστορία.", "error": false}
+      ]
+    }
+  ]
+}

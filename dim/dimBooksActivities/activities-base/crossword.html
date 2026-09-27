@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σταυρόλεξο Πληροφορικής</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:15px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#f5576c;font-size:1.1em}
+.game-layout{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
+.crossword-area{flex:0 0 auto;overflow:auto}
+.cw-grid{display:inline-grid;gap:1px;background:#e0e0e0;border:2px solid #f5576c;border-radius:8px}
+.cw-cell{width:34px;height:34px;display:flex;align-items:center;justify-content:center;position:relative;background:#fff}
+.cw-cell.active{cursor:pointer}
+.cw-cell.active:hover{background:#fce4ec}
+.cw-cell .cell-input{width:100%;height:100%;border:none;text-align:center;font-size:1em;font-weight:700;color:#333;background:transparent;outline:none;text-transform:uppercase;caret-color:#f5576c}
+.cw-cell .cell-num{position:absolute;top:1px;left:2px;font-size:.55em;color:#999;font-weight:600;line-height:1}
+.cw-cell.black{background:#555}
+.cw-cell.correct-cell{background:#c8e6c9}
+.cw-cell.wrong-cell{background:#ffcdd2}
+.cw-cell.revealed-cell{background:#fff9c4}
+.clues-panel{flex:1;min-width:200px;max-height:400px;overflow-y:auto}
+.clues-panel h3{color:#333;font-size:.95em;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #fce4ec}
+.clues-panel h3:not(:first-child){margin-top:12px}
+.clue-item{padding:4px 8px;margin-bottom:3px;font-size:.85em;color:#555;border-radius:6px;cursor:pointer;transition:background .2s}
+.clue-item:hover{background:#fce4ec}
+.clue-item.solved{color:#2e7d32;text-decoration:line-through;background:#e8f5e9}
+.clue-num{font-weight:700;color:#f5576c;margin-right:4px}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:15px;flex-wrap:wrap}
+.ctrl-btn{padding:10px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;color:#fff;transition:all .2s}
+.ctrl-btn:hover{transform:scale(1.05)}
+.check-btn{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.solve-btn{background:linear-gradient(135deg,#ffb74d,#ff9800)}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;min-height:28px;margin-top:10px}
+.feedback.correct{color:#2e7d32}
+.feedback.wrong{color:#c62828}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#f5576c;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const cwWords=data.words;
+let gridData={},maxRow=0,maxCol=0,solvedWords=new Set();
+const cellSize=34;
+
+cwWords.forEach((w,wi)=>{
+const word=w.word.toUpperCase();
+const len=word.length;
+for(let i=0;i<len;i++){
+const r=w.dir==='V'?w.row+i:w.row;
+const c=w.dir==='H'?w.col+i:w.col;
+if(r>maxRow)maxRow=r;
+if(c>maxCol)maxCol=c;
+const key=r+','+c;
+if(!gridData[key])gridData[key]={letter:word[i],inputs:[]};
+gridData[key].letter=word[i];
+gridData[key].inputs.push({wordIdx:wi,pos:i})
+}
+});
+const rows=maxRow+1,cols=maxCol+1;
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle)}</h2>
+<p>Γέμισε τα κουτάκια με τα σωστά γράμματα βάσει των υποδείξεων.</p>
+<p>Λέξεις: ${cwWords.length}</p>
+<button class="start-btn" onclick="startGame()">Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+solvedWords=new Set();
+const gridWidth=cols*(cellSize+1)+4;
+const containerWidth=Math.min(gridWidth+230,660);
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Λέξεις: <span id="solvedCount">0/${cwWords.length}</span></div>
+</div>
+<div class="game-layout" id="gameLayout">
+<div class="crossword-area">
+<div class="cw-grid" id="cwGrid" style="grid-template-columns:repeat(${cols},${cellSize}px)"></div>
+</div>
+<div class="clues-panel" id="cluesPanel"></div>
+</div>
+<div class="controls">
+<button class="ctrl-btn check-btn" onclick="checkAll()">Έλεγχος</button>
+<button class="ctrl-btn solve-btn" onclick="showSolution()">Λύση</button>
+</div>
+<div class="feedback" id="feedback"></div>
+`;
+renderGrid();renderClues()
+};
+
+function renderGrid(){
+const el=document.getElementById('cwGrid');
+el.innerHTML='';
+for(let r=0;r<rows;r++){
+for(let c=0;c<cols;c++){
+const key=r+','+c;
+const cell=document.createElement('div');
+cell.className='cw-cell';
+cell.dataset.row=r;cell.dataset.col=c;
+if(gridData[key]){
+cell.classList.add('active');
+const numEl=document.createElement('span');
+numEl.className='cell-num';
+const startWordIdx=findWordStartAt(r,c);
+if(startWordIdx>=0)numEl.textContent=(startWordIdx+1);
+cell.appendChild(numEl);
+const input=document.createElement('input');
+input.className='cell-input';
+input.maxLength=1;
+input.dataset.row=r;input.dataset.col=c;
+input.addEventListener('input',handleInput);
+input.addEventListener('keydown',handleKeydown);
+input.addEventListener('focus',function(){this.select()});
+cell.appendChild(input)
+}else{
+cell.classList.add('black')
+}
+el.appendChild(cell)
+}
+}
+}
+
+function findWordStartAt(r,c){
+for(let i=0;i<cwWords.length;i++){
+const w=cwWords[i];
+if(w.row===r&&w.col===c)return i
+}
+return -1
+}
+
+function handleInput(e){
+const inp=e.target;
+const r=+inp.dataset.row,c=+inp.dataset.col;
+inp.value=inp.value.toUpperCase().replace(/[^Α-Ω]/g,'');
+if(inp.value.length===1){
+const nextR=r,nextC=c+1;
+const nextKey=nextR+','+nextC;
+if(gridData[nextKey]){
+const nextInput=document.querySelector(`.cell-input[data-row="${nextR}"][data-col="${nextC}"]`);
+if(nextInput)nextInput.focus()
+}
+}
+}
+
+function handleKeydown(e){
+const inp=e.target;
+const r=+inp.dataset.row,c=+inp.dataset.col;
+if(e.key==='Backspace'&&!inp.value){
+const prevR=r,prevC=c-1;
+const prevKey=prevR+','+prevC;
+if(gridData[prevKey]){
+const prevInput=document.querySelector(`.cell-input[data-row="${prevR}"][data-col="${prevC}"]`);
+if(prevInput){prevInput.focus();prevInput.value=''}
+}
+}
+if(e.key==='ArrowRight'){
+const ni=document.querySelector(`.cell-input[data-row="${r}"][data-col="${c+1}"]`);
+if(ni)ni.focus()
+}
+if(e.key==='ArrowLeft'){
+const ni=document.querySelector(`.cell-input[data-row="${r}"][data-col="${c-1}"]`);
+if(ni)ni.focus()
+}
+if(e.key==='ArrowDown'){
+const ni=document.querySelector(`.cell-input[data-row="${r+1}"][data-col="${c}"]`);
+if(ni)ni.focus()
+}
+if(e.key==='ArrowUp'){
+const ni=document.querySelector(`.cell-input[data-row="${r-1}"][data-col="${c}"]`);
+if(ni)ni.focus()
+}
+}
+
+function renderClues(){
+const panel=document.getElementById('cluesPanel');
+const across=cwWords.filter(w=>w.dir==='H');
+const down=cwWords.filter(w=>w.dir==='V');
+let html='<h3>Οριζόντια</h3>';
+across.forEach(w=>{
+const idx=cwWords.indexOf(w);
+const cls=solvedWords.has(idx)?'clue-item solved':'clue-item';
+html+=`<div class="${cls}" onclick="focusWord(${idx})"><span class="clue-num">${idx+1}.</span>${esc(w.clue)}</div>`
+});
+html+='<h3>Κάθετα</h3>';
+down.forEach(w=>{
+const idx=cwWords.indexOf(w);
+const cls=solvedWords.has(idx)?'clue-item solved':'clue-item';
+html+=`<div class="${cls}" onclick="focusWord(${idx})"><span class="clue-num">${idx+1}.</span>${esc(w.clue)}</div>`
+});
+panel.innerHTML=html
+}
+
+window.focusWord=function(idx){
+const w=cwWords[idx];
+const inp=document.querySelector(`.cell-input[data-row="${w.row}"][data-col="${w.col}"]`);
+if(inp)inp.focus()
+};
+
+window.checkAll=function(){
+let allCorrect=true;
+let allFilled=true;
+for(let r=0;r<rows;r++){
+for(let c=0;c<cols;c++){
+const key=r+','+c;
+if(!gridData[key])continue;
+const inp=document.querySelector(`.cell-input[data-row="${r}"][data-col="${c}"]`);
+const cell=inp.parentElement;
+cell.classList.remove('correct-cell','wrong-cell');
+if(!inp.value){allFilled=false;continue}
+if(inp.value.toUpperCase()===gridData[key].letter){
+cell.classList.add('correct-cell')
+}else{
+cell.classList.add('wrong-cell');allCorrect=false
+}
+}
+}
+const fb=document.getElementById('feedback');
+if(!allFilled){fb.className='feedback';fb.textContent='Γέμισε όλα τα κουτάκια πρώτα!';return}
+checkSolvedWords();
+if(solvedWords.size===cwWords.length){
+fb.className='feedback correct';fb.textContent='Τέλεια! Όλα σωστά!';
+setTimeout(showEnd,1500)
+}else if(allCorrect){
+fb.className='feedback correct';fb.textContent='Μπράβο! Σωστά!';
+setTimeout(showEnd,1500)
+}else{
+fb.className='feedback wrong';fb.textContent='Υπάρχουν λάθη. Δοκίμασε ξανά!'
+}
+};
+
+function checkSolvedWords(){
+cwWords.forEach((w,idx)=>{
+const word=w.word.toUpperCase();
+let solved=true;
+for(let i=0;i<word.length;i++){
+const r=w.dir==='V'?w.row+i:w.row;
+const c=w.dir==='H'?w.col+i:w.col;
+const inp=document.querySelector(`.cell-input[data-row="${r}"][data-col="${c}"]`);
+if(!inp||inp.value.toUpperCase()!==word[i]){solved=false;break}
+}
+if(solved)solvedWords.add(idx)
+});
+const sc=document.getElementById('solvedCount');
+if(sc)sc.textContent=solvedWords.size+'/'+cwWords.length;
+renderClues()
+}
+
+window.showSolution=function(){
+for(let r=0;r<rows;r++){
+for(let c=0;c<cols;c++){
+const key=r+','+c;
+if(!gridData[key])continue;
+const inp=document.querySelector(`.cell-input[data-row="${r}"][data-col="${c}"]`);
+inp.value=gridData[key].letter;
+inp.parentElement.classList.remove('wrong-cell');
+inp.parentElement.classList.add('revealed-cell')
+}
+}
+const fb=document.getElementById('feedback');
+fb.className='feedback';fb.textContent='Αυτή είναι η λύση!';
+cwWords.forEach((_,idx)=>solvedWords.add(idx));
+renderClues()
+};
+
+function showEnd(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Συγχαρητήρια!</h2>
+<div class="final-score">${cwWords.length}/${cwWords.length}</div>
+<div class="message">Τα βρήκες όλα! Μπράβο!</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

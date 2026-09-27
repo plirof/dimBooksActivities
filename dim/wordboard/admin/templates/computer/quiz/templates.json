@@ -1,0 +1,214 @@
+{
+  "templates": [
+    {
+      "id": "computer_quiz_basics_001",
+      "name": "Βασικά του υπολογιστή",
+      "description": "Μάθε τα βασικά μέρη του υπολογιστή",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "basics", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Τι χρησιμοποιούμε για να γράφουμε στον υπολογιστή;",
+          "options": ["Πληκτρολόγιο", "Ποντίκι", "Οθόνη", "Εκτυπωτής"],
+          "correct": 0
+        },
+        {
+          "question": "Τι χρησιμοποιούμε για να κάνουμε κλικ;",
+          "options": ["Οθόνη", "Πληκτρολόγιο", "Ποντίκι", "Scanner"],
+          "correct": 2
+        },
+        {
+          "question": "Πού βλέπουμε τις εικόνες στον υπολογιστή;",
+          "options": ["Εκτυπωτής", "Οθόνη", "Κουτί", "Ποντίκι"],
+          "correct": 1
+        },
+        {
+          "question": "Τι κάνει ο υπολογιστής να μην ζεσταίνεται;",
+          "options": ["Ανεμιστήρας", "Νερό", "Αέρας", "Πάγος"],
+          "correct": 0
+        },
+        {
+          "question": "Πού αποθηκεύουμε τα αρχεία μας;",
+          "options": ["Σκληρός δίσκος", "CD", "USB", "Όλα τα παραπάνω"],
+          "correct": 3
+        }
+      ]
+    },
+    {
+      "id": "computer_quiz_parts_001",
+      "name": "Μέρη του υπολογιστή",
+      "description": "Αναγνώρισε τα μέρη του υπολογιστή",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Πώς λέγεται η καρτέλα που βλέπουμε;",
+          "options": ["Οθόνη", "Κάρτα γραφικών", "Κάρτα ήχου", "Μητρική"],
+          "correct": 0
+        },
+        {
+          "question": "Ποιο κομμάτι είναι ο 'εγκέφαλος' του υπολογιστή;",
+          "options": ["Σκληρός δίσκος", "Επεξεργαστής", "Μνήμη RAM", "Τροφοδοτικό"],
+          "correct": 1
+        },
+        {
+          "question": "Τι χρησιμεύει η μνήμη RAM;",
+          "options": ["Αποθήκευση μουσικής", "Προσωρινή μνήμη", "Εκτύπωση", "Σύνδεση στο internet"],
+          "correct": 1
+        },
+        {
+          "question": "Πού βάζουμε τα CD/DVD;",
+          "options": ["Floppy", "DVD Drive", "USB Port", "Card Reader"],
+          "correct": 1
+        },
+        {
+          "question": "Τι συνδέει όλα τα κομμάτια του υπολογιστή;",
+          "options": ["Καλώδια", "Μητρική κάρτα", "Τροφοδοτικό", "Πλαίσιο"],
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": "computer_quiz_internet_001",
+      "name": "Διαδίκτυο και Ίντερνετ",
+      "description": "Μάθε για τη χρήση του ίντερνετ",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Τι χρησιμοποιούμε για να μπούμε στο ίντερνετ;",
+          "options": ["Browser", "Word", "Excel", "Paint"],
+          "correct": 0
+        },
+        {
+          "question": "Ποια είναι η 'διεύθυνση' μιας ιστοσελίδας;",
+          "options": ["URL", "Email", "IP", "Link"],
+          "correct": 0
+        },
+        {
+          "question": "Τι σημαίνει WWW;",
+          "options": ["World Wide Web", "Wide World Web", "Web World Wide", "World Web Wide"],
+          "correct": 0
+        },
+        {
+          "question": "Πώς λέγεται το 'γράμμα' στο ίντερνετ;",
+          "options": ["Email", "Letter", "Post", "Message"],
+          "correct": 0
+        },
+        {
+          "question": "Τι πρέπει να προσέχουμε στο ίντερνετ;",
+          "options": ["Τα προσωπικά μας στοιχεία", "Όλους τους κωδικούς", "Όλες τις σελίδες", "Κανένα"],
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": "computer_quiz_keyboard_001",
+      "name": "Πληκτρολόγιο",
+      "description": "Μάθε τα πλήκτρα του υπολογιστή",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Ποιο πλήκτρο σβήνει το τελευταίο γράμμα;",
+          "options": ["Shift", "Enter", "Backspace", "Delete"],
+          "correct": 2
+        },
+        {
+          "question": "Ποιο πλήκτρο χρησιμοποιούμε για κεφαλαία;",
+          "options": ["Ctrl", "Alt", "Shift", "Caps Lock"],
+          "correct": 3
+        },
+        {
+          "question": "Ποιο πλήκτρο επιβεβαιώνει μια εντολή;",
+          "options": ["Space", "Escape", "Enter", "Tab"],
+          "correct": 2
+        },
+        {
+          "question": "Ποιο πλήκτρο ακυρώνει μια εντολή;",
+          "options": ["Escape", "Enter", "Control", "Alt"],
+          "correct": 0
+        },
+        {
+          "question": "Πού βρίσκεται το πλήκτρο με τα βέλη;",
+          "options": ["Πάνω δεξιά", "Κάτω δεξιά", "Πάνω αριστερά", "Κέντρο"],
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": "computer_quiz_programs_001",
+      "name": "Προγράμματα υπολογιστή",
+      "description": "Γνώρισε βασικά προγράμματα",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Για τι χρησιμεύει το Word;",
+          "options": ["Για ζωγραφική", "Για λογαριασμούς", "Για γράψιμο κειμένων", "Για παιχνίδια"],
+          "correct": 2
+        },
+        {
+          "question": "Για τι χρησιμεύει το Paint;",
+          "options": ["Για μουσική", "Για ζωγραφική", "Για βίντεο", "Για αριθμούς"],
+          "correct": 1
+        },
+        {
+          "question": "Για τι χρησιμεύει το Calculator;",
+          "options": ["Για παιχνίδια", "Για μαθηματικά", "Για γράμματα", "Για εικόνες"],
+          "correct": 1
+        },
+        {
+          "question": "Τι χρησιμεύει το Internet Explorer ή Chrome;",
+          "options": ["Για γράψιμο", "Για σχέδιο", "Για να μπαίνουμε στο ίντερνετ", "Για μουσική"],
+          "correct": 2
+        },
+        {
+          "question": "Για τι χρησιμεύει το Notepad;",
+          "options": ["Για παιχνίδια", "Για απλό κείμενο", "Για βίντεο", "Για φωτογραφίες"],
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": "computer_quiz_safety_001",
+      "name": "Ασφάλεια στο ίντερνετ",
+      "description": "Μάθε να χρησιμοποιείς το ίντερνετ με ασφάλεια",
+      "category": "computer_quiz",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "internet", "greek", "elementary"],
+      "questions": [
+        {
+          "question": "Πρέπει να δίνουμε τον κωδικό μας σε φίλους;",
+          "options": ["Ναι", "Όχι", "Μόνο σε μεγάλους", "Μόνο στους γονείς"],
+          "correct": 1
+        },
+        {
+          "question": "Τι κάνουμε αν μας στείλει μήνυμα ένας ξένος;",
+          "options": ["Απαντάμε", "Τον προσθέτουμε φίλο", "Το λέμε στους γονείς μας", "Στέλνουμε φωτογραφία"],
+          "correct": 2
+        },
+        {
+          "question": "Μπορούμε να ανοίξουμε οποιοδήποτε link;",
+          "options": ["Ναι", "Όχι", "Μόνο αυτά που ξέρουμε", "Μόνο από φίλους"],
+          "correct": 2
+        },
+        {
+          "question": "Τι πρέπει να κάνουμε πριν από κάθε χρήση του υπολογιστή;",
+          "options": ["Να πλύνουμε τα χέρια μας", "Να βάλουμε κωδικό", "Να καλέσουμε φίλους", "Να φάμε"],
+          "correct": 0
+        },
+        {
+          "question": "Πόση ώρα είναι καλό να κάθεσαι στον υπολογιστή;",
+          "options": ["Όσο θέλω", "1-2 ώρες", "Όλη μέρα", "Καθόλου"],
+          "correct": 1
+        }
+      ]
+    }
+  ]
+}

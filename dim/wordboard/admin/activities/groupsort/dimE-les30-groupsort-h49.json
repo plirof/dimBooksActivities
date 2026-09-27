@@ -1,0 +1,43 @@
+{
+    "id": "dimE-les30-groupsort-h49",
+    "title": "Creative Commons - Άδειες χρήσης - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "groups": [
+            {
+                "name": "CC Άδειες",
+                "items": [
+                    "CC-BY (αναφορά)",
+                    "CC-BY-NC (μη εμπορική)",
+                    "CC-BY-ND (όχι παράγωγα)",
+                    "CC-BY-SA (ίδια άδεια)"
+                ]
+            },
+            {
+                "name": "Κανόνες",
+                "items": [
+                    "Αναφορά πηγής",
+                    "Νόμιμη χρήση",
+                    "Σεβασμός δημιουργού",
+                    "Μη παραβίαση"
+                ]
+            },
+            {
+                "name": "Σχετικά",
+                "items": [
+                    "Πνευματικά δικαιώματα",
+                    "Creative Commons",
+                    "Νόμος πνευματικής ιδιοκτησίας",
+                    "Κοινή χρήση"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les30",
+        "creativecommons"
+    ]
+}

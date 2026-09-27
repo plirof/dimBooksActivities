@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Βήματα Μοτίβου",
+  "subtitle": "Πιάσε μόνο σωστά βήματα!",
+  "instructions": "Πιάσε μόνο ΣΩΣΤΑ βήματα για μοτίβο! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Βρες εντολές", "correct": true, "color": "#4CAF50"},
+    {"text": "Κοιμάμαι", "correct": false, "color": "#f44336"},
+    {"text": "Διάβασε αριθμό", "correct": true, "color": "#2196F3"},
+    {"text": "Παίζω", "correct": false, "color": "#FF9800"},
+    {"text": "Σχεδίασε μοτίβο", "correct": true, "color": "#9C27B0"},
+    {"text": "Τρώω", "correct": false, "color": "#E91E63"},
+    {"text": "Ταίριαξε", "correct": true, "color": "#009688"},
+    {"text": "Τρέχω", "correct": false, "color": "#FFC107"},
+    {"text": "Ανακάλυψε", "correct": true, "color": "#795548"},
+    {"text": "Κάνω μπάνιο", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "title": "Βρες τα Λάθη: Σωστή Ορολογία",
+  "subtitle": "Βρες τις λάθος λέξεις στις προτάσεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Οι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "στήλες",
+          "error": true,
+          "correct": "γραμμές",
+          "feedback": "Τα κάθετα κομμάτια πίνακα είναι οι γραμμές."
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "κάθετα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "κομμάτια",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "του",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πίνακα.",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Για",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "να",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "αλλάξεις",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "μέγεθος",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εικόνας",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πληκτρολογείς",
+          "error": true,
+          "correct": "τραβάς",
+          "feedback": "Αλλάζεις μέγεθος εικόνας τραβώντας τις λαβές, όχι πληκτρολογώντας."
+        },
+        {
+          "text": "τις",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "λαβές.",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "αλλαγή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "προσανατολισμού",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "γίνεται",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "από",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εικόνα",
+          "error": true,
+          "correct": "Σελίδα",
+          "feedback": "Η αλλαγή γίνεται από την καρτέλα «Σελίδα», όχι από την εικόνα."
+        },
+        {
+          "text": "«Σελίδα».",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

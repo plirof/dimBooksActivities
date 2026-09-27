@@ -1,0 +1,36 @@
+{
+    "id": "dimST-les11-match-ddb",
+    "title": "Καταγραφή δεδομένων - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "pairs": [
+            {
+                "left": "Data logging",
+                "right": "Καταγραφή δεδομένων από αισθητήρες"
+            },
+            {
+                "left": "Datalogger",
+                "right": "Επέκταση του micro:bit για καταγραφή"
+            },
+            {
+                "left": "Column",
+                "right": "Όνομα στήλης στον πίνακα καταγραφής"
+            },
+            {
+                "left": "MY_DATA.HTM",
+                "right": "Αρχείο δεδομένων στο micro:bit"
+            },
+            {
+                "left": "MICROBIT",
+                "right": "Εξωτερικός αποθηκευτικός χώρος στον εξερευνητή"
+            }
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les11",
+        "δεδομένα"
+    ]
+}

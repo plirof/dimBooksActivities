@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δημιουργία Ισχυρού Κωδικού Πρόσβασης</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.tips-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 30px;
+}
+.tips-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.tips-list {
+list-style: none;
+}
+.tips-list li {
+padding: 8px 0;
+color: #555;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.tips-list li::before {
+content: '✓';
+color: #27ae60;
+font-weight: bold;
+font-size: 1.2rem;
+}
+.password-input-section {
+margin-bottom: 25px;
+}
+.input-label {
+display: block;
+margin-bottom: 10px;
+font-weight: bold;
+color: #333;
+font-size: 1.1rem;
+}
+.password-input {
+width: 100%;
+padding: 15px 20px;
+border: 2px solid #ddd;
+border-radius: 10px;
+font-size: 1.1rem;
+font-family: monospace;
+transition: all 0.3s ease;
+}
+.password-input:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.requirements {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+grid-gap: 12px;
+margin-bottom: 25px;
+}
+.requirement {
+background: #f8f9fa;
+padding: 12px 15px;
+border-radius: 10px;
+font-size: 0.9rem;
+color: #666;
+border: 2px solid #ddd;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+.requirement.met {
+background: #d4edda;
+border-color: #28a745;
+color: #155724;
+}
+.requirement strong {
+display: block;
+margin-bottom: 5px;
+}
+.check-btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.check-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.strong {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.weak {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.result-box.medium {
+background: #fff3cd;
+color: #856404;
+border: 2px solid #ffc107;
+}
+.strength-meter {
+height: 10px;
+background: #e0e0e0;
+border-radius: 5px;
+margin: 15px 0;
+overflow: hidden;
+}
+.strength-bar {
+height: 100%;
+transition: width 0.5s ease, background 0.5s ease;
+}
+.example-section {
+margin-top: 25px;
+padding-top: 25px;
+border-top: 2px solid #e0e0e0;
+}
+.example-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.1rem;
+}
+.example-item {
+background: #f8f9fa;
+padding: 12px 15px;
+border-radius: 10px;
+margin-bottom: 10px;
+display: flex;
+align-items: center;
+gap: 15px;
+}
+.example-icon {
+font-size: 1.5rem;
+}
+.example-text {
+flex: 1;
+}
+.example-weak {
+color: #e74c3c;
+}
+.example-strong {
+color: #27ae60;
+}
+.example-reason {
+font-size: 0.85rem;
+color: #666;
+margin-top: 3px;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tips-title > * + * { margin-left: 10px; }
+  .tips-list li > * + * { margin-left: 10px; }
+  .example-item > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔐 Δημιουργία Ισχυρού Κωδικού Πρόσβασης</h1>
+<p class="subtitle">Δημιουργήστε έναν ισχυρό κωδικό και δείτε αν πληροί όλα τα κριτήρια ασφαλείας</p>
+
+<div class="container">
+<div class="tips-box">
+<div class="tips-title">📋 Κανόνες για ισχυρό κωδικό</div>
+<ul class="tips-list">
+<li>Περιέχει τουλάχιστον 8 χαρακτήρες</li>
+<li>Περιέχει τουλάχιστον 1 κεφαλαίο γράμμα</li>
+<li>Περιέχει τουλάχιστον 1 πεζό γράμμα</li>
+<li>Περιέχει τουλάχιστον 1 αριθμό</li>
+<li>Περιέχει τουλάχιστον 1 ειδικό χαρακτήρα (!@#$%^&*)</li>
+<li>Δεν περιέχει το όνομά σας</li>
+<li>Δεν μοιράζεστε τον κωδικό σας</li>
+</ul>
+</div>
+
+<div class="password-input-section">
+<label class="input-label">Γράψτε τον κωδικό σας:</label>
+<input type="text" class="password-input" id="passwordInput" placeholder="Πληκτρολογήστε κωδικό..." autocomplete="off">
+</div>
+
+<div class="strength-meter">
+<div class="strength-bar" id="strengthBar"></div>
+</div>
+
+<div class="requirements">
+<div class="requirement" id="req-length">
+<strong>📏 Μήκος</strong>
+Τουλάχιστον 8 χαρακτήρες
+</div>
+<div class="requirement" id="req-uppercase">
+<strong>🔠 Κεφαλαία</strong>
+Τουλάχιστον 1 κεφαλαίο γράμμα
+</div>
+<div class="requirement" id="req-lowercase">
+<strong>🔡 Πεζά</strong>
+Τουλάχιστον 1 πεζό γράμμα
+</div>
+<div class="requirement" id="req-number">
+<strong>🔢 Αριθμός</strong>
+Τουλάχιστον 1 αριθμό
+</div>
+<div class="requirement" id="req-special">
+<strong>✨ Ειδικό</strong>
+Τουλάχιστον 1 ειδικό χαρακτήρα
+</div>
+</div>
+
+<button class="check-btn" onclick="checkPassword()">🔍 Ελέγξτε τον Κωδικό</button>
+
+<div class="result-box" id="resultBox"></div>
+
+<div class="example-section">
+<div class="example-title">📚 Παραδείγματα Κωδικών</div>
+<div class="example-item">
+<div class="example-icon">❌</div>
+<div class="example-text">
+<div class="example-weak">password123</div>
+<div class="example-reason">Λάθος: Πιο απλό, χωρίς κεφαλαία, χωρίς ειδικούς χαρακτήρες</div>
+</div>
+</div>
+<div class="example-item">
+<div class="example-icon">❌</div>
+<div class="example-text">
+<div class="example-weak">Maria2024</div>
+<div class="example-reason">Λάθος: Περιέχει όνομα, εύκολο να μαντευτεί</div>
+</div>
+</div>
+<div class="example-item">
+<div class="example-icon">✅</div>
+<div class="example-text">
+<div class="example-strong">Rainbow_Starlight!</div>
+<div class="example-reason">Σωστό: Μεγάλο μήκος, κεφαλαία, πεζά, ειδικός χαρακτήρας, δεν είναι όνομα</div>
+</div>
+</div>
+<div class="example-item">
+<div class="example-icon">✅</div>
+<div class="example-text">
+<div class="example-strong">SuperTiger#123</div>
+<div class="example-reason">Σωστό: Μεγάλο μήκος, όλα τα στοιχεία, δύσκολο να μαντευτεί</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mascot">🔑</div>
+
+<script>
+const forbiddenNames = ['maria', 'eleni', 'nikos', 'kostas', 'george', 'giorgos', 'dimitris', 'alexandros', 'eleni', 'eleni', 'elena', 'elenimpoura'];
+
+const input = document.getElementById('passwordInput');
+
+input.addEventListener('input', updateStrengthMeter);
+
+function updateStrengthMeter() {
+const password = input.value;
+let met = 0;
+
+if (password.length >= 8) met++;
+if (/[A-Z]/.test(password)) met++;
+if (/[a-z]/.test(password)) met++;
+if (/[0-9]/.test(password)) met++;
+if (/[!@#$%^&*]/.test(password)) met++;
+
+const strengthBar = document.getElementById('strengthBar');
+strengthBar.style.width = (met * 20) + '%';
+
+if (met <= 1) {
+strengthBar.style.background = '#e74c3c';
+} else if (met <= 2) {
+strengthBar.style.background = '#e67e22';
+} else if (met <= 3) {
+strengthBar.style.background = '#f39c12';
+} else if (met <= 4) {
+strengthBar.style.background = '#3498db';
+} else {
+strengthBar.style.background = '#27ae60';
+}
+}
+
+function checkPassword() {
+const password = input.value;
+if (password.length === 0) {
+alert('Γράψτε έναν κωδικό για να ελέγξετε!');
+return;
+}
+
+let metCount = 0;
+const lengthReq = document.getElementById('req-length');
+const uppercaseReq = document.getElementById('req-uppercase');
+const lowercaseReq = document.getElementById('req-lowercase');
+const numberReq = document.getElementById('req-number');
+const specialReq = document.getElementById('req-special');
+
+lengthReq.classList.remove('met');
+uppercaseReq.classList.remove('met');
+lowercaseReq.classList.remove('met');
+numberReq.classList.remove('met');
+specialReq.classList.remove('met');
+
+if (password.length >= 8) {
+lengthReq.classList.add('met');
+metCount++;
+}
+
+if (/[A-Z]/.test(password)) {
+uppercaseReq.classList.add('met');
+metCount++;
+}
+
+if (/[a-z]/.test(password)) {
+lowercaseReq.classList.add('met');
+metCount++;
+}
+
+if (/[0-9]/.test(password)) {
+numberReq.classList.add('met');
+metCount++;
+}
+
+if (/[!@#$%^&*]/.test(password)) {
+specialReq.classList.add('met');
+metCount++;
+}
+
+const resultBox = document.getElementById('resultBox');
+resultBox.className = 'result-box show';
+
+const lowerPassword = password.toLowerCase();
+const containsName = forbiddenNames.some(name => lowerPassword.includes(name));
+
+if (metCount === 5 && !containsName) {
+resultBox.className = 'result-box show strong';
+resultBox.innerHTML = `
+<h3>🎉 Εξαιρετικός Κωδικός!</h3>
+<p>Ο κωδικός σας είναι πολύ ισχυρός και ασφαλής.</p>
+<p>Πληροί όλα τα κριτήρια ασφαλείας!</p>
+`;
+} else if (metCount >= 4 && !containsName) {
+resultBox.className = 'result-box show medium';
+resultBox.innerHTML = `
+<h3>👍 Καλος Κωδικός!</h3>
+<p>Ο κωδικός σας είναι καλός, αλλά θα μπορούσε να είναι καλύτερος.</p>
+${metCount === 5 && containsName ? '<p style="color: #e74c3c;">⚠️ Προσοχή: Αποφύγετε να χρησιμοποιείτε το όνομά σας στον κωδικό!</p>' : ''}
+${metCount < 5 ? '<p>Προσπαθήστε να πληροίτε όλα τα κριτήρια.</p>' : ''}
+`;
+} else {
+resultBox.className = 'result-box show weak';
+resultBox.innerHTML = `
+<h3>❌ Αδύναμος Κωδικός</h3>
+<p>Ο κωδικός σας είναι αδύναμος και δεν είναι ασφαλής.</p>
+${metCount < 5 ? '<p>Πρέπει να πληροίτε περισσότερα κριτήρια.</p>' : ''}
+${containsName ? '<p style="color: #e74c3c;">⚠️ Προσοχή: Μην χρησιμοποιείτε το όνομά σας στον κωδικό!</p>' : ''}
+<p>Δείτε τα παραδείγματα παρακάτω για βοήθεια.</p>
+`;
+}
+}
+</script>
+</body>
+</html>

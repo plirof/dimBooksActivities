@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αναζήτηση",
+  "subtitle": "Μόνο στοιχεία μηχανής αναζήτησης!",
+  "instruction": "Σπάσε μόνο λέξεις ΣΧΕΤΙΚΕΣ ΜΕ ΜΗΧΑΝΕΣ ΑΝΑΖΗΤΗΣΗΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Keywords", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουτάλι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Αποτελέσματα", "correct": true, "color": "#45B7D1" },
+    { "text": "Γοβάς", "correct": false, "color": "#96CEB4" },
+    { "text": "Πλαίσιο αναζήτησης", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μπογιά", "correct": false, "color": "#DDA0DD" },
+    { "text": "Μηχανή αναζήτησης", "correct": true, "color": "#98D8C8" },
+    { "text": "Κουρελού", "correct": false, "color": "#F7DC6F" },
+    { "text": "Παγκόσμιος ιστός", "correct": true, "color": "#BB8FCE" },
+    { "text": "Σφουγγάρι", "correct": false, "color": "#85C1E9" }
+  ]
+}

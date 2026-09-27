@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μέρη URL",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "protocol", "name": "Πρωτόκολλο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "extension", "name": "Επέκταση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "http://", "category": "protocol"},
+    {"text": "https://", "category": "protocol"},
+    {"text": "Ασφαλής σύνδεση", "category": "protocol"},
+    {"text": "Τρόπος σύνδεσης", "category": "protocol"},
+    {"text": "Κρυπτογραφημένο", "category": "protocol"},
+    {"text": ".gr", "category": "extension"},
+    {"text": ".com", "category": "extension"},
+    {"text": ".org", "category": "extension"},
+    {"text": ".net", "category": "extension"},
+    {"text": ".edu", "category": "extension"}
+  ],
+  "duration": 30
+}

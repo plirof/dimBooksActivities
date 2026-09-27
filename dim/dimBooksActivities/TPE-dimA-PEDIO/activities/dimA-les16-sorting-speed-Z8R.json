@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Αποθηκεύω ή Όχι;",
+  "subtitle": "Τι κάνω για να σώσω;",
+  "instructions": "Πάτα: Αποθηκεύω ή Όχι;",
+  "categories": [
+    {"id": "apothi", "name": "Αποθηκεύω", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πατάω μενού Αρχείο", "category": "apothi"},
+    {"text": "Κλείνω οθόνη", "category": "oxi"},
+    {"text": "Δίνω όνομα αρχείου", "category": "apothi"},
+    {"text": "Σβήνω τη ζωγραφιά", "category": "oxi"},
+    {"text": "Επιλέγω αποθήκευση", "category": "apothi"},
+    {"text": "Πατάω τερματισμό", "category": "oxi"},
+    {"text": "Κλικ στο εικονίδιο", "category": "apothi"},
+    {"text": "Φεύγω χωρίς σώσιμο", "category": "oxi"}
+  ],
+  "duration": 30
+}

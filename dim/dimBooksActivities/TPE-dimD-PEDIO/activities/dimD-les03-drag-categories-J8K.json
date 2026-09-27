@@ -1,0 +1,20 @@
+{
+  "title": "Εντολές στο Scratch",
+  "subtitle": "Σύρε κάθε εντολή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "rep", "name": "Εντολή επανάληψης", "color": "#FF9800" },
+    { "id": "move", "name": "Εντολή κίνησης", "color": "#4CAF50" },
+    { "id": "evt", "name": "Συμβάν", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "i1", "text": "Επανάλαβε 10 φορές", "category": "rep" },
+    { "id": "i2", "text": "Μετακίνηση 10 βημάτων", "category": "move" },
+    { "id": "i3", "text": "Όταν πατηθεί πράσινη σημαία", "category": "evt" },
+    { "id": "i4", "text": "Επανάλαβε 20 φορές", "category": "rep" },
+    { "id": "i5", "text": "Μετακίνηση 5 βημάτων", "category": "move" },
+    { "id": "i6", "text": "Μετακίνηση 15 βημάτων", "category": "move" },
+    { "id": "i7", "text": "Επανάλαβε 4 φορές", "category": "rep" },
+    { "id": "i8", "text": "Όταν πατηθεί πλήκτρο διαστήματος", "category": "evt" },
+    { "id": "i9", "text": "Γύρνα δεξιά 90 μοίρες", "category": "move" }
+  ]
+}

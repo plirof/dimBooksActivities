@@ -1,0 +1,66 @@
+{
+    "id": "dimST-les15-missingword-lmq",
+    "title": "Θετικές και αρνητικές επιπτώσεις - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το ___ είναι η προσπάθεια εισβολής σε υπολογιστικά συστήματα χωρίς άδεια.",
+                "options": [
+                    "Hacking",
+                    "Phishing",
+                    "Malware",
+                    "IoT"
+                ],
+                "correct": "Hacking"
+            },
+            {
+                "sentence": "Οι απατεώνες χρησιμοποιούν ___ για να προσποιηθούν ότι είναι αξιόπιστες πηγές.",
+                "options": [
+                    "Phishing",
+                    "Hacking",
+                    "IoT",
+                    "Antivirus"
+                ],
+                "correct": "Phishing"
+            },
+            {
+                "sentence": "Για προστασία χρησιμοποιούμε ___ και ισχυρούς κωδικούς πρόσβασης.",
+                "options": [
+                    "antivirus",
+                    "phishing",
+                    "malware",
+                    "hacking"
+                ],
+                "correct": "antivirus"
+            },
+            {
+                "sentence": "Το Διαδίκτυο των Πραγμάτων ονομάζεται ___.",
+                "options": [
+                    "IoT",
+                    "IoP",
+                    "Wi-Fi",
+                    "URL"
+                ],
+                "correct": "IoT"
+            },
+            {
+                "sentence": "Στα ___ σπίτια, συσκευές συνδέονται στο διαδίκτυο για απομακρυσμένο έλεγχο.",
+                "options": [
+                    "έξυπνα",
+                    "παλιά",
+                    "μεγάλα",
+                    "μικρά"
+                ],
+                "correct": "έξυπνα"
+            }
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les15",
+        "ασφάλεια"
+    ]
+}

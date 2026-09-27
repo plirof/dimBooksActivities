@@ -1,0 +1,31 @@
+{
+  "title": "Νοητικός Χάρτης: Εφαρμογές Υπολογιστή",
+  "subtitle": "Βάλε τις λέξεις-κλειδιά στον σωστό κλάδο!",
+  "centralTopic": "Εφαρμογές Υπολογιστή",
+  "branches": [
+    {
+      "id": "internet",
+      "label": "Φυλλομετρητές",
+      "color": "#2196f3",
+      "keywords": ["Firefox", "Chrome", "Edge", "Ιστοσελίδες"]
+    },
+    {
+      "id": "grafioy",
+      "label": "Εφαρμογές Γραφείου",
+      "color": "#ff9800",
+      "keywords": ["Writer", "Calc", "Impress", "Word", "Excel", "PowerPoint"]
+    },
+    {
+      "id": "dimioyrgia",
+      "label": "Δημιουργία",
+      "color": "#4caf50",
+      "keywords": ["Scratch", "TuxPaint", "MakeCode", "Ζωγραφική"]
+    },
+    {
+      "id": "leitoyrgiko",
+      "label": "Λειτουργικό Σύστημα",
+      "color": "#e91e63",
+      "keywords": ["Windows", "Linux", "Android", "iOS", "Επιφάνεια εργασίας"]
+    }
+  ]
+}

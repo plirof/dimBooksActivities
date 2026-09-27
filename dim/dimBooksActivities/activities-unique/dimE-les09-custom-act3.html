@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χορευτικό Σύνολο: 4 Χαρακτήρες | Μάθημα 9</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:10px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:750px;width:100%;padding:16px;}
+.stage{background:#1a237e;border-radius:14px;overflow:hidden;margin-bottom:12px;position:relative;}
+.stage canvas{width:100%;display:block;}
+.char-controls{display:grid;grid-template-columns:1fr 1fr;grid-gap:10px;margin-bottom:12px;}
+.char-card{background:#f8f9ff;border-radius:12px;padding:12px;border:2px solid #e8eaf6;}
+.char-card h3{font-size:.9rem;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.char-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;}
+.slider-row{display:flex;align-items:center;gap:6px;margin:4px 0;font-size:.8rem;}
+.slider-row label{min-width:65px;font-weight:600;color:#555;}
+.slider-row input{flex:1;accent-color:#667eea;}
+.slider-row .v{font-weight:700;color:#5b3ea8;min-width:30px;text-align:right;}
+.btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:10px 22px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn-play{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-stop{background:linear-gradient(135deg,#f7971e,#ffd200);color:#333;}
+.info{text-align:center;font-size:.8rem;color:#888;margin-top:8px;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .char-card h3 > * + * { margin-left: 6px; }
+  .slider-row > * + * { margin-left: 6px; }
+  .btn-row > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💃 Χορευτικό Σύνολο: 4 Χαρακτήρες</h1>
+<p class="subtitle">Παράλληλη εκτέλεση — Κάθε χαρακτήρας χορεύει ταυτόχρονα!</p>
+<div class="container">
+<div class="stage"><canvas id="sc" width="750" height="280"></canvas></div>
+<div class="char-controls">
+<div class="char-card">
+<h3><span class="char-icon" style="background:#e91e63">💃</span> Αλεξία</h3>
+<div class="slider-row"><label>Βήματα:</label><input type="range" id="s1" min="2" max="15" value="6" oninput="upd()"><span class="v" id="v1">6</span></div>
+<div class="slider-row"><label>Στροφή:</label><input type="range" id="t1" min="15" max="180" step="15" value="90" oninput="upd()"><span class="v" id="w1">90°</span></div>
+</div>
+<div class="char-card">
+<h3><span class="char-icon" style="background:#2196f3">🕺</span> Νίκος</h3>
+<div class="slider-row"><label>Βήματα:</label><input type="range" id="s2" min="2" max="15" value="8" oninput="upd()"><span class="v" id="v2">8</span></div>
+<div class="slider-row"><label>Στροφή:</label><input type="range" id="t2" min="15" max="180" step="15" value="45" oninput="upd()"><span class="v" id="w2">45°</span></div>
+</div>
+<div class="char-card">
+<h3><span class="char-icon" style="background:#4caf50">🤖</span> Ρομπότ</h3>
+<div class="slider-row"><label>Βήματα:</label><input type="range" id="s3" min="2" max="15" value="4" oninput="upd()"><span class="v" id="v3">4</span></div>
+<div class="slider-row"><label>Στροφή:</label><input type="range" id="t3" min="15" max="180" step="15" value="120" oninput="upd()"><span class="v" id="w3">120°</span></div>
+</div>
+<div class="char-card">
+<h3><span class="char-icon" style="background:#ff9800">🐱</span> Γατούλα</h3>
+<div class="slider-row"><label>Βήματα:</label><input type="range" id="s4" min="2" max="15" value="10" oninput="upd()"><span class="v" id="v4">10</span></div>
+<div class="slider-row"><label>Στροφή:</label><input type="range" id="t4" min="15" max="180" step="15" value="60" oninput="upd()"><span class="v" id="w4">60°</span></div>
+</div>
+</div>
+<div class="btn-row">
+<button class="btn btn-play" onclick="play()">▶ Όλοι Μαζί!</button>
+<button class="btn btn-stop" onclick="stop()">⏹ Σταμάτα</button>
+</div>
+<div class="info">Και οι 4 χαρακτήρες ξεκινούν <b>ταυτόχρονα</b> (παράλληλη εκτέλεση)!</div>
+</div>
+<script>
+var c=document.getElementById('sc'),cx=c.getContext('2d'),W=750,H=280;
+var chars=[
+{emoji:'💃',x:W*.2,y:H*.5,angle:0,steps:6,turn:90,color:'#e91e63',stepIdx:0,si:'s1',ti:'t1',vi:'v1',wi:'w1'},
+{emoji:'🕺',x:W*.4,y:H*.5,angle:0,steps:8,turn:45,color:'#2196f3',stepIdx:0,si:'s2',ti:'t2',vi:'v2',wi:'w2'},
+{emoji:'🤖',x:W*.6,y:H*.5,angle:0,steps:4,turn:120,color:'#4caf50',stepIdx:0,si:'s3',ti:'t3',vi:'v3',wi:'w3'},
+{emoji:'🐱',x:W*.8,y:H*.5,angle:0,steps:10,turn:60,color:'#ff9800',stepIdx:0,si:'s4',ti:'t4',vi:'v4',wi:'w4'}
+];
+var playing=false,intervalId;
+function upd(){
+chars.forEach(function(ch){
+ch.steps=+document.getElementById(ch.si).value;ch.turn=+document.getElementById(ch.ti).value;
+document.getElementById(ch.vi).textContent=ch.steps;document.getElementById(ch.wi).textContent=ch.turn+'°';
+});draw();
+}
+function draw(){
+cx.clearRect(0,0,W,H);
+var g=cx.createRadialGradient(W/2,H/2,50,W/2,H/2,W/2);g.addColorStop(0,'#283593');g.addColorStop(1,'#1a237e');
+cx.fillStyle=g;cx.fillRect(0,0,W,H);
+cx.globalAlpha=.15;cx.strokeStyle='#fff';cx.lineWidth=1;
+for(var i=0;i<W;i+=50){cx.beginPath();cx.moveTo(i,0);cx.lineTo(i,H);cx.stroke();}
+for(var i=0;i<H;i+=50){cx.beginPath();cx.moveTo(0,i);cx.lineTo(W,i);cx.stroke();}
+cx.globalAlpha=1;
+chars.forEach(function(ch){
+cx.save();cx.translate(ch.x,ch.y);cx.rotate(ch.angle*Math.PI/180);
+cx.font='32px serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(ch.emoji,0,0);
+cx.restore();
+});
+}
+function step(){
+var allDone=true;
+chars.forEach(function(ch){
+if(ch.stepIdx<8){
+var isMove=ch.stepIdx%2===0;
+if(isMove){var rad=ch.angle*Math.PI/180;ch.x+=Math.cos(rad)*ch.steps*2;ch.y+=Math.sin(rad)*ch.steps*2;
+ch.x=Math.max(30,Math.min(W-30,ch.x));ch.y=Math.max(30,Math.min(H-30,ch.y));}
+else{ch.angle=(ch.angle+ch.turn)%360;}
+ch.stepIdx++;allDone=false;
+}
+});
+draw();if(allDone){stop();}
+}
+function play(){
+chars.forEach(function(ch){ch.stepIdx=0;});playing=true;
+intervalId=setInterval(function(){if(!playing){clearInterval(intervalId);return;}step();},300);
+}
+function stop(){playing=false;clearInterval(intervalId);}
+draw();
+</script>
+</body>
+</html>

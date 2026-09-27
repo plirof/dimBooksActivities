@@ -1,0 +1,58 @@
+{
+  "title": "Αλήθεια ή Ψέματα;",
+  "subtitle": "Ταξινόμησε τις προτάσεις στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "true",
+      "name": "ΑΛΗΘΕΙΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "false",
+      "name": "ΨΕΜΑΤΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ο ουρανός είναι μπλε",
+      "category": "true"
+    },
+    {
+      "id": "item2",
+      "text": "Η γη είναι επίπεδη",
+      "category": "false"
+    },
+    {
+      "id": "item3",
+      "text": "Το νερό βράζει στους 100°C",
+      "category": "true"
+    },
+    {
+      "id": "item4",
+      "text": "Τα ψάρια πετάνε",
+      "category": "false"
+    },
+    {
+      "id": "item5",
+      "text": "Ο ήλιος είναι αστέρας",
+      "category": "true"
+    },
+    {
+      "id": "item6",
+      "text": "Ο πάγος είναι ζεστός",
+      "category": "false"
+    },
+    {
+      "id": "item7",
+      "text": "Η Ελλάδα έχει θάλασσα",
+      "category": "true"
+    },
+    {
+      "id": "item8",
+      "text": "Τα δέντρα περπατάνε",
+      "category": "false"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Αισθητήρες Φωτός",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "επίπεδο", "error": false },
+        { "text": "φωτισμού", "error": false },
+        { "text": "πάει", "error": false },
+        { "text": "από", "error": false },
+        { "text": "0", "error": false },
+        { "text": "μέχρι", "error": false },
+        { "text": "100.", "error": true, "correct": "255", "feedback": "Το επίπεδο φωτισμού πάει από 0 μέχρι 255" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "micro:bit", "error": false },
+        { "text": "έχει", "error": false },
+        { "text": "15", "error": true, "correct": "25", "feedback": "Το micro:bit έχει 25 φωτοδιόδους (5×5)" },
+        { "text": "φωτοδιόδους.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Οι", "error": false },
+        { "text": "LED", "error": false },
+        { "text": "λειτουργούν", "error": false },
+        { "text": "μόνο", "error": true, "correct": "και ως", "feedback": "Οι LED λειτουργούν ΚΑΙ ως είσοδος ΚΑΙ ως έξοδος" },
+        { "text": "ως", "error": false },
+        { "text": "έξοδος.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "εντολή", "error": false },
+        { "text": "επιλογής", "error": false },
+        { "text": "μπαίνει", "error": false },
+        { "text": "μέσα", "error": false },
+        { "text": "στην", "error": false },
+        { "text": "εντολή", "error": false },
+        { "text": "«κατά", "error": true, "correct": "«για πάντα»", "feedback": "Η εντολή επιλογής μπαίνει μέσα στην «για πάντα» για συνεχή έλεγχο" },
+        { "text": "την", "error": false },
+        { "text": "έναρξη».", "error": false }
+      ]
+    }
+  ]
+}

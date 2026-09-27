@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Κουμπί ή Γεγονός;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Κουμπί micro:bit ή Γεγονός;",
+  "categories": [
+    {"id": "koumpi", "name": "Κουμπί", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "geg", "name": "Γεγονός", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κουμπί A", "category": "koumpi"},
+    {"text": "Πάτημα κουμπιού", "category": "geg"},
+    {"text": "Κουμπί B", "category": "koumpi"},
+    {"text": "Αφή λογότυπου", "category": "geg"},
+    {"text": "Λογότυπο", "category": "koumpi"},
+    {"text": "Δυνατός ήχος", "category": "geg"},
+    {"text": "Οβάλ σχήμα", "category": "koumpi"},
+    {"text": "Σείσιμο", "category": "geg"}
+  ],
+  "duration": 30
+}

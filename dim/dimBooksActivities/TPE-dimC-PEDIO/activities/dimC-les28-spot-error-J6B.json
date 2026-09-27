@@ -1,0 +1,60 @@
+{
+  "title": "Βρες τα Λάθη: Αποθετήρια",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Φωτόδεντρο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "μουσείο", "error": true, "correct": "αποθετήριο", "feedback": "Το Φωτόδεντρο είναι αποθετήριο, όχι μουσείο!"},
+        {"text": "εκπαιδευτικό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στην", "error": false},
+        {"text": "Ανοιχτή", "error": false},
+        {"text": "βιβλιοθήκη", "error": false},
+        {"text": "υπάρχουν", "error": false},
+        {"text": "πίνακες", "error": true, "correct": "βιβλία", "feedback": "Η Ανοιχτή βιβλιοθήκη περιέχει βιβλία, όχι πίνακες!"},
+        {"text": "ψηφιακά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βρω", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "Φωτόδεντρο", "error": false},
+        {"text": "ταινίες", "error": true, "correct": "εκπαιδευτικά βίντεο", "feedback": "Στο Φωτόδεντρο βρίσκουμε εκπαιδευτικά βίντεο, όχι ταινίες!"},
+        {"text": "για", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σχολείο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "πλατφόρμα", "error": false},
+        {"text": "Αίσωπος", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "εστιατόριο", "error": true, "correct": "αποθετήρια", "feedback": "Η πλατφόρμα Αίσωπος έχει αποθετήρια, όχι εστιατόριο!"},
+        {"text": "εκπαιδευτικά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "audio", "error": false},
+        {"text": "books", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "βίντεο", "error": true, "correct": "ηχητικά", "feedback": "Τα audio books είναι ηχητικά βιβλία, όχι βίντεο!"},
+        {"text": "ψηφιακά", "error": false},
+        {"text": "βιβλία.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Κινήσεις",
+  "subtitle": "Ποια κατεύθυνση είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Θέλω", "error": false},
+        {"text": "να", "error": false},
+        {"text": "πάω", "error": true, "correct": "κατέβω", "feedback": "Θέλω να κατέβω, όχι να πάω!"},
+        {"text": "κάτω.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "βελάκι", "error": false},
+        {"text": "δείχνει", "error": true, "correct": "δεξιά", "feedback": "Το βελάκι δείχνει δεξιά, όχι αριστερά!"},
+        {"text": "αριστερά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πάω", "error": true, "correct": "Ανεβαίνω", "feedback": "Ανεβαίνω πάνω, δεν πάω κάτω!"},
+        {"text": "κάτω", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "σκάλες.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εντολή", "error": false},
+        {"text": "λέει", "error": true, "correct": "δεξιά", "feedback": "Η εντολή λέει δεξιά, όχι πάνω!"},
+        {"text": "πάνω.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Επαναλήψεις στη Φύση",
+  "subtitle": "Μόνο ό,τι επαναλαμβάνεται στη φύση!",
+  "instruction": "Σπάσε μόνο αυτά που ΕΠΑΝΑΛΑΜΒΑΝΟΝΤΑΙ στη φύση!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Ημέρα - Νύχτα", "correct": true, "color": "#FF6B6B" },
+    { "text": "Χτίσμα σπιτιού", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εποχές του χρόνου", "correct": true, "color": "#45B7D1" },
+    { "text": "Διάβασμα βιβλίου", "correct": false, "color": "#96CEB4" },
+    { "text": "Όψεις φεγγαριού", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μαγείρεμα φαγητού", "correct": false, "color": "#DDA0DD" },
+    { "text": "Αναπνοή", "correct": true, "color": "#98D8C8" },
+    { "text": "Γράψιμο γράμματος", "correct": false, "color": "#F7DC6F" },
+    { "text": "Σφυγμός καρδιάς", "correct": true, "color": "#BB8FCE" },
+    { "text": "Ξύπνημα πρωί", "correct": false, "color": "#85C1E9" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Κατασκευή Λαβύρινθου",
+  "subtitle": "Πιάσε τα σωστά!",
+  "instructions": "Πιάσε μόνο τα υλικά και βήματα κατασκευής",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Αντίγραφα πίστας", "correct": true, "color": "#4caf50" },
+    { "text": "Κόλλα ρούχων", "correct": false, "color": "#f44336" },
+    { "text": "Ταινία για σταθεροποίηση", "correct": true, "color": "#2196f3" },
+    { "text": "Χρώματα ζωγραφικής", "correct": false, "color": "#ff9800" },
+    { "text": "Μαύρη γραμμή στο τέλος", "correct": true, "color": "#8bc34a" },
+    { "text": "Κόκκινη γραμμή στο τέλος", "correct": false, "color": "#9c27b0" },
+    { "text": "Λεία επιφάνεια", "correct": true, "color": "#00bcd4" },
+    { "text": "Τραχιά επιφάνεια", "correct": false, "color": "#ff5722" }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Αποθήκευση Αρχείων",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αποθηκεύσω", "error": false},
+        {"text": "πάω", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "μενού", "error": false},
+        {"text": "«Επεξεργασία».", "error": true, "correct": "«Αρχείο»", "feedback": "Πάμε στο μενού «ΑΡΧΕΙΟ», όχι «Επεξεργασία»!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ανοίξω", "error": false},
+        {"text": "αρχείο", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "τριπλό", "error": true, "correct": "διπλό", "feedback": "Κάνουμε ΔΙΠΛΟ κλικ για να ανοίξουμε αρχείο, όχι τριπλό!"},
+        {"text": "κλικ", "error": false},
+        {"text": "πάνω", "error": false},
+        {"text": "του.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "σαρωτής", "error": false},
+        {"text": "εισάγει", "error": false},
+        {"text": "ήχους", "error": true, "correct": "εικόνες", "feedback": "Ο σαρωτής εισάγει ΕΙΚΟΝΕΣ, όχι ήχους! Ήχους εισάγει το μικρόφωνο."},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "αρχεία", "error": false},
+        {"text": "μπορούν", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Τα αρχεία μπορούν να είναι κείμενο, εικόνα ΚΑΙ ήχος!"},
+        {"text": "κείμενο.", "error": false}
+      ]
+    }
+  ]
+}

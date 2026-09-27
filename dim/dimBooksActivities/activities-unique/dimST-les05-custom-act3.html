@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κομπιουτεράκι «Άκης»</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:40px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+h1{text-align:center;color:#4a3f8a;margin-bottom:4px;font-size:1.5rem}
+.aki-label{text-align:center;color:#8a7fb5;margin-bottom:24px;font-size:.9rem}
+.input-row{display:flex;gap:12px;margin-bottom:18px}
+.input-row .field{flex:1}
+.input-row label{display:block;font-weight:600;color:#4a3f8a;margin-bottom:6px;font-size:.88rem}
+.input-row input{width:100%;padding:12px 14px;border:3px solid #ddd;border-radius:12px;font-size:1.15rem;text-align:center;outline:none;transition:border-color .3s;font-family:inherit}
+.input-row input:focus{border-color:#764ba2}
+.ops-label{text-align:center;font-weight:600;color:#4a3f8a;margin-bottom:10px;font-size:.92rem}
+.ops-row{display:flex;gap:10px;justify-content:center;margin-bottom:22px}
+.op-btn{width:64px;height:64px;border-radius:16px;border:3px solid #ddd;background:#f9f8ff;font-size:1.6rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;font-weight:700;color:#4a3f8a}
+.op-btn:hover{border-color:#764ba2;background:#f0ecff;transform:translateY(-2px)}
+.op-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(118,75,162,.4)}
+.calc-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;font-family:inherit;font-weight:700;transition:transform .2s,box-shadow .2s}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(118,75,162,.4)}
+.calc-btn:active{transform:translateY(0)}
+.warning{background:#fdecea;color:#e74c3c;border:2px solid #e74c3c;border-radius:12px;padding:14px;text-align:center;margin-top:16px;font-weight:600;display:none}
+.warning span{font-size:1.3rem}
+.result-card{margin-top:22px;background:#f5f3ff;border-radius:16px;padding:22px;display:none;text-align:center;border:2px solid #ddd}
+.result-card.show{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.result-card .expr{font-size:1.05rem;color:#8a7fb5;margin-bottom:6px}
+.result-card .answer{font-size:2rem;font-weight:800;color:#4a3f8a}
+.result-card .steps{margin-top:14px;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
+.result-card .steps .num{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:8px 16px;border-radius:10px;font-weight:700;font-size:1.1rem}
+.result-card .steps .sym{font-size:1.4rem;color:#764ba2;font-weight:700}
+.reset-btn{display:block;margin:18px auto 0;padding:10px 28px;background:#e0d7ff;color:#4a3f8a;border:none;border-radius:10px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600;transition:transform .2s}
+.reset-btn:hover{transform:translateY(-1px)}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .input-row > * + * { margin-left: 12px; }
+  .ops-row > * + * { margin-left: 10px; }
+  .result-card .steps > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🤖 Ψηφιακός Βοηθός «Άκης»</h1>
+<p class="aki-label">Ο Άκης είναι ο υπολογιστής σου! Δώσε δύο αριθμούς και διάλεξε πράξη.</p>
+
+<div class="input-row">
+<div class="field">
+<label>Αριθμός Α:</label>
+<input type="number" id="numA" step="any" placeholder="π.χ. 12">
+</div>
+<div class="field">
+<label>Αριθμός Β:</label>
+<input type="number" id="numB" step="any" placeholder="π.χ. 4">
+</div>
+</div>
+
+<p class="ops-label">Επίλεξε πράξη:</p>
+<div class="ops-row">
+<button class="op-btn" data-op="+" onclick="selectOp(this)">+</button>
+<button class="op-btn" data-op="-" onclick="selectOp(this)">−</button>
+<button class="op-btn" data-op="*" onclick="selectOp(this)">×</button>
+<button class="op-btn" data-op="/" onclick="selectOp(this)">÷</button>
+</div>
+
+<button class="calc-btn" onclick="calculate()">🧮 Υπολογισμός</button>
+
+<div id="warning" class="warning">
+<span>⚠️</span> Αδύνατη η διαίρεση με το μηδέν! Δώσε άλλο αριθμό Β.
+</div>
+
+<div id="resultCard" class="result-card">
+<p class="expr" id="exprText"></p>
+<p class="answer" id="answerText"></p>
+<div class="steps" id="stepsArea"></div>
+</div>
+
+<button class="reset-btn" onclick="resetAll()">🔄 Νέος Υπολογισμός</button>
+</div>
+
+<script>
+var selectedOp=null;
+
+function selectOp(btn){
+var btns=document.querySelectorAll('.op-btn');
+for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+btn.classList.add('active');
+selectedOp=btn.getAttribute('data-op');
+}
+
+function calculate(){
+var a=parseFloat(document.getElementById('numA').value);
+var b=parseFloat(document.getElementById('numB').value);
+var warn=document.getElementById('warning');
+var card=document.getElementById('resultCard');
+
+warn.style.display='none';
+card.classList.remove('show');
+card.style.display='none';
+
+if(isNaN(a)||isNaN(b)){return}
+if(!selectedOp){return}
+
+if(selectedOp==='/'&&b===0){
+warn.style.display='block';
+return;
+}
+
+var result;
+var opSymbol;
+switch(selectedOp){
+case '+':result=a+b;opSymbol='+';break;
+case '-':result=a-b;opSymbol='−';break;
+case '*':result=a*b;opSymbol='×';break;
+case '/':result=a/b;opSymbol='÷';break;
+}
+
+var displayA=Number.isInteger(a)?a:a.toFixed(2);
+var displayB=Number.isInteger(b)?b:b.toFixed(2);
+var displayR=Number.isInteger(result)?result:parseFloat(result.toFixed(4));
+
+document.getElementById('exprText').textContent=displayA+' '+opSymbol+' '+displayB;
+document.getElementById('answerText').textContent='= '+displayR;
+document.getElementById('stepsArea').innerHTML=
+'<span class="num">'+displayA+'</span>'+
+'<span class="sym">'+opSymbol+'</span>'+
+'<span class="num">'+displayB+'</span>'+
+'<span class="sym">=</span>'+
+'<span class="num" style="background:linear-gradient(135deg,#27ae60,#2ecc71)">'+displayR+'</span>';
+
+card.style.display='block';
+setTimeout(function(){card.classList.add('show')},10);
+}
+
+function resetAll(){
+document.getElementById('numA').value='';
+document.getElementById('numB').value='';
+var btns=document.querySelectorAll('.op-btn');
+for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+selectedOp=null;
+document.getElementById('warning').style.display='none';
+var card=document.getElementById('resultCard');
+card.classList.remove('show');
+card.style.display='none';
+document.getElementById('numA').focus();
+}
+
+document.addEventListener('keydown',function(e){
+if(e.key==='Enter') calculate();
+});
+</script>
+</body>
+</html>

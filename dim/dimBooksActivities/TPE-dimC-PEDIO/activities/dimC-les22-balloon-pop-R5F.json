@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: TuxPaint",
+  "subtitle": "Μόνο εργαλεία και όροι TuxPaint!",
+  "instruction": "Σπάσε μόνο λέξεις ΣΧΕΤΙΚΕΣ ΜΕ TUXPAINT ΚΑΙ ANIMATION!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Πινέλο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουτάλι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Γέμισμα", "correct": true, "color": "#45B7D1" },
+    { "text": "Γοβάς", "correct": false, "color": "#96CEB4" },
+    { "text": "Προβολή διαφανειών", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μπογιά τοίχου", "correct": false, "color": "#DDA0DD" },
+    { "text": "Αποθήκευση", "correct": true, "color": "#98D8C8" },
+    { "text": "Σφυρί", "correct": false, "color": "#F7DC6F" },
+    { "text": "GIF", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κάβουρας", "correct": false, "color": "#85C1E9" }
+  ]
+}

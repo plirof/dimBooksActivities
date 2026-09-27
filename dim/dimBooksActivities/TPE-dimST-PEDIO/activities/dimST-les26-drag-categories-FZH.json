@@ -1,0 +1,58 @@
+{
+  "title": "Εργαλεία τηλεκπαίδευσης",
+  "subtitle": "Ταίριαξε κάθε εργαλείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "share",
+      "name": "ΔΙΑΜΟΙΡΑΣΜΟΣ ΟΘΟΝΗΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wb",
+      "name": "ΑΣΠΡΟΠΙΝΑΚΑΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "annot",
+      "name": "ANNOTATION",
+      "color": "#FF9800"
+    },
+    {
+      "id": "chat",
+      "name": "CHAT",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖥️ Share screen",
+      "category": "share"
+    },
+    {
+      "id": "item2",
+      "text": "⬜ Whiteboard",
+      "category": "wb"
+    },
+    {
+      "id": "item3",
+      "text": "✏️ Σημειώσεις",
+      "category": "annot"
+    },
+    {
+      "id": "item4",
+      "text": "💬 Μηνύματα",
+      "category": "chat"
+    },
+    {
+      "id": "item5",
+      "text": "📋 Παρουσίαση",
+      "category": "share"
+    },
+    {
+      "id": "item6",
+      "text": "🖌️ Ζωγραφική",
+      "category": "wb"
+    }
+  ]
+}

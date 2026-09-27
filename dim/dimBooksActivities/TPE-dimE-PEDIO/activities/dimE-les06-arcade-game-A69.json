@@ -1,0 +1,18 @@
+{
+  "title": "Πείραμα: Άλλαξε Πόντους Νίκης",
+  "subtitle": "Δοκίμασε διαφορετικούς στόχους και δες πότε τελειώνει το παιχνίδι!",
+  "winScore": 10,
+  "maxLives": 3,
+  "initialStars": 4,
+  "initialPuffers": 1,
+  "maxPuffers": 2,
+  "pufferSpeed": 1.5,
+  "canvasW": 660,
+  "canvasH": 300,
+  "hasSliders": true,
+  "sliderMin": 3,
+  "sliderMax": 20,
+  "hasLevels": false,
+  "hasConditionBox": true,
+  "conditionText": "Επανάλαβε μέχρι πόντοι = WIN Ή ζωές = 0"
+}

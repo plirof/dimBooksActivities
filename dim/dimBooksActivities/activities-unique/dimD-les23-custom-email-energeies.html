@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ενέργειες Email</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 900px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.email-inbox {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border: 2px solid #e0e0e0;
+}
+.inbox-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.message-item {
+background: white;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 12px;
+border-left: 4px solid #667eea;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.message-item:hover {
+transform: translateX(5px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.message-item.selected {
+border-left-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.message-sender {
+font-weight: bold;
+color: #333;
+margin-bottom: 5px;
+}
+.message-subject {
+color: #555;
+font-size: 0.95rem;
+}
+.actions-panel {
+background: linear-gradient(135deg, #f5f7fa, #e8ecf3);
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 25px;
+}
+.actions-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.action-buttons {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+grid-gap: 15px;
+}
+.action-btn {
+background: white;
+border: 2px solid #ddd;
+border-radius: 12px;
+padding: 20px 15px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+color: #333;
+}
+.action-btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+border-color: #667eea;
+}
+.action-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+}
+.action-btn .icon {
+font-size: 2rem;
+}
+.scenarios {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+}
+.scenarios-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.scenario-card {
+background: white;
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 15px;
+border: 2px solid #e0e0e0;
+}
+.scenario-text {
+color: #555;
+margin-bottom: 15px;
+line-height: 1.6;
+font-size: 0.95rem;
+}
+.scenario-actions {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.scenario-btn {
+flex: 1;
+min-width: 100px;
+padding: 10px 15px;
+border: none;
+border-radius: 8px;
+font-size: 0.9rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+background: #667eea;
+color: white;
+}
+.scenario-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.scenario-btn.correct {
+background: #27ae60;
+}
+.scenario-btn.wrong {
+background: #e74c3c;
+}
+.feedback {
+background: rgba(255,255,255,0.95);
+border-radius: 12px;
+padding: 15px 20px;
+margin-top: 15px;
+font-weight: bold;
+display: none;
+}
+.feedback.show {
+display: block;
+}
+.feedback.correct {
+color: #155724;
+border: 2px solid #28a745;
+background: #d4edda;
+}
+.feedback.wrong {
+color: #721c24;
+border: 2px solid #dc3545;
+background: #f8d7da;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .inbox-title > * + * { margin-left: 10px; }
+  .actions-title > * + * { margin-left: 10px; }
+  .action-btn > * + * { margin-top: 10px; }
+  .scenarios-title > * + * { margin-left: 10px; }
+  .scenario-actions > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📧 Ενέργειες Email</h1>
+<p class="subtitle">Μάθετε να χρησιμοποιείτε τις ενέργειες του ηλεκτρονικού ταχυδρομείου</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/6</div>
+
+<div class="container">
+<div class="email-inbox">
+<div class="inbox-title">📬 Εισερχόμενα Μηνύματα</div>
+<div class="message-item" onclick="selectMessage(this, 'msg1')">
+<div class="message-sender">👩‍🏫 Δασκάλα Μαρία</div>
+<div class="message-subject">Εργασία για την επόμενη εβδομάδα</div>
+</div>
+<div class="message-item" onclick="selectMessage(this, 'msg2')">
+<div class="message-sender">👨‍🎓 Φίλος Γιώργος</div>
+<div class="message-subject">Χαίρεται! Πώς είσαι;</div>
+</div>
+<div class="message-item" onclick="selectMessage(this, 'msg3')">
+<div class="message-sender">🏫 Γραμματεία Σχολείου</div>
+<div class="message-subject">Ανακοίνωση: Αργία την Παρασκευή</div>
+</div>
+<div class="message-item" onclick="selectMessage(this, 'msg4')">
+<div class="message-sender">🎮 GameStore</div>
+<div class="message-subject">Προσφορές σε βιντεοπαιχνίδια!</div>
+</div>
+</div>
+
+<div class="actions-panel">
+<div class="actions-title">🔘 Κουμπιά Ενεργειών</div>
+<div class="action-buttons">
+<button class="action-btn" id="btn-reply" onclick="performAction('reply')" disabled>
+<div class="icon">↩️</div>
+<div>Απάντηση</div>
+</button>
+<button class="action-btn" id="btn-forward" onclick="performAction('forward')" disabled>
+<div class="icon">➡️</div>
+<div>Προώθηση</div>
+</button>
+<button class="action-btn" id="btn-delete" onclick="performAction('delete')" disabled>
+<div class="icon">🗑️</div>
+<div>Διαγραφή</div>
+</button>
+<button class="action-btn" id="btn-new" onclick="performAction('new')">
+<div class="icon">✏️</div>
+<div>Νέο Μήνυμα</div>
+</button>
+</div>
+</div>
+
+<div class="scenarios">
+<div class="scenarios-title">📋 Σενάρια - Ποια ενέργεια θα κάνατε;</div>
+
+<div class="scenario-card" id="scenario1">
+<div class="scenario-text">Η δασκάλα σας έστειλε ένα μήνυμα με εργασία. Θέλετε να απαντήσετε για να της πείτε ότι το κάνατε.</div>
+<div class="scenario-actions">
+<button class="scenario-btn" onclick="checkScenario(1, 'reply')">↩️ Απάντηση</button>
+<button class="scenario-btn" onclick="checkScenario(1, 'forward')">➡️ Προώθηση</button>
+<button class="scenario-btn" onclick="checkScenario(1, 'delete')">🗑️ Διαγραφή</button>
+</div>
+<div class="feedback" id="feedback1"></div>
+</div>
+
+<div class="scenario-card" id="scenario2">
+<div class="scenario-text">Η γραμματεία έστειλε ανακοίνωση για την αργία της Παρασκευής. Θέλετε να τη στείλετε στη μαμά σου.</div>
+<div class="scenario-actions">
+<button class="scenario-btn" onclick="checkScenario(2, 'reply')">↩️ Απάντηση</button>
+<button class="scenario-btn" onclick="checkScenario(2, 'forward')">➡️ Προώθηση</button>
+<button class="scenario-btn" onclick="checkScenario(2, 'delete')">🗑️ Διαγραφή</button>
+</div>
+<div class="feedback" id="feedback2"></div>
+</div>
+
+<div class="scenario-card" id="scenario3">
+<div class="scenario-text">Λάβατε ένα μήνυμα διαφήμισης που δεν σας ενδιαφέρει.</div>
+<div class="scenario-actions">
+<button class="scenario-btn" onclick="checkScenario(3, 'reply')">↩️ Απάντηση</button>
+<button class="scenario-btn" onclick="checkScenario(3, 'forward')">➡️ Προώθηση</button>
+<button class="scenario-btn" onclick="checkScenario(3, 'delete')">🗑️ Διαγραφή</button>
+</div>
+<div class="feedback" id="feedback3"></div>
+</div>
+</div>
+</div>
+
+<div class="mascot">📨</div>
+
+<script>
+let selectedMessage = null;
+let score = 0;
+
+const scenarioAnswers = {
+1: 'reply',
+2: 'forward',
+3: 'delete'
+};
+
+function selectMessage(element, msgId) {
+document.querySelectorAll('.message-item').forEach(item => {
+item.classList.remove('selected');
+});
+element.classList.add('selected');
+selectedMessage = msgId;
+
+document.getElementById('btn-reply').disabled = false;
+document.getElementById('btn-forward').disabled = false;
+document.getElementById('btn-delete').disabled = false;
+}
+
+function performAction(action) {
+if (!selectedMessage && action !== 'new') {
+alert('Επιλέξτε πρώτα ένα μήνυμα!');
+return;
+}
+
+const messageEl = document.querySelector('.message-item.selected');
+if (messageEl) {
+if (action === 'delete') {
+messageEl.style.opacity = '0.5';
+messageEl.style.textDecoration = 'line-through';
+setTimeout(() => {
+messageEl.style.display = 'none';
+selectedMessage = null;
+document.getElementById('btn-reply').disabled = true;
+document.getElementById('btn-forward').disabled = true;
+document.getElementById('btn-delete').disabled = true;
+}, 500);
+}
+}
+
+alert('Η ενέργεια «' + getActionName(action) + '» εκτελέστηκε επιτυχώς!');
+}
+
+function getActionName(action) {
+const names = {
+'reply': 'Απάντηση',
+'forward': 'Προώθηση',
+'delete': 'Διαγραφή',
+'new': 'Νέο Μήνυμα'
+};
+return names[action] || action;
+}
+
+function checkScenario(scenarioNum, action) {
+const feedbackEl = document.getElementById('feedback' + scenarioNum);
+const correctAnswer = scenarioAnswers[scenarioNum];
+const buttons = document.getElementById('scenario' + scenarioNum).querySelectorAll('.scenario-btn');
+
+buttons.forEach(btn => {
+btn.classList.remove('correct', 'wrong');
+btn.disabled = true;
+});
+
+if (action === correctAnswer) {
+buttons.forEach(btn => {
+if (btn.textContent.includes(getActionName(action))) {
+btn.classList.add('correct');
+}
+});
+
+score++;
+document.getElementById('score').textContent = score;
+
+feedbackEl.className = 'feedback show correct';
+feedbackEl.innerHTML = '🎉 Σωστά! ' + getExplanation(scenarioNum);
+} else {
+buttons.forEach(btn => {
+if (btn.textContent.includes(getActionName(action))) {
+btn.classList.add('wrong');
+}
+});
+
+feedbackEl.className = 'feedback show wrong';
+feedbackEl.innerHTML = '❌ Λάθος! ' + getExplanation(scenarioNum);
+}
+}
+
+function getExplanation(scenarioNum) {
+const explanations = {
+1: 'Όταν θέλετε να απαντήσετε στον αποστολέα, χρησιμοποιείτε την «Απάντηση».',
+2: 'Όταν θέλετε να στείλετε ένα μήνυμα σε άλλον παραλήπτη, χρησιμοποιείτε την «Προώθηση».',
+3: 'Όταν θέλετε να αφαιρέσετε ένα μήνυμα, χρησιμοποιείτε την «Διαγραφή».'
+};
+return explanations[scenarioNum] || '';
+}
+</script>
+</body>
+</html>

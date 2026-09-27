@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάξε τον Δικό σου Δικτυακό Τόπο</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#d9f99d,#a3e635);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#4d7c0f,#65a30d);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.steps{display:flex;gap:6px;margin-bottom:4px;flex-wrap:wrap;justify-content:center}
+.step-badge{padding:4px 14px;border-radius:20px;font-size:.75em;font-weight:600;color:#fff}
+.step-badge.done{background:#4d7c0f}
+.step-badge.active{background:#65a30d}
+.step-badge.pending{background:#d1d5db;color:#999}
+.builder-area{background:#f7fee7;border-radius:16px;border:2px solid #bef264;padding:16px;min-height:250px}
+.builder-area h3{font-size:1em;color:#4d7c0f;margin-bottom:10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice-row{display:flex;gap:10px;flex-wrap:wrap}
+.choice-btn{padding:10px 18px;border:3px solid #e2e8f0;border-radius:14px;background:#fff;cursor:pointer;transition:all .2s;font-size:.85em;text-align:center;flex:1;min-width:120px}
+.choice-btn:hover{transform:translateY(-2px);border-color:#65a30d}
+.choice-btn.selected{border-color:#4d7c0f;background:#ecfccb;font-weight:700;box-shadow:0 0 0 2px #bef264}
+.choice-btn .cb-icon{font-size:1.8em;display:block;margin-bottom:4px}
+.choice-btn .cb-label{font-size:.9em;font-weight:600;color:#1f2937}
+.choice-btn .cb-desc{font-size:.75em;color:#6b7280;margin-top:2px}
+.preview-box{background:#fff;border-radius:14px;border:2px solid #e2e8f0;overflow:hidden;margin-top:10px}
+.preview-header{background:linear-gradient(135deg,#4d7c0f,#65a30d);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:.9em}
+.preview-nav{background:#ecfccb;padding:6px 12px;display:flex;gap:6px;flex-wrap:wrap;font-size:.8em}
+.preview-nav span{background:#fff;padding:4px 10px;border-radius:6px;color:#4d7c0f}
+.preview-body{padding:14px;font-size:.85em;color:#475569;min-height:60px;line-height:1.6}
+.nav-edit-area{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.nav-tag{display:flex;align-items:center;gap:4px;background:#ecfccb;border:2px solid #bef264;border-radius:8px;padding:4px 10px;font-size:.8em}
+.nav-tag .del{cursor:pointer;color:#dc2626;font-weight:700;margin-left:4px;font-size:1.1em}
+.nav-tag .del:hover{color:#991b1b}
+.add-nav{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.add-nav input{flex:1;min-width:120px;padding:8px 12px;border:2px solid #e2e8f0;border-radius:8px;font-size:.85em}
+.add-nav input:focus{outline:none;border-color:#65a30d}
+.add-nav button{padding:8px 16px;background:#65a30d;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:600}
+.add-nav button:hover{background:#4d7c0f}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#4d7c0f,#65a30d);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(77,124,15,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#4d7c0f}
+.feedback.fail{color:#dc2626}
+.result-box{text-align:center;padding:20px;font-size:1.1em;line-height:1.8}
+.result-box .big{font-size:2em;margin-bottom:8px}
+@media(max-width:500px){.choice-btn{min-width:100px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .steps > * { margin: 3px; }
+  .choices > * + * { margin-top: 8px; }
+  .choice-row > * { margin: 5px; }
+  .preview-header > * + * { margin-left: 8px; }
+  .preview-nav > * { margin: 3px; }
+  .nav-edit-area > * { margin: 3px; }
+  .nav-tag > * + * { margin-left: 4px; }
+  .add-nav > * { margin: 3px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🏗️ Φτιάξε τον Δικό σου Δικτυακό Τόπο</h1>
+<p>Ακολούθησε τα βήματα για να σχεδιάσεις τον δικτυακό σου τόπο!</p>
+</div>
+<div class="area">
+<div class="steps" id="stepsBar"></div>
+<div class="builder-area" id="builderArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextStep()">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var steps=[
+{
+title:'Τύπος Ιδιοκτήτη',
+question:'Ποιος θα είναι ο ιδιοκτήτης του δικτυακού σου τόπου;',
+choices:[
+{icon:'🏢',label:'Εταιρεία',desc:'Μια εταιρεία που πουλά προϊόντα'},
+{icon:'🏫',label:'Οργάνωση',desc:'Ένα σχολείο ή οργανισμός'},
+{icon:'👤',label:'Άτομο',desc:'Ένα πρόσωπο'}
+]
+},
+{
+title:'Δομή',
+question:'Τι δομή θα έχει ο δικτυακός σου τόπος;',
+choices:[
+{icon:'📄',label:'Γραμμική',desc:'Σελίδες με σειρά, σαν βιβλίο'},
+{icon:'🌳',label:'Δενδρική',desc:'Κατηγορίες με υποκατηγορίες'}
+]
+},
+{
+title:'Διεύθυνση URL',
+question:'Ποια θα είναι η διεύθυνση (URL) του δικτυακού σου τόπου;',
+custom:true
+},
+{
+title:'Μενού',
+question:'Πρόσθεσε σελίδες στο μενού του δικτυακού σου τόπου (τουλάχιστον 3):',
+custom:true
+}
+];
+
+var currentStep=0;
+var selections={};
+
+var presetMenus={
+'🏢 Εταιρεία':['Αρχική','Προϊόντα','Υπηρεσίες','Προσφορές','Επικοινωνία'],
+'🏫 Οργάνωση':['Αρχική','Σχετικά','Δράσεις','Ανακοινώσεις','Επικοινωνία'],
+'👤 Άτομο':['Αρχική','Βιογραφικό','Χόμπι','Επικοινωνία']
+};
+
+function renderSteps(){
+var bar=document.getElementById('stepsBar');
+bar.innerHTML='';
+for(var i=0;i<steps.length;i++){
+var badge=document.createElement('div');
+badge.className='step-badge';
+if(i<currentStep)badge.classList.add('done');
+else if(i===currentStep)badge.classList.add('active');
+else badge.classList.add('pending');
+badge.textContent=(i+1)+'. '+steps[i].title;
+bar.appendChild(badge);
+}
+}
+
+function renderStep(){
+renderSteps();
+var step=steps[currentStep];
+var area=document.getElementById('builderArea');
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+var isLast=currentStep>=steps.length-1;
+document.getElementById('nextBtn').textContent=isLast?'🏁 Τέλος':'⏭ Επόμενο';
+
+if(currentStep===2){
+renderURLStep(area,step);
+}else if(currentStep===3){
+renderMenuStep(area,step);
+}else{
+renderChoiceStep(area,step);
+}
+}
+
+function renderChoiceStep(area,step){
+var html='<h3>🔹 '+step.question+'</h3><div class="choices"><div class="choice-row">';
+for(var i=0;i<step.choices.length;i++){
+var c=step.choices[i];
+var sel=selections[currentStep]===i?' selected':'';
+html+='<div class="choice-btn'+sel+'" onclick="selectChoice('+i+')"><span class="cb-icon">'+c.icon+'</span><span class="cb-label">'+c.label+'</span><span class="cb-desc">'+c.desc+'</span></div>';
+}
+html+='</div></div>';
+if(selections[currentStep]!==undefined){
+html+='<div class="preview-box" style="margin-top:12px"><div class="preview-body">✅ Επέλεξες: <b>'+step.choices[selections[currentStep]].icon+' '+step.choices[selections[currentStep]].label+'</b></div></div>';
+}
+area.innerHTML=html;
+if(selections[currentStep]!==undefined)document.getElementById('nextBtn').disabled=false;
+}
+
+function selectChoice(idx){
+selections[currentStep]=idx;
+renderStep();
+if(currentStep===0)setTimeout(function(){document.getElementById('nextBtn').disabled=false;},100);
+}
+
+function renderURLStep(area,step){
+var url=selections[2]||'';
+var ownerLabel=selections[0]!==undefined?steps[0].choices[selections[0]].label:'';
+var ownerSlug=ownerLabel.toLowerCase().replace(/[^α-ωα-ωa-z]/g,'-');
+var suggested='https://www.'+ownerSlug+'.gr';
+html='<h3>🔹 '+step.question+'</h3><div style="margin-top:10px">';
+html+='<p style="font-size:.85em;color:#6b7280;margin-bottom:8px">Πληκτρολόγησε τη διεύθυνση (π.χ. '+suggested+')</p>';
+html+='<input type="text" id="urlInput" value="'+url+'" placeholder="'+suggested+'" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:.9em" oninput="checkURL(this.value)">';
+html+='<div class="preview-box" style="margin-top:10px"><div class="preview-body">🌐 URL: <b id="urlPreview">'+(url||'...')+'</b></div></div>';
+html+='</div>';
+area.innerHTML=html;
+document.getElementById('nextBtn').disabled=!url;
+}
+
+function checkURL(val){
+selections[2]=val;
+document.getElementById('urlPreview').textContent=val||'...';
+document.getElementById('nextBtn').disabled=!val||val.length<5;
+}
+
+function renderMenuStep(area,step){
+var ownerIdx=selections[0];
+var ownerLabel=ownerIdx!==undefined?steps[0].choices[ownerIdx].icon+' '+steps[0].choices[ownerIdx].label:'Ο τόπος σου';
+var pages=selections[3]||[];
+var html='<h3>🔹 '+step.question+'</h3>';
+html+='<div class="preview-box"><div class="preview-header">🏗️ '+ownerLabel+'</div>';
+if(pages.length>0){
+html+='<div class="preview-nav">';
+for(var i=0;i<pages.length;i++)html+='<span>'+pages[i]+'</span>';
+html+='</div>';
+}
+html+='<div class="preview-body"><b>Ιδιοκτήτης:</b> '+ownerLabel+'<br><b>Δομή:</b> '+(selections[1]!==undefined?steps[1].choices[selections[1]].icon+' '+steps[1].choices[selections[1]].label:'—')+'<br><b>URL:</b> '+(selections[2]||'—')+'<br><b>Σελίδες:</b> '+pages.length+'</div></div>';
+html+='<div style="margin-top:10px"><div class="nav-edit-area" id="navTags">';
+if(pages.length>0){
+for(var i=0;i<pages.length;i++){
+html+='<div class="nav-tag">'+pages[i]+'<span class="del" onclick="removePage('+i+')">✕</span></div>';
+}
+}
+html+='</div>';
+if(presetMenus[steps[0].choices[ownerIdx||0].icon+' '+steps[0].choices[ownerIdx||0].label]){
+var preset=presetMenus[steps[0].choices[ownerIdx||0].icon+' '+steps[0].choices[ownerIdx||0].label];
+if(pages.length===0){
+html+='<p style="font-size:.8em;color:#6b7280;margin:6px 0">💡 Πρόταση: ';
+for(var i=0;i<preset.length;i++)html+='<a href="#" onclick="addPage(\''+preset[i]+'\');return false" style="color:#4d7c0f;text-decoration:underline">'+preset[i]+'</a> ';
+html+='</p>';
+}
+}
+html+='<div class="add-nav"><input type="text" id="newPageInput" placeholder="Όνομα σελίδας..." onkeypress="if(event.key===\'Enter\')addPageFromInput()"><button onclick="addPageFromInput()">➕ Προσθήκη</button></div></div>';
+area.innerHTML=html;
+document.getElementById('nextBtn').disabled=pages.length<3;
+}
+
+function addPage(name){
+var pages=selections[3]||[];
+if(pages.indexOf(name)===-1)pages.push(name);
+selections[3]=pages;
+renderStep();
+}
+
+function addPageFromInput(){
+var input=document.getElementById('newPageInput');
+if(!input||!input.value.trim())return;
+addPage(input.value.trim());
+input.value='';
+}
+
+function removePage(idx){
+var pages=selections[3]||[];
+pages.splice(idx,1);
+selections[3]=pages;
+renderStep();
+}
+
+function nextStep(){
+if(currentStep<steps.length-1){
+currentStep++;
+renderStep();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+var area=document.getElementById('builderArea');
+var ownerLabel=steps[0].choices[selections[0]].icon+' '+steps[0].choices[selections[0]].label;
+var structureLabel=steps[1].choices[selections[1]].icon+' '+steps[1].choices[selections[1]].label;
+var url=selections[2];
+var pages=selections[3]||[];
+var structureType=selections[1]===0?'γραμμική δομή (όπως ένα βιβλίο)':'δενδρική δομή (με κατηγορίες και υποκατηγορίες)';
+var ownerType=selections[0]===0?'εταιρεία':selections[0]===1?'οργάνωση':'άτομο';
+var html='<div class="result-box"><div class="big">🎉</div><h3 style="color:#4d7c0f;margin-bottom:12px">Ο Δικτυακός σου Τόπος Δημιουργήθηκε!</h3>';
+html+='<p>🏗️ <b>Ιδιοκτήτης:</b> '+ownerLabel+' ('+ownerType+')</p>';
+html+='<p>🌐 <b>Διεύθυνση URL:</b> '+url+'</p>';
+html+='<p>📐 <b>Δομή:</b> '+structureLabel+' — '+structureType+'</p>';
+html+='<p>📋 <b>Μενού:</b> '+pages.join(' · ')+'</p>';
+html+='<p style="margin-top:10px;color:#6b7280;font-size:.9em">✅ Ο δικτυακός σου τόπος έχει όλα τα βασικά χαρακτηριστικά: <b>διεύθυνση</b>, <b>ιδιοκτήτη</b>, <b>δομή</b> και <b>μενού</b>!</p></div>';
+area.innerHTML=html;
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Μπράβο! Σχεδίασες τον δικό σου δικτυακό τόπο! 🌐';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentStep=0;
+selections={};
+renderStep();
+document.getElementById('nextBtn').style.display='inline-block';
+}
+
+resetAll();
+</script>
+</body>
+</html>

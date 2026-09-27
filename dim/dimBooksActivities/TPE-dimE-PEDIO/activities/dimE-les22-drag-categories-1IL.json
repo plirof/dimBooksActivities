@@ -1,0 +1,53 @@
+{
+  "title": "Φίλτρα αναζήτησης",
+  "subtitle": "Ταίριαξε κάθε φίλτρο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "quotes",
+      "name": "ΕΙΣΑΓΩΓΙΚΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "type",
+      "name": "ΤΥΠΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "lang",
+      "name": "ΓΛΩΣΣΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "«ακριβής φράση»",
+      "category": "quotes"
+    },
+    {
+      "id": "item2",
+      "text": "📷 Εικόνες",
+      "category": "type"
+    },
+    {
+      "id": "item3",
+      "text": "🇬🇷 Ελληνικά",
+      "category": "lang"
+    },
+    {
+      "id": "item4",
+      "text": "«όνομα επίθετο»",
+      "category": "quotes"
+    },
+    {
+      "id": "item5",
+      "text": "📹 Βίντεο",
+      "category": "type"
+    },
+    {
+      "id": "item6",
+      "text": "🇬🇧 Αγγλικά",
+      "category": "lang"
+    }
+  ]
+}

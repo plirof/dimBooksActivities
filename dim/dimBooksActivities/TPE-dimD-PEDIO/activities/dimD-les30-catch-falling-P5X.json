@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Αξιολόγηση Πηγών Σωστά-Λάθος",
+  "subtitle": "Πιάσε τις ΣΩΣΤΕΣ προτάσεις!",
+  "instructions": "Πιάσε μόνο τις ΣΩΣΤΕΣ προτάσεις για αξιολόγηση πηγών!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 5,
+  "items": [
+    { "text": "Ελέγχω ποιος έγραψε το άρθρο", "correct": true, "color": "#4CAF50" },
+    { "text": "Δεν με νοιάζει η ημερομηνία", "correct": false, "color": "#f44336" },
+    { "text": "Ψάχνω βιβλιογραφία και πηγές", "correct": true, "color": "#2196F3" },
+    { "text": "Κάθε ιστοσελίδα είναι αξιόπιστη", "correct": false, "color": "#FF9800" },
+    { "text": "Διασταυρώνω πληροφορίες", "correct": true, "color": "#9C27B0" },
+    { "text": "Τα λάθη ορθογραφίας μειώνουν αξιοπιστία", "correct": true, "color": "#00BCD4" },
+    { "text": "Δεν χρειάζεται να ξέρω τον συγγραφέα", "correct": false, "color": "#E91E63" },
+    { "text": "Το gov.gr είναι αξιόπιστο", "correct": true, "color": "#8BC34A" },
+    { "text": "Authority = πατρότητα πηγής", "correct": true, "color": "#3F51B5" },
+    { "text": "Credibility = επικαιρότητα", "correct": false, "color": "#FF5722" }
+  ]
+}

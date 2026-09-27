@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κουίζ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.6em}
+h2{color:#666;text-align:center;font-size:1em;margin-bottom:25px;font-weight:400}
+.progress{background:#e0e0e0;border-radius:10px;height:12px;margin-bottom:20px;overflow:hidden}
+.progress-bar{background:linear-gradient(90deg,#4CAF50,#8BC34A);height:100%;border-radius:10px;transition:width .4s}
+.question-area{margin-bottom:25px}
+.question-text{font-size:1.2em;color:#333;margin-bottom:20px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:12px}
+.option-btn{padding:14px 20px;border:2px solid #e0e0e0;border-radius:12px;background:#f8f9fa;cursor:pointer;font-size:1.05em;color:#333;transition:all .2s;text-align:left}
+.option-btn:hover{border-color:#667eea;background:#f0f0ff;transform:translateX(5px)}
+.option-btn.selected{border-color:#667eea;background:#eef0ff;font-weight:600}
+.option-btn.correct{border-color:#4CAF50;background:#e8f5e9;color:#2e7d32}
+.option-btn.wrong{border-color:#f44336;background:#ffebee;color:#c62828}
+.option-btn.disabled{pointer-events:none;opacity:.7}
+.tf-buttons{display:flex;gap:20px;justify-content:center}
+.tf-btn{padding:14px 40px;border:2px solid #e0e0e0;border-radius:12px;background:#f8f9fa;cursor:pointer;font-size:1.1em;color:#333;transition:all .2s;min-width:140px}
+.tf-btn:hover{transform:scale(1.05)}
+.tf-btn.correct{border-color:#4CAF50;background:#e8f5e9;color:#2e7d32}
+.tf-btn.wrong{border-color:#f44336;background:#ffebee;color:#c62828}
+.tf-btn.disabled{pointer-events:none;opacity:.7}
+.next-btn{display:none;margin:20px auto 0;padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.next-btn:hover{transform:scale(1.05)}
+.score-area{display:none;text-align:center;padding:20px}
+.score-area h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.score-area .score{font-size:3em;color:#667eea;font-weight:700}
+.score-area .message{font-size:1.1em;color:#666;margin-top:10px}
+.restart-btn{margin-top:20px;padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.loading{text-align:center;padding:40px;color:#fff;font-size:1.2em}
+.feedback{margin-top:10px;padding:10px;border-radius:8px;font-size:1em;display:none}
+.feedback.correct-fb{background:#e8f5e9;color:#2e7d32}
+.feedback.wrong-fb{background:#ffebee;color:#c62828}
+.review-section{margin-top:20px}
+.review-question{padding:15px;margin-bottom:15px;border-radius:12px;border:2px solid #e0e0e0}
+.review-question.rq-correct{border-color:#4CAF50;background:#f9fdf9}
+.review-question.rq-wrong{border-color:#f44336;background:#fff9f9}
+.rq-text{font-size:1.1em;color:#333;margin-bottom:12px;line-height:1.5;font-weight:600}
+.review-question .option-btn{display:block;width:100%;margin-bottom:6px;pointer-events:none;opacity:1}
+.review-question .option-btn[disabled]{cursor:default}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div class="loading" id="loading">Φόρτωση...</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+function showError(msg){app.innerHTML='<div class="error">'+msg+'</div>'}
+
+if(!dataFile){showError('Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json στο URL.');throw new Error('No data file')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+let current=0,score=0,answered=false,userAnswers=[];
+const questions=data.questions;
+
+function render(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>${esc(data.subtitle||'')}</h2>
+<div class="progress"><div class="progress-bar" style="width:${(current/questions.length)*100}%"></div></div>
+<div class="question-area">
+<div class="question-text">${current+1}. ${esc(questions[current].text)}</div>
+${questions[current].type==='tf'?renderTF():renderMC()}
+</div>
+<div class="feedback" id="feedback"></div>
+<button class="next-btn" id="nextBtn">${current<questions.length-1?'Επόμενο →':'Δείτε Αποτέλεσμα'}</button>
+`;
+answered=false;
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('nextBtn').onclick=()=>{current++;current<questions.length?render():showScore()};
+}
+
+function renderTF(){return `<div class="tf-buttons">
+<button class="tf-btn" data-val="true" onclick="checkAnswer(this,'true')">✓ ΑΛΗΘΕΙΑ</button>
+<button class="tf-btn" data-val="false" onclick="checkAnswer(this,'false')">✗ ΨΕΜΑΤΑ</button>
+</div>`}
+
+function renderMC(){
+const q=questions[current];
+const shuffled=q.options.map((o,i)=>({text:o,index:i})).sort(()=>Math.random()-.5);
+return `<div class="options">${shuffled.map(o=>`<button class="option-btn" data-idx="${o.index}" onclick="checkAnswer(this,${o.index})">${esc(o.text)}</button>`).join('')}</div>`}
+
+window.checkAnswer=function(el,val){
+if(answered)return;
+answered=true;
+const q=questions[current];
+let correct;
+if(q.type==='tf'){correct=(q.answer!==undefined?q.answer:q.correct).toString()===val}else{correct=parseInt(val)===q.correctIndex}
+userAnswers.push({val:val,correct:correct});
+if(correct){
+score++;
+el.classList.add('correct');
+showFeedback(true,q.explanation||'Σωστό! Μπράβο!')
+}else{
+el.classList.add('wrong');
+el.classList.add('disabled');
+if(q.type==='tf'){
+document.querySelector(`.tf-btn[data-val="${q.answer!==undefined?q.answer:q.correct}"]`).classList.add('correct')
+}else{
+document.querySelector(`.option-btn[data-idx="${q.correctIndex}"]`).classList.add('correct')
+}
+document.querySelectorAll(q.type==='tf'?'.tf-btn':'.option-btn').forEach(b=>{if(!b.classList.contains('correct')&&!b.classList.contains('wrong'))b.classList.add('disabled')});
+showFeedback(false,q.explanation||'Δεν είναι σωστό. Δοκίμασε ξανά!')
+}
+document.getElementById('nextBtn').style.display='block'
+};
+
+function showFeedback(correct,msg){
+const fb=document.getElementById('feedback');
+fb.textContent=msg;
+fb.className='feedback '+(correct?'correct-fb':'wrong-fb');
+fb.style.display='block'
+}
+
+function showScore(){
+const pct=Math.round((score/questions.length)*100);
+let msg=pct>=90?'Εξαιρετικά! Τα ξέρεις όλα!':pct>=70?'Μπράβο! Πολύ καλά!':pct>=50?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+let reviewHTML='<div class="review-section">';
+questions.forEach((q,i)=>{
+const ua=userAnswers[i];
+const isCorrect=ua&&ua.correct;
+reviewHTML+=`<div class="review-question${isCorrect?' rq-correct':' rq-wrong'}">`;
+reviewHTML+=`<div class="rq-text">${i+1}. ${esc(q.text)}</div>`;
+if(q.type==='tf'){
+const correctVal=(q.answer!==undefined?q.answer:q.correct).toString();
+const userVal=ua?ua.val:null;
+['true','false'].forEach(v=>{
+let cls='option-btn';
+let label=v==='true'?'✓ ΑΛΗΘΕΙΑ':'✗ ΨΕΜΑΤΑ';
+if(v===correctVal)cls+=' correct';
+if(ua&&!ua.correct&&v===userVal)cls+=' wrong';
+reviewHTML+=`<button class="${cls}" disabled>${label}</button>`;
+});
+}else{
+q.options.forEach((opt,oi)=>{
+let cls='option-btn';
+if(oi===q.correctIndex)cls+=' correct';
+if(ua&&!ua.correct&&parseInt(ua.val)===oi)cls+=' wrong';
+reviewHTML+=`<button class="${cls}" disabled>${esc(opt)}</button>`;
+});
+}
+reviewHTML+='</div>';
+});
+reviewHTML+='</div>';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="score-area" style="display:block">
+<h2>Αποτέλεσμα</h2>
+<div class="score">${score}/${questions.length}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>
+</div>
+${reviewHTML}`
+}
+
+render()
+}).catch(err=>showError('Σφάλμα φόρτωσης: '+esc(err.message)));
+</script>
+</body>
+</html>

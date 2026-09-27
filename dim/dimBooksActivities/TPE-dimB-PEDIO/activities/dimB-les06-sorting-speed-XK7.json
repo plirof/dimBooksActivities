@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Εντολή ή Στοιχείο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Εντολή ή Στοιχείο;",
+  "categories": [
+    {"id": "entoli", "name": "Εντολή", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "stoixeio", "name": "Στοιχείο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "category": "entoli"},
+    {"text": "Ήρωας", "category": "stoixeio"},
+    {"text": "ΕΠΑΝΑΛΑΒΕ", "category": "entoli"},
+    {"text": "Μπάλα", "category": "stoixeio"},
+    {"text": "ΠΗΔΑ", "category": "entoli"},
+    {"text": "Σκηνικό", "category": "stoixeio"},
+    {"text": "ΟΡΙΣΕ ΤΑΧΥΤΗΤΑ", "category": "entoli"},
+    {"text": "Βιβλιοθήκη", "category": "stoixeio"}
+  ],
+  "duration": 30
+}

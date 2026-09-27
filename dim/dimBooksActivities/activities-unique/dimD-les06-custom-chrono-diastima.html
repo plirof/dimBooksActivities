@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χρονοδιάστημα Κίνησης - Scratch Animation</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#d97706,#fbbf24);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fef3c7;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#92400e;text-align:center;line-height:1.5}
+.animation-stage{background:#f0fdf4;border-radius:16px;border:2px solid #86efac;padding:20px;margin-bottom:14px;text-align:center;position:relative;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.character{font-size:5em;transition:transform 0.1s}
+.character.walking{animation:walk 0.3s infinite}
+@keyframes walk{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+  100%{transform:translateY(0)}
+}
+.costume-display{background:#fff;border-radius:12px;padding:10px 16px;margin:10px 0;font-size:1em;font-weight:700;color:#d97706}
+.control-panel{background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:14px}
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.slider-row label{min-width:150px;font-weight:700;color:#475569;font-size:.9em}
+.slider-row input[type="range"]{flex:1;max-width:200px}
+.slider-value{min-width:60px;text-align:center;font-weight:700;color:#d97706;font-size:.95em}
+.code-display{background:#1e293b;color:#a5f3fc;border-radius:12px;padding:14px;margin-bottom:14px;font-family:monospace;font-size:.9em;line-height:1.6}
+.code-display .command{color:#fcd34d}
+.code-display .value{color:#4ade80}
+.btn-play{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:14px 40px;font-size:1.1em;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;margin:0 auto}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-play:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.challenge{background:#fff7ed;border:2px solid #fdba74;border-radius:14px;padding:14px;margin-bottom:14px}
+.challenge h3{color:#c2410c;margin-bottom:8px;font-size:1em}
+.challenge p{color:#9a3412;font-size:.9em;line-height:1.5}
+.challenge-btn{background:#fff;border:2px solid #fdba74;border-radius:50px;padding:10px 20px;font-weight:700;color:#c2410c;cursor:pointer;transition:all .2s;margin-top:8px;display:inline-block}
+.challenge-btn:hover{background:#fdba74;color:#fff}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:550px){.character{font-size:3.5em}.slider-row label{min-width:100px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .slider-row > * + * { margin-left: 12px; }
+  .btn-play > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>⏱️ Χρονοδιάστημα Κίνησης</h1>
+<p>Ρύθμισε τον χρόνο για να κουνιέται ο χαρακτήρας σωστά!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch, χρησιμοποιούμε την εντολή «περίμενε» με διαίρεση για να ελέγχουμε πόσο γρήγορα αλλάζουν οι ενδυμασίες και δημιουργούμε animation!</div>
+
+<div class="animation-stage">
+<div class="character" id="character">🐱</div>
+<div class="costume-display" id="costumeDisplay">Ενδυμασία 1</div>
+</div>
+
+<div class="code-display">
+<span class="command">Επανάλαβε ώσπου:</span><br>
+  <span class="command">επόμενη ενδυμασία</span><br>
+  <span class="command">περίμενε</span> <span class="value" id="codeValue">(1 / <span id="divisorDisplay">10</span>) δευτερόλεπτα</span>
+</div>
+
+<div class="control-panel">
+<div class="slider-row">
+<label>Διαιρέτης (αριθμός):</label>
+<input type="range" id="divisor" min="5" max="50" value="10" oninput="updateDisplay()">
+<span class="slider-value" id="divisorValue">10</span>
+</div>
+<div class="slider-row">
+<label>Χρόνος ανά αλλαγή:</label>
+<span class="slider-value" id="waitTime">0.1 δλ.</span>
+</div>
+</div>
+
+<div class="challenge">
+<h3>🎯 Πρόκληση 1:</h3>
+<p>Βρες τον σωστό διαιρέτη ώστε ο χαρακτήρας να κουνιέται αργά, όχι γρήγορα!</p>
+<button class="challenge-btn" onclick="checkChallenge1()">Έλεγχος</button>
+</div>
+
+<div class="challenge">
+<h3>🎯 Πρόκληση 2:</h3>
+<p>Βρες τον σωστό διαιρέτη ώστε ο χαρακτήρας να κουνιέται πολύ γρήγορα!</p>
+<button class="challenge-btn" onclick="checkChallenge2()">Έλεγχος</button>
+</div>
+
+<button class="btn-play" id="playBtn" onclick="toggleAnimation()">▶️ Ξεκίνα Animation</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var isAnimating=false;
+var animationInterval=null;
+var costumeIndex=1;
+var costumeEmojis=['🐱','😺','😸','😹','😻'];
+
+function updateDisplay(){
+  var divisor=parseInt(document.getElementById('divisor').value);
+  document.getElementById('divisorValue').textContent=divisor;
+  document.getElementById('divisorDisplay').textContent=divisor;
+  var waitTime=(1/divisor).toFixed(3);
+  document.getElementById('waitTime').textContent=waitTime+' δλ.';
+}
+
+function toggleAnimation(){
+  if(isAnimating){
+    stopAnimation();
+  }else{
+    startAnimation();
+  }
+}
+
+function startAnimation(){
+  var divisor=parseInt(document.getElementById('divisor').value);
+  var waitTime=(1/divisor)*1000;
+  isAnimating=true;
+  document.getElementById('playBtn').textContent='⏸️ Σταμάτα Animation';
+  document.getElementById('character').classList.add('walking');
+  animationInterval=setInterval(function(){
+    costumeIndex=(costumeIndex%costumeEmojis.length);
+    document.getElementById('character').textContent=costumeEmojis[costumeIndex];
+    costumeIndex++;
+  },waitTime);
+}
+
+function stopAnimation(){
+  isAnimating=false;
+  document.getElementById('playBtn').textContent='▶️ Ξεκίνα Animation';
+  document.getElementById('character').classList.remove('walking');
+  if(animationInterval){
+    clearInterval(animationInterval);
+    animationInterval=null;
+  }
+}
+
+function checkChallenge1(){
+  var divisor=parseInt(document.getElementById('divisor').value);
+  if(divisor<=8){
+    showFeedback('✅ Σωστά! Με μικρό διαιρέτη (<= 8), η κίνηση είναι πιο αργή!',true);
+  }else{
+    showFeedback('❌ Προσπάθησε με μικρότερο διαιρέτη για πιο αργή κίνηση!',false);
+  }
+}
+
+function checkChallenge2(){
+  var divisor=parseInt(document.getElementById('divisor').value);
+  if(divisor>=30){
+    showFeedback('✅ Σωστά! Με μεγάλο διαιρέτη (>= 30), η κίνηση είναι πολύ γρήγορη!',true);
+  }else{
+    showFeedback('❌ Προσπάθησε με μεγαλύτερο διαιρέτη για πιο γρήγορη κίνηση!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+updateDisplay();
+</script>
+</body>
+</html>

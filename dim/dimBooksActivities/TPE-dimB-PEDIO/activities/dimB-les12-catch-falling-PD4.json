@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Συσκευές Υπολογιστή",
+  "subtitle": "Πιάσε μόνο συσκευές ΕΞΟΔΟΥ!",
+  "instructions": "Πιάσε μόνο ΣΥΣΚΕΥΕΣ ΕΞΟΔΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Οθόνη", "correct": true, "color": "#4CAF50"},
+    {"text": "Ποντίκι", "correct": false, "color": "#f44336"},
+    {"text": "Εκτυπωτής", "correct": true, "color": "#2196F3"},
+    {"text": "Κάμερα", "correct": false, "color": "#FF9800"},
+    {"text": "Ηχεία", "correct": true, "color": "#9C27B0"},
+    {"text": "Μικρόφωνο", "correct": false, "color": "#E91E63"},
+    {"text": "Ακουστικά", "correct": true, "color": "#009688"},
+    {"text": "Πληκτρολόγιο", "correct": false, "color": "#FFC107"},
+    {"text": "Οθόνη αφής", "correct": true, "color": "#795548"},
+    {"text": "Σαρωτής", "correct": false, "color": "#607D8B"}
+  ]
+}

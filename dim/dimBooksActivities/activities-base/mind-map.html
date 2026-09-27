@@ -1,0 +1,350 @@
+<!-- v002-260919: tap-to-place fallback for touch screens -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Νοητικός Χάρτης</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:820px;width:100%;background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);padding:30px;text-align:center;overflow:hidden}
+h1{color:#302b63;font-size:1.8rem;margin-bottom:5px}
+h2{color:#666;font-size:1.1rem;margin-bottom:15px;font-weight:400}
+.btn{background:linear-gradient(135deg,#302b63,#24243e);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.2rem;cursor:pointer;box-shadow:0 5px 15px rgba(48,43,99,.3);transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(48,43,99,.4)}
+.hidden{display:none}
+.map-area{position:relative;width:100%;height:440px;margin:10px auto 0}
+.map-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#302b63,#24243e);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;text-align:center;z-index:10;box-shadow:0 4px 20px rgba(48,43,99,.4);line-height:1.2;padding:8px}
+.map-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.branch-node{position:absolute;z-index:5;display:flex;flex-direction:column;align-items:center;gap:4px;transform:translate(-50%,-50%)}
+.branch-label{padding:8px 16px;border-radius:12px;font-size:.85rem;font-weight:700;color:#fff;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.15);text-align:center}
+.branch-drop{min-width:110px;min-height:50px;border:2px dashed rgba(0,0,0,.15);border-radius:12px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;padding:6px;transition:all .2s;background:rgba(255,255,255,.85)}
+.branch-drop.hover{border-color:#302b63;background:rgba(48,43,99,.08);transform:scale(1.03)}
+.branch-drop.highlight-ok{background:rgba(76,175,80,.12);border-color:#4caf50}
+.branch-drop.highlight-fail{background:rgba(244,67,54,.1);border-color:#f44336}
+.pool-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 0;padding:12px;background:#f3e5f5;border-radius:12px;min-height:50px}
+.chip{padding:7px 13px;border-radius:20px;font-size:.82rem;font-weight:600;background:#fff;border:2px solid #ce93d8;color:#4a148c;cursor:grab;user-select:none;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.chip:active{cursor:grabbing}
+.chip.placed{display:none}
+.chip.correct{border-color:#4caf50;background:#e8f5e9}
+.chip.wrong{border-color:#f44336;background:#ffebee}
+.chip.tap-selected{outline:3px solid #302b63!important;background:#e8eaf6!important;box-shadow:0 0 12px rgba(48,43,99,.4)!important}
+.branch-drop.tap-target{border-color:#302b63;background:rgba(48,43,99,.08)}
+.info-bar{display:flex;justify-content:space-between;margin-bottom:6px;font-size:.9rem;color:#666}
+.btn-check{background:linear-gradient(135deg,#302b63,#7e57c2);color:#fff;border:none;padding:11px 28px;border-radius:25px;font-size:1rem;cursor:pointer;margin:8px;box-shadow:0 4px 12px rgba(48,43,99,.3);transition:transform .2s}
+.btn-check:hover{transform:translateY(-2px)}
+.feedback{font-size:1.1rem;font-weight:600;margin:6px 0;min-height:28px}
+.feedback.ok{color:#4caf50}
+.feedback.fail{color:#f44336}
+.end-score{font-size:3rem;color:#302b63;font-weight:700;margin:15px 0}
+.instructions-text{color:#666;margin-bottom:18px;font-size:.95rem;line-height:1.5}
+@media(max-width:600px){
+  .map-area{height:380px}
+  .map-center{width:90px;height:90px;font-size:.8rem}
+  .branch-label{font-size:.75rem;padding:6px 10px}
+  .branch-drop{min-width:80px;min-height:40px}
+  .chip{font-size:.75rem;padding:5px 10px}
+}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div id="error" class="hidden" style="color:#f44336;font-size:1.1rem;padding:30px"></div>
+<div id="startScreen">
+  <h1 id="gameTitle">Νοητικός Χάρτης</h1>
+  <h2 id="gameSubtitle">Τοποθέτησε τις λέξεις-κλειδιά στους σωστούς κλάδους!</h2>
+  <p class="instructions-text">Σύρε κάθε λέξη-κλειδί από την κάτω περιοχή και άφησέ τη στον σωστό κλάδο του χάρτη.<br>Κλικ σε τοποθετημένη λέξη για να την επιστρέψεις.<br><b>Οθόνες αφής:</b> πάτα τη λέξη και μετά τον κλάδο-στόχο — ή σύρε τη με το δάχτυλο.</p>
+  <button class="btn" onclick="startGame()">&#9654; Έναρξη</button>
+</div>
+<div id="gameScreen" class="hidden">
+  <div class="info-bar"><span id="scoreInfo"></span><span id="placedInfo"></span></div>
+  <div class="feedback" id="feedback"></div>
+  <div class="map-area" id="mapArea">
+    <svg class="map-lines" id="mapLines"></svg>
+    <div class="map-center" id="mapCenter"></div>
+  </div>
+  <div class="pool-area" id="poolArea"></div>
+  <div><button class="btn-check" onclick="checkAnswers()">&#10003; Έλεγχος</button></div>
+</div>
+<div id="endScreen" class="hidden">
+  <h1>Αποτέλεσμα</h1>
+  <div class="end-score" id="endScore"></div>
+  <p id="endMsg" style="font-size:1.1rem;color:#666;margin-bottom:20px"></p>
+  <button class="btn" onclick="restartGame()">&#128260; Ξανά!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+let gameData=null,placements={},dragEl=null,dragItemIdx=null,touchMoved=false,tapStartX=0,tapStartY=0,tapSelIdx=null;
+
+if(!dataFile){document.getElementById('error').textContent='\u0394\u03b5\u03bd \u03b2\u03c1\u03ad\u03b8\u03b7\u03ba\u03b5 \u03b1\u03c1\u03c7\u03b5\u03af\u03bf \u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd\u03c9\u03bd. \u03a7\u03c1\u03b7\u03c3\u03b9\u03bc\u03bf\u03c0\u03bf\u03af\u03b7\u03c3\u03b5 ?data=file.json';document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')}else{fetch(dataFile).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(d=>{gameData=d;document.getElementById('gameTitle').textContent=esc(d.title||'\u039d\u03bf\u03b7\u03c4\u03b9\u03ba\u03cc\u03c2 \u03a7\u03ac\u03c1\u03c4\u03b7\u03c2');document.getElementById('gameSubtitle').textContent=esc(d.subtitle||'')}).catch(()=>{document.getElementById('error').textContent='\u03a3\u03c6\u03ac\u03bb\u03bc\u03b1 \u03c6\u03cc\u03c1\u03c4\u03c9\u03c3\u03b7\u03c2 \u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd\u03c9\u03bd: '+esc(dataFile);document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')})}
+
+function startGame(){
+  placements={};
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('gameScreen').classList.remove('hidden');
+  document.getElementById('mapCenter').textContent=gameData.centralTopic||'Θέμα';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('scoreInfo').textContent='';
+  buildBranches();
+  buildPool();
+  updateCounts();
+}
+
+function buildBranches(){
+  const area=document.getElementById('mapArea');
+  const svg=document.getElementById('mapLines');
+  area.querySelectorAll('.branch-node').forEach(n=>n.remove());
+  svg.innerHTML='';
+  const branches=gameData.branches;
+  const n=branches.length;
+  const aW=area.offsetWidth||760;
+  const aH=area.offsetHeight||440;
+  const cx=aW/2,cy=aH/2;
+  const radiusX=aW*0.37,radiusY=aH*0.37;
+  branches.forEach((b,i)=>{
+    const angle=(-90+i*(360/n))*Math.PI/180;
+    const bx=cx+radiusX*Math.cos(angle);
+    const by=cy+radiusY*Math.sin(angle);
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+    line.setAttribute('x2',bx);line.setAttribute('y2',by);
+    line.setAttribute('stroke',b.color||'#999');
+    line.setAttribute('stroke-width','3');
+    line.setAttribute('stroke-dasharray','6,4');
+    line.setAttribute('opacity','0.5');
+    svg.appendChild(line);
+    const node=document.createElement('div');
+    node.className='branch-node';
+    node.style.left=bx+'px';
+    node.style.top=by+'px';
+    node.innerHTML='<div class="branch-label" style="background:'+esc(b.color||'#999')+'">'+esc(b.label)+'</div>'
+      +'<div class="branch-drop" data-branch="'+esc(b.id)+'"></div>';
+    area.appendChild(node);
+  });
+  setupDropZones();
+}
+
+function buildPool(){
+  const pool=document.getElementById('poolArea');
+  pool.innerHTML='';
+  const allKeywords=[];
+  gameData.branches.forEach(b=>{
+    b.keywords.forEach(kw=>{
+      allKeywords.push({text:kw,branchId:b.id});
+    });
+  });
+  const shuffled=allKeywords.map((v,i)=>({v,i,s:Math.random()})).sort((a,b)=>a.s-b.s).map(o=>o.v);
+  shuffled.forEach((item,i)=>{
+    const chip=document.createElement('div');
+    chip.className='chip';
+    chip.textContent=item.text;
+    chip.dataset.branchId=item.branchId;
+    chip.dataset.index=i;
+    chip.dataset.text=item.text;
+    chip.draggable=true;
+    chip.ondragstart=e=>{
+      dragEl=chip;dragItemIdx=i;
+      e.dataTransfer.setData('text/plain',String(i));
+      chip.style.opacity='.5';
+    };
+    chip.ondragend=()=>{if(chip)chip.style.opacity='1'};
+    chip.ontouchstart=e=>{
+      touchMoved=false;
+      dragEl=chip;dragItemIdx=i;
+    };
+    pool.appendChild(chip);
+  });
+  setupTouch();
+}
+
+function setupTouch(){
+  document.ontouchstart=e=>{
+    const t=e.touches[0];
+    if(t){tapStartX=t.clientX;tapStartY=t.clientY}
+  };
+  document.ontouchmove=e=>{
+    if(!dragEl)return;
+    const t=e.touches[0];
+    if(!touchMoved){if(Math.abs(t.clientX-tapStartX)<10&&Math.abs(t.clientY-tapStartY)<10)return;touchMoved=true;dragEl.classList.add('dragging')}
+    e.preventDefault();
+    const el=document.elementFromPoint(t.clientX,t.clientY);
+    document.querySelectorAll('.branch-drop').forEach(z=>z.classList.remove('hover'));
+    if(el){
+      const zone=el.closest('.branch-drop');
+      if(zone)zone.classList.add('hover');
+    }
+  };
+  document.ontouchend=e=>{
+    const t=e.changedTouches[0];
+    if(!t)return;
+    const moved=Math.abs(t.clientX-tapStartX)>10||Math.abs(t.clientY-tapStartY)>10;
+    document.querySelectorAll('.branch-drop').forEach(z=>z.classList.remove('hover'));
+    if(dragEl&&moved){
+      const el=document.elementFromPoint(t.clientX,t.clientY);
+      if(el){
+        const zone=el.closest('.branch-drop');
+        if(zone)placeItem(dragItemIdx,zone.dataset.branch);
+      }
+      dragEl.classList.remove('dragging');
+    }else if(!moved){handleTap(t)}
+    dragEl=null;dragItemIdx=null;touchMoved=false;
+  };
+}
+
+function handleTap(t){
+  if(!t)return;
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  if(!el)return;
+  const poolChip=el.closest('.pool-area .chip');
+  const placedChip=el.closest('.branch-drop .chip');
+  if(tapSelIdx===null){
+    if(poolChip){tapSelIdx=parseInt(poolChip.dataset.index);poolChip.classList.add('tap-selected');document.querySelectorAll('.branch-drop').forEach(z=>z.classList.add('tap-target'))}
+    else if(placedChip){removePlaced(parseInt(placedChip.dataset.index))}
+    return;
+  }
+  if(poolChip){const i2=parseInt(poolChip.dataset.index);const same=(i2===tapSelIdx);clearTapSel();if(!same){tapSelIdx=i2;poolChip.classList.add('tap-selected');document.querySelectorAll('.branch-drop').forEach(z=>z.classList.add('tap-target'))}return}
+  if(placedChip){removePlaced(parseInt(placedChip.dataset.index));return}
+  if(el.closest('.branch-drop')){placeItem(tapSelIdx,el.closest('.branch-drop').dataset.branch)}
+  clearTapSel();
+}
+
+function clearTapSel(){
+  tapSelIdx=null;
+  document.querySelectorAll('.chip.tap-selected').forEach(c=>c.classList.remove('tap-selected'));
+  document.querySelectorAll('.branch-drop.tap-target').forEach(z=>z.classList.remove('tap-target'));
+}
+
+function setupDropZones(){
+  document.querySelectorAll('.branch-drop').forEach(zone=>{
+    zone.ondragover=e=>{e.preventDefault();zone.classList.add('hover')};
+    zone.ondragleave=()=>{zone.classList.remove('hover')};
+    zone.ondrop=e=>{
+      e.preventDefault();zone.classList.remove('hover');
+      const idx=parseInt(e.dataTransfer.getData('text/plain'));
+      placeItem(idx,zone.dataset.branch);
+    };
+  });
+}
+
+function placeItem(itemIdx,branchId){
+  if(placements[itemIdx]!==undefined){
+    const oldZone=document.querySelector('.branch-drop[data-branch="'+placements[itemIdx]+'"]');
+    if(oldZone){
+      const existing=oldZone.querySelector('.chip[data-index="'+itemIdx+'"]');
+      if(existing)existing.remove();
+    }
+  }
+  placements[itemIdx]=branchId;
+  const zoneEl=document.querySelector('.branch-drop[data-branch="'+branchId+'"]');
+  const poolChip=document.querySelector('.pool-area .chip[data-index="'+itemIdx+'"]');
+  if(poolChip)poolChip.classList.add('placed');
+  const clone=document.createElement('div');
+  clone.className='chip';
+  clone.textContent=poolChip?poolChip.dataset.text:'';
+  clone.dataset.index=itemIdx;
+  clone.onclick=()=>removePlaced(itemIdx);
+  zoneEl.appendChild(clone);
+  updateCounts();
+}
+
+function removePlaced(itemIdx){
+  const zc=document.querySelector('.branch-drop .chip[data-index="'+itemIdx+'"]');
+  if(zc)zc.remove();
+  delete placements[itemIdx];
+  const pc=document.querySelector('.pool-area .chip[data-index="'+itemIdx+'"]');
+  if(pc)pc.classList.remove('placed');
+  updateCounts();
+}
+
+function updateCounts(){
+  const placed=Object.keys(placements).length;
+  const pool=document.getElementById('poolArea');
+  const total=pool.querySelectorAll('.chip').length;
+  document.getElementById('placedInfo').textContent='\u03a4\u03bf\u03c0\u03bf\u03b8\u03b5\u03c4\u03b7\u03bc\u03ad\u03bd\u03b1: '+placed+'/'+total;
+}
+
+function checkAnswers(){
+  let correct=0;
+  const pool=document.getElementById('poolArea');
+  const total=pool.querySelectorAll('.chip').length;
+  pool.querySelectorAll('.chip').forEach(chip=>{
+    const idx=chip.dataset.index;
+    const correctBranch=chip.dataset.branchId;
+    const placed=placements[idx];
+    chip.classList.remove('correct','wrong');
+    if(placed!==undefined&&placed===correctBranch){
+      correct++;
+      chip.classList.add('correct');
+    }else if(placed!==undefined){
+      chip.classList.add('wrong');
+    }
+  });
+  document.querySelectorAll('.branch-drop').forEach(z=>z.classList.remove('highlight-ok','highlight-fail'));
+  document.querySelectorAll('.branch-drop .chip').forEach(chip=>{
+    const idx=chip.dataset.index;
+    const poolChip=pool.querySelector('.chip[data-index="'+idx+'"]');
+    const correctBranch=poolChip?poolChip.dataset.branchId:null;
+    const placedBranch=placements[idx];
+    chip.classList.remove('correct','wrong');
+    if(placedBranch===correctBranch){
+      correct++;
+      chip.classList.add('correct');
+    }else{
+      chip.classList.add('wrong');
+    }
+  });
+  correct=0;
+  pool.querySelectorAll('.chip').forEach(chip=>{
+    const idx=chip.dataset.index;
+    const correctBranch=chip.dataset.branchId;
+    if(placements[idx]!==undefined&&placements[idx]===correctBranch)correct++;
+  });
+  document.querySelectorAll('.branch-drop .chip').forEach(chip=>{
+    const idx=chip.dataset.index;
+    const poolChip=pool.querySelector('.chip[data-index="'+idx+'"]');
+    const correctBranch=poolChip?poolChip.dataset.branchId:null;
+    if(placements[idx]!==undefined&&placements[idx]===correctBranch)correct++;
+  });
+  correct=0;
+  const counted=new Set();
+  pool.querySelectorAll('.chip').forEach(chip=>{
+    const idx=chip.dataset.index;
+    if(counted.has(idx))return;
+    counted.add(idx);
+    const correctBranch=chip.dataset.branchId;
+    if(placements[idx]!==undefined&&placements[idx]===correctBranch)correct++;
+  });
+  const fb=document.getElementById('feedback');
+  if(correct===total&&Object.keys(placements).length===total){
+    fb.textContent='\u03a4\u03ad\u03bb\u03b5\u03b9\u03b1! \u038c\u03bb\u03b1 \u03c3\u03c9\u03c3\u03c4\u03ac! \ud83c\udf89';
+    fb.className='feedback ok';
+    setTimeout(()=>endGame(correct,total),1500);
+  }else{
+    fb.textContent=correct+' / '+total+' \u03c3\u03c9\u03c3\u03c4\u03ac. \u0394\u03bf\u03ba\u03af\u03bc\u03b1\u03c3\u03b5 \u03be\u03b1\u03bd\u03ac!';
+    fb.className='feedback fail';
+  }
+}
+
+function endGame(score,total){
+  document.getElementById('gameScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.remove('hidden');
+  document.getElementById('endScore').textContent=score+' / '+total;
+  if(score===total)document.getElementById('endMsg').textContent='\u03a4\u03ad\u03bb\u03b5\u03b9\u03b1! \u03a4\u03b1 \u03be\u03ad\u03c1\u03b5\u03b9\u03c2 \u03cc\u03bb\u03b1! \ud83c\udf1f';
+  else if(score>=total*0.7)document.getElementById('endMsg').textContent='\u03a0\u03bf\u03bb\u03cd \u03ba\u03b1\u03bb\u03ac! \ud83d\ude0a';
+  else document.getElementById('endMsg').textContent='\u0394\u03bf\u03ba\u03af\u03bc\u03b1\u03c3\u03b5 \u03be\u03b1\u03bd\u03ac! \ud83d\udcaa';
+}
+
+function restartGame(){
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('startScreen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

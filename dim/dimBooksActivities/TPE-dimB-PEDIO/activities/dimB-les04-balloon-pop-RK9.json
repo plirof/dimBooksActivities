@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μοτίβο Επανάληψης",
+  "subtitle": "Μόνο τα σωστά βήματα!",
+  "instruction": "Σπάσε μόνο τα ΣΩΣΤΑ βήματα για να βρεις μοτίβο!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Βρες εντολές που επαναλαμβάνονται", "correct": true, "color": "#FF6B6B" },
+    { "text": "Γράψε τυχαία εντολές", "correct": false, "color": "#4ECDC4" },
+    { "text": "Διάβασε τον αριθμό στο κυκλάκι", "correct": true, "color": "#45B7D1" },
+    { "text": "Αγνόησε τον αριθμό", "correct": false, "color": "#96CEB4" },
+    { "text": "Σχεδίασε τα μοτίβα", "correct": true, "color": "#FFEAA7" },
+    { "text": "Διάγραψε τις εντολές", "correct": false, "color": "#DDA0DD" },
+    { "text": "Βρες το μοτίβο", "correct": true, "color": "#98D8C8" },
+    { "text": "Μάντευε χωρίς σκέψη", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ταίριαξε τα προγράμματα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Παράτησε την προσπάθεια", "correct": false, "color": "#85C1E9" }
+  ]
+}

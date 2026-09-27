@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εννοιολογικός Χάρτης",
+  "subtitle": "Ταξινόμησε τα στοιχεία στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε στοιχείο.",
+  "categories": [
+    { "id": "stixia", "name": "Στοιχεία Χάρτη", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "leitourgies", "name": "Λειτουργίες", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "prosthesi", "name": "Προσθήκη", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "ekana", "name": "Όχι στον Χάρτη", "color": "#f44336", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Έννοια", "category": "stixia" },
+    { "text": "Σύνδεση", "category": "stixia" },
+    { "text": "Αντιγραφή εικόνας", "category": "leitourgies" },
+    { "text": "Επικόλληση", "category": "leitourgies" },
+    { "text": "Υπερσύνδεσμος", "category": "prosthesi" },
+    { "text": "Εικόνα", "category": "prosthesi" },
+    { "text": "Διεύθυνση ιστού", "category": "prosthesi" },
+    { "text": "Ιός", "category": "ekana" },
+    { "text": "Firewall", "category": "ekana" },
+    { "text": "Λέξη κλειδί", "category": "leitourgies" },
+    { "text": "Φόντο εικόνας", "category": "prosthesi" },
+    { "text": "Πληκτρολόγιο", "category": "ekana" }
+  ],
+  "duration": 45
+}

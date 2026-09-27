@@ -1,0 +1,46 @@
+{
+  "title": "Βρες τα Λάθη: micro:bit",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "1000", "error": false, "correct": "", "feedback": "" },
+        { "text": "ms", "error": false, "correct": "", "feedback": "" },
+        { "text": "ισούται", "error": false, "correct": "", "feedback": "" },
+        { "text": "με", "error": false, "correct": "", "feedback": "" },
+        { "text": "10", "error": true, "correct": "1", "feedback": "1000 ms = 1 δευτερόλεπτο, όχι 10" },
+        { "text": "δευτερόλεπτα.", "error": true, "correct": "δευτερόλεπτο", "feedback": "1000 ms = 1 δευτερόλεπτο, όχι 10" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "κουμπί", "error": false, "correct": "", "feedback": "" },
+        { "text": "Α", "error": false, "correct": "", "feedback": "" },
+        { "text": "σταματάει", "error": true, "correct": "ξεκινάει", "feedback": "Το κουμπί Α ΞΕΚΙΝΑΕΙ τη μελωδία. Το Β τη σταματάει" },
+        { "text": "την", "error": false, "correct": "", "feedback": "" },
+        { "text": "μελωδία.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "micro:bit", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "ένα", "error": false, "correct": "", "feedback": "" },
+        { "text": "λογισμικό", "error": true, "correct": "μικροελεγκτής", "feedback": "Το micro:bit είναι ένας ΜΙΚΡΟΕΛΕΓΚΤΗΣ (υλικό), όχι λογισμικό" },
+        { "text": "υπολογιστή.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Με", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "κούνημα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αλλάζει", "error": false, "correct": "", "feedback": "" },
+        { "text": "η", "error": false, "correct": "", "feedback": "" },
+        { "text": "μελωδία.", "error": true, "correct": "ο ρυθμός", "feedback": "Με το κούνημα αλλάζει ο ΡΥΘΜΟΣ (τέμπο), όχι η ίδια η μελωδία" }
+      ]
+    }
+  ]
+}

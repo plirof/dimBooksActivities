@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πνευματικά Δικαιώματα</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.statement {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 20px;
+border: 2px solid #e0e0e0;
+}
+.statement-text {
+color: #333;
+line-height: 1.6;
+margin-bottom: 15px;
+font-weight: 500;
+}
+.answer-buttons {
+display: flex;
+gap: 15px;
+}
+.answer-btn {
+flex: 1;
+padding: 15px 20px;
+border: 2px solid;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.yes-btn {
+border-color: #27ae60;
+color: #27ae60;
+}
+.yes-btn:hover, .yes-btn.selected {
+background: #27ae60;
+color: white;
+}
+.no-btn {
+border-color: #e74c3c;
+color: #e74c3c;
+}
+.no-btn:hover, .no-btn.selected {
+background: #e74c3c;
+color: white;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.feedback {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+font-weight: bold;
+}
+.feedback.show {
+display: block;
+}
+.feedback.correct {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.feedback.wrong {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .answer-buttons > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>©️ Πνευματικά Δικαιώματα</h1>
+<p class="subtitle">Απαντήστε ΝΑΙ ή ΟΧΙ στις ερωτήσεις</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/5</div>
+
+<div class="container">
+<div class="statement" id="stmt1">
+<div class="statement-text">1. Στο διαδίκτυο μπορούμε να χρησιμοποιήσουμε υλικό (κείμενα ή εικόνες) χωρίς άδεια;</div>
+<div class="answer-buttons">
+<button class="answer-btn yes-btn" onclick="answer(1, false)">ΝΑΙ</button>
+<button class="answer-btn no-btn" onclick="answer(1, true)">ΟΧΙ</button>
+</div>
+</div>
+
+<div class="statement" id="stmt2">
+<div class="statement-text">2. Έχω μια ιδέα για τη δημιουργία ενός παραμυθιού. Η ιδέα αυτή προστατεύεται;</div>
+<div class="answer-buttons">
+<button class="answer-btn yes-btn" onclick="answer(2, false)">ΝΑΙ</button>
+<button class="answer-btn no-btn" onclick="answer(2, true)">ΟΧΙ</button>
+</div>
+</div>
+
+<div class="statement" id="stmt3">
+<div class="statement-text">3. Έχω γράψει ένα διήγημα. Μπορεί κάποιος να το μεταφράσει και να το αναρτήσει με την άδειά μου;</div>
+<div class="answer-buttons">
+<button class="answer-btn yes-btn" onclick="answer(3, true)">ΝΑΙ</button>
+<button class="answer-btn no-btn" onclick="answer(3, false)">ΟΧΙ</button>
+</div>
+</div>
+
+<div class="statement" id="stmt4">
+<div class="statement-text">4. Είναι υποχρεωτικό να αναφέρω τις πηγές και τους δημιουργούς των έργων που χρησιμοποιώ για τις σχολικές εργασίες;</div>
+<div class="answer-buttons">
+<button class="answer-btn yes-btn" onclick="answer(4, true)">ΝΑΙ</button>
+<button class="answer-btn no-btn" onclick="answer(4, false)">ΟΧΙ</button>
+</div>
+</div>
+
+<div class="statement" id="stmt5">
+<div class="statement-text">5. Μπορώ να πάρω φωτογραφίες από διάφορα παραμύθια, να φτιάξω δικό μου και να το πουλήσω χωρίς την άδεια των δημιουργών;</div>
+<div class="answer-buttons">
+<button class="answer-btn yes-btn" onclick="answer(5, false)">ΝΑΙ</button>
+<button class="answer-btn no-btn" onclick="answer(5, true)">ΟΧΙ</button>
+</div>
+</div>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<div class="mascot">📚</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 5;
+
+function answer(num, isYes) {
+const stmt = document.getElementById('stmt' + num);
+if (stmt.classList.contains('answered')) return;
+
+stmt.classList.add('answered');
+
+const correctAnswer = num === 1 ? false : num === 2 ? false : num === 3 ? true : num === 4 ? true : num === 5 ? false : false;
+
+if (isYes === correctAnswer) {
+score++;
+document.getElementById('score').textContent = score;
+stmt.style.borderColor = '#27ae60';
+} else {
+stmt.style.borderColor = '#e74c3c';
+}
+
+answered++;
+
+const feedback = document.getElementById('feedback');
+feedback.className = 'feedback show ' + (isYes === correctAnswer ? 'correct' : 'wrong');
+
+if (answered === total) {
+if (score === total) {
+feedback.innerHTML = '🎉 Εξαιρετικό! Καταλαβαίνετε πλήρως τα πνευματικά δικαιώματα!';
+} else {
+feedback.innerHTML = '📚 ' + score + '/' + total + ' σωστά. Συνεχίστε να μαθαίνετε για τα πνευματικά δικαιώματα!';
+}
+} else {
+feedback.style.display = 'none';
+}
+}
+</script>
+</body>
+</html>

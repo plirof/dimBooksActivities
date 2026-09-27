@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v02 -260916 - fix issue with the index in the secondary selection
+-->	
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διόρθωση Αλγορίθμου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f9a8d4);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#9d174d,#ec4899);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fdf2f8;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#9d174d;text-align:center;line-height:1.5}
+.round-box{background:#fafafa;border-radius:16px;border:2px solid #e5e7eb;padding:16px;margin-bottom:14px}
+.round-title{text-align:center;font-weight:700;color:#9d174d;font-size:1.05em;margin-bottom:12px}
+.step-row{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:6px;border-radius:12px;border:2px solid transparent;cursor:pointer;transition:all .25s;background:#fff}
+.step-row:hover{border-color:#f9a8d4;background:#fdf2f8}
+.step-row.selected{border-color:#ec4899;background:#fce7f3;box-shadow:0 0 12px rgba(236,72,153,.15)}
+.step-row.found-bug{border-color:#f97316;background:#fff7ed;animation:pulse .5s}
+.step-row.fixed{border-color:#16a34a;background:#f0fdf4}
+.step-num{width:28px;height:28px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;color:#6b7280;flex-shrink:0}
+.step-icon{font-size:1.2em;flex-shrink:0}
+.step-text{flex:1;font-size:.9em;color:#334155}
+.step-badge{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:700}
+.badge-bug{background:#fef2f2;color:#dc2626}
+.badge-ok{background:#f0fdf4;color:#16a34a}
+.phase-info{text-align:center;font-size:.85em;color:#9d174d;margin-bottom:10px;font-weight:600}
+.fix-panel{background:#fef2f8;border-radius:14px;padding:14px;margin-top:10px;display:none}
+.fix-panel h4{text-align:center;color:#9d174d;margin-bottom:10px;font-size:.9em}
+.fix-options{display:flex;flex-direction:column;gap:8px}
+.fix-opt{padding:10px 14px;background:#fff;border:2px solid #e9d5ff;border-radius:12px;cursor:pointer;font-size:.88em;transition:all .2s;text-align:center}
+.fix-opt:hover{border-color:#ec4899;background:#fdf2f8}
+.fix-opt.correct-fix{border-color:#16a34a;background:#f0fdf4}
+.fix-opt.wrong-fix{border-color:#dc2626;background:#fef2f2}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#9d174d,#ec4899);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(157,23,77,.4)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+@media(max-width:600px){.step-row{padding:8px 10px;gap:6px}.step-text{font-size:.82em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .step-row > * + * { margin-left: 10px; }
+  .fix-options > * + * { margin-top: 8px; }
+  .controls > * + * { margin-left: 15px; }
+  @media(max-width:600px){
+    .step-row > * + * { margin-left: 6px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🐛 Διόρθωση Αλγορίθμου</h1>
+<p>Βρες το λάθος βήμα και διάλεξε τη σωστή διόρθωση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Κάθε αλγόριθμος έχει ένα <b>λάθος βήμα</b>. Πάτα το βήμα που νομίζεις ότι είναι λάθος, και μετά διάλεξε τη σωστή διόρθωση.</div>
+<div class="score-bar">Πρόβλημα <span id="roundNum">1</span>/<span id="roundTotal">5</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextRound()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var puzzles=[
+{
+title:'🦺 Διάσχιση δρόμου',
+steps:['Κοιτάζω αριστερά','Κοιτάζω δεξιά','Διασχίζω τον δρόμο','Κοιτάζω πάλι αριστερά'],
+bugIdx:2,
+bugWhy:'Διασχίζεις πριν ελέγξεις αν έρχονται αυτοκίνητα!',
+fixIdx:2,
+fixes:['Περιμένω να φύγουν τα αυτοκίνητα','Κοιτάζω πάλι αριστερά','Διασχίζω αν δεν έρχεται τίποτα']
+},
+{
+title:'🪥 Βουρτσίζω τα δόντια μου',
+steps:['Παίρνω την οδοντόβουρτσα','Βάζω οδοντόκρεμα','Βουρτσίζω τα δόντια μου','Φτύνω και ξεπλένω','Βάζω την οδοντόβουρτσα στο ψυγείο'],
+bugIdx:4,
+bugWhy:'Η οδοντόβουρτσα μπαίνει στο ποτήρι, όχι στο ψυγείο!',
+fixIdx:0,
+fixes:['Βάζω την οδοντόβουρτσα στο ποτήρι','Ξεπλένω την οδοντόβουρτσα','Βάζω την οδοντόβουρτσα στο νεροχύτη']
+},
+{
+title:'🍳 Χτυπάω αυγό',
+steps:['Παίρνω ένα αυγό','Χτυπάω το αυγό στο τραπέζι','Χωρίζω το κέλυφος','Ρίχνω το αυγό στο τηγάνι','Χτυπάω το αυγό με πιρούνι','Ανοίγω το μάτι της κουζίνας'],
+bugIdx:5,
+bugWhy:'Πρέπει να ανάψεις το μάτι πριν ρίξεις το αυγό!',
+fixIdx:0,
+fixes:['Ανοίγω το μάτι της κουζίνας','Ανοίγω το μάτι στο τέλος','Δεν χρειάζεται να ανάψω']
+},
+{
+title:'🌧️ Φεύγω με βροχή',
+steps:['Βλέπω ότι βρέχει','Παίρνω ομπρέλα','Βγαίνω έξω','Ανοίγω την ομπρέλα'],
+bugIdx:3,
+bugWhy:'Πρέπει να ανοίξεις την ομπρέλα πριν βγεις έξω!',
+fixIdx:0,
+fixes:['Ανοίγω την ομπρέλα','Τρέχω γρήγορα','Δεν χρειάζομαι ομπρέλα']
+},
+{
+title:'📱 Κάνω τηλεφώνημα',
+steps:['Ξεκλειδώνω το κινητό','Πατάω το εικονίδιο τηλεφώνου','Γράφω το μήνυμα','Πατάω «Κλήση»','Μιλάω'],
+bugIdx:2,
+bugWhy:'Γράφεις μήνυμα αντί να πας στην κλήση φωνής!',
+fixIdx:0,
+fixes:['Επιλέγω την επαφή και πατάω κλήση','Γράφω ένα email','Πατάω την κάμερα']
+}
+];
+
+var currentRound=0;
+var score=0;
+var phase='find';
+var selectedBug=-1;
+
+function renderRound(){
+var p=puzzles[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=puzzles.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('nextBtn').disabled=true;
+phase='find';
+selectedBug=-1;
+var area=document.getElementById('gameArea');
+var html='<div class="round-box"><div class="round-title">'+p.title+'</div>';
+html+='<div class="phase-info">👆 Πάτα το βήμα που νομίζεις ότι είναι λάθος</div>';
+for(var i=0;i<p.steps.length;i++){
+html+='<div class="step-row" data-idx="'+i+'" onclick="selectBug('+i+')">';
+html+='<span class="step-num">'+(i+1)+'</span>';
+html+='<span class="step-text">'+p.steps[i]+'</span>';
+html+='</div>';
+}
+html+='<div class="fix-panel" id="fixPanel"></div>';
+html+='</div>';
+area.innerHTML=html;
+}
+
+function selectBug(idx){
+if(phase!=='find')return;
+var p=puzzles[currentRound];
+selectedBug=idx;
+var rows=document.querySelectorAll('.step-row');
+for(var i=0;i<rows.length;i++)rows[i].classList.remove('selected');
+rows[idx].classList.add('selected');
+if(idx===p.bugIdx){
+phase='fix';
+rows[idx].classList.add('found-bug');
+showFixPanel();
+}else{
+showFeedback('❌ Αυτό το βήμα είναι σωστό! Ψάξε περισσότερο...',false);
+rows[idx].classList.remove('selected');
+setTimeout(function(){rows[idx].style.opacity='.7';},300);
+}
+}
+
+function showFixPanel(){
+var p=puzzles[currentRound];
+var panel=document.getElementById('fixPanel');
+var html='<h4>⚠️ Λάθος βήμα: «'+p.steps[p.bugIdx]+'»</h4>';
+html+='<p style="text-align:center;font-size:.82em;color:#9d174d;margin-bottom:10px">'+p.bugWhy+'</p>';
+html+='<p style="text-align:center;font-size:.85em;font-weight:600;color:#334155">Διάλεξε τη σωστή διόρθωση:</p>';
+html+='<div class="fix-options">';
+for(var i=0;i<p.fixes.length;i++){
+html+='<div class="fix-opt" onclick="selectFix('+i+')">'+p.fixes[i]+'</div>';
+}
+html+='</div>';
+panel.innerHTML=html;
+panel.style.display='block';
+}
+
+function selectFix(idx){
+var p=puzzles[currentRound];
+var opts=document.querySelectorAll('.fix-opt');
+if(idx===p.fixIdx){
+opts[idx].classList.add('correct-fix');
+score++;
+showFeedback('🎉 Σωστό! Η διόρθωση είναι: «'+p.fixes[idx]+'»',true);
+document.getElementById('nextBtn').disabled=false;
+document.getElementById('scoreStr').textContent=score;
+for(var i=0;i<opts.length;i++)opts[i].style.pointerEvents='none';
+}else{
+opts[idx].classList.add('wrong-fix');
+showFeedback('❌ Δεν είναι η σωστή διόρθωση. Δοκίμασε άλλη!',false);
+setTimeout(function(){opts[idx].classList.remove('wrong-fix');},800);
+}
+}
+
+function nextRound(){
+if(currentRound<puzzles.length-1){currentRound++;renderRound();}
+else showFinal();
+}
+
+function showFinal(){
+var pct=Math.round(score/puzzles.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Βρήκες όλα τα λάθη στους αλγορίθμους!';
+else if(pct>=60)msg='👏 Μπράβο! '+score+'/'+puzzles.length+' σωστά!';
+else msg='💪 '+score+'/'+puzzles.length+' σωστά. Δοκίμασε ξανά!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=60?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#9d174d">'+msg+'</div>';
+document.getElementById('nextBtn').disabled=true;
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+renderRound();
+</script>
+</body>
+</html>

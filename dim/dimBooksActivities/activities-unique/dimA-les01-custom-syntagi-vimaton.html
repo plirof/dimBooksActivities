@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+v260924 - διόρθωση σοβαρού λάθους: η αποδοχή καρτών σύγκριναν τη θέση στην ανακατεμένη λίστα (data-idx = σειρά εμφάνισης)
+	αντί για την πραγματική σειρά των βημάτων. Τώρα κάθε κάρτα κουβαλά το origIdx της, ο έλεγχος γίνεται στη
+	σωστή σειρά, και οι κάρτες της πισίνας δεν φοράνε πλέον αριθμό-θέση που παραπλανά.
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συνταγή Βημάτων 🧩</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.4rem; margin-bottom: 2px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    padding: 10px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #764ba2; }
+  .round { font-size: 1rem; color: #888; }
+  .task-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .task-emoji { font-size: 3.5rem; margin-bottom: 6px; }
+  .task-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 4px;
+  }
+  .task-desc {
+    font-size: 1rem;
+    color: #666;
+  }
+  .steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    min-height: 260px;
+  }
+  .step-card {
+    background: #fff;
+    border: 3px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s ease;
+    touch-action: manipulation;
+  }
+  .step-card:hover { border-color: #667eea; transform: translateX(4px); }
+  .step-card:active { transform: scale(.97); }
+  .step-card .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-card .step-emoji { font-size: 2rem; flex-shrink: 0; }
+  .step-card .step-text { font-size: 1.1rem; font-weight: 600; color: #2d3436; }
+  .step-card.placed {
+    border-color: #28a745;
+    background: #e8f5e9;
+    cursor: default;
+    opacity: .7;
+    transform: none !important;
+  }
+  .step-card.wrong-flash {
+    border-color: #dc3545;
+    background: #ffebee;
+    animation: shake .4s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .placeholder-area {
+    background: #f8f9ff;
+    border: 3px dashed #c0c0ff;
+    border-radius: 16px;
+    min-height: 200px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .placeholder-area .empty-msg {
+    text-align: center;
+    color: #aaa;
+    font-size: 1rem;
+    padding: 40px 0;
+  }
+  .placeholder-area .step-card {
+    border-color: #667eea;
+    background: #eef0ff;
+    cursor: default;
+    transform: none !important;
+  }
+  .placeholder-area .step-card:active { transform: none; }
+  .feedback {
+    text-align: center;
+    padding: 14px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px;
+    text-align: center;
+    display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .task-emoji { font-size: 3rem; }
+    .step-card .step-text { font-size: 1rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .steps-container > * + * { margin-top: 8px; }
+  .step-card > * + * { margin-left: 12px; }
+  .placeholder-area > * + * { margin-top: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>🧩 Συνταγή Βημάτων</h1>
+    <p>Βάλε τα βήματα στη σωστή σειρά!</p>
+  </div>
+
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+
+  <div id="gameArea">
+    <div class="task-card">
+      <div class="task-emoji" id="taskEmoji">🪥</div>
+      <div class="task-title" id="taskTitle">Πλένω τα δόντια μου</div>
+      <div class="task-desc" id="taskDesc">Πάτα τα βήματα με τη σωστή σειρά!</div>
+    </div>
+
+    <div class="placeholder-area" id="placeholderArea">
+      <div class="empty-msg" id="emptyMsg">👆 Πάτα τα βήματα από κάτω με τη σωστή σειρά!</div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="steps-container" id="stepsContainer"></div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+
+<script>
+  var rounds = [
+    {
+      emoji: '🪥',
+      title: 'Πλένω τα δόντια μου',
+      desc: 'Πάτα τα βήματα με τη σωστή σειρά!',
+      steps: [
+        { emoji: '🚰', text: 'Βρέχω την οδοντόβουρτσα' },
+        { emoji: '🧴', text: 'Βάζω οδοντόκρεμα' },
+        { emoji: '🦷', text: 'Βουρτσίζω τα δόντια μου' },
+        { emoji: '🫧', text: 'Ξεπλένω το στόμα μου' },
+        { emoji: '🧹', text: 'Καθαρίζω την οδοντόβουρτσα' }
+      ]
+    },
+    {
+      emoji: '🛏️',
+      title: 'Στρώνω το κρεβάτι μου',
+      desc: 'Πάτα τα βήματα με τη σωστή σειρά!',
+      steps: [
+        { emoji: '🧹', text: 'Βγάζω τα μαξιλάρια' },
+        { emoji: '🛏️', text: 'Απλώνω το σεντόνι' },
+        { emoji: '🛌', text: 'Βάζω την κουβέρτα' },
+        { emoji: '🟣', text: 'Τοποθετώ τα μαξιλάρια' },
+        { emoji: '🧸', text: 'Βάζω το αρκουδάκι μου' }
+      ]
+    },
+    {
+      emoji: '🎒',
+      title: 'Ετοιμάζω την τσάντα μου',
+      desc: 'Πάτα τα βήματα με τη σωστή σειρά!',
+      steps: [
+        { emoji: '📋', text: 'Βλέπω το πρόγραμμα' },
+        { emoji: '📚', text: 'Διαλέγω τα βιβλία' },
+        { emoji: '📓', text: 'Διαλέγω τα τετράδια' },
+        { emoji: '✏️', text: 'Ετοιμάζω την κασετίνα' },
+        { emoji: '🎒', text: 'Βάζω όλα στην τσάντα' }
+      ]
+    },
+    {
+      emoji: '🥪',
+      title: 'Ετοιμάζω το φαγητό μου',
+      desc: 'Πάτα τα βήματα με τη σωστή σειρά!',
+      steps: [
+        { emoji: '🧴', text: 'Πλένω τα χέρια μου' },
+        { emoji: '🍞', text: 'Παίρνω δύο φέτες ψωμί' },
+        { emoji: '🧀', text: 'Βάζω τυρί στο ψωμί' },
+        { emoji: '🥬', text: 'Βάζω μαρούλι' },
+        { emoji: '🥪', text: 'Κλείνω το σάντουιτς' }
+      ]
+    }
+  ];
+
+  var currentRound = 0;
+  var score = 0;
+  var waiting = false;
+
+  function startGame() {
+    currentRound = 0;
+    score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showRound();
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function showRound() {
+    if (currentRound >= rounds.length) {
+      showResult();
+      return;
+    }
+
+    waiting = false;
+    var r = rounds[currentRound];
+    document.getElementById('taskEmoji').textContent = r.emoji;
+    document.getElementById('taskTitle').textContent = r.title;
+    document.getElementById('taskDesc').textContent = r.desc;
+    document.getElementById('roundDisplay').textContent = (currentRound + 1) + '/' + rounds.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var placeholder = document.getElementById('placeholderArea');
+    placeholder.innerHTML = '<div class="empty-msg">👆 Πάτα τα βήματα από κάτω με τη σωστή σειρά!</div>';
+
+    var shuffled = shuffle(r.steps.slice().map(function(st, idx) {
+      return { emoji: st.emoji, text: st.text, origIdx: idx };
+    }));
+    var orderGuard = 0;
+    while (shuffled.every(function(it, i) { return it.origIdx === i; }) && orderGuard < 60) { shuffle(shuffled); orderGuard++; }
+    var container = document.getElementById('stepsContainer');
+    container.innerHTML = '';
+    for (var i = 0; i < shuffled.length; i++) {
+      (function(cardItem) {
+        var card = document.createElement('div');
+        card.className = 'step-card';
+        card.setAttribute('data-idx', cardItem.origIdx);
+        card.innerHTML = '<div class="step-emoji">' + cardItem.emoji + '</div><div class="step-text">' + cardItem.text + '</div>';
+        card.addEventListener('click', function() {
+          if (!waiting) tryPlace(this, r);
+        });
+        container.appendChild(card);
+      })(shuffled[i]);
+    }
+  }
+
+  var placedCount = 0;
+
+  function tryPlace(el, r) {
+    if (el.classList.contains('placed')) return;
+    var idx = parseInt(el.getAttribute('data-idx'));
+    var correctIdx = placedCount;
+
+    if (idx === correctIdx) {
+      el.classList.remove('wrong-flash');
+      el.classList.add('placed');
+
+      var placeholder = document.getElementById('placeholderArea');
+      var empty = placeholder.querySelector('.empty-msg');
+      if (empty) empty.remove();
+
+      var clone = el.cloneNode(true);
+      clone.className = 'step-card';
+      clone.style.cursor = 'default';
+      clone.style.transform = 'none';
+      clone.innerHTML = '<div class="step-num" style="background: #28a745;">' + (placedCount + 1) + '</div><div class="step-emoji">' + r.steps[placedCount].emoji + '</div><div class="step-text">' + r.steps[placedCount].text + '</div>';
+      placeholder.appendChild(clone);
+
+      placedCount++;
+      el.style.display = 'none';
+
+      if (placedCount === r.steps.length) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback correct';
+        fb.textContent = '✅ Μπράβο! ' + r.title + ' — τα κατάφερες!';
+        waiting = true;
+        setTimeout(function() {
+          placedCount = 0;
+          currentRound++;
+          showRound();
+        }, 1500);
+      }
+    } else {
+      el.classList.remove('wrong-flash');
+      void el.offsetWidth;
+      el.classList.add('wrong-flash');
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = rounds.length;
+    var emoji, title, msg;
+    if (score === total) {
+      emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις όλες τις συνταγές βημάτων!';
+    } else if (score >= 3) {
+      emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!';
+    } else if (score >= 2) {
+      emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!';
+    } else {
+      emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!';
+    }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

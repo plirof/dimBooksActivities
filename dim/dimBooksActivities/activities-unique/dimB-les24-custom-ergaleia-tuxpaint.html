@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Τα Εργαλεία του TuxPaint 🎨</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(247,151,30,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #f7971e; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff8e1; border: 2px dashed #ffb300; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #6b5900;
+  }
+  .tool-showcase {
+    background: #fff; border-radius: 24px; padding: 20px;
+    margin-bottom: 14px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  }
+  .tool-icon-big { font-size: 5rem; margin-bottom: 6px; }
+  .tool-name { font-size: 1.3rem; font-weight: 700; color: #2d3436; }
+  .tool-grid {
+    display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px;
+  }
+  .tool-card {
+    background: #fff; border: 3px solid #e0e0e0; border-radius: 16px;
+    padding: 14px 10px; text-align: center; cursor: pointer;
+    transition: all .2s; user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .tool-card:active { transform: scale(.95); }
+  .tool-card .tc-emoji { font-size: 2.5rem; }
+  .tool-card .tc-text { font-size: .85rem; font-weight: 600; color: #555; margin-top: 4px; }
+  .tool-card.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .tool-card.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .tool-card.disabled { pointer-events: none; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .feedback { text-align:center; padding:14px; border-radius:16px; font-size:1.1rem; font-weight:700; margin-bottom:12px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.yay { background:#d4edda; color:#155724; }
+  .feedback.nay { background:#f8d7da; color:#721c24; }
+  .result-screen { background:#fff; border-radius:24px; box-shadow:0 8px 28px rgba(0,0,0,.1); padding:40px 24px; text-align:center; display:none; }
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#f7971e,#ffd200);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(247,151,30,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}.tool-icon-big{font-size:3.5rem}.tool-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎨 Τα Εργαλεία του TuxPaint</h1>
+    <p>Μάντεψε ποιο εργαλείο κρύβεται!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/8</span>
+  </div>
+  <div class="instructions">🖌️ Δες το εργαλείο και βρες τι κάνει!</div>
+  <div id="gameArea">
+    <div class="tool-showcase">
+      <div class="tool-icon-big" id="toolIcon">🖌️</div>
+      <div class="tool-name" id="toolName">Πινέλο</div>
+    </div>
+    <div class="tool-grid" id="toolGrid"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var tools = [
+    {icon:'🖌️', name:'Πινέλο', desc:'Ζωγραφίζω ελεύθερα με χρώμα', ans:0,
+     choices:[
+       {e:'🖌️',t:'Ζωγραφίζω ελεύθερα'},
+       {e:'🔲',t:'Σχεδιάζω σχήματα'},
+       {e:'🧽',t:'Σβήνω λάθη'},
+       {e:'🔤',t:'Γράφω γράμματα'}
+     ]},
+    {icon:'🧽', name:'Σβήστρα', desc:'Σβήνω ότι δεν μου αρέσει', ans:0,
+     choices:[
+       {e:'🧽',t:'Σβήνω λάθη'},
+       {e:'🪣',t:'Γεμίζω με χρώμα'},
+       {e:'🖌️',t:'Ζωγραφίζω'},
+       {e:'🔲',t:'Σχεδιάζω τετράγωνο'}
+     ]},
+    {icon:'🪣', name:'Γέμισμα με χρώμα', desc:'Γεμίζω μια περιοχή με χρώμα', ans:1,
+     choices:[
+       {e:'🧽',t:'Σβήνω'},
+       {e:'🪣',t:'Γεμίζω με χρώμα'},
+       {e:'✏️',t:'Σχεδιάζω γραμμή'},
+       {e:'🔤',t:'Γράφω κείμενο'}
+     ]},
+    {icon:'🔲', name:'Σχήματα', desc:'Σχεδιάζω κύκλους και τετράγωνα', ans:0,
+     choices:[
+       {e:'🔲',t:'Σχεδιάζω σχήματα'},
+       {e:'🧽',t:'Σβήνω'},
+       {e:'🪣',t:'Γεμίζω'},
+       {e:'✏️',t:'Τραβάω γραμμή'}
+     ]},
+    {icon:'✏️', name:'Γραμμές', desc:'Τραβάω ευθείες γραμμές', ans:0,
+     choices:[
+       {e:'✏️',t:'Τραβάω γραμμές'},
+       {e:'🔲',t:'Σχεδιάζω σχήματα'},
+       {e:'🖌️',t:'Ζωγραφίζω ελεύθερα'},
+       {e:'🔤',t:'Γράφω κείμενο'}
+     ]},
+    {icon:'🔤', name:'Κείμενο', desc:'Γράφω λέξεις και αριθμούς', ans:0,
+     choices:[
+       {e:'🔤',t:'Γράφω γράμματα'},
+       {e:'✏️',t:'Τραβάω γραμμή'},
+       {e:'🧽',t:'Σβήνω'},
+       {e:'🪣',t:'Γεμίζω χρώμα'}
+     ]},
+    {icon:'↩️', name:'Αναίρεση', desc:'Γυρίζω πίσω στο προηγούμενο βήμα', ans:0,
+     choices:[
+       {e:'↩️',t:'Γυρίζω πίσω'},
+       {e:'🔄',t:'Το κάνω ξανά'},
+       {e:'🧽',t:'Σβήνω τα πάντα'},
+       {e:'💾',t:'Αποθηκεύω'}
+     ]},
+    {icon:'🎨', name:'Χρώματα', desc:'Διαλέγω διαφορετικό χρώμα για να ζωγραφίσω', ans:0,
+     choices:[
+       {e:'🎨',t:'Διαλέγω χρώμα'},
+       {e:'🖌️',t:'Ζωγραφίζω'},
+       {e:'🔲',t:'Σχεδιάζω'},
+       {e:'🧽',t:'Σβήνω'}
+     ]}
+  ];
+  var cur=0,score=0;
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){
+    shuffle(tools);cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    loadTool();
+  }
+  function loadTool(){
+    if(cur>=tools.length){showResult();return;}
+    var t=tools[cur];
+    document.getElementById('roundDisplay').textContent=(cur+1)+'/'+tools.length;
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('toolIcon').textContent=t.icon;
+    document.getElementById('toolName').textContent=t.name;
+    var g=document.getElementById('toolGrid');g.innerHTML='';
+    for(var i=0;i<t.choices.length;i++){
+      (function(idx){
+        var c=document.createElement('div');c.className='tool-card';
+        c.innerHTML='<div class="tc-emoji">'+t.choices[idx].e+'</div><div class="tc-text">'+t.choices[idx].t+'</div>';
+        c.addEventListener('click',function(){choose(idx);});
+        g.appendChild(c);
+      })(i);
+    }
+  }
+  function choose(idx){
+    var t=tools[cur];var fb=document.getElementById('feedback');
+    var cards=document.querySelectorAll('#toolGrid .tool-card');
+    for(var i=0;i<cards.length;i++)cards[i].classList.add('disabled');
+    if(idx===t.ans){score++;
+      document.getElementById('scoreDisplay').textContent='⭐ '+score;
+      cards[idx].classList.add('correct');
+      fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Αυτό κάνει το '+t.name+'!';
+    }else{
+      cards[idx].classList.add('wrong');cards[t.ans].classList.add('correct');
+      fb.className='feedback show nay';fb.textContent='❌ Το '+t.name+' το χρησιμοποιούμε για: '+t.choices[t.ans].t;
+    }
+    setTimeout(function(){cur++;loadTool();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=tools.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Ξέρεις όλα τα εργαλεία του TuxPaint! Είσαι καλλιτέχνης!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Τα πήγες πολύ καλά με τα εργαλεία!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά! Θα τα μάθεις!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Βρήκες '+score+' από '+total+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

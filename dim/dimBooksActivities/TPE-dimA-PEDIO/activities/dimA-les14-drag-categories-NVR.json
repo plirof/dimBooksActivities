@@ -1,0 +1,53 @@
+{
+  "title": "Χρειάζεται / Δεν χρειάζεται διαδίκτυο",
+  "subtitle": "Ποιες δραστηριότητες απαιτούν διαδίκτυο;",
+  "categories": [
+    {
+      "id": "need",
+      "name": "ΧΡΕΙΑΖΕΤΑΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΔΕΝ ΧΡΕΙΑΖΕΤΑΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αποστολή email",
+      "category": "need"
+    },
+    {
+      "id": "item2",
+      "text": "Γράψιμο κειμένου",
+      "category": "no"
+    },
+    {
+      "id": "item3",
+      "text": "Βιντεοκλήση",
+      "category": "need"
+    },
+    {
+      "id": "item4",
+      "text": "Ζωγραφική",
+      "category": "no"
+    },
+    {
+      "id": "item5",
+      "text": "Πλοήγηση στο web",
+      "category": "need"
+    },
+    {
+      "id": "item6",
+      "text": "Εκτύπωση αρχείου",
+      "category": "no"
+    },
+    {
+      "id": "item7",
+      "text": "Αναζήτηση πληροφοριών",
+      "category": "need"
+    }
+  ]
+}

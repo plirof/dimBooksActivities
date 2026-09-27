@@ -1,0 +1,53 @@
+{
+  "title": "Μορφοποιήσεις κειμένου",
+  "subtitle": "Ταίριαξε κάθε μορφοποίηση στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "bold",
+      "name": "ΕΝΤΟΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "italic",
+      "name": "ΠΛΑΓΙΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "para",
+      "name": "ΠΑΡΑΓΡΑΦΟΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "**Bold**",
+      "category": "bold"
+    },
+    {
+      "id": "item2",
+      "text": "*Italic*",
+      "category": "italic"
+    },
+    {
+      "id": "item3",
+      "text": "↵ Enter",
+      "category": "para"
+    },
+    {
+      "id": "item4",
+      "text": "Αλλαγή γραμμής",
+      "category": "para"
+    },
+    {
+      "id": "item5",
+      "text": "Πλάγια γραφή",
+      "category": "italic"
+    },
+    {
+      "id": "item6",
+      "text": "Χοντρή γραφή",
+      "category": "bold"
+    }
+  ]
+}

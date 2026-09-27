@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Λαβύρινθος",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Λαβύρινθος", "error": false, "correct": "Λαβύρινθος", "feedback": "" },
+        { "text": "Λαβηρινθος", "error": true, "correct": "Λαβύρινθος", "feedback": "Γράφεται Λαβύρινθος" },
+        { "text": "Συνδυασμός", "error": false, "correct": "Συνδυασμός", "feedback": "" },
+        { "text": "Συνδασμος", "error": true, "correct": "Συνδυασμός", "feedback": "Γράφεται Συνδυασμός" },
+        { "text": "Επιφάνεια", "error": false, "correct": "Επιφάνεια", "feedback": "" },
+        { "text": "Επτιάνεια", "error": true, "correct": "Επιφάνεια", "feedback": "Γράφεται Επιφάνεια" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Απόσταση", "error": false, "correct": "Απόσταση", "feedback": "" },
+        { "text": "Αποσταση", "error": true, "correct": "Απόσταση", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Σταθερός", "error": false, "correct": "Σταθερός", "feedback": "" },
+        { "text": "Σταθεος", "error": true, "correct": "Σταθερός", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Έξοδος", "error": false, "correct": "Έξοδος", "feedback": "" },
+        { "text": "Εξοδος", "error": true, "correct": "Έξοδος", "feedback": "Χρειάζεται τόνος στο Έ" }
+      ]
+    }
+  ]
+}

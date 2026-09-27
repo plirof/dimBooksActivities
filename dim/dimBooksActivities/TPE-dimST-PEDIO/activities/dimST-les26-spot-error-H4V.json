@@ -1,0 +1,62 @@
+{
+  "title": "Βρες τα Λάθη: Τηλεκπαίδευση",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "οποιοσδήποτε", "error": true, "correct": "μόνο ο παρουσιαστής", "feedback": "ΜΟΝΟ ο παρουσιαστής μπορεί να διαμοιράσει περιεχόμενο!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "διαμοιράσει", "error": false},
+        {"text": "περιεχόμενο", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σταματήσεις", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "διαμοιρασμό", "error": false},
+        {"text": "πατάς", "error": false},
+        {"text": "απευθείας", "error": true, "correct": "πρώτα share και μετά", "feedback": "Πρέπει ΠΡΩΤΑ να πατήσεις share και ΜΕΤΑ το Stop sharing!"},
+        {"text": "Stop", "error": false},
+        {"text": "sharing", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ασπροπίνακας", "error": false},
+        {"text": "δεν", "error": true, "correct": "μπορεί", "feedback": "Ο ασπροπίνακας ΜΠΟΡΕΙ να αποθηκευτεί για μελλοντική χρήση!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αποθηκευτεί", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "επισημείωση", "error": false},
+        {"text": "χρησιμοποιείται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "Οι επισημειώσεις ΔΕΝ είναι μόνο για τον παρουσιαστή! Βοηθούν και την τάξη."},
+        {"text": "από", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "παρουσιαστή", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "επιλέγουμε", "error": false},
+        {"text": "Optimize", "error": false},
+        {"text": "for", "error": false},
+        {"text": "text", "error": true, "correct": "motion and video", "feedback": "Για ΒΙΝΤΕΟ επιλέγουμε Optimize for MOTION AND VIDEO, όχι για κείμενο!"},
+        {"text": "and", "error": false},
+        {"text": "images", "error": false}
+      ]
+    }
+  ]
+}

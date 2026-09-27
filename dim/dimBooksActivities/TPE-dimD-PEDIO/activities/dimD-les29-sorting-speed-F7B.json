@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Θετικό vs Αρνητικό",
+  "subtitle": "Ταξινόμησε τις συμπεριφορές!",
+  "instructions": "Πάτα ← για Θετικό Προφίλ, → για Αρνητικό Προφίλ!",
+  "categories": [
+    { "id": "positive", "name": "Θετικό Προφίλ", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "negative", "name": "Αρνητικό Προφίλ", "color": "#f44336", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Σέβομαι τους άλλους", "category": "positive" },
+    { "text": "Υβριστικά σχόλια", "category": "negative" },
+    { "text": "Αναφέρω πηγές", "category": "positive" },
+    { "text": "Ψεύτικες ειδήσεις", "category": "negative" },
+    { "text": "Ζητάω άδεια για φωτογραφίες", "category": "positive" },
+    { "text": "Ρατσιστικά κείμενα", "category": "negative" },
+    { "text": "Καλή διαδικτυακή συμπεριφορά", "category": "positive" },
+    { "text": "Αποκαλυπτικές φωτογραφίες", "category": "negative" },
+    { "text": "Κρυφή κοινοποίηση BCC", "category": "positive" },
+    { "text": "Γράμμα με ΚΕΦΑΛΑΙΑ", "category": "negative" },
+    { "text": "Σκέφτομαι πριν αναρτήσω", "category": "positive" },
+    { "text": "Προσβλητικό χιούμορ", "category": "negative" }
+  ],
+  "duration": 45
+}

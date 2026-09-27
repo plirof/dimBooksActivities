@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αξιολόγηση Ιστοσελίδων</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 700px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 1000px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.criteria-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 30px;
+}
+.criteria-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.criteria-list {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+grid-gap: 15px;
+}
+.criteria-item {
+background: white;
+padding: 15px;
+border-radius: 10px;
+border-left: 4px solid #667eea;
+}
+.criteria-item strong {
+color: #667eea;
+}
+.website-card {
+background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 25px;
+}
+.website-header {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 20px;
+}
+.website-icon {
+font-size: 2.5rem;
+}
+.website-info h3 {
+color: #333;
+font-size: 1.3rem;
+}
+.website-url {
+color: #666;
+font-size: 0.9rem;
+margin-top: 5px;
+}
+.features {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+grid-gap: 15px;
+margin-bottom: 20px;
+}
+.feature {
+background: white;
+padding: 12px;
+border-radius: 10px;
+text-align: center;
+font-size: 0.9rem;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid transparent;
+}
+.feature:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.feature.selected {
+background: #d4edda;
+border-color: #28a745;
+color: #155724;
+}
+.feature.missing {
+background: #f8d7da;
+border-color: #dc3545;
+color: #721c24;
+}
+.feature-label {
+font-weight: bold;
+display: block;
+margin-bottom: 5px;
+}
+.answer-section {
+display: flex;
+gap: 15px;
+flex-wrap: wrap;
+}
+.answer-btn {
+flex: 1;
+min-width: 150px;
+padding: 15px 25px;
+border: none;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.reliable {
+background: linear-gradient(135deg, #4ecdc4, #44a08d);
+color: white;
+}
+.unreliable {
+background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+color: white;
+}
+.answer-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.answer-btn.selected {
+box-shadow: 0 0 0 4px rgba(0,0,0,0.3);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.correct {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.wrong {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+.next-btn {
+background: white;
+color: #667eea;
+border: none;
+padding: 12px 30px;
+border-radius: 25px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin-top: 20px;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+display: none;
+}
+.next-btn.show {
+display: block;
+}
+.next-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.progress {
+width: 100%;
+height: 10px;
+background: #e0e0e0;
+border-radius: 5px;
+margin-bottom: 20px;
+overflow: hidden;
+}
+.progress-bar {
+height: 100%;
+background: linear-gradient(90deg, #4ecdc4, #44a08d);
+transition: width 0.5s ease;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .criteria-title > * + * { margin-left: 10px; }
+  .website-header > * + * { margin-left: 15px; }
+  .answer-section > * { margin: 7.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Αξιολόγηση Ιστοσελίδων</h1>
+<p class="subtitle">Ελέγξτε αν μια ιστοσελίδα είναι αξιόπιστη χρησιμοποιώντας τα κριτήρια που μάθατε!</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/5</div>
+
+<div class="container">
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="criteria-box">
+<div class="criteria-title">📋 Κριτήρια αξιολόγησης ιστοσελίδων</div>
+<div class="criteria-list">
+<div class="criteria-item">
+<strong>📌 Σκοπός:</strong> Παρέχει πληροφορίες ή πουλάει πράγματα;
+</div>
+<div class="criteria-item">
+<strong>🎨 Σχεδιασμός:</strong> Εύκολη περιήγηση, καθαρή οργάνωση
+</div>
+<div class="criteria-item">
+<strong>📞 Αξιοπιστία:</strong> Διεύθυνση, τηλέφωνο, email επικοινωνίας
+</div>
+</div>
+</div>
+
+<div id="websiteContainer"></div>
+</div>
+
+<div class="mascot">🦊</div>
+
+<script>
+const websites = [
+{
+icon: '🏛️',
+name: 'Εθνικό Αρχαιολογικό Μουσείο',
+url: 'namuseum.gr',
+features: {
+purpose: true,
+design: true,
+contact: true
+},
+reliable: true,
+explanation: 'Το Μουσείο παρέχει πληροφορίες, έχει καθαρό σχεδιασμό και διαθέτει στοιχεία επικοινωνίας!'
+},
+{
+icon: '🎮',
+name: 'CheapGamesNow',
+url: 'cheapgamesnow.xyz',
+features: {
+purpose: false,
+design: false,
+contact: false
+},
+reliable: false,
+explanation: 'Αυτή η ιστοσελίδα πουλάει προϊόντα, έχει κακό σχεδιασμό και δεν δίνει στοιχεία επικοινωνίας!'
+},
+{
+icon: '🏫',
+name: 'Πανεπιστήμιο Αθηνών',
+url: 'uoa.gr',
+features: {
+purpose: true,
+design: true,
+contact: true
+},
+reliable: true,
+explanation: 'Το Πανεπιστήμιο παρέχει πληροφορίες, έχει επαγγελματικό σχεδιασμό και στοιχεία επικοινωνίας!'
+},
+{
+icon: '💰',
+name: 'Κερδίσε Χρήματα Τώρα!',
+url: 'win-money-fast.com',
+features: {
+purpose: false,
+design: false,
+contact: false
+},
+reliable: false,
+explanation: 'Προσπαθεί να πουλήσει κάτι, έχει κακό σχεδιασμό και δεν εμφανίζει στοιχεία επικοινωνίας!'
+},
+{
+icon: '🏥',
+name: 'Εθνική Οργάνωση Υγείας',
+url: 'eody.gov.gr',
+features: {
+purpose: true,
+design: true,
+contact: true
+},
+reliable: true,
+explanation: 'Ο οργανισμός παρέχει πληροφορίες υγείας, έχει καθαρό σχεδιασμό και πλήρη στοιχεία επικοινωνίας!'
+}
+];
+
+let currentWebsite = 0;
+let score = 0;
+let userAnswer = null;
+
+function renderWebsite() {
+const website = websites[currentWebsite];
+const container = document.getElementById('websiteContainer');
+
+container.innerHTML = `
+<div class="website-card">
+<div class="website-header">
+<div class="website-icon">${website.icon}</div>
+<div class="website-info">
+<h3>${website.name}</h3>
+<div class="website-url">🔗 ${website.url}</div>
+</div>
+</div>
+
+<div class="features">
+<div class="feature" onclick="toggleFeature(this)">
+<span class="feature-label">📌 Σκοπός:</span>
+<span id="purpose-${currentWebsite}">Παρέχει πληροφορίες</span>
+</div>
+<div class="feature" onclick="toggleFeature(this)">
+<span class="feature-label">🎨 Σχεδιασμός:</span>
+<span id="design-${currentWebsite}">Καθαρός και οργανωμένος</span>
+</div>
+<div class="feature" onclick="toggleFeature(this)">
+<span class="feature-label">📞 Επικοινωνία:</span>
+<span id="contact-${currentWebsite}">Διεύθυνση/Τηλέφωνο/Email</span>
+</div>
+</div>
+
+<div class="answer-section">
+<button class="answer-btn reliable" onclick="selectAnswer(true)">✅ Αξιόπιστη</button>
+<button class="answer-btn unreliable" onclick="selectAnswer(false)">❌ Μη Αξιόπιστη</button>
+</div>
+
+<div class="result-box" id="result-${currentWebsite}"></div>
+</div>
+`;
+
+resetFeatures();
+}
+
+function resetFeatures() {
+const features = document.querySelectorAll('.feature');
+features.forEach(f => {
+f.classList.remove('selected', 'missing');
+});
+userAnswer = null;
+}
+
+function toggleFeature(element) {
+element.classList.toggle('selected');
+element.classList.toggle('missing');
+const featureId = element.querySelector('span').id;
+const website = websites[currentWebsite];
+const featureType = featureId.split('-')[0];
+const featureState = website.features[featureType];
+
+if (element.classList.contains('selected')) {
+element.querySelector(`#${featureId}`).textContent = 
+featureType === 'purpose' ? 'Παρέχει πληροφορίες ✓' :
+featureType === 'design' ? 'Καθαρός και οργανωμένος ✓' :
+'Διεύθυνση/Τηλέφωνο/Email ✓';
+element.style.background = '#d4edda';
+element.style.borderColor = '#28a745';
+element.style.color = '#155724';
+} else if (element.classList.contains('missing')) {
+element.querySelector(`#${featureId}`).textContent = 
+featureType === 'purpose' ? 'Πουλάει προϊόντα/υπηρεσίες ✗' :
+featureType === 'design' ? 'Κακός σχεδιασμός ✗' :
+'Χωρίς στοιχεία επικοινωνίας ✗';
+element.style.background = '#f8d7da';
+element.style.borderColor = '#dc3545';
+element.style.color = '#721c24';
+} else {
+element.querySelector(`#${featureId}`).textContent = 
+featureType === 'purpose' ? 'Παρέχει πληροφορίες' :
+featureType === 'design' ? 'Καθαρός και οργανωμένος' :
+'Διεύθυνση/Τηλέφωνο/Email';
+element.style.background = '';
+element.style.borderColor = '';
+element.style.color = '';
+}
+}
+
+function selectAnswer(isReliable) {
+if (userAnswer !== null) return;
+
+userAnswer = isReliable;
+const website = websites[currentWebsite];
+const resultBox = document.getElementById(`result-${currentWebsite}`);
+
+const reliableBtn = document.querySelector('.reliable');
+const unreliableBtn = document.querySelector('.unreliable');
+
+if (isReliable) {
+reliableBtn.classList.add('selected');
+} else {
+unreliableBtn.classList.add('selected');
+}
+
+const isCorrect = isReliable === website.reliable;
+
+resultBox.className = 'result-box show ' + (isCorrect ? 'correct' : 'wrong');
+
+if (isCorrect) {
+score++;
+document.getElementById('score').textContent = score;
+resultBox.innerHTML = `
+<h3>🎉 Σωστά!</h3>
+<p>${website.explanation}</p>
+<button class="next-btn show" onclick="nextWebsite()">Επόμενη Ιστοσελίδα ➡️</button>
+`;
+} else {
+resultBox.innerHTML = `
+<h3>❌ Λάθος!</h3>
+<p>${website.explanation}</p>
+<button class="next-btn show" onclick="nextWebsite()">Επόμενη Ιστοσελίδα ➡️</button>
+`;
+}
+
+updateProgress();
+}
+
+function nextWebsite() {
+currentWebsite++;
+
+if (currentWebsite >= websites.length) {
+showFinalResult();
+} else {
+renderWebsite();
+}
+}
+
+function updateProgress() {
+const progress = ((currentWebsite + 1) / websites.length) * 100;
+document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function showFinalResult() {
+const container = document.getElementById('websiteContainer');
+const message = score === websites.length ?
+'🏆 Εξαιρετικό! Είστε ειδικοί στην αξιολόγηση ιστοσελίδων!' :
+score >= websites.length - 1 ?
+'👍 Πολύ καλά! Κάντε λίγη εξάσκηση ακόμα!' :
+'📚 Προσπαθήστε ξανά! Προσέξτε τα κριτήρια αξιολόγησης.';
+
+container.innerHTML = `
+<div class="result-box" style="display: block;">
+<h2>📊 Αποτελέσματα</h2>
+<p style="font-size: 1.5rem; margin: 20px 0;">Σκορ: ${score}/${websites.length}</p>
+<p style="font-size: 1.2rem;">${message}</p>
+<button class="next-btn show" onclick="restart()">🔄 Ξεκινήστε ξανά</button>
+</div>
+`;
+}
+
+function restart() {
+currentWebsite = 0;
+score = 0;
+document.getElementById('score').textContent = '0';
+document.getElementById('progressBar').style.width = '0%';
+renderWebsite();
+}
+
+renderWebsite();
+</script>
+</body>
+</html>

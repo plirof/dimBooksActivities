@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Αξιόπιστες Πηγές",
+  "subtitle": "Πιάσε τα αξιόπιστα στοιχεία ιστοσελίδας!",
+  "instructions": "Πιάσε τα χαρακτηριστικά αξιόπιστης ιστοσελίδας. Απόφυγε τα αναξιόπιστα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Στοιχεία επικοινωνίας", "correct": true, "color": "#4caf50" },
+    { "text": "Ξεκάθαρος σκοπός", "correct": true, "color": "#2196f3" },
+    { "text": "Επαγγελματικός σχεδιασμός", "correct": true, "color": "#ff9800" },
+    { "text": "Όνομα συγγραφέα", "correct": true, "color": "#9c27b0" },
+    { "text": "Αναξιόπιστην πηγή", "correct": false, "color": "#f44336" },
+    { "text": "Πολλές διαφημίσεις", "correct": false, "color": "#f44336" },
+    { "text": "Ενημερωμένο περιεχόμενο", "correct": true, "color": "#00bcd4" },
+    { "text": "Χωρίς πηγή", "correct": false, "color": "#f44336" },
+    { "text": "Σωστή πληροφορία", "correct": true, "color": "#8bc34a" },
+    { "text": "Παλιά πληροφορία", "correct": false, "color": "#f44336" }
+  ]
+}

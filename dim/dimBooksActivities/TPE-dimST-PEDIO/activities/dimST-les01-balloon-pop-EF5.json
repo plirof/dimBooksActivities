@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εντολές Αλγορίθμων",
+  "subtitle": "Σπάσε τα μπαλόνια με εντολές αλγορίθμων",
+  "instruction": "Σπάσε τα μπαλόνια με ΣΩΣΤΕΣ εντολές αλγορίθμων!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 45,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Διάβασε",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Γράψε",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Όρισε",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Τύπωσε",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Επανάλαβε",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Σχεδίασε",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Αν...τότε",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Κλείσε",
+      "correct": false,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Σχόλιο //",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "Διέγραψε",
+      "correct": false,
+      "color": "#E91E63"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Κώδικας Αντρέα ή Μπάλας;",
+  "subtitle": "Σύρε κάθε εντολή στο σωστό αντικείμενο",
+  "categories": [
+    { "id": "andreas", "name": "Αντρέας (Αποστολέας)", "color": "#FF9800" },
+    { "id": "ball", "name": "Μπάλα (Παραλήπτης)", "color": "#E91E63" }
+  ],
+  "items": [
+    { "id": "a1", "text": "⬅️➡️ Μετακίνηση με βέλη", "category": "andreas" },
+    { "id": "a2", "text": "👕 Αλλαγή ενδυμασίας βολής", "category": "andreas" },
+    { "id": "a3", "text": "📤 Αποστολή μηνύματος «βολή»", "category": "andreas" },
+    { "id": "a4", "text": "🔊 Παίξε ήχο «Cheer»", "category": "andreas" },
+    { "id": "b1", "text": "📥 Λήψη μηνύματος «βολή»", "category": "ball" },
+    { "id": "b2", "text": "👁️ Εμφανίσου", "category": "ball" },
+    { "id": "b3", "text": "📍 Πήγαινε στον Αντρέα", "category": "ball" },
+    { "id": "b4", "text": "🏀 Ολίσθησε προς το καλάθι", "category": "ball" },
+    { "id": "b5", "text": "🙈 Εξαφανίσου", "category": "ball" }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: Δεδομένα και Φύλλο",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεδομένα", "error": false, "correct": "", "feedback": "" },
+        { "text": "μπορούμε", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "συγκεντρώσουμε", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνο", "error": true, "correct": "", "feedback": "Δεν είναι μόνο από διαδίκτυο. Μπορούμε και με ερωτηματολόγιο ή παρατήρηση" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαδίκτυο.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπολογιστικό", "error": false, "correct": "", "feedback": "" },
+        { "text": "φύλλο", "error": false, "correct": "", "feedback": "" },
+        { "text": "χρησιμεύει", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνο", "error": true, "correct": "και", "feedback": "Το φύλλο χρησιμεύει ΚΑΙ για διαγράμματα ΚΑΙ για υπολογισμούς" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "επιστολές.", "error": true, "correct": "δεδομένα.", "feedback": "Το υπολογιστικό φύλλο χρησιμεύει για επεξεργασία ΔΕΔΟΜΕΝΩΝ" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "ιδιότητες", "error": false, "correct": "", "feedback": "" },
+        { "text": "αρχείου", "error": false, "correct": "", "feedback": "" },
+        { "text": "δείχνουν", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνο", "error": true, "correct": "και", "feedback": "Δείχνουν ΚΑΙ ημερομηνία, ΚΑΙ φάκελο, ΚΑΙ μέγεθος" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "χρώμα.", "error": true, "correct": "μέγεθος.", "feedback": "Οι ιδιότητες δείχνουν ΜΕΓΕΘΟΣ, ημερομηνία δημιουργίας κ.ά." }
+      ]
+    }
+  ]
+}

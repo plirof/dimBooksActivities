@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Scratch Ορολογία",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Scratch", "error": false, "correct": "Scratch", "feedback": "" },
+        { "text": "Sratch", "error": true, "correct": "Scratch", "feedback": "Λείπει το c" },
+        { "text": "Γατούλα", "error": false, "correct": "Γατούλα", "feedback": "" },
+        { "text": "Γατούλα", "error": false, "correct": "Γατούλα", "feedback": "" },
+        { "text": "Γατουλα", "error": true, "correct": "Γατούλα", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Επανάλαβε", "error": false, "correct": "Επανάλαβε", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Υπόβαθρο", "error": false, "correct": "Υπόβαθρο", "feedback": "" },
+        { "text": "Ιπόβαθρο", "error": true, "correct": "Υπόβαθρο", "feedback": "Γράφεται Υπόβαθρο" },
+        { "text": "Σκηνή", "error": false, "correct": "Σκηνή", "feedback": "" },
+        { "text": "Σκινή", "error": true, "correct": "Σκηνή", "feedback": "Γράφεται Σκηνή" },
+        { "text": "Βήματα", "error": false, "correct": "Βήματα", "feedback": "" },
+        { "text": "Βημματα", "error": true, "correct": "Βήματα", "feedback": "Γράφεται Βήματα" }
+      ]
+    }
+  ]
+}

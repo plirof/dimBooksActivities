@@ -1,0 +1,20 @@
+{
+  "title": "Σενάρια Scratch",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "sprite_elli", "name": "Κώδικας Έλλης", "color": "#E91E63" },
+    { "id": "sprite_ast", "name": "Κώδικας Αστερία", "color": "#FF9800" },
+    { "id": "game_rule", "name": "Κανόνας Παιχνιδιού", "color": "#9C27B0" }
+  ],
+  "items": [
+    { "id": "s1", "text": "🖱️ Ακολουθεί το ποντίκι", "category": "sprite_elli" },
+    { "id": "s2", "text": "➡️ Κινήσου 10 βήματα", "category": "sprite_elli" },
+    { "id": "s3", "text": "🚫 Αν ΔΕΝ αγγίζει ποντίκι → κίνηση", "category": "sprite_elli" },
+    { "id": "s4", "text": "🔄 Επανάλαβε 10 φορές", "category": "sprite_ast" },
+    { "id": "s5", "text": "🙈 Εξαφανίσου → Περίμενε → Εμφανίσου", "category": "sprite_ast" },
+    { "id": "s6", "text": "🔀 Πήγαινε σε τυχαία θέση", "category": "sprite_ast" },
+    { "id": "s7", "text": "📸 10 φωτογραφίες αστερία", "category": "game_rule" },
+    { "id": "s8", "text": "🔊 Ήχος όταν αγγίζει Έλλη", "category": "sprite_ast" },
+    { "id": "s9", "text": "🎮 Αρχή, μέση, τέλος", "category": "game_rule" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Έγγραφα ή Εικόνες;",
+  "subtitle": "Ταξινόμησε τα αρχεία στους σωστούς φακέλους",
+  "instructions": "Βάλε κάθε αρχείο στον σωστό φάκελο",
+  "categories": [
+    { "id": "eggrafo", "name": "Έγγραφα", "color": "#2196F3", "key": "A" },
+    { "id": "eikona", "name": "Εικόνες", "color": "#f44336", "key": "L" }
+  ],
+  "items": [
+    { "text": "Κείμενο παραμυθιού", "category": "eggrafo" },
+    { "text": "Ζωγραφιά σκύλου", "category": "eikona" },
+    { "text": "Έκθεση σχολείου", "category": "eggrafo" },
+    { "text": "Φωτογραφία διακοπών", "category": "eikona" },
+    { "text": "Λίστα αγορών", "category": "eggrafo" },
+    { "text": "Σχεδιάσεις γεωμετρίας", "category": "eikona" },
+    { "text": "Μύθοι Αισώπου", "category": "eggrafo" },
+    { "text": "Καρτ ποστάλ", "category": "eikona" },
+    { "text": "Επιστολή φίλου", "category": "eggrafo" },
+    { "text": "Αφίσα σχολείου", "category": "eikona" }
+  ],
+  "duration": 30
+}

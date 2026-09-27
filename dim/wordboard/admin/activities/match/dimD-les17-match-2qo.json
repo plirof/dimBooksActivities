@@ -1,0 +1,40 @@
+{
+    "id": "dimD-les17-match-2qo",
+    "title": "Μεγέθη και διαχείριση αρχείων - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "JPEG",
+                "right": "Μορφή εικόνας (~5 MB)"
+            },
+            {
+                "left": "PNG",
+                "right": "Μορφή εικόνας (~20 MB)"
+            },
+            {
+                "left": "GIF",
+                "right": "Κινούμενη εικόνα (~200 KB)"
+            },
+            {
+                "left": "MP4",
+                "right": "Μορφή βίντεο (~30 MB)"
+            },
+            {
+                "left": "MP3",
+                "right": "Μορφή ήχου (~2 MB)"
+            },
+            {
+                "left": "ODT",
+                "right": "Μορφή κειμένου (~40 KB)"
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les17",
+        "αρχεία"
+    ]
+}

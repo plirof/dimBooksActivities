@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Ερωτήματα και Φόρμες",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Ερωτηματολόγιο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ερωτιματολόγιο",
+          "error": true,
+          "correct": "Ερωτηματολόγιο",
+          "feedback": "Λείπει το γράμμα 'η' στη λέξη"
+        },
+        {
+          "text": "Δεδομένα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Δημοσκόφηση",
+          "error": true,
+          "correct": "Δημοσκόπηση",
+          "feedback": "Το σωστό είναι 'Δημοσκόπηση' με 'π'"
+        },
+        {
+          "text": "Φόρμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Απάντιση",
+          "error": true,
+          "correct": "Απάντηση",
+          "feedback": "Το σωστό είναι 'Απάντηση' με 'σ'"
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Υπολογιστικό",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Πλατφόρμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κιψέλη",
+          "error": true,
+          "correct": "Κυψέλη",
+          "feedback": "Το σωστό είναι 'Κυψέλη' με 'υ'"
+        },
+        {
+          "text": "Διάργραμμα",
+          "error": true,
+          "correct": "Διάγραμμα",
+          "feedback": "Το σωστό είναι 'Διάγραμμα' με ένα 'ρ'"
+        },
+        {
+          "text": "Ανάλυση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ερέυνα",
+          "error": true,
+          "correct": "Έρευνα",
+          "feedback": "Το σωστό είναι 'Έρευνα' με 'ε' χωρίς πνεύμα"
+        }
+      ]
+    }
+  ]
+}

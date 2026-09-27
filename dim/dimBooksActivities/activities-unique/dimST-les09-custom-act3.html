@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δείκτης Σιωπής: Πράσινο/Κόκκινο</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:600px;width:100%;padding:25px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.3rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:20px;}
+
+.traffic-light{display:flex;justify-content:center;margin-bottom:20px;}
+.tl-body{background:#1e1e2e;border-radius:20px;padding:15px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.tl-light{width:80px;height:80px;border-radius:50%;border:3px solid #333;transition:all .3s;position:relative;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.tl-light.red{background:#2a1a1a;border-color:#3a1a1a;}
+.tl-light.yellow{background:#2a2a1a;border-color:#3a3a1a;}
+.tl-light.green{background:#1a2a1a;border-color:#1a3a1a;}
+.tl-light.red.active{background:#ef4444;border-color:#dc2626;box-shadow:0 0 20px #ef4444,0 0 40px rgba(239,68,68,.3);}
+.tl-light.yellow.active{background:#eab308;border-color:#ca8a04;box-shadow:0 0 20px #eab308,0 0 40px rgba(234,179,8,.3);}
+.tl-light.green.active{background:#22c55e;border-color:#16a34a;box-shadow:0 0 20px #22c55e,0 0 40px rgba(34,197,94,.3);}
+
+.status-card{text-align:center;padding:20px;border-radius:16px;margin-bottom:20px;transition:all .3s;font-size:1.4rem;font-weight:bold;}
+.status-card.quiet{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#166534;border:3px solid #86efac;}
+.status-card.medium{background:linear-gradient(135deg,#fefce8,#fef9c3);color:#854d0e;border:3px solid #fde047;}
+.status-card.loud{background:linear-gradient(135deg,#fef2f2,#fecaca);color:#991b1b;border:3px solid #f87171;}
+.status-emoji{font-size:3rem;display:block;margin-bottom:8px;}
+
+.slider-section{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:20px;}
+.slider-section label{display:block;font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:1rem;text-align:center;}
+.slider-wrapper{display:flex;align-items:center;gap:12px;justify-content:center;}
+.slider-wrapper span{font-weight:bold;color:#764ba2;min-width:35px;text-align:center;}
+input[type=range]{width:280px;height:10px;-webkit-appearance:none;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);border-radius:5px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+
+.value-display{text-align:center;margin-bottom:15px;}
+.value-big{font-size:3rem;font-weight:bold;transition:color .3s;}
+.value-label{color:#888;font-size:.85rem;}
+
+.zones{display:flex;gap:8px;margin-bottom:20px;}
+.zone{flex:1;text-align:center;padding:12px 8px;border-radius:12px;font-size:.75rem;font-weight:bold;border:2px solid transparent;transition:all .3s;}
+.zone-green{background:#f0fdf4;color:#166534;border-color:#86efac;}
+.zone-yellow{background:#fefce8;color:#854d0e;border-color:#fde047;}
+.zone-red{background:#fef2f2;color:#991b1b;border-color:#f87171;}
+.zone.active{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+
+.logic-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:14px;padding:15px;margin-bottom:15px;}
+.logic-title{font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:.9rem;}
+.logic-row{display:flex;align-items:center;gap:8px;padding:6px 10px;margin-bottom:4px;border-radius:8px;font-size:.85rem;font-family:'Courier New',monospace;}
+.logic-row.active-cond{background:#fff;border:2px solid #c4b5fd;}
+.logic-row.inactive-cond{opacity:.4;}
+.logic-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:#22c55e;}
+.dot-yellow{background:#eab308;}
+.dot-red{background:#ef4444;}
+
+.btn{padding:12px 24px;border:none;border-radius:12px;cursor:pointer;font-size:.95rem;font-weight:bold;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-center{text-align:center;margin-top:10px;}
+
+.history-section{margin-top:15px;}
+.history-title{font-weight:bold;color:#5b3ea8;margin-bottom:8px;font-size:.9rem;text-align:center;}
+.history-bars{display:flex;gap:3px;align-items:flex-end;height:60px;overflow-x:auto;padding:5px;}
+.history-bar{width:12px;border-radius:3px 3px 0 0;min-height:3px;flex-shrink:0;transition:all .2s;}
+
+@media(max-width:600px){.container{padding:15px;}.tl-light{width:60px;height:60px;font-size:1.5rem;}input[type=range]{width:200px;}.value-big{font-size:2.2rem;}.status-card{font-size:1.1rem;padding:15px;}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tl-body > * + * { margin-top: 12px; }
+  .slider-wrapper > * + * { margin-left: 12px; }
+  .zones > * + * { margin-left: 8px; }
+  .logic-row > * + * { margin-left: 8px; }
+  .btn > * + * { margin-left: 6px; }
+  .history-bars > * + * { margin-left: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🚦 Δείκτης Σιωπής: Πράσινο/Κόκκινο</h1>
+<p class="subtitle">Ελέγξτε τη στάθμη θορύβου στην τάξη!</p>
+
+<div class="traffic-light">
+<div class="tl-body">
+<div class="tl-light red" id="lightRed">😠</div>
+<div class="tl-light yellow" id="lightYellow">😐</div>
+<div class="tl-light green" id="lightGreen">🙂</div>
+</div>
+</div>
+
+<div class="status-card quiet" id="statusCard">
+<span class="status-emoji" id="statusEmoji">🙂</span>
+<span id="statusText">Ήσυχα</span>
+</div>
+
+<div class="value-display">
+<div class="value-big" id="soundValue" style="color:#22c55e;">0</div>
+<div class="value-label">Στάθμή Θορύβου (0-255)</div>
+</div>
+
+<div class="slider-section">
+<label>🔊 Προσομοίωση Στάθμης Θορύβου</label>
+<div class="slider-wrapper">
+<span>🔇</span>
+<input type="range" id="noiseSlider" min="0" max="255" value="0" oninput="updateNoise(this.value)">
+<span>📢</span>
+</div>
+</div>
+
+<div class="zones">
+<div class="zone zone-green" id="zoneGreen">
+<div style="font-size:1.5rem;">🙂</div>
+<div>Ήσυχα</div>
+<div>0-49</div>
+</div>
+<div class="zone zone-yellow" id="zoneYellow">
+<div style="font-size:1.5rem;">😐</div>
+<div>Μέτρια</div>
+<div>50-100</div>
+</div>
+<div class="zone zone-red" id="zoneRed">
+<div style="font-size:1.5rem;">😠</div>
+<div>Θορυβώδη!</div>
+<div>&gt;100</div>
+</div>
+</div>
+
+<div class="logic-box">
+<div class="logic-title">🧠 Λογική:</div>
+<div class="logic-row inactive-cond" id="cond1">
+<div class="logic-dot dot-green"></div>
+<span>εάν ήχος &lt; 50 → 🙂 Ήσυχα (Πράσινο)</span>
+</div>
+<div class="logic-row inactive-cond" id="cond2">
+<div class="logic-dot dot-yellow"></div>
+<span>εάν ήχος 50-100 → 😐 Μέτρια (Κίτρινο)</span>
+</div>
+<div class="logic-row inactive-cond" id="cond3">
+<div class="logic-dot dot-red"></div>
+<span>εάν ήχος &gt; 100 → 😠 Θορυβώδη! (Κόκκινο)</span>
+</div>
+</div>
+
+<div class="btn-center">
+<button class="btn btn-primary" onclick="resetNoise()">🔄 Επαναφορά</button>
+</div>
+
+<div class="history-section">
+<div class="history-title">📜 Ιστορικό Στάθμης</div>
+<div class="history-bars" id="historyBars">
+<div style="color:#aaa;font-size:.8rem;width:100%;text-align:center;">Κούνα τον slider...</div>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+var history=[];
+var historyTimeout=null;
+
+window.updateNoise=function(val){
+val=parseInt(val);
+var valueEl=document.getElementById('soundValue');
+var card=document.getElementById('statusCard');
+var emoji=document.getElementById('statusEmoji');
+var text=document.getElementById('statusText');
+var lightR=document.getElementById('lightRed');
+var lightY=document.getElementById('lightYellow');
+var lightG=document.getElementById('lightGreen');
+var zoneG=document.getElementById('zoneGreen');
+var zoneY=document.getElementById('zoneYellow');
+var zoneR=document.getElementById('zoneRed');
+var cond1=document.getElementById('cond1');
+var cond2=document.getElementById('cond2');
+var cond3=document.getElementById('cond3');
+
+lightR.classList.remove('active');
+lightY.classList.remove('active');
+lightG.classList.remove('active');
+zoneG.classList.remove('active');
+zoneY.classList.remove('active');
+zoneR.classList.remove('active');
+cond1.classList.remove('active-cond');cond1.classList.add('inactive-cond');
+cond2.classList.remove('active-cond');cond2.classList.add('inactive-cond');
+cond3.classList.remove('active-cond');cond3.classList.add('inactive-cond');
+
+if(val<50){
+valueEl.style.color='#22c55e';
+card.className='status-card quiet';
+emoji.textContent='🙂';
+text.textContent='🙂 Ήσυχα - Έτσι!';
+lightG.classList.add('active');
+zoneG.classList.add('active');
+cond1.classList.add('active-cond');cond1.classList.remove('inactive-cond');
+}else if(val<=100){
+valueEl.style.color='#eab308';
+card.className='status-card medium';
+emoji.textContent='😐';
+text.textContent='😐 Μέτρια - Ήσυχάστε λιγάκι!';
+lightY.classList.add('active');
+zoneY.classList.add('active');
+cond2.classList.add('active-cond');cond2.classList.remove('inactive-cond');
+}else{
+valueEl.style.color='#ef4444';
+card.className='status-card loud';
+emoji.textContent='😠';
+text.textContent='😠 Θορυβώδη! Σιωπή!';
+lightR.classList.add('active');
+zoneR.classList.add('active');
+cond3.classList.add('active-cond');cond3.classList.remove('inactive-cond');
+}
+valueEl.textContent=val;
+
+clearTimeout(historyTimeout);
+historyTimeout=setTimeout(function(){
+history.push(val);
+if(history.length>50)history.shift();
+renderHistory();
+},200);
+};
+
+function renderHistory(){
+var container=document.getElementById('historyBars');
+container.innerHTML='';
+history.forEach(function(val){
+var bar=document.createElement('div');
+bar.className='history-bar';
+var h=Math.max(3,(val/255)*55);
+bar.style.height=h+'px';
+if(val<50)bar.style.background='#22c55e';
+else if(val<=100)bar.style.background='#eab308';
+else bar.style.background='#ef4444';
+container.appendChild(bar);
+});
+}
+
+window.resetNoise=function(){
+history=[];
+document.getElementById('noiseSlider').value=0;
+document.getElementById('historyBars').innerHTML='<div style="color:#aaa;font-size:.8rem;width:100%;text-align:center;">Κούνα τον slider...</div>';
+updateNoise(0);
+};
+
+window.updateNoise(0);
+})();
+</script>
+</body>
+</html>

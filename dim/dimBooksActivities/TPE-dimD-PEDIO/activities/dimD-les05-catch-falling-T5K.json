@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Αλήθεια ή Ψέματα",
+  "subtitle": "Πιάσε τις αληθείς συνθήκες!",
+  "instructions": "Πιάσε τις συνθήκες που είναι ΑΛΗΘΕΙΑ",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Γατούλα αγγίζει όριο → Αλήθεια", "correct": true, "color": "#4caf50" },
+    { "text": "Γατούλα στο κέντρο → Αλήθεια", "correct": false, "color": "#f44336" },
+    { "text": "Συνθήκη αλήθεια → σταματάει", "correct": true, "color": "#2196f3" },
+    { "text": "Συνθήκη ψέματα → σταματάει", "correct": false, "color": "#ff9800" },
+    { "text": "Επανάλαβε ώσπου → ερώτηση;", "correct": true, "color": "#8bc34a" },
+    { "text": "Επανάλαβε ώσπου → αριθμός", "correct": false, "color": "#9c27b0" },
+    { "text": "Αγγίζει όριο = συνθήκη αίσθησης", "correct": true, "color": "#00bcd4" },
+    { "text": "Αγγίζει όριο = κατηγορία κίνησης", "correct": false, "color": "#ff5722" }
+  ]
+}

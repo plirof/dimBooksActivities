@@ -1,0 +1,48 @@
+{
+  "title": "Καλώρια σε υπολογιστές",
+  "subtitle": "Ενσύρματη ή ασύρματη σύνδεση;",
+  "categories": [
+    {
+      "id": "wired",
+      "name": "ΕΝΣΥΡΜΑΤΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wireless",
+      "name": "ΑΣΥΡΜΑΤΟ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🔌 Ethernet",
+      "category": "wired"
+    },
+    {
+      "id": "item2",
+      "text": "📶 Wi-Fi",
+      "category": "wireless"
+    },
+    {
+      "id": "item3",
+      "text": "🔌 USB",
+      "category": "wired"
+    },
+    {
+      "id": "item4",
+      "text": "📶 Bluetooth",
+      "category": "wireless"
+    },
+    {
+      "id": "item5",
+      "text": "🔌 HDMI",
+      "category": "wired"
+    },
+    {
+      "id": "item6",
+      "text": "📶 4G",
+      "category": "wireless"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη: Μοτίβα",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "μοτίβο", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "τρία", "error": true, "correct": "τρία", "feedback": "Σωστό! Αλλά δοκίμασε να βρεις άλλο λάθος!"},
+        {"text": "χάντρες.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Φτιάχνουμε", "error": false},
+        {"text": "βραχιόλια", "error": false},
+        {"text": "από", "error": false},
+        {"text": "αμμόλουτρα", "error": true, "correct": "χάντρες", "feedback": "Τα βραχιόλια φτιάχνονται από χάντρες, όχι αμμόλουτρα!"},
+        {"text": "πολύχρωμες.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "μαντέψω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "τελευταίο", "error": true, "correct": "επόμενο", "feedback": "Μαντεύουμε το επόμενο, όχι το τελευταίο!"},
+        {"text": "αντικείμενο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "μοτίβα", "error": false},
+        {"text": "βρίσκονται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "Τα μοτίβα δεν είναι μόνο στη φύση, αλλά και στην τέχνη!"},
+        {"text": "στη", "error": false},
+        {"text": "φύση.", "error": false}
+      ]
+    }
+  ]
+}

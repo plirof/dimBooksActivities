@@ -1,0 +1,496 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['username']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'publisher')) {
+    header('Location: ../index.php');
+    exit;
+}
+
+require_once '../api/file_utils.php';
+
+$isEditing = isset($_GET['id']);
+$editingActivity = null;
+
+if ($isEditing) {
+    $activityId = $_GET['id'];
+    $editingActivity = findActivityById($activityId, '../admin/activities/');
+    
+    if ($editingActivity === null) {
+        header('Location: dashboard.php');
+        exit;
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $isEditing ? 'Edit Crossword Activity - Wordboard' : 'Create Crossword Activity - Wordboard'; ?></title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .grid-editor {
+            display: inline-block;
+            border: 2px solid #333;
+            margin: 20px 0;
+        }
+        
+        .grid-row {
+            display: flex;
+        }
+        
+        .grid-cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .grid-cell.black {
+            background: #333;
+        }
+        
+        .grid-cell.white {
+            background: white;
+        }
+        
+        .grid-cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: transparent;
+            outline: none;
+        }
+        
+        .words-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .word-form {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .word-form label {
+            min-width: 80px;
+        }
+        
+        .word-form input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><?php echo $isEditing ? 'Edit Crossword Activity' : 'Create Crossword Activity'; ?></h1>
+            <div class="header-actions">
+                <a href="create_activity.php" class="button">Back to Activity Types</a>
+                <a href="dashboard.php" class="button">Back to Dashboard</a>
+            </div>
+        </div>
+        
+        <form id="crosswordForm">
+            <div class="form-section">
+                <h2>Activity Details</h2>
+                
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required <?php echo $isEditing ? 'value="' . htmlspecialchars($editingActivity['title']) . '"' : ''; ?>>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags">Tags (comma separated):</label>
+                    <input type="text" id="tags" name="tags" placeholder="e.g., dimA, lesson01, math">
+                    <small style="color: #666;">Separate tags with commas</small>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Grid Setup</h2>
+                <p>Click cells to toggle black/white. Enter letters in white cells.</p>
+                
+                <div class="form-group">
+                    <label>Grid Size (10-15):</label>
+                    <input type="number" id="gridSize" value="10" min="10" max="15" onchange="createGrid()">
+                </div>
+                
+                <div class="grid-editor" id="gridEditor"></div>
+            </div>
+            
+            <div class="words-section">
+                <h3>Words & Clues</h3>
+                <p>For each word in the grid, provide the clue.</p>
+                <div id="wordsContainer"></div>
+                <button type="button" onclick="detectWords()" style="margin-top: 10px;">Detect Words from Grid</button>
+            </div>
+            
+            <div class="form-section">
+                <button type="submit">Save Activity</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        var gridSize = 10;
+        var grid = [];
+        var wordCount = 1;
+        
+        var isEditing = <?php echo $isEditing ? 'true' : 'false'; ?>;
+        var editingId = '<?php echo $isEditing ? htmlspecialchars($editingActivity['id']) : ''; ?>';
+        var editingData = <?php echo $isEditing ? json_encode($editingActivity['data']) : '{}'; ?>;
+        var editingTags = <?php echo $isEditing ? json_encode(isset($editingActivity['tags']) ? $editingActivity['tags'] : array()) : '[]'; ?>;
+        var currentUsername = <?php echo json_encode(isset($_SESSION['username']) ? $_SESSION['username'] : 'admin'); ?>;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isEditing && editingTags.length > 0) {
+                document.getElementById('tags').value = editingTags.join(', ');
+            }
+        });
+        
+        function createGrid() {
+            gridSize = parseInt(document.getElementById('gridSize').value);
+            grid = [];
+            
+            for (var row = 0; row < gridSize; row++) {
+                grid[row] = [];
+                for (var col = 0; col < gridSize; col++) {
+                    grid[row][col] = '#';
+                }
+            }
+            
+            renderGrid();
+        }
+        
+        function renderGrid() {
+            var editor = document.getElementById('gridEditor');
+            editor.innerHTML = '';
+            
+            for (var row = 0; row < gridSize; row++) {
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'grid-row';
+                
+                for (var col = 0; col < gridSize; col++) {
+                    var cell = document.createElement('div');
+                    cell.className = 'grid-cell black';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    
+                    if (grid[row][col] !== '#') {
+                        cell.classList.remove('black');
+                        cell.classList.add('white');
+                        
+                        var input = document.createElement('input');
+                        input.type = 'text';
+                        input.maxLength = 1;
+                        input.value = grid[row][col];
+                        input.dataset.row = row;
+                        input.dataset.col = col;
+                        
+                        input.addEventListener('input', function(e) {
+                            var row = parseInt(e.target.dataset.row);
+                            var col = parseInt(e.target.dataset.col);
+                            grid[row][col] = e.target.value.toUpperCase() || ' ';
+                        });
+                        
+                        cell.appendChild(input);
+                    }
+                    
+                    cell.addEventListener('click', function(e) {
+                        if (e.target.tagName !== 'INPUT') {
+                            var row = parseInt(e.currentTarget.dataset.row);
+                            var col = parseInt(e.currentTarget.dataset.col);
+                            
+                            if (grid[row][col] === '#') {
+                                grid[row][col] = ' ';
+                                e.currentTarget.classList.remove('black');
+                                e.currentTarget.classList.add('white');
+                                
+                                var input = document.createElement('input');
+                                input.type = 'text';
+                                input.maxLength = 1;
+                                input.dataset.row = row;
+                                input.dataset.col = col;
+                                
+                                input.addEventListener('input', function(ev) {
+                                    var r = parseInt(ev.target.dataset.row);
+                                    var c = parseInt(ev.target.dataset.col);
+                                    grid[r][c] = ev.target.value.toUpperCase() || ' ';
+                                });
+                                
+                                e.currentTarget.appendChild(input);
+                            } else {
+                                grid[row][col] = '#';
+                                e.currentTarget.classList.remove('white');
+                                e.currentTarget.classList.add('black');
+                                e.currentTarget.innerHTML = '';
+                            }
+                        }
+                    });
+                    
+                    rowDiv.appendChild(cell);
+                }
+                
+                editor.appendChild(rowDiv);
+            }
+        }
+        
+        function detectWords() {
+            var words = [];
+            var number = 1;
+            
+            for (var row = 0; row < gridSize; row++) {
+                for (var col = 0; col < gridSize; col++) {
+                    if (grid[row][col] !== '#') {
+                        var newWord = false;
+                        
+                        var across = '';
+                        if (col === 0 || grid[row][col - 1] === '#') {
+                            for (var c = col; c < gridSize && grid[row][c] !== '#'; c++) {
+                                across += grid[row][c];
+                            }
+                            if (across.length >= 2) {
+                                words.push({ number: number, direction: 'across', clue: '', answer: across.trim() });
+                                newWord = true;
+                            }
+                        }
+                        
+                        var down = '';
+                        if (row === 0 || grid[row - 1][col] === '#') {
+                            for (var r = row; r < gridSize && grid[r][col] !== '#'; r++) {
+                                down += grid[r][col];
+                            }
+                            if (down.length >= 2) {
+                                words.push({ number: number, direction: 'down', clue: '', answer: down.trim() });
+                                newWord = true;
+                            }
+                        }
+                        
+                        if (newWord) {
+                            number++;
+                        }
+                    }
+                }
+            }
+            
+            renderWords(words);
+        }
+        
+        function renderWords(words) {
+            var container = document.getElementById('wordsContainer');
+            container.innerHTML = '';
+            
+            for (var i = 0; i < words.length; i++) {
+                var wordDiv = document.createElement('div');
+                wordDiv.className = 'word-form';
+                wordDiv.innerHTML = 
+                    '<label>' + words[i].number + ' ' + words[i].direction + ':</label>' +
+                    '<input type="text" value="' + words[i].answer + '" disabled>' +
+                    '<input type="text" class="word-clue" placeholder="Enter clue" required>';
+                
+                container.appendChild(wordDiv);
+            }
+        }
+        
+        function addWordForm(word, clue) {
+            var container = document.getElementById('wordsContainer');
+            var wordCount = container.children.length + 1;
+            
+            var wordDiv = document.createElement('div');
+            wordDiv.className = 'word-form';
+            wordDiv.innerHTML = 
+                '<label>Word ' + wordCount + ':</label>' +
+                '<input type="text" class="word-input" value="' + (word || '') + '" placeholder="Enter word" required>' +
+                '<input type="text" class="word-clue" value="' + (clue || '') + '" placeholder="Enter clue" required>';
+            
+            container.appendChild(wordDiv);
+        }
+        
+        document.getElementById('crosswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var title = document.getElementById('title').value;
+            var wordForms = document.querySelectorAll('.word-form');
+            
+            if (wordForms.length < 2) {
+                alert('Please create at least 2 words on the grid.');
+                return;
+            }
+            
+            var words = [];
+            var number = 1;
+            var row = 0;
+            
+            for (var i = 0; i < wordForms.length; i++) {
+                var form = wordForms[i];
+                var parts = form.querySelector('label').textContent.split(' ');
+                var direction = parts[1];
+                var clue = form.querySelector('.word-clue').value;
+                
+                words.push({
+                    number: number,
+                    direction: direction,
+                    clue: clue,
+                    row: row,
+                    col: 0,
+                    answer: ''
+                });
+                
+                if (direction === 'down') {
+                    row++;
+                    number++;
+                }
+            }
+            
+            var tagsInput = document.getElementById('tags').value;
+            var tags = tagsInput ? tagsInput.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t.length > 0; }) : [];
+            
+            var activityData = {
+                title: title,
+                type: 'crossword',
+                tags: tags,
+                created_by: currentUsername,
+                created_date: new Date().toISOString().split('T')[0],
+                data: {
+                    words: words
+                }
+            };
+            
+            // Include ID if editing
+            if (isEditing) {
+                activityData.id = editingId;
+            }
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '../api/save_activity.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Activity saved successfully!');
+                        var currentRole = <?php echo json_encode(isset($_SESSION['role']) ? $_SESSION['role'] : 'student'); ?>;
+                        if (currentRole === 'publisher') {
+                            window.location.href = 'publisher_dashboard.php';
+                        } else {
+                            window.location.href = 'dashboard.php';
+                        }
+                    } else {
+                        alert('Error saving activity: ' + response.message);
+                    }
+                } else {
+                    alert('Error saving activity.');
+                }
+            };
+            
+            xhr.send(JSON.stringify(activityData));
+        });
+        
+        // Initialize page
+        function initPage() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var templateId = urlParams.get('template');
+            
+            if (templateId) {
+                var templateFiles = [
+                    'templates/crossword/templates.json',
+                    'templates/greek/crossword/templates.json',
+                    'templates/computer/crossword/templates.json'
+                ];
+                
+                var fileIndex = 0;
+                var foundTemplate = null;
+                
+                function tryNextFile() {
+                    if (fileIndex >= templateFiles.length) {
+                        createGrid();
+                        addWordForm('', '');
+                        addWordForm('', '');
+                        return;
+                    }
+                    
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', templateFiles[fileIndex], true);
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            try {
+                                var data = JSON.parse(xhr.responseText);
+                                for (var i = 0; i < data.templates.length; i++) {
+                                    if (data.templates[i].id === templateId) {
+                                        foundTemplate = data.templates[i];
+                                        break;
+                                    }
+                                }
+                                
+                                if (foundTemplate && foundTemplate.words) {
+                                    document.getElementById('title').value = foundTemplate.name;
+                                    createGrid();
+                                    for (var j = 0; j < foundTemplate.words.length; j++) {
+                                        addWordForm(foundTemplate.words[j].word, foundTemplate.words[j].clue);
+                                    }
+                                    alert('Template "' + foundTemplate.name + '" loaded! You can customize it before saving.');
+                                } else {
+                                    fileIndex++;
+                                    tryNextFile();
+                                }
+                            } catch (e) {
+                                console.error('Error loading template:', e);
+                                fileIndex++;
+                                tryNextFile();
+                            }
+                        } else {
+                            fileIndex++;
+                            tryNextFile();
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        fileIndex++;
+                        tryNextFile();
+                    };
+                    
+                    xhr.send();
+                }
+                
+                tryNextFile();
+            } else if (isEditing && editingData.grid && editingData.gridSize) {
+                gridSize = editingData.gridSize;
+                grid = editingData.grid;
+                document.getElementById('gridSize').value = gridSize;
+                renderGrid();
+                
+                if (editingData.words) {
+                    for (var i = 0; i < editingData.words.length; i++) {
+                        addWordForm(editingData.words[i].word, editingData.words[i].clue);
+                    }
+                }
+            } else {
+                createGrid();
+                addWordForm('', '');
+                addWordForm('', '');
+            }
+        }
+        
+        initPage();
+    </script>
+</body>
+</html>

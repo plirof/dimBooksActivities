@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake News & IoT | Μάθημα 29</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fef2f2,#f87171);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#7f1d1d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#dc2626;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#7f1d1d;font-size:.75rem;font-weight:700;border:1px solid #f87171;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.news-card{background:#fef2f2;border:2px solid #fecaca;border-radius:12px;padding:10px;margin:6px 0}
+.news-badge{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:4px}
+.news-badge.headline{background:#fee2e2;color:#991b1b}
+.news-title{font-size:.78rem;font-weight:700;color:#7f1d1d;text-align:center;margin-bottom:4px}
+.news-desc{font-size:.7rem;color:#991b1b;text-align:center}
+.cat-opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.cat-opt{padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:8px}
+.cat-opt:hover{border-color:#dc2626;background:#fef2f2}
+.cat-opt .cat-icon{font-size:1rem;min-width:24px;text-align:center}
+.cat-opt .cat-body{flex:1}
+.cat-opt .cat-body .cat-name{font-weight:700;display:block;margin-bottom:2px}
+.cat-opt .cat-body .cat-hint{font-size:.6rem;color:#9ca3af}
+.cat-opt.selected{border-color:#dc2626;background:#fee2e2;color:#7f1d1d}
+.cat-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.cat-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.cat-opt.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#dc2626;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#b91c1c}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #dc2626;border-radius:10px;background:transparent;color:#dc2626;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fef2f2}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .cat-opts > * + * { margin-top: 6px; }
+  .cat-opt > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📰 Fake News & IoT</h1>
+<p class="subtitle">Βρες σε ποια κατηγορία ανήκει κάθε είδηση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Είδηση:</span> <span id="qNum">1</span>/<span id="qTotal">7</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var categories=[
+{icon:'💰',name:'Εμπορικοί λόγοι',hint:'Προώθηση ή δυσφήμιση προϊόντος'},
+{icon:'🖱️',name:'Clickbait',hint:'Πρωτοσέλιδα για κλικ & διαφημίσεις'},
+{icon:'🏛️',name:'Πολιτικοί λόγοι',hint:'Πληροφορίες για πολιτικούς σκοπούς'},
+{icon:'🌐',name:'IoT / Ψηφιακό Χάσμα / Ρητορική μίσους',hint:'Αλληλένδετες έννοιες'}
+];
+var news=[
+{
+badge:'📰 Τίτλος',
+title:'«Απίστευτο! Αυτό το ρόφημα καίει 10 κιλά σε 2 μέρες!»',
+desc:'Σκέψου γιατί γράφτηκε αυτό το άρθρο.',
+correct:1,
+explain:'Clickbait: Πρωτοσέλιδο-σοκ για να κάνεις κλικ και να δεις διαφημίσεις.'
+},
+{
+title:'«Το προϊόν X είναι επικίνδυνο — αγόρασε το Y!»',
+desc:'Ψευδής είδηση που δυσφημεί ένα προϊόν για να προωθήσει άλλο.',
+correct:0,
+explain:'Εμπορικοί λόγοι: Στόχος η προώθηση ανταγωνιστικού προϊόντος.'
+},
+{
+title:'«Ο υποψήφιος Ζ δωροδοκήθηκε!» — χωρίς απόδειξη',
+desc:'Ψευδής πληροφορία λίγο πριν εκλογές.',
+correct:2,
+explain:'Πολιτικοί λόγοι: Στόχος η παραπληροφόρηση για πολιτικό πρόσωπο.'
+},
+{
+title:'«ΔΕΣ ΜΕ! Ο τραγουδιστής που... ΔΕΝ ΘΑ ΠΙΣΤΕΨΕΙΣ τι έκανε!»',
+desc:'Τεράστιος τίτλος με αποσιωπητικά που σε παρακινεί να πατήσεις.',
+correct:1,
+explain:'Clickbait: Απαράδεκτος τίτλος για να τραβήξει κλικ.'
+},
+{
+title:'«Η σύνδεση των οικιακών συσκευών στο ίντερνετ»',
+desc:'Το ψυγείο, η κάμερα και το ρολόι σου μιλάνε μεταξύ τους μέσω δικτύου.',
+correct:3,
+explain:'Internet of Things (IoT): Συσκευές συνδεδεμένες στο ίντερνετ.'
+},
+{
+title:'«Μαθητές σε απομακρυσμένο χωριό δεν έχουν ίντερνετ»',
+desc:'Η ανισότητα πρόσβασης σε τεχνολογία μεταξύ περιοχών.',
+correct:3,
+explain:'Ψηφιακό Χάσμα: Κάποιοι έχουν πρόσβαση, άλλοι όχι.'
+},
+{
+title:'«Σχόλια μίσους σε ανάρτηση για πρόσφυγες»',
+desc:'Εχθρικά μηνύματα που προωθούν βία κατά ομάδας ανθρώπων.',
+correct:3,
+explain:'Ρητορική Μίσους: Κακόβουλη ομιλία που προωθεί βία ή μίσος.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var n=news[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="news-card">';
+if(n.badge)h+='<div style="text-align:center"><span class="news-badge headline">'+n.badge+'</span></div>';
+h+='<div class="news-title">'+n.title+'</div>';
+h+='<div class="news-desc">'+n.desc+'</div>';
+h+='</div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#7f1d1d;text-align:center;margin:4px 0">Σε ποια κατηγορία ανήκει;</p>';
+h+='<div class="cat-opts">';
+for(var i=0;i<categories.length;i++){
+var cls='cat-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===n.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">';
+h+='<span class="cat-icon">'+categories[i].icon+'</span>';
+h+='<span class="cat-body"><span class="cat-name">'+categories[i].name+'</span><span class="cat-hint">'+categories[i].hint+'</span></span>';
+h+='</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===n.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+n.explain:'❌ '+n.explain)+'</div>';
+if(curQ<news.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Είδηση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<news.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

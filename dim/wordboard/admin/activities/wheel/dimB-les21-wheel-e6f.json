@@ -1,0 +1,24 @@
+{
+    "id": "dimB-les21-wheel-e6f",
+    "title": "Εντοπίζω περισσότερους χαρακτήρες στο πληκτρολόγιο - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "ENTER",
+            "Τόνος",
+            "Caps Lock",
+            "Space",
+            "Backspace",
+            "Κόμμα",
+            "Τελεία",
+            "Τελικό «ς»"
+        ]
+    },
+    "tags": [
+        "dimB",
+        "les21",
+        "πληκτρολόγιο"
+    ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Τι βρίσκεις στο Φωτόδεντρο;",
+  "subtitle": "Πιάσε το εκπαιδευτικό περιεχόμενο!",
+  "instructions": "Πιάσε μόνο ό,τι ΒΡΙΣΚΕΙΣ στο ΦΩΤΟΔΕΝΤΡΟ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Παιχνίδι", "correct": true, "color": "#4CAF50"},
+    {"text": "Μαγειρική", "correct": false, "color": "#f44336"},
+    {"text": "Κουίζ", "correct": true, "color": "#2196F3"},
+    {"text": "Ψώνια", "correct": false, "color": "#FF9800"},
+    {"text": "Βίντεο", "correct": true, "color": "#9C27B0"},
+    {"text": "Καθαριότητα", "correct": false, "color": "#E91E63"},
+    {"text": "Εφαρμογή", "correct": true, "color": "#009688"},
+    {"text": "Ποδόσφαιρο", "correct": false, "color": "#FFC107"},
+    {"text": "Παρουσίαση", "correct": true, "color": "#795548"},
+    {"text": "Κουζίνα", "correct": false, "color": "#607D8B"}
+  ]
+}

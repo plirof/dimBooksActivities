@@ -1,0 +1,74 @@
+{
+  "title": "Βρες τα Λάθη: Ορολογία Netiquette",
+  "subtitle": "Βρες ποιες λέξεις είναι γραμμένα λάθος!",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "συμπεριφορά",
+          "error": false
+        },
+        {
+          "text": "αποτύπωμά",
+          "error": true,
+          "correct": "αποτύπωμα",
+          "feedback": "Το σωστό είναι αποτύπωμα (χωρίς τόνο σε αυτή τη θέση)"
+        },
+        {
+          "text": "σεβασμός",
+          "error": false
+        },
+        {
+          "text": "κηνοποίηση",
+          "error": true,
+          "correct": "κοινοποίηση",
+          "feedback": "Το σωστό είναι κοινοποίηση (με οι)"
+        },
+        {
+          "text": "ανάρτηση",
+          "error": false
+        },
+        {
+          "text": "προφίλ",
+          "error": false
+        },
+        {
+          "text": "ρατσιστικά",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "υβριστικά",
+          "error": false
+        },
+        {
+          "text": "ψηφιακό",
+          "error": false
+        },
+        {
+          "text": "ιδιωτική",
+          "error": false
+        },
+        {
+          "text": "κεφάλαια",
+          "error": true,
+          "correct": "κεφαλαία",
+          "feedback": "Το σωστό είναι κεφαλαία (με α, αι)"
+        },
+        {
+          "text": "ηλεκτρονική",
+          "error": false
+        },
+        {
+          "text": "φίμη",
+          "error": true,
+          "correct": "φήμη",
+          "feedback": "Το σωστό είναι φήμη (με η)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λαβύρινθος</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:15px;font-weight:400}
+.game-header{display:flex;justify-content:space-between;padding:10px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#11998e;font-size:1.1em}
+.word-tracker{text-align:center;margin-bottom:10px;padding:8px;background:#f0fdf4;border-radius:10px;font-size:1.4em;letter-spacing:6px;font-weight:700}
+.word-tracker .found{color:#2e7d32}
+.word-tracker .missing{color:#ccc}
+.canvas-wrap{display:flex;justify-content:center;margin-bottom:10px}
+canvas{border-radius:12px;border:2px solid #ddd;display:block}
+.start-screen,.end-screen{text-align:center;padding:30px 20px}
+.start-screen h2,.end-screen h2{color:#333;margin-bottom:10px}
+.start-screen p,.end-screen p{color:#666;margin-bottom:15px;line-height:1.5}
+.start-btn,.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.final-score{font-size:3em;color:#11998e;font-weight:700}
+.message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.warn-msg{text-align:center;padding:8px;background:#fff3e0;border-radius:8px;color:#e65100;font-weight:600;margin-bottom:8px;opacity:0;transition:opacity .3s}
+.warn-msg.show{opacity:1}
+.level-word{text-align:center;margin-bottom:8px;color:#555;font-size:.95em}
+.level-word span{color:#11998e;font-weight:700}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const gridSize=data.gridSize||10;
+const timeLimit=data.timeLimit||90;
+const levels=data.levels||[];
+let currentLevel=0,score=0,timeLeft=timeLimit,gameRunning=false,timerInterval=null;
+let maze,player,exitPos,letters,cellSize,canvasSize;
+
+function generateMaze(rows,cols){
+const grid=[];
+for(let r=0;r<rows;r++){grid[r]=[];for(let c=0;c<cols;c++){grid[r][c]={top:true,right:true,bottom:true,left:true,visited:false}}}
+const stack=[];
+let cur={r:0,c:0};
+grid[0][0].visited=true;
+stack.push(cur);
+while(stack.length>0){
+cur=stack[stack.length-1];
+const neighbors=[];
+const dirs=[{dr:-1,dc:0,wall:'top',opp:'bottom'},{dr:1,dc:0,wall:'bottom',opp:'top'},{dr:0,dc:-1,wall:'left',opp:'right'},{dr:0,dc:1,wall:'right',opp:'left'}];
+for(const d of dirs){const nr=cur.r+d.dr,nc=cur.c+d.dc;if(nr>=0&&nr<rows&&nc>=0&&nc<cols&&!grid[nr][nc].visited)neighbors.push({r:nr,c:nc,wall:d.wall,opp:d.opp})}
+if(neighbors.length>0){
+const next=neighbors[Math.floor(Math.random()*neighbors.length)];
+grid[cur.r][cur.c][next.wall]=false;
+grid[next.r][next.c][next.opp]=false;
+grid[next.r][next.c].visited=true;
+stack.push({r:next.r,c:next.c})
+}else{stack.pop()}
+}
+return grid
+}
+
+function placeLetters(word){
+letters=[];
+const used=new Set();
+used.add('0,0');
+used.add((gridSize-1)+','+(gridSize-1));
+const chars=word.split('');
+for(let i=0;i<chars.length;i++){
+let placed=false,attempts=0;
+while(!placed&&attempts<500){
+const r=Math.floor(Math.random()*gridSize);
+const c=Math.floor(Math.random()*gridSize);
+const k=r+','+c;
+if(!used.has(k)){used.add(k);letters.push({r,c,char:chars[i],collected:false});placed=true}
+attempts++
+}
+}
+}
+
+function initLevel(){
+const lvl=levels[currentLevel];
+if(!lvl)return;
+maze=generateMaze(gridSize,gridSize);
+player={r:0,c:0};
+exitPos={r:gridSize-1,c:gridSize-1};
+placeLetters(lvl.word);
+timeLeft=timeLimit;
+const maxCanvas=Math.min(600,window.innerWidth-80);
+cellSize=Math.floor(maxCanvas/gridSize);
+canvasSize=cellSize*gridSize;
+}
+
+function getCollectedCount(){return letters.filter(l=>l.collected).length}
+
+function getWordDisplay(){
+const lvl=levels[currentLevel];
+if(!lvl)return '';
+return lvl.word.split('').map((ch,i)=>{
+if(letters[i]&&letters[i].collected)return '<span class="found">'+esc(ch)+'</span>';
+return '<span class="missing">_</span>'
+}).join(' ')
+}
+
+function showStart(){
+const levelList=levels.map((l,i)=>'<p>Επίπεδο '+(i+1)+': '+l.word.length+' γράμματα</p>').join('');
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle||'')}</h2>
+<p>${esc(data.instructions||'')}</p>
+<p>Επίπεδα: <span>${levels.length}</span> | Χρόνος: <span>${timeLimit}s</span> ανά επίπεδο</p>
+${levelList}
+<button class="start-btn" onclick="startGame()">▶ Ξεκίνα!</button>
+</div>`
+}
+
+window.startGame=function(){
+currentLevel=0;score=0;
+initLevel();
+renderGame();
+setupMazeTouch();
+gameRunning=true;
+timerInterval=setInterval(()=>{
+if(!gameRunning)return;
+timeLeft--;
+const timerEl=document.getElementById('timer');if(timerEl)timerEl.textContent=timeLeft;
+const fillEl=document.getElementById('timerFill');if(fillEl)fillEl.style.width=((timeLeft/timeLimit)*100)+'%';
+if(timeLeft<=0){gameRunning=false;clearInterval(timerInterval);showEnd(false)}
+},1000)
+};
+
+function renderGame(){
+const lvl=levels[currentLevel];
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>Επίπεδο ${currentLevel+1}/${levels.length}</h2>
+<div class="game-header">
+<div class="stat">Σκορ: <span id="scoreDisplay">${score}</span></div>
+<div class="stat">Γράμματα: <span id="letterCount">${getCollectedCount()}/${letters.length}</span></div>
+<div class="stat">Χρόνος: <span id="timer">${timeLeft}</span>s</div>
+</div>
+<div style="height:8px;background:#eee;border-radius:4px;margin-bottom:10px;overflow:hidden"><div id="timerFill" style="height:100%;background:linear-gradient(90deg,#4CAF50,#ff9800,#f44336);border-radius:4px;width:100%;transition:width 1s linear"></div></div>
+<div class="word-tracker" id="wordTracker">${getWordDisplay()}</div>
+<div id="warnMsg" class="warn-msg">Μάζεψε όλα τα γράμματα πρώτα!</div>
+<div class="canvas-wrap"><canvas id="mazeCanvas" width="${canvasSize}" height="${canvasSize}"></canvas></div>`;
+drawMaze()
+}
+
+function drawMaze(){
+const canvas=document.getElementById('mazeCanvas');
+if(!canvas)return;
+const ctx=canvas.getContext('2d');
+ctx.clearRect(0,0,canvasSize,canvasSize);
+ctx.fillStyle='#f0fdf4';
+ctx.fillRect(0,0,canvasSize,canvasSize);
+ctx.strokeStyle='#2e7d32';
+ctx.lineWidth=2;
+for(let r=0;r<gridSize;r++){
+for(let c=0;c<gridSize;c++){
+const x=c*cellSize,y=r*cellSize;
+const cell=maze[r][c];
+if(cell.top){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+cellSize,y);ctx.stroke()}
+if(cell.right){ctx.beginPath();ctx.moveTo(x+cellSize,y);ctx.lineTo(x+cellSize,y+cellSize);ctx.stroke()}
+if(cell.bottom){ctx.beginPath();ctx.moveTo(x,y+cellSize);ctx.lineTo(x+cellSize,y+cellSize);ctx.stroke()}
+if(cell.left){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+cellSize);ctx.stroke()}
+}
+}
+
+const allCollected=letters.every(l=>l.collected);
+ctx.fillStyle=allCollected?'#4CAF50':'#bdbdbd';
+const ex=exitPos.c*cellSize,ey=exitPos.r*cellSize;
+ctx.beginPath();
+ctx.roundRect?ctx.roundRect(ex+2,ey+2,cellSize-4,cellSize-4,4):ctx.fillRect(ex+2,ey+2,cellSize-4,cellSize-4);
+ctx.fill();
+ctx.font=Math.floor(cellSize*0.5)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillStyle='#fff';
+ctx.fillText('🚪',ex+cellSize/2,ey+cellSize/2);
+
+for(const l of letters){
+if(!l.collected){
+const lx=l.c*cellSize,ly=l.r*cellSize;
+ctx.fillStyle='#fff3e0';
+ctx.fillRect(lx+2,ly+2,cellSize-4,cellSize-4);
+ctx.fillStyle='#e65100';
+ctx.font='bold '+Math.floor(cellSize*0.55)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(l.char,lx+cellSize/2,ly+cellSize/2)
+}
+}
+
+const px=player.c*cellSize,py=player.r*cellSize;
+ctx.fillStyle='#e3f2fd';
+ctx.fillRect(px+2,py+2,cellSize-4,cellSize-4);
+ctx.font=Math.floor(cellSize*0.5)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillStyle='#000';
+ctx.fillText('🤖',px+cellSize/2,py+cellSize/2)
+}
+
+function movePlayer(wallName,dr,dc){
+if(!gameRunning)return;
+const cell=maze[player.r][player.c];
+if(cell[wallName])return;
+const nr=player.r+dr,nc=player.c+dc;
+if(nr<0||nr>=gridSize||nc<0||nc>=gridSize)return;
+player.r=nr;player.c=nc;
+
+for(const l of letters){
+if(!l.collected&&l.r===nr&&l.c===nc){
+l.collected=true;
+score+=5;
+const sEl=document.getElementById('scoreDisplay');if(sEl)sEl.textContent=score;
+const wt=document.getElementById('wordTracker');if(wt)wt.innerHTML=getWordDisplay();
+const lc=document.getElementById('letterCount');if(lc)lc.textContent=getCollectedCount()+'/'+letters.length
+}
+}
+
+if(player.r===exitPos.r&&player.c===exitPos.c){
+const allCollected=letters.every(l=>l.collected);
+if(!allCollected){
+const warn=document.getElementById('warnMsg');
+if(warn){warn.classList.add('show');setTimeout(()=>{if(warn)warn.classList.remove('show')},1500)}
+drawMaze();
+return
+}
+score+=10;
+if(currentLevel<levels.length-1){
+currentLevel++;
+clearInterval(timerInterval);
+initLevel();
+renderGame();
+setupMazeTouch();
+timerInterval=setInterval(()=>{
+if(!gameRunning)return;
+timeLeft--;
+const timerEl=document.getElementById('timer');if(timerEl)timerEl.textContent=timeLeft;
+const fillEl=document.getElementById('timerFill');if(fillEl)fillEl.style.width=((timeLeft/timeLimit)*100)+'%';
+if(timeLeft<=0){gameRunning=false;clearInterval(timerInterval);showEnd(false)}
+},1000)
+}else{
+gameRunning=false;clearInterval(timerInterval);showEnd(true)
+}
+return
+}
+drawMaze()
+}
+
+function setupMazeTouch(){
+if(typeof TouchControls==='undefined')return;
+var cw=document.querySelector('.canvas-wrap');
+if(!cw)return;
+var existing=cw.parentNode.querySelector('.tc-cross');
+if(existing)existing.remove();
+TouchControls.create({
+container:cw.parentNode,
+directions:['up','down','left','right'],
+theme:{bg:'#f0fdf4',border:'#a7f3d0',active:'#bbf7d0',text:'#11998e'},
+onPress:function(dName){
+var dMap={up:{wall:'top',dr:-1,dc:0},down:{wall:'bottom',dr:1,dc:0},left:{wall:'left',dr:0,dc:-1},right:{wall:'right',dr:0,dc:1}};
+var m=dMap[dName];
+if(m)movePlayer(m.wall,m.dr,m.dc);
+}
+});
+}
+
+document.addEventListener('keydown',function(e){
+if(!gameRunning)return;
+const dirs={'ArrowUp':{dr:-1,dc:0,wall:'top'},'ArrowDown':{dr:1,dc:0,wall:'bottom'},'ArrowLeft':{dr:0,dc:-1,wall:'left'},'ArrowRight':{dr:0,dc:1,wall:'right'}};
+const d=dirs[e.key];
+if(!d)return;
+e.preventDefault();
+movePlayer(d.wall,d.dr,d.dc);
+});
+
+function showEnd(won){
+const foundWords=levels.map(l=>'<p>✅ '+esc(l.word)+'</p>').join('');
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="end-screen" style="display:block">
+<h2>${won?'Συγχαρητήρια!':'Τέλος Χρόνου!'}</h2>
+<div class="final-score">${score}</div>
+<div class="message">${won?'Μπράβο! Βρήκες όλες τις λέξεις!':'Προσπάθησε ξανά!'}</div>
+${won?foundWords:''}
+<button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>
+</div>`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

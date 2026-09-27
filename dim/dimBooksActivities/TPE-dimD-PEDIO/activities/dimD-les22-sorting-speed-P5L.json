@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είδη Ταχυδρομείου",
+  "subtitle": "Ταξινόμησε τα στοιχεία στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε στοιχείο.",
+  "categories": [
+    { "id": "ilektroniko", "name": "Ηλεκτρονικό", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "symbatiko", "name": "Συμβατικό", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "koina", "name": "Και τα δύο", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "kanena", "name": "Κανένα", "color": "#f44336", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Στέλνεται σε δευτερόλεπτα", "category": "ilektroniko" },
+    { "text": "Χρειάζεται φάκελο", "category": "symbatiko" },
+    { "text": "Έχει συνημμένα αρχεία", "category": "ilektroniko" },
+    { "text": "Χρειάζεται ταχυδρομικά τέλη", "category": "symbatiko" },
+    { "text": "Έχει αποστολέα", "category": "koina" },
+    { "text": "Έχει παραλήπτη", "category": "koina" },
+    { "text": "Έχει θέμα/τίτλο", "category": "koina" },
+    { "text": "Παραδίδει πακέτα", "category": "symbatiko" },
+    { "text": "Πιο φθηνό", "category": "ilektroniko" },
+    { "text": "Περισσότερη ασφάλεια", "category": "symbatiko" },
+    { "text": "Γραπτό μήνυμα", "category": "koina" },
+    { "text": "Τηλεόραση", "category": "kanena" }
+  ],
+  "duration": 45
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Ισχυροί ή Αδύναμοι Κωδικοί;",
+  "subtitle": "Ταξινόμησε τους κωδικούς σε Ισχυρούς ή Αδύναμους",
+  "categories": [
+    {
+      "id": "strong",
+      "name": "ΙΣΧΥΡΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "weak",
+      "name": "ΑΔΥΝΑΜΟΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "M@r!@2024!",
+      "category": "strong"
+    },
+    {
+      "id": "item2",
+      "text": "123456",
+      "category": "weak"
+    },
+    {
+      "id": "item3",
+      "text": "ypatia",
+      "category": "weak"
+    },
+    {
+      "id": "item4",
+      "text": "K0d!k0s@#7",
+      "category": "strong"
+    },
+    {
+      "id": "item5",
+      "text": "password",
+      "category": "weak"
+    },
+    {
+      "id": "item6",
+      "text": "7fmlfmnp!",
+      "category": "strong"
+    },
+    {
+      "id": "item7",
+      "text": "15032015",
+      "category": "weak"
+    },
+    {
+      "id": "item8",
+      "text": "&p@t#@2030",
+      "category": "strong"
+    }
+  ]
+}

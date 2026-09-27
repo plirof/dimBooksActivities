@@ -1,0 +1,16 @@
+{
+  "title": "Μάζεψε τα φρούτα!",
+  "subtitle": "Κάνε κλικ στα φρούτα πριν εξαφανιστούν!",
+  "instructions": "Κάνε κλικ στα φρούτα που εμφανίζονται! Απόφυγε τις βόμβες!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "🍎", "color": "#ffcdd2" },
+    { "label": "🍊", "color": "#ffe0b2" },
+    { "label": "🍋", "color": "#fff9c4" },
+    { "label": "🍇", "color": "#e1bee7" },
+    { "label": "🍓", "color": "#f8bbd0" },
+    { "label": "🍑", "color": "#ffccbc" }
+  ]
+}

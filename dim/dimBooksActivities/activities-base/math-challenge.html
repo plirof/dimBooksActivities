@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μαθηματικά με τον Υπολογιστή!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:700px;width:100%;padding:40px;text-align:center}
+h1{color:#11998e;font-size:2em;margin-bottom:10px}
+h2{color:#555;font-size:1.2em;margin-bottom:30px;font-weight:400}
+.timer-bar{width:100%;height:12px;background:#e0e0e0;border-radius:6px;overflow:hidden;margin-bottom:25px}
+.timer-fill{height:100%;background:linear-gradient(90deg,#38ef7d,#11998e);border-radius:6px;transition:width 1s linear}
+.timer-text{font-size:1em;color:#11998e;margin-bottom:10px;font-weight:600}
+.problem{font-size:3em;font-weight:700;color:#333;margin:30px 0;padding:20px;background:linear-gradient(135deg,#e0f7e9,#b2f0c7);border-radius:15px}
+input[type="text"]{width:100%;max-width:200px;padding:15px;font-size:1.5em;border:3px solid #ddd;border-radius:12px;text-align:center;outline:none;transition:border-color 0.3s}
+input[type="text"]:focus{border-color:#11998e}
+.btn{background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff;border:none;padding:15px 40px;font-size:1.1em;border-radius:12px;cursor:pointer;margin:15px 5px;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(17,153,142,0.4)}
+.btn:active{transform:translateY(0)}
+.score{font-size:1.4em;color:#11998e;margin:15px 0}
+.feedback{font-size:1.3em;margin:15px 0;padding:12px;border-radius:10px;font-weight:600}
+.feedback.correct{background:#d4edda;color:#155724}
+.feedback.wrong{background:#f8d7da;color:#721c24}
+.start-btn{font-size:1.3em;padding:18px 50px}
+.hidden{display:none}
+.problem-count{font-size:0.9em;color:#888;margin-bottom:5px}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div style="font-size:3em;margin-bottom:20px">🧮</div>
+<h1 id="title">Μαθηματικά με τον Υπολογιστή!</h1>
+<h2 id="subtitle">Λύσε γρήγορα τις πράξεις!</h2>
+<div id="startScreen">
+<button class="btn start-btn" onclick="startGame()">🎮 Ξεκίνα!</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="timer-text" id="timerText">Χρόνος: 60δ</div>
+<div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+<div class="problem-count" id="problemCount"></div>
+<div class="problem" id="problem"></div>
+<input type="text" id="answerInput" placeholder="?" autocomplete="off" inputmode="numeric">
+<div>
+<button class="btn" onclick="submitAnswer()">Απάντηση</button>
+</div>
+<div class="feedback hidden" id="feedback"></div>
+<div class="score">Σκορ: <span id="score">0</span> / <span id="answered">0</span></div>
+</div>
+<div id="endScreen" class="hidden">
+<div style="font-size:3em;margin-bottom:20px">🏆</div>
+<h1>Τέλος!</h1>
+<div class="score" id="finalScore"></div>
+<p id="endMessage" style="color:#555;font-size:1.1em;margin:20px 0"></p>
+<button class="btn" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+let data=null,problems=[],current=0,score=0,answered=0,timerInterval=null,timeLeft=60,totalTime=60;
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+if(dataFile){
+fetch(dataFile).then(r=>r.json()).then(d=>{data=d;document.getElementById('title').textContent=esc(data.title||'Μαθηματικά με τον Υπολογιστή!');document.getElementById('subtitle').textContent=esc(data.subtitle||'Λύσε γρήγορα τις πράξεις!');}).catch(e=>{document.getElementById('subtitle').textContent='Σφάλμα φόρτωσης δεδομένων';});
+}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){
+if(!data)return;
+problems=shuffle(data.problems);
+current=0;score=0;answered=0;
+totalTime=data.duration||60;
+timeLeft=totalTime;
+document.getElementById('startScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+document.getElementById('score').textContent='0';
+document.getElementById('answered').textContent='0';
+document.getElementById('feedback').classList.add('hidden');
+startTimer();showProblem();
+}
+function startTimer(){
+if(timerInterval)clearInterval(timerInterval);
+timerInterval=setInterval(()=>{
+timeLeft--;
+const pct=(timeLeft/totalTime)*100;
+document.getElementById('timerFill').style.width=pct+'%';
+document.getElementById('timerText').textContent='Χρόνος: '+timeLeft+'δ';
+if(timeLeft<=10){
+document.getElementById('timerFill').style.background='linear-gradient(90deg,#dc3545,#ff6b6b)';
+}
+if(timeLeft<=0){clearInterval(timerInterval);endGame()}
+},1000);
+}
+function showProblem(){
+if(current>=problems.length){clearInterval(timerInterval);endGame();return}
+document.getElementById('problem').textContent=problems[current].q;
+document.getElementById('problemCount').textContent=`Πρόβλημα ${current+1} από ${problems.length}`;
+document.getElementById('answerInput').value='';
+document.getElementById('answerInput').focus();
+document.getElementById('feedback').classList.add('hidden');
+}
+function submitAnswer(){
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden');
+const userAns=parseInt(document.getElementById('answerInput').value.trim());
+const correctAns=problems[current].answer;
+answered++;
+document.getElementById('answered').textContent=answered;
+if(userAns===correctAns){
+fb.className='feedback correct';
+fb.textContent='✓ Σωστό!';
+score++;
+document.getElementById('score').textContent=score;
+}else{
+fb.className='feedback wrong';
+fb.textContent='✗ Λάθος! Η σωστή απάντηση: '+correctAns;
+}
+current++;
+setTimeout(()=>{showProblem()},1000);
+}
+function endGame(){
+document.getElementById('gameScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.remove('hidden');
+document.getElementById('finalScore').textContent=`${score} σωστά από ${answered} προβλήματα`;
+let msg='';
+const pct=answered>0?score/answered:0;
+if(pct>=0.9)msg='Εξαιρετικά! Είσαι αστέρι στα μαθηματικά! 🌟';
+else if(pct>=0.7)msg='Πολύ καλά! Συνέχισε έτσι! 😊';
+else if(pct>=0.5)msg='Καλή προσπάθεια! Μπορείς καλύτερα! 💪';
+else msg='Προσπάθησε ξανά! Η εξάσκηση φέρνει το τέλειο! 📚';
+document.getElementById('endMessage').textContent=msg;
+}
+document.addEventListener('keydown',function(e){if(e.key==='Enter'){const gs=document.getElementById('gameScreen');if(!gs.classList.contains('hidden'))submitAnswer()}});
+</script>
+</body>
+</html>

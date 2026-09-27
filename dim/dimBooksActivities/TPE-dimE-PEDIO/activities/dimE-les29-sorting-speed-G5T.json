@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Fake News",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "commercial", "name": "Εμπορικά", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "political", "name": "Πολιτικά", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Παραπλανητική διαφήμιση προϊόντος", "category": "commercial"},
+    {"text": "Ψευδής πληροφορία για κόμμα", "category": "political"},
+    {"text": "Ψεύτικη προσφορά έκπτωσης", "category": "commercial"},
+    {"text": "Παραποιημένη συνέντευξη πολιτικού", "category": "political"},
+    {"text": "Πλαστό σύγκριση ανταγωνιστικών προϊόντων", "category": "commercial"},
+    {"text": "Προπαγάνδα πριν εκλογές", "category": "political"},
+    {"text": "Ψεύτικη αξιολόγηση καταστήματος", "category": "commercial"},
+    {"text": "Σχεδίαση σκανδάλου πολιτικού", "category": "political"},
+    {"text": "Παραπλανητική τιμή προϊόντος", "category": "commercial"},
+    {"text": "Παραποιημένα στοιχεία δημοσκόπησης", "category": "political"}
+  ],
+  "duration": 30
+}

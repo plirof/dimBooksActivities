@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Ταξινόμηση Δεδομένων",
+  "subtitle": "Πιάσε τις σωστές έννοιες της ταξινόμησης",
+  "instructions": "Πιάσε τις λέξεις σχετικές με την ταξινόμηση και άσε τις λάθος",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Ταξινόμηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φθίνουσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αύξουσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Κριτήριο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Στήλη δεδομένων",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μενού Δεδομένα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πρόγραμμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

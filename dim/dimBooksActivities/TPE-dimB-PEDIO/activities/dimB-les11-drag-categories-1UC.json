@@ -1,0 +1,53 @@
+{
+  "title": "Είσοδος-Επεξεργασία-Έξοδος",
+  "subtitle": "Ταίριαξε κάθε στοιχείο στο σωστό στάδιο",
+  "categories": [
+    {
+      "id": "input",
+      "name": "ΕΙΣΟΔΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "process",
+      "name": "ΕΠΕΞΕΡΓΑΣΙΑ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "output",
+      "name": "ΕΞΟΔΟΣ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🍎 Φρούτα (πρώτες ύλες)",
+      "category": "input"
+    },
+    {
+      "id": "item2",
+      "text": "🔧 Μπλέντερ (μηχανή)",
+      "category": "process"
+    },
+    {
+      "id": "item3",
+      "text": "🧃 Χυμός (αποτέλεσμα)",
+      "category": "output"
+    },
+    {
+      "id": "item4",
+      "text": "📄 Κείμενο",
+      "category": "input"
+    },
+    {
+      "id": "item5",
+      "text": "💻 Επεξεργασία",
+      "category": "process"
+    },
+    {
+      "id": "item6",
+      "text": "🖨️ Εκτύπωση",
+      "category": "output"
+    }
+  ]
+}

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταίριαξε το Μονοπάτι 🗺️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 540px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(102,126,234,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #667eea; }
+  .round { font-size: .9rem; color: #888; }
+  .question-box {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 20px;
+    margin-bottom: 14px; text-align: center;
+  }
+  .question-box h3 { font-size: 1rem; color: #666; margin-bottom: 8px; }
+  .program-preview {
+    display: flex; gap: 4px; justify-content: center; flex-wrap: wrap;
+    background: #f0f0ff; border-radius: 12px; padding: 12px;
+    margin-bottom: 12px;
+  }
+  .preview-arrow {
+    width: 44px; height: 44px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    background: #fff; border: 2px solid #667eea;
+  }
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-gap: 12px; margin-bottom: 14px;
+  }
+  .option-card {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 18px; padding: 16px;
+    cursor: pointer; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s ease;
+    text-align: center;
+  }
+  .option-card:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,.15); }
+  .option-card:active { transform: scale(.96); }
+  .option-card .opt-grid {
+    display: inline-grid; grid-gap: 1px; margin-bottom: 6px;
+  }
+  .option-card .opt-grid .ocell {
+    width: 28px; height: 28px; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .7rem; background: #fff; border: 1px solid #eee;
+  }
+  .option-card .opt-grid .ocell.o-start { background: #fff9c4; }
+  .option-card .opt-grid .ocell.o-goal { background: #c8e6c9; }
+  .option-card .opt-grid .ocell.o-path { background: #bbdefb; }
+  .option-card .opt-grid .ocell.o-empty { background: #fafafa; }
+  .option-card .opt-label {
+    font-size: 1rem; font-weight: 700; color: #2d3436;
+    margin-top: 4px;
+  }
+  .option-card.selected { border-color: #667eea; background: #eef0ff; }
+  .option-card.correct-card { border-color: #28a745; background: #d4edda; }
+  .option-card.wrong-card { border-color: #dc3545; background: #f8d7da; }
+  .option-card.disabled { pointer-events: none; }
+  .btn-check-answer {
+    width: 100%; border: none; border-radius: 14px;
+    padding: 14px; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s; margin-bottom: 12px;
+  }
+  .btn-check-answer:active { transform: scale(.97); }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.15rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .option-card .opt-grid .ocell { width: 24px; height: 24px; font-size: .65rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .program-preview > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🗺️ Ταίριαξε το Μονοπάτι</h1>
+    <p>Ποιο μονοπάτι ταιριάζει με το πρόγραμμα;</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="question-box">
+      <h3>📋 Πρόγραμμα</h3>
+      <div class="program-preview" id="programPreview"></div>
+    </div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <button class="btn-check-answer" id="btnCheck" onclick="checkAnswer()">✅ Επέλεξα!</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var questions = [
+    {
+      arrows: ['➡️', '➡️', '⬇️', '⬇️'],
+      options: [
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[1,0],[2,0],[2,1],[2,2]],
+          label: 'Α'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[0,2],[1,2],[2,2]],
+          label: 'Β'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[1,0],[0,0],[0,1],[0,2]],
+          label: 'Γ'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[2,1],[2,2]],
+          label: 'Δ'
+        }
+      ],
+      answer: 1
+    },
+    {
+      arrows: ['➡️', '⬇️', '⬇️', '➡️'],
+      options: [
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[2,1],[2,2]],
+          label: 'Α'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[2,1],[1,1],[0,1]],
+          label: 'Β'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[2,1],[2,0],[2,1]],
+          label: 'Γ'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[1,2],[2,2]],
+          label: 'Δ'
+        }
+      ],
+      answer: 0
+    },
+    {
+      arrows: ['➡️', '⬇️', '⬇️', '⬅️'],
+      options: [
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['G', '', '']
+          ],
+          path: [[0,0],[0,1],[1,1],[1,0],[2,0]],
+          label: 'Α'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['G', '', '']
+          ],
+          path: [[0,0],[1,0],[1,1],[2,1],[2,0]],
+          label: 'Β'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['G', '', '']
+          ],
+          path: [[0,0],[0,1],[1,1],[2,1],[2,0]],
+          label: 'Γ'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['G', '', '']
+          ],
+          path: [[0,0],[0,1],[1,1],[1,2],[2,2]],
+          label: 'Δ'
+        }
+      ],
+      answer: 2
+    },
+    {
+      arrows: ['⬇️', '➡️', '⬇️', '➡️'],
+      options: [
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[1,0],[1,1],[0,1],[0,2],[1,2]],
+          label: 'Α'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[1,0],[2,0],[2,1],[2,2]],
+          label: 'Β'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[0,1],[1,1],[1,2],[2,2]],
+          label: 'Γ'
+        },
+        {
+          grid: [
+            ['S', '', ''],
+            ['', '', ''],
+            ['', '', 'G']
+          ],
+          path: [[0,0],[1,0],[1,1],[2,1],[2,2]],
+          label: 'Δ'
+        }
+      ],
+      answer: 3
+    }
+  ];
+
+  var currentQ = 0, score = 0;
+  var selected = -1;
+
+  function startGame() {
+    currentQ = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (currentQ >= questions.length) { showResult(); return; }
+    selected = -1;
+    var q = questions[currentQ];
+    document.getElementById('roundDisplay').textContent = (currentQ + 1) + '/' + questions.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnCheck').disabled = false;
+
+    var preview = document.getElementById('programPreview');
+    preview.innerHTML = '';
+    for (var i = 0; i < q.arrows.length; i++) {
+      var a = document.createElement('div');
+      a.className = 'preview-arrow';
+      a.textContent = q.arrows[i];
+      preview.appendChild(a);
+    }
+
+    var grid = document.getElementById('optionsGrid');
+    grid.innerHTML = '';
+    for (var o = 0; o < q.options.length; o++) {
+      (function(optIdx) {
+        var card = document.createElement('div');
+        card.className = 'option-card';
+        card.setAttribute('data-idx', optIdx);
+
+        var opt = q.options[optIdx];
+        var rows = opt.grid.length;
+        var cols = opt.grid[0].length;
+
+        var optGrid = document.createElement('div');
+        optGrid.className = 'opt-grid';
+        optGrid.style.gridTemplateColumns = 'repeat(' + cols + ', 28px)';
+
+        var pathSet = {};
+        for (var p = 0; p < opt.path.length; p++) {
+          pathSet[opt.path[p][0] + ',' + opt.path[p][1]] = true;
+        }
+
+        for (var r = 0; r < rows; r++) {
+          for (var c = 0; c < cols; c++) {
+            var cell = document.createElement('div');
+            cell.className = 'ocell';
+            if (opt.grid[r][c] === 'S') { cell.classList.add('o-start'); cell.textContent = '🐛'; }
+            else if (opt.grid[r][c] === 'G') { cell.classList.add('o-goal'); cell.textContent = '🌺'; }
+            else if (pathSet[r + ',' + c]) { cell.classList.add('o-path'); cell.textContent = '·'; }
+            else { cell.classList.add('o-empty'); }
+            optGrid.appendChild(cell);
+          }
+        }
+
+        card.appendChild(optGrid);
+        var label = document.createElement('div');
+        label.className = 'opt-label';
+        label.textContent = opt.label;
+        card.appendChild(label);
+
+        card.addEventListener('click', function() {
+          if (this.classList.contains('disabled')) return;
+          var cards = document.querySelectorAll('.option-card');
+          for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+          this.classList.add('selected');
+          selected = parseInt(this.getAttribute('data-idx'));
+        });
+
+        grid.appendChild(card);
+      })(o);
+    }
+  }
+
+  function checkAnswer() {
+    if (selected === -1) {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Πάτα πρώτα ένα μονοπάτι για να το επιλέξεις!';
+      return;
+    }
+    var q = questions[currentQ];
+    var fb = document.getElementById('feedback');
+    var cards = document.querySelectorAll('.option-card');
+    for (var i = 0; i < cards.length; i++) cards[i].classList.add('disabled');
+
+    if (selected === q.answer) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      cards[selected].classList.add('correct-card');
+      fb.className = 'feedback correct';
+      fb.textContent = '✅ Μπράβο! Αυτό είναι το σωστό μονοπάτι!';
+    } else {
+      cards[selected].classList.add('wrong-card');
+      cards[q.answer].classList.add('correct-card');
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Ωχ! Το σωστό είναι το ' + q.options[q.answer].label + '. Δοκίμασε ξανά!';
+    }
+    document.getElementById('btnCheck').disabled = true;
+
+    setTimeout(function() {
+      currentQ++;
+      loadQuestion();
+    }, 2000);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = questions.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ταιριάζεις τέλεια τα μονοπάτια με τα προγράμματα!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

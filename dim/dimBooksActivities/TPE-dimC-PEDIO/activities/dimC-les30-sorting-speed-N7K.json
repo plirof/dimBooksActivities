@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Κανόνες & Όρια",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "kanonas", "name": "Βασικός Κανόνας", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος Πρακτική", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "2 ώρες την ημέρα", "category": "kanonas"},
+    {"text": "Απεριόριστος χρόνος", "category": "lathos"},
+    {"text": "Τακτικά διαλείμματα", "category": "kanonas"},
+    {"text": "Καθόλου διάλειμμα", "category": "lathos"},
+    {"text": "Ανάρτηση = δημόσιο", "category": "kanonas"},
+    {"text": "Ανάρτηση = ιδιωτικό", "category": "lathos"},
+    {"text": "Έλεγχος πηγών", "category": "kanonas"},
+    {"text": "Πιστεύω τα πάντα", "category": "lathos"},
+    {"text": "Συμφωνία με γονείς", "category": "kanonas"},
+    {"text": "Χωρίς κανόνες", "category": "lathos"}
+  ],
+  "duration": 30
+}

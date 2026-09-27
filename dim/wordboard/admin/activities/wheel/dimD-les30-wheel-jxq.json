@@ -1,0 +1,26 @@
+{
+    "id": "dimD-les30-wheel-jxq",
+    "title": "Κριτήρια αξιολόγησης πηγών - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Πατρότητα",
+            "Επικαιρότητα",
+            "Ακρίβεια",
+            "Αντικειμενικότητα",
+            "Αξιοπιστία",
+            "Authority",
+            "Recency",
+            "Accuracy",
+            "Objectivity",
+            "Credibility"
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les30",
+        "αξιολόγηση"
+    ]
+}

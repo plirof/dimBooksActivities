@@ -1,0 +1,65 @@
+{
+  "title": "Βρες τα Λάθη: Δημιουργικό Διαδίκτυο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "σοβαρά", "error": false},
+        {"text": "παιχνίδια", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "Τα serious games ΔΕΝ είναι μόνο για διασκέδαση! Είναι και εκπαιδευτικά!"},
+        {"text": "για", "error": false},
+        {"text": "διασκέδαση", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "σύστημα", "error": false},
+        {"text": "PEGI", "error": false},
+        {"text": "δεν", "error": true, "correct": "βοηθάει", "feedback": "Το PEGI ΒΟΗΘΑΕΙ να διαλέγεις ασφαλή παιχνίδια για την ηλικία σου!"},
+        {"text": "έχει", "error": false},
+        {"text": "καμία", "error": false},
+        {"text": "χρησιμότητα", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Scratch", "error": false},
+        {"text": "χρησιμοποιείται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "Το Scratch ΔΕΝ είναι μόνο για παιχνίδια! Φτιάχνεις ιστορίες και κινούμενα σχέδια επίσης!"},
+        {"text": "για", "error": false},
+        {"text": "παιχνίδια", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "εικονίδιο", "error": false},
+        {"text": "τζόγου", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "PEGI", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "έχει", "error": true, "correct": "παροτρύνει στον", "feedback": "Το εικονίδιο τζόγου σημαίνει ότι το παιχνίδι ΠΑΡΟΤΡΥΝΕΙ στον τζόγο!"},
+        {"text": "τζόγο", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ώρα", "error": false},
+        {"text": "του", "error": false},
+        {"text": "κώδικα", "error": false},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γίνει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "στο σχολείο ή", "feedback": "Η ώρα του κώδικα μπορεί να γίνει ΚΑΙ στο σπίτι ΚΑΙ στο σχολείο!"},
+        {"text": "στο", "error": false},
+        {"text": "σχολείο", "error": false}
+      ]
+    }
+  ]
+}

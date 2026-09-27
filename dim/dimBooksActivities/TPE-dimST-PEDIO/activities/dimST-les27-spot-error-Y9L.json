@@ -1,0 +1,62 @@
+{
+  "title": "Βρες τα Λάθη: Υπηρεσίες Βίντεο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "μπούμε", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "video.sch.gr", "error": false},
+        {"text": "δεν", "error": true, "correct": "πρέπει", "feedback": "ΠΡΕΠΕΙ να συνδεθείς με τους κωδικούς του ΠΣΔ!"},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "σύνδεση", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "οποιοσδήποτε", "error": true, "correct": "μόνο ο πιστοποιημένος", "feedback": "ΜΟΝΟ ο πιστοποιημένος χρήστης μπορεί να σχολιάσει!"},
+        {"text": "χρήστης", "error": false},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σχολιάσει", "error": false},
+        {"text": "βίντεο", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ανεβάσω", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "εγώ", "error": true, "correct": "μόνο ο δάσκαλος", "feedback": "ΜΟΝΟ ο δάσκαλος μπορεί να ανεβάσει βίντεο στο ΠΣΔ!"},
+        {"text": "ο", "error": false},
+        {"text": "ίδιος", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "αγαπημένα", "error": false},
+        {"text": "βρίσκονται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "μενού", "error": false},
+        {"text": "Κατηγορίες", "error": true, "correct": "Οι σελίδες μου", "feedback": "Τα αγαπημένα βρίσκονται στο «Οι σελίδες μου» και μετά «Αγαπημένα»!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "αναφορά", "error": false},
+        {"text": "ως", "error": false},
+        {"text": "ακατάλληλο", "error": false},
+        {"text": "στέλνει", "error": false},
+        {"text": "μήνυμα", "error": false},
+        {"text": "στους", "error": false},
+        {"text": "φίλους", "error": true, "correct": "διαχειριστές", "feedback": "Η αναφορά απευθύνεται στους ΔΙΑΧΕΙΡΙΣΤΕΣ της υπηρεσίας!"}
+      ]
+    }
+  ]
+}

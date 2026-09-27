@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μεταβλητές Πόντων & Ζωών | Μάθημα 5</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fefce8,#fde047);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#713f12;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#ca8a04;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#713f12;font-size:.75rem;font-weight:700;border:1px solid #fde047;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.var-display{display:flex;gap:12px;justify-content:center;margin:8px 0}
+.var-box{padding:8px 16px;border-radius:12px;text-align:center;min-width:80px}
+.var-box.pts-box{background:#dcfce7;border:2px solid #86efac}
+.var-box.lives-box{background:#fef2f2;border:2px solid #fca5a5}
+.var-label{font-size:.65rem;font-weight:700;color:#64748b;margin-bottom:2px}
+.var-val{font-size:1.2rem;font-weight:700}
+.pts-box .var-val{color:#14532d}
+.lives-box .var-val{color:#dc2626}
+.event-card{background:#fefce8;border:2px solid #fde047;border-radius:12px;padding:10px;margin:8px 0}
+.event-icon{font-size:1.2rem;text-align:center}
+.event-desc{font-size:.72rem;color:#713f12;text-align:center;margin:4px 0;font-weight:600}
+.input-row{display:flex;gap:6px;justify-content:center;align-items:center;margin:6px 0}
+.input-row label{font-size:.7rem;font-weight:700;color:#713f12}
+.var-input{width:50px;height:32px;border:2px solid #fde047;border-radius:8px;text-align:center;font-size:.9rem;font-weight:700;color:#334155;background:#fff}
+.var-input.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.var-input.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.timeline{margin:8px 0}
+.tl-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #fef9c3}
+.tl-item:last-child{border:none}
+.tl-icon{font-size:.9rem}
+.tl-text{font-size:.68rem;color:#713f12;flex:1}
+.tl-vals{display:flex;gap:8px}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#ca8a04;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#a16207}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #ca8a04;border-radius:10px;background:transparent;color:#ca8a04;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fefce8}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .var-display > * + * { margin-left: 12px; }
+  .input-row > * + * { margin-left: 6px; }
+  .tl-item > * + * { margin-left: 8px; }
+  .tl-vals > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Μεταβλητές Πόντων & Ζωών</h1>
+<p class="subtitle">Πρόβλεψε τις τιμές των μεταβλητών μετά από κάθε γεγονός!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Γύρος:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var rounds=[
+{
+title:'Παιχνίδι Έλλης — Γύρος 1',
+initPts:0,initLives:3,
+events:[
+{icon:'⭐',desc:'Η Έλλη πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι αγγίζει την Έλλη',dp:0,dl:-1},
+{icon:'⭐',desc:'Η Έλλη πιάνει αστερία',dp:1,dl:0},
+{icon:'⭐',desc:'Η Έλλη πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι αγγίζει την Έλλη',dp:0,dl:-1}
+]
+},
+{
+title:'Παιχνίδι Έλλης — Γύρος 2',
+initPts:0,initLives:3,
+events:[
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι!',dp:0,dl:-1},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι!',dp:0,dl:-1},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0}
+]
+},
+{
+title:'Παιχνίδι Έλλης — Γύρος 3',
+initPts:0,initLives:5,
+events:[
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι!',dp:0,dl:-1},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι!',dp:0,dl:-1},
+{icon:'⭐',desc:'Πιάνει αστερία',dp:1,dl:0},
+{icon:'🐡',desc:'Φουσκωτό ψάρι!',dp:0,dl:-1}
+]
+}
+];
+var curQ=0,pts=0,answers={},checked=false;
+
+function initQ(){answers={};checked=false;}
+
+function getExpected(round){
+var p=round.initPts,l=round.initLives;
+var result=[{pts:p,lives:l}];
+for(var i=0;i<round.events.length;i++){
+p+=round.events[i].dp;
+l+=round.events[i].dl;
+result.push({pts:p,lives:l});
+}
+return result;
+}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var r=rounds[curQ];
+var expected=getExpected(r);
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.78rem;font-weight:700;color:#713f12;text-align:center">'+r.title+'</div>';
+h+='<div class="info-text">Αρχικές τιμές: πόντοι = '+r.initPts+', ζωές = '+r.initLives+'</div>';
+h+='<div class="var-display">';
+var curPts=r.initPts,curLives=r.initLives;
+h+='<div class="var-box pts-box"><div class="var-label">Πόντοι</div><div class="var-val">'+curPts+'</div></div>';
+h+='<div class="var-box lives-box"><div class="var-label">Ζωές</div><div class="var-val">'+curLives+'</div></div>';
+h+='</div>';
+h+='<div class="timeline">';
+for(var i=0;i<r.events.length;i++){
+var e=r.events[i];
+var expPts=expected[i+1].pts;
+var expLives=expected[i+1].lives;
+var hasAnswer=answers[i]!==undefined;
+var pCls='',lCls='';
+if(checked&&hasAnswer){
+pCls=answers[i].pts===expPts?'correct':'wrong';
+lCls=answers[i].lives===expLives?'correct':'wrong';
+}
+h+='<div class="event-card">';
+h+='<div class="event-icon">'+e.icon+'</div>';
+h+='<div class="event-desc">'+e.desc+(e.dp>0?' (πόντοι +'+e.dp+')':'')+(e.dl<0?' (ζωές '+e.dl+')':'')+'</div>';
+h+='<div class="input-row">';
+h+='<label>Πόντοι:</label>';
+h+='<input type="number" class="var-input '+pCls+'" id="pts_'+i+'" value="'+(hasAnswer?answers[i].pts:'')+'" onchange="setAnswer('+i+')" '+(checked?'disabled':'')+'>';
+h+='<label>Ζωές:</label>';
+h+='<input type="number" class="var-input '+lCls+'" id="lives_'+i+'" value="'+(hasAnswer?answers[i].lives:'')+'" onchange="setAnswer('+i+')" '+(checked?'disabled':'')+'>';
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+var allAnswered=Object.keys(answers).length===r.events.length;
+if(allAnswered&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Απαντήσεων</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<r.events.length;i++){
+if(answers[i]&&answers[i].pts===expected[i+1].pts&&answers[i].lives===expected[i+1].lives)correct++;
+}
+var pct=Math.round(correct/r.events.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ '+correct+'/'+r.events.length+' σωστά!':'❌ '+correct+'/'+r.events.length+' σωστά.')+'</div>';
+if(curQ<rounds.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενος Γύρος ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function setAnswer(idx){
+  var p=document.getElementById('pts_'+idx).value;
+  var l=document.getElementById('lives_'+idx).value;
+  if(p!==''&&l!==''){
+    answers[idx]={pts:parseInt(p),lives:parseInt(l)};
+  }
+  render();
+}
+
+function checkAnswer(){checked=true;render();}
+
+function nextQ(){
+if(curQ<rounds.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

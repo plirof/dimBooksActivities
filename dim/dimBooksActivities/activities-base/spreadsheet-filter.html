@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spreadsheet Φίλτρο</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:900px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-top:20px}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.6em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:20px;font-weight:400}
+.counter{text-align:center;font-size:.9em;color:#667eea;margin-bottom:15px;font-weight:600}
+.toolbar{margin-bottom:15px}
+.filter-checkboxes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;padding:12px;background:#f8f9fa;border-radius:10px}
+.filter-checkboxes label{display:flex;align-items:center;gap:6px;font-size:.9em;color:#333;cursor:pointer;padding:4px 10px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;transition:all .2s}
+.filter-checkboxes label:hover{border-color:#667eea}
+.filter-checkboxes label input[type="checkbox"]{accent-color:#667eea;cursor:pointer}
+.spreadsheet{border:1px solid #d0d7de;border-radius:10px;overflow:hidden}
+.spreadsheet table{width:100%;border-collapse:collapse}
+.spreadsheet th{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 14px;text-align:left;font-size:.9em;font-weight:600;position:relative;white-space:nowrap}
+.spreadsheet th .col-header{display:flex;align-items:center;gap:6px;cursor:default}
+.spreadsheet th .filter-btn{background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:4px;width:22px;height:22px;cursor:pointer;font-size:.75em;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.spreadsheet th .filter-btn:hover{background:rgba(255,255,255,.45)}
+.spreadsheet th .filter-btn.active{background:rgba(255,255,255,.5)}
+.spreadsheet td{padding:10px 14px;border-bottom:1px solid #eee;font-size:.9em;color:#333}
+.spreadsheet tr:nth-child(even) td{background:#f8f9ff}
+.spreadsheet tr.hidden-row{display:none}
+.spreadsheet tr:hover td{background:#f0f0ff}
+.row-num{color:#aaa;font-size:.8em;min-width:30px}
+.dropdown-panel{position:absolute;top:100%;left:0;background:#fff;border:1px solid #d0d7de;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:100;min-width:160px;overflow:hidden;display:none}
+.dropdown-panel.open{display:block}
+.dropdown-panel .dd-item{padding:10px 16px;cursor:pointer;font-size:.9em;color:#333;transition:background .15s;border-bottom:1px solid #f0f0f0}
+.dropdown-panel .dd-item:hover{background:#f0f0ff}
+.dropdown-panel .dd-item.active{background:#eef0ff;font-weight:600;color:#667eea}
+.dropdown-panel .dd-clear{padding:8px 16px;text-align:center;font-size:.85em;color:#888;cursor:pointer;border-top:2px solid #eee}
+.dropdown-panel .dd-clear:hover{background:#fff3e0;color:#e65100}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.loading{text-align:center;padding:40px;color:#fff;font-size:1.2em}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+<div class="loading">Φόρτωση...</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+function showError(msg){app.innerHTML='<div class="error">'+msg+'</div>'}
+
+if(!dataFile){showError('Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json στο URL.');throw new Error('No data file')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const columns=data.columns;
+const rows=data.data;
+const filterMode=data.filterMode||'dropdown';
+const filterableCols=new Set((data.filterableColumns||[]).map(c=>c));
+const multiSelect=data.multiSelect||false;
+let activeFilters={};
+let openDropdown=-1;
+
+filterableCols.forEach(ci=>{
+  activeFilters[ci]=multiSelect?[]:null;
+});
+
+function getUniqueValues(colIndex){
+  const vals=new Set();
+  rows.forEach(r=>vals.add(r[colIndex]));
+  return[...vals].sort();
+}
+
+function isRowVisible(row){
+  for(const ci of filterableCols){
+    const filter=activeFilters[ci];
+    if(multiSelect){
+      if(Array.isArray(filter)&&filter.length>0&&!filter.includes(row[ci]))return false;
+    }else{
+      if(filter!==null&&filter!==undefined&&row[ci]!==filter)return false;
+    }
+  }
+  return true;
+}
+
+function getVisibleCount(){
+  return rows.filter(r=>isRowVisible(r)).length;
+}
+
+function render(){
+  const visibleCount=getVisibleCount();
+  const totalCount=rows.length;
+
+  let checkboxHtml='';
+  if(filterMode==='checkbox'){
+    filterableCols.forEach(ci=>{
+      const uniq=getUniqueValues(ci);
+      checkboxHtml+=`<div class="filter-checkboxes">
+        <strong style="margin-right:8px;color:#667eea;font-size:.85em">${esc(columns[ci].name)}:</strong>
+        ${uniq.map(v=>{
+          const checked=Array.isArray(activeFilters[ci])&&activeFilters[ci].includes(v);
+          return`<label><input type="checkbox" value="${esc(v)}" ${checked?'checked':''} onchange="toggleCheckbox(${ci},this)">${esc(v)}</label>`;
+        }).join('')}
+        ${multiSelect&&activeFilters[ci]&&activeFilters[ci].length>0?`<label style="border-color:#f44336;color:#f44336" onclick="clearCheckboxFilter(${ci})"><input type="checkbox" style="display:none">Καθαρισμός</label>`:''}
+      </div>`;
+    });
+  }
+
+  app.innerHTML=`
+    <h1>${esc(data.title)}</h1>
+    <h2>${esc(data.subtitle||'')}</h2>
+    <div class="counter">Εμφανίζονται <strong>${visibleCount}</strong> από <strong>${totalCount}</strong> εγγραφές</div>
+    ${checkboxHtml?'<div class="toolbar">'+checkboxHtml+'</div>':''}
+    <div class="spreadsheet" id="spreadsheet">
+      <table>
+        <thead><tr>
+          <th style="width:40px;text-align:center">#</th>
+          ${columns.map((col,ci)=>{
+            const isFilterable=filterableCols.has(ci);
+            const hasActiveFilter=multiSelect?(activeFilters[ci]&&activeFilters[ci].length>0):(activeFilters[ci]!==null);
+            if(isFilterable&&filterMode==='dropdown'){
+              const uniq=getUniqueValues(ci);
+              return`<th>
+                <div class="col-header">
+                  ${esc(col.name)}
+                  <button class="filter-btn ${hasActiveFilter?'active':''}" onclick="toggleDropdown(${ci},event)">▼</button>
+                  <div class="dropdown-panel ${openDropdown===ci?'open':''}" id="dd-${ci}">
+                    <div class="dd-clear" onclick="clearDropdown(${ci})">✕ Καθαρισμός φίλτρου</div>
+                    ${uniq.map(v=>{
+                      const isActive=!multiSelect&&activeFilters[ci]===v;
+                      return`<div class="dd-item ${isActive?'active':''}" onclick="selectDropdown(${ci},'${esc(v)}')">${esc(v)}</div>`;
+                    }).join('')}
+                  </div>
+                </div>
+              </th>`;
+            }
+            return`<th>${esc(col.name)}</th>`;
+          }).join('')}
+        </tr></thead>
+        <tbody>
+          ${rows.map((row,ri)=>{
+            const visible=isRowVisible(row);
+            return`<tr class="${visible?'':'hidden-row'}">
+              <td class="row-num" style="text-align:center">${ri+1}</td>
+              ${row.map((cell,ci)=>`<td>${esc(String(cell))}</td>`).join('')}
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+window.toggleDropdown=function(ci,e){
+  e.stopPropagation();
+  openDropdown=openDropdown===ci?-1:ci;
+  render();
+};
+
+window.selectDropdown=function(ci,val){
+  if(activeFilters[ci]===val){activeFilters[ci]=null}
+  else{activeFilters[ci]=val}
+  openDropdown=-1;
+  render();
+};
+
+window.clearDropdown=function(ci){
+  activeFilters[ci]=null;
+  openDropdown=-1;
+  render();
+};
+
+window.toggleCheckbox=function(ci,el){
+  const val=el.value;
+  if(!Array.isArray(activeFilters[ci]))activeFilters[ci]=[];
+  if(el.checked){
+    if(!activeFilters[ci].includes(val))activeFilters[ci].push(val);
+  }else{
+    activeFilters[ci]=activeFilters[ci].filter(v=>v!==val);
+  }
+  render();
+};
+
+window.clearCheckboxFilter=function(ci){
+  activeFilters[ci]=[];
+  render();
+};
+
+document.addEventListener('click',()=>{if(openDropdown!==-1){openDropdown=-1;render()}});
+
+render()
+}).catch(err=>showError('Σφάλμα φόρτωσης: '+esc(err.message)));
+</script>
+</body>
+</html>

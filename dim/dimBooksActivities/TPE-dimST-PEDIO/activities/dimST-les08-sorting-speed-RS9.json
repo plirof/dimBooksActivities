@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είδος Αισθητήρα",
+  "subtitle": "Ταξινόμησε κάθε αισθητήρα στη σωστή κατηγορία",
+  "instructions": "Πάτα αριστερό βέλος για Αισθητήρα micro:bit, δεξιό για Εντολή MakeCode",
+  "categories": [
+    { "id": "sensor", "name": "Αισθητήρας / Υλικό", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "code", "name": "Εντολή MakeCode", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Αισθητήρας φωτός", "category": "sensor" },
+    { "text": "Εμφάνισε αριθμό", "category": "code" },
+    { "text": "Φωτοδίοδος LED", "category": "sensor" },
+    { "text": "Show leds", "category": "code" },
+    { "text": "Αισθητήρας απόστασης", "category": "sensor" },
+    { "text": "Εάν-αλλιώς", "category": "code" },
+    { "text": "Αισθητήρας θερμοκρασίας", "category": "sensor" },
+    { "text": "Για πάντα", "category": "code" },
+    { "text": "Κουμπί A", "category": "sensor" },
+    { "text": "Επίπεδο φωτισμού", "category": "code" }
+  ],
+  "duration": 30
+}

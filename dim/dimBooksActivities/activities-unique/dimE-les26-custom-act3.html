@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated e-me | Μάθημα 26</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.2rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.8rem;text-align:center;margin-bottom:10px;}
+.app{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:650px;width:100%;overflow:hidden;}
+.header{background:linear-gradient(90deg,#1565c0,#0d47a1);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+.header .logo{font-size:1.3rem;font-weight:800;}
+.header .user{margin-left:auto;font-size:.8rem;opacity:.8;}
+.nav{display:flex;border-bottom:2px solid #e0e0e0;}
+.nav button{flex:1;padding:10px;border:none;background:#fff;cursor:pointer;font-weight:700;font-size:.8rem;color:#666;border-bottom:3px solid transparent;transition:all .2s;}
+.nav button.active{color:#1565c0;border-bottom-color:#1565c0;background:#e3f2fd;}
+.content{padding:16px;min-height:350px;}
+.page{display:none;}.page.active{display:block;}
+.post-card{background:#f5f5f5;border-radius:12px;padding:14px;margin-bottom:12px;border:2px solid #e0e0e0;}
+.post-card .author{font-weight:700;color:#1565c0;font-size:.9rem;}
+.post-card .text{margin:8px 0;font-size:.9rem;color:#333;line-height:1.4;}
+.post-card .actions{display:flex;gap:12px;font-size:.8rem;}
+.post-card .actions span{cursor:pointer;color:#666;transition:color .2s;}
+.post-card .actions span:hover{color:#1565c0;}
+.post-card .actions span.liked{color:#e91e63;}
+.new-post{background:#e3f2fd;border-radius:12px;padding:14px;margin-bottom:14px;}
+.new-post textarea{width:100%;border:2px solid #bbdefb;border-radius:8px;padding:8px;font-family:inherit;font-size:.9rem;resize:vertical;min-height:60px;outline:none;}
+.new-post textarea:focus{border-color:#1565c0;}
+.new-post .post-btn{margin-top:8px;padding:8px 20px;border:none;border-radius:8px;background:#1565c0;color:#fff;font-weight:700;cursor:pointer;font-size:.85rem;}
+.new-post .post-btn:hover{background:#0d47a1;}
+.assignment-card{background:#fff3e0;border-radius:12px;padding:14px;margin-bottom:10px;border:2px solid #ffe082;}
+.assignment-card h3{font-size:.95rem;color:#e65100;margin-bottom:4px;}
+.assignment-card p{font-size:.85rem;color:#666;}
+.assignment-card .due{font-size:.8rem;color:#f57c00;font-weight:700;margin-top:6px;}
+.assignment-card .submit-btn{margin-top:8px;padding:6px 16px;border:none;border-radius:8px;background:#ff9800;color:#fff;font-weight:700;cursor:pointer;font-size:.8rem;}
+.msg-item{display:flex;gap:10px;padding:10px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;}
+.msg-item:hover{background:#f5f5f5;}
+.msg-item .avatar{width:36px;height:36px;border-radius:50%;background:#667eea;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.85rem;}
+.msg-item .preview{flex:1;}.msg-item .preview .name{font-weight:700;font-size:.85rem;color:#333;}
+.msg-item .preview .text{font-size:.8rem;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-item .time{font-size:.7rem;color:#bbb;}
+.success-msg{text-align:center;padding:10px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:10px;color:#166534;font-weight:700;font-size:.9rem;margin-top:10px;display:none;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .header > * + * { margin-left: 10px; }
+  .post-card .actions > * + * { margin-left: 12px; }
+  .msg-item > * + * { margin-left: 10px; }
+  .g61f8_0 > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📱 Simulated e-me</h1>
+<p class="subtitle">Ανέβασε, σχολίασε και εξερεύνησε!</p>
+<div class="app">
+<div class="header">
+<span class="logo">🏫 e-me</span>
+<span class="user">👤 Μαθητής Ε'</span>
+</div>
+<div class="nav">
+<button class="active" onclick="switchPage('wall')">🏠 Τοίχος</button>
+<button onclick="switchPage('assignments')">📋 Εργασίες</button>
+<button onclick="switchPage('messages')">💬 Μηνύματα</button>
+</div>
+<div class="content">
+<div class="page active" id="page-wall">
+<div class="new-post">
+<textarea id="postText" placeholder="Γράψε κάτι..."></textarea>
+<div class="g61f8_0" style="display:flex;gap:8px;align-items:center;">
+<button class="post-btn" onclick="addPost()">📢 Ανάρτηση</button>
+<button class="post-btn" style="background:#999;" onclick="addImage()">🖼️ + Εικόνα</button>
+</div>
+</div>
+<div id="posts"></div>
+</div>
+<div class="page" id="page-assignments">
+<div class="assignment-card"><h3>📝 Εργασία: Διαδραστική Παρουσίαση</h3><p>Φτιάξε μια παρουσίαση για την ασφάλεια στο διαδίκτυο.</p><span class="due">📅 Παράδοση: 10/05</span><br><button class="submit-btn" onclick="submitWork(this)">📤 Υποβολή</button></div>
+<div class="assignment-card"><h3>🎨 Εργασία: Ψηφιακό Έργο Τέχνης</h3><p>Ζωγράφισε με το Scratch ή το TuxPaint.</p><span class="due">📅 Παράδοση: 15/05</span><br><button class="submit-btn" onclick="submitWork(this)">📤 Υποβολή</button></div>
+<div class="assignment-card"><h3>📊 Εργασία: Υπολογιστικό Φύλλο</h3><p>Φτιάξε πίνακα με τα αγαπημένα φαγητά της τάξης.</p><span class="due">📅 Παράδοση: 20/05</span><br><button class="submit-btn" onclick="submitWork(this)">📤 Υποβολή</button></div>
+<div class="success-msg" id="submitMsg">✅ Η εργασία υποβλήθηκε επιτυχώς!</div>
+</div>
+<div class="page" id="page-messages">
+<div class="msg-item" onclick="openMsg(0)"><div class="avatar">Κ</div><div class="preview"><div class="name">Κυψέλη Τάξης</div><div class="text">Μπράβο σε όλους για τις εργασίες!</div></div><div class="time">10:30</div></div>
+<div class="msg-item" onclick="openMsg(1)"><div class="avatar">Μ</div><div class="preview"><div class="name">Μαρία (Ε2)</div><div class="text">Μπορείς να μου στείλεις τη φωτογραφία;</div></div><div class="time">Χθες</div></div>
+<div class="msg-item" onclick="openMsg(2)"><div class="avatar">Δ</div><div class="preview"><div class="name">Δάσκαλος</div><div class="text">Υπενθύμιση: η εργασία παραδίνεται Παρασκευή</div></div><div class="time">Δευ.</div></div>
+<div class="success-msg" id="msgSuccess">📨 Το μήνυμα διαβάστηκε!</div>
+</div>
+</div>
+</div>
+<script>
+var posts=[
+{author:'Δάσκαλος',text:'🏫 Καλή εβδομάδα σε όλους! Σήμερα μαθαίνουμε για το διαδίκτυο.',likes:5,liked:false,comments:['Μπράβο!','Ενδιαφέρον!']},
+{author:'Γιώργος',text:'🖥️ Μου αρέσει πολύ το Scratch! Έφτιαξα ένα παιχνίδι!',likes:3,liked:false,comments:[]},
+{author:'Ελένη',text:'📚 Βρήκα ένα ωραίο διαδραστικό βιβλίο στο ebooks.edu.gr',likes:7,liked:false,comments:['Στείλε link!']}
+];
+function renderPosts(){
+var html='';posts.forEach(function(p,i){
+html+='<div class="post-card"><div class="author">'+p.author+'</div><div class="text">'+p.text+'</div>';
+html+='<div class="actions"><span class="'+(p.liked?'liked':'')+'" onclick="likePost('+i+')">'+(p.liked?'❤️':'🤍')+' '+p.likes+'</span>';
+html+='<span onclick="commentPost('+i+')">💬 '+p.comments.length+'</span></div></div>';
+});document.getElementById('posts').innerHTML=html;
+}
+function addPost(){
+var t=document.getElementById('postText').value.trim();if(!t)return;
+posts.unshift({author:'Μαθητής Ε\'',text:t,likes:0,liked:false,comments:[]});
+document.getElementById('postText').value='';renderPosts();
+}
+function addImage(){document.getElementById('postText').value+=' [🖼️ Εικόνα]';}
+function likePost(i){posts[i].liked=!posts[i].liked;posts[i].likes+=posts[i].liked?1:-1;renderPosts();}
+function commentPost(i){var c=prompt('Σχόλιο:');if(c){posts[i].comments.push(c);renderPosts();}}
+function switchPage(p){
+document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('active');});
+event.target.classList.add('active');
+document.querySelectorAll('.page').forEach(function(pg){pg.classList.remove('active');});
+document.getElementById('page-'+p).classList.add('active');
+}
+function submitWork(btn){
+btn.textContent='✅ Υποβλήθηκε';btn.style.background='#4caf50';btn.disabled=true;
+var m=document.getElementById('submitMsg');m.style.display='block';
+setTimeout(function(){m.style.display='none';},2000);
+}
+function openMsg(i){
+var m=document.getElementById('msgSuccess');m.style.display='block';
+setTimeout(function(){m.style.display='none';},1500);
+}
+renderPosts();
+</script>
+</body>
+</html>

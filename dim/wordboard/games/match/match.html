@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Word Match - Wordboard</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .match-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 20px auto;
+        }
+        
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .match-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .match-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .match-card {
+            padding: 20px;
+            background: #f8f9ff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .match-card:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+        
+        .match-card.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .match-card.matched {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            cursor: default;
+        }
+        
+        .match-card.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .match-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .match-stat {
+            padding: 15px 30px;
+            background: #f8f9ff;
+            border-radius: 8px;
+        }
+        
+        .match-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .match-stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="match-container" id="matchContainer">
+            <div class="match-header">
+                <a href="../../index.php" class="button" style="font-size: 12px; padding: 5px 10px;">← Back</a>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <h2 id="matchTitle">Word Match</h2>
+                    <div class="match-score">Matches: <span id="score">0</span> / <span id="total">0</span></div>
+                </div>
+            </div>
+            
+            <div class="match-board" id="matchBoard"></div>
+        </div>
+        
+        <div class="match-container result-container" id="resultContainer" style="display: none;">
+            <h2>Complete!</h2>
+            <div class="result-score" id="finalScore">0%</div>
+            <p id="resultMessage"></p>
+            
+            <div class="match-stats">
+                <div class="match-stat">
+                    <div class="match-stat-value" id="correctMatches">0</div>
+                    <div class="match-stat-label">Correct Matches</div>
+                </div>
+                <div class="match-stat">
+                    <div class="match-stat-value" id="wrongAttempts">0</div>
+                    <div class="match-stat-label">Wrong Attempts</div>
+                </div>
+            </div>
+            
+            <a href="../../student/dashboard.php" class="back-btn" style="margin-top: 30px; display: inline-block;">Back to Dashboard</a>
+        </div>
+    </div>
+    
+    <script src="match.js"></script>
+</body>
+</html>

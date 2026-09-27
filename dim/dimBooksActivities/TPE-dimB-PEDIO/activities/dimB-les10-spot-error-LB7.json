@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη: Υπολογιστής στη Ζωή μας",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "γιατροί", "error": false},
+        {"text": "χρησιμοποιούν", "error": false},
+        {"text": "υπολογιστή", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "στάδιο", "error": true, "correct": "νοσοκομείο", "feedback": "Οι γιατροί χρησιμοποιούν υπολογιστή στο νοσοκομείο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "σκούπα", "error": false},
+        {"text": "ρομπότ", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "φτερά", "error": true, "correct": "αισθητήρες", "feedback": "Η σκούπα ρομπότ έχει αισθητήρες, όχι φτερά!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αισθητήρας", "error": false},
+        {"text": "μετράει", "error": false},
+        {"text": "κάτι", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαστημόπλοιο", "error": true, "correct": "περιβάλλον", "feedback": "Ο αισθητήρας μετράει κάτι στο περιβάλλον του!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ψηφιακές", "error": false},
+        {"text": "συσκευές", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πάντα", "error": true, "correct": "παντού", "feedback": "Οι ψηφιακές συσκευές είναι παντού, όχι πάντα!"}
+      ]
+    }
+  ]
+}

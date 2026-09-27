@@ -1,0 +1,12 @@
+{
+  "title": "Συνδέθηκαν;",
+  "subtitle": "Κάνε κλικ στους συνδεδεμένους υπολογιστές",
+  "instructions": "Κάνε κλικ μόνο στους υπολογιστές που έχουν καλώδιο!",
+  "duration": 25,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "🖥️✅", "color": "#C8E6C9" },
+    { "label": "🖥️❌", "color": "#FFCDD2" }
+  ]
+}

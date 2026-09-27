@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: Γεγονότα",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ένα", "error": false},
+        {"text": "γεγονός", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "κάτι", "error": false},
+        {"text": "που", "error": false},
+        {"text": "τρώγεται", "error": true, "correct": "συμβαίνει", "feedback": "Το γεγονός είναι κάτι που συμβαίνει, όχι που τρώγεται!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "παιχνίδι", "error": false},
+        {"text": "ονομάζεται", "error": false},
+        {"text": "Πέτρα-Ψαλίδι-", "error": false},
+        {"text": "Μολύβι", "error": true, "correct": "Χαρτί", "feedback": "Το παιχνίδι λέγεται Πέτρα-Ψαλίδι-Χαρτί!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πάτα", "error": false},
+        {"text": "την", "error": false},
+        {"text": "κατηγορία", "error": false},
+        {"text": "Εξοδος", "error": true, "correct": "Είσοδος", "feedback": "Η κατηγορία λέγεται Είσοδος, όχι Έξοδος!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "λογότυπο", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "κάτω", "error": true, "correct": "πάνω", "feedback": "Το λογότυπο βρίσκεται στο ΠΑΝΩ μέρος!"}
+      ]
+    }
+  ]
+}

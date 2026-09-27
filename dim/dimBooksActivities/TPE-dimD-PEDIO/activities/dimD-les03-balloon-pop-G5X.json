@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Scratch Έννοιες",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για το Scratch",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Επανάλαβε 10 φορές", "correct": true, "color": "#4caf50" },
+    { "text": "Τυχαία εντολή", "correct": false, "color": "#f44336" },
+    { "text": "Πράσινη σημαία = εκκίνηση", "correct": true, "color": "#2196f3" },
+    { "text": "Πράσινη σημαία = διαγραφή", "correct": false, "color": "#ff9800" },
+    { "text": "Πιο πολλά βήματα = πιο γρήγορα", "correct": true, "color": "#8bc34a" },
+    { "text": "Πιο λίγα βήματα = πιο γρήγορα", "correct": false, "color": "#9c27b0" },
+    { "text": "Υπόβαθρο = φόντο σκηνής", "correct": true, "color": "#00bcd4" },
+    { "text": "Η γατούλα είναι η σκηνή", "correct": false, "color": "#ff5722" },
+    { "text": "10 φορές × 10 βήματα = 100", "correct": true, "color": "#607d8b" },
+    { "text": "Τα βήματα δεν μετράνε", "correct": false, "color": "#e91e63" }
+  ]
+}

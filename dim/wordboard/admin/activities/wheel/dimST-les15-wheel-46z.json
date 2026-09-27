@@ -1,0 +1,24 @@
+{
+    "id": "dimST-les15-wheel-46z",
+    "title": "Θετικές και αρνητικές επιπτώσεις - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Hacking",
+            "Phishing",
+            "Malware",
+            "Cyberbullying",
+            "IoT",
+            "Έξυπνα σπίτια",
+            "Antivirus",
+            "Έξυπνες πόλεις"
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les15",
+        "ασφάλεια"
+    ]
+}

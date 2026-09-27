@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Αλγοριθμικές Έννοιες",
+  "subtitle": "Πιάσε τις σωστές έννοιες!",
+  "instructions": "Πιάσε τα αντικείμενα που είναι βήματα αλγόριθμου. Απόφυγε τα λάθος!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Σήκω πάνω", "correct": true, "color": "#4caf50" },
+    { "text": "Ντύσου", "correct": true, "color": "#2196f3" },
+    { "text": "Τυχαία κίνηση", "correct": false, "color": "#f44336" },
+    { "text": "Φάε πρωινό", "correct": true, "color": "#ff9800" },
+    { "text": "Χωρίς σειρά", "correct": false, "color": "#9c27b0" },
+    { "text": "Πάρε τσάντα", "correct": true, "color": "#00bcd4" },
+    { "text": "Αν βρέχει, πάρε ομπρέλα", "correct": true, "color": "#8bc34a" },
+    { "text": "Δεν ξέρω", "correct": false, "color": "#ff5722" },
+    { "text": "Ξεκίνα για σχολείο", "correct": true, "color": "#607d8b" },
+    { "text": "Ό,τι να ναι", "correct": false, "color": "#e91e63" }
+  ]
+}

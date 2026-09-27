@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μηνύματα: Μπάλα → Καλάθι | Μάθημα 10</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:10px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:16px;}
+.stage{background:#fff8e1;border-radius:14px;overflow:hidden;margin-bottom:12px;border:3px solid #ff9800;}
+.stage canvas{width:100%;display:block;}
+.message-flow{background:#f3e5f5;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;}
+.msg-step{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;margin:3px;font-weight:700;font-size:.8rem;color:#fff;}
+.msg-step.ball{background:#f44336;}.msg-step.msg{background:#9c27b0;}.msg-step.basket{background:#ff9800;}.msg-step.score{background:#4caf50;}
+.arrow-r{font-size:1.2rem;color:#9c27b9;font-weight:700;margin:0 4px;}
+.btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.btn{padding:10px 22px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn-play{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-reset{background:linear-gradient(135deg,#f7971e,#ffd200);color:#333;}
+.score-display{text-align:center;font-size:1.5rem;font-weight:800;color:#5b3ea8;margin-bottom:10px;}
+.log{background:#f5f5f5;border-radius:10px;padding:10px;max-height:150px;overflow-y:auto;font-size:.8rem;font-family:monospace;}
+.log div{padding:2px 0;border-bottom:1px solid #eee;}
+.log .ball-msg{color:#f44336;}.log .broadcast-msg{color:#9c27b0;}.log .basket-msg{color:#ff9800;}.log .score-msg{color:#4caf50;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .msg-step > * + * { margin-left: 6px; }
+  .btn-row > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏀 Μπάλα → Μήνυμα → Καλάθι</h1>
+<p class="subtitle">Δες πώς η μπάλα στέλνει μήνυμα «μπήκε» στο καλάθι!</p>
+<div class="container">
+<div class="score-display">🏀 Πόντοι: <span id="pts">0</span></div>
+<div class="stage"><canvas id="sc" width="700" height="300"></canvas></div>
+<div class="message-flow">
+<span class="msg-step ball">🏀 Μπάλα</span><span class="arrow-r">→</span>
+<span class="msg-step msg">📨 μετάδωσε «μπήκε»</span><span class="arrow-r">→</span>
+<span class="msg-step basket">🧺 Καλάθι</span><span class="arrow-r">→</span>
+<span class="msg-step score">⭐ πόντοι+1</span>
+</div>
+<div class="btn-row">
+<button class="btn btn-play" onclick="shoot()">🏀 Ρίξε Μπάλα!</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+<div class="log" id="log"></div>
+</div>
+<script>
+var c=document.getElementById('sc'),cx=c.getContext('2d'),W=700,H=300;
+var pts=0,ball={x:100,y:250,r:15,vy:0,vx:0,flying:false};
+var basket={x:550,y:120,w:70};
+var animId,phase='ready',messageSent=false;
+function log(msg,cls){var d=document.getElementById('log');var div=document.createElement('div');div.className=cls||'';div.textContent=msg;d.prepend(div);}
+function draw(){
+cx.clearRect(0,0,W,H);
+var g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#fff8e1');g.addColorStop(1,'#ffe082');cx.fillStyle=g;cx.fillRect(0,0,W,H);
+cx.fillStyle='#795548';cx.fillRect(basket.x-5,basket.y,5,80);cx.fillRect(basket.x+basket.w,basket.y,5,80);
+cx.fillStyle='#e65100';cx.fillRect(basket.x-8,basket.y-5,basket.w+16,10);cx.fillRect(basket.x-8,basket.y+70,basket.w+16,8);
+cx.strokeStyle='#b71c1c';cx.lineWidth=3;cx.beginPath();cx.moveTo(basket.x,basket.y+60);cx.lineTo(basket.x+basket.w,basket.y+60);cx.stroke();cx.lineWidth=1;
+cx.save();cx.translate(ball.x,ball.y);
+cx.fillStyle='#ff6f00';cx.beginPath();cx.arc(0,0,ball.r,0,Math.PI*2);cx.fill();
+cx.strokeStyle='#e65100';cx.lineWidth=2;cx.beginPath();cx.arc(0,0,ball.r,0,Math.PI*2);cx.stroke();
+cx.beginPath();cx.moveTo(-ball.r,0);cx.lineTo(ball.r,0);cx.stroke();cx.beginPath();cx.moveTo(0,-ball.r);cx.lineTo(0,ball.r);cx.stroke();
+cx.restore();
+if(phase==='message'){
+cx.fillStyle='#9c27b0';cx.font='bold 16px sans-serif';cx.textAlign='center';
+var pulse=1+Math.sin(Date.now()/100)*.2;cx.save();cx.translate((ball.x+basket.x+basket.w/2)/2,basket.y-20);cx.scale(pulse,pulse);
+cx.fillText('📨 «μπήκε»',0,0);cx.restore();
+}
+cx.fillStyle='#666';cx.font='12px sans-serif';cx.textAlign='center';cx.fillText('Πάτα "Ρίξε Μπάλα"',W/2,H-10);
+}
+function shoot(){
+if(ball.flying)return;
+ball.flying=true;phase='flying';messageSent=false;
+ball.vy=-9;ball.vx=5.5;
+log('🏀 Μπάλα εκτοξεύτηκε!','ball-msg');
+animateShot();
+}
+function animateShot(){
+ball.x+=ball.vx;ball.y+=ball.vy;ball.vy+=0.15;
+if(!messageSent&&ball.x>=basket.x-10&&ball.x<=basket.x+basket.w+10&&ball.y>=basket.y&&ball.y<=basket.y+70){
+messageSent=true;phase='message';
+pts++;document.getElementById('pts').textContent=pts;
+log('📨 Μπάλα: μετάδωσε «μπήκε»!','broadcast-msg');
+log('🧺 Καλάθι: όταν λάβω «μπήκε» → άλλαξε ενδυμασία','basket-msg');
+log('⭐ Πόντοι: πόντοι+1 = '+pts,'score-msg');
+setTimeout(function(){phase='scored';ball.flying=false;ball.x=100;ball.y=250;draw();
+setTimeout(function(){phase='ready';draw();},500);
+},1500);
+}
+if(ball.y>H+30){phase='ready';ball.flying=false;ball.x=100;ball.y=250;log('🏀 Αστόχησε! Δοκίμασε ξανά.','ball-msg');}
+draw();
+if(ball.flying)animId=requestAnimationFrame(animateShot);
+}
+function resetGame(){pts=0;document.getElementById('pts').textContent='0';ball.x=100;ball.y=250;ball.flying=false;phase='ready';messageSent=false;document.getElementById('log').innerHTML='';draw();}
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "title": "Μπορεί / Δεν μπορεί το ρομπότ",
+  "subtitle": "Τι μπορεί και τι δεν μπορεί να κάνει ένα ρομπότ;",
+  "categories": [
+    {
+      "id": "can",
+      "name": "ΜΠΟΡΕΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "cant",
+      "name": "ΔΕΝ ΜΠΟΡΕΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Περιστρέφεται",
+      "category": "can"
+    },
+    {
+      "id": "item2",
+      "text": "Μεταφέρει βαριά αντικείμενα",
+      "category": "can"
+    },
+    {
+      "id": "item3",
+      "text": "Κοιμάται",
+      "category": "cant"
+    },
+    {
+      "id": "item4",
+      "text": "Περπατάει",
+      "category": "can"
+    },
+    {
+      "id": "item5",
+      "text": "Κλαίει",
+      "category": "cant"
+    },
+    {
+      "id": "item6",
+      "text": "Γελάει",
+      "category": "cant"
+    },
+    {
+      "id": "item7",
+      "text": "Μαθαίνει",
+      "category": "can"
+    }
+  ]
+}

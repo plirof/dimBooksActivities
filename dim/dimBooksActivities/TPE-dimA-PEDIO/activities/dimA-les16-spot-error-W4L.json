@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Αποθήκευση",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "μενού", "error": false},
+        {"text": "ζωγραφικής", "error": true, "correct": "αρχείο", "feedback": "Πατάω το μενού Αρχείο, όχι Ζωγραφικής!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σώσω.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "Πρέπει", "feedback": "Πρέπει να αποθηκεύω τη δουλειά μου!"},
+        {"text": "να", "error": false},
+        {"text": "αποθηκεύω", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "δουλειά", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δίνω", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "χρώμα", "error": true, "correct": "όνομα", "feedback": "Δίνω όνομα στο αρχείο, όχι χρώμα!"},
+        {"text": "στο", "error": false},
+        {"text": "αρχείο", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "αποθηκεύσω,", "error": false},
+        {"text": "η", "error": false},
+        {"text": "δουλειά", "error": false},
+        {"text": "μου", "error": false},
+        {"text": "σώζεται", "error": true, "correct": "χάνεται", "feedback": "Αν δεν αποθηκεύσω, η δουλειά χάνεται!"},
+        {"text": "!", "error": false}
+      ]
+    }
+  ]
+}

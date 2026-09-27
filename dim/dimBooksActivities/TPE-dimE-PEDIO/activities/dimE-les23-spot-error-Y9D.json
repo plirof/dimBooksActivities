@@ -1,0 +1,58 @@
+{
+  "title": "Βρες τα Λάθη: Αποθήκευση",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αποθηκεύσουμε", "error": false},
+        {"text": "πατάμε", "error": false},
+        {"text": "Επεξεργασία", "error": true, "correct": "Αρχείο", "feedback": "Πατάμε ΑΡΧΕΙΟ και όχι Επεξεργασία!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "προεπιλεγμένος", "error": false},
+        {"text": "φάκελος", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "οι", "error": false},
+        {"text": "Εικόνες.", "error": true, "correct": "Έγγραφα", "feedback": "Ο προεπιλεγμένος φάκελος είναι τα ΕΓΓΡΑΦΑ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορούμε", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βάλουμε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σύμβολο", "error": false},
+        {"text": "*", "error": true, "correct": "", "feedback": "Το * ΔΕΝ επιτρέπεται στα ονόματα αρχείων!"},
+        {"text": "στο", "error": false},
+        {"text": "όνομα", "error": false},
+        {"text": "αρχείου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ένα", "error": false},
+        {"text": "νέο", "error": false},
+        {"text": "έγγραφο", "error": false},
+        {"text": "ονομάζεται", "error": false},
+        {"text": "Νέο", "error": true, "correct": "Untitled", "feedback": "Το νέο έγγραφο ονομάζεται UNTITLED!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ανοίξουμε", "error": false},
+        {"text": "αρχείο", "error": false},
+        {"text": "κάνουμε", "error": false},
+        {"text": "τριπλό", "error": true, "correct": "διπλό", "feedback": "Κάνουμε ΔΙΠΛΟ κλικ, όχι τριπλό!"},
+        {"text": "κλικ.", "error": false}
+      ]
+    }
+  ]
+}

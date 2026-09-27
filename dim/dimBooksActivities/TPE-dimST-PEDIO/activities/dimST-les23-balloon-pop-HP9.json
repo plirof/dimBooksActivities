@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αναρτήσεις",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με τις αναρτήσεις",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με τις αναρτήσεις ιστολογίου",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Άρθρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ανάρτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Σύνδεσμος",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εικόνα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Βίντεο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πολυμέσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φόρουμ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "QR Code",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

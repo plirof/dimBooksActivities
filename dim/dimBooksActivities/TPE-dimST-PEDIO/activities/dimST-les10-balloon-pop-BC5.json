@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Θερμόμετρο",
+  "subtitle": "Σπάσε μόνο τα στοιχεία του θερμόμετρου",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με το θερμόμετρο και τη θερμοκρασία",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Θερμοκρασία",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Θερμόμετρο",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Μπάσκετ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Μέγιστην τιμή",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Ελάχιστην τιμή",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Κυνήγι",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Αισθητήρας θερμοκρασίας",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Βαθμοί Κελσίου",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

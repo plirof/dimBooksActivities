@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ο Δείκτης",
+  "subtitle": "Μόνο λέξεις για τον δείκτη!",
+  "instruction": "Σπάσε μόνο λέξεις σχετικές με τον ΔΕΙΚΤΗ και τις ΚΑΤΕΥΘΥΝΣΕΙΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Δείκτης", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουζίνα", "correct": false, "color": "#f44336" },
+    { "text": "Αριστερά", "correct": true, "color": "#2196F3" },
+    { "text": "Ψυγείο", "correct": false, "color": "#FF9800" },
+    { "text": "Δεξιά", "correct": true, "color": "#9C27B0" },
+    { "text": "Μολύβι", "correct": false, "color": "#E91E63" },
+    { "text": "Πάνω", "correct": true, "color": "#FFC107" },
+    { "text": "Καρέκλα", "correct": false, "color": "#00BCD4" },
+    { "text": "Κάτω", "correct": true, "color": "#3F51B5" },
+    { "text": "Κουρτίνα", "correct": false, "color": "#795548" },
+    { "text": "Βέλος", "correct": true, "color": "#FF9800" },
+    { "text": "Σκάλα", "correct": false, "color": "#607D8B" }
+  ]
+}

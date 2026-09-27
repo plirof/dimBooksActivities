@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάγραμμα: Οπτικοποίηση Δεδομένων | Μάθημα 19</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:750px;width:100%;padding:16px;}
+.data-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.data-table th{background:#667eea;color:#fff;padding:8px;font-size:.85rem;}
+.data-table td{border:1px solid #e0e0e0;padding:6px 8px;text-align:center;}
+.data-table td input{width:100%;border:none;text-align:center;font-size:.9rem;outline:none;background:transparent;}
+.data-table td input:focus{background:#f3e5f5;border-radius:4px;}
+.chart-type-btns{display:flex;gap:8px;margin-bottom:14px;justify-content:center;}
+.type-btn{padding:8px 20px;border:2px solid #c5cae9;border-radius:10px;background:#fff;font-weight:700;cursor:pointer;color:#4527a0;transition:all .2s;font-size:.85rem;}
+.type-btn.active,.type-btn:hover{background:#667eea;color:#fff;border-color:#667eea;}
+.chart-area{background:#fafafa;border-radius:14px;padding:16px;border:2px solid #e0e0e0;margin-bottom:14px;}
+canvas{width:100%;display:block;}
+.btn-row{display:flex;gap:8px;justify-content:center;}
+.btn{padding:8px 18px;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:700;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn-add{background:#43a047;color:#fff;}.btn-rm{background:#e53935;color:#fff;}.btn-reset{background:#f9a825;color:#333;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .chart-type-btns > * + * { margin-left: 8px; }
+  .btn-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Φτιάξε Διάγραμμα</h1>
+<p class="subtitle">Βάλε δεδομένα, διάλεξε τύπο και οπτικοποίησέ τα!</p>
+<div class="container">
+<table class="data-table" id="dtable">
+<tr><th>Κατηγορία</th><th>Τιμή</th><th></th></tr>
+</table>
+<div class="chart-type-btns">
+<button class="type-btn active" onclick="setType('bar')">📊 Ραβδόγραμμα</button>
+<button class="type-btn" onclick="setType('pie')">🥧 Κυκλικό</button>
+</div>
+<div class="chart-area"><canvas id="cv" width="700" height="350"></canvas></div>
+<div class="btn-row">
+<button class="btn btn-add" onclick="addRow()">+ Γραμμή</button>
+<button class="btn btn-rm" onclick="rmRow()">- Γραμμή</button>
+<button class="btn btn-reset" onclick="resetData()">🔄 Παράδειγμα</button>
+</div>
+</div>
+<script>
+var canvas=document.getElementById('cv'),ctx=canvas.getContext('2d'),W=700,H=350;
+var colors=['#42a5f5','#66bb6a','#ffa726','#ef5350','#ab47bc','#26c6da','#8d6e63','#78909c'];
+var chartType='bar';
+var items=[
+{label:'Πίτσα',value:12},{label:'Μπέργκερ',value:8},{label:'Σουβλάκι',value:15},
+{label:'Μακαρόνια',value:6},{label:'Σαλάτα',value:4}
+];
+function renderTable(){
+var t=document.getElementById('dtable');
+var html='<tr><th>Κατηγορία</th><th>Τιμή</th><th></th></tr>';
+items.forEach(function(it,i){
+html+='<tr><td><input value="'+it.label+'" oninput="upd('+i+',\'label\',this.value)"></td>';
+html+='<td><input type="number" value="'+it.value+'" oninput="upd('+i+',\'value\',+this.value)"></td>';
+html+='<td style="color:#ccc;font-size:.7rem">'+(i+1)+'</td></tr>';
+});
+t.innerHTML=html;
+}
+function upd(i,k,v){items[i][k]=v;drawChart();}
+function addRow(){items.push({label:'Νέο',value:5});renderTable();drawChart();}
+function rmRow(){if(items.length>1){items.pop();renderTable();drawChart();}}
+function setType(t){
+chartType=t;
+document.querySelectorAll('.type-btn').forEach(function(b){b.classList.remove('active');});
+event.target.classList.add('active');drawChart();
+}
+function resetData(){
+items=[{label:'Πίτσα',value:12},{label:'Μπέργκερ',value:8},{label:'Σουβλάκι',value:15},{label:'Μακαρόνια',value:6},{label:'Σαλάτα',value:4}];
+renderTable();drawChart();
+}
+function drawChart(){
+ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafafa';ctx.fillRect(0,0,W,H);
+var total=items.reduce(function(s,it){return s+Math.max(0,it.value||0);},0);
+if(total===0){ctx.fillStyle='#999';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('Πρόσθεσε τιμές!',W/2,H/2);return;}
+if(chartType==='bar'){
+var maxV=Math.max.apply(null,items.map(function(it){return it.value||0;}));
+var barW=Math.min(60,(W-100)/items.length-10);
+var startX=80;var chartH=H-80;var chartW=W-120;
+ctx.strokeStyle='#ddd';ctx.lineWidth=1;
+for(var i=0;i<=5;i++){var y=40+chartH-chartH*i/5;ctx.beginPath();ctx.moveTo(startX,y);ctx.lineTo(W-20,y);ctx.stroke();
+ctx.fillStyle='#999';ctx.font='11px sans-serif';ctx.textAlign='right';ctx.fillText(Math.round(maxV*i/5),startX-8,y+4);}
+items.forEach(function(it,i){
+var h=chartH*(it.value/maxV);var x=startX+i*(barW+10);
+ctx.fillStyle=colors[i%colors.length];
+ctx.beginPath();ctx.roundRect(x,40+chartH-h,barW,h,6);ctx.fill();
+ctx.fillStyle='#333';ctx.font='11px sans-serif';ctx.textAlign='center';
+ctx.fillText(it.value||0,x+barW/2,40+chartH-h-6);
+ctx.fillText(it.label,x+barW/2,40+chartH+16);
+});
+ctx.fillStyle='#666';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+ctx.fillText('Ραβδόγραμμα',W/2,20);
+}else{
+var cx2=W/2,cy=H/2+10,r=Math.min(W,H)/2-50;
+var start=-Math.PI/2;
+items.forEach(function(it,i){
+var angle=(it.value/total)*Math.PI*2;
+ctx.fillStyle=colors[i%colors.length];
+ctx.beginPath();ctx.moveTo(cx2,cy);ctx.arc(cx2,cy,r,start,start+angle);ctx.closePath();ctx.fill();
+ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+var mid=start+angle/2;var lx=cx2+(r+20)*Math.cos(mid);var ly=cy+(r+20)*Math.sin(mid);
+ctx.fillStyle='#333';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(it.label+' ('+Math.round(it.value/total*100)+'%)',lx,ly);
+start+=angle;
+});
+ctx.fillStyle='#666';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+ctx.fillText('Κυκλικό Διάγραμμα',W/2,20);
+}
+}
+renderTable();drawChart();
+</script>
+</body>
+</html>

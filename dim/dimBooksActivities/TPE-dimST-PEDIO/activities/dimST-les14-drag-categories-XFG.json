@@ -1,0 +1,53 @@
+{
+  "title": "Πάροχοι",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στον σωστό πάροχο",
+  "categories": [
+    {
+      "id": "dsl",
+      "name": "DSL",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "fiber",
+      "name": "ΟΠΤΙΚΗ ΙΝΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "mobile",
+      "name": "ΚΙΝΗΤΗΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Μέσω τηλεφωνικής γραμμής",
+      "category": "dsl"
+    },
+    {
+      "id": "item2",
+      "text": "Ταχύτητα 1 Gbps",
+      "category": "fiber"
+    },
+    {
+      "id": "item3",
+      "text": "Μέσω κεραίας",
+      "category": "mobile"
+    },
+    {
+      "id": "item4",
+      "text": "Μέτρια ταχύτητα",
+      "category": "dsl"
+    },
+    {
+      "id": "item5",
+      "text": "Ταχύτητα φωτός",
+      "category": "fiber"
+    },
+    {
+      "id": "item6",
+      "text": "4G/5G",
+      "category": "mobile"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ερωτήσεις από Εννοιολογικό Χάρτη</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#a7f3d0,#6ee7b7);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:900px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#047857,#10b981);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px}
+.map-view{background:#f0fdf4;border-radius:16px;border:2px solid #bbf7d0;padding:16px;margin-bottom:14px;overflow-x:auto}
+.map-view h3{text-align:center;color:#047857;margin-bottom:10px;font-size:1em}
+.map-grid{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.85em}
+.map-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.map-box{display:inline-block;padding:5px 12px;border-radius:8px;font-weight:700;font-size:.9em;text-align:center}
+.map-box.purple{background:#6d28d9;color:#fff}
+.map-box.green{background:#047857;color:#fff}
+.map-box.amber{background:#f59e0b;color:#fff}
+.map-box.blue{background:#1d4ed8;color:#fff}
+.map-box.outline{background:#fff;border:2px solid #6d28d9;color:#6d28d9}
+.map-conn{color:#888;font-size:.8em;font-style:italic}
+.map-line{color:#bbb;font-size:1em}
+.quiz-area{padding:0}
+.question-card{background:#f8fdfa;border-radius:14px;border:2px solid #bbf7d0;padding:16px;margin-bottom:12px}
+.q-number{display:inline-block;background:#047857;color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-size:.8em;font-weight:700;margin-right:8px}
+.q-text{font-size:.95em;font-weight:600;color:#1f2937;margin-bottom:10px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:6px}
+.option{display:flex;align-items:center;gap:8px;padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;cursor:pointer;transition:all .2s;background:#fff;font-size:.9em}
+.option:hover{border-color:#10b981;background:#f0fdf4}
+.option.selected{border-color:#047857;background:#d1fae5;font-weight:600}
+.option.correct{border-color:#047857;background:#d1fae5;color:#047857}
+.option.wrong{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.option .radio{width:18px;height:18px;border-radius:50%;border:2px solid #d1d5db;display:inline-block;flex-shrink:0}
+.option.selected .radio{border-color:#047857;background:#047857;border-width:5px}
+.option.correct .radio{border-color:#047857;background:#047857;border-width:5px}
+.option.wrong .radio{border-color:#dc2626;background:#dc2626;border-width:5px}
+.option:active{transform:scale(.98)}
+.progress-bar{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.p-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7em;font-weight:700;border:2px solid #d1d5db;background:#fff;color:#999}
+.p-dot.done{border-color:#047857;background:#d1fae5;color:#047857}
+.p-dot.wrong{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.p-dot.current{border-color:#047857;background:#047857;color:#fff}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:14px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#047857,#10b981);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(4,120,87,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-finish{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff}
+.btn-finish:hover{transform:scale(1.05)}
+.btn-reset{background:#f0f0f0;color:#555;padding:10px 20px}
+.btn-reset:hover{background:#e0e0e0}
+.score-area{text-align:center;padding:20px;font-size:1.3em;font-weight:700;color:#047857}
+@media(max-width:600px){.map-grid{font-size:.75em}.map-box{font-size:.8em;padding:4px 8px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .map-grid > * + * { margin-top: 4px; }
+  .map-row > * { margin: 3px; }
+  .options > * + * { margin-top: 6px; }
+  .option > * + * { margin-left: 8px; }
+  .progress-bar > * + * { margin-left: 6px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🗺️ Ερωτήσεις από τον Εννοιολογικό Χάρτη</h1>
+<p>Διάβασε τον χάρτη και απάντησε στις ερωτήσεις!</p>
+</div>
+<div class="area">
+<div class="map-view">
+<h3>🧠 Εννοιολογικός Χάρτης: Υπολογιστικό Σύστημα</h3>
+<div class="map-grid">
+<div class="map-row"><span class="map-box purple">Υπολογιστικό Σύστημα</span></div>
+<div class="map-row"><span class="map-conn">συνεργάζονται</span></div>
+<div class="map-row"><span class="map-box green">Υλικό</span> <span class="map-line">↔</span> <span class="map-box green">Λογισμικό</span></div>
+<div class="map-row"><span class="map-conn">περιλαμβάνει</span> <span class="map-line" style="margin:0 20px"> </span> <span class="map-conn">περιλαμβάνει</span></div>
+<div class="map-row"><span class="map-box amber">Κεντρική Μονάδα</span> <span class="map-box amber">Περιφερειακές Συσκευές</span> <span class="map-line" style="margin:0 10px"> </span> <span class="map-box amber">Εφαρμογές</span></div>
+<div class="map-row"><span class="map-conn">αποτελείται από</span></div>
+<div class="map-row"><span class="map-box blue">Επεξεργαστής</span> <span class="map-box blue">Μνήμη</span> <span class="map-box blue">Δίσκος Αποθήκευσης</span></div>
+</div>
+</div>
+<div class="quiz-area" id="quizArea">
+<div class="progress-bar" id="progressBar"></div>
+<div id="questionContainer"></div>
+<div class="controls" id="controlsArea">
+<button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>⏭ Επόμενη</button>
+<button class="btn btn-reset" onclick="resetQuiz()">🔄 Αρχή</button>
+</div>
+<div class="score-area" id="scoreArea" style="display:none"></div>
+</div>
+</div>
+</div>
+<script>
+var questions=[
+{
+q:'Τι είναι το Υπολογιστικό Σύστημα;',
+options:['Μόνο ο υπολογιστής','Η συνεργασία υλικού και λογισμικού','Μόνο το λογισμικό','Μόνο οι εφαρμογές'],
+correct:1,
+hint:'Κοίταξε την κορυφή του χάρτη!'
+},
+{
+q:'Ποια είναι τα δύο κύρια μέρη του Υπολογιστικού Συστήματος;',
+options:['Επεξεργαστής και Μνήμη','Υλικό και Λογισμικό','Οθόνη και Πληκτρολόγιο','Δίσκος και Εφαρμογές'],
+correct:1,
+hint:'Δες τη δεύτερη γραμμή του χάρτη.'
+},
+{
+q:'Τι περιλαμβάνει το Υλικό;',
+options:['Επεξεργαστής, Μνήμη, Δίσκος','Εφαρμογές και προγράμματα','Κεντρική Μονάδα και Περιφερειακές Συσκευές','Μόνο οθόνη και ποντίκι'],
+correct:2,
+hint:'Κοίταξε τι βγαίνει από το «Υλικό» στον χάρτη.'
+},
+{
+q:'Από τι αποτελείται η Κεντρική Μονάδα;',
+options:['Από εφαρμογές','Από Επεξεργαστή, Μνήμη και Δίσκο Αποθήκευσης','Από περιφερειακές συσκευές','Από το λογισμικό'],
+correct:1,
+hint:'Δες την τελευταία γραμμή του χάρτη.'
+},
+{
+q:'Είναι απαραίτητο το Λογισμικό για τον υπολογιστή;',
+options:['Ναι, συνεργάζεται με το υλικό','Όχι, δεν χρειάζεται','Μόνο για παιχνίδια','Μόνο για το διαδίκτυο'],
+correct:0,
+hint:'Ο χάρτης λέει ότι υλικό και λογισμικό «συνεργάζονται».'
+},
+{
+q:'Ποιο από αυτά είναι παράδειγμα Περιφερειακής Συσκευής;',
+options:['Επεξεργαστής','Μνήμη','Εκτυπωτής','Δίσκος Αποθήκευσης'],
+correct:2,
+hint:'Περιφερειακές συσκευές είναι αυτές που συνδέονται εξωτερικά.'
+}
+];
+
+var currentQ=0;
+var answers={};
+
+function renderProgress(){
+var bar=document.getElementById('progressBar');
+bar.innerHTML='';
+for(var i=0;i<questions.length;i++){
+var dot=document.createElement('div');
+dot.className='p-dot';
+if(answers[i]!==undefined)dot.classList.add(answers[i]===questions[i].correct?'done':'wrong');
+if(i===currentQ)dot.classList.add('current');
+dot.textContent=i+1;
+bar.appendChild(dot);
+}
+}
+
+function renderQuestion(){
+renderProgress();
+var container=document.getElementById('questionContainer');
+var q=questions[currentQ];
+var html='<div class="question-card"><div class="q-text"><span class="q-number">'+(currentQ+1)+'</span>'+q.q+'</div><div class="options">';
+for(var i=0;i<q.options.length;i++){
+var selected=answers[currentQ]!==undefined&&answers[currentQ]===i?' selected':'';
+var extra=answers[currentQ]!==undefined?(i===q.correct?' correct':(i===answers[currentQ]?' wrong':'')):'';
+html+='<div class="option'+selected+extra+'" data-optidx="'+i+'" onclick="selectAnswer('+i+')"><span class="radio"></span>'+q.options[i]+'</div>';
+}
+html+='</div></div>';
+container.innerHTML=html;
+var btn=document.getElementById('nextBtn');
+btn.disabled=answers[currentQ]===undefined;
+if(currentQ===questions.length-1)btn.textContent='🏁 Τέλος';
+else btn.textContent='⏭ Επόμενη';
+}
+
+function selectAnswer(idx){
+if(answers[currentQ]!==undefined)return;
+answers[currentQ]=idx;
+renderQuestion();
+var q=questions[currentQ];
+if(idx===q.correct){
+showFeedback('✅ Σωστά! '+q.hint,true);
+}else{
+showFeedback('❌ Δεν είναι σωστό. '+q.hint,false);
+}
+document.getElementById('nextBtn').disabled=false;
+}
+
+function nextQuestion(){
+if(currentQ<questions.length-1){
+currentQ++;
+renderQuestion();
+document.getElementById('nextBtn').disabled=true;
+}else{
+showResults();
+}
+}
+
+function showResults(){
+var correct=0;
+for(var i=0;i<questions.length;i++){
+if(answers[i]===questions[i].correct)correct++;
+}
+var pct=Math.round(correct/questions.length*100);
+var msg='';
+if(pct===100)msg='🎉 Τέλεια! '+correct+'/'+questions.length+' σωστές απαντήσεις!';
+else if(pct>=70)msg='👏 Μπράβο! '+correct+'/'+questions.length+' σωστές!';
+else msg='💪 '+correct+'/'+questions.length+' σωστές. Δοκίμασε ξανά!';
+document.getElementById('questionContainer').innerHTML='';
+document.getElementById('controlsArea').style.display='none';
+document.getElementById('scoreArea').style.display='block';
+document.getElementById('scoreArea').textContent=msg;
+document.getElementById('progressBar').style.display='none';
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+if(!el){
+el=document.createElement('div');
+el.id='feedback';
+el.className='feedback';
+document.getElementById('quizArea').insertBefore(el,document.getElementById('progressBar').nextSibling);
+}
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+setTimeout(function(){if(el.parentNode)el.className='feedback';},3000);
+}
+
+function resetQuiz(){
+currentQ=0;
+answers={};
+document.getElementById('scoreArea').style.display='none';
+document.getElementById('progressBar').style.display='flex';
+document.getElementById('controlsArea').style.display='flex';
+var old=document.getElementById('feedback');
+if(old)old.remove();
+renderQuestion();
+document.getElementById('nextBtn').disabled=true;
+}
+
+resetQuiz();
+</script>
+</body>
+</html>

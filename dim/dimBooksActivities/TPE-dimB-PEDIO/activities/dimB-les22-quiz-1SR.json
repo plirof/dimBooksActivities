@@ -1,0 +1,74 @@
+{
+  "title": "Μάθημα 22: Γράφω Περισσότερα",
+  "subtitle": "Παράγραφος, σβήσιμο, κεφαλαία",
+  "questions": [
+    {
+      "text": "Πώς αλλάζω παράγραφο;",
+      "type": "mc",
+      "options": ["Enter", "Space", "Backspace", "Tab"],
+      "correctIndex": 0,
+      "explanation": "Το Enter μετακινεί τον κέρσορα σε νέα γραμμή/παράγραφο."
+    },
+    {
+      "text": "Πώς σβήνω ένα γράμμα;",
+      "type": "mc",
+      "options": ["Space", "Backspace", "Enter", "Shift"],
+      "correctIndex": 1,
+      "explanation": "Το Backspace σβήνει τον χαρακτήρα αριστερά του κέρσορα."
+    },
+    {
+      "text": "Πώς κάνω ένα γράμμα κεφαλαίο;",
+      "type": "mc",
+      "options": ["Space", "Backspace", "Shift ή Caps Lock", "Enter"],
+      "correctIndex": 2,
+      "explanation": "Χρησιμοποιώ Shift+γράμμα ή Caps Lock για κεφαλαία."
+    },
+    {
+      "text": "Το Enter αλλάζει γραμμή.",
+      "type": "tf",
+      "answer": true,
+      "explanation": "Το Enter μετακινεί τον κέρσορα στην επόμενη γραμμή."
+    },
+    {
+      "text": "Το Backspace σβήνει τον χαρακτήρα ΔΕΞΙΑ από τον κέρσορα.",
+      "type": "tf",
+      "answer": false,
+      "explanation": "Το Backspace σβήνει τον χαρακτήρα ΑΡΙΣΤΕΡΑ από τον κέρσορα."
+    },
+    {
+      "text": "Ποιο πλήκτρο βάζει κενό ανάμεσα σε λέξεις;",
+      "type": "mc",
+      "options": ["Space", "Enter", "Backspace", "Tab"],
+      "correctIndex": 0,
+      "explanation": "Το Space βάζει κενό ανάμεσα στις λέξεις."
+    },
+    {
+      "text": "Τι κάνει το πλήκτρο Caps Lock;",
+      "type": "mc",
+      "options": ["Γράφει όλα κεφαλαία", "Σβήνει γράμματα", "Αλλάζει γραμμή", "Βάζει κενό"],
+      "correctIndex": 0,
+      "explanation": "Το Caps Lock κλειδώνει τα γράμματα σε κεφαλαία."
+    },
+    {
+      "text": "Πού γράφεις το κείμενο της πρόσκλησης για πάρτι;",
+      "type": "mc",
+      "options": ["Σε εφαρμογή κειμενογράφου", "Στο TuxPaint", "Στο ScratchJr", "Στο micro:bit"],
+      "correctIndex": 0,
+      "explanation": "Γράφεις το κείμενο σε μία εφαρμογή κειμενογράφου."
+    },
+    {
+      "text": "Τι χρειάζεται να έχεις ανάμεσα στις λέξεις;",
+      "type": "mc",
+      "options": ["Κενό (Space)", "Τελεία", "Κόμμα", "Τόνο"],
+      "correctIndex": 0,
+      "explanation": "Βάζεις κενό ανάμεσα στις λέξεις με το Space."
+    },
+    {
+      "text": "Με ποια πλήκτρα γράφεις κεφαλαίο γράμμα προσωρινά;",
+      "type": "mc",
+      "options": ["Shift + γράμμα", "Caps Lock μόνο", "Enter + γράμμα", "Space + γράμμα"],
+      "correctIndex": 0,
+      "explanation": "Κρατάς πατημένο Shift και πατάς το γράμμα για κεφαλαίο."
+    }
+  ]
+}

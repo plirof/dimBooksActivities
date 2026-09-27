@@ -1,0 +1,53 @@
+{
+  "title": "Βρες τα Λάθη: Ηχο-γράφημα",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "επίπεδο", "error": false },
+        { "text": "ήχου", "error": false },
+        { "text": "πάει", "error": false },
+        { "text": "από", "error": false },
+        { "text": "0", "error": false },
+        { "text": "μέχρι", "error": false },
+        { "text": "100.", "error": true, "correct": "255", "feedback": "Το επίπεδο ήχου παίρνει τιμές από 0 μέχρι 255" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "μικρόφωνο", "error": false },
+        { "text": "βρίσκεται", "error": false },
+        { "text": "πάνω", "error": false },
+        { "text": "αριστερά", "error": true, "correct": "πάνω δεξιά", "feedback": "Το μικρόφωνο βρίσκεται πάνω δεξιά στο micro:bit" },
+        { "text": "στο", "error": false },
+        { "text": "micro:bit.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "κουμπί", "error": false },
+        { "text": "Α", "error": false },
+        { "text": "χρησιμοποιείται", "error": false },
+        { "text": "για", "error": false },
+        { "text": "το", "error": false },
+        { "text": "γράφοημα.", "error": true, "correct": "αριθμητική τιμή (κουμπί Β για γράφημα)", "feedback": "Το κουμπί Α δείχνει τον αριθμό, το κουμπί Β το γράφημα" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "κόκκινο", "error": false },
+        { "text": "λαμπάκι", "error": false },
+        { "text": "δείχνει", "error": false },
+        { "text": "ότι", "error": false },
+        { "text": "το", "error": false },
+        { "text": "ηχείο", "error": true, "correct": "μικρόφωνο", "feedback": "Το κόκκινο λαμπάκι δείχνει ότι το μικρόφωνο μετράει ήχο" },
+        { "text": "μετράει", "error": false },
+        { "text": "ήχο.", "error": false }
+      ]
+    }
+  ]
+}

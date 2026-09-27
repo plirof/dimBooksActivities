@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Τα Μέρη του Υπολογιστή - dimC les10</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 4px;
+}
+h1 .emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.subtitle {
+    color: #d0ffe0;
+    text-align: center;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    max-width: 700px;
+}
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 24px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-fill {
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333;
+}
+.phase-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 14px;
+}
+.phase-tab {
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    background: #e0e0e0;
+    color: #777;
+    transition: all 0.3s;
+}
+.phase-tab.active {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+}
+.phase-content {
+    display: none;
+}
+.phase-content.active {
+    display: block;
+}
+.diagram-area {
+    background: #f5f5f5;
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 14px;
+}
+.central-unit {
+    border: 3px solid #666;
+    border-radius: 14px;
+    padding: 14px;
+    background: linear-gradient(160deg, #e8e8e8 0%, #fafafa 100%);
+    position: relative;
+}
+.cu-title-row {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.cu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+.cu-grid .slot-full {
+    grid-column: 1 / -1;
+}
+.port-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+.port-row .cable-line {
+    flex: 0 0 40px;
+    height: 3px;
+    background: #555;
+    border-radius: 2px;
+}
+.port-row .periph-icon {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.6rem;
+}
+.slot {
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #aaa;
+    background: rgba(255,255,255,0.6);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.slot:hover {
+    border-color: #888;
+}
+.slot.highlight-slot {
+    border-color: #4caf50;
+    background: rgba(76,175,80,0.08);
+}
+.slot.filled {
+    border-style: solid;
+    border-color: #4caf50;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: bold;
+    cursor: default;
+}
+.slot .slot-hint {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1rem;
+    opacity: 0.5;
+}
+.slot .slot-text {
+    font-size: 0.8rem;
+}
+.labels-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 10px;
+    background: #f0faf0;
+    border-radius: 12px;
+    border: 2px dashed #8bc34a;
+}
+.label-card {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #8bc34a;
+    border-radius: 10px;
+    cursor: grab;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #2e7d32;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.3s;
+    touch-action: none;
+}
+.label-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.label-card.selected {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255,152,0,0.3);
+    transform: scale(1.05);
+}
+.label-card.used {
+    opacity: 0.2;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+.label-card .le {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.1rem;
+}
+.dragging-clone {
+    position: fixed;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0.92;
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #38ef7d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #2e7d32;
+}
+.dragging-clone .le {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.1rem;
+}
+.phase-feedback {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    min-height: 26px;
+}
+.phase-feedback.correct { color: #4caf50; }
+.phase-feedback.wrong { color: #f44336; }
+.btn-next-phase {
+    display: none;
+    margin: 16px auto 0;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+.btn-next-phase:hover { transform: scale(1.05); }
+.btn-next-phase.show { display: block; }
+.quiz-card {
+    background: #fafffe;
+    border-radius: 14px;
+    padding: 18px;
+    border: 2px solid #c8e6c9;
+    margin-bottom: 10px;
+}
+.quiz-question {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+.quiz-question .qq {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.quiz-option {
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    transition: all 0.2s;
+    background: white;
+    text-align: left;
+}
+.quiz-option:hover {
+    border-color: #11998e;
+    background: #f0faf5;
+}
+.quiz-option.correct-answer {
+    border-color: #4caf50;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: bold;
+}
+.quiz-option.wrong-answer {
+    border-color: #f44336;
+    background: #ffebee;
+    color: #c62828;
+}
+.quiz-option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+.quiz-feedback {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    min-height: 24px;
+}
+.quiz-feedback.correct { color: #4caf50; }
+.quiz-feedback.wrong { color: #f44336; }
+.quiz-counter {
+    text-align: center;
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+.completion-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    z-index: 20000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.completion-overlay.show { display: flex; }
+.completion-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 25px;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    animation: bounceIn 0.5s ease;
+}
+.completion-card h2 {
+    color: #4caf50;
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+.completion-card .congrats-sub {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+.stars-row {
+    font-size: 2.8rem;
+    margin: 12px 0 16px;
+}
+.star {
+    display: inline-block;
+    color: #ffd700;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    animation: starPop 0.5s ease backwards;
+    margin: 0 3px;
+}
+.star.empty {
+    color: #ddd;
+    text-shadow: none;
+}
+.completion-score {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 18px;
+}
+.btn-restart {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+.btn-restart:hover { transform: scale(1.05); }
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes starPop {
+    0% { transform: scale(0) rotate(-30deg); }
+    70% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .phase-indicator > * + * { margin-left: 20px; }
+  .port-row > * + * { margin-left: 10px; }
+  .slot > * + * { margin-left: 6px; }
+  .labels-area > * { margin: 4px; }
+  .label-card > * + * { margin-left: 5px; }
+  .dragging-clone > * + * { margin-left: 5px; }
+  .quiz-options > * + * { margin-top: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1><span class="emoji-title">💻</span> Τα Μέρη του Υπολογιστή</h1>
+<p class="subtitle">Τοποθέτησε τις ετικέτες και απάντησε στις ερωτήσεις!</p>
+<div class="container">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+        <span class="progress-text" id="progressText">0 / 10</span>
+    </div>
+    <div class="phase-indicator">
+        <div class="phase-tab active" id="tab1">🏷️ Ετικέτες</div>
+        <div class="phase-tab" id="tab2">❓ Κουίζ</div>
+    </div>
+
+    <div class="phase-content active" id="phase1">
+        <div class="diagram-area">
+            <div class="central-unit">
+                <div class="cu-title-row">
+                    <div class="slot" data-part="central-unit">
+                        <span class="slot-hint">📦</span>
+                        <span class="slot-text">Τι είναι αυτό;</span>
+                    </div>
+                </div>
+                <div class="cu-grid">
+                    <div class="slot" data-part="processor">
+                        <span class="slot-hint">⚙️</span>
+                        <span class="slot-text">?</span>
+                    </div>
+                    <div class="slot" data-part="memory">
+                        <span class="slot-hint">🧠</span>
+                        <span class="slot-text">?</span>
+                    </div>
+                    <div class="slot slot-full" data-part="disk">
+                        <span class="slot-hint">💿</span>
+                        <span class="slot-text">?</span>
+                    </div>
+                </div>
+                <div class="port-row">
+                    <div class="slot" data-part="usb" style="flex:0 0 auto;">
+                        <span class="slot-hint">🔌</span>
+                        <span class="slot-text">?</span>
+                    </div>
+                    <div class="cable-line"></div>
+                    <div class="slot" data-part="cable" style="flex:0 0 auto;">
+                        <span class="slot-hint">➖</span>
+                        <span class="slot-text">?</span>
+                    </div>
+                    <div class="cable-line"></div>
+                    <span class="periph-icon">🖱️</span>
+                </div>
+            </div>
+        </div>
+        <div class="labels-area" id="labelsArea"></div>
+        <div class="phase-feedback" id="phase1Feedback"></div>
+        <button class="btn-next-phase" id="btnNextPhase">➡️ Πάμε στο κουίζ!</button>
+    </div>
+
+    <div class="phase-content" id="phase2">
+        <div class="quiz-counter" id="quizCounter"></div>
+        <div class="quiz-card" id="quizCard"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+</div>
+
+<div class="completion-overlay" id="completionOverlay">
+    <div class="completion-card">
+        <h2>🎉 Μπράβο!</h2>
+        <p class="congrats-sub">Έμαθες τα μέρη του υπολογιστή!</p>
+        <div class="stars-row" id="starsRow"></div>
+        <div class="completion-score" id="completionScore"></div>
+        <button class="btn-restart" id="btnRestart">🔄 Ξαναπαίξου</button>
+    </div>
+</div>
+
+<script>
+(function(){
+    var parts = [
+        { id: 'processor', label: 'Επεξεργαστής', emoji: '⚙️', hint: '⚙️' },
+        { id: 'memory', label: 'Μνήμη', emoji: '🧠', hint: '🧠' },
+        { id: 'disk', label: 'Δίσκος αποθήκευσης', emoji: '💿', hint: '💿' },
+        { id: 'usb', label: 'Θύρα USB', emoji: '🔌', hint: '🔌' },
+        { id: 'cable', label: 'Καλώδιο', emoji: '🔗', hint: '➖' },
+        { id: 'central-unit', label: 'Κεντρική Μονάδα', emoji: '📦', hint: '📦' }
+    ];
+
+    var quizData = [
+        {
+            q: 'Τι κάνει ο επεξεργαστής;',
+            opts: ['Αποθηκεύει τα δεδομένα', 'Επεξεργάζεται τα δεδομένα', 'Δείχνει εικόνες στην οθόνη'],
+            ans: 1
+        },
+        {
+            q: 'Πού αποθηκεύονται μόνιμα τα δεδομένα;',
+            opts: ['Στη μνήμη', 'Στον επεξεργαστή', 'Στο δίσκο αποθήκευσης'],
+            ans: 2
+        },
+        {
+            q: 'Τι είναι το υλικό (hardware);',
+            opts: ['Τα προγράμματα του υπολογιστή', 'Τα φυσικά μέρη του υπολογιστή', 'Τα αρχεία μας'],
+            ans: 1
+        },
+        {
+            q: 'Πώς συνδέουμε μια συσκευή στον υπολογιστή;',
+            opts: ['Με μαγεία', 'Με καλώδιο σε θύρα σύνδεσης', 'Δεν συνδέεται'],
+            ans: 1
+        }
+    ];
+
+    var totalTasks = 10;
+    var completed = 0;
+    var score = 0;
+    var labelsPlaced = 0;
+    var quizIndex = 0;
+    var quizAnswered = false;
+
+    var selectedLabel = null;
+    var dragLabel = null;
+    var dragClone = null;
+    var dragOffX = 0;
+    var dragOffY = 0;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var isDragging = false;
+    var feedbackTimer = null;
+
+    function shuffle(a) {
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+    }
+
+    function init() {
+        completed = 0;
+        score = 0;
+        labelsPlaced = 0;
+        quizIndex = 0;
+        quizAnswered = false;
+        selectedLabel = null;
+        dragLabel = null;
+        dragClone = null;
+        isDragging = false;
+
+        var slots = document.querySelectorAll('.slot');
+        for (var i = 0; i < slots.length; i++) {
+            slots[i].classList.remove('filled');
+            var hint = slots[i].getAttribute('data-part');
+            var hintMap = { 'processor': '⚙️', 'memory': '🧠', 'disk': '💿', 'usb': '🔌', 'cable': '➖', 'central-unit': '📦' };
+            var textMap = { 'processor': '?', 'memory': '?', 'disk': '?', 'usb': '?', 'cable': '?', 'central-unit': 'Τι είναι αυτό;' };
+            slots[i].innerHTML = '<span class="slot-hint">' + hintMap[hint] + '</span><span class="slot-text">' + textMap[hint] + '</span>';
+        }
+
+        var area = document.getElementById('labelsArea');
+        area.innerHTML = '';
+        var shuffled = shuffle(parts.slice());
+        for (var k = 0; k < shuffled.length; k++) {
+            var p = shuffled[k];
+            var lbl = document.createElement('div');
+            lbl.className = 'label-card';
+            lbl.setAttribute('data-part', p.id);
+            lbl.innerHTML = '<span class="le">' + p.emoji + '</span><span>' + p.label + '</span>';
+            lbl.addEventListener('mousedown', onLabelDown);
+            lbl.addEventListener('touchstart', onLabelDown, { passive: false });
+            area.appendChild(lbl);
+        }
+
+        for (var s = 0; s < slots.length; s++) {
+            slots[s].addEventListener('click', onSlotClick);
+        }
+
+        document.getElementById('phase1').classList.add('active');
+        document.getElementById('phase2').classList.remove('active');
+        document.getElementById('tab1').classList.add('active');
+        document.getElementById('tab2').classList.remove('active');
+        document.getElementById('btnNextPhase').classList.remove('show');
+        document.getElementById('phase1Feedback').textContent = '';
+        document.getElementById('phase1Feedback').className = 'phase-feedback';
+
+        updateProgress();
+    }
+
+    function getPos(e) {
+        if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches.length > 0) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+    }
+
+    function onLabelDown(e) {
+        var lbl = e.currentTarget;
+        if (lbl.classList.contains('used')) return;
+        e.preventDefault();
+        var pos = getPos(e);
+        var rect = lbl.getBoundingClientRect();
+        dragOffX = pos.x - rect.left;
+        dragOffY = pos.y - rect.top;
+        dragStartX = pos.x;
+        dragStartY = pos.y;
+        dragLabel = lbl;
+        isDragging = false;
+
+        if (selectedLabel && selectedLabel !== lbl) {
+            selectedLabel.classList.remove('selected');
+        }
+        selectedLabel = lbl;
+        lbl.classList.add('selected');
+    }
+
+    function onLabelMove(e) {
+        if (!dragLabel) return;
+        var pos = getPos(e);
+        if (!isDragging) {
+            var dx = pos.x - dragStartX;
+            var dy = pos.y - dragStartY;
+            if (Math.sqrt(dx * dx + dy * dy) < 8) return;
+            isDragging = true;
+            dragLabel.classList.remove('selected');
+            selectedLabel = null;
+            createLabelClone(dragLabel, pos);
+        }
+        if (isDragging && dragClone) {
+            e.preventDefault();
+            dragClone.style.left = (pos.x - dragOffX) + 'px';
+            dragClone.style.top = (pos.y - dragOffY) + 'px';
+            highlightSlots(pos);
+        }
+    }
+
+    function onLabelUp(e) {
+        if (!dragLabel) return;
+        if (isDragging && dragClone) {
+            var pos = getPos(e);
+            var slot = getSlotAtPos(pos);
+            if (slot && !slot.classList.contains('filled')) {
+                tryPlaceLabel(dragLabel, slot);
+            }
+            if (dragClone.parentNode) dragClone.parentNode.removeChild(dragClone);
+            dragClone = null;
+            clearSlotHighlight();
+        }
+        dragLabel = null;
+        isDragging = false;
+    }
+
+    function createLabelClone(lbl, pos) {
+        dragClone = document.createElement('div');
+        dragClone.className = 'dragging-clone';
+        dragClone.innerHTML = lbl.innerHTML;
+        var rect = lbl.getBoundingClientRect();
+        dragClone.style.width = rect.width + 'px';
+        dragClone.style.left = (pos.x - dragOffX) + 'px';
+        dragClone.style.top = (pos.y - dragOffY) + 'px';
+        document.body.appendChild(dragClone);
+        lbl.style.opacity = '0.3';
+    }
+
+    function highlightSlots(pos) {
+        var slots = document.querySelectorAll('.slot:not(.filled)');
+        for (var i = 0; i < slots.length; i++) {
+            var r = slots[i].getBoundingClientRect();
+            if (pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom) {
+                slots[i].classList.add('highlight-slot');
+            } else {
+                slots[i].classList.remove('highlight-slot');
+            }
+        }
+    }
+
+    function clearSlotHighlight() {
+        var slots = document.querySelectorAll('.slot');
+        for (var i = 0; i < slots.length; i++) slots[i].classList.remove('highlight-slot');
+    }
+
+    function getSlotAtPos(pos) {
+        var slots = document.querySelectorAll('.slot:not(.filled)');
+        for (var i = 0; i < slots.length; i++) {
+            var r = slots[i].getBoundingClientRect();
+            if (pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom) {
+                return slots[i];
+            }
+        }
+        return null;
+    }
+
+    function onSlotClick(e) {
+        var slot = e.currentTarget;
+        if (slot.classList.contains('filled') || !selectedLabel) return;
+        tryPlaceLabel(selectedLabel, slot);
+        selectedLabel.classList.remove('selected');
+        selectedLabel = null;
+    }
+
+    function tryPlaceLabel(lbl, slot) {
+        var lblPart = lbl.getAttribute('data-part');
+        var slotPart = slot.getAttribute('data-part');
+
+        if (lblPart === slotPart) {
+            score++;
+            completed++;
+            labelsPlaced++;
+
+            slot.classList.add('filled');
+            var partData = null;
+            for (var i = 0; i < parts.length; i++) {
+                if (parts[i].id === lblPart) { partData = parts[i]; break; }
+            }
+            slot.innerHTML = '<span class="slot-hint">' + partData.emoji + '</span><span class="slot-text">' + partData.label + '</span>';
+
+            lbl.classList.add('used');
+            lbl.classList.remove('selected');
+            lbl.style.opacity = '';
+
+            showPhase1Feedback(true, '✅ Σωστό!');
+            updateProgress();
+
+            if (labelsPlaced >= parts.length) {
+                document.getElementById('btnNextPhase').classList.add('show');
+            }
+        } else {
+            lbl.style.opacity = '';
+            lbl.classList.remove('selected');
+            showPhase1Feedback(false, '❌ Δεν είναι εδώ. Δοκίμασε αλλού!');
+            lbl.style.animation = 'none';
+            lbl.offsetHeight;
+            lbl.style.animation = 'shake 0.4s ease';
+            setTimeout(function() { lbl.style.animation = ''; }, 500);
+        }
+
+        if (selectedLabel === lbl) selectedLabel = null;
+    }
+
+    function showPhase1Feedback(ok, txt) {
+        var fb = document.getElementById('phase1Feedback');
+        fb.textContent = txt;
+        fb.className = 'phase-feedback ' + (ok ? 'correct' : 'wrong');
+        if (feedbackTimer) clearTimeout(feedbackTimer);
+        feedbackTimer = setTimeout(function() {
+            fb.textContent = '';
+            fb.className = 'phase-feedback';
+        }, 1500);
+    }
+
+    function startQuiz() {
+        document.getElementById('phase1').classList.remove('active');
+        document.getElementById('phase2').classList.add('active');
+        document.getElementById('tab1').classList.remove('active');
+        document.getElementById('tab2').classList.add('active');
+        quizIndex = 0;
+        showQuizQuestion();
+    }
+
+    function showQuizQuestion() {
+        if (quizIndex >= quizData.length) {
+            showCompletion();
+            return;
+        }
+        quizAnswered = false;
+        var q = quizData[quizIndex];
+        var card = document.getElementById('quizCard');
+        var html = '<div class="quiz-question"><span class="qq">❓</span> ' + q.q + '</div><div class="quiz-options">';
+        for (var i = 0; i < q.opts.length; i++) {
+            html += '<div class="quiz-option" data-idx="' + i + '">' + q.opts[i] + '</div>';
+        }
+        html += '</div>';
+        card.innerHTML = html;
+
+        document.getElementById('quizCounter').textContent = 'Ερώτηση ' + (quizIndex + 1) + ' από ' + quizData.length;
+        document.getElementById('quizFeedback').textContent = '';
+        document.getElementById('quizFeedback').className = 'quiz-feedback';
+
+        var opts = card.querySelectorAll('.quiz-option');
+        for (var j = 0; j < opts.length; j++) {
+            opts[j].addEventListener('click', onQuizAnswer);
+        }
+    }
+
+    function onQuizAnswer(e) {
+        if (quizAnswered) return;
+        quizAnswered = true;
+        var btn = e.currentTarget;
+        var idx = parseInt(btn.getAttribute('data-idx'));
+        var q = quizData[quizIndex];
+        var opts = document.querySelectorAll('.quiz-option');
+
+        for (var i = 0; i < opts.length; i++) {
+            opts[i].classList.add('disabled');
+        }
+
+        if (idx === q.ans) {
+            btn.classList.add('correct-answer');
+            score++;
+            document.getElementById('quizFeedback').textContent = '✅ Σωστό! Μπράβο!';
+            document.getElementById('quizFeedback').className = 'quiz-feedback correct';
+        } else {
+            btn.classList.add('wrong-answer');
+            opts[q.ans].classList.add('correct-answer');
+            document.getElementById('quizFeedback').textContent = '❌ Η σωστή απάντηση είναι: ' + q.opts[q.ans];
+            document.getElementById('quizFeedback').className = 'quiz-feedback wrong';
+        }
+
+        completed++;
+        updateProgress();
+
+        setTimeout(function() {
+            quizIndex++;
+            showQuizQuestion();
+        }, 1800);
+    }
+
+    function updateProgress() {
+        var pct = (completed / totalTasks) * 100;
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressText').textContent = completed + ' / ' + totalTasks;
+    }
+
+    function showCompletion() {
+        var overlay = document.getElementById('completionOverlay');
+        var starsRow = document.getElementById('starsRow');
+        var scoreDiv = document.getElementById('completionScore');
+
+        var starCount = 1;
+        if (score >= 9) starCount = 3;
+        else if (score >= 7) starCount = 2;
+
+        starsRow.innerHTML = '';
+        for (var i = 0; i < 3; i++) {
+            var s = document.createElement('span');
+            s.className = 'star' + (i < starCount ? '' : ' empty');
+            s.textContent = '★';
+            s.style.animationDelay = (i * 0.2) + 's';
+            starsRow.appendChild(s);
+        }
+
+        scoreDiv.textContent = score + ' / ' + totalTasks + ' σωστές απαντήσεις!';
+        overlay.classList.add('show');
+    }
+
+    function restartGame() {
+        document.getElementById('completionOverlay').classList.remove('show');
+        init();
+    }
+
+    document.addEventListener('mousemove', onLabelMove);
+    document.addEventListener('mouseup', onLabelUp);
+    document.addEventListener('touchmove', onLabelMove, { passive: false });
+    document.addEventListener('touchend', onLabelUp);
+    document.getElementById('btnNextPhase').addEventListener('click', startQuiz);
+    document.getElementById('btnRestart').addEventListener('click', restartGame);
+
+    init();
+})();
+</script>
+</body>
+</html>

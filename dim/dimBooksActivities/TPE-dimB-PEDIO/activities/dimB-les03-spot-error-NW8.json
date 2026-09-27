@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη: Εντολή Επανάληψης",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εντολή", "error": false},
+        {"text": "επανάληψης", "error": false},
+        {"text": "περιέχει", "error": false},
+        {"text": "όμορφα", "error": true, "correct": "εντολές", "feedback": "Η εντολή επανάληψης περιέχει εντολές, όχι όμορφα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "βατραχάκι", "error": false},
+        {"text": "προχωράει", "error": false},
+        {"text": "πάνω", "error": false},
+        {"text": "στα", "error": false},
+        {"text": "δέντρα", "error": true, "correct": "νούφαρα", "feedback": "Το βατραχάκι προχωράει στα νούφαρα, όχι στα δέντρα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "επανάληψη", "error": false},
+        {"text": "χρησιμοποιούμε", "error": false},
+        {"text": "περισσότερες", "error": true, "correct": "λιγότερες", "feedback": "Με επανάληψη χρησιμοποιούμε λιγότερες εντολές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αριθμός", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "αυτοκίνητο", "error": true, "correct": "κουτάκι", "feedback": "Ο αριθμός γράφεται στο κουτάκι της επανάληψης!"},
+        {"text": "δείχνει", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "φορές.", "error": false}
+      ]
+    }
+  ]
+}

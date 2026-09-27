@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>micro:bit Συνθέτης Μελωδίας | Μάθημα 11</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#0f172a,#1e1b4b);min-height:100vh;padding:12px;display:flex;flex-direction:column;align-items:center;color:#e2e8f0}
+h1{color:#fbbf24;font-size:1.2rem;text-align:center;margin:6px 0}
+.subtitle{color:#a5b4fc;font-size:.82rem;text-align:center;margin-bottom:10px}
+.main{display:flex;gap:16px;max-width:900px;width:100%;flex-wrap:wrap;justify-content:center}
+.mb-sim{width:220px;flex-shrink:0}
+.mb-body{width:220px;background:linear-gradient(180deg,#374151,#1f2937);border-radius:24px;border:3px solid #4b5563;padding:15px 10px;display:flex;flex-direction:column;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.mb-label{font-size:.65rem;color:#9ca3af;letter-spacing:1px;margin-bottom:8px}
+.mb-screen{background:#111827;border-radius:8px;border:2px solid #374151;padding:8px;width:160px;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.mb-screen .note-display{font-size:2rem;font-weight:800;color:#22d3ee;transition:all .15s}
+.mb-screen .note-display.playing{color:#fbbf24;animation:notePulse .3s ease}
+@keyframes notePulse{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.mb-screen .wave{position:absolute;bottom:0;left:0;width:100%;height:20px;background:linear-gradient(0deg,rgba(34,211,238,.2),transparent)}
+.mb-btns{display:flex;gap:40px;margin-top:10px}
+.mb-ab{width:44px;height:26px;border-radius:13px;background:#4b5563;border:2px solid #6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#9ca3af;font-weight:700;transition:all .15s}
+.mb-ab:hover{background:#6b7280}
+.mb-ab:active,.mb-ab.active{background:#22d3ee;color:#0f172a}
+.mb-usb{width:50px;height:6px;background:#4b5563;border-radius:3px;margin-top:8px}
+.composer{flex:1;min-width:320px;display:flex;flex-direction:column;gap:10px}
+.panel{background:#111827;border-radius:14px;border:2px solid #1e293b;padding:12px}
+.panel-title{color:#c4b5fd;font-size:.82rem;font-weight:700;margin-bottom:8px;text-align:center}
+.piano{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.white-key{width:38px;height:60px;background:linear-gradient(180deg,#fff,#e2e8f0);border:2px solid #94a3b8;border-radius:0 0 8px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;font-size:.65rem;font-weight:700;color:#475569;transition:all .1s;user-select:none}
+.white-key:hover{background:#fef3c7}
+.white-key:active,.white-key.pressed{background:#fbbf24;color:#451a03;transform:scaleY(.97)}
+.black-key{width:28px;height:38px;background:linear-gradient(180deg,#1e293b,#0f172a);border:2px solid #334155;border-radius:0 0 6px 6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#64748b;transition:all .1s;user-select:none;position:relative;margin:0 -8px;z-index:2}
+.black-key:hover{background:#3730a3}
+.black-key:active,.black-key.pressed{background:#7c3aed;color:#fff;transform:scaleY(.97)}
+.track{min-height:80px;background:#0f172a;border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;border:1px dashed #334155}
+.note-block{padding:6px 12px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;color:#fff;position:relative;user-select:none}
+.note-block:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.note-block.playing-note{outline:2px solid #fbbf24;transform:scale(1.1)}
+.note-block .remove{position:absolute;top:-6px;right:-6px;width:16px;height:16px;background:#ef4444;border-radius:50%;font-size:.55rem;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:all .15s;color:#fff}
+.note-block:hover .remove{opacity:1}
+.note-block.whole{background:linear-gradient(135deg,#0891b2,#22d3ee);min-width:40px}
+.note-block.half{background:linear-gradient(135deg,#7c3aed,#a78bfa);min-width:28px}
+.note-block.quarter{background:linear-gradient(135deg,#2563eb,#60a5fa);min-width:20px}
+.note-block.rest{background:linear-gradient(135deg,#475569,#64748b);min-width:20px}
+.track-hint{color:#475569;font-size:.75rem;text-align:center;width:100%}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ctrl-btn{padding:8px 16px;border:none;border-radius:12px;cursor:pointer;font-size:.8rem;font-weight:700;transition:all .2s}
+.ctrl-btn:hover{transform:translateY(-2px)}
+.ctrl-play{background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b}
+.ctrl-stop{background:#ef4444;color:#fff}
+.ctrl-clear{background:#374151;color:#d1d5db}
+.ctrl-tempo{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#451a03}
+.challenge-box{background:#1e1b4b;border-radius:12px;padding:10px;text-align:center}
+.challenge-box .ch-label{color:#fbbf24;font-size:.75rem;font-weight:700;margin-bottom:4px}
+.challenge-box .ch-text{color:#c4b5fd;font-size:.78rem;line-height:1.4}
+.tempo-display{text-align:center;color:#fbbf24;font-size:.85rem;font-weight:700}
+.duration-sel{display:flex;gap:4px;justify-content:center}
+.dur-btn{padding:4px 12px;border:2px solid #334155;border-radius:8px;background:transparent;color:#94a3b8;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s}
+.dur-btn.active{background:#7c3aed;color:#fff;border-color:#a78bfa}
+.dur-btn:hover{border-color:#a78bfa}
+.feedback{text-align:center;font-size:.85rem;font-weight:700;min-height:24px;margin-top:8px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.progress-bar{width:100%;max-width:900px;height:6px;background:#1e293b;border-radius:3px;margin-top:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#22d3ee,#a78bfa);border-radius:3px;transition:width .3s;width:0}
+@media(max-width:650px){.main{flex-direction:column;align-items:center}.composer{min-width:100%}.white-key{width:32px;height:50px}.black-key{width:22px;height:32px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .main > * { margin: 8px; }
+  .mb-btns > * + * { margin-left: 40px; }
+  .composer > * + * { margin-top: 10px; }
+  .piano > * { margin: 2px; }
+  .track > * { margin: 2px; }
+  .ctrl-row > * { margin: 4px; }
+  .duration-sel > * + * { margin-left: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎵 micro:bit Συνθέτης Μελωδίας</h1>
+<p class="subtitle">Πάτα τα πλήκτρα για να προσθέσεις νότες! Φτιάξε τη μελωδία «Χαρούμενα Γενέθλια»!</p>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="main">
+<div class="mb-sim">
+<div class="mb-body">
+<div class="mb-label">BBC micro:bit</div>
+<div class="mb-screen">
+<div class="note-display" id="noteDisplay">🎵</div>
+<div class="wave" id="waveVis"></div>
+</div>
+<div class="mb-btns">
+<div class="mb-ab" id="btnA" onclick="onButtonA()">A</div>
+<div class="mb-ab" id="btnB" onclick="onButtonB()">B</div>
+</div>
+<div class="mb-usb"></div>
+</div>
+<div class="challenge-box">
+<div class="ch-label">🎯 Πρόκληση</div>
+<div class="ch-text" id="challengeText">Φτιάξε τη μελωδία των Χαρούμενων Γενεθλίων! Χρησιμοποίησε τις σωστές νότες.</div>
+</div>
+<div class="tempo-display">Tempo: <span id="tempoVal">120</span> BPM
+<input type="range" min="60" max="200" value="120" style="width:100%" oninput="setTempo(this.value)">
+</div>
+</div>
+<div class="composer">
+<div class="panel">
+<div class="panel-title">🎹 Μουσικά Πλήκτρα — πάτα για νότα!</div>
+<div class="duration-sel">
+<button class="dur-btn" onclick="setDuration('quarter')" id="durQuarter">¼ Τέταρτο</button>
+<button class="dur-btn active" onclick="setDuration('half')" id="durHalf">½ Ημιόλιο</button>
+<button class="dur-btn" onclick="setDuration('whole')" id="durWhole">1 Ολόκληρο</button>
+<button class="dur-btn" onclick="setDuration('rest')" id="durRest">🔇 Πάυσα</button>
+</div>
+<div class="piano" id="piano"></div>
+</div>
+<div class="panel">
+<div class="panel-title">🎼 Μελωδία — οι νότες σου εδώ (πάτα ✕ για διαγραφή)</div>
+<div class="track" id="track"><span class="track-hint">Πάτα τα πλήκτρα για να προσθέσεις νότες...</span></div>
+</div>
+<div class="ctrl-row">
+<button class="ctrl-btn ctrl-play" onclick="playMelody()">▶ Παίξε Μελωδία</button>
+<button class="ctrl-btn ctrl-stop" onclick="stopMelody()">⏹️ Στοπ</button>
+<button class="ctrl-btn ctrl-clear" onclick="clearTrack()">🗑️ Καθαρισμός</button>
+<button class="ctrl-btn ctrl-tempo" onclick="checkMelody()">✅ Έλεγχος</button>
+</div>
+</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<script>
+var notes={
+'C4':261.63,'C#4':277.18,'D4':293.66,'D#4':311.13,'E4':329.63,
+'F4':349.23,'F#4':369.99,'G4':392.00,'G#4':415.30,'A4':440.00,
+'A#4':466.16,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25
+};
+var pianoKeys=[
+{name:'C4',type:'white'},{'name':'C#4',type:'black'},
+{name:'D4',type:'white'},{'name':'D#4',type:'black'},
+{name:'E4',type:'white'},
+{name:'F4',type:'white'},{'name':'F#4',type:'black'},
+{name:'G4',type:'white'},{'name':'G#4',type:'black'},
+{name:'A4',type:'white'},{'name':'A#4',type:'black'},
+{name:'B4',type:'white'},
+{name:'C5',type:'white'},
+{name:'D5',type:'white'},
+{name:'E5',type:'white'}
+];
+var melody=[];
+var duration='half';
+var tempo=120;
+var audioCtx=null;
+var isPlaying=false;
+var playTimeout=null;
+var currentPlayIdx=-1;
+var happyBday=['C4','C4','D4','C4','F4','E4','C4','C4','D4','C4','G4','F4','C4','C4','C5','A4','F4','E4','D4','Bb4','Bb4','A4','F4','G4','F4'];
+var challenges=[
+{label:'Ευκολη μελωδια (3 νοτες)',target:['C4','D4','E4'],hint:'Φτιάξε μια απλή ανοδική κλίμακα: Ντο - Ρε - Μι'},
+{label:'Χαρούμενα Γενέθλια (αρχη)',target:['C4','C4','D4','C4','F4','E4'],hint:'Τα πρώτα 6notes: Ντο Ντο Ρε Ντο Φα Μι'},
+{label:'Ελεύθερη Σύνθεση',target:null,hint:'Φτιάξε δική σου μελωδία, τουλάχιστον 8 νοτες!'}
+];
+var currentChallenge=0;
+function init(){
+buildPiano();
+loadChallenge(0);
+}
+function buildPiano(){
+var piano=document.getElementById('piano');
+piano.innerHTML='';
+for(var i=0;i<pianoKeys.length;i++){
+var key=pianoKeys[i];
+var el=document.createElement('div');
+el.className=key.type==='white'?'white-key':'black-key';
+el.textContent=key.name;
+el.dataset.note=key.name;
+el.onclick=(function(note){return function(){addNote(note);playNoteSound(note);};})(key.name);
+el.ontouchstart=(function(note,el2){return function(e){e.preventDefault();addNote(note);playNoteSound(note);};})(key.name,el);
+piano.appendChild(el);
+}
+}
+function getAudioCtx(){
+if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+return audioCtx;
+}
+function playNoteSound(note){
+if(!notes[note])return;
+var ctx=getAudioCtx();
+var osc=ctx.createOscillator();
+var gain=ctx.createGain();
+osc.type='square';
+osc.frequency.value=notes[note];
+gain.gain.setValueAtTime(0.15,ctx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.5);
+osc.connect(gain);
+gain.connect(ctx.destination);
+osc.start(ctx.currentTime);
+osc.stop(ctx.currentTime+0.5);
+updateDisplay(note);
+}
+function updateDisplay(note){
+var disp=document.getElementById('noteDisplay');
+disp.textContent=note;
+disp.classList.add('playing');
+setTimeout(function(){disp.classList.remove('playing');},300);
+}
+function addNote(note){
+var dur=duration;
+melody.push({note:note,duration:dur});
+renderTrack();
+updateProgress();
+}
+function setDuration(d){
+duration=d;
+document.querySelectorAll('.dur-btn').forEach(function(b){b.classList.remove('active');});
+var map={'quarter':'durQuarter','half':'durHalf','whole':'durWhole','rest':'durRest'};
+document.getElementById(map[d]).classList.add('active');
+}
+function removeNote(idx){
+melody.splice(idx,1);
+renderTrack();
+updateProgress();
+}
+function renderTrack(){
+var track=document.getElementById('track');
+if(melody.length===0){
+track.innerHTML='<span class="track-hint">Πάτα τα πλήκτρα για να προσθέσεις νότες...</span>';
+return;
+}
+track.innerHTML='';
+for(var i=0;i<melody.length;i++){
+var n=melody[i];
+var block=document.createElement('div');
+var durClass=n.note==='REST'?'rest':n.duration;
+block.className='note-block '+durClass;
+if(i===currentPlayIdx)block.classList.add('playing-note');
+var label=n.note==='REST'?'🔇':n.note.replace('#','#');
+block.innerHTML=label+'<span class="remove" onclick="removeNote('+i+')">✕</span>';
+block.onclick=(function(idx){return function(){
+if(!isPlaying){currentPlayIdx=idx;renderTrack();playNoteSound(melody[idx].note==='REST'?'C4':melody[idx].note);setTimeout(function(){currentPlayIdx=-1;renderTrack();},500);}
+};})(i);
+track.appendChild(block);
+}
+}
+function playMelody(){
+if(melody.length===0){showFeedback('Πρόσθεσε νοτες πρώτα!',false);return;}
+stopMelody();
+isPlaying=true;
+var idx=0;
+function playNext(){
+if(idx>=melody.length){stopMelody();return;}
+var n=melody[idx];
+currentPlayIdx=idx;
+renderTrack();
+if(n.note!=='REST'){
+playNoteSound(n.note);
+document.getElementById('btnA').classList.add('active');
+setTimeout(function(){document.getElementById('btnA').classList.remove('active');},200);
+}else{
+document.getElementById('noteDisplay').textContent='🔇';
+}
+var ms=durationToMs(n.duration);
+playTimeout=setTimeout(function(){idx++;playNext();},ms);
+}
+playNext();
+}
+function durationToMs(d){
+var beatMs=60000/tempo;
+if(d==='whole')return beatMs*4;
+if(d==='half')return beatMs*2;
+if(d==='quarter')return beatMs;
+return beatMs;
+}
+function stopMelody(){
+isPlaying=false;
+currentPlayIdx=-1;
+if(playTimeout){clearTimeout(playTimeout);playTimeout=null;}
+document.getElementById('btnB').classList.add('active');
+setTimeout(function(){document.getElementById('btnB').classList.remove('active');},200);
+renderTrack();
+}
+function clearTrack(){
+stopMelody();
+melody=[];
+renderTrack();
+document.getElementById('progressFill').style.width='0%';
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+}
+function setTempo(val){
+tempo=parseInt(val);
+document.getElementById('tempoVal').textContent=tempo;
+}
+function onButtonA(){
+document.getElementById('btnA').classList.add('active');
+setTimeout(function(){document.getElementById('btnA').classList.remove('active');},200);
+if(melody.length>0)playMelody();
+}
+function onButtonB(){
+stopMelody();
+}
+function updateProgress(){
+var ch=challenges[currentChallenge];
+if(!ch.target)return;
+var pct=Math.min(100,Math.round(melody.length/ch.target.length*100));
+document.getElementById('progressFill').style.width=pct+'%';
+}
+function checkMelody(){
+var ch=challenges[currentChallenge];
+if(!ch.target){
+if(melody.length>=8){
+showFeedback('🎉 Ωραία σύνθεση! Φτιάχτηκες μελωδία '+melody.length+' νοτων!',true);
+}else{
+showFeedback('Πρόσθεσε τουλάχιστον 8 νοτες για τη δική σου σύνθεση!',false);
+}
+return;
+}
+var target=ch.target;
+var correct=0;
+var maxLen=Math.max(melody.length,target.length);
+for(var i=0;i<target.length;i++){
+if(i<melody.length){
+var mNote=melody[i].note;
+if(mNote===target[i]){correct++;}
+}
+}
+if(correct===target.length&&melody.length===target.length){
+showFeedback('🎉 Τέλεια! Η μελωδία είναι σωστή! '+correct+'/'+target.length+' νοτες!',true);
+flashPiano();
+}else if(correct>target.length/2){
+showFeedback('🔍 '+correct+'/'+target.length+' σωστές νοτες. Συνέχισε!',false);
+}else{
+showFeedback('❌ '+correct+'/'+target.length+' σωστές. Δοκίμασε ξανά! Υπόδειξη: '+ch.hint,false);
+}
+}
+function flashPiano(){
+var keys=document.querySelectorAll('.white-key,.black-key');
+var count=0;
+var flash=setInterval(function(){
+keys.forEach(function(k){
+if(count%2===0){k.style.background='#4ade80';}
+else{k.style.background='';}
+});
+count++;
+if(count>5){clearInterval(flash);keys.forEach(function(k){k.style.background='';});}
+},200);
+}
+function loadChallenge(idx){
+currentChallenge=idx;
+var ch=challenges[idx];
+document.getElementById('challengeText').textContent=ch.hint;
+document.getElementById('progressFill').style.width='0%';
+}
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},5000);
+}
+init();
+</script>
+</body>
+</html>

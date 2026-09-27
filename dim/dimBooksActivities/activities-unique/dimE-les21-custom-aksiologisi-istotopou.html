@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αξιολόγηση Ιστότοπου | Μάθημα 21</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0f9ff,#bae6fd);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#0c4a6e;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#0284c7;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#0c4a6e;font-size:.75rem;font-weight:700;border:1px solid #7dd3fc;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.site-preview{border:2px solid #e2e8f0;border-radius:12px;overflow:hidden;margin:8px 0}
+.site-bar{background:#0284c7;color:#fff;padding:6px 12px;font-size:.65rem;display:flex;align-items:center;gap:6px}
+.site-bar .dots{display:flex;gap:3px}
+.site-bar .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5)}
+.site-bar .url-bar{background:rgba(255,255,255,.2);padding:2px 8px;border-radius:4px;flex:1;font-size:.6rem}
+.site-body{padding:10px;font-size:.7rem;color:#334155;line-height:1.4;background:#fafafa}
+.site-body h3{font-size:.75rem;color:#1e293b;margin-bottom:4px}
+.criteria-area{margin:10px 0}
+.crit-row{display:flex;align-items:flex-start;gap:8px;margin:6px 0;padding:8px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;transition:all .2s}
+.crit-row .crit-icon{font-size:1.2rem;flex-shrink:0}
+.crit-row .crit-text{flex:1}
+.crit-row .crit-q{font-size:.72rem;font-weight:700;color:#1e293b;margin-bottom:2px}
+.crit-row .crit-detail{font-size:.62rem;color:#64748b}
+.crit-btns{display:flex;gap:6px;margin-top:4px}
+.crit-btn{padding:4px 10px;border:2px solid #d1d5db;border-radius:8px;font-size:.62rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fff}
+.crit-btn:hover{transform:scale(1.05)}
+.crit-btn.yes{border-color:#10b981;background:#dcfce7;color:#065f46}
+.crit-btn.no{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.crit-btn.idk{border-color:#f59e0b;background:#fef3c7;color:#92400e}
+.rating-area{margin:10px 0;text-align:center}
+.rating-label{font-size:.75rem;font-weight:700;color:#0c4a6e;margin-bottom:6px}
+.stars{display:flex;gap:6px;justify-content:center}
+.star{font-size:1.6rem;cursor:pointer;transition:all .15s;opacity:.3}
+.star:hover,.star.active{opacity:1;transform:scale(1.1)}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.result-msg.warn{background:#fef3c7;color:#92400e}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#0284c7;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#0369a1}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #0284c7;border-radius:10px;background:transparent;color:#0284c7;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0f9ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .site-bar > * + * { margin-left: 6px; }
+  .site-bar .dots > * + * { margin-left: 3px; }
+  .crit-row > * + * { margin-left: 8px; }
+  .crit-btns > * + * { margin-left: 6px; }
+  .stars > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Αξιολόγησε τον Ιστότοπο!</h1>
+<p class="subtitle">Έλεγξε αν μια ιστοσελίδα είναι αξιόπιστη χρησιμοποιώντας τα σωστά κριτήρια!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ιστότοπος:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var sites=[
+{
+url:'https://copyrightschool.gr/',
+title:'Copyright School',
+body:'Ιστότοπος για την πνευματική ιδιοκτησία. Δημιουργός: Ευρωπαϊκή Ένωση. Υπάρχουν στοιχεία επικοινωνίας, ημερομηνία ενημέρωσης, περιεχόμενο κατάλληλο για παιδιά.',
+criteria:[
+{q:'Μπορώ να βρω ποιος δημιούργησε τον ιστότοπο;',expected:'yes',explain:'Ναι! Γράφει ξεκάθαρα ο δημιουργός.'},
+{q:'Είναι ενημερωμένη η πληροφορία;',expected:'yes',explain:'Ναι! Υπάρχει ημερομηνία τελευταίας ενημέρωσης.'},
+{q:'Μπορώ να καταλάβω το περιεχόμενο;',expected:'yes',explain:'Ναι! Είναι γραμμένο απλά και ξεκάθαρα.'},
+{q:'Είναι σχετικό με αυτό που ψάχνω;',expected:'yes',explain:'Ναι! Αναφέρεται ακριβώς στο θέμα.'}
+],
+safeRating:4,
+verdict:'Αξιόπιστος',
+explanation:'Ο ιστότοπος έχει δημιουργό, είναι ενημερωμένος, κατανοητός και σχετικός. Είναι αξιόπιστος!'
+},
+{
+url:'https://funfacts-alien-invasion.xyz/',
+title:'Alien Facts',
+body:'«Τα favorspace ήρθαν από τον Αρη χθες!!! Ο πλανήτης Γη θα εξαφανιστεί σε 3 μέρες!! Δεν υπάρχουν στοιχεία συγγραφέα. Η σελίδα είναι γεμάτη διαφημίσεις.',
+criteria:[
+{q:'Μπορώ να βρω ποιος δημιώργησε τον ιστότοπο;',expected:'no',explain:'Όχι! Δεν υπάρχει κανένα στοιχείο δημιουργού.'},
+{q:'Είναι γραμμένο σωστά (χωρίς ορθογραφικά λάθη);',expected:'no',explain:'Όχι! Υπάρχουν πολλά ορθογραφικά λάθη και ακατανόητο κείμενο.'},
+{q:'Η πληροφορία φαίνεται αληθινή;',expected:'no',explain:'Όχι! «Favorspace» δεν υπάρχει, οι ισχυρισμοί είναι παράλογοι.'},
+{q:'Είναι σχετικό με αξιόπιστη πηγή;',expected:'no',explain:'Όχι! Δεν αναφέρει καμία πηγή, καμία απόδειξη.'}
+],
+safeRating:1,
+verdict:'Μη αξιόπιστος',
+explanation:'Δεν έχει δημιουργό, έχει λάθη, οι πληροφορίες είναι ψευδείς. ΔΕΝ είναι αξιόπιστος!'
+},
+{
+url:'https://wikipedia.org/',
+title:'Wikipedia - Ήλιος',
+body:'Ο Ήλιος είναι το άστρο στο κέντρο του ηλιακού μας συστήματος. Είναι σφαίρα από ζεστό πλάσμα. Δημιουργός: Ίδρυμα Wikimedia (οργανισμός). Υπάρχουν πηγές και παραπομπές.',
+criteria:[
+{q:'Είναι ο δημιουργός γνωστός οργανισμός;',expected:'yes',explain:'Ναι! Το Ίδρυμα Wikimedia είναι γνωστός οργανισμός.'},
+{q:'Υπάρχουν πηγές/παραπομπές;',expected:'yes',explain:'Ναι! Η Wikipedia έχει παραπομπές σε κάθε άρθρο.'},
+{q:'Μπορώ να καταλάβω το περιεχόμενο;',expected:'yes',explain:'Ναι! Είναι γραμμένο κατανοητά.'},
+{q:'Είναι σχετικό με αυτό που ψάχνω;',expected:'yes',explain:'Ναι! Δίνει πληροφορίες για τον Ήλιο.'}
+],
+safeRating:4,
+verdict:'Αξιόπιστος (με επιφύλαξη)',
+explanation:'Η Wikipedia είναι γενικά αξιόπιστη αλλά πρέπει πάντα να ελέγχουμε τις πηγές της!'
+},
+{
+url:'https://free-math-answers-99.com/',
+title:'Free Math Answers 99',
+body:'«Δώσε μας τα στοιχεία σου και θα σου λύσουμε τις ασκήσεις μαθηματικών ΔΩΡΕΑΝ!» Δεν υπάρχει όνομα δημιουργού. Δεν υπάρχουν στοιχεία επικοινωνίας. Ζητάει προσωπικά δεδομένα.',
+criteria:[
+{q:'Μπορώ να βρω ποιος δημιούργησε τον ιστότοπο;',expected:'no',explain:'Όχι! Δεν υπάρχει κανένα στοιχείο για τον δημιουργό.'},
+{q:'Ζητάει προσωπικά στοιχεία;',expected:'yes',explain:'Ναι! Ζητάει προσωπικά δεδομένα — αυτό είναι ύποπτο!'},
+{q:'Η προσφορά φαίνεται υπερβολική;',expected:'yes',explain:'Ναι! «Δωρεάν λύσεις» χωρίς κανένα όρο είναι ύποπτο.'},
+{q:'Είναι ασφαλές να δώσω τα στοιχεία μου;',expected:'no',explain:'Όχι! Ποτέ δεν δίνουμε προσωπικά δεδομένα σε άγνωστους ιστότοπους!'}
+],
+safeRating:1,
+verdict:'Επικίνδυνος',
+explanation:'Ζητάει προσωπικά δεδομένα χωρίς γνωστό δημιουργό. Είναι επικίνδυνος!'
+}
+];
+var curQ=0;
+var pts=0;
+var answers={};
+var starRating=0;
+var checked=false;
+
+function initQ(){
+answers={};
+starRating=0;
+checked=false;
+}
+
+function render(){
+var site=sites[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="site-preview">';
+h+='<div class="site-bar"><span class="url-bar">'+site.url+'</span></div>';
+h+='<div class="site-body"><h3>'+site.title+'</h3>'+site.body+'</div>';
+h+='</div>';
+h+='<div class="criteria-area">';
+h+='<div style="font-size:.78rem;font-weight:700;color:#0c4a6e;margin-bottom:6px">📋 Αξιολόγηση — Απάντησε σε κάθε κριτήριο:</div>';
+for(var i=0;i<site.criteria.length;i++){
+var c=site.criteria[i];
+var ans=answers[i];
+h+='<div class="crit-row">';
+h+='<span class="crit-icon">'+(i===0?'👤':i===1?'📅':i===2?'📖':'🔗')+'</span>';
+h+='<div class="crit-text">';
+h+='<div class="crit-q">'+c.q+'</div>';
+h+='<div class="crit-btns">';
+var ycls='crit-btn'+(ans==='yes'?' yes':'');
+var ncls='crit-btn'+(ans==='no'?' no':'');
+var dcls='crit-btn'+(ans==='idk'?' idk':'');
+var dis=checked?' style="pointer-events:none"':'';
+h+='<button class="'+ycls+'" onclick="setAnswer('+i+',\'yes\')"'+dis+'>Ναι</button>';
+h+='<button class="'+ncls+'" onclick="setAnswer('+i+',\'no\')"'+dis+'>Όχι</button>';
+h+='<button class="'+dcls+'" onclick="setAnswer('+i+',\'idk\')"'+dis+'>Δεν ξέρω</button>';
+h+='</div>';
+if(checked){
+h+='<div style="font-size:.6rem;margin-top:4px;color:'+(ans===c.expected?'#14532d':'#dc2626')+'">'+(ans===c.expected?'✅ ':'❌ ')+c.explain+'</div>';
+}
+h+='</div></div>';
+}
+h+='</div>';
+h+='<div class="rating-area">';
+h+='<div class="rating-label">⭐ Βαθμολόγησε την αξιοπιστία (1-5):</div>';
+h+='<div class="stars">';
+for(var s=1;s<=5;s++){
+var act=s<=starRating?' active':'';
+h+='<span class="star'+act+'" onclick="setStar('+s+')">⭐</span>';
+}
+h+='</div></div>';
+if(!checked){
+var allAnswered=Object.keys(answers).length===site.criteria.length&&starRating>0;
+h+='<button class="check-btn" onclick="checkAnswer()"'+(allAnswered?'':' disabled')+'>✓ Τελική Αξιολόγηση</button>';
+}else{
+var correct=starRating>=site.safeRating-1&&starRating<=site.safeRating+1;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(site.safeRating>=3?'ok':site.safeRating>=2?'warn':'bad')+'">'+(site.safeRating>=3?'✅':'⚠️')+' Η σωστή απάντηση: '+site.verdict+' ('+site.safeRating+'/5)</div>';
+h+='<div style="font-size:.68rem;color:#334155;margin:4px 0;line-height:1.4;background:#f0f9ff;padding:8px;border-radius:8px">'+site.explanation+'</div>';
+h+='<button class="next-btn" onclick="nextQ()">Επόμενος Ιστότοπος ▶</button>';
+}
+main.innerHTML=h;
+}
+
+function setAnswer(idx,val){
+if(checked)return;
+answers[idx]=val;
+render();
+}
+
+function setStar(val){
+if(checked)return;
+starRating=val;
+render();
+}
+
+function checkAnswer(){
+checked=true;
+render();
+}
+
+function nextQ(){
+if(curQ<sites.length-1){
+curQ++;
+initQ();
+render();
+}
+}
+
+initQ();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Scratch Ορολογία",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "ell", "name": "Ελληνικό όνομα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "agg", "name": "Αγγλικό όνομα", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μορφή", "category": "ell"},
+    {"text": "Sprite", "category": "agg"},
+    {"text": "Πλακίδιο", "category": "ell"},
+    {"text": "Block", "category": "agg"},
+    {"text": "Σενάριο", "category": "ell"},
+    {"text": "Script", "category": "agg"},
+    {"text": "Συμβάν", "category": "ell"},
+    {"text": "Event", "category": "agg"},
+    {"text": "Χαρακτήρας", "category": "ell"},
+    {"text": "Code", "category": "agg"}
+  ],
+  "duration": 30
+}

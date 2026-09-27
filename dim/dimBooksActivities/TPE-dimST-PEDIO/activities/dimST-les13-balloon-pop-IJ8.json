@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ρυθμίσεις Υπολογιστή",
+  "subtitle": "Σπάσε μόνο τα στοιχεία των ρυθμίσεων",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με ρυθμίσεις και αντιμετώπιση προβλημάτων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Ρυθμίσεις συστήματος",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εγκατάσταση εφαρμογής",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ψήσιμο κέικ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αντιμετώπιση προβλημάτων",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Κέντρο ελέγχου",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Κηπουρική",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Αντι-ιική προστασία",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Μαγειρική",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Αποθετήριο λογισμικού",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Blog: Ανάρτηση</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.tabs{display:flex;gap:0;margin-bottom:20px;border-radius:10px;overflow:hidden;border:2px solid #667eea}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:700;font-size:.9em;transition:all .2s;background:#fff;color:#667eea}
+.tab.active{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff}
+.tab:hover:not(.active){background:#f0f0ff}
+.editor-panel,.preview-panel,.feed-panel{display:none}
+.editor-panel.active,.preview-panel.active,.feed-panel.active{display:block;animation:fadeIn .3s ease}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:700;color:#333;margin-bottom:6px;font-size:.9em}
+.form-group input,.form-group textarea{width:100%;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9em}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#667eea}
+.form-group textarea{min-height:120px;resize:vertical}
+.tag-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tag-btn{padding:6px 14px;background:#f0f0ff;color:#667eea;border:2px solid #667eea;border-radius:20px;cursor:pointer;font-family:inherit;font-size:.85em;font-weight:600;transition:all .2s}
+.tag-btn:hover{background:#667eea;color:#fff}
+.publish-btn{padding:12px 30px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:700;font-size:1em;margin-top:10px}
+.publish-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,.4)}
+.preview-post{background:#fafafa;border-radius:14px;padding:20px;border:2px solid #eee}
+.preview-post h2{color:#333;margin-bottom:8px}
+.preview-post .meta{color:#999;font-size:.8em;margin-bottom:14px}
+.preview-post .body-text{line-height:1.7;color:#444}
+.preview-post .body-text .img-placeholder{display:block;width:100%;max-width:400px;height:200px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px;margin:14px 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2em;font-weight:600}
+.preview-post .body-text .video-placeholder{display:block;width:100%;max-width:400px;height:220px;background:#111;border-radius:10px;margin:14px 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:3em}
+.blog-feed{display:flex;flex-direction:column;gap:16px}
+.feed-post{padding:18px;background:#fafafa;border-radius:14px;border:2px solid #eee;transition:all .2s}
+.feed-post:hover{border-color:#667eea}
+.feed-post h3{color:#333;margin-bottom:6px;font-size:1.05em}
+.feed-post .meta{color:#999;font-size:.78em;margin-bottom:10px}
+.feed-post .excerpt{color:#555;line-height:1.6;font-size:.9em}
+.feed-post .content-block{margin-top:8px}
+.feed-empty{text-align:center;padding:40px;color:#999;font-size:1.1em}
+.success-msg{text-align:center;padding:16px;background:#e6f4ea;color:#1b7a34;border-radius:10px;margin-top:12px;font-weight:600;display:none}
+.success-msg.show{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tabs > * + * { margin-left: 0; }
+  .tag-buttons > * { margin: 4px; }
+  .blog-feed > * + * { margin-top: 16px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📝 Δημιουργία Ιστολογίου (Blog)</h1>
+<p class="subtitle">Γράψε, μορφοποίησε και δημοσίευσε τις αναρτήσεις σου</p>
+<div class="container">
+<div class="tabs">
+<div class="tab active" onclick="switchTab('editor')">✍️ Σύνταξη</div>
+<div class="tab" onclick="switchTab('preview')">👁️ Προεπισκόπηση</div>
+<div class="tab" onclick="switchTab('feed')">📰 Ιστολόγιο</div>
+</div>
+<div class="editor-panel active" id="editorPanel">
+<div class="form-group">
+<label>📌 Τίτλος Ανάρτησης</label>
+<input type="text" id="postTitle" placeholder="Γράψε τον τίτλο...">
+</div>
+<div class="form-group">
+<label>📄 Περιεχόμενο</label>
+<textarea id="postBody" placeholder="Γράψε το κείμενο της ανάρτησής σου...&#10;&#10;Μπορείς να χρησιμοποιήσεις τα παρακάτω κουμπιά για να προσθέσεις εικόνα ή βίντεο."></textarea>
+<div class="tag-buttons">
+<button class="tag-btn" onclick="insertTag('[IMAGE]')">🖼️ Προσθήκη Εικόνας [IMAGE]</button>
+<button class="tag-btn" onclick="insertTag('[VIDEO]')">🎬 Προσθήκη Βίντεο [VIDEO]</button>
+</div>
+</div>
+<button class="publish-btn" onclick="publishPost()">📤 Δημοσίευση Ανάρτησης</button>
+<div class="success-msg" id="successMsg">✅ Η ανάρτηση δημοσιεύτηκε επιτυχώς!</div>
+</div>
+<div class="preview-panel" id="previewPanel">
+<div class="preview-post" id="previewContent">
+<div class="feed-empty">Η προεπισκόπηση θα εμφανιστεί εδώ...</div>
+</div>
+</div>
+<div class="feed-panel" id="feedPanel">
+<div class="blog-feed" id="blogFeed"></div>
+</div>
+</div>
+<script>
+let posts=[
+{title:"Η πρώτη μου εμπειρία με το Scratch",body:"Σήμερα έμαθα να φτιάχνω ένα απλό παιχνίδι στο Scratch! [IMAGE] Είναι πολύ ευκολό και διασκεδαστικό. Ο χαρακτήρας μου μπορεί να κινείται με τα βήματα!",date:"28/04/2026",author:"Μαρία Κ."},
+{title:"Ασφάλεια στο Διαδίκτυο",body:"Στο μάθημα της Πληροφορικής μάθαμε για την ασφάλεια στο διαδίκτυο. [VIDEO] Πρέπει πάντα να χρησιμοποιούμε ισχυρούς κωδικούς και να μην μοιραζόμαστε προσωπικά στοιχεία!",date:"27/04/2026",author:"Γιάννης Π."}
+];
+function switchTab(tab){
+document.querySelectorAll('.tab').forEach((t,i)=>{
+t.classList.toggle('active',['editor','preview','feed'][i]===tab);
+});
+document.getElementById('editorPanel').classList.toggle('active',tab==='editor');
+document.getElementById('previewPanel').classList.toggle('active',tab==='preview');
+document.getElementById('feedPanel').classList.toggle('active',tab==='feed');
+if(tab==='preview')renderPreview();
+if(tab==='feed')renderFeed();
+}
+function insertTag(tag){
+const ta=document.getElementById('postBody');
+const start=ta.selectionStart;
+const text=ta.value;
+ta.value=text.substring(0,start)+'\n'+tag+'\n'+text.substring(start);
+ta.focus();
+}
+function formatBody(text){
+let html=text.replace(/\n/g,'<br>');
+html=html.replace(/\[IMAGE\]/g,'<div class="img-placeholder">🖼️ Εικόνα</div>');
+html=html.replace(/\[VIDEO\]/g,'<div class="video-placeholder">▶️</div>');
+return html;
+}
+function renderPreview(){
+const title=document.getElementById('postTitle').value||'Χωρίς Τίτλο';
+const body=document.getElementById('postBody').value;
+const el=document.getElementById('previewContent');
+if(!body){el.innerHTML='<div class="feed-empty">Γράψε κάτι στον editor για να δεις την προεπισκόπηση!</div>';return;}
+el.innerHTML=`<h2>${title}</h2><div class="meta">👤 Εσύ · 📅 Τώρα</div><div class="body-text">${formatBody(body)}</div>`;
+}
+function renderFeed(){
+const feed=document.getElementById('blogFeed');
+feed.innerHTML='';
+if(posts.length===0){feed.innerHTML='<div class="feed-empty">Δεν υπάρχουν αναρτήσεις ακόμα.</div>';return;}
+posts.forEach(p=>{
+const div=document.createElement('div');
+div.className='feed-post';
+div.innerHTML=`<h3>📌 ${p.title}</h3><div class="meta">👤 ${p.author} · 📅 ${p.date}</div><div class="excerpt content-block">${formatBody(p.body)}</div>`;
+feed.appendChild(div);
+});
+}
+function publishPost(){
+const title=document.getElementById('postTitle').value.trim();
+const body=document.getElementById('postBody').value.trim();
+if(!title||!body)return;
+const now=new Date();
+const date=now.getDate().toString().padStart(2,'0')+'/'+(now.getMonth()+1).toString().padStart(2,'0')+'/'+now.getFullYear();
+posts.unshift({title,body,date,author:"Εσύ"});
+document.getElementById('postTitle').value='';
+document.getElementById('postBody').value='';
+const msg=document.getElementById('successMsg');
+msg.classList.add('show');
+setTimeout(()=>msg.classList.remove('show'),3000);
+}
+renderFeed();
+</script>
+</body>
+</html>

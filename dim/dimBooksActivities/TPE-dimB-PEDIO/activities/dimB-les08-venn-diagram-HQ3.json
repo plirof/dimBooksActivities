@@ -1,0 +1,17 @@
+{
+  "title": "Διάγραμμα Venn: micro:bit ή Υπολογιστής",
+  "subtitle": "Βάλε κάθε στοιχείο στη σωστή θέση!",
+  "circleA": { "label": "micro:bit", "color": "#2196F3" },
+  "circleB": { "label": "Υπολογιστής", "color": "#4CAF50" },
+  "items": [
+    { "text": "Φωτάκια LED", "zone": "A" },
+    { "text": "Μεγάλη οθόνη", "zone": "B" },
+    { "text": "Κουμπιά Α και Β", "zone": "A" },
+    { "text": "Πληκτρολόγιο", "zone": "B" },
+    { "text": "Μικρόφωνο", "zone": "A" },
+    { "text": "Ποντίκι", "zone": "B" },
+    { "text": "Ηχείο", "zone": "A" },
+    { "text": "Οθόνη", "zone": "B" },
+    { "text": "Προγραμματίζεται", "zone": "A" }
+  ]
+}

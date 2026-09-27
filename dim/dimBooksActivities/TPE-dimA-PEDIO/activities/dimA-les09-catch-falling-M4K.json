@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τις Εντολές",
+  "subtitle": "Πιάσε τις εντολές της πασχαλίτσας!",
+  "instructions": "Πιάσε μόνο τις ΕΝΤΟΛΕΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Μπροστά", "correct": true, "color": "#4CAF50"},
+    {"text": "Κοιμάται", "correct": false, "color": "#f44336"},
+    {"text": "Πίσω", "correct": true, "color": "#2196F3"},
+    {"text": "Τρώει", "correct": false, "color": "#FF9800"},
+    {"text": "Δεξιά", "correct": true, "color": "#9C27B0"},
+    {"text": "Χορεύει", "correct": false, "color": "#E91E63"},
+    {"text": "Αριστερά", "correct": true, "color": "#009688"},
+    {"text": "Πετάει", "correct": false, "color": "#FFC107"},
+    {"text": "Στρίψε", "correct": true, "color": "#795548"},
+    {"text": "Τρέχει", "correct": false, "color": "#607D8B"}
+  ]
+}

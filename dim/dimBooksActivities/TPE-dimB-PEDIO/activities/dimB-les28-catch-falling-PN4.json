@@ -1,0 +1,20 @@
+{
+  "title": "Πιάσε τα: Σε ποιον στέλνω;",
+  "subtitle": "Πιάσε μόνο επαφές",
+  "instructions": "Πιάσε τα μπλόκς που λένε επαφές που μπορώ να στείλω μαιλ. Απέφυγε τους άλλους.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Συμμαθητής", "correct": true, "color": "#4CAF50" },
+    { "text": "Άγνωστος", "correct": false, "color": "#f44336" },
+    { "text": "Δασκάλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Διάσημος", "correct": false, "color": "#f44336" },
+    { "text": "Συμμαθήτρια", "correct": true, "color": "#4CAF50" },
+    { "text": "Ξένος", "correct": false, "color": "#f44336" },
+    { "text": "Δάσκαλος", "correct": true, "color": "#4CAF50" },
+    { "text": "Τυχαίος", "correct": false, "color": "#f44336" },
+    { "text": "Φίλη", "correct": true, "color": "#4CAF50" }
+  ]
+}

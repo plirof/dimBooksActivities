@@ -1,0 +1,14 @@
+{
+  "title": "Πιάσε τα Φρούτα!",
+  "subtitle": "Οδήγησε το ποντίκι και κάνε κλικ",
+  "instructions": "Κάνε κλικ στα φρούτα πριν εξαφανιστούν!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "🍎", "color": "#FFCDD2" },
+    { "label": "🍊", "color": "#FFE0B2" },
+    { "label": "🍇", "color": "#E1BEE7" },
+    { "label": "🍌", "color": "#FFF9C4" }
+  ]
+}

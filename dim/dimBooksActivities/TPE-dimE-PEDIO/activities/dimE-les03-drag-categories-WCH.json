@@ -1,0 +1,53 @@
+{
+  "title": "ΚΑΙ/Η/ΟΧΙ πίνακας αληθείας",
+  "subtitle": "Ταίριαξε κάθε πρόταση στο σωστό λογικό τελεστή",
+  "categories": [
+    {
+      "id": "kai",
+      "name": "ΚΑΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "i",
+      "name": "Η",
+      "color": "#2196F3"
+    },
+    {
+      "id": "ohi",
+      "name": "ΟΧΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ήλιος ΚΑΙ βροχή",
+      "category": "kai"
+    },
+    {
+      "id": "item2",
+      "text": "Ήλιος Η βροχή",
+      "category": "i"
+    },
+    {
+      "id": "item3",
+      "text": "ΟΧΙ κρύο",
+      "category": "ohi"
+    },
+    {
+      "id": "item4",
+      "text": "Ζέστη ΚΑΙ υγρασία",
+      "category": "kai"
+    },
+    {
+      "id": "item5",
+      "text": "Μουσική Η αθλητισμός",
+      "category": "i"
+    },
+    {
+      "id": "item6",
+      "text": "ΟΧΙ βροχή",
+      "category": "ohi"
+    }
+  ]
+}

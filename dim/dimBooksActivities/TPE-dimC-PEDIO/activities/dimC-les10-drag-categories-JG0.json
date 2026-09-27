@@ -1,0 +1,53 @@
+{
+  "title": "Καλώδιο/θύρα",
+  "subtitle": "Ταίριαξε κάθε καλώδιο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "usb",
+      "name": "USB",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "network",
+      "name": "ΔΙΚΤΥΟΥ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "display",
+      "name": "ΟΘΟΝΗΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🔌 USB-A",
+      "category": "usb"
+    },
+    {
+      "id": "item2",
+      "text": "🌐 RJ-45",
+      "category": "network"
+    },
+    {
+      "id": "item3",
+      "text": "📺 HDMI",
+      "category": "display"
+    },
+    {
+      "id": "item4",
+      "text": "🔌 USB-C",
+      "category": "usb"
+    },
+    {
+      "id": "item5",
+      "text": "📶 Καλώδιο Ethernet",
+      "category": "network"
+    },
+    {
+      "id": "item6",
+      "text": "🖥️ VGA",
+      "category": "display"
+    }
+  ]
+}

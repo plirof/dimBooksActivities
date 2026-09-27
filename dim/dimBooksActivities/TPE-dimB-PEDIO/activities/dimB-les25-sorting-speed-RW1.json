@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Στοιχεία e-me",
+  "subtitle": "Ταξινόμησε: πού τα βλέπω;",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή θέση",
+  "categories": [
+    { "id": "fakelaki", "name": "Φακελάκι", "color": "#2196F3", "key": "A" },
+    { "id": "kabanoula", "name": "Καμπανούλα", "color": "#f44336", "key": "L" },
+    { "id": "kyphlh", "name": "Κυψέλες", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Νέο μήνυμα φίλου", "category": "fakelaki" },
+    { "text": "Κάποιος σχολίασε", "category": "kabanoula" },
+    { "text": "Εργασία τάξης", "category": "kyphlh" },
+    { "text": "Απάντηση δασκάλου", "category": "fakelaki" },
+    { "text": "Νέα δραστηριότητα", "category": "kabanoula" },
+    { "text": "Ομαδική εργασία", "category": "kyphlh" },
+    { "text": "Μήνυμα από σχολείο", "category": "fakelaki" },
+    { "text": "Υπενθύμιση", "category": "kabanoula" },
+    { "text": "Αρχεία μαθητή", "category": "kyphlh" },
+    { "text": "Ερώτηση συμμαθητή", "category": "fakelaki" }
+  ],
+  "duration": 30
+}

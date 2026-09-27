@@ -1,0 +1,53 @@
+{
+  "title": "Στοιχεία OK ή ΟΧΙ στο προφίλ",
+  "subtitle": "Τι πρέπει να γράφεις στο προφίλ σου;",
+  "categories": [
+    {
+      "id": "ok",
+      "name": "OK",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΟΧΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "✅ Ηλικία",
+      "category": "ok"
+    },
+    {
+      "id": "item2",
+      "text": "❌ Διεύθυνση",
+      "category": "no"
+    },
+    {
+      "id": "item3",
+      "text": "✅ Αγαπημένο χρώμα",
+      "category": "ok"
+    },
+    {
+      "id": "item4",
+      "text": "❌ Κωδικός",
+      "category": "no"
+    },
+    {
+      "id": "item5",
+      "text": "✅ Αγαπημένο μάθημα",
+      "category": "ok"
+    },
+    {
+      "id": "item6",
+      "text": "❌ Τηλέφωνο γονιών",
+      "category": "no"
+    },
+    {
+      "id": "item7",
+      "text": "✅ Όνομα",
+      "category": "ok"
+    }
+  ]
+}

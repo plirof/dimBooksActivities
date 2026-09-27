@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εντολή Επιλογής",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "meros", "name": "Μέρος εντολής", "color": "#FF9800", "key": "ArrowLeft"},
+    {"id": "actions", "name": "Ενέργεια", "color": "#4CAF50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αν...τότε", "category": "meros"},
+    {"text": "Πες Γεια σου", "category": "actions"},
+    {"text": "Εξάγωνο (συνθήκη)", "category": "meros"},
+    {"text": "Μετακίνηση δεξιά", "category": "actions"},
+    {"text": "Κενό διάστημα (εντολές)", "category": "meros"},
+    {"text": "Βάλε όνομα στο σκυλάκι", "category": "actions"},
+    {"text": "Πορτοκαλί κατηγορία", "category": "meros"},
+    {"text": "Σύρσιμο χαρακτήρα", "category": "actions"},
+    {"text": "Ακουμπά Σκυλάκι", "category": "meros"},
+    {"text": "Αποθήκευση έργου", "category": "actions"}
+  ],
+  "duration": 30
+}

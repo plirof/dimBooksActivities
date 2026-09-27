@@ -1,0 +1,52 @@
+{
+  "title": "Βρες τα Λάθη: Δικτυακός Τόπος",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "δικτυακός", "error": false},
+        {"text": "τόπος", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Ένας δικτυακός τόπος έχει ΠΟΛΛΕΣ ιστοσελίδες, όχι μόνο μία!"},
+        {"text": "μία", "error": true, "correct": "πολλές", "feedback": "Ένας δικτυακός τόπος έχει ΠΟΛΛΕΣ ιστοσελίδες!"},
+        {"text": "ιστοσελίδα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "δω", "error": false},
+        {"text": "ιστοσελίδα", "error": false},
+        {"text": "χρειάζομαι", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Χρειάζεσαι ΚΑΙ συσκευή ΚΑΙ φυλλομετρητή!"},
+        {"text": "φυλλομετρητή.", "error": true, "correct": "συσκευή με σύνδεση και φυλλομετρητή", "feedback": "Χρειάζεσαι ψηφιακή συσκευή με σύνδεση ΚΑΙ φυλλομετρητή!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ιστοσελίδες", "error": false},
+        {"text": "ενός", "error": false},
+        {"text": "δικτυακού", "error": false},
+        {"text": "τόπου", "error": false},
+        {"text": "διαβάζονται", "error": true, "correct": "επιλέγονται", "feedback": "Οι ιστοσελίδες ΕΠΙΛΕΓΟΝΤΑΙ, δεν διαβάζονται υποχρεωτικά με σειρά!"},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Μπορείς να δεις όποια ιστοσελίδα θέλεις!"},
+        {"text": "με", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "σειρά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "φυλλομετρητής", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "η", "error": false},
+        {"text": "συσκευή", "error": true, "correct": "εφαρμογή", "feedback": "Ο φυλλομετρητής (browser) είναι ΕΦΑΡΜΟΓΗ, όχι συσκευή!"},
+        {"text": "μου.", "error": false}
+      ]
+    }
+  ]
+}

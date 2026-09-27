@@ -1,0 +1,62 @@
+{
+  "title": "Βρες τα Λάθη: Αλήθεια ή Ψέματα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "λογικές", "error": false},
+        {"text": "εκφράσεις", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πάντα", "error": true, "correct": "", "feedback": "Οι λογικές εκφράσεις ΔΕΝ είναι πάντα αλήθεια! Μπορούν να είναι και ψέματα."},
+        {"text": "αλήθεια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μια", "error": false},
+        {"text": "πρόταση", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ψέμα", "error": false},
+        {"text": "αν", "error": false},
+        {"text": "αυτό", "error": false},
+        {"text": "που", "error": false},
+        {"text": "λέει", "error": true, "correct": "δεν ισχύει", "feedback": "Ψέμα σημαίνει ότι ΔΕΝ ισχύει αυτό που λέει!"},
+        {"text": "ισχύει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "συνθήκες", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Οι συνθήκες ΕΙΝΑΙ λογικές εκφράσεις!"},
+        {"text": "είναι", "error": false},
+        {"text": "λογικές", "error": false},
+        {"text": "εκφράσεις.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "φοράει", "error": false},
+        {"text": "κόκκινο", "error": true, "correct": "μπλε", "feedback": "Η Άννα φοράει μπλε φόρεμα, όχι κόκκινο!"},
+        {"text": "φόρεμα", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "η", "error": false},
+        {"text": "Άννα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "πρόταση", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "είτε", "error": false},
+        {"text": "αλήθεια", "error": false},
+        {"text": "είτε", "error": true, "correct": "ή", "feedback": "Στα ελληνικά λέμε «αλήθεια ή ψέμα», όχι «είτε... είτε...»!"},
+        {"text": "ψέματα.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Πληροφορική Ε&#x27; Δημοτικού — Μάθημα 2: Ο αλγόριθμος του Καίσαρα (συνέχεια) ............................................................................................... 12</title>
+
+<title>Πληροφορική και Τεχνολογίες της Πληροφορίας και των Επικοινωνιών – Ε΄ Δημοτικού</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="pdftohtml 0.36"/>
+<meta name="author" content="Ναταλία Θεόκλεια Γεωργιτζίκη"/>
+<meta name="date" content="2026-03-31T12:49:06+00:00"/>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+
+</head>
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<!-- Page 13 -->
+<a name="13"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page13-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index013.png" alt="background image"/>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft1337">Αλγοριθμική – Προγραμματισμός - Ρομποτική</p>
+<p style="position:absolute;top:13px;left:26px;white-space:nowrap" class="ft1340"><b>1</b></p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft1324">12</p>
+<p style="position:absolute;top:150px;left:335px;white-space:nowrap" class="ft1353">&#160; &#160;Ο αλγόριθμος του Καίσαρα (συνέχεια)</p>
+<p style="position:absolute;top:289px;left:118px;white-space:nowrap" class="ft1344">&#160;</p>
+<p style="position:absolute;top:289px;left:139px;white-space:nowrap" class="ft1356">Ότι για ένα πρόβλημα μπορεί να υπάρχουν περισσότεροι από ένας αλγόριθμοι&#160;<br/>που το επιλύουν.</p>
+<p style="position:absolute;top:334px;left:118px;white-space:nowrap" class="ft1344">&#160;</p>
+<p style="position:absolute;top:334px;left:139px;white-space:nowrap" class="ft1356">Ότι θέλουμε οι αλγόριθμοί μας να είναι γενικοί και να μπορούν να επιλύουν πολλά&#160;<br/>παρόμοια προβλήματα.</p>
+<p style="position:absolute;top:379px;left:118px;white-space:nowrap" class="ft1344">&#160;</p>
+<p style="position:absolute;top:379px;left:139px;white-space:nowrap" class="ft1345">Ότι σε έναν αλγόριθμο μπορούμε να δώσουμε διάφορα δεδομένα εισόδου.</p>
+<p style="position:absolute;top:237px;left:136px;white-space:nowrap" class="ft1326"><b>Στο μάθημα αυτό θα μάθεις:</b></p>
+<p style="position:absolute;top:460px;left:85px;white-space:nowrap" class="ft1355">Ένας αλγόριθμος κρυπτογράφησης πρέπει να λύνει το πρόβλημα της κρυπτογράφησης που&#160;<br/>περιγράψαμε παραπάνω κωδικοποιώντας οποιοδήποτε μήνυμα, όποιον συνδυασμό χαρακτήρων και αν&#160;<br/>περιέχει. Πρέπει δηλαδή να είναι γενικός και ανεξάρτητος από τα δεδομένα που του δίνουμε ως είσοδο.</p>
+<p style="position:absolute;top:550px;left:85px;white-space:nowrap" class="ft1355">Ας δούμε όμως τον πίνακα με τις τιμές της μεταβλητής θέση που συμπλήρωσες στο προηγούμενο&#160;<br/>μάθημα. Παρατήρησε ότι για το γράμμα Ω υπάρχει κάποιο πρόβλημα. Η θέση του γράμματος στο&#160;<br/>αλφάβητο είναι το 24, αλλά αν της προσθέσουμε 3 προκύπτει ο αριθμός 27, που δεν αντιστοιχεί σε&#160;<br/>κανένα γράμμα του αλφαβήτου.</p>
+<p style="position:absolute;top:154px;left:122px;white-space:nowrap" class="ft1354"><b>&#160; &#160; &#160;Μάθημα 2ο</b></p>
+<p style="position:absolute;top:708px;left:104px;white-space:nowrap" class="ft1324">Συζητήστε στην τάξη για ποια γράμματα του αλφαβήτου ισχύει ότι&#160;</p>
+<p style="position:absolute;top:707px;left:543px;white-space:nowrap" class="ft1326"><b>θέση&#160;</b></p>
+<p style="position:absolute;top:708px;left:582px;white-space:nowrap" class="ft1324">+ 3 &gt; 24&#160;&#160;</p>
+<p style="position:absolute;top:729px;left:104px;white-space:nowrap" class="ft1324">και με ποια γράμματα τα αντικαθιστούμε σύμφωνα με τον πίνακα αντικατάστασης.</p>
+<p style="position:absolute;top:920px;left:104px;white-space:nowrap" class="ft1334">Συζητήστε στην τάξη εναλλακτικούς τρόπους που θα μπορούσαν να διορθώσουν το πρόβλημα&#160;<br/>στον αλγόριθμο.</p>
+<p style="position:absolute;top:788px;left:85px;white-space:nowrap" class="ft1355">Ο προηγούμενος αλγόριθμος δεν έχει προβλέψει την περίπτωση αυτών των γραμμάτων.&#160;&#160;<br/>Πρέπει επομένως να τον διορθώσουμε ώστε να μπορεί να κρυπτογραφήσει σωστά&#160;</p>
+<p style="position:absolute;top:810px;left:641px;white-space:nowrap" class="ft1326"><b>όλα</b></p>
+<p style="position:absolute;top:810px;left:668px;white-space:nowrap" class="ft1324">&#160;τα&#160;&#160;</p>
+<p style="position:absolute;top:833px;left:85px;white-space:nowrap" class="ft1324">γράμματα του αλφαβήτου.</p>
+<p style="position:absolute;top:1004px;left:85px;white-space:nowrap" class="ft1355">Θα μπορούσαμε, για παράδειγμα, να γράψουμε τον αλγόριθμο ως εξής για να διορθώσουμε&#160;&#160;<br/>το πρόβλημα:</p>
+</div>
+
+<!-- Page 14 -->
+<a name="14"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft1464{font-size:15px;line-height:25px;font-family:FBMXDD+IEPComic;color:#000000;}
+-->
+</style>
+<div id="page14-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index014.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft1424">13</p>
+<p style="position:absolute;top:990px;left:104px;white-space:nowrap" class="ft1455">Συζητήστε στην τάξη τι αλλαγές πρέπει να γίνουν στον αλγόριθμο 3 αν η μετατόπιση γίνει ένας&#160;<br/>άλλος αριθμός, π.χ. το 5. Συγκρίνετε τις αλλαγές με αυτές που πρέπει να γίνουν στον αλγόριθμο 2.&#160;</p>
+<p style="position:absolute;top:625px;left:84px;white-space:nowrap" class="ft1455">Δες τώρα έναν άλλο αλγόριθμο που διορθώνει το πρόβλημα εξετάζοντας μόνο δύο διαφορετικές&#160;<br/>περιπτώσεις για τα γράμματα του αλφαβήτου και ακολουθεί διαφορετικό μονοπάτι εκτέλεσης για την κάθε&#160;<br/>περίπτωση:</p>
+<p style="position:absolute;top:715px;left:122px;white-space:nowrap" class="ft1458">Αλγόριθμος 3</p>
+<p style="position:absolute;top:746px;left:122px;white-space:nowrap" class="ft1460">Επανάλαβε ώσπου να τελειώσουν όλα τα γράμματα&#160;<br/>&#160;</p>
+<p style="position:absolute;top:768px;left:148px;white-space:nowrap" class="ft1459">Διάβασε το επόμενο γράμμα</p>
+<p style="position:absolute;top:791px;left:122px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:791px;left:148px;white-space:nowrap" class="ft1459">Βρες τη&#160;</p>
+<p style="position:absolute;top:790px;left:205px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:790px;left:205px;white-space:nowrap" class="ft1459">θέση&#160;του γράμματος στο αλφάβητο&#160;</p>
+<p style="position:absolute;top:813px;left:122px;white-space:nowrap" class="ft1459">&#160;Αν&#160;</p>
+<p style="position:absolute;top:813px;left:171px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:813px;left:171px;white-space:nowrap" class="ft1459">θέση&#160;+ 3 &gt; 24 τότε</p>
+<p style="position:absolute;top:836px;left:122px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:836px;left:148px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:836px;left:176px;white-space:nowrap" class="ft1459">Γράψε το γράμμα που υπάρχει στη (</p>
+<p style="position:absolute;top:835px;left:419px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:835px;left:419px;white-space:nowrap" class="ft1459">θέση&#160;+ 3 ) – 24 του αλφαβήτου</p>
+<p style="position:absolute;top:858px;left:122px;white-space:nowrap" class="ft1460">&#160;Αλλιώς&#160;<br/>&#160;</p>
+<p style="position:absolute;top:881px;left:148px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:881px;left:176px;white-space:nowrap" class="ft1459">Γράψε το γράμμα που υπάρχει στη&#160;</p>
+<p style="position:absolute;top:880px;left:414px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:880px;left:414px;white-space:nowrap" class="ft1459">θέση&#160;+ 3 του αλφαβήτου</p>
+<p style="position:absolute;top:445px;left:104px;white-space:nowrap" class="ft1434">Συζητήστε στην τάξη τι αλλαγές πρέπει να κάνουμε στον αλγόριθμο 2&#160;&#160;<br/>αν η μετατόπιση γίνει ένας άλλος αριθμός, π.χ. το 5.</p>
+<p style="position:absolute;top:129px;left:122px;white-space:nowrap" class="ft1458">Αλγόριθμος 2</p>
+<p style="position:absolute;top:160px;left:122px;white-space:nowrap" class="ft1459">Επανάλαβε ώσπου να τελειώσουν όλα τα γράμματα</p>
+<p style="position:absolute;top:186px;left:142px;white-space:nowrap" class="ft1464">Διάβασε το επόμενο γράμμα<br/>Βρες τη&#160;</p>
+<p style="position:absolute;top:211px;left:199px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:211px;left:199px;white-space:nowrap" class="ft1459">θέση&#160;του γράμματος στο αλφάβητo</p>
+<p style="position:absolute;top:237px;left:142px;white-space:nowrap" class="ft1464">Αν το γράμμα είναι το Χ, τότε γράψε το γράμμα Α<br/>Αν το γράμμα είναι το Ψ, τότε γράψε το γράμμα Β&#160;<br/>Αν το γράμμα είναι το Ω, τότε γράψε το γράμμα Γ<br/>Αν το γράμμα ΔΕΝ είναι το Χ ΚΑΙ ΔΕΝ είναι το Ψ ΚΑΙ ΔΕΝ είναι το Ω, τότε&#160;&#160;</p>
+<p style="position:absolute;top:313px;left:716px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:339px;left:142px;white-space:nowrap" class="ft1459">&#160;</p>
+<p style="position:absolute;top:339px;left:176px;white-space:nowrap" class="ft1459">Γράψε το γράμμα του αλφαβήτου που υπάρχει στη&#160;</p>
+<p style="position:absolute;top:338px;left:520px;white-space:nowrap" class="ft1459">θέση&#160;</p>
+<p style="position:absolute;top:338px;left:520px;white-space:nowrap" class="ft1459">θέση&#160;+ 3</p>
+<p style="position:absolute;top:553px;left:211px;white-space:nowrap" class="ft1424">Εντόπισε και υπογράμμισε τις λογικές εκφράσεις στον αλγόριθμο 2.</p>
+<p style="position:absolute;top:32px;left:409px;white-space:nowrap" class="ft1452">Μάθημα 2ο: Ο αλγόριθμος του Καίσαρα (συνέχεια)&#160;</p>
+</div>
+
+<!-- Page 15 -->
+<a name="15"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page15-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index015.png" alt="background image"/>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft1537">Αλγοριθμική – Προγραμματισμός - Ρομποτική</p>
+<p style="position:absolute;top:13px;left:26px;white-space:nowrap" class="ft1540"><b>1</b></p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft1524">14</p>
+<p style="position:absolute;top:190px;left:104px;white-space:nowrap" class="ft1555">Συζητήστε στην τάξη τι αλλαγές πρέπει να γίνουν στον αλγόριθμο 3 για να μπορεί να κωδικοποιεί&#160;<br/>τα γράμματα του&#160;</p>
+<p style="position:absolute;top:212px;left:218px;white-space:nowrap" class="ft1526"><b>λατινικού</b></p>
+<p style="position:absolute;top:213px;left:285px;white-space:nowrap" class="ft1524">&#160;αλφαβήτου που έχει 26 γράμματα.&#160;</p>
+<p style="position:absolute;top:286px;left:85px;white-space:nowrap" class="ft1555">Ο αλγόριθμος 3 μπορεί με μικρές αλλαγές να κωδικοποιήσει περισσότερα αλφάβητα και με διάφορες&#160;<br/>μετατοπίσεις, είναι δηλαδή πιο γενικός από τον αλγόριθμο 2.&#160;&#160;<br/>Στην επιστήμη των υπολογιστών πολλές φορές χρειάζεται να&#160;</p>
+<p style="position:absolute;top:331px;left:495px;white-space:nowrap" class="ft1526"><b>γενικεύουμε</b></p>
+<p style="position:absolute;top:331px;left:582px;white-space:nowrap" class="ft1524">&#160;τις λύσεις που δίνουμε, έτσι&#160;</p>
+<p style="position:absolute;top:354px;left:85px;white-space:nowrap" class="ft1524">ώστε να μπορούμε να τις χρησιμοποιούμε για να λύνουμε παρόμοιου είδους προβλήματα.</p>
+<p style="position:absolute;top:436px;left:147px;white-space:nowrap" class="ft1534">Χωριστείτε σε ομάδες. Συμφωνήστε από την αρχή μεταξύ σας ποια θα είναι η μετατόπιση και&#160;<br/>πόσες λέξεις ή χαρακτήρες θα έχουν τα μηνύματά σας. Κάθε ομάδα γράφει σε ένα χαρτί ένα&#160;</p>
+<p style="position:absolute;top:478px;left:105px;white-space:nowrap" class="ft1524">κρυπτογραφημένο μήνυμα σύμφωνα με τη μέθοδο του Καίσαρα.&#160;</p>
+<p style="position:absolute;top:566px;left:145px;white-space:nowrap" class="ft1534">Το κενό δεν κρυπτογραφείται και παραμένει κενό και στο κρυπτογραφημένο σας μήνυμα.&#160;<br/>Ανταλλάξτε το μήνυμά σας με το μήνυμα μιας άλλης ομάδας και προσπαθήστε να το&#160;</p>
+<p style="position:absolute;top:608px;left:104px;white-space:nowrap" class="ft1524">αποκρυπτογραφήσετε. Κερδίζει η ομάδα που αποκρυπτογράφησε πρώτη το μήνυμα που πήρε.</p>
+<p style="position:absolute;top:847px;left:122px;white-space:nowrap" class="ft1539"><b>Αξιολογώ πόσο καλά έμαθα</b></p>
+<p style="position:absolute;top:816px;left:401px;white-space:nowrap" class="ft1524">Έχω&#160;</p>
+<p style="position:absolute;top:837px;left:372px;white-space:nowrap" class="ft1524">καταλάβει και&#160;</p>
+<p style="position:absolute;top:858px;left:382px;white-space:nowrap" class="ft1524">μπορώ να&#160;</p>
+<p style="position:absolute;top:879px;left:387px;white-space:nowrap" class="ft1524">εξηγήσω</p>
+<p style="position:absolute;top:826px;left:507px;white-space:nowrap" class="ft1524">Έχω&#160;</p>
+<p style="position:absolute;top:847px;left:490px;white-space:nowrap" class="ft1524">καταλάβει&#160;</p>
+<p style="position:absolute;top:868px;left:482px;white-space:nowrap" class="ft1524">αρκετά καλά</p>
+<p style="position:absolute;top:816px;left:614px;white-space:nowrap" class="ft1524">Έχω&#160;</p>
+<p style="position:absolute;top:837px;left:596px;white-space:nowrap" class="ft1524">καταλάβει&#160;</p>
+<p style="position:absolute;top:858px;left:598px;white-space:nowrap" class="ft1524">αλλά έχω&#160;</p>
+<p style="position:absolute;top:879px;left:603px;white-space:nowrap" class="ft1524">απορίες</p>
+<p style="position:absolute;top:837px;left:700px;white-space:nowrap" class="ft1524">Χρειάζομαι&#160;</p>
+<p style="position:absolute;top:858px;left:709px;white-space:nowrap" class="ft1524">βοήθεια</p>
+<p style="position:absolute;top:926px;left:94px;white-space:nowrap" class="ft1563"></p>
+<p style="position:absolute;top:926px;left:106px;white-space:nowrap" class="ft1524">&#160;&#160;Να ανακαλύπτω μια γενική λύση&#160;</p>
+<p style="position:absolute;top:947px;left:124px;white-space:nowrap" class="ft1524">σε ένα πρόβλημα.</p>
+<p style="position:absolute;top:1007px;left:94px;white-space:nowrap" class="ft1563"></p>
+<p style="position:absolute;top:1007px;left:105px;white-space:nowrap" class="ft1524">&#160;&#160;Να δοκιμάζω έναν αλγόριθμο για&#160;</p>
+<p style="position:absolute;top:1028px;left:123px;white-space:nowrap" class="ft1524">διάφορα δεδομένα εισόδου.</p>
+<p style="position:absolute;top:670px;left:257px;white-space:nowrap" class="ft1539"><b>1.</b></p>
+<p style="position:absolute;top:670px;left:378px;white-space:nowrap" class="ft1539"><b>2.</b></p>
+<p style="position:absolute;top:670px;left:500px;white-space:nowrap" class="ft1539"><b>3.</b></p>
+<p style="position:absolute;top:753px;left:525px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11344">Συμπλήρωση&#160;</a></p>
+<p style="position:absolute;top:769px;left:547px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11344">κενών</a></p>
+<p style="position:absolute;top:753px;left:404px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11329">Εκπαιδευτικό&#160;</a></p>
+<p style="position:absolute;top:769px;left:420px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11329">παιχνίδι</a></p>
+<p style="position:absolute;top:753px;left:291px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11330">Ερωτήσεις&#160;</a></p>
+<p style="position:absolute;top:769px;left:270px;white-space:nowrap" class="ft1527"><a href="https://ebooksdl.cti.gr/view?item=20.500.14040/11330">σωστού / λάθους.</a></p>
+</div>
+
+</body>
+</html>

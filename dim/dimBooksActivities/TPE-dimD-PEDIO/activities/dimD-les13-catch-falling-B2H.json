@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Εφαρμογές Υπολογιστή",
+  "subtitle": "Πιάστε τα ονόματα εφαρμογών!",
+  "instructions": "Πιάσε τα ονόματα πραγματικών εφαρμογών. Απόφυγε τα ψεύτικα!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Scratch", "correct": true, "color": "#4caf50" },
+    { "text": "Firefox", "correct": true, "color": "#2196f3" },
+    { "text": "Firebox", "correct": false, "color": "#f44336" },
+    { "text": "TuxPaint", "correct": true, "color": "#ff9800" },
+    { "text": "Calc", "correct": true, "color": "#00bcd4" },
+    { "text": "Kalk", "correct": false, "color": "#9c27b0" },
+    { "text": "Writer", "correct": true, "color": "#8bc34a" },
+    { "text": "Wrider", "correct": false, "color": "#ff5722" },
+    { "text": "Impress", "correct": true, "color": "#607d8b" },
+    { "text": "Emprise", "correct": false, "color": "#e91e63" }
+  ]
+}

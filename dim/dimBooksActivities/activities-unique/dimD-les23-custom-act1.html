@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ηλεκτρονικό Ταχυδρομείο | Μάθημα 23</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#f093fb 0%,#f5576c 50%,#fda085 100%);
+  padding:12px;display:flex;flex-direction:column;align-items:center;
+}
+h1{color:#fff;font-size:1.6rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.95rem;text-align:center;margin-bottom:12px;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.container{
+  background:#fff;border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);
+  max-width:800px;width:100%;padding:16px;overflow:hidden;
+}
+.tasks-bar{
+  background:linear-gradient(90deg,#fce4ec,#f8bbd0);border-radius:12px;
+  padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.tasks-bar .tasks-title{font-weight:700;color:#c62828;font-size:.9rem;}
+.task-check{display:flex;align-items:center;gap:4px;font-size:.8rem;color:#555;}
+.task-check .chk{
+  width:22px;height:22px;border-radius:6px;border:2px solid #aaa;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;background:#fff;
+}
+.task-check .chk.done{background:#e53935;color:#fff;border-color:#e53935;}
+.email-layout{display:flex;min-height:420px;border-radius:14px;overflow:hidden;border:2px solid #eee;}
+.email-sidebar{
+  width:150px;background:#f5f5f5;border-right:2px solid #eee;
+  padding:8px 0;flex-shrink:0;
+}
+.sidebar-folder{
+  padding:10px 14px;cursor:pointer;font-size:.85rem;font-weight:600;
+  display:flex;align-items:center;gap:6px;transition:background .15s;
+}
+.sidebar-folder:hover{background:#fce4ec;}
+.sidebar-folder.active{background:#f8bbd0;color:#c62828;}
+.sidebar-folder .badge{
+  background:#e53935;color:#fff;border-radius:8px;padding:1px 6px;
+  font-size:.7rem;margin-left:auto;
+}
+.new-email-btn{
+  margin:8px;padding:10px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,#e53935,#f5576c);color:#fff;
+  font-size:.85rem;font-weight:700;cursor:pointer;width:calc(100% - 16px);
+  transition:transform .15s,box-shadow .15s;
+}
+.new-email-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(229,57,53,.4);}
+.email-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.email-list{flex:1;overflow-y:auto;}
+.email-row{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background .15s;
+}
+.email-row:hover{background:#fce4ec;}
+.email-row.unread{background:#fff8e1;font-weight:700;}
+.email-row .email-sender{width:100px;font-size:.85rem;color:#333;flex-shrink:0;}
+.email-row .email-subject{flex:1;font-size:.85rem;color:#555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.email-row .email-date{font-size:.7rem;color:#999;flex-shrink:0;}
+.email-read{flex:1;overflow-y:auto;padding:16px;}
+.email-read-header{border-bottom:2px solid #eee;padding-bottom:12px;margin-bottom:14px;}
+.email-read-header h3{font-size:1.1rem;color:#333;margin-bottom:6px;}
+.email-read-header .meta{font-size:.8rem;color:#888;display:flex;gap:12px;flex-wrap:wrap;}
+.email-read-body{font-size:.9rem;line-height:1.7;color:#444;white-space:pre-wrap;}
+.email-read-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.action-btn{
+  padding:8px 14px;border-radius:10px;border:2px solid #eee;
+  background:#fff;font-size:.8rem;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:4px;transition:all .15s;
+}
+.action-btn:hover{background:#fce4ec;border-color:#f8bbd0;}
+.compose-view{flex:1;display:flex;flex-direction:column;padding:16px;}
+.compose-title{font-size:1rem;font-weight:700;color:#c62828;margin-bottom:12px;}
+.compose-field{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.compose-field label{font-size:.85rem;font-weight:600;color:#666;width:65px;flex-shrink:0;}
+.compose-field input{
+  flex:1;padding:8px 12px;border-radius:10px;border:2px solid #ddd;
+  font-size:.85rem;outline:none;
+}
+.compose-field input:focus{border-color:#f5576c;}
+.compose-textarea{
+  flex:1;padding:10px 12px;border-radius:10px;border:2px solid #ddd;
+  font-size:.85rem;outline:none;resize:none;min-height:120px;font-family:inherit;
+}
+.compose-textarea:focus{border-color:#f5576c;}
+.compose-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end;}
+.btn{
+  padding:10px 18px;border-radius:10px;border:none;
+  font-size:.9rem;font-weight:600;cursor:pointer;transition:all .15s;
+}
+.btn-send{background:linear-gradient(135deg,#e53935,#f5576c);color:#fff;}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(229,57,53,.4);}
+.btn-draft{background:#f5f5f5;color:#666;border:2px solid #ddd;}
+.btn-draft:hover{background:#eee;}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#43a047;color:#fff;padding:12px 24px;border-radius:12px;
+  font-weight:700;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.2);
+  display:none;z-index:1000;
+  animation:toastIn .3s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.congrats{
+  text-align:center;padding:12px;border-radius:12px;
+  background:linear-gradient(135deg,#e53935,#f5576c);color:#fff;
+  font-weight:700;display:none;margin-top:10px;
+}
+.empty-state{text-align:center;padding:40px 20px;color:#bbb;font-size:.95rem;}
+@media(max-width:600px){
+  .email-layout{flex-direction:column;}
+  .email-sidebar{
+    width:100%;border-right:none;border-bottom:2px solid #eee;
+    display:flex;flex-wrap:wrap;padding:4px;gap:0;
+  }
+  .sidebar-folder{padding:6px 10px;font-size:.75rem;}
+  .new-email-btn{width:auto;margin:4px;}
+  .email-row .email-sender{width:70px;font-size:.75rem;}
+  .compose-field label{width:55px;font-size:.8rem;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tasks-bar > * { margin: 5px; }
+  .task-check > * + * { margin-left: 4px; }
+  .sidebar-folder > * + * { margin-left: 6px; }
+  .email-row > * + * { margin-left: 10px; }
+  .email-read-header .meta > * { margin: 6px; }
+  .email-read-actions > * { margin: 4px; }
+  .action-btn > * + * { margin-left: 4px; }
+  .compose-field > * + * { margin-left: 8px; }
+  .compose-actions > * { margin: 4px; }
+  @media(max-width:600px){
+    .email-sidebar > * { margin: 0px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📧 Ηλεκτρονικό Ταχυδρομείο</h1>
+<p class="subtitle">Στείλε και διάβασε email!</p>
+<div class="container">
+
+<div class="tasks-bar">
+  <div class="tasks-title">✅ Εργασίες:</div>
+  <div class="task-check"><div class="chk" id="chk1">1</div><span>Αποστολή email</span></div>
+  <div class="task-check"><div class="chk" id="chk2">2</div><span>Απάντηση</span></div>
+</div>
+
+<div class="email-layout">
+  <div class="email-sidebar" id="emailSidebar"></div>
+  <div class="email-main" id="emailMain"></div>
+</div>
+
+<div class="congrats" id="congrats">🎉 Μπράβο! Μάθες να στέλνεις και να απαντάς σε email!</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var tasks = {send:false, reply:false};
+
+function updateTasks(){
+  if(tasks.send){
+    document.getElementById('chk1').classList.add('done');
+    document.getElementById('chk1').textContent = '✓';
+  }
+  if(tasks.reply){
+    document.getElementById('chk2').classList.add('done');
+    document.getElementById('chk2').textContent = '✓';
+  }
+  if(tasks.send && tasks.reply){
+    document.getElementById('congrats').style.display = 'block';
+  }
+}
+
+var folders = [
+  {id:'inbox', icon:'📥', name:'Εισερχόμενα'},
+  {id:'sent', icon:'📤', name:'Σταλθέντα'},
+  {id:'drafts', icon:'📝', name:'Πρόχειρα'},
+  {id:'trash', icon:'🗑️', name:'Διαγραμμένα'}
+];
+
+var emails = {
+  inbox: [
+    {
+      id: 1, from: 'κυρία Μαρία', subject: 'Εργασία Πληροφορικής',
+      date: 'Σήμερα', unread: true,
+      body: 'Γεια σου!\n\nΗ εργασία για την Πληροφορική πρέπει να παραδοθεί μέχρι την Παρασκευή.\n\nΠρέπει να γράψεις μια παράγραφο για τις χρήσεις του υπολογιστή στο σχολείο.\n\nΚαλή επιτυχία!\nκυρία Μαρία'
+    },
+    {
+      id: 2, from: 'Γιάννης', subject: 'Συσκευές υπολογιστή',
+      date: 'Χθες', unread: true,
+      body: 'Γεια!\n\nΜπορείς να μου στείλεις τις σημειώσεις για τις συσκευές του υπολογιστή;\n\nΘέλω να τις διαβάσω για το διαγώνισμα.\n\nΕυχαριστώ!\nΓιάννης'
+    }
+  ],
+  sent: [],
+  drafts: [],
+  trash: []
+};
+
+var currentFolder = 'inbox';
+var currentView = 'list';
+var currentEmail = null;
+var composingReplyTo = null;
+
+function getUnreadCount(folderId){
+  return emails[folderId].filter(function(e){return e.unread;}).length;
+}
+
+function renderSidebar(){
+  var sb = document.getElementById('emailSidebar');
+  var html = '<button class="new-email-btn" onclick="openCompose()">✉️ Νέο μήνυμα</button>';
+  folders.forEach(function(f){
+    var active = f.id === currentFolder ? ' active' : '';
+    var badge = '';
+    var unread = getUnreadCount(f.id);
+    if(unread > 0){
+      badge = '<span class="badge">'+unread+'</span>';
+    }
+    html += '<div class="sidebar-folder'+active+'" onclick="selectFolder(\''+f.id+'\')">'+f.icon+' '+f.name+badge+'</div>';
+  });
+  sb.innerHTML = html;
+}
+
+function selectFolder(folderId){
+  currentFolder = folderId;
+  currentView = 'list';
+  currentEmail = null;
+  renderSidebar();
+  renderMain();
+}
+
+function renderMain(){
+  var main = document.getElementById('emailMain');
+  if(currentView === 'list'){
+    renderEmailList(main);
+  } else if(currentView === 'read'){
+    renderEmailRead(main);
+  } else if(currentView === 'compose'){
+    renderCompose(main);
+  }
+}
+
+function renderEmailList(main){
+  var list = emails[currentFolder];
+  if(list.length === 0){
+    main.innerHTML = '<div class="email-list"><div class="empty-state">📭 Δεν υπάρχουν μηνύματα</div></div>';
+    return;
+  }
+  var html = '<div class="email-list">';
+  list.forEach(function(email){
+    var unreadCls = email.unread ? ' unread' : '';
+    html += '<div class="email-row'+unreadCls+'" onclick="openEmail('+email.id+')">';
+    html += '<div class="email-sender">'+(email.from || email.to)+'</div>';
+    html += '<div class="email-subject">'+email.subject+'</div>';
+    html += '<div class="email-date">'+email.date+'</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  main.innerHTML = html;
+}
+
+function openEmail(emailId){
+  var list = emails[currentFolder];
+  var email = list.find(function(e){return e.id===emailId;});
+  if(!email) return;
+  email.unread = false;
+  currentEmail = email;
+  currentView = 'read';
+  renderSidebar();
+  renderMain();
+}
+
+function renderEmailRead(main){
+  if(!currentEmail) return;
+  var html = '<div class="email-read">';
+  html += '<div class="email-read-header">';
+  html += '<h3 id="readSubject"></h3>';
+  html += '<div class="meta"><span>Από: <span id="readFrom"></span></span><span id="readDate"></span></div>';
+  html += '</div>';
+  html += '<div class="email-read-body" id="readBody"></div>';
+  html += '<div class="email-read-actions">';
+  html += '<button class="action-btn" onclick="replyTo()">↩️ Απάντηση</button>';
+  html += '<button class="action-btn" onclick="forwardEmail()">↗️ Προώθηση</button>';
+  html += '<button class="action-btn" onclick="deleteEmail('+currentEmail.id+')">🗑️ Διαγραφή</button>';
+  html += '</div></div>';
+  main.innerHTML = html;
+  document.getElementById('readSubject').textContent = currentEmail.subject;
+  document.getElementById('readFrom').textContent = currentEmail.from || currentEmail.to;
+  document.getElementById('readDate').textContent = currentEmail.date;
+  document.getElementById('readBody').textContent = currentEmail.body;
+}
+
+function replyTo(){
+  if(!currentEmail) return;
+  composingReplyTo = currentEmail;
+  currentView = 'compose';
+  renderMain();
+}
+
+function forwardEmail(){
+  if(!currentEmail) return;
+  composingReplyTo = null;
+  currentView = 'compose';
+  renderMain();
+  setTimeout(function(){
+    var subjectInput = document.querySelector('.compose-field input[placeholder]');
+    if(subjectInput){
+      subjectInput.value = 'Fwd: ' + currentEmail.subject;
+    }
+    var textarea = document.querySelector('.compose-textarea');
+    if(textarea){
+      textarea.value = '\n\n---------- Προωθημένο μήνυμα ----------\nΑπό: ' + currentEmail.from + '\n\n' + currentEmail.body;
+    }
+  }, 50);
+}
+
+function deleteEmail(emailId){
+  var list = emails[currentFolder];
+  var idx = list.findIndex(function(e){return e.id===emailId;});
+  if(idx<0) return;
+  var removed = list.splice(idx,1)[0];
+  if(currentFolder !== 'trash'){
+    emails.trash.push(removed);
+  }
+  currentView = 'list';
+  currentEmail = null;
+  renderSidebar();
+  renderMain();
+}
+
+function openCompose(prefill){
+  composingReplyTo = prefill || null;
+  currentView = 'compose';
+  renderMain();
+  if(composingReplyTo){
+    setTimeout(function(){
+      var toInput = document.querySelector('.compose-field:nth-child(2) input');
+      var subjectInput = document.querySelector('.compose-field:nth-child(3) input');
+      var textarea = document.querySelector('.compose-textarea');
+      if(toInput) toInput.value = composingReplyTo.from || '';
+      if(subjectInput) subjectInput.value = 'Re: ' + composingReplyTo.subject;
+      if(textarea) textarea.value = '\n\n---------- Πρωτότυπο μήνυμα ----------\nΑπό: ' + composingReplyTo.from + '\n\n' + composingReplyTo.body;
+    }, 50);
+  }
+}
+
+function renderCompose(main){
+  var html = '<div class="compose-view">';
+  html += '<div class="compose-title">✉️ Νέο μήνυμα</div>';
+  html += '<div class="compose-field"><label>Προς:</label><input type="text" id="composeTo" placeholder="email@paradeigma.gr"></div>';
+  html += '<div class="compose-field"><label>Θέμα:</label><input type="text" id="composeSubject" placeholder="Θέμα μηνύματος..."></div>';
+  html += '<textarea class="compose-textarea" id="composeBody" placeholder="Γράψε το μήνυμά σου εδώ..."></textarea>';
+  html += '<div class="compose-actions">';
+  html += '<button class="btn btn-draft" onclick="saveDraft()">📝 Αποθήκευση ως πρόχειρο</button>';
+  html += '<button class="btn btn-send" onclick="sendEmail()">📤 Αποστολή</button>';
+  html += '</div></div>';
+  main.innerHTML = html;
+}
+
+function sendEmail(){
+  var to = document.getElementById('composeTo').value.trim();
+  var subject = document.getElementById('composeSubject').value.trim();
+  var body = document.getElementById('composeBody').value.trim();
+
+  var toEl = document.getElementById('composeTo');
+  var subjectEl = document.getElementById('composeSubject');
+
+  if(!to){
+    toEl.style.borderColor = '#e53935';
+    return;
+  }
+  if(!subject){
+    subjectEl.style.borderColor = '#e53935';
+    return;
+  }
+
+  var newEmail = {
+    id: Date.now(),
+    to: to,
+    from: 'Εγώ',
+    subject: subject,
+    body: body || '(Κενό μήνυμα)',
+    date: 'Τώρα',
+    unread: false
+  };
+  emails.sent.unshift(newEmail);
+
+  if(composingReplyTo && !tasks.reply){
+    tasks.reply = true;
+    updateTasks();
+  } else if(!composingReplyTo && !tasks.send){
+    tasks.send = true;
+    updateTasks();
+  }
+
+  composingReplyTo = null;
+  currentView = 'list';
+  currentFolder = 'sent';
+  renderSidebar();
+  renderMain();
+  showToast('✅ Το email στάλθηκε!');
+}
+
+function saveDraft(){
+  var to = document.getElementById('composeTo').value.trim();
+  var subject = document.getElementById('composeSubject').value.trim();
+  var body = document.getElementById('composeBody').value.trim();
+
+  emails.drafts.unshift({
+    id: Date.now(),
+    to: to || '(χωρίς παραλήπτη)',
+    from: 'Εγώ',
+    subject: subject || '(χωρίς θέμα)',
+    body: body,
+    date: 'Τώρα',
+    unread: false
+  });
+
+  currentView = 'list';
+  currentFolder = 'drafts';
+  renderSidebar();
+  renderMain();
+  showToast('📝 Αποθηκεύτηκε στα πρόχειρα!');
+}
+
+function showToast(msg){
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  setTimeout(function(){toast.style.display = 'none';}, 2500);
+}
+
+renderSidebar();
+renderMain();
+</script>
+</body>
+</html>

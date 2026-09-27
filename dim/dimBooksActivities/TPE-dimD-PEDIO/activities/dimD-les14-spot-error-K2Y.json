@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Δίκτυα",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Δρομολογητής", "error": false, "correct": "Δρομολογητής", "feedback": "" },
+        { "text": "Δρομολογητης", "error": true, "correct": "Δρομολογητής", "feedback": "Γράφεται Δρομολογητής με τόνο" },
+        { "text": "Ασύρματο", "error": false, "correct": "Ασύρματο", "feedback": "" },
+        { "text": "Ασύρμνατο", "error": true, "correct": "Ασύρματο", "feedback": "Γράφεται Ασύρματο" },
+        { "text": "Αντίγραφο", "error": false, "correct": "Αντίγραφο", "feedback": "" },
+        { "text": "Αντίγραφο", "error": true, "correct": "Αντίγραφο", "feedback": "Γράφεται Αντίγραφο" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Κωδικός", "error": false, "correct": "Κωδικός", "feedback": "" },
+        { "text": "Κωδήκος", "error": true, "correct": "Κωδικός", "feedback": "Γράφεται Κωδικός" },
+        { "text": "Δεδομένα", "error": false, "correct": "Δεδομένα", "feedback": "" },
+        { "text": "Δαδομένα", "error": true, "correct": "Δεδομένα", "feedback": "Γράφεται Δεδομένα με ε" },
+        { "text": "Προορισμός", "error": false, "correct": "Προορισμός", "feedback": "" },
+        { "text": "Προορισμός", "error": true, "correct": "Προορισμός", "feedback": "Γράφεται Προορισμός" }
+      ]
+    }
+  ]
+}

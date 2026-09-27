@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υλικό Υπολογιστή",
+  "subtitle": "Σπάσε μόνο τα εξαρτήματα του υπολογιστή",
+  "instruction": "Σπάσε τα μπαλόνια που είναι εξαρτήματα υπολογιστή",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Επεξεργαστής",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μνήμη RAM",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Τραπέζι",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Δίσκος SSD",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Μητρική πλακέτα",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Ψυγείο",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Κάρτα γραφικών",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Πλαστικό",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Οθόνη",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Καρέκλα",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

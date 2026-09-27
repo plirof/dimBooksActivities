@@ -1,0 +1,58 @@
+{
+  "title": "Πρωτόκολλα σε λειτουργίες",
+  "subtitle": "Ταίριαξε κάθε πρωτόκολλο στη σωστή λειτουργία",
+  "categories": [
+    {
+      "id": "tcpip",
+      "name": "TCP/IP",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "http",
+      "name": "HTTP",
+      "color": "#2196F3"
+    },
+    {
+      "id": "ftp",
+      "name": "FTP",
+      "color": "#FF9800"
+    },
+    {
+      "id": "smtp",
+      "name": "SMTP",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🌐 Ιστοσελίδες",
+      "category": "http"
+    },
+    {
+      "id": "item2",
+      "text": "📧 Αποστολή email",
+      "category": "smtp"
+    },
+    {
+      "id": "item3",
+      "text": "📁 Μεταφορά αρχείων",
+      "category": "ftp"
+    },
+    {
+      "id": "item4",
+      "text": "🔗 Δίκτυο",
+      "category": "tcpip"
+    },
+    {
+      "id": "item5",
+      "text": "🔒 HTTPS",
+      "category": "http"
+    },
+    {
+      "id": "item6",
+      "text": "📨 POP3",
+      "category": "smtp"
+    }
+  ]
+}

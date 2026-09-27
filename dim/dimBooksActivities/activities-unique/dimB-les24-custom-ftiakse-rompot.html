@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Φτιάξε το Ρομπότ 🤖</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(0,131,176,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #0083b0; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #e0f2fe; border: 2px dashed #0288d1; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #01579b;
+  }
+  .robot-preview {
+    background: #fff; border-radius: 24px; padding: 20px;
+    margin-bottom: 14px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    min-height: 130px;
+  }
+  .robot-canvas {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+    position: relative;
+  }
+  .robot-row { display: flex; gap: 4px; justify-content: center; }
+  .robot-part {
+    width: 30px; height: 30px; border-radius: 4px; display: inline-block;
+    transition: all .3s;
+  }
+  .robot-part.head { border-radius: 8px 8px 4px 4px; }
+  .robot-part.eye { border-radius: 50%; }
+  .robot-part.body { width: 70px; height: 40px; border-radius: 8px; }
+  .robot-part.arm { width: 20px; height: 50px; border-radius: 6px; }
+  .robot-part.leg { width: 24px; height: 40px; border-radius: 6px; }
+  .robot-part.empty { background: #e0e0e0; border: 2px dashed #bbb; }
+  .shape-palette {
+    background: #fff; border-radius: 24px; padding: 16px;
+    margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  }
+  .shape-q {
+    font-size: 1.1rem; font-weight: 700; color: #2d3436;
+    text-align: center; margin-bottom: 12px;
+  }
+  .shape-options {
+    display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px;
+  }
+  .shape-opt {
+    background: #fff; border: 3px solid #e0e0e0; border-radius: 16px;
+    padding: 14px 10px; text-align: center; cursor: pointer;
+    transition: all .2s; user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .shape-opt:active { transform: scale(.95); }
+  .shape-opt .so-preview { font-size: 2.5rem; }
+  .shape-opt .so-shape { display: inline-block; }
+  .shape-opt .so-text { font-size: .85rem; font-weight: 600; color: #555; margin-top: 4px; }
+  .shape-opt .so-color {
+    display: inline-block; width: 20px; height: 20px; border-radius: 50%;
+    vertical-align: middle; margin-left: 4px; border: 1px solid #aaa;
+  }
+  .shape-opt.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .shape-opt.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .shape-opt.disabled { pointer-events: none; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .feedback { text-align:center; padding:14px; border-radius:16px; font-size:1.1rem; font-weight:700; margin-bottom:12px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.yay { background:#d4edda; color:#155724; }
+  .feedback.nay { background:#f8d7da; color:#721c24; }
+  .result-screen { background:#fff; border-radius:24px; box-shadow:0 8px 28px rgba(0,0,0,.1); padding:40px 24px; text-align:center; display:none; }
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#00b4db,#0083b0);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,131,176,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}.robot-part{width:24px;height:24px}.robot-part.body{width:56px;height:32px}.robot-part.arm{width:16px;height:40px}.robot-part.leg{width:20px;height:32px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .robot-canvas > * + * { margin-top: 2px; }
+  .robot-row > * + * { margin-left: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🤖 Φτιάξε το Ρομπότ</h1>
+    <p>Βοήθησε να φτιάξουμε ένα ρομπότ στο TuxPaint!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/8</span>
+  </div>
+  <div class="instructions">🎨 Διάλεξε το σωστό σχήμα και χρώμα για κάθε μέρος του ρομπότ!</div>
+  <div id="gameArea">
+    <div class="robot-preview" id="robotPreview">
+      <div class="robot-canvas" id="robotCanvas"></div>
+    </div>
+    <div class="shape-palette">
+      <div class="shape-q" id="shapeQ">🤔 Τι σχήμα θέλεις για το κεφάλι;</div>
+      <div class="shape-options" id="shapeOptions"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var emptyGrid = [
+    [{type:'empty'},{type:'empty'},{type:'head',color:'#bbb',shape:'square'},{type:'empty'},{type:'empty'}],
+    [{type:'arm',side:'l',color:'#bbb',shape:'rect'},{type:'eye',color:'#bbb'},{type:'eye',color:'#bbb'},{type:'arm',side:'r',color:'#bbb',shape:'rect'},{type:'empty'}],
+    [{type:'empty'},{type:'empty'},{type:'body',color:'#bbb',shape:'rect'},{type:'empty'},{type:'empty'}],
+    [{type:'empty'},{type:'empty'},{type:'body',color:'#bbb',shape:'rect'},{type:'empty'},{type:'empty'}],
+    [{type:'empty'},{type:'leg',color:'#bbb',shape:'rect'},{type:'empty'},{type:'leg',color:'#bbb',shape:'rect'},{type:'empty'}]
+  ];
+
+  var steps = [
+    {part:'head', q:'🤔 Τι σχήμα θέλεις για το ΚΕΦΑΛΙ του ρομπότ;',
+     opts:[{s:'⬜',t:'Τετράγωνο',ans:true},{s:'⬤',t:'Κύκλος',ans:false}],
+     defaultColor:'#e53935', r:0, c:2},
+    {part:'eyes', q:'👀 Τι σχήμα θέλεις για τα ΜΑΤΙΑ;',
+     opts:[{s:'⬤',t:'Κύκλοι',ans:true},{s:'⬜',t:'Τετράγωνα',ans:false}],
+     defaultColor:'#1e88e5', r:1, c:[1,2]},
+    {part:'bodyTop', q:'🔲 Τι σχήμα θέλεις για το ΣΩΜΑ (πάνω);',
+     opts:[{s:'⬜',t:'Ορθογώνιο',ans:true},{s:'⬤',t:'Κύκλος',ans:false}],
+     defaultColor:'#43a047', r:2, c:2},
+    {part:'bodyBottom', q:'🔲 Τι σχήμα θέλεις για το ΣΩΜΑ (κάτω);',
+     opts:[{s:'⬜',t:'Ορθογώνιο',ans:true},{s:'⬤',t:'Κύκλος',ans:false}],
+     defaultColor:'#43a047', r:3, c:2},
+    {part:'arms', q:'💪 Τι σχήμα θέλεις για τα ΧΕΡΙΑ;',
+     opts:[{s:'▯',t:'Ορθογώνια',ans:true},{s:'⬤',t:'Κύκλους',ans:false}],
+     defaultColor:'#fb8c00', r:1, c:[0,3]},
+    {part:'legs', q:'🦵 Τι σχήμα θέλεις για τα ΠΟΔΙΑ;',
+     opts:[{s:'▯',t:'Ορθογώνια',ans:true},{s:'⬤',t:'Κύκλους',ans:false}],
+     defaultColor:'#8e24aa', r:4, c:[1,3]},
+    {part:'colorHead', q:'🎨 Τι χρώμα θέλεις για το ΚΕΦΑΛΙ;',
+     opts:[{s:'🔴',t:'Κόκκινο',c:'#e53935',ans:true},{s:'🔵',t:'Μπλε',c:'#1e88e5',ans:false},{s:'🟢',t:'Πράσινο',c:'#43a047',ans:false}],
+     r:0, c:2},
+    {part:'colorBody', q:'🎨 Τι χρώμα θέλεις για το ΣΩΜΑ;',
+     opts:[{s:'🔴',t:'Κόκκινο',c:'#e53935',ans:false},{s:'🔵',t:'Μπλε',c:'#1e88e5',ans:false},{s:'🟢',t:'Πράσινο',c:'#43a047',ans:true}],
+     r:[2,3], c:2}
+  ];
+  var cur=0,score=0;
+  var robotState = JSON.parse(JSON.stringify(emptyGrid));
+
+  function buildRobot(){
+    var canvas=document.getElementById('robotCanvas');canvas.innerHTML='';
+    var partMap = [
+      {type:'head', cls:'head', w:40, h:30},
+      {type:'eye', cls:'eye', w:12, h:12},
+      {type:'body', cls:'body', w:56, h:32},
+      {type:'arm', cls:'arm', w:16, h:40},
+      {type:'leg', cls:'leg', w:20, h:32}
+    ];
+    for(var r=0;r<robotState.length;r++){
+      var row=document.createElement('div');row.className='robot-row';
+      for(var c=0;c<robotState[r].length;c++){
+        var cell=robotState[r][c];
+        var el=document.createElement('div');
+        if(cell.type==='empty'){
+          el.className='robot-part empty';
+          el.style.width='20px';el.style.height='20px';
+        } else {
+          var found=false;
+          for(var p=0;p<partMap.length;p++){
+            if(partMap[p].type===cell.type){
+              el.className='robot-part '+partMap[p].cls;
+              el.style.width=partMap[p].w+'px';
+              el.style.height=partMap[p].h+'px';
+              el.style.background=cell.color||'#bbb';
+              el.style.border='2px solid '+(cell.color||'#bbb');
+              el.style.borderRadius=cell.type==='eye'?'50%':'';
+              if(cell.type==='eye'){el.style.width='12px';el.style.height='12px';}
+              if(cell.type==='head'){el.style.borderRadius='8px 8px 4px 4px';}
+              found=true;break;
+            }
+          }
+          if(!found){el.className='robot-part empty';el.style.width='20px';el.style.height='20px';}
+        }
+        row.appendChild(el);
+      }
+      canvas.appendChild(row);
+    }
+  }
+
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){
+    robotState=JSON.parse(JSON.stringify(emptyGrid));
+    cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    buildRobot();
+    loadStep();
+  }
+  function applyStep(step, choiceIdx){
+    var correct=false;
+    for(var i=0;i<step.opts.length;i++){if(i===choiceIdx&&step.opts[i].ans){correct=true;break;}}
+    if(!correct) return;
+    var color = step.defaultColor || '#999';
+    if(step.opts[0].c) color = step.opts[choiceIdx].c || color;
+
+    if(step.part==='head'){
+      robotState[0][2].color=color;
+      robotState[0][2].type='head';
+    } else if(step.part==='eyes'){
+      robotState[1][1].color=color;
+      robotState[1][1].type='eye';
+      robotState[1][2].color=color;
+      robotState[1][2].type='eye';
+    } else if(step.part==='bodyTop'){
+      robotState[2][2].color=color;
+      robotState[2][2].type='body';
+    } else if(step.part==='bodyBottom'){
+      robotState[3][2].color=color;
+      robotState[3][2].type='body';
+    } else if(step.part==='arms'){
+      robotState[1][0].color=color;
+      robotState[1][0].type='arm';
+      robotState[1][3].color=color;
+      robotState[1][3].type='arm';
+    } else if(step.part==='legs'){
+      robotState[4][1].color=color;
+      robotState[4][1].type='leg';
+      robotState[4][3].color=color;
+      robotState[4][3].type='leg';
+    } else if(step.part==='colorHead'){
+      robotState[0][2].color=color;
+    } else if(step.part==='colorBody'){
+      robotState[2][2].color=color;
+      robotState[3][2].color=color;
+    }
+    buildRobot();
+  }
+  function loadStep(){
+    if(cur>=steps.length){showResult();return;}
+    var s=steps[cur];
+    document.getElementById('roundDisplay').textContent=(cur+1)+'/'+steps.length;
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('shapeQ').textContent=s.q;
+    var g=document.getElementById('shapeOptions');g.innerHTML='';
+    for(var i=0;i<s.opts.length;i++){
+      (function(idx){
+        var o=document.createElement('div');o.className='shape-opt';
+        var html='<div class="so-preview">'+s.opts[idx].s+'</div>';
+        html+='<div class="so-text">'+s.opts[idx].t+'</div>';
+        if(s.opts[idx].c) html+='<div><span class="so-color" style="background:'+s.opts[idx].c+'"></span></div>';
+        o.innerHTML=html;
+        o.addEventListener('click',function(){choose(idx);});
+        g.appendChild(o);
+      })(i);
+    }
+  }
+  function choose(idx){
+    var s=steps[cur];var fb=document.getElementById('feedback');
+    var opts=document.querySelectorAll('#shapeOptions .shape-opt');
+    for(var i=0;i<opts.length;i++)opts[i].classList.add('disabled');
+    var isCorrect=s.opts[idx].ans;
+    if(isCorrect){score++;
+      document.getElementById('scoreDisplay').textContent='⭐ '+score;
+      opts[idx].classList.add('correct');
+      fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Το ρομπότ ομορφαίνει!';
+      applyStep(s, idx);
+    }else{
+      opts[idx].classList.add('wrong');
+      for(var i=0;i<s.opts.length;i++){if(s.opts[i].ans){opts[i].classList.add('correct');break;}}
+      fb.className='feedback show nay';fb.textContent='❌ Δεν πειράζει! Προσπάθησε ξανά!';
+    }
+    setTimeout(function(){cur++;loadStep();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=steps.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Το ρομπότ σου είναι πανέμορφο! Είσαι καλλιτέχνης του TuxPaint!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Το ρομπότ σου είναι υπέροχο!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια! Το ρομπότ σου είναι χαριτωμένο!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά να φτιάξεις το ρομπότ!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Σωστές απαντήσεις: '+score+' από '+total+'! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Τρέξε, Ρομπότ!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#333;margin-bottom:5px;font-size:1.8em}
+h2{text-align:center;color:#666;margin-bottom:15px;font-size:1.1em;font-weight:400}
+.instructions{text-align:center;color:#888;margin-bottom:20px;font-size:0.95em;line-height:1.5}
+canvas{display:block;margin:0 auto;border-radius:12px;max-width:100%}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px;max-width:560px;margin-left:auto;margin-right:auto}
+.score{font-size:1.2em;font-weight:bold;color:#333}
+.hiscore{font-size:1em;color:#888}
+.btn{display:block;margin:10px auto;padding:12px 40px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#a8edea,#fed6e3);color:#333;font-weight:bold;transition:transform 0.1s}
+.btn:hover{transform:scale(1.05)}
+.start-screen{text-align:center}
+.end-screen{text-align:center;display:none}
+.game-screen{display:none}
+.final-score{font-size:3em;color:#333;margin:15px 0}
+.end-msg{font-size:1.3em;color:#666;margin-bottom:10px}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div class="start-screen" id="startScreen">
+<h1 id="gameTitle"></h1>
+<h2 id="gameSubtitle"></h2>
+<p class="instructions" id="gameInstructions"></p>
+<button class="btn" id="startBtn">Έναρξη!</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="hud">
+<span class="score">Σκορ: <span id="scoreVal">0</span></span>
+<span class="hiscore">Ρεκόρ: <span id="hiVal">0</span></span>
+</div>
+<canvas id="canvas"></canvas>
+</div>
+<div class="end-screen" id="endScreen">
+<h1 id="endTitle">Τέλος Παιχνιδιού!</h1>
+<div class="end-msg" id="endMsg"></div>
+<div class="final-score" id="finalScore"></div>
+<button class="btn" id="restartBtn">Ξαναπάιξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);const dataFile=params.get('data');
+let G=null,canvas,ctx,score,highScore=0,gameRunning,animFrame,player,obstacles,scrollSpeed,spawnTimer,frameCount;
+const defaults={title:'Τρέξε, Ρομπότ!',subtitle:'Πήδα πάνω από τα εμπόδια!',instructions:'Πάτα SPACE ή ↑ για να πηδήξεις! Απόφυγε τα εμπόδια!',groundY:300,playerX:80,jumpPower:12,gravity:0.6,startSpeed:4,maxSpeed:8,obstacleInterval:1500,maxScore:Infinity,obstacleEmojis:['🧱','📦','🚧','🌵'],background:'#87CEEB'};
+function loadJSON(file){
+fetch(file).then(r=>r.json()).then(data=>{
+G=Object.assign({},defaults,data);
+document.getElementById('gameTitle').textContent=G.title;
+document.getElementById('gameSubtitle').textContent=G.subtitle;
+document.getElementById('gameInstructions').textContent=G.instructions;
+}).catch(()=>{G=Object.assign({},defaults);document.getElementById('gameTitle').textContent=G.title;document.getElementById('gameSubtitle').textContent=G.subtitle;document.getElementById('gameInstructions').textContent='Σφάλμα φόρτωσης.'})
+}
+if(dataFile)loadJSON(dataFile);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{
+document.getElementById('endScreen').style.display='none';startGame();
+});
+document.addEventListener('keydown',e=>{
+if(!gameRunning)return;
+if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();jump()}
+});
+canvas=document.getElementById('canvas');
+canvas.addEventListener('touchstart',e=>{e.preventDefault();if(gameRunning)jump()});
+canvas.addEventListener('mousedown',e=>{if(gameRunning)jump()});
+function jump(){
+if(!player.onGround)return;
+player.vy=-G.jumpPower;
+player.onGround=false;
+}
+function startGame(){
+if(!G)G=Object.assign({},defaults);
+canvas=document.getElementById('canvas');
+canvas.width=560;canvas.height=400;
+ctx=canvas.getContext('2d');
+score=0;scrollSpeed=G.startSpeed;frameCount=0;gameRunning=true;
+obstacles=[];
+player={x:G.playerX,y:G.groundY-50,vy:0,w:40,h:50,onGround:true};
+document.getElementById('startScreen').style.display='none';
+document.getElementById('gameScreen').style.display='block';
+document.getElementById('endScreen').style.display='none';
+document.getElementById('scoreVal').textContent='0';
+clearTimeout(spawnTimer);
+scheduleObstacle();
+if(animFrame)cancelAnimationFrame(animFrame);
+animFrame=requestAnimationFrame(gameLoop);
+}
+function scheduleObstacle(){
+if(!gameRunning)return;
+const variance=Math.random()*800-400;
+spawnTimer=setTimeout(()=>{
+if(!gameRunning)return;
+const emojis=G.obstacleEmojis;
+const emoji=emojis[Math.floor(Math.random()*emojis.length)];
+const h=30+Math.random()*20;
+const w=30+Math.random()*15;
+obstacles.push({x:canvas.width+10,y:G.groundY-h,w:w,h:h,emoji:emoji});
+        scheduleObstacle();
+},G.obstacleInterval+variance);
+}
+function gameLoop(){
+if(!gameRunning)return;
+frameCount++;
+const CW=canvas.width,CH=canvas.height;
+scrollSpeed=Math.min(G.maxSpeed,G.startSpeed+score*0.08);
+if(!player.onGround){
+player.vy+=G.gravity;
+player.y+=player.vy;
+if(player.y>=G.groundY-50){
+player.y=G.groundY-50;player.vy=0;player.onGround=true;
+}
+}
+for(let i=obstacles.length-1;i>=0;i--){
+obstacles[i].x-=scrollSpeed;
+if(obstacles[i].x+obstacles[i].w<0){obstacles.splice(i,1);continue}
+const o=obstacles[i];
+const px=player.x,py=player.y,pw=player.w-8,ph=player.h-8;
+if(px+pw>o.x+5&&px<o.x+o.w-5&&py+ph>o.y+5&&py<o.y+o.h-5){
+endGame();return;
+}
+}
+if(frameCount%6===0){
+score++;
+document.getElementById('scoreVal').textContent=score;
+
+}
+draw();
+animFrame=requestAnimationFrame(gameLoop);
+}
+function draw(){
+const CW=canvas.width,CH=canvas.height;
+ctx.fillStyle=G.background||'#87CEEB';
+ctx.fillRect(0,0,CW,CH);
+ctx.fillStyle='#90EE90';
+ctx.fillRect(0,G.groundY,CW,CH-G.groundY);
+ctx.fillStyle='#8B4513';
+ctx.fillRect(0,G.groundY,CW,3);
+ctx.strokeStyle='#228B22';ctx.lineWidth=1;
+for(let i=0;i<CW;i+=40){
+const gx=(i+frameCount*scrollSpeed*0.3)%CW;
+ctx.beginPath();ctx.moveTo(CW-gx,G.groundY+5);ctx.lineTo(CW-gx+20,G.groundY+15);ctx.stroke();
+}
+const bobY=player.onGround?Math.sin(frameCount*0.15)*3:0;
+ctx.font='40px "EmojiFont", serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+ctx.fillText('🤖',player.x+20,player.y+50+bobY);
+for(const o of obstacles){
+ctx.font=(o.h)+'px "EmojiFont", serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+ctx.fillText(o.emoji,o.x+o.w/2,o.y+o.h);
+}
+ctx.fillStyle='rgba(0,0,0,0.3)';ctx.font='bold 16px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
+ctx.fillText('Score: '+score,10,10);
+}
+function endGame(won){
+gameRunning=false;clearTimeout(spawnTimer);cancelAnimationFrame(animFrame);
+if(score>highScore)highScore=score;
+document.getElementById('gameScreen').style.display='none';
+document.getElementById('endScreen').style.display='block';
+document.getElementById('endMsg').textContent=won?'Έφτασες στο μέγιστο σκορ! Μπράβο!':'Τρέξες '+score+' μέτρα!';
+document.getElementById('finalScore').textContent=score+' πόντοι';
+document.getElementById('endTitle').textContent=won?'Μπράβο!':'Αχ! Κράταγε!';
+document.getElementById('hiVal').textContent=highScore;
+}
+</script>
+</body>
+</html>

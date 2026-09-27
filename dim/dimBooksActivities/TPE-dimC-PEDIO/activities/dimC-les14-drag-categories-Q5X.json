@@ -1,0 +1,53 @@
+{
+  "title": "File manager: αρχεία σε φακέλους",
+  "subtitle": "Οργάνωσε τα αρχεία στους σωστούς φακέλους",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΦΑΚΕΛΟΣ ΕΙΚΟΝΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "vid",
+      "name": "ΦΑΚΕΛΟΣ ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "text",
+      "name": "ΦΑΚΕΛΟΣ ΚΕΙΜΕΝΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖼️ Φωτογραφία τάξης",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": "🎥 Εκδρομή",
+      "category": "vid"
+    },
+    {
+      "id": "item3",
+      "text": "📝 Έκθεση",
+      "category": "text"
+    },
+    {
+      "id": "item4",
+      "text": "🖼️ Σχέδιο",
+      "category": "img"
+    },
+    {
+      "id": "item5",
+      "text": "🎬 Πείραμα",
+      "category": "vid"
+    },
+    {
+      "id": "item6",
+      "text": "📄 Εργασία",
+      "category": "text"
+    }
+  ]
+}

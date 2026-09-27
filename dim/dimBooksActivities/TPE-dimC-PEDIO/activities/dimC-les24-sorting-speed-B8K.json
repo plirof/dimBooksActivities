@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ιστολόγια",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Blog = ιστολόγιο", "category": "swsto"},
+    {"text": "Blog = ιδιωτικό ημερολόγιο", "category": "lathos"},
+    {"text": "Άρθρα: πρόσφατο → παλιό", "category": "swsto"},
+    {"text": "Blogger = αυτός που διαβάζει", "category": "lathos"},
+    {"text": "Blog κυψέλης = συνεργατικό", "category": "swsto"},
+    {"text": "Blog χρήστη = γράφουν όλοι", "category": "lathos"},
+    {"text": "Weblog = web + log", "category": "swsto"},
+    {"text": "Κυψέλη = ένα άτομο", "category": "lathos"},
+    {"text": "Blog = σκέψεις, εικόνες, εμπειρίες", "category": "swsto"},
+    {"text": "Εκπαιδευτικό blog = συμβουλές μάθησης", "category": "swsto"}
+  ],
+  "duration": 30
+}

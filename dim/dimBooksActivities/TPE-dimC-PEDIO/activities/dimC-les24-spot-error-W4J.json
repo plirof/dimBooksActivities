@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Ιστολόγια",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ιστολόγιο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "ιδιωτικό", "error": true, "correct": "δημόσιο", "feedback": "Το blog είναι ΔΗΜΟΣΙΟ - μπορεί να το δει οποιοσδήποτε!"},
+        {"text": "ημερολόγιο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "άρθρα", "error": false},
+        {"text": "εμφανίζονται", "error": false},
+        {"text": "από", "error": false},
+        {"text": "παλιό", "error": true, "correct": "πρόσφατο", "feedback": "Τα άρθρα εμφανίζονται από το πιο ΠΡΟΣΦΑΤΟ στο πιο παλιό!"},
+        {"text": "σε", "error": false},
+        {"text": "νέο.", "error": true, "correct": "παλιό", "feedback": "Πρόσφατο → Παλιό, όχι το αντίστροφο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "ιστολόγιο", "error": false},
+        {"text": "χρήστη", "error": false},
+        {"text": "γράφουν", "error": false},
+        {"text": "όλοι.", "error": true, "correct": "μόνο ο δημιουργός", "feedback": "Στο ιστολόγιο ΧΡΗΣΤΗ γράφει ΜΟΝΟ ο δημιουργός!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Blog", "error": false},
+        {"text": "προέρχεται", "error": false},
+        {"text": "από", "error": false},
+        {"text": "το", "error": false},
+        {"text": "weblog", "error": false},
+        {"text": "που", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ψηφιακό", "error": true, "correct": "web", "feedback": "Το weblog σημαίνει WEB log, όχι ψηφιακό log!"}
+      ]
+    }
+  ]
+}

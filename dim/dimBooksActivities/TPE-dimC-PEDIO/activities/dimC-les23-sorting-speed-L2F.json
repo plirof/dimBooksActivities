@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ασφαλές Προφίλ",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η ενέργεια;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Βάζω avatar στο προφίλ", "category": "swsto"},
+    {"text": "Βάζω τηλέφωνο στο προφίλ", "category": "lathos"},
+    {"text": "Γράφω περιγραφή χωρίς προσωπικά", "category": "swsto"},
+    {"text": "Δίνω κωδικό σε φίλους", "category": "lathos"},
+    {"text": "Ζωγραφίζω εικόνα για προφίλ", "category": "swsto"},
+    {"text": "Βάζω διεύθυνση σπιτιού", "category": "lathos"},
+    {"text": "Avatar = ψηφιακός χαρακτήρας", "category": "swsto"},
+    {"text": "Μοιράζομαι ΑΦΜ στο διαδίκτυο", "category": "lathos"},
+    {"text": "Προστατεύω προσωπικά δεδομένα", "category": "swsto"},
+    {"text": "Βάζω κωδικό στο προφίλ", "category": "lathos"}
+  ],
+  "duration": 30
+}

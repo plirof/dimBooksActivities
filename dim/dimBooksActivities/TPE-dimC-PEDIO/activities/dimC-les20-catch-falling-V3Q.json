@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Λέξεις-Κλειδιά",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΚΑΤΑΛΛΗΛΕΣ ΛΕΞΕΙΣ-ΚΛΕΙΔΙΑ για αναζήτηση μουσείου! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Μουσείο", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Αρχαιολογικό", "correct": true, "color": "#2196F3"},
+    {"text": "Μπανάνα", "correct": false, "color": "#FF9800"},
+    {"text": "Αθήνα", "correct": true, "color": "#9C27B0"},
+    {"text": "Γλάστρα", "correct": false, "color": "#E91E63"},
+    {"text": "Ωράριο", "correct": true, "color": "#00BCD4"},
+    {"text": "Καρέκλα", "correct": false, "color": "#FFC107"},
+    {"text": "Είσοδος", "correct": true, "color": "#795548"},
+    {"text": "Μολύβι", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Βρες τα Λάθη: Πλατφόρμα e-me",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "e-me", "error": false, "correct": "", "feedback": "" },
+        { "text": "ειναι", "error": true, "correct": "είναι", "feedback": "Λείπει ο τόνος" },
+        { "text": "παιχνιδοπλατφορμα", "error": true, "correct": "εκπαιδευτική πλατφόρμα", "feedback": "Είναι εκπαιδευτική, όχι παιχνιδοπλατφόρμα" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "συνδεθω", "error": true, "correct": "συνδεθώ", "feedback": "Λείπει ο τόνος" },
+        { "text": "χρειάζομαι", "error": false, "correct": "", "feedback": "" },
+        { "text": "εχθρικο", "error": true, "correct": "μαθητικό", "feedback": "Χρειάζομαι μαθητικό λογαριασμό ΠΣΔ" },
+        { "text": "λογαριασμό", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνυματα", "error": true, "correct": "μηνύματα", "feedback": "Λείπει ο τόνος" },
+        { "text": "εμφανίζονται", "error": false, "correct": "", "feedback": "" },
+        { "text": "στην", "error": false, "correct": "", "feedback": "" },
+        { "text": "καμπανούλα", "error": true, "correct": "φακελάκι", "feedback": "Μηνύματα στο φακελάκι, ειδοποιήσεις στην καμπανούλα" }
+      ]
+    }
+  ]
+}

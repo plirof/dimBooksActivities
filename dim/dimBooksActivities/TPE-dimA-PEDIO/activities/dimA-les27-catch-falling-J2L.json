@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Σελιδοδείκτες",
+  "subtitle": "Πιάστε λέξεις!",
+  "instructions": "Πιάσε μόνο λέξεις για ΣΕΛΙΔΟΔΕΙΚΤΕΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Αστεράκι", "correct": true, "color": "#FFC107"},
+    {"text": "Μπάνιο", "correct": false, "color": "#f44336"},
+    {"text": "Σχόλιο", "correct": true, "color": "#2196F3"},
+    {"text": "Κούπα", "correct": false, "color": "#FF9800"},
+    {"text": "Καρδούλα", "correct": true, "color": "#E91E63"},
+    {"text": "Σκάφος", "correct": false, "color": "#4ECDC4"},
+    {"text": "Ανάρτηση", "correct": true, "color": "#9C27B0"},
+    {"text": "Μπαλκόνι", "correct": false, "color": "#96CEB4"},
+    {"text": "Αντίδραση", "correct": true, "color": "#4CAF50"},
+    {"text": "Φουρνός", "correct": false, "color": "#DDA0DD"},
+    {"text": "Σελιδοδείκτης", "correct": true, "color": "#3F51B5"},
+    {"text": "Κουρτίνα", "correct": false, "color": "#85C1E9" }
+  ]
+}

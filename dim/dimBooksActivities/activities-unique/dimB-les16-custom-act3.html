@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διαχειριστής Αρχείων - Μάθημα 16</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;margin:0 auto;padding:20px}
+h1{text-align:center;font-size:1.5rem;color:#4a3f8a;margin-bottom:5px}
+h1 .emoji{font-size:1.8rem}
+.instructions{text-align:center;color:#666;margin-bottom:15px;font-size:.95rem;line-height:1.4}
+.panels{display:flex;gap:15px;flex-wrap:wrap}
+.panel{flex:1;min-width:250px;background:#f8f9ff;border-radius:15px;padding:15px;border:2px solid #e0e0ff}
+.panel-title{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:12px;padding:8px;border-radius:10px;color:#fff}
+.files-panel .panel-title{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.folders-panel .panel-title{background:linear-gradient(135deg,#fa709a,#fee140)}
+.file-item{display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:8px;background:#fff;border-radius:12px;cursor:grab;border:2px solid #e8e8e8;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .15s,box-shadow .15s;user-select:none;font-size:.95rem}
+.file-item:active{cursor:grabbing;transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.file-item .icon{font-size:1.4rem;flex-shrink:0}
+.file-item .fname{font-weight:600;color:#333;word-break:break-all}
+.file-item.dragging{opacity:.4;transform:scale(.95)}
+.folder-drop{min-height:70px;padding:12px;margin-bottom:10px;border-radius:14px;border:3px dashed #ccc;transition:background .2s,border-color .2s;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
+.folder-drop.drag-over{background:#e8f5e9;border-color:#4caf50;border-style:solid}
+.folder-drop.correct{border-color:#4caf50;background:#e8f5e9}
+.folder-drop.wrong{border-color:#f44336;background:#ffebee}
+.folder-label{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.95rem;color:#555;margin-bottom:6px}
+.folder-label .ficon{font-size:1.3rem}
+.dropped-file{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:.85rem;font-weight:600;background:#e3f2fd;border:1px solid #90caf9;color:#1565c0;position:relative}
+.dropped-file .icon{font-size:1rem}
+.dropped-file .status{font-size:1rem;margin-left:2px}
+.dropped-file.status-correct{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32}
+.dropped-file.status-wrong{background:#ffcdd2;border-color:#ef5350;color:#c62828}
+.btn-row{text-align:center;margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{padding:12px 28px;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.22)}
+.btn:active{transform:translateY(0)}
+.btn-check{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1b5e20}
+.btn-reset{background:linear-gradient(135deg,#fbc2eb,#a6c1ee);color:#4a3f8a}
+.score-box{text-align:center;margin-top:15px;padding:14px;border-radius:14px;font-size:1.2rem;font-weight:700;display:none}
+.score-box.show{display:block}
+.score-box.perfect{background:linear-gradient(135deg,#a8edea,#fed6e3);color:#2e7d32}
+.score-box.notperfect{background:#fff3e0;color:#e65100}
+.ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:scale(1.08)}
+@media(max-width:600px){
+.panels{flex-direction:column}
+.panel{min-width:unset}
+h1{font-size:1.25rem}
+.file-item{padding:8px 10px;font-size:.88rem}
+.btn{padding:10px 20px;font-size:1rem}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .panels > * { margin: 7.5px; }
+  .file-item > * + * { margin-left: 8px; }
+  .folder-drop > * { margin: 3px; }
+  .folder-label > * + * { margin-left: 6px; }
+  .dropped-file > * + * { margin-left: 4px; }
+  .btn-row > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+  <h1><span class="emoji">📁</span> Διαχειριστής Αρχείων <span class="emoji">📁</span></h1>
+  <p class="instructions">Σύρε τα αρχεία μέσα στο σωστό φάκελο! 👆</p>
+  <div class="panels">
+    <div class="panel files-panel">
+      <div class="panel-title">📄 Αρχεία</div>
+      <div id="filesList"></div>
+    </div>
+    <div class="panel folders-panel">
+      <div class="panel-title">📂 Φάκελοι</div>
+      <div id="foldersList"></div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος</button>
+    <button class="btn btn-reset" onclick="resetGame()">🔄 Ξανά!</button>
+  </div>
+  <div class="score-box" id="scoreBox"></div>
+</div>
+<script>
+var filesData = [
+  {name:"Ζωγραφιά.png", icon:"🖼️", folder:"Εικόνες"},
+  {name:"Εργασία.txt", icon:"📄", folder:"Κείμενα"},
+  {name:"Φωτογραφία.jpg", icon:"🖼️", folder:"Εικόνες"},
+  {name:"Τραγούδι.mp3", icon:"🎵", folder:"Μουσική"},
+  {name:"Βίντεο.mp4", icon:"🎬", folder:"Βίντεο"},
+  {name:"Κείμενο.txt", icon:"📝", folder:"Κείμενα"},
+  {name:"Τοπίο.jpg", icon:"🖼️", folder:"Εικόνες"},
+  {name:"Μουσική.mp3", icon:"🎵", folder:"Μουσική"}
+];
+
+var foldersData = [
+  {name:"Εικόνες", icon:"🖼️", types:[".png",".jpg",".gif",".bmp"]},
+  {name:"Κείμενα", icon:"📝", types:[".txt",".doc",".docx",".pdf"]},
+  {name:"Μουσική", icon:"🎵", types:[".mp3",".wav",".ogg"]},
+  {name:"Βίντεο", icon:"🎬", types:[".mp4",".avi",".mov"]}
+];
+
+var droppedFiles = {};
+var checked = false;
+
+function init(){
+  var fl = document.getElementById("filesList");
+  fl.textContent = "";
+  filesData.forEach(function(f, i){
+    var div = document.createElement("div");
+    div.className = "file-item";
+    div.setAttribute("draggable","true");
+    div.setAttribute("data-index", i);
+    var iconSpan = document.createElement("span");
+    iconSpan.className = "icon";
+    iconSpan.textContent = f.icon;
+    var nameSpan = document.createElement("span");
+    nameSpan.className = "fname";
+    nameSpan.textContent = f.name;
+    div.appendChild(iconSpan);
+    div.appendChild(nameSpan);
+    div.addEventListener("dragstart", onDragStart);
+    div.addEventListener("dragend", onDragEnd);
+    div.addEventListener("touchstart", onTouchStart, {passive:false});
+    div.addEventListener("touchmove", onTouchMove, {passive:false});
+    div.addEventListener("touchend", onTouchEnd, {passive:false});
+    fl.appendChild(div);
+  });
+
+  var fol = document.getElementById("foldersList");
+  fol.textContent = "";
+  droppedFiles = {};
+  checked = false;
+  document.getElementById("scoreBox").className = "score-box";
+  document.getElementById("scoreBox").textContent = "";
+
+  foldersData.forEach(function(fd, i){
+    var label = document.createElement("div");
+    label.className = "folder-label";
+    var fi = document.createElement("span");
+    fi.className = "ficon";
+    fi.textContent = "📂";
+    var fn = document.createElement("span");
+    fn.textContent = fd.name;
+    label.appendChild(fi);
+    label.appendChild(fn);
+
+    var drop = document.createElement("div");
+    drop.className = "folder-drop";
+    drop.setAttribute("data-folder", fd.name);
+    drop.addEventListener("dragover", onDragOver);
+    drop.addEventListener("dragenter", onDragEnter);
+    drop.addEventListener("dragleave", onDragLeave);
+    drop.addEventListener("drop", onDrop);
+
+    fol.appendChild(label);
+    fol.appendChild(drop);
+    droppedFiles[fd.name] = [];
+  });
+}
+
+var dragIndex = null;
+var touchGhost = null;
+var touchIndex = null;
+
+function onDragStart(e){
+  if(checked) return;
+  dragIndex = e.target.closest(".file-item").getAttribute("data-index");
+  e.target.closest(".file-item").classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", dragIndex);
+}
+function onDragEnd(e){
+  e.target.closest(".file-item").classList.remove("dragging");
+}
+function onDragOver(e){e.preventDefault(); e.dataTransfer.dropEffect="move";}
+function onDragEnter(e){
+  e.preventDefault();
+  var dz = e.target.closest(".folder-drop");
+  if(dz) dz.classList.add("drag-over");
+}
+function onDragLeave(e){
+  var dz = e.target.closest(".folder-drop");
+  if(dz && !dz.contains(e.relatedTarget)) dz.classList.remove("drag-over");
+}
+function onDrop(e){
+  e.preventDefault();
+  var dz = e.target.closest(".folder-drop");
+  if(!dz || checked) return;
+  dz.classList.remove("drag-over");
+  var idx = parseInt(e.dataTransfer.getData("text/plain"));
+  dropFile(idx, dz);
+}
+
+function dropFile(idx, dropZone){
+  var folder = dropZone.getAttribute("data-folder");
+  var alreadyIn = null;
+  Object.keys(droppedFiles).forEach(function(fn){
+    var pos = droppedFiles[fn].indexOf(idx);
+    if(pos!==-1) alreadyIn = fn;
+  });
+  if(alreadyIn !== null) droppedFiles[alreadyIn].splice(droppedFiles[alreadyIn].indexOf(idx),1);
+  droppedFiles[folder].push(idx);
+  renderDropped();
+  var fileEl = document.querySelector('.file-item[data-index="'+idx+'"]');
+  if(fileEl) fileEl.classList.add("dragging");
+  setTimeout(function(){ if(fileEl) fileEl.classList.remove("dragging"); },200);
+}
+
+function renderDropped(){
+  document.querySelectorAll(".folder-drop").forEach(function(dz){
+    var fn = dz.getAttribute("data-folder");
+    dz.textContent = "";
+    droppedFiles[fn].forEach(function(idx){
+      var f = filesData[idx];
+      var span = document.createElement("span");
+      span.className = "dropped-file";
+      span.setAttribute("data-findex", idx);
+      var ic = document.createElement("span");
+      ic.className = "icon";
+      ic.textContent = f.icon;
+      var nm = document.createElement("span");
+      nm.textContent = f.name;
+      span.appendChild(ic);
+      span.appendChild(nm);
+      if(checked){
+        var st = document.createElement("span");
+        st.className = "status";
+        if(f.folder === fn){
+          st.textContent = "✅";
+          span.classList.add("status-correct");
+        } else {
+          st.textContent = "❌";
+          span.classList.add("status-wrong");
+        }
+        span.appendChild(st);
+      }
+      dz.appendChild(span);
+    });
+  });
+}
+
+function onTouchStart(e){
+  if(checked) return;
+  var el = e.target.closest(".file-item");
+  if(!el) return;
+  e.preventDefault();
+  touchIndex = parseInt(el.getAttribute("data-index"));
+  el.classList.add("dragging");
+  var touch = e.touches[0];
+  touchGhost = el.cloneNode(true);
+  touchGhost.className = "file-item ghost";
+  touchGhost.style.width = el.offsetWidth + "px";
+  touchGhost.style.left = (touch.clientX - el.offsetWidth/2) + "px";
+  touchGhost.style.top = (touch.clientY - 25) + "px";
+  document.body.appendChild(touchGhost);
+}
+function onTouchMove(e){
+  if(touchGhost === null) return;
+  e.preventDefault();
+  var touch = e.touches[0];
+  touchGhost.style.left = (touch.clientX - touchGhost.offsetWidth/2) + "px";
+  touchGhost.style.top = (touch.clientY - 25) + "px";
+  document.querySelectorAll(".folder-drop").forEach(function(dz){
+    var r = dz.getBoundingClientRect();
+    if(touch.clientX>=r.left && touch.clientX<=r.right && touch.clientY>=r.top && touch.clientY<=r.bottom){
+      dz.classList.add("drag-over");
+    } else {
+      dz.classList.remove("drag-over");
+    }
+  });
+}
+function onTouchEnd(e){
+  if(touchGhost === null) return;
+  e.preventDefault();
+  if(touchGhost.parentNode) touchGhost.parentNode.removeChild(touchGhost);
+  touchGhost = null;
+  var el = document.querySelector('.file-item[data-index="'+touchIndex+'"]');
+  if(el) el.classList.remove("dragging");
+  var touch = e.changedTouches[0];
+  var target = null;
+  document.querySelectorAll(".folder-drop").forEach(function(dz){
+    var r = dz.getBoundingClientRect();
+    if(touch.clientX>=r.left && touch.clientX<=r.right && touch.clientY>=r.top && touch.clientY<=r.bottom){
+      target = dz;
+    }
+    dz.classList.remove("drag-over");
+  });
+  if(target) dropFile(touchIndex, target);
+  touchIndex = null;
+}
+
+function checkAnswers(){
+  checked = true;
+  renderDropped();
+  var total = 0, correct = 0;
+  Object.keys(droppedFiles).forEach(function(fn){
+    droppedFiles[fn].forEach(function(idx){
+      total++;
+      if(filesData[idx].folder === fn) correct++;
+    });
+  });
+  var inFolders = 0;
+  Object.keys(droppedFiles).forEach(function(fn){ inFolders += droppedFiles[fn].length; });
+  var sb = document.getElementById("scoreBox");
+  sb.className = "score-box show";
+  if(inFolders < filesData.length){
+    sb.classList.add("notperfect");
+    sb.textContent = "⚠️ Βάλε όλα τα αρχεία σε φακέλους πρώτα! (" + inFolders + "/" + filesData.length + ")";
+  } else if(correct === total){
+    sb.classList.add("perfect");
+    sb.textContent = "🎉 Μπράβο! Σωστά όλα! " + correct + "/" + total + " 🌟⭐";
+  } else {
+    sb.classList.remove("perfect");
+    sb.classList.add("notperfect");
+    sb.textContent = "😏 " + correct + "/" + total + " σωστά. Ξαναδοκίμασε! 🔄";
+  }
+}
+
+function resetGame(){ init(); }
+init();
+</script>
+</body>
+</html>

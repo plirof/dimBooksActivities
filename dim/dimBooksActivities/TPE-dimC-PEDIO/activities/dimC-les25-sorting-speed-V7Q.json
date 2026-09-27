@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Άρθρα",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Άρθρο = δημοσίευση σε blog", "category": "swsto"},
+    {"text": "Ετικέτα = μεγάλο κείμενο", "category": "lathos"},
+    {"text": "Κατηγορία = ομάδα άρθρων", "category": "swsto"},
+    {"text": "Άρθρο = μόνο κείμενο", "category": "lathos"},
+    {"text": "Μπορεί να έχει εικόνες", "category": "swsto"},
+    {"text": "Τίτλος = ημερομηνία", "category": "lathos"},
+    {"text": "Οργανώνονται χρονολογικά", "category": "swsto"},
+    {"text": "Δημοσίευση = το κρύβω", "category": "lathos"},
+    {"text": "Μπορεί να έχει συνδέσμους", "category": "swsto"},
+    {"text": "Προσθήκη = πίνακας ελέγχου", "category": "swsto"}
+  ],
+  "duration": 30
+}

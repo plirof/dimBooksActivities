@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: Κινούμενα Σχέδια",
+  "subtitle": "Μάντεψε λέξεις για τα animations!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΚΙΝΗΣΗ", "hint": "Αποτέλεσμα του animation", "category": "Animation" },
+    { "word": "ΕΙΚΟΝΑ", "hint": "Κάθε καρέ του animation", "category": "Animation" },
+    { "word": "ΤΑΧΥΤΗΤΑ", "hint": "Πόσο γρήγορα εναλλάσσονται", "category": "Ρυθμίσεις" },
+    { "word": "ΠΙΝΕΛΟ", "hint": "Εργαλείο σχεδίασης στο TuxPaint", "category": "Εργαλείο" },
+    { "word": "ΓΕΜΙΣΜΑ", "hint": "Εργαλείο για χρώμα στο TuxPaint", "category": "Εργαλείο" },
+    { "word": "ΤΑΙΝΙΑ", "hint": "Κινηματογραφική... κινουμένων σχεδίων", "category": "Ιστορία" }
+  ]
+}

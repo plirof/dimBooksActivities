@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακή Συσκευή",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "υπολογιστής", "error": false},
+        {"text": "αποθηκεύει", "error": false},
+        {"text": "δεδομένα", "error": false},
+        {"text": "με", "error": false},
+        {"text": "γράμματα", "error": true, "correct": "δυαδικά ψηφία", "feedback": "Ο υπολογιστής αποθηκεύει δεδομένα με δυαδικά ψηφία 0 και 1, όχι με γράμματα!"},
+        {"text": "0", "error": false},
+        {"text": "και", "error": false},
+        {"text": "1.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "δυαδικό", "error": false},
+        {"text": "ψηφίο", "error": false},
+        {"text": "λέγεται", "error": false},
+        {"text": "μπάιτ.", "error": true, "correct": "μπιτ (bit)", "feedback": "Κάθε δυαδικό ψηφίο λέγεται μπιτ (bit), όχι μπάιτ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "ανοίξουμε", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "διακόπτη", "error": false},
+        {"text": "γράφουμε", "error": false},
+        {"text": "0.", "error": true, "correct": "1", "feedback": "Όταν ανοίγουμε τον διακόπτη περνάει ρεύμα, οπότε γράφουμε 1!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "υπολογιστής", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μηχάνημα", "error": false},
+        {"text": "που", "error": false},
+        {"text": "λειτουργεί", "error": false},
+        {"text": "με", "error": false},
+        {"text": "νερό.", "error": true, "correct": "ηλεκτρικό ρεύμα", "feedback": "Ο υπολογιστής λειτουργεί με ηλεκτρικό ρεύμα, όχι με νερό!"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Αλήθεια ή ψέματα - Πληροφορική Γ' Δημοτικού</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f0ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        .slideshow-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .slide {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #9b59b6;
+        }
+        .slide-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .slide-subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .example-box {
+            background-color: #f8e6ff;
+            border-left: 4px solid #9b59b6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #8e44ad;
+            margin-bottom: 10px;
+        }
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .truth-table th, .truth-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .truth-table th {
+            background-color: #9b59b6;
+            color: white;
+        }
+        .truth-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .truth-table tr:hover {
+            background-color: #e8e8e8;
+        }
+        .truth-value {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .truth-true {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .truth-false {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .game-example {
+            background-color: #fff9e6;
+            border: 2px dashed #f39c12;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .game-title {
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .character-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .character {
+            text-align: center;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px;
+            width: 180px;
+        }
+        .character-name {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .nav-btn {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .nav-btn:hover {
+            background-color: #8e44ad;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Slide 1: Introduction -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">2. Αλήθεια ή ψέματα;</h1>
+                <p class="slide-subtitle">Μάθημα 2ο - Πληροφορική Γ' Δημοτικού</p>
+            </div>
+            <div class="content">
+                <p>Κάποιες προτάσεις μάς δίνουν πληροφορίες για τις οποίες μπορούμε να πούμε αν είναι αλήθεια ή ψέματα.</p>
+                <div class="example-box">
+                    <p class="example-title">Τι είναι λογικές εκφράσεις;</p>
+                    <p>Οι προτάσεις που μπορούμε να πούμε αν είναι αληθείς ή ψευδείς ονομάζονται <strong>λογικές εκφράσεις</strong>.</p>
+                </div>
+                <p>Οι συνθήκες των αποφάσεων που είδαμε στο προηγούμενο μάθημα είναι λογικές εκφράσεις - μπορεί να είναι <strong>ΑΛΗΘΕΙΑ</strong> ή <strong>ΨΕΜΑΤΑ</strong>.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Truth Examples -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Παραδείγματα αληθειών και ψευδών</h1>
+                <p class="slide-subtitle">Λογικές εκφράσεις για τους ήρωες</p>
+            </div>
+            <div class="content">
+                <table class="truth-table">
+                    <thead>
+                        <tr>
+                            <th>Πρόταση</th>
+                            <th>Αλήθεια / Ψέμα</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Φοράει γυαλιά</td>
+                            <td><span class="truth-value truth-true">Αλήθεια</span></td>
+                        </tr>
+                        <tr>
+                            <td>Έχει μπλε παντελόνι</td>
+                            <td><span class="truth-value truth-true">Αλήθεια</span></td>
+                        </tr>
+                        <tr>
+                            <td>Κρατάει ακουστικά</td>
+                            <td><span class="truth-value truth-false">Ψέμα</span></td>
+                        </tr>
+                        <tr>
+                            <td>Έχει κόκκινα μαλλιά</td>
+                            <td><span class="truth-value truth-true">Αλήθεια</span></td>
+                        </tr>
+                        <tr>
+                            <td>Φοράει καφέ παντελόνι και μπλουζάκι με ρίγες</td>
+                            <td><span class="truth-value truth-true">Αλήθεια</span></td>
+                        </tr>
+                        <tr>
+                            <td>Κρατάει κινητό τηλέφωνο</td>
+                            <td><span class="truth-value truth-false">Ψέμα</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="example-title">Παρατήρησε την εικόνα με τα οκτώ παιδιά και τα ρούχα που φοράνε:</p>
+                <p>Γράψε αν είναι αλήθεια ή ψέμα οι παρακάτω προτάσεις.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Game "Find Who It Is" -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Το παιχνίδι "Βρες ποιος είναι"</h1>
+                <p class="slide-subtitle">Ανάγνωση και χρήση λογικών εκφράσεων</p>
+            </div>
+            <div class="content">
+                <div class="game-example">
+                    <p class="game-title">Κανόνες του παιχνιδιού:</p>
+                    <p>1. Σκέψου κάποιο ή κάποια χαρακτηριστικά ενός παιδιού της τάξης σου που το κάνουν μοναδικό.</p>
+                    <p>2. Πες την περιγραφή του παιδιού που έχεις σκεφτεί, χωρίς να αποκαλύψεις το όνομά του.</p>
+                    <p>3. Τα υπόλοιπα μέλη της ομάδας σου πρέπει να μαντέψουν ποιο παιδί περιέγραψες.</p>
+                    <p>4. Μπορείς να χρησιμοποιήσεις προτάσεις όπως:</p>
+                    <ul style="list-style-type: none; padding-left: 20px;">
+                        <li>• <strong>Αν</strong> φοράει μπλε φόρεμα, <strong>τότε</strong> είναι η Άννα.</li>
+                        <li>• <strong>Αν</strong> έχει κόκκινα μαλλιά και φοράει κοντό παντελόνι, <strong>τότε</strong> είναι ο Γιώργος.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Greek Mythology -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Παιχνίδι μυθολογίας</h1>
+                <p class="slide-subtitle">"Βρες ποιος θεός ή θεά είναι!"</p>
+            </div>
+            <div class="content">
+                <p>Στο μάθημα της Ιστορίας έχεις μάθει για τους αρχαίους θεούς του Ολύμπου, τις συνήθειες, τα χαρακτηριστικά και τα σύμβολα τους.</p>
+                <div class="game-example">
+                    <p class="game-title">Διάλεξε έναν θεό και μια θεά του Ολύμπου:</p>
+                    <p>Γράψε σε ένα χαρτί μία πρόταση που να τον/την περιγράφει με μοναδικό τρόπο.</p>
+                    <p><strong>Παράδειγμα για την Αθηνά:</strong> "Είναι κόρη του Δία και έχει σύμβολο την κουκουβάγια".</p>
+                    <p><strong>Παράδειγμα για τον Ποσειδώνα:</strong> "Έχει τρίαινα και βασιλεύει στην θάλασσα".</p>
+                </div>
+                <p>Αντάλλαξε τις περιγραφές σου με έναν συμμαθητή ή μία συμμαθήτριά σου. Προσπάθησε να μαντέψεις τις περιγραφές του άλλου παιδιού.</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Exercises -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Ασκήσεις</h1>
+                <p class="slide-subtitle">Εφαρμογή των γνώσεων</p>
+            </div>
+            <div class="content">
+                <div class="example-box">
+                    <p class="example-title">1. Συμπλήρωσε τις παρακάτω προτάσεις:</p>
+                    <p><strong>Αν</strong> __________________________________________________________________________________________________________________________</p>
+                    <p><strong>τότε</strong> __________________________________________________________________________________________________________________________</p>
+                </div>
+                <div class="example-box">
+                    <p class="example-title">2. Παίξε το παιχνίδι "Βρες ποιος είναι" με τους συμμαθητές σου:</p>
+                    <p>• Πες 3 χαρακτηριστικά ενός παιδιού της τάξης σου</p>
+                    <p>• Οι συμμαθητές σου πρέπει να μαντέψουν ποιο παιδί περιέγραψες</p>
+                    <p>• Μπορείς να χρησιμοποιήσεις και συνδυασμούς χαρακτηριστικών</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Τι έμαθα σε αυτό το μάθημα</h1>
+                <p class="slide-subtitle">Βασικά σημεία</p>
+            </div>
+            <div class="content">
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li>• <strong>Να διατυπώνω εκφράσεις</strong> που μπορεί να είναι αλήθεια ή ψέματα.</li>
+                    <li>• <strong>Να βρίσκω αν μία πρόταση είναι αλήθεια</strong> ή ψέματα.</li>
+                    <li>• <strong>Να χρησιμοποιώ λογικές εκφράσεις</strong> σε παιχνίδια και δραστηριότητες.</li>
+                    <li>• <strong>Να αναγνωρίζω</strong> τα χαρακτηριστικά των αντικειμένων.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="font-size: 1.5em; color: #8e44ad;">"Οι λογικές εκφράσεις είναι η βάση για τις αποφάσεις - ΑΛΗΘΕΙΑ ή ΨΕΜΑΤΑ"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="changeSlide(-1)">Προηγούμενο</button>
+            <button class="nav-btn" onclick="changeSlide(1)">Επόμενο</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Πληροφορική Γ' Δημοτικού - Αλγοριθμική - Προγραμματισμός - Ρομποτική</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+        }
+        
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            }
+            showSlide(currentSlide);
+        }
+        
+        // Auto-advance slides every 30 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 30000);
+    </script>
+</body>
+</html>

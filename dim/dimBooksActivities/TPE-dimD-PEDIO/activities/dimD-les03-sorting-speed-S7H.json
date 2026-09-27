@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Scratch Ορολογία",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία Scratch",
+  "categories": [
+    { "id": "entoli", "name": "Εντολές Scratch", "color": "#2196f3", "key": "1" },
+    { "id": "atelo", "name": "Αντικείμενα/Στοιχεία", "color": "#ff9800", "key": "2" },
+    { "id": "aritmi", "name": "Αριθμητικά", "color": "#4caf50", "key": "3" }
+  ],
+  "items": [
+    { "text": "Επανάλαβε 10 φορές", "category": "entoli" },
+    { "text": "Γατούλα", "category": "atelo" },
+    { "text": "10 × 10 = 100", "category": "aritmi" },
+    { "text": "Κίνηση 10 βημάτων", "category": "entoli" },
+    { "text": "Υπόβαθρο Urban", "category": "atelo" },
+    { "text": "20 × 5 = 100", "category": "aritmi" },
+    { "text": "Πράσινη σημαία", "category": "entoli" },
+    { "text": "Σκηνή", "category": "atelo" },
+    { "text": "5 + 5 = 10", "category": "aritmi" },
+    { "text": "Προσθήκη υπόβαθρου", "category": "entoli" }
+  ],
+  "duration": 45
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Τύποι ερωτήσεων",
+  "subtitle": "Ταίριαξε κάθε ερώτηση στον σωστό τύπο",
+  "categories": [
+    {
+      "id": "mc",
+      "name": "ΠΟΛΛΑΠΛΗΣ ΕΠΙΛΟΓΗΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟΥ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "scale",
+      "name": "ΚΛΙΜΑΚΩΣΗΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "☑️ Α, Β, Γ, Δ",
+      "category": "mc"
+    },
+    {
+      "id": "item2",
+      "text": "✍️ Γράψε απάντηση",
+      "category": "text"
+    },
+    {
+      "id": "item3",
+      "text": "⭐ 1-5",
+      "category": "scale"
+    },
+    {
+      "id": "item4",
+      "text": "○ Επίλεξε ένα",
+      "category": "mc"
+    },
+    {
+      "id": "item5",
+      "text": "📝 Δική σου γνώμη",
+      "category": "text"
+    },
+    {
+      "id": "item6",
+      "text": "📊 Βαθμολόγηση",
+      "category": "scale"
+    }
+  ]
+}

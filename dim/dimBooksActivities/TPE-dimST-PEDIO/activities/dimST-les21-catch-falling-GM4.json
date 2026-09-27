@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Εναλλακτική Αναζήτηση",
+  "subtitle": "Πιάσε τις σωστές λέξεις εναλλακτικής αναζήτησης",
+  "instructions": "Πιάσε τις σωστές έννοιες και άσε τις λάθος να πέσουν",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Αντίστροφη αναζήτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φωνητική αναζήτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "QR Code",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μεταφόρτωση εικόνας",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Σάρωση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μικρόφωνο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Υπολογιστικό φύλλο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο δεδομένων",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

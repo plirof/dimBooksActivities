@@ -1,0 +1,25 @@
+{
+  "title": "Ταξινόμηση: Κεφαλαία, Μικρά ή Αριθμοί;",
+  "subtitle": "Τι βλέπω στην οθόνη;",
+  "instructions": "Πάτα: ΚΕΦΑΛΑΙΟ, ΜΙΚΡΟ ή ΑΡΙΘΜΟΣ",
+  "categories": [
+    {"id": "kefalaio", "name": "Κεφαλαίο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "mikro", "name": "Μικρό", "color": "#2196F3", "key": "ArrowUp"},
+    {"id": "arithmos", "name": "Αριθμός", "color": "#FF9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Α", "category": "kefalaio"},
+    {"text": "α", "category": "mikro"},
+    {"text": "3", "category": "arithmos"},
+    {"text": "Κ", "category": "kefalaio"},
+    {"text": "μ", "category": "mikro"},
+    {"text": "7", "category": "arithmos"},
+    {"text": "Ω", "category": "kefalaio"},
+    {"text": "τ", "category": "mikro"},
+    {"text": "9", "category": "arithmos"},
+    {"text": "Μ", "category": "kefalaio"},
+    {"text": "ε", "category": "mikro"},
+    {"text": "1", "category": "arithmos"}
+  ],
+  "duration": 30
+}

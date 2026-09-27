@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ψηφιοποίηση",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με έννοιες της ψηφιοποίησης!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Δυαδικά ψηφία", "correct": true, "color": "#4CAF50" },
+    { "text": "Κωδικοποίηση", "correct": true, "color": "#2196F3" },
+    { "text": "Αποκωδικοποίηση", "correct": true, "color": "#FF9800" },
+    { "text": "Πίνακας αντιστοίχισης", "correct": true, "color": "#9C27B0" },
+    { "text": "Ηλεκτρικό σήμα", "correct": true, "color": "#00BCD4" },
+    { "text": "0 και 1", "correct": true, "color": "#E91E63" },
+    { "text": "Δεκαεξαδικός", "correct": false, "color": "#F44336" },
+    { "text": "Τριαδικός", "correct": false, "color": "#795548" },
+    { "text": "Δεκαδικός πίνακας", "correct": false, "color": "#607D8B" },
+    { "text": "Οκταδικός", "correct": false, "color": "#FF5722" }
+  ]
+}

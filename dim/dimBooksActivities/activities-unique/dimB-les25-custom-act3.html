@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εξερεύνηση e-me | Μάθημα 25</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#1565c0 0%,#42a5f5 40%,#90caf9 100%);
+  padding:12px;
+  display:flex;flex-direction:column;align-items:center;
+}
+h1{color:#fff;font-size:1.7rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#e3f2fd;font-size:1rem;text-align:center;margin-bottom:10px;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.container{
+  background:#fff;border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);
+  max-width:800px;width:100%;padding:0;overflow:hidden;
+}
+.instructions{
+  background:linear-gradient(90deg,#e3f2fd,#bbdefb);
+  padding:10px 20px;
+  font-size:.95rem;color:#1565c0;font-weight:600;
+  text-align:center;border-bottom:1px solid #90caf9;
+}
+
+.navbar{
+  background:linear-gradient(135deg,#0d47a1,#1565c0);
+  display:flex;align-items:center;flex-wrap:wrap;
+  padding:0 12px;border-bottom:3px solid #0d47a1;
+}
+.nav-logo{
+  font-size:1.2rem;font-weight:800;color:#fff;
+  padding:10px 14px 10px 8px;
+  white-space:nowrap;
+  border-right:1px solid rgba(255,255,255,.2);
+  margin-right:4px;
+}
+.nav-logo span{font-size:1.1rem;}
+.nav-items{
+  display:flex;flex-wrap:wrap;flex:1;
+}
+.nav-item{
+  padding:10px 12px;color:#bbdefb;font-size:.82rem;font-weight:600;
+  cursor:pointer;border-bottom:3px solid transparent;
+  transition:all .2s;white-space:nowrap;
+  text-align:center;
+}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.08);}
+.nav-item.active{color:#fff;border-bottom-color:#ffca28;background:rgba(255,255,255,.1);}
+.nav-item .nav-emoji{font-size:1rem;display:block;margin-bottom:1px;}
+@media(max-width:500px){
+  .nav-item{padding:8px 7px;font-size:.72rem;}
+  .nav-item .nav-emoji{font-size:.9rem;}
+  .nav-logo{font-size:1rem;padding:10px 8px;}
+}
+
+.progress-bar{
+  background:#e3f2fd;padding:10px 20px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid #bbdefb;
+}
+.progress-label{font-size:.85rem;font-weight:700;color:#1565c0;white-space:nowrap;}
+.progress-track{
+  flex:1;height:10px;background:#bbdefb;border-radius:5px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#43a047,#66bb6a);
+  border-radius:5px;transition:width .5s ease;width:0%;
+}
+.progress-count{font-size:.85rem;font-weight:700;color:#2e7d32;white-space:nowrap;}
+
+.page-content{
+  padding:20px;min-height:350px;
+  animation:fadeIn .35s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.page-title{font-size:1.2rem;font-weight:800;color:#1565c0;margin-bottom:12px;}
+
+.card{
+  background:#f5f5f5;border-radius:12px;padding:14px;
+  margin-bottom:10px;border:1px solid #e0e0e0;
+  transition:all .15s;
+}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);border-color:#90caf9;}
+.card-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:6px;
+}
+.card-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#42a5f5,#1565c0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;color:#fff;font-weight:700;flex-shrink:0;
+}
+.card-sender{font-weight:700;color:#37474f;font-size:.9rem;}
+.card-time{font-size:.75rem;color:#90a4ae;margin-left:auto;}
+.card-body{color:#546e7a;font-size:.88rem;line-height:1.5;margin-left:44px;}
+.unread-dot{
+  width:8px;height:8px;background:#1565c0;border-radius:50%;
+  display:inline-block;margin-left:6px;flex-shrink:0;
+}
+
+.file-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;background:#f5f5f5;border-radius:10px;
+  margin-bottom:8px;border:1px solid #e0e0e0;
+  cursor:pointer;transition:all .15s;
+}
+.file-item:hover{background:#e3f2fd;border-color:#42a5f5;}
+.file-icon{font-size:1.6rem;}
+.file-name{font-weight:700;color:#37474f;font-size:.9rem;}
+.file-meta{font-size:.75rem;color:#90a4ae;}
+
+.profile-card{
+  text-align:center;padding:20px;
+}
+.profile-avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#42a5f5,#1565c0);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:2.8rem;margin-bottom:10px;
+  box-shadow:0 4px 16px rgba(21,101,192,.3);
+}
+.profile-name{font-size:1.2rem;font-weight:800;color:#1565c0;}
+.profile-class{font-size:.9rem;color:#78909c;margin-top:2px;}
+
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;background:#f5f5f5;border-radius:10px;
+  margin-bottom:8px;border:1px solid #e0e0e0;
+}
+.toggle-label{font-weight:700;color:#37474f;font-size:.9rem;}
+.toggle-switch{
+  width:48px;height:26px;background:#bdbdbd;border-radius:13px;
+  position:relative;cursor:pointer;transition:background .25s;
+  flex-shrink:0;
+}
+.toggle-switch.on{background:#43a047;}
+.toggle-knob{
+  width:22px;height:22px;background:#fff;border-radius:50%;
+  position:absolute;top:2px;left:2px;
+  transition:left .25s;box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.toggle-switch.on .toggle-knob{left:24px;}
+
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.5);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.hidden{display:none;}
+.modal-box{
+  background:#fff;border-radius:20px;padding:30px;
+  max-width:420px;width:100%;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:modalPop .35s ease;
+}
+@keyframes modalPop{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-box .modal-icon{font-size:3.5rem;margin-bottom:10px;}
+.modal-box h2{color:#2e7d32;font-size:1.3rem;margin-bottom:8px;}
+.modal-box p{color:#546e7a;font-size:.95rem;line-height:1.5;margin-bottom:14px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 22px;border-radius:12px;border:none;
+  font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;
+  box-shadow:0 4px 14px rgba(21,101,192,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(21,101,192,.45);}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .progress-bar > * + * { margin-left: 10px; }
+  .card-header > * + * { margin-left: 8px; }
+  .file-item > * + * { margin-left: 10px; }
+  .btn > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🧭 Εξερεύνηση e-me</h1>
+<p class="subtitle">Κλικ στα μενού για να τα ανακαλύψεις όλα!</p>
+
+<div class="container">
+  <div class="instructions">
+    ℹ️ Πάτα πάνω σε κάθε μενού για να δεις τι κάνει. Εξερεύνησε και τα 6!
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-logo">🎓 <span>e-me</span></div>
+    <div class="nav-items" id="navItems">
+      <div class="nav-item active" data-page="home" onclick="showPage('home')">
+        <span class="nav-emoji">🏠</span> Αρχική
+      </div>
+      <div class="nav-item" data-page="mail" onclick="showPage('mail')">
+        <span class="nav-emoji">📧</span> Κυψέλη
+      </div>
+      <div class="nav-item" data-page="announce" onclick="showPage('announce')">
+        <span class="nav-emoji">📢</span> Ανακοινώσεις
+      </div>
+      <div class="nav-item" data-page="material" onclick="showPage('material')">
+        <span class="nav-emoji">📚</span> Υλικό
+      </div>
+      <div class="nav-item" data-page="profile" onclick="showPage('profile')">
+        <span class="nav-emoji">👤</span> Προφίλ
+      </div>
+      <div class="nav-item" data-page="settings" onclick="showPage('settings')">
+        <span class="nav-emoji">⚙️</span> Ρυθμίσεις
+      </div>
+    </div>
+  </nav>
+
+  <div class="progress-bar">
+    <span class="progress-label">Μενού που εξερεύνησες:</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-count" id="progressCount">0/6</span>
+  </div>
+
+  <div class="page-content" id="pageContent">
+    <!-- Dynamic content -->
+  </div>
+</div>
+
+<!-- CONGRATS MODAL -->
+<div class="modal-overlay hidden" id="congratsModal">
+  <div class="modal-box">
+    <div class="modal-icon">🏆</div>
+    <h2>Μπράβο! Τα εξερεύνησες όλα!</h2>
+    <p>Άνοιξες και τα 6 μενού της πλατφόρμας e-me! Τώρα ξέρεις πώς να πλοηγείσαι σαν επαγγελματίας! 🌟</p>
+    <button class="btn btn-primary" onclick="closeCongrats()">🎉 Συνέχισα!</button>
+  </div>
+</div>
+
+<script>
+var pages = {
+  home: {
+    title: '🏠 Αρχική Σελίδα',
+    html: '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar">🎓</div>' +
+        '<span class="card-sender">Καλημέρα, Μαθητή!</span>' +
+      '</div>' +
+      '<div class="card-body">Καλώς ήρθες στην e-me! Εδώ θα βρεις όλα τα νέα και τις ανακοινώσεις του σχολείου σου. Εξέρευνη τα μενού για να ανακαλύψεις τι προσφέρει η πλατφόρμα!</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#66bb6a,#2e7d32);">📢</div>' +
+        '<span class="card-sender">Σχολική γιορτή</span>' +
+        '<span class="card-time">Χθες</span>' +
+      '</div>' +
+      '<div class="card-body">Αύριο Πέμπτη θα γίνει η σχολική γιορτή στην αυλή του σχολείου στις 10:00. Να είστε όλοι παρόντες!</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#ffa726,#e65100);">🎨</div>' +
+        '<span class="card-sender">Διαγωνισμός ζωγραφικής</span>' +
+        '<span class="card-time">Πριν 2 μέρες</span>' +
+      '</div>' +
+      '<div class="card-body">Ξεκίνησε ο διαγωνισμός ζωγραφικής με θέμα "Η θάλασσά μου". Στείλτε τις ζωγραφιές σας μέχρι την Παρασκευή!</div>' +
+    '</div>'
+  },
+  mail: {
+    title: '📧 Κυψέλη - Μηνύματα',
+    html: '<p style="font-size:.9rem;color:#78909c;margin-bottom:12px;">Έχετε <strong style="color:#1565c0;">2 νέα μηνύματα</strong></p>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#ec407a,#ad1457);">Μ</div>' +
+        '<span class="card-sender">Μαρία Παπαδοπούλου</span>' +
+        '<span class="card-time">10:30</span>' +
+        '<span class="unread-dot"></span>' +
+      '</div>' +
+      '<div class="card-body">Γεια σου! Μπορείς να μου στείλεις τη ζωγραφική σου για το project; Είναι πολύ ωραία! 😊</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#26a69a,#00695c);">Γ</div>' +
+        '<span class="card-sender">Γιάννης Νικολάου</span>' +
+        '<span class="card-time">Χθες</span>' +
+        '<span class="unread-dot"></span>' +
+      '</div>' +
+      '<div class="card-body">Θέλεις να κάνουμε μαζί την εργασία για τα ζώα; Μπορούμε να μιλήσουμε αύριο στο διάλειμμα!</div>' +
+    '</div>'
+  },
+  announce: {
+    title: '📢 Ανακοινώσεις',
+    html: '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a);">Μ</div>' +
+        '<span class="card-sender">κυρία Μαρία</span>' +
+        '<span class="card-time">Σήμερα 08:00</span>' +
+      '</div>' +
+      '<div class="card-body">Αύριο θα έχουμε τεστ στα Μαθηματικά. Επαναλάβετε την προπαίδεια και τις προσθέσεις μέχρι το 100. Καλή μελέτη! 📖</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a);">Μ</div>' +
+        '<span class="card-sender">κυρία Μαρία</span>' +
+        '<span class="card-time">Πριν 3 μέρες</span>' +
+      '</div>' +
+      '<div class="card-body">Θέλω να φέρετε αύριο χρωματιστά μολύβια και μια κόλλα χαρτί. Θα φτιάξουμε μια ωραία κατασκευή! ✂️</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="card-header">' +
+        '<div class="card-avatar" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a);">Μ</div>' +
+        '<span class="card-sender">κυρία Μαρία</span>' +
+        '<span class="card-time">Πριν 1 εβδομάδα</span>' +
+      '</div>' +
+      '<div class="card-body">Μπράβο σε όλα τα παιδιά για τις εξαιρετικές εργασίες που παραδώσατε! Ήσασταν υπέροχοι! ⭐</div>' +
+    '</div>'
+  },
+  material: {
+    title: '📚 Υλικό - Αρχεία',
+    html: '<div class="file-item">' +
+        '<span class="file-icon">📄</span>' +
+        '<div><div class="file-name">εργασία1.pdf</div><div class="file-meta">Μέγεθος: 245 KB · Ανέβηκε: 15/03</div></div>' +
+      '</div>' +
+      '<div class="file-item">' +
+        '<span class="file-icon">🖼️</span>' +
+        '<div><div class="file-name">φωτογραφία.jpg</div><div class="file-meta">Μέγεθος: 1.2 MB · Ανέβηκε: 12/03</div></div>' +
+      '</div>' +
+      '<div class="file-item">' +
+        '<span class="file-icon">📊</span>' +
+        '<div><div class="file-name">πίνακας-γραμμάτων.pdf</div><div class="file-meta">Μέγεθος: 89 KB · Ανέβηκε: 10/03</div></div>' +
+      '</div>' +
+      '<div class="file-item">' +
+        '<span class="file-icon">🎵</span>' +
+        '<div><div class="file-name">τραγούδι-γιορτής.mp3</div><div class="file-meta">Μέγεθος: 3.5 MB · Ανέβηκε: 08/03</div></div>' +
+      '</div>'
+  },
+  profile: {
+    title: '👤 Προφίλ',
+    html: '<div class="profile-card">' +
+        '<div class="profile-avatar">🧒</div>' +
+        '<div class="profile-name">Μαθητής Β\' Τάξης</div>' +
+        '<div class="profile-class">Β\' Δημοτικού - Τμήμα Β1</div>' +
+        '<div style="margin-top:14px;padding:12px;background:#f5f5f5;border-radius:10px;font-size:.88rem;color:#546e7a;">' +
+          '📧 <strong> Email:</strong> μαθητης@sch.gr<br>' +
+          '🏫 <strong> Σχολείο:</strong> 2ο Δημοτικό Σχολείο<br>' +
+          '📅 <strong> Έτος:</strong> 2025-2026' +
+        '</div>' +
+      '</div>'
+  },
+  settings: {
+    title: '⚙️ Ρυθμίσεις',
+    html: '<div class="toggle-row">' +
+        '<span class="toggle-label">🌙 Σκοτεινή λειτουργία</span>' +
+        '<div class="toggle-switch" id="toggleDark" onclick="toggleSwitch(\'toggleDark\')"><div class="toggle-knob"></div></div>' +
+      '</div>' +
+      '<div class="toggle-row">' +
+        '<span class="toggle-label">🔔 Ειδοποιήσεις</span>' +
+        '<div class="toggle-switch on" id="toggleNotif" onclick="toggleSwitch(\'toggleNotif\')"><div class="toggle-knob"></div></div>' +
+      '</div>' +
+      '<div class="toggle-row">' +
+        '<span class="toggle-label">🔊 Ήχοι</span>' +
+        '<div class="toggle-switch on" id="toggleSound" onclick="toggleSwitch(\'toggleSound\')"><div class="toggle-knob"></div></div>' +
+      '</div>' +
+      '<div style="margin-top:14px;padding:10px 14px;background:#e3f2fd;border-radius:10px;font-size:.85rem;color:#1565c0;text-align:center;">' +
+        '💡 Εδώ μπορείς να αλλάξεις τις ρυθμίσεις σου. Δοκίμασε τα κουμπιά!' +
+      '</div>'
+  }
+};
+
+var visited = {};
+var currentPage = 'home';
+
+function init() {
+  showPage('home');
+}
+
+function showPage(pageKey) {
+  currentPage = pageKey;
+  visited[pageKey] = true;
+  updateProgress();
+
+  var items = document.querySelectorAll('.nav-item');
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].getAttribute('data-page') === pageKey) {
+      items[i].className = 'nav-item active';
+    } else {
+      items[i].className = 'nav-item';
+    }
+  }
+
+  var p = pages[pageKey];
+  var content = document.getElementById('pageContent');
+  content.innerHTML = '<div class="page-title">' + p.title + '</div>' + p.html;
+
+  checkComplete();
+}
+
+function updateProgress() {
+  var count = Object.keys(visited).length;
+  document.getElementById('progressCount').textContent = count + '/6';
+  document.getElementById('progressFill').style.width = Math.round((count / 6) * 100) + '%';
+}
+
+function checkComplete() {
+  var count = Object.keys(visited).length;
+  if (count >= 6) {
+    setTimeout(function() {
+      document.getElementById('congratsModal').className = 'modal-overlay';
+    }, 600);
+  }
+}
+
+function closeCongrats() {
+  document.getElementById('congratsModal').className = 'modal-overlay hidden';
+}
+
+function toggleSwitch(id) {
+  var el = document.getElementById(id);
+  if (el.className.indexOf('on') !== -1) {
+    el.className = 'toggle-switch';
+  } else {
+    el.className = 'toggle-switch on';
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "title": "Ζώα σε κατηγορία χάρτη",
+  "subtitle": "Ταίριαξε κάθε ζώο στην κατηγορία του",
+  "categories": [
+    {
+      "id": "pet",
+      "name": "ΚΑΤΟΙΚΙΔΙΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wild",
+      "name": "ΑΓΡΙΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🐱 Γάτα",
+      "category": "pet"
+    },
+    {
+      "id": "item2",
+      "text": "🐶 Σκύλος",
+      "category": "pet"
+    },
+    {
+      "id": "item3",
+      "text": "🦁 Λιοντάρι",
+      "category": "wild"
+    },
+    {
+      "id": "item4",
+      "text": "🐰 Κουνέλι",
+      "category": "pet"
+    },
+    {
+      "id": "item5",
+      "text": "🐻 Αρκούδα",
+      "category": "wild"
+    },
+    {
+      "id": "item6",
+      "text": "🦊 Αλεπού",
+      "category": "wild"
+    },
+    {
+      "id": "item7",
+      "text": "🐟 Χρυσόψαρο",
+      "category": "pet"
+    }
+  ]
+}

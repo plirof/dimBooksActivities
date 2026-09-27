@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ανάλυση Μετρήσεων | Μάθημα 11</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.main{max-width:750px;width:100%}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:8px}
+.story-box{background:#1e293b;border-radius:10px;padding:10px 12px;margin-bottom:10px;border-left:3px solid #6366f1;font-size:.72rem;color:#e2e8f0;line-height:1.5}
+.data-table-wrap{overflow-x:auto;margin-bottom:10px;border-radius:10px;border:1px solid #334155}
+.data-table{width:100%;border-collapse:collapse;font-size:.66rem}
+.data-table th{background:#1e293b;color:#fbbf24;padding:5px 7px;text-align:left;font-weight:700;border-bottom:2px solid #334155}
+.data-table td{padding:4px 7px;color:#e2e8f0;border-bottom:1px solid #1e293b}
+.data-table .hl-cell{background:#22c55e11;color:#4ade80;font-weight:700}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));grid-gap:6px;margin-bottom:10px}
+.stat-box{background:#1e293b;border-radius:10px;padding:8px;text-align:center;border:1px solid #334155}
+.stat-box .sb-label{color:#64748b;font-size:.58rem;font-weight:700;text-transform:uppercase}
+.stat-box .sb-value{font-family:monospace;font-size:1rem;font-weight:700;color:#fbbf24;margin-top:2px}
+.stat-box .sb-unit{color:#94a3b8;font-size:.6rem}
+.question-area{background:#1e293b;border-radius:12px;padding:12px;margin-top:6px}
+.q-num{color:#64748b;font-size:.6rem;font-weight:700;margin-bottom:4px}
+.q-text{color:#e2e8f0;font-size:.72rem;margin-bottom:8px;line-height:1.5}
+.q-opts{display:flex;gap:6px;flex-wrap:wrap}
+.q-btn{padding:7px 14px;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#e2e8f0;font-size:.68rem;font-weight:600;cursor:pointer;transition:all .2s}
+.q-btn:hover{border-color:#6366f1}
+.q-btn.correct{border-color:#22c55e;background:#22c55e22;color:#4ade80}
+.q-btn.wrong{border-color:#ef4444;background:#ef444422;color:#f87171}
+.q-btn:disabled{cursor:default;opacity:.7}
+.q-feedback{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.65rem;line-height:1.4;text-align:center}
+.q-feedback.show{display:block}
+.q-feedback.ok{background:#22c55e11;color:#4ade80}
+.q-feedback.fail{background:#ef444411;color:#f87171}
+.chart-area{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:8px;overflow-x:auto}
+.chart-bar{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:.62rem}
+.chart-bar .cb-label{width:70px;color:#94a3b8;text-align:right;font-weight:600}
+.chart-bar .cb-fill{height:18px;border-radius:4px;background:linear-gradient(90deg,#6366f1,#818cf8);min-width:4px;transition:width .5s;display:flex;align-items:center;padding-left:4px}
+.chart-bar .cb-fill .cb-val{color:#fff;font-weight:700;font-size:.55rem;white-space:nowrap}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .q-opts > * { margin: 3px; }
+  .chart-bar > * + * { margin-left: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Ανάλυση Μετρήσεων</h1>
+<p class="subtitle">Επεξεργάσου τα δεδομένα που κατέγραψες και βγάλε συμπεράσματα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πείραμα:</span> <span id="expNum">1</span>/5</span>
+</div>
+<div class="main" id="main"></div>
+<script>
+var experiments=[
+{
+story:'📐 Η Μαρία κατέγραψε τη θερμοκρασία της τάξης κάθε ώρα με το micro:bit της. Βοήθησέ τη να αναλύσει τα δεδομένα!',
+data:[{room:'09:00',temp:21.5,light:180},{room:'10:00',temp:22.0,light:210},{room:'11:00',temp:22.5,light:240},{room:'12:00',temp:23.0,light:260},{room:'13:00',temp:23.5,light:280},{room:'14:00',temp:23.0,light:250}],
+questions:[
+{q:'Ποια είναι η ΜΕΓΙΣΤΗ θερμοκρασία που καταγράφηκε;',opts:['21.5°C','23.0°C','23.5°C','24.0°C'],correct:2,explain:'Η μέγιστη θερμοκρασία είναι 23.5°C στις 13:00. Ο αισθητήρας θερμοκρασίας του micro:bit την κατέγραψε!'},
+{q:'Πόσο αυξήθηκε η θερμοκρασία από τις 09:00 έως τις 13:00;',opts:['1.0°C','2.0°C','3.0°C','0.5°C'],correct:1,explain:'Από 21.5°C σε 23.5°C, δηλαδή αύξηση 2.0°C. Η θερμοκρασία ανέβαινε σταδιακά μέσα στην ημέρα.'},
+{q:'Σε ποια ώρα το φως ήταν πιο δυνατό;',opts:['11:00','12:00','13:00','14:00'],correct:2,explain:'Στις 13:00 το φως ήταν στο μέγιστο (280). Ο αισθητήρας φωτός κατέγραψε την αυξημένη ηλιοφάνεια.'}
+]
+},
+{
+story:'🌡️ Ο Γιάννης έκανε ένα πείραμα: μέτρησε θερμοκρασία σε 4 διαφορετικούς χώρους του σχολείου. Ανάλυσε τα δεδομένα!',
+data:[{room:'Αίθουσα',temp:22,light:200},{room:'Προαύλιο',temp:34,light:720},{room:'Βιβλιοθήκη',temp:20,light:100},{room:'Κυλικείο',temp:26,light:320}],
+questions:[
+{q:'Ποιος χώρος έχει τη ΜΕΓΑΛΥΤΕΡΗ θερμοκρασία;',opts:['Αίθουσα','Προαύλιο','Βιβλιοθήκη','Κυλικείο'],correct:1,explain:'Το προαύλιο έχει 34°C γιατί βρίσκεται στον ήλιο. Ο αισθητήρας θερμοκρασίας το κατέγραψε!'},
+{q:'Ποιος χώρος έχει το ΛΙΓΟΤΕΡΟ φως;',opts:['Αίθουσα','Προαύλιο','Βιβλιοθήκη','Κυλικείο'],correct:2,explain:'Η βιβλιοθήκη έχει μόνο 100 φωτεινότητα. Είναι ο πιο σκοτεινός χώρος από τους 4.'},
+{q:'Ποια είναι η διαφορά θερμοκρασίας ανάμεσα στο πιο ζεστό και το πιο κρύο μέρος;',opts:['10°C','12°C','14°C','16°C'],correct:2,explain:'34°C - 20°C = 14°C διαφορά ανάμεσα στο προαύλιο και τη βιβλιοθήκη!'}
+]
+},
+{
+story:'🔊 Η Ελένη μέτρησε το επίπεδο ήχου σε διάφορους χώρους και το κατέγραψε με το datalogger του micro:bit.',
+data:[{room:'Βιβλιοθήκη',sound:20},{room:'Αίθουσα',sound:45},{room:'Διάδρομος',sound:55},{room:'Κυλικείο',sound:72},{room:'Γυμναστήριο',sound:85}],
+questions:[
+{q:'Ποιος χώρος είναι ο ΠΙΟ ΗΣΥΧΟΣ;',opts:['Αίθουσα','Βιβλιοθήκη','Διάδρομος','Γυμναστήριο'],correct:1,explain:'Η βιβλιοθήκη έχει ένταση ήχου 20, την πιο χαμηλή. Είναι ο πιο ήσυχος χώρος.'},
+{q:'Πόσο πιο δυνατός είναι ο ήχος στο κυλικείο από την αίθουσα;',opts:['27','37','17','47'],correct:0,explain:'72 - 45 = 27. Το κυλικείο είναι 27 μονάδες πιο δυνατό από την αίθουσα.'},
+{q:'Αν το micro:bit αποθηκεύσει τα δεδομένα σε MY_DATA.HTM, πού μπορείς να τα επεξεργαστείς;',opts:['Σε επεξεργαστή κειμένου','Σε υπολογιστικό φύλλο','Σε πρόγραμμα ζωγραφικής','Σε φυλλομετρητή'],correct:1,explain:'Το αρχείο MY_DATA.HTM μπορεί να ανοιχθεί και να επεξεργαστεί σε υπολογιστικό φύλλο (π.χ. Excel) για περαιτέρω ανάλυση.'}
+]
+},
+{
+story:'☀️ Ο Πέτρος έκανε ένα πείραμα με τον αισθητήρα φωτός: μέτρησε το φως σε εσωτερικούς και εξωτερικούς χώρους.',
+data:[{room:'Σκοτεινό δωμάτιο',light:10},{room:'Υπόγειο',light:45},{room:'Αίθουσα με στορ',light:120},{room:'Αίθουσα χωρίς στορ',light:280},{room:'Μπαλκόνι',light:680},{room:'Ήλιος μεσημέρι',light:900}],
+questions:[
+{q:'Πόσες φορές πιο δυνατό είναι το φως στο μπαλκόνι από την αίθουσα με στορ;',opts:['~3 φορές','~5 φορές','~6 φορές','~10 φορές'],correct:2,explain:'680/120 ≈ 5.7, δηλαδή περίπου 6 φορές πιο δυνατό! Ο αισθητήρας φωτός του micro:bit το δείχνει καθαρά.'},
+{q:'Τι συμπέρασμα βγάζεις για τη φωτεινότητα;',opts:['Είναι ίδια παντού','Εξαρτάται από την ώρα και το μέρος','Μόνο ο ήλιος μετράει','Δεν μπορούμε να μετρήσουμε'],correct:1,explain:'Η φωτεινότητα διαφέρει σημαντικά ανάλογα με τον χώρο και την ώρα. Γι\' αυτό χρειαζόμαστε αισθητήρες!'}
+]
+},
+{
+story:'📋 Η δασκάλα ζήτησε από τους μαθητές να καταγράψουν και τα 3 είδη μετρήσεων (φως, θερμοκρασία, ήχος) σε 3 χώρους ταυτόχρονα.',
+data:[{room:'Βιβλιοθήκη',light:110,temp:21,sound:18},{room:'Γυμναστήριο',light:450,temp:27,sound:82},{room:'Εργαστήριο Υπολογιστών',light:160,temp:24,sound:32}],
+questions:[
+{q:'Ποιος χώρος έχει την ΚΑΛΥΤΕΡΗ ισορροπία για μελέτη (αρκετό φως, ήσυχα, δροσερά);',opts:['Βιβλιοθήκη','Γυμναστήριο','Εργαστήριο Υπολογιστών','Κανένας'],correct:2,explain:'Το εργαστήριο έχει 160 φως (αρκετό), 24°C (δροσερά) και 32 ήχο (σχετικά ήσυχα). Ιδανικό για μελέτη!'},
+{q:'Ποια στήλη πρέπει να δημιουργήσεις στο datalogger για να καταγράφεις θερμοκρασία;',opts:['fws','thrm','ixos','temp'],correct:1,explain:'Στο datalogger, δημιουργούμε στήλη με όνομα "thrm" για να καταγράφουμε θερμοκρασία. Χρησιμοποιούμε λατινικούς χαρακτήρες.'},
+{q:'Γιατί χρησιμοποιούμε λατινικούς χαρακτήρες στα ονόματα στηλών στο datalogger;',opts:['Γιατί είναι πιο ωραίοι','Γιατί το micro:bit δεν υποστηρίζει ελληνικούς','Γιατί είναι πιο σύντομοι','Γιατί έτσι συμφωνήσαμε'],correct:1,explain:'Το micro:bit δεν μπορεί να διαχειριστεί ελληνικούς χαρακτήρες για τα ονόματα στηλών, γι\' αυτό χρησιμοποιούμε λατινικούς.'}
+]
+}
+];
+var current=0;
+var pts=0;
+var answered={};
+function init(){
+render();
+}
+function render(){
+var exp=experiments[current];
+document.getElementById('expNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="story-box">📖 '+exp.story+'</div>';
+h+='<div class="data-table-wrap"><table class="data-table"><thead><tr>';
+var keys=Object.keys(exp.data[0]);
+for(var i=0;i<keys.length;i++){
+h+='<th>'+keys[i].charAt(0).toUpperCase()+keys[i].slice(1)+'</th>';
+}
+h+='</tr></thead><tbody>';
+for(var r=0;r<exp.data.length;r++){
+h+='<tr>';
+for(var k=0;k<keys.length;k++){
+var val=exp.data[r][keys[k]];
+var isMax=false,isMin=false;
+if(typeof val==='number'){
+var vals=exp.data.map(function(d){return d[keys[k]];});
+isMax=val===Math.max.apply(null,vals)&&vals.filter(function(v){return v===val;}).length===1;
+isMin=val===Math.min.apply(null,vals)&&vals.filter(function(v){return v===val;}).length===1;
+}
+h+='<td class="'+(isMax?'hl-cell':'')+'">'+val+(keys[k]!=='room'&&typeof val==='number'?keys[k]==='temp'?'°C':'':'')+'</td>';
+}
+h+='</tr>';
+}
+h+='</tbody></table></div>';
+var keysNum=keys.filter(function(k){return k!=='room'&&typeof exp.data[0][k]==='number';});
+if(keysNum.length>0){
+h+='<div class="stats-grid">';
+for(var n=0;n<keysNum.length;n++){
+var k2=keysNum[n];
+var vals=exp.data.map(function(d){return d[k2];});
+var avg=vals.reduce(function(a,b){return a+b;},0)/vals.length;
+var max=Math.max.apply(null,vals);
+var min=Math.min.apply(null,vals);
+h+='<div class="stat-box"><div class="sb-label">Μέσος όρος '+k2+'</div><div class="sb-value">'+(k2==='temp'?avg.toFixed(1):Math.round(avg))+'</div><div class="sb-unit">'+(k2==='temp'?'°C':k2==='light'?'lux':k2==='sound'?'dB':'')+'</div></div>';
+h+='<div class="stat-box"><div class="sb-label">Μέγιστη '+k2+'</div><div class="sb-value" style="color:#4ade80">'+(k2==='temp'?max.toFixed(1):max)+'</div><div class="sb-unit">'+(k2==='temp'?'°C':k2==='light'?'lux':k2==='sound'?'dB':'')+'</div></div>';
+h+='<div class="stat-box"><div class="sb-label">Ελάχιστη '+k2+'</div><div class="sb-value" style="color:#60a5fa">'+(k2==='temp'?min.toFixed(1):min)+'</div><div class="sb-unit">'+(k2==='temp'?'°C':k2==='light'?'lux':k2==='sound'?'dB':'')+'</div></div>';
+}
+h+='</div></div>';
+}
+h+='<div class="chart-area"><div style="font-size:.65rem;color:#94a3b8;font-weight:700;margin-bottom:6px">📊 Οπτικοποίηση δεδομένων</div>';
+var chartKey=keysNum[0];
+if(chartKey&&exp.data.length<=8){
+var maxVal=Math.max.apply(null,exp.data.map(function(d){return d[chartKey];}));
+for(var c=0;c<exp.data.length;c++){
+var pct=Math.round((exp.data[c][chartKey]/maxVal)*100);
+h+='<div class="chart-bar"><span class="cb-label">'+exp.data[c].room+'</span><div class="cb-fill" style="width:'+Math.max(pct,4)+'%"><span class="cb-val">'+exp.data[c][chartKey]+'</span></div></div>';
+}
+}
+h+='</div>';
+h+='<div class="question-area">';
+var qIdx=current%exp.questions.length;
+if(answered[current]!==undefined){
+qIdx=current%exp.questions.length;
+}else{
+for(var qa=0;qa<exp.questions.length;qa++){
+if(answered[current+qa]===undefined){
+qIdx=qa;break;
+}
+qIdx=qa;
+}
+}
+var q=exp.questions[qIdx];
+h+='<div class="q-num">ΕΡΩΤΗΣΗ '+(qIdx+1)+'/'+exp.questions.length+'</div>';
+h+='<div class="q-text">'+q.q+'</div>';
+h+='<div class="q-opts" id="qOpts">';
+for(var o=0;o<q.opts.length;o++){
+var cls='q-btn';
+var ansKey=current+'_'+qIdx;
+if(answered[ansKey]!==undefined){
+cls+=o===q.correct?' correct':'';
+cls+=o===answered[ansKey]&&o!==q.correct?' wrong':'';
+}
+h+='<button class="'+cls+'" onclick="answer('+qIdx+','+o+')"'+(answered[ansKey]!==undefined?' disabled':'')+'>'+String.fromCharCode(945+o)+'. '+q.opts[o]+'</button>';
+}
+h+='</div>';
+var ansKey2=current+'_'+qIdx;
+if(answered[ansKey2]!==undefined){
+h+='<div class="q-feedback show '+(answered[ansKey2]===q.correct?'ok':'fail')+'">'+(answered[ansKey2]===q.correct?'✅ ':'❌ ')+q.explain+'</div>';
+}else{
+h+='<div class="q-feedback" id="qFb"></div>';
+}
+h+='</div></div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevExp()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextExp()"'+(current===experiments.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function answer(qIdx,optIdx){
+var exp=experiments[current];
+var q=exp.questions[qIdx];
+var ansKey=current+'_'+qIdx;
+if(answered[ansKey]!==undefined)return;
+answered[ansKey]=optIdx;
+if(optIdx===q.correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+}
+render();
+}
+function prevExp(){if(current>0){current--;render();}}
+function nextExp(){if(current<experiments.length-1){current++;render();}}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξινόμηση Συμβάντων - Scratch</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f0abfc);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#c026d3,#e879f9);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fce7f3;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#86198f;text-align:center;line-height:1.5}
+.event-drag-area{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px}
+.area-label{font-weight:700;color:#475569;margin-bottom:10px;font-size:.95em;text-align:center}
+.event-boxes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.event-box{min-width:180px;background:#fff;border:2px dashed #cbd5e1;border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .2s}
+.event-box.active{border-color:#e879f9;background:#fdf4ff}
+.event-box.highlight{border-color:#16a34a;background:#f0fdf4;transform:scale(1.05)}
+.event-icon{font-size:2.5em}
+.event-name{font-weight:700;color:#475569;font-size:.9em}
+.event-desc{font-size:.8em;color:#64748b;text-align:center}
+.scenarios-area{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.scenario-card{background:#fff;border:2px solid #fdba74;border-radius:12px;padding:14px;margin-bottom:12px}
+.scenario-icon{font-size:2em;text-align:center;margin-bottom:8px}
+.scenario-text{text-align:center;font-size:.95em;color:#9a3412;line-height:1.5;margin-bottom:10px}
+.scenario-actions{display:flex;gap:10px;justify-content:center}
+.btn-action{border:none;border-radius:50px;padding:10px 24px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-action:hover{transform:scale(1.05)}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#c026d3;margin-bottom:12px}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.btn-next{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:none;margin:10px auto;transition:all .2s}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(59,130,246,.4)}
+@media(max-width:550px){.event-box{min-width:150px}.event-icon{font-size:2em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .event-boxes > * { margin: 6px; }
+  .event-box > * + * { margin-top: 8px; }
+  .scenario-actions > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎯 Ταξινόμηση Συμβάντων</h1>
+<p>Διάλεξε το κατάλληλο συμβάν για κάθε περίπτωση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch υπάρχουν διαφορετικά συμβάντα: η πράσινη σημαία ξεκινάει όταν πατάμε το έγχρωμο κουμπί, το "Όταν γίνει κλικ σε αυτό" όταν πατάμε πάνω στο αντικείμενο, και το "Όταν πατηθεί αυτό το πλήκτρο" για πληκτρολόγιο!</div>
+
+<div class="score-display" id="scoreDisplay">Βαθμολογία: 0 / 5</div>
+
+<div class="event-drag-area">
+<div class="area-label">🎭 Διαθέσιμα Συμβάντα Scratch:</div>
+<div class="event-boxes">
+<div class="event-box" id="event1" onclick="selectEvent('greenflag')">
+<div class="event-icon">🚩</div>
+<div class="event-name">Πράσινη Σημαία</div>
+<div class="event-desc">Όταν πατηθεί η πράσινη σημαία</div>
+</div>
+<div class="event-box" id="event2" onclick="selectEvent('click')">
+<div class="event-icon">👆</div>
+<div class="event-name">Κλικ στο Αντικείμενο</div>
+<div class="event-desc">Όταν γίνει κλικ σε αυτό</div>
+</div>
+<div class="event-box" id="event3" onclick="selectEvent('key')">
+<div class="event-icon">⌨️</div>
+<div class="event-name">Πλήκτρο</div>
+<div class="event-desc">Όταν πατηθεί πλήκτρο</div>
+</div>
+</div>
+</div>
+
+<div class="scenarios-area" id="scenariosArea"></div>
+<button class="btn-next" id="nextBtn" onclick="nextScenario()">Επόμενο</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentScenario=0;
+var score=0;
+var selectedEvent=null;
+
+var scenarios=[
+{
+  icon:'🏁',
+  text:'Θέλω το παιχνίδι μου να ξεκινάει από την αρχή όταν πατάω το κουμπί στην κορυφή!',
+  correct:'greenflag',
+  explanation:'Η πράσινη σημαία ξεκινάει πάντα από την αρχή!'
+},
+{
+  icon:'🧙‍♀️',
+  text:'Η μάγισσα θα κάνει ξόρκι όταν κάνω κλικ πάνω της!',
+  correct:'click',
+  explanation:'Το «Όταν γίνει κλικ σε αυτό» ενεργοποιείται όταν πατάμε πάνω στο αντικείμενο!'
+},
+{
+  icon:'🚗',
+  text:'Το αυτοκίνητο θα κινείται όταν πατάω το πλήκτρο διαστήματος!',
+  correct:'key',
+  explanation:'Το «Όταν πατηθεί αυτό το πλήκτρο» ελέγχεται από το πληκτρολόγιο!'
+},
+{
+  icon:'👾',
+  text:'Το τέρας θα εμφανιστεί όταν ξεκινήσει το πρόγραμμα!',
+  correct:'greenflag',
+  explanation:'Όλα τα αντικείμενα με συμβάν πράσινης σημαίας ξεκινούν ταυτόχρονα!'
+},
+{
+  icon:'🎵',
+  text:'Το μουσικό όργανο θα παίξει νότα όταν κάνω κλικ πάνω του!',
+  correct:'click',
+  explanation:'Ο ήχος παίζει μόνο όταν κάνουμε κλικ στο συγκεκριμένο αντικείμενο!'
+}
+];
+
+function initScenario(){
+  var scenario=scenarios[currentScenario];
+  var container=document.getElementById('scenariosArea');
+  container.innerHTML='<div class="scenario-card"><div class="scenario-icon">'+scenario.icon+'</div><div class="scenario-text">'+scenario.text+'</div><div class="scenario-actions"><button class="btn-action" style="background:#f0abfc;color:#86198f" onclick="submitAnswer()">✅ Επιλογή</button></div></div>';
+  selectedEvent=null;
+  clearEventHighlights();
+}
+
+function selectEvent(eventType){
+  clearEventHighlights();
+  selectedEvent=eventType;
+  var eventBoxId='';
+  if(eventType==='greenflag')eventBoxId='event1';
+  else if(eventType==='click')eventBoxId='event2';
+  else if(eventType==='key')eventBoxId='event3';
+  document.getElementById(eventBoxId).classList.add('active');
+}
+
+function clearEventHighlights(){
+  var boxes=document.querySelectorAll('.event-box');
+  for(var i=0;i<boxes.length;i++){
+    boxes[i].classList.remove('active');
+  }
+}
+
+function submitAnswer(){
+  if(!selectedEvent){
+    showFeedback('❌ Διάλεξε πρώτα ένα συμβάν!',false);
+    return;
+  }
+  
+  var scenario=scenarios[currentScenario];
+  var isCorrect=selectedEvent===scenario.correct;
+  
+  var eventBoxId='';
+  if(selectedEvent==='greenflag')eventBoxId='event1';
+  else if(selectedEvent==='click')eventBoxId='event2';
+  else if(selectedEvent==='key')eventBoxId='event3';
+  
+  var eventBox=document.getElementById(eventBoxId);
+  
+  if(isCorrect){
+    score++;
+    eventBox.classList.remove('active');
+    eventBox.classList.add('highlight');
+    showFeedback('✅ Σωστά! '+scenario.explanation,true);
+    document.getElementById('nextBtn').style.display='block';
+  }else{
+    eventBox.classList.remove('active');
+    showFeedback('❌ Λάθος! Προσπάθησε ξανά!',false);
+  }
+  
+  updateScore();
+}
+
+function nextScenario(){
+  currentScenario++;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  
+  if(currentScenario>=scenarios.length){
+    showFinalResult();
+  }else{
+    initScenario();
+  }
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent='Βαθμολογία: '+score+' / '+scenarios.length;
+}
+
+function showFinalResult(){
+  var container=document.getElementById('scenariosArea');
+  container.innerHTML='';
+  clearEventHighlights();
+  
+  if(score===scenarios.length){
+    showFeedback('🏆 Τέλεια! Ξέρεις όλα τα συμβάντα!',true);
+  }else if(score>=3){
+    showFeedback('👍 Καλά! '+score+'/'+scenarios.length+' σωστά. Συνέχισε!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+scenarios.length+' σωστά. Θυμήσου τα διαφορετικά συμβάντα!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+initScenario();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ιστοσελίδες",
+  "subtitle": "Μόνο λέξεις σχετικές με ΔΙΚΤΥΑΚΟΥΣ ΤΟΠΟΥΣ!",
+  "instruction": "Σπάσε μόνο λέξεις ΠΟΥ ΑΦΟΡΟΥΝ ΣΕ ΔΙΚΤΥΑΚΟΥΣ ΤΟΠΟΥΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Ιστοσελίδα", "correct": true, "color": "#FF6B6B" },
+    { "text": "Τραπεζάκι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Φυλλομετρητής", "correct": true, "color": "#45B7D1" },
+    { "text": "Μπλε χρώμα", "correct": false, "color": "#96CEB4" },
+    { "text": "Browser", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κουτάλι", "correct": false, "color": "#DDA0DD" },
+    { "text": "Website", "correct": true, "color": "#98D8C8" },
+    { "text": "Γοβάς", "correct": false, "color": "#F7DC6F" },
+    { "text": "Webpage", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κουρελού", "correct": false, "color": "#85C1E9" }
+  ]
+}

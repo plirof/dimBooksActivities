@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Υπολογιστικό Φύλλο",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Κελί",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κελίο",
+          "error": true,
+          "correct": "Κελί",
+          "feedback": "Το σωστό είναι 'Κελί' χωρίς 'ο'"
+        },
+        {
+          "text": "Διάγραμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Στήλη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Γραμνή",
+          "error": true,
+          "correct": "Γραμμή",
+          "feedback": "Το σωστό είναι 'Γραμμή' με 'μ' και όχι 'μν'"
+        },
+        {
+          "text": "Πίνακας",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Ερώτημα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Εισαγωγή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Αποτέλεσμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Εισαγωργή",
+          "error": true,
+          "correct": "Εισαγωγή",
+          "feedback": "Το σωστό είναι 'Εισαγωγή' με 'γ' και όχι 'ργ'"
+        },
+        {
+          "text": "Επινλογή",
+          "error": true,
+          "correct": "Επιλογή",
+          "feedback": "Το σωστό είναι 'Επιλογή' χωρίς 'ν'"
+        },
+        {
+          "text": "Ανάλυση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

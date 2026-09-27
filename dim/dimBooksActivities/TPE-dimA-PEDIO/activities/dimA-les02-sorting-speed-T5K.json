@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Πρώτα ή Τέλος;",
+  "subtitle": "Πότε γίνεται;",
+  "instructions": "Πάτα: Πρώτα ή Τέλος;",
+  "categories": [
+    {"id": "prwta", "name": "Πρώτα", "color": "#FF9800", "key": "ArrowLeft"},
+    {"id": "telos", "name": "Τέλος", "color": "#9C27B0", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Διαβάζω συνταγή", "category": "prwta"},
+    {"text": "Ψήνω κουλουράκια", "category": "telos"},
+    {"text": "Βλέπω πρόγραμμα", "category": "prwta"},
+    {"text": "Κλείνω τσάντα", "category": "telos"},
+    {"text": "Φτιάχνω ζύμη", "category": "prwta"},
+    {"text": "Πλένω δόντια", "category": "telos"},
+    {"text": "Στρώνω κρεβάτι", "category": "prwta"},
+    {"text": "Φεύγω σχολείο", "category": "telos"}
+  ],
+  "duration": 30
+}

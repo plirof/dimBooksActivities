@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Καταγραφή Δεδομένων",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τα στοιχεία που σχετίζονται με την καταγραφή δεδομένων",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Καταγραφή", "correct": true, "color": "#4CAF50" },
+    { "text": "Δεδομένα", "correct": true, "color": "#2196F3" },
+    { "text": "Πίνακας", "correct": true, "color": "#FF9800" },
+    { "text": "Στήλη", "correct": true, "color": "#9C27B0" },
+    { "text": "Πείραμα", "correct": true, "color": "#00BCD4" },
+    { "text": "Datalogger", "correct": true, "color": "#8BC34A" },
+    { "text": "Μέτρηση", "correct": true, "color": "#FF5722" },
+    { "text": "Αρχείο", "correct": true, "color": "#3F51B5" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#f44336" },
+    { "text": "Μπάσκετ", "correct": false, "color": "#795548" },
+    { "text": "Κήπος", "correct": false, "color": "#607D8B" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#E91E63" }
+  ]
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 27 - Δραστηριότητα 1: Φτιάξε μήνυμα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{text-align:center;color:#fff;margin-bottom:10px;font-size:1.5rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;margin-bottom:20px}
+.safety-banner{background:linear-gradient(90deg,#fff3e0,#ffe0b2);border:2px solid #ff9800;border-radius:14px;padding:14px;margin-bottom:20px;text-align:center;font-size:.95rem;color:#e65100;font-weight:700}
+.compose-section{display:flex;flex-direction:column;gap:14px}
+.field-group{display:flex;flex-direction:column;gap:4px}
+.field-group label{font-weight:700;color:#555;font-size:.9rem}
+.field-group input,.field-group select,.field-group textarea{width:100%;padding:12px;border:2px solid #ddd;border-radius:12px;font-size:1rem;font-family:inherit;transition:border-color .3s}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{outline:none;border-color:#f5576c}
+.field-group textarea{resize:vertical;min-height:100px}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.attach-btn{padding:12px 20px;background:#fff;color:#ff9800;border:2px solid #ff9800;border-radius:14px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .3s;flex:1;min-width:140px}
+.attach-btn:hover{background:#fff3e0}
+.send-btn{padding:12px 20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(102,126,234,.4);transition:transform .2s;flex:1;min-width:140px}
+.send-btn:hover{transform:scale(1.03)}
+.send-btn:disabled{opacity:.5;cursor:default;transform:none}
+.toast{position:fixed;top:30px;left:50%;transform:translateX(-50%) translateY(-100px);background:#333;color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;z-index:999;transition:transform .4s ease;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.sent-section{margin-top:24px;display:none}
+.sent-section h3{color:#764ba2;margin-bottom:14px;font-size:1.1rem}
+.sent-item{background:#f8f9fa;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #764ba2}
+.sent-item .sent-to{font-weight:700;color:#333;font-size:.95rem}
+.sent-item .sent-subject{color:#764ba2;font-size:.9rem;margin-top:2px}
+.sent-item .sent-body{color:#555;margin-top:6px;line-height:1.5;font-size:.9rem}
+.sent-item .sent-time{font-size:.75rem;color:#999;margin-top:6px}
+.congrats{display:none;text-align:center;padding:30px}
+.congrats h2{color:#2e7d32;font-size:1.5rem;margin-bottom:10px}
+.congrats p{color:#555;font-size:1.1rem}
+.congrats .big-emoji{font-size:4rem;margin-bottom:10px}
+.status-badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700;margin-top:8px}
+@media(max-width:600px){.container{padding:15px}h1{font-size:1.2rem}.btn-row{flex-direction:column}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .compose-section > * + * { margin-top: 14px; }
+  .field-group > * + * { margin-top: 4px; }
+  .btn-row > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>✉️ Μάθημα 27 - Δραστηριότητα 1</h1>
+<div class="toast" id="toast"></div>
+<div class="container" id="mainArea">
+<div class="safety-banner">⚠️ Στέλνουμε μηνύματα μόνο σε άτομα που γνωρίζουμε!</div>
+<div class="compose-section">
+<div class="field-group">
+<label for="toField">📧 Προς:</label>
+<select id="toField">
+<option value="">-- Διάλεξε παραλήπτη --</option>
+<option value="Γιάννης">Γιάννης</option>
+<option value="Μαρία">Μαρία</option>
+<option value="κυρία Ελένη">κυρία Ελένη</option>
+</select>
+</div>
+<div class="field-group">
+<label for="subjectField">📝 Θέμα:</label>
+<input type="text" id="subjectField" maxlength="80" placeholder="Γράψε το θέμα του μηνύματος...">
+</div>
+<div class="field-group">
+<label for="bodyField">💬 Μήνυμα:</label>
+<textarea id="bodyField" rows="5" maxlength="500" placeholder="Γράψε το μήνυμά σου εδώ..."></textarea>
+</div>
+<div class="btn-row">
+<button class="attach-btn" onclick="doAttach()">📎 Συνημμένο</button>
+<button class="send-btn" id="sendBtn" onclick="doSend()">📤 Αποστολή</button>
+</div>
+</div>
+<div class="sent-section" id="sentSection">
+<h3>📬 Σταλθέντα</h3>
+<div id="sentList"></div>
+</div>
+</div>
+<div class="container congrats" id="congratsArea">
+<div class="big-emoji">🎉</div>
+<h2>Μπράβο! Μπράβο!</h2>
+<p>Έστειλες το πρώτο σου μήνυμα στο e-me! ✉️<br>Να θυμάσαι: στέλνουμε μηνύματα μόνο σε άτομα που γνωρίζουμε! ⚠️</p>
+</div>
+
+<script>
+var sentMessages=[];
+var hasAttached=false;
+
+function showToast(msg){
+var t=document.getElementById('toast');
+t.textContent=msg;
+t.classList.add('show');
+setTimeout(function(){t.classList.remove('show')},2500);
+}
+
+function doAttach(){
+hasAttached=true;
+showToast('📎 Προστέθηκε αρχείο!');
+}
+
+function doSend(){
+var to=document.getElementById('toField').value;
+var subject=document.getElementById('subjectField').value.trim();
+var body=document.getElementById('bodyField').value.trim();
+if(!to){showToast('❌ Διάλεξε παραλήπτη!');return}
+if(!subject){showToast('❌ Γράψε ένα θέμα!');return}
+if(!body){showToast('❌ Γράψε ένα μήνυμα!');return}
+var now=new Date();
+var timeStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+var dateStr=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+timeStr;
+sentMessages.push({to:to,subject:subject,body:body,time:dateStr,attached:hasAttached});
+document.getElementById('sentSection').style.display='block';
+renderSent();
+showToast('✅ Το μήνυμά σου στάλθηκε!');
+document.getElementById('sendBtn').disabled=true;
+setTimeout(function(){
+document.getElementById('mainArea').style.display='none';
+document.getElementById('congratsArea').style.display='block';
+},1500);
+}
+
+function renderSent(){
+var list=document.getElementById('sentList');
+list.innerHTML='';
+sentMessages.forEach(function(m){
+var d=document.createElement('div');d.className='sent-item';
+var divTo=document.createElement('div');divTo.className='sent-to';divTo.textContent='📧 Προς: '+m.to;
+var divSubj=document.createElement('div');divSubj.className='sent-subject';divSubj.textContent='📝 '+m.subject;
+var divBody=document.createElement('div');divBody.className='sent-body';divBody.textContent=m.body;
+var divTime=document.createElement('div');divTime.className='sent-time';divTime.textContent='🕐 '+m.time+(m.attached?' · 📎 Συνημμένο':'');
+d.appendChild(divTo);d.appendChild(divSubj);d.appendChild(divBody);d.appendChild(divTime);
+var badge=document.createElement('div');badge.className='status-badge';badge.textContent='✅ Στάλθηκε';
+d.appendChild(badge);
+list.appendChild(d);
+});
+}
+</script>
+</body>
+</html>

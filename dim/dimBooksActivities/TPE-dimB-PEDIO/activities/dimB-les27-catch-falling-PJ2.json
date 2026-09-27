@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι στέλνω σε μήνυμα;",
+  "subtitle": "Πιάσε μόνο περιεχόμενο μηνυμάτων",
+  "instructions": "Πιάσε τι μπορώ να στείλω. Απόφυγε τα άλλα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Κείμενο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τοίχος", "correct": false, "color": "#f44336" },
+    { "text": "Φωτογραφία", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουπί", "correct": false, "color": "#f44336" },
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Σφυρί", "correct": false, "color": "#f44336" },
+    { "text": "Ήχος", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρέκλα", "correct": false, "color": "#f44336" },
+    { "text": "Emoticons", "correct": true, "color": "#4CAF50" },
+    { "text": "Τέντες", "correct": false, "color": "#f44336" }
+  ]
+}

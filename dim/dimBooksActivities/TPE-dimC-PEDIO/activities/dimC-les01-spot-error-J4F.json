@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Συνθήκες",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "βρέχει,", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "φόρεσε", "error": true, "correct": "πάρε", "feedback": "Όταν βρέχει παίρνουμε ομπρέλα, δεν φοράμε!"},
+        {"text": "ομπρέλα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "συνθήκη", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "μετά", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "λέξη", "error": true, "correct": "Αν", "feedback": "Η συνθήκη βρίσκεται μετά τη λέξη «Αν», όχι μετά τη λέξη «τότε»!"},
+        {"text": "τότε.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "κρύο,", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "βάλε", "error": true, "correct": "φόρεσε", "feedback": "Τα ρούχα τα φοράμε, δεν τα βάζουμε!"},
+        {"text": "κασκόλ", "error": false},
+        {"text": "και", "error": false},
+        {"text": "σκούφο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "αέρα,", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "πάρε", "error": true, "correct": "φόρεσε", "feedback": "Το αντιανεμικό το φοράμε, δεν το παίρνουμε!"},
+        {"text": "αντιανεμικό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "ήλιο,", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "πάρε", "error": true, "correct": "βάλε", "feedback": "Τα γυαλιά ηλίου τα βάζουμε, δεν τα παίρνουμε!"},
+        {"text": "γυαλιά", "error": false},
+        {"text": "ηλίου.", "error": false}
+      ]
+    }
+  ]
+}

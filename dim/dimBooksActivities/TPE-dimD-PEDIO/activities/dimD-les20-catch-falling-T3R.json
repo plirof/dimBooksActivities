@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Λειτουργίες Browser",
+  "subtitle": "Πιάσε τις πραγματικές λειτουργίες του φυλλομετρητή!",
+  "instructions": "Πιάσε τις λειτουργίες που πραγματικά υπάρχουν σε έναν φυλλομετρητή.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Σελιδοδείκτης", "correct": true, "color": "#4caf50" },
+    { "text": "Καρτέλα", "correct": true, "color": "#2196f3" },
+    { "text": "Ζουμ", "correct": true, "color": "#ff9800" },
+    { "text": "Εκτύπωση", "correct": true, "color": "#9c27b0" },
+    { "text": "Βιντεοπαραγωγή", "correct": false, "color": "#f44336" },
+    { "text": "Αναζήτηση λέξης", "correct": true, "color": "#00bcd4" },
+    { "text": "Πρόγραμμα ζωγραφικής", "correct": false, "color": "#f44336" },
+    { "text": "Ιστορικό", "correct": true, "color": "#8bc34a" },
+    { "text": "Μουσική σύνθεση", "correct": false, "color": "#f44336" },
+    { "text": "Λήψεις αρχείων", "correct": true, "color": "#e91e63" }
+  ]
+}

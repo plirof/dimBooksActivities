@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ψηφιακή Ταυτότητα</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0e7ff,#818cf8);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#3730a3,#6366f1);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#eef2ff;border-radius:12px;border-left:4px solid #6366f1;padding:10px 14px;font-size:.85em;color:#312e81;line-height:1.5}
+.info b{color:#3730a3}
+.game-area{display:flex;gap:16px;flex-wrap:wrap}
+.profile-card{flex:1;min-width:260px;background:#f8fafc;border-radius:16px;border:2px solid #c7d2fe;padding:16px}
+.profile-card h3{color:#3730a3;font-size:.95em;margin-bottom:12px;text-align:center}
+.avatar-area{text-align:center;margin-bottom:12px}
+.avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a5b4fc);display:inline-flex;align-items:center;justify-content:center;font-size:2.5em;border:3px solid #c7d2fe}
+.profile-field{margin-bottom:8px}
+.profile-field label{font-size:.8em;color:#6b7280;font-weight:600;display:block;margin-bottom:3px}
+.profile-field .pf-value{padding:6px 10px;background:#eef2ff;border-radius:8px;font-size:.85em;color:#1e293b;min-height:28px;border:1px solid #c7d2fe}
+.profile-field .pf-value.empty{color:#a5b4fc;font-style:italic}
+.items-panel{flex:1;min-width:260px}
+.items-panel h3{color:#3730a3;font-size:.95em;margin-bottom:10px;text-align:center}
+.item-pool{display:flex;flex-direction:column;gap:8px}
+.item-card{padding:10px 14px;background:#fff;border:2px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;user-select:none;touch-action:none}
+.item-card:hover{border-color:#6366f1;background:#eef2ff}
+.item-card:active{transform:scale(.98)}
+.item-card .ic-icon{font-size:1.3em}
+.item-card .ic-text{font-size:.85em;color:#1e293b}
+.item-card .ic-tag{font-size:.7em;padding:2px 8px;border-radius:20px;margin-left:auto;font-weight:600;white-space:nowrap}
+.tag-safe{background:#d1fae5;color:#047857}
+.tag-unsafe{background:#fee2e2;color:#b91c1c}
+.item-card.placed{opacity:.4;pointer-events:none}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#3730a3}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#3730a3,#6366f1);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(55,48,163,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:600px){.game-area{flex-direction:column}.item-card .ic-tag{display:none}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .game-area > * { margin: 8px; }
+  .item-pool > * + * { margin-top: 8px; }
+  .item-card > * + * { margin-left: 10px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>👤 Ψηφιακή Ταυτότητα & Προφίλ</h1>
+<p>Τι είναι ασφαλές να μοιραστούμε στο προφίλ μας;</p>
+</div>
+<div class="area">
+<div class="info">💡 Στην πλατφόρμα <b>e-me</b> μπορείς να φτιάξεις το <b>προφίλ</b> σου. Το προφίλ σου είναι η <b>ψηφιακή σου ταυτότητα</b>. Πρέπει να είσαι προσεκτικός: δεν πρέπει να μοιράζεσαι <b>προσωπικά δεδομένα</b> (π.χ. διεύθυνση, τηλέφωνο) με αγνώστους!</div>
+<div class="score-bar">⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="game-area">
+<div class="profile-card" id="profileCard">
+<h3>🪪 Το Προφίλ μου στο e-me</h3>
+<div class="avatar-area"><div class="avatar">😊</div></div>
+<div class="profile-field"><label>Όνομα:</label><div class="pf-value empty" id="fieldName">—</div></div>
+<div class="profile-field"><label>Τάξη:</label><div class="pf-value empty" id="fieldClass">—</div></div>
+<div class="profile-field"><label>Αγαπημένο χόμπι:</label><div class="pf-value empty" id="fieldHobby">—</div></div>
+<div class="profile-field"><label>Σχολείο:</label><div class="pf-value empty" id="fieldSchool">—</div></div>
+<div class="profile-field"><label>Τηλέφωνο:</label><div class="pf-value empty" id="fieldPhone">—</div></div>
+<div class="profile-field"><label>Διεύθυνση σπιτιού:</label><div class="pf-value empty" id="fieldAddress">—</div></div>
+<div class="profile-field"><label>Κωδικός:</label><div class="pf-value empty" id="fieldPassword">—</div></div>
+</div>
+<div class="items-panel">
+<h3>📦 Σύρε τα στοιχεία στο προφίλ</h3>
+<p style="font-size:.8em;color:#6b7280;text-align:center;margin-bottom:10px">Κάνε κλικ σε κάθε στοιχείο. Αν είναι <span style="color:#047857;font-weight:700">ασφαλές</span>, μπαίνει στο προφίλ. Αν είναι <span style="color:#b91c1c;font-weight:700">επικίνδυνο</span>, μπλοκάρει!</p>
+<div class="item-pool" id="itemPool"></div>
+</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextRound()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var rounds=[
+{
+scenario:'Μaria, Γ\' Δημοτικού',
+avatar:'👧',
+items:[
+{text:'Μαρία Π.',icon:'👤',field:'name',safe:true},
+{text:'Γραμμική Άλγεβρα',icon:'📐',field:'hobby',safe:true},
+{text:'6ο Δ.Σ. Θεσσαλονίκης',icon:'🏫',field:'school',safe:true},
+{text:'Γ\' Δημοτικού',icon:'📚',field:'class',safe:true},
+{text:'2310-555-123',icon:'📞',field:'phone',safe:false},
+{text:'Παπάγου 15, Θεσσαλονίκη',icon:'🏠',field:'address',safe:false},
+{text:'maria2026!',icon:'🔑',field:'password',safe:false}
+]
+},
+{
+scenario:'Γιώργος, Γ\' Δημοτικού',
+avatar:'👦',
+items:[
+{text:'Γιώργος Κ.',icon:'👤',field:'name',safe:true},
+{text:'Μπάσκετ',icon:'🏀',field:'hobby',safe:true},
+{text:'12ο Δ.Σ. Αθήνας',icon:'🏫',field:'school',safe:true},
+{text:'Γ\' Δημοτικού',icon:'📚',field:'class',safe:true},
+{text:'694-123-4567',icon:'📞',field:'phone',safe:false},
+{text:'Ερμού 8, Αθήνα',icon:'🏠',field:'address',safe:false},
+{text:'gwrgos2026#',icon:'🔑',field:'password',safe:false}
+]
+},
+{
+scenario:'Ελένη, Γ\' Δημοτικού',
+avatar:'👧',
+items:[
+{text:'Ελένη Δ.',icon:'👤',field:'name',safe:true},
+{text:'Ζωγραφική',icon:'🎨',field:'hobby',safe:true},
+{text:'3ο Δ.Σ. Πάτρας',icon:'🏫',field:'school',safe:true},
+{text:'Γ\' Δημοτικού',icon:'📚',field:'class',safe:true},
+{text:'2610-333-999',icon:'📞',field:'phone',safe:false},
+{text:'Κανάρη 22, Πάτρα',icon:'🏠',field:'address',safe:false},
+{text:'3leniPass!',icon:'🔑',field:'password',safe:false}
+]
+}
+];
+
+var currentRound=0;
+var score=0;
+var totalItems=0;
+var answered=0;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initRound(){
+var r=rounds[currentRound];
+answered=0;
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+document.querySelector('.avatar').textContent=r.avatar;
+
+var fields=['FieldName','FieldClass','FieldHobby','FieldSchool','FieldPhone','FieldAddress','FieldPassword'];
+for(var i=0;i<fields.length;i++){
+var el=document.getElementById(fields[i]);
+el.textContent='—';
+el.classList.add('empty');
+}
+
+var pool=document.getElementById('itemPool');
+pool.innerHTML='';
+var order=[];
+for(var i=0;i<r.items.length;i++)order.push(i);
+shuffle(order);
+for(var i=0;i<order.length;i++){
+var idx=order[i];
+var item=r.items[idx];
+var card=document.createElement('div');
+card.className='item-card';
+card.dataset.idx=idx;
+card.innerHTML='<span class="ic-icon">'+item.icon+'</span><span class="ic-text">'+item.text+'</span><span class="ic-tag '+(item.safe?'tag-safe':'tag-unsafe')+'">'+(item.safe?'✅ Ασφαλές':'⚠️ Ιδιωτικό')+'</span>';
+card.onclick=function(){handleClick(parseInt(this.dataset.idx),this);};
+pool.appendChild(card);
+}
+totalItems=r.items.length;
+}
+
+function handleClick(idx,el){
+if(el.classList.contains('placed'))return;
+var r=rounds[currentRound];
+var item=r.items[idx];
+el.classList.add('placed');
+
+var fieldMap={
+name:'FieldName',
+class:'FieldClass',
+hobby:'FieldHobby',
+school:'FieldSchool',
+phone:'FieldPhone',
+address:'FieldAddress',
+password:'FieldPassword'
+};
+
+var fieldEl=document.getElementById(fieldMap[item.field]);
+
+if(item.safe){
+fieldEl.textContent=item.text;
+fieldEl.classList.remove('empty');
+score++;
+showFeedback('✅ Το «'+item.text+'» είναι ασφαλές να το βάλεις στο προφίλ!',true);
+}else{
+fieldEl.textContent='🔒 ΚΡΥΜΜΕΝΟ';
+fieldEl.classList.remove('empty');
+fieldEl.style.background='#fee2e2';
+fieldEl.style.borderColor='#fca5a5';
+showFeedback('🚫 Σωστά! Το «'+item.text+'» είναι <b>προσωπικό δεδομένο</b> — ΔΕΝ το μοιράζεσαι online!',true);
+}
+
+answered++;
+document.getElementById('scoreDisplay').textContent=score;
+
+if(answered>=r.items.length){
+document.getElementById('nextBtn').disabled=false;
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.innerHTML=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},3000);
+}
+
+function nextRound(){
+if(currentRound<rounds.length-1){
+currentRound++;
+initRound();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+var total=0;
+for(var i=0;i<rounds.length;i++)total+=rounds[i].items.length;
+var pct=Math.round(score/total*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+document.getElementById('itemPool').innerHTML='';
+document.getElementById('profileCard').innerHTML='<div style="text-align:center;padding:16px"><div style="font-size:2.5em">'+stars+'</div><h3 style="color:#3730a3;margin:8px 0">'+score+'/'+total+' σωστά!</h3><p style="color:#64748b;font-size:.9em">'+(pct>=80?'Μπράβο! Ξέρεις τι είναι ασφαλές να μοιράζεσαι online!':'Θυμήσου: Ποτέ δεν μοιράζεσαι τηλέφωνο, διεύθυνση ή κωδικό!')+'</p><p style="color:#6b7280;font-size:.85em;margin-top:8px">🔒 <b>Κανόνας:</b> Όνομα, τάξη, σχολείο, χόμπι = ΟΚ. Τηλέφωνο, διεύθυνση, κωδικός = ΠΟΤΕ!</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentRound=0;
+score=0;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('nextBtn').style.display='inline-block';
+initRound();
+}
+
+function countTotal(){var c=0;for(var i=0;i<rounds.length;i++)c+=rounds[i].items.length;return c;}
+document.getElementById('totalDisplay').textContent=countTotal();
+initRound();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Πέτρα-Ψαλίδι-Χαρτί",
+  "subtitle": "Πιάσε μόνο στοιχεία παιχνιδιού!",
+  "instructions": "Πιάσε μόνο ΣΤΟΙΧΕΙΑ ΠΑΙΧΝΙΔΙΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Πέτρα", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουζίνα", "correct": false, "color": "#f44336"},
+    {"text": "Ψαλίδι", "correct": true, "color": "#2196F3"},
+    {"text": "Αυτοκίνητο", "correct": false, "color": "#FF9800"},
+    {"text": "Χαρτί", "correct": true, "color": "#9C27B0"},
+    {"text": "Τηλεόραση", "correct": false, "color": "#E91E63"},
+    {"text": "Κουμπί A", "correct": true, "color": "#009688"},
+    {"text": "Καρέκλα", "correct": false, "color": "#FFC107"},
+    {"text": "Λογότυπο", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

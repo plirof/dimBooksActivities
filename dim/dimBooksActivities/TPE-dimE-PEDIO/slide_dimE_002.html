@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 2ο: Ο αλγόριθμος του Καίσαρα (συνέχεια)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a1628;color:#222;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+.topbar{background:linear-gradient(135deg,#00598a,#0077b6);color:#fff;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;height:46px;flex-shrink:0}
+.topbar .left{display:flex;align-items:center;gap:10px}
+.topbar .badge{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+.topbar h1{font-size:14px}
+.topbar .counter{font-size:13px;opacity:.8}
+.pbar{height:3px;background:#1a2a40;flex-shrink:0}
+.pbar-fill{height:100%;background:linear-gradient(90deg,#00598a,#00b4d8);transition:width .3s}
+.stage{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:20px}
+.slide{display:none;max-width:860px;width:100%;background:#fff;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,.4);padding:40px 50px;animation:fadeIn .3s}
+.slide.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide h2{color:#00598a;font-size:24px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #00b4d8}
+.slide h3{color:#0077b6;font-size:18px;margin:18px 0 10px}
+.slide p{line-height:1.7;margin-bottom:12px;font-size:15px}
+.slide ul{margin:10px 0 14px 24px;line-height:1.8;font-size:15px}
+.slide ul li{margin-bottom:4px}
+.slide .box{background:#e8f4fd;border-left:4px solid #00598a;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0}
+.slide .box.orange{background:#fff3e0;border-left-color:#e65100}
+.slide .box.green{background:#e8f5e9;border-left-color:#2e7d32}
+.slide .box.red{background:#ffebee;border-left-color:#d32f2f}
+.slide .algo{background:#f5f5f5;border:1px solid #ddd;border-radius:8px;padding:18px 22px;margin:14px 0;font-family:'Courier New',monospace;font-size:14px;line-height:1.9}
+.slide .indent{padding-left:24px}
+.slide .indent2{padding-left:48px}
+.slide .keyword{color:#00598a;font-weight:700}
+.slide .highlight{color:#d32f2f;font-weight:700}
+.navbar{background:#0f1b2d;height:52px;display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0}
+.nbtn{background:#00598a;border:none;color:#fff;padding:7px 20px;border-radius:6px;cursor:pointer;font-size:14px;transition:background .2s}
+.nbtn:hover{background:#0077b6}
+.nbtn:disabled{opacity:.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="left"><span class="badge">Μάθημα 2ο</span><h1>Ο αλγόριθμος του Καίσαρα (συνέχεια)</h1></div>
+<span class="counter"><span id="cur">1</span> / <span id="tot"></span></span>
+</div>
+<div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+<div class="stage">
+
+<div class="slide active">
+<h2>Μάθημα 2ο: Ο αλγόριθμος του Καίσαρα (συνέχεια)</h2>
+<div class="box green"><strong>Στόχοι μαθήματος:</strong>
+<ul>
+<li>Ότι για ένα πρόβλημα μπορεί να υπάρχουν <strong>περισσότεροι από ένας αλγόριθμοι</strong> που το επιλύουν</li>
+<li>Ότι θέλουμε οι αλγόριθμοί μας να είναι <strong>γενικοί</strong> και να μπορούν να επιλύουν πολλά παρόμοια προβλήματα</li>
+<li>Ότι σε έναν αλγόριθμο μπορούμε να δώσουμε <strong>διάφορα δεδομένα εισόδου</strong></li>
+</ul></div>
+</div>
+
+<div class="slide">
+<h2>Το πρόβλημα με τα τελευταία γράμματα</h2>
+<p>Ας δούμε τον πίνακα με τις τιμές της μεταβλητής <em>θέση</em> στο προηγούμενο μάθημα. Παρατήρησε ότι για το γράμμα <strong>Ω</strong> υπάρχει κάποιο <span class="highlight">πρόβλημα</span>.</p>
+<div class="box red">
+<strong>Πρόβλημα:</strong> Η θέση του γράμματος Ω στο αλφάβητο είναι το 24, αλλά αν της προσθέσουμε 3 προκύπτει ο αριθμός <strong>27</strong>, που δεν αντιστοιχεί σε κανένα γράμμα του αλφαβήτου!
+</div>
+<p>Ο προηγούμενος αλγόριθμος δεν έχει προβλέψει την περίπτωση αυτών των γραμμάτων. Πρέπει επομένως να τον <strong>διορθώσουμε</strong> ώστε να μπορεί να κρυπτογραφήσει σωστά <strong>όλα</strong> τα γράμματα του αλφαβήτου.</p>
+<p>Για ποια γράμματα του αλφαβήτου ισχύει ότι <em>θέση + 3 > 24</strong>;</p>
+<p>Είναι τα γράμματα <strong>Χ, Ψ, Ω</strong> (θέσεις 22, 23, 24).</p>
+</div>
+
+<div class="slide">
+<h2>Αλγόριθμος 2: Εξεύρεση ειδικών περιπτώσεων</h2>
+<div class="algo">
+<strong>Αλγόριθμος 2</strong><br>
+Επανάλαβε ώσπου να τελειώσουν όλα τα γράμματα<br>
+<div class="indent">Διάβασε το επόμενο γράμμα</div>
+<div class="indent">Βρες τη <span class="keyword">θέση</span> του γράμματος στο αλφάβητο</div>
+<div class="indent">Αν το γράμμα είναι το Χ, τότε γράψε το γράμμα Α</div>
+<div class="indent">Αν το γράμμα είναι το Ψ, τότε γράψε το γράμμα Β</div>
+<div class="indent">Αν το γράμμα είναι το Ω, τότε γράψε το γράμμα Γ</div>
+<div class="indent">Αν το γράμμα <span class="highlight">ΔΕΝ</span> είναι το Χ <span class="highlight">ΚΑΙ</span> <span class="highlight">ΔΕΝ</span> είναι το Ψ <span class="highlight">ΚΑΙ</span> <span class="highlight">ΔΕΝ</span> είναι το Ω, τότε</div>
+<div class="indent2">Γράψε το γράμμα του αλφαβήτου στη <span class="keyword">θέση + 3</span></div>
+</div>
+<div class="box orange">
+<strong>Πρόσεξε:</strong> Ο αλγόριθμος 2 χρησιμοποιεί <span class="keyword">λογικές εκφράσεις</span> με τους τελεστές <strong>ΔΕΝ</strong> και <strong>ΚΑΙ</strong>!
+</div>
+</div>
+
+<div class="slide">
+<h2>Αλγόριθμος 3: Γενίκευση</h2>
+<div class="algo">
+<strong>Αλγόριθμος 3</strong><br>
+Επανάλαβε ώσπου να τελειώσουν όλα τα γράμματα<br>
+<div class="indent">Διάβασε το επόμενο γράμμα</div>
+<div class="indent">Βρες τη <span class="keyword">θέση</span> του γράμματος στο αλφάβητο</div>
+<div class="indent">Αν <span class="keyword">θέση</span> + 3 > 24 τότε</div>
+<div class="indent2">Γράψε το γράμμα στη (<span class="keyword">θέση</span> + 3) − 24</div>
+<div class="indent">Αλλιώς</div>
+<div class="indent2">Γράψε το γράμμα στη <span class="keyword">θέση</span> + 3</div>
+</div>
+<div class="box green">
+<strong>Πλεονέκτημα:</strong> Ο αλγόριθμος 3 μπορεί με μικρές αλλαγές να κωδικοποιήσει περισσότερα αλφάβητα και με διάφορες μετατοπίσεις. Είναι πιο <span class="keyword">γενικός</span> από τον αλγόριθμο 2.
+</div>
+</div>
+
+<div class="slide">
+<h2>Γενίκευση αλγορίθμου</h2>
+<p>Στην επιστήμη των υπολογιστών πολλές φορές χρειάζεται να <span class="keyword">γενικεύουμε</span> τις λύσεις που δίνουμε, έτσι ώστε να μπορούμε να τις χρησιμοποιούμε για να λύνουμε <strong>παρόμοιου είδους προβλήματα</strong>.</p>
+<div class="box">
+<strong>Συζήτηση:</strong>
+<ul>
+<li>Τι αλλαγές πρέπει να γίνουν στον Αλγόριθμο 2 αν η μετατόπιση γίνει π.χ. 5;</li>
+<li>Τι αλλαγές πρέπει να γίνουν στον Αλγόριθμο 3 για την ίδια αλλαγή;</li>
+<li>Ποιος αλγόριθμος είναι πιο γενικός;</li>
+<li>Τι αλλαγές πρέπει για το λατινικό αλφάβητο (26 γράμματα);</li>
+</ul>
+</div>
+</div>
+
+<div class="slide">
+<h2>Τι έμαθα;</h2>
+<div class="box green">
+<strong>Σύνοψη μαθήματος:</strong>
+<ul>
+<li>Για ένα πρόβλημα μπορούν να υπάρχουν <strong>πολλοί διαφορετικοί αλγόριθμοι</strong> που το επιλύουν</li>
+<li>Κάθε αλγόριθμος πρέπει να αντιμετωπίζει <strong>όλες τις περιπτώσεις</strong> δεδομένων εισόδου</li>
+<li>Η <strong>γενίκευση</strong> κάνει τους αλγόριθμους χρήσιμους για περισσότερα προβλήματα</li>
+<li>Οι <strong>λογικές εκφράσεις</strong> (με τελεστές ΚΑΙ, Ή, ΔΕΝ) χρησιμοποιούνται μέσα στους αλγόριθμους</li>
+<li>Οι αλγόριθμοι πρέπει να <strong>δοκιμάζονται</strong> με διάφορα δεδομένα εισόδου</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navbar">
+<button class="nbtn" id="prevBtn" onclick="go(-1)">◀ Προηγούμενο</button>
+<button class="nbtn" id="nextBtn" onclick="go(1)">Επόμενο ▶</button>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');let c=0;
+document.getElementById('tot').textContent=slides.length;
+function show(i){c=Math.max(0,Math.min(i,slides.length-1));slides.forEach((s,j)=>{s.classList.toggle('active',j===c)});document.getElementById('cur').textContent=c+1;document.getElementById('pbar').style.width=((c+1)/slides.length*100)+'%';document.getElementById('prevBtn').disabled=c===0;document.getElementById('nextBtn').disabled=c===slides.length-1}
+function go(d){show(c+d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}if(e.key==='Home'){e.preventDefault();show(0)}if(e.key==='End'){e.preventDefault();show(slides.length-1)}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?go(1):go(-1)}});
+show(0);
+</script>
+</body>
+</html>

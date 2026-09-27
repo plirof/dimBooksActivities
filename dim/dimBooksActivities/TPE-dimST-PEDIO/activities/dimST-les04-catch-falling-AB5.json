@@ -1,0 +1,61 @@
+{
+  "title": "Πιάστε τα!: Υποπρογράμματα Scratch",
+  "subtitle": "Πιάσε έννοιες υποπρογραμμάτων",
+  "instructions": "Πιάσε μόνο έννοιες σχετικές με υποπρογράμματα!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "Νέα εντολή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μεταβλητή εισόδου",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Εγκατάσταση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ορισμός",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Λήψη αρχείου",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Κλήση",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Ευανάγνωστος",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Διαγραφή λογαριασμού",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Περίμετρος",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "Ακτίνα",
+      "correct": true,
+      "color": "#FF5722"
+    }
+  ]
+}

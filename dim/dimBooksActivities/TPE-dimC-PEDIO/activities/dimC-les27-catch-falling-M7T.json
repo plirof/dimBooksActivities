@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ενέργειες Τοίχου",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΕΝΕΡΓΕΙΕΣ ΠΟΥ ΜΠΟΡΩ ΝΑ ΚΑΝΩ ΣΤΟΝ ΤΟΙΧΟ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Νέα ανάρτηση", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Σχόλιο", "correct": true, "color": "#2196F3"},
+    {"text": "Γλάστρα", "correct": false, "color": "#FF9800"},
+    {"text": "Αντιδρώ", "correct": true, "color": "#9C27B0"},
+    {"text": "Μπογιά", "correct": false, "color": "#E91E63"},
+    {"text": "Διαβάζω ανάρτηση", "correct": true, "color": "#00BCD4"},
+    {"text": "Σφυρί", "correct": false, "color": "#FFC107"},
+    {"text": "Βίντεο/εικόνα", "correct": true, "color": "#795548"},
+    {"text": "Κάβουρας", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Πηγές Δεδομένων",
+  "subtitle": "Πιάσε τους σωστούς τρόπους συλλογής δεδομένων!",
+  "instructions": "Πιάσε τις σωστές πηγές συλλογής δεδομένων. Απόφυγε τις λάθος.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Αισθητήρες", "correct": true, "color": "#4caf50" },
+    { "text": "Διαδίκτυο", "correct": true, "color": "#2196f3" },
+    { "text": "Ερωτηματολόγια", "correct": true, "color": "#ff9800" },
+    { "text": "Μετρήσεις", "correct": true, "color": "#9c27b0" },
+    { "text": "Μαγική μπάλα", "correct": false, "color": "#f44336" },
+    { "text": "Χαρτομαντεία", "correct": false, "color": "#f44336" },
+    { "text": "GPS", "correct": true, "color": "#00bcd4" },
+    { "text": "Κάμερες", "correct": true, "color": "#8bc34a" },
+    { "text": "Ζαριά", "correct": false, "color": "#f44336" },
+    { "text": "Ιατρικά αρχεία", "correct": true, "color": "#e91e63" }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Ρήματα στη σωστή γραμμή",
+  "subtitle": "Ταίριαξε κάθε ρήμα στη σωστή σχέση",
+  "categories": [
+    {
+      "id": "contains",
+      "name": "ΠΕΡΙΕΧΕΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "is",
+      "name": "ΕΙΝΑΙ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "uses",
+      "name": "ΧΡΗΣΙΜΟΠΟΙΕΙ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Υπολογιστής → __ → οθόνη",
+      "category": "contains"
+    },
+    {
+      "id": "item2",
+      "text": "CPU → __ → εγκέφαλος",
+      "category": "is"
+    },
+    {
+      "id": "item3",
+      "text": "Χρήστης → __ → πληκτρολόγιο",
+      "category": "uses"
+    },
+    {
+      "id": "item4",
+      "text": "RAM → __ → προσωρινή μνήμη",
+      "category": "is"
+    },
+    {
+      "id": "item5",
+      "text": "Φάκελος → __ → αρχεία",
+      "category": "contains"
+    }
+  ]
+}

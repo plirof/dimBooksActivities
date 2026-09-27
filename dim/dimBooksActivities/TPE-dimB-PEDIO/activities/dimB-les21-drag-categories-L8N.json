@@ -1,0 +1,26 @@
+{
+  "title": "Πλήκτρα του Πληκτρολογίου",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "letters",
+      "name": "Γράμματα & Σημεία",
+      "color": "#2196F3"
+    },
+    {
+      "id": "functions",
+      "name": "Πλήκτρα Λειτουργίας",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Κόμμα (,)", "category": "letters" },
+    { "id": "i2", "text": "Τελεία (.)", "category": "letters" },
+    { "id": "i3", "text": "Τόνος (´)", "category": "letters" },
+    { "id": "i4", "text": "Τελικό σίγμα (ς)", "category": "letters" },
+    { "id": "i5", "text": "Enter", "category": "functions" },
+    { "id": "i6", "text": "Backspace", "category": "functions" },
+    { "id": "i7", "text": "Caps Lock", "category": "functions" },
+    { "id": "i8", "text": "Πλήκτρο κενού (Space)", "category": "functions" }
+  ]
+}

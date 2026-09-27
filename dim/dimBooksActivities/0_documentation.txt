@@ -1,0 +1,197 @@
+# 0_documentation — How to use this project
+# ============================================================
+# Informatics (Πληροφορική) primary-school books: browsable activity
+# index (index.php), presentation lister (presentation_tts_lister.php),
+# and self-contained HTML slide presentations with Greek narration.
+#
+# Requires Apache + PHP (XAMPP). Open pages via http://localhost — the
+# PHP pages and the presentation TTS engines do not work over file://.
+
+# ------------------------------------------------------------
+# 1. Quick reference — main URLs
+# ------------------------------------------------------------
+
+Activity index (all classes / activities):
+    http://localhost/dim/dimBooksActivities/index.php
+
+Presentation lister (all TTS slide presentations):
+    http://localhost/dim/dimBooksActivities/presentation_tts_lister.php
+
+A single presentation (example — class ST, lesson 9):
+    http://localhost/dim/dimBooksActivities/TPE-dimST-PEDIO/presentations/lesson09.html
+
+Class codes used everywhere:  A  Β  C  D  E  ST  (Α' … ΣΤ' Δημοτικού)
+Each class has 30 lessons (lesson01.html … lesson30.html).
+
+
+# ------------------------------------------------------------
+# 2. index.php — activity index
+# ------------------------------------------------------------
+
+WHAT IT IS
+    A dashboard that auto-scans every class folder and lists all the
+    interactive activities (JSON-driven games in activities-base/ plus
+    custom HTML activities in activities-unique/).
+
+MAIN PAGE
+    - Stat cards: total activities, classes, activity types, 30 lessons per class.
+    - "Ανά τάξη" — one card per class. Click the card to open that class.
+    - The colored badges on each card are filters: e.g. "Quiz: 120" opens
+      that class showing only quiz activities.
+    - "Ανά τύπο" — overview chips showing how many activities exist per type.
+
+CLASS PAGE (?class=A … ?class=ST)
+    - Activities grouped in collapsible per-lesson sections (Μάθημα 01–30).
+    - "▼ Άνοιγμα όλων" / "▲ Κλείσιμο όλων" expand/collapse every group.
+    - Click any row to open the activity in a new tab.
+    - Filter bar appears when a category badge is active
+      (?class=A&category=quiz) — "× Αφαίρεση φίλτρου" removes it.
+
+USEFUL LINKS ON THE PAGE
+    - "Quiz: 1/JSON" toggle (bottom) — switch counting between
+      1 per JSON file and 1 per generated quiz game (each quiz JSON is
+      served in 6 game variants: basket, penalty, soccer, duel, runner…).
+    - "⚠ Αναφορά προβλήματος / Report" — opens the feedback form.
+    - "↻ Ανανέωση λίστας" (?rebuild=1) — IMPORTANT: the index is cached in
+      cache/activities-index.json. After adding/removing activity JSON
+      files, click this once (or open index.php?rebuild=1) so the list
+      is rebuilt.
+
+URL parameters
+    ?class=A|B|C|D|E|ST       show one class
+    ?category=<type>          filter that class by activity type
+    ?rebuild=1                rebuild the activity cache
+
+EXAMPLES
+    index.php                              everything, all classes
+    index.php?class=C                      only Γ' Δημοτικού
+    index.php?class=ST&category=memory     ΣΤ' Δημοτικού, only Memory games
+    index.php?class=A&category=0quiz_basket
+                                           Α' Δημοτικού, only the Quiz Basket variant
+    index.php?class=D&category=drag-order  Δ' Δημοτικού, only Drag Order
+    index.php?rebuild=1                    rescan folders and rebuild the cache once
+
+
+# ------------------------------------------------------------
+# 3. presentation_tts_lister.php — presentation lister
+# ------------------------------------------------------------
+
+WHAT IT IS
+    A directory of all 180 slide presentations (6 classes × 30 lessons),
+    grouped by class, with clickable cards for every lesson.
+
+HOW TO USE
+    - "Τάξη" dropdown — show only one class (?c=A … ?c=ST).
+    - "Μάθημα" dropdown — show only one lesson number across classes (?l=9).
+    - "Καθαρισμός" — clear both filters.
+    - Click a lesson card to open that presentation.
+
+    Every generated link carries the defaults configured at the top of
+    the PHP file (lines 3–4):
+
+        $speed = 0.9;   // playback speed appended as ?speed=0.9
+        $mode  = 'auto'; // appended as &mode=auto (= autoplay with narration)
+
+    Edit those two values (e.g. $mode = 'manual') if you want the lister
+    to open presentations differently for everyone.
+
+EXAMPLES
+    presentation_tts_lister.php             all 180 presentations, grouped by class
+    presentation_tts_lister.php?c=E         only Ε' Δημοτικού
+    presentation_tts_lister.php?l=12        lesson 12 across all 6 classes
+    presentation_tts_lister.php?c=B&l=5     Β' Δημοτικού, lesson 5 only
+    presentation_tts_lister.php?c=ST        ΣΤ' Δημοτικού, all lessons
+
+
+# ------------------------------------------------------------
+# 4. The presentations (lessonNN.html)
+# ------------------------------------------------------------
+
+WHAT THEY ARE
+    Self-contained HTML slideshows of each lesson (no book needed):
+    title → concepts → glossary → worked example → steps → practice →
+    self-assessment. Each slide is narrated in Greek; in the default mode
+    the deck plays hands-free: it narrates a slide, then advances
+    automatically ~2 s after the narration ends.
+
+ON-SCREEN / KEYBOARD CONTROLS
+    → / ←            next / previous slide (narration switches instantly)
+    Space            pause / resume narration+autoplay
+    M                mute / unmute
+    F                fullscreen
+    + / −            playback speed ±0.1 (0.5×–2.0×, default 0.85×)
+    ● dots           jump to any slide
+    counter "n / N"  current slide position
+
+URL PARAMETERS (combine freely, e.g. ?tts=piper&speed=0.8&mode=manual)
+    ?speed=0.7       narration speed, 0.5–2.0 (default 0.85)
+    ?mode=manual     manual mode: NO narration and NO auto-advance —
+                     you flip slides yourself, the deck stays silent
+                     (applies to every narration engine)
+    ?tts=piper       narrate with the LOCAL neural Greek voice (Piper,
+                     el_GR-rapunzelina) synthesized in the browser.
+                     Chrome only. No MP3s used, no internet needed —
+                     the engine (~99 MB: model, phonemizer, runtime)
+                     is served from tts/piper/ on this server.
+                     The next slide's audio is pre-generated while the
+                     current one plays, so slide changes are instant;
+                     pauses at sentence ends (".") are slightly longer.
+    ?tts=web         narrate with the browser's built-in Web Speech
+                     engine instead of the MP3s. Needs a Greek system
+                     voice on Linux (speech-dispatcher + espeak-ng;
+                     Firefox natively, Chrome with
+                     --enable-speech-dispatcher). Quality is robotic
+                     compared to the other modes.
+
+EXAMPLES (base: http://localhost/dim/dimBooksActivities/TPE-dimST-PEDIO/presentations/lesson09.html)
+    ?speed=0.7                              MP3 narration, slower
+    ?mode=manual                            silent — flip slides yourself
+    ?tts=piper                              local neural voice, autoplay
+    ?tts=piper&speed=0.9                    neural voice, slightly slower
+    ?tts=web&speed=1.1                      browser speech, slightly faster
+    ?tts=piper&speed=0.8&mode=manual        all three combined
+                                            (manual mode is always silent —
+                                            the engine only matters when narrating)
+    Full URL with three mixed parameters:
+    http://localhost/dim/dimBooksActivities/TPE-dimST-PEDIO/presentations/lesson09.html?tts=piper&speed=0.8&mode=manual
+
+NARRATION ENGINES — WHICH ONE PLAYS
+    default (no param)  pre-generated MP3s (audio/lessonNN/NN.mp3) —
+                        best quality, fully offline
+    ?tts=piper          local in-browser neural voice — offline, no
+                        audio files, Chrome
+    ?tts=web            browser/OS speech — fallback, robotic on Linux
+    If the selected engine fails (e.g. no voices), narration falls back
+    to Web Speech automatically.
+
+TROUBLESHOOTING
+    - No sound on the first slide in Chrome: Chrome blocks audio until
+      the first click/keypress on the page — click once (or press →)
+      and narration starts; the deck no longer skips slides silently.
+    - ?mode=manual is silent — that is by design, not a fault.
+    - Piper page seems silent right after opening: the first load
+      initializes the 63 MB voice model (~1–2 s over localhost); every
+      later slide is instant (pre-generated in the background).
+    - Presentations must be opened over http:// (localhost / XAMPP),
+      not by double-clicking the file — the TTS engines and the shared
+      runtime in tts/scripts/ require a web server.
+
+
+# ------------------------------------------------------------
+# 5. Related documentation in this folder
+# ------------------------------------------------------------
+
+    tts_piper_implementation260906instructions.md
+        How the ?tts=piper mode is implemented (files, downloads,
+        gotchas, changelog) — for reproducing it in another copy.
+
+    tts_VoicePresentationsSummer2026.md
+        Project log: per-lesson generation history, slide standards,
+        per-lesson workflow and verification checklist.
+
+    Agents.md
+        Workspace rules (backup rule: copy any file to backup_/ named
+        [filename]YYMMDD.[ext] before modifying it) and folder map.
+
+    tts/AI_AGENT_INSTRUCTIONS.md
+        Per-lesson generation workflow (slideTexts sync, MP3 pregen).

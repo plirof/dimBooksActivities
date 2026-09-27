@@ -1,0 +1,13 @@
+{
+  "title": "Ψάρεμα!",
+  "subtitle": "Κάνε κλικ στα ψαράκια για να τα πιάσεις",
+  "instructions": "Τα ψαράκια κολυμπούν — κάνε κλικ για να τα πιάσεις!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "🐟", "color": "#B3E5FC" },
+    { "label": "🐠", "color": "#80DEEA" },
+    { "label": "🦈", "color": "#B0BEC5" }
+  ]
+}

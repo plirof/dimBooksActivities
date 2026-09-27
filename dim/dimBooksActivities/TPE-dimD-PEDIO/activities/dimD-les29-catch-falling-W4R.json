@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Netiquette Σωστά-Λάθος",
+  "subtitle": "Πιάσε τις ΣΩΣΤΕΣ διαδικτυακές συμπεριφορές!",
+  "instructions": "Πιάσε μόνο τις ΣΩΣΤΕΣ συμπεριφορές στο διαδίκτυο!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 5,
+  "items": [
+    { "text": "Σέβομαι την ιδιωτική ζωή άλλων", "correct": true, "color": "#4CAF50" },
+    { "text": "Γράφω υβριστικά σχόλια", "correct": false, "color": "#f44336" },
+    { "text": "Δημοσιεύω φωτογραφίες χωρίς άδεια", "correct": false, "color": "#FF9800" },
+    { "text": "Χρησιμοποιώ κρυφή κοινοποίηση BCC", "correct": true, "color": "#2196F3" },
+    { "text": "Δεν γράφω με ΚΕΦΑΛΑΙΑ", "correct": true, "color": "#9C27B0" },
+    { "text": "Μοιράζομαι ψεύτικες ειδήσεις", "correct": false, "color": "#E91E63" },
+    { "text": "Σέβομαι τα πνευματικά δικαιώματα", "correct": true, "color": "#00BCD4" },
+    { "text": "Κάνω προσβλητικό χιούμορ", "correct": false, "color": "#FF5722" },
+    { "text": "Φέρομαι όπως στην πραγματική ζωή", "correct": true, "color": "#8BC34A" },
+    { "text": "Σκέφτομαι πριν αναρτήσω", "correct": true, "color": "#3F51B5" }
+  ]
+}

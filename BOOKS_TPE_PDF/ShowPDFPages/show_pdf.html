@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Viewer show_pdf.html?pages=1,5,8&pdfpath=other.pdf</title>
+<!--
+
+v07b-260813CDN - CDN 260813 (Range support added)
+v06c - CDN 2309010
+v06  - CDN 230901
+
+
+
+examples:
+NEW RANGE SUPPORT: http://localhost/ShowPDFPages/show_pdf.html?pages=2-8&pdfpath=... (shows pages 2,3,4,5,6,7,8)
+MIXED FORMAT: http://localhost/ShowPDFPages/show_pdf.html?pages=1,3,5-7,10&pdfpath=... (shows pages 1,3,5,6,7,10)
+WORKS : http://localhost/ShowPDFPages/show_pdf.html?pages=1,5,8&pdfpath=http://localhost/chess/usborne%20guide__COMPUTERgames__archive.org.pdf
+OK : http://localhost/ShowPDFPages/show_pdf.html?pages=1,5,8&pdfpath=http://localhost/chess/usborne.com_BASICpractice_your.pdf
+OK v06c works after URLencode (https://www.urlencoder.org/) -phoenix_computer_crib_card.pdf or URL : http://localhost/ShowPDFPages/show_pdf.html?pages=1,5,8&pdfpath=https%3A%2F%2Fprismdrive.s3.us-central-1.wasabisys.com%2Fuploads%2FwCDPabpJIusGnESo6yjctCEhUvKwbbl130Ir%2FwCDPabpJIusGnESo6yjctCEhUvKwbbl130Ir%3Fresponse-content-type%3Dapplication%252Foctet-stream%26response-content-disposition%3Dattachment%253Bfilename%253Dphoenix_computer_crib_card.pdf%252520-%252520Copy%26X-Amz-Content-Sha256%3DUNSIGNED-PAYLOAD%26X-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Credential%3DL1D8SHO4Y8K5YOOMRKL1%252F20230924%252Fus-central-1%252Fs3%252Faws4_request%26X-Amz-Date%3D20230924T100830Z%26X-Amz-SignedHeaders%3Dhost%26X-Amz-Expires%3D1800%26X-Amz-Signature%3Ddda726586f1ecd48c214b9947b9dcb5ef7dfdac53e845a5816bd0a1fced6bbde
+
+
+2test : http://127.0.0.1/ShowPDFPages/show_pdf.html?pages=1,5,8&pdfpath=https://ia800208.us.archive.org/13/items/simple-basic/simple-basic.pdf
+
+
+-->    
+</head>
+<body>
+   
+    <div>
+        <label for="scale-input">Scale Factor:</label>
+        <input type="number" id="scale-input" value="1" step="1">
+        <button id="apply-scale">Apply</button>
+    </div>
+    <div id="pdf-container"></div>
+
+    <!--   CDN  https://cdnjs.com/libraries/pdf.js  <script src="build/pdf.js"></script>   <script src="path-to-pdf.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js"></script>
+    
+    <script>
+        // Function to parse pages parameter with range support (v07a-260813CDN)
+        function parsePagesParameter(pagesParam) {
+            const pageNumbers = [];
+            const tokens = pagesParam.split(',');
+            
+            for (const token of tokens) {
+                if (token.includes('-')) {
+                    // Handle range like "2-8"
+                    const [start, end] = token.split('-').map(Number);
+                    if (start > end) {
+                        console.error(`Invalid range: ${token} (start > end)`);
+                        continue;
+                    }
+                    for (let i = start; i <= end; i++) {
+                        pageNumbers.push(i);
+                    }
+                } else {
+                    // Handle single page number
+                    const pageNum = Number(token);
+                    if (!isNaN(pageNum) && pageNum > 0) {
+                        pageNumbers.push(pageNum);
+                    }
+                }
+            }
+            
+            // Remove duplicates and sort
+            return [...new Set(pageNumbers)].sort((a, b) => a - b);
+        }
+
+        // Get the 'pages' parameter from the URL
+        const queryParams = new URLSearchParams(window.location.search);
+        const pagesParam = queryParams.get('pages');
+        const pdfPathParam = queryParams.get('pdfpath');
+        //const pdfPathParam ='http://localhost/chess/usborne.com_BASICpractice_your.pdf'; //OK works
+        //const pdfPathParam ='https://prismdrive.s3.us-central-1.wasabisys.com/uploads/wCDPabpJIusGnESo6yjctCEhUvKwbbl130Ir/wCDPabpJIusGnESo6yjctCEhUvKwbbl130Ir?response-content-type=application%2Foctet-stream&response-content-disposition=attachment%3Bfilename%3Dphoenix_computer_crib_card.pdf%2520-%2520Copy&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=L1D8SHO4Y8K5YOOMRKL1%2F20230924%2Fus-central-1%2Fs3%2Faws4_request&X-Amz-Date=20230924T100830Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=dda726586f1ecd48c214b9947b9dcb5ef7dfdac53e845a5816bd0a1fced6bbde' ; // OK Works
+
+
+
+        const defaultPdfPath = 'usborne guide__COMPUTERgames__archive.org.pdf'; // Default PDF file path
+
+        // Determine the PDF file path to use
+        const pdfFilePath = pdfPathParam || defaultPdfPath;
+
+        // Load the PDF and display specific pages
+        const pdfContainer = document.getElementById('pdf-container');
+        const pdfURL = pdfFilePath ; // Replace with the actual path to your PDF file
+
+        // Check if 'pages' parameter exists
+        if (pagesParam) {
+            // Parse the 'pages' parameter with range support
+            pageNumbers = parsePagesParameter(pagesParam);
+
+
+
+            // Initialize PDF.js
+            const pdfjsLib = window['pdfjs-dist/build/pdf'];
+            //pdfjsLib.GlobalWorkerOptions.workerSrc = 'build/pdf.worker.js'; // Replace with the actual path to pdf.worker.js
+			pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.min.js'; // Replace with the actual path to pdf.worker.js
+            pdfjsLib.getDocument(pdfURL).promise.then(pdf => {
+                // Loop through the requested pages and display them
+                pageNumbers.forEach(pageNumber => {
+                    pdf.getPage(pageNumber).then(page => {
+                        const scale = 3; // Adjust the scale as needed
+                        const viewport = page.getViewport({ scale });
+
+                        // Create a canvas for each page
+                        const canvas = document.createElement('canvas');
+                        canvas.style.display = 'block';
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        pdfContainer.appendChild(canvas);
+
+                        // Render the page to the canvas
+                        page.render({ canvasContext: context, viewport });
+                    });
+                });
+            }).catch(error => {
+                console.error('Error loading PDF:', error);
+            });
+        } else {
+            console.error('No "pages" parameter found in the URL.');
+        }
+
+
+
+
+        const scaleInput = document.getElementById('scale-input');
+        const applyScaleButton = document.getElementById('apply-scale');
+
+        applyScaleButton.addEventListener('click', () => {
+            const newScale = parseFloat(scaleInput.value);
+            if (!isNaN(newScale) && newScale > 0) {
+                // Clear the existing canvas elements
+              //  pdfContainer = document.getElementById('pdf-container');
+                pdfContainer.innerHTML = '';
+
+                // Reload and display the PDF with the new scale
+                pdfjsLib.getDocument(pdfURL).promise.then(pdf => {
+                    pageNumbers.forEach(pageNumber => {
+                        pdf.getPage(pageNumber).then(page => {
+                            const viewport = page.getViewport({ scale: newScale });
+
+                            const canvas = document.createElement('canvas');
+                            canvas.style.display = 'block';
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            pdfContainer.appendChild(canvas);
+
+                            page.render({ canvasContext: context, viewport });
+                        });
+                    });
+                }).catch(error => {
+                    console.error('Error loading PDF:', error);
+                });
+            } else {
+                console.error('Invalid scale factor:', scaleInput.value);
+            }
+        });
+
+
+    </script>
+    <hr>
+    <!-- Examples: 
+         show_pdf.html?pages=1,5,8&pdfpath=other.pdf (individual pages)
+         show_pdf.html?pages=2-8&pdfpath=other.pdf (range: pages 2-8)
+         show_pdf.html?pages=1,3,5-7,10&pdfpath=other.pdf (mixed format) -->
+</body>
+</html>

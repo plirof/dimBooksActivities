@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+260923 - mpάλα->μπάλα
+260923 - σχεδιαζόμενοι χαρακτήρες (SVG) με ρούχα/καπέλο/παπούτσια και ξεχωριστά αντικείμενα, αντί για emoji
+    -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αλήθεια ή Ψέμα; - dimC les02</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #4a3f8a;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+h1 .emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    color: #7c6fbf;
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 20px;
+    background: #e8e0f0;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.round-label {
+    text-align: center;
+    color: #6c5ce7;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.character-card {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    border: 3px solid #f9ca24;
+    text-align: center;
+}
+
+.character-card .char-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 8px;
+}
+
+.character-card .char-svg {
+    width: 100%;
+    max-width: 132px;
+    height: auto;
+    display: block;
+    margin: 0 auto 6px;
+}
+
+.character-card .item-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.character-card .char-desc {
+    font-size: 1.05rem;
+    color: #2d3436;
+    line-height: 1.7;
+}
+
+.character-card .char-desc b {
+    color: #d63031;
+    font-size: 1.1rem;
+}
+
+.statement-area {
+    margin-bottom: 12px;
+}
+
+.statement-card {
+    background: #f8f9ff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border: 2px solid #d5d0f0;
+    transition: all 0.3s ease;
+}
+
+.statement-card.correct {
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.statement-card.wrong {
+    border-color: #e17055;
+    background: #fff0ec;
+}
+
+.statement-card .stmt-text {
+    font-size: 1.15rem;
+    color: #2d3436;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-answer {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-answer:active {
+    transform: scale(0.95);
+}
+
+.btn-answer.true-btn {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+}
+
+.btn-answer.true-btn:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+}
+
+.btn-answer.false-btn {
+    background: linear-gradient(135deg, #e17055, #d63031);
+    color: white;
+}
+
+.btn-answer.false-btn:hover {
+    background: linear-gradient(135deg, #d63031, #e17055);
+}
+
+.btn-answer:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.feedback {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+.feedback.correct-fb {
+    color: #00b894;
+}
+
+.feedback.wrong-fb {
+    color: #d63031;
+}
+
+.btn-next {
+    display: block;
+    margin: 16px auto 0;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+}
+
+.btn-next:active {
+    transform: scale(0.95);
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.completion-screen h2 {
+    color: #4a3f8a;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #6c5ce7;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+.completion-screen .score-detail {
+    color: #7c6fbf;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.statement-card {
+    animation: popIn 0.3s ease;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .btn-row > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Αλήθεια ή Ψέμα; <span class="emoji-title">🤔</span></h1>
+    <p class="subtitle">Διάβασε την περιγραφή και βρες τι είναι αλήθεια!</p>
+
+    <div id="game-area">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%">0 / 0</div>
+        </div>
+        <div class="round-label" id="round-label"></div>
+        <div class="character-card" id="character-card"></div>
+        <div class="statement-area" id="statement-area"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-next hidden" id="btn-next">Επόμενη Πρόταση ➡️</button>
+    </div>
+
+    <div class="completion-screen hidden" id="completion-screen">
+        <div class="stars" id="stars"></div>
+        <h2>Μπράβο! Τέλειωσες! 🎉</h2>
+        <p class="score-text" id="score-text"></p>
+        <p class="score-detail" id="score-detail"></p>
+        <button class="btn-restart" id="btn-restart">Παίξε Ξανά! 🔄</button>
+    </div>
+</div>
+
+<script>
+var rounds = [
+    {
+        name: "Ο Νίκος",
+        desc: "Έχει <b>κόκκινο καπέλο</b>, φοράει <b>μπλε μπλούζα</b>, κρατάει <b>μπάλα</b>, φοράει <b>πράσινα παπούτσια</b>, <b>ΔΕΝ</b> φοράει γυαλιά",
+        look: { gender: 'boy', hair: 'brown', hat: 'red', top: { type: 'shirt', color: 'blue' }, bottom: { type: 'pants', color: 'gray' }, shoes: { type: 'shoes', color: 'green' }, item: '🏀' },
+        attributes: { "έχει κόκκινο καπέλο": true, "φοράει μπλε μπλούζα": true, "κρατάει μπάλα": true, "φοράει πράσινα παπούτσια": true, "φοράει γυαλιά": false, "έχει κίτρινο καπέλο": false, "φοράει κόκκινη μπλούζα": false, "κρατάει σακούλα": false },
+        statements: [
+            { text: "Ο Νίκος έχει κόκκινο καπέλο.", answer: true },
+            { text: "Ο Νίκος φοράει μπλε μπλούζα.", answer: true },
+            { text: "Ο Νίκος φοράει γυαλιά.", answer: false },
+            { text: "Ο Νίκος κρατάει μπάλα.", answer: true },
+            { text: "Ο Νίκος έχει κίτρινο καπέλο.", answer: false },
+            { text: "Ο Νίκος φοράει πράσινα παπούτσια.", answer: true },
+            { text: "Ο Νίκος φοράει κόκκινη μπλούζα.", answer: false },
+            { text: "Ο Νίκος κρατάει σακούλα.", answer: false }
+        ]
+    },
+    {
+        name: "Η Μαρία",
+        desc: "Φοράει <b>κόκκινο φόρεμα</b>, έχει <b>μακριά μαλλιά</b>, κρατάει <b>βιβλίο</b>, φοράει <b>κίτρινα παπούτσια</b>, <b>ΔΕΝ</b> φοράει καπέλο",
+        look: { gender: 'girl', hair: 'black', top: { type: 'dress', color: 'red' }, shoes: { type: 'shoes', color: 'yellow' }, item: '📖' },
+        attributes: { "φοράει κόκκινο φόρεμα": true, "έχει μακριά μαλλιά": true, "κρατάει βιβλίο": true, "φοράει κίτρινα παπούτσια": true, "φοράει καπέλο": false, "φοράει μπλε φόρεμα": false, "έχει κοντά μαλλιά": false, "κρατάει μολύβι": false },
+        statements: [
+            { text: "Η Μαρία φοράει κόκκινο φόρεμα.", answer: true },
+            { text: "Η Μαρία έχει μακριά μαλλιά.", answer: true },
+            { text: "Η Μαρία φοράει καπέλο.", answer: false },
+            { text: "Η Μαρία κρατάει βιβλίο.", answer: true },
+            { text: "Η Μαρία φοράει μπλε φόρεμα.", answer: false },
+            { text: "Η Μαρία φοράει κίτρινα παπούτσια.", answer: true },
+            { text: "Η Μαρία έχει κοντά μαλλιά.", answer: false },
+            { text: "Η Μαρία κρατάει μολύβι.", answer: false }
+        ]
+    },
+    {
+        name: "Ο Γιώργος",
+        desc: "Φοράει <b>πράσινο μπλουζάκι</b>, έχει <b>σγουρά μαλλιά</b>, κρατάει <b>ψαροντούφεκο</b>, φοράει <b>κοντά παντελόνια</b>, <b>ΔΕΝ</b> έχει γένια",
+        look: { gender: 'boy', hair: 'brown', hairStyle: 'curly', top: { type: 'tshirt', color: 'green' }, bottom: { type: 'shorts', color: '#c9a86a' }, item: '🤿' },
+        attributes: { "φοράει πράσινο μπλουζάκι": true, "έχει σγουρά μαλλιά": true, "κρατάει ψαροντούφεκο": true, "φοράει κοντά παντελόνια": true, "έχει γένια": false, "φοράει κόκκινο μπλουζάκι": false, "έχει ίσια μαλλιά": false, "κρατάει μπαλίτσα": false },
+        statements: [
+            { text: "Ο Γιώργος φοράει πράσινο μπλουζάκι.", answer: true },
+            { text: "Ο Γιώργος έχει σγουρά μαλλιά.", answer: true },
+            { text: "Ο Γιώργος έχει γένια.", answer: false },
+            { text: "Ο Γιώργος κρατάει ψαροντούφεκο.", answer: true },
+            { text: "Ο Γιώργος φοράει κόκκινο μπλουζάκι.", answer: false },
+            { text: "Ο Γιώργος φοράει κοντά παντελόνια.", answer: true },
+            { text: "Ο Γιώργος έχει ίσια μαλλιά.", answer: false },
+            { text: "Ο Γιώργος κρατάει μπαλίτσα.", answer: false }
+        ]
+    },
+    {
+        name: "Η Ελένη",
+        desc: "Φοράει <b>μωβ παλτό</b>, έχει <b>μαύρα μαλλιά</b>, κρατάει <b>ομπρέλα</b>, φοράει <b>μποτάκια</b>, <b>ΔΕΝ</b> φοράει κασκόλ",
+        look: { gender: 'girl', hair: 'black', top: { type: 'coat', color: 'purple' }, shoes: { type: 'boots', color: 'brown' }, item: '☂️' },
+        attributes: { "φοράει μωβ παλτό": true, "έχει μαύρα μαλλιά": true, "κρατάει ομπρέλα": true, "φοράει μποτάκια": true, "φοράει κασκόλ": false, "φοράει κόκκινο παλτό": false, "έχει ξανθά μαλλιά": false, "κρατάει τσάντα": false },
+        statements: [
+            { text: "Η Ελένη φοράει μωβ παλτό.", answer: true },
+            { text: "Η Ελένη έχει μαύρα μαλλιά.", answer: true },
+            { text: "Η Ελένη φοράει κασκόλ.", answer: false },
+            { text: "Η Ελένη κρατάει ομπρέλα.", answer: true },
+            { text: "Η Ελένη φοράει κόκκινο παλτό.", answer: false },
+            { text: "Η Ελένη φοράει μποτάκια.", answer: true },
+            { text: "Η Ελένη έχει ξανθά μαλλιά.", answer: false },
+            { text: "Η Ελένη κρατάει τσάντα.", answer: false }
+        ]
+    }
+];
+
+var currentRound = 0;
+var currentStmt = 0;
+var score = 0;
+var totalAnswered = 0;
+var totalStatements = 0;
+var answered = false;
+
+var PAL = {
+    red: '#e74c3c', blue: '#3498db', green: '#27ae60', yellow: '#f4c20d',
+    pink: '#fd79a8', brown: '#8d6e63', black: '#2d3436', gray: '#5f6c7d',
+    purple: '#8e44ac'
+};
+var HAIR_COLORS = { black: '#2d3436', brown: '#6d4c41', blond: '#e6b410' };
+var SKIN = '#f8c9a0';
+var SKIN_DARK = '#dfa070';
+
+function col(c) { return PAL[c] || c; }
+
+function charSVG(l) {
+    var girl = l.gender === 'girl';
+    var curly = l.hairStyle === 'curly';
+    var hairC = HAIR_COLORS[l.hair] || l.hair;
+    var eyeC = l.eyes === 'blue' ? '#3d9be9' : '#4e342e';
+    var topC = l.top ? col(l.top.color) : '';
+    var ttype = l.top ? l.top.type : '';
+    var botC = l.bottom ? col(l.bottom.color) : '#5f6c7d';
+    var btype = l.bottom ? l.bottom.type : '';
+    var shoes = l.shoes || { type: 'shoes', color: 'black' };
+    var shoeC = col(shoes.color);
+    var hatC = l.hat ? col(l.hat) : '';
+
+    var legEnd = (btype === 'skirt') ? 128 : (ttype === 'dress' ? 130 : 126);
+    var footL = 51.5, footR = 68.5;
+    var p = '<svg class="char-svg" viewBox="0 0 120 142" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+
+    if (btype === 'skirt') {
+        p += '<path d="M44,88 L76,88 L85,114 L35,114 Z" fill="' + botC + '"/>';
+        p += '<rect x="48" y="114" width="9" height="14" fill="' + SKIN + '"/>';
+        p += '<rect x="63" y="114" width="9" height="14" fill="' + SKIN + '"/>';
+    } else if (ttype === 'dress') {
+        p += '<rect x="49" y="118" width="9" height="12" fill="' + SKIN + '"/>';
+        p += '<rect x="62" y="118" width="9" height="12" fill="' + SKIN + '"/>';
+    } else if (btype === 'shorts') {
+        p += '<rect x="42" y="86" width="36" height="14" rx="4" fill="' + botC + '"/>';
+        p += '<rect x="45" y="96" width="13" height="14" rx="3" fill="' + botC + '"/>';
+        p += '<rect x="62" y="96" width="13" height="14" rx="3" fill="' + botC + '"/>';
+        p += '<rect x="47.5" y="108" width="8" height="18" fill="' + SKIN + '"/>';
+        p += '<rect x="64.5" y="108" width="8" height="18" fill="' + SKIN + '"/>';
+    } else {
+        p += '<rect x="42" y="86" width="36" height="14" rx="4" fill="' + botC + '"/>';
+        p += '<rect x="45" y="96" width="13" height="30" rx="3" fill="' + botC + '"/>';
+        p += '<rect x="62" y="96" width="13" height="30" rx="3" fill="' + botC + '"/>';
+        if (btype === 'jeans') {
+            p += '<line x1="51.5" y1="100" x2="51.5" y2="122" stroke="rgba(255,255,255,0.45)" stroke-width="1.4"/>';
+            p += '<line x1="68.5" y1="100" x2="68.5" y2="122" stroke="rgba(255,255,255,0.45)" stroke-width="1.4"/>';
+        }
+    }
+
+    if (shoes.type === 'boots') {
+        p += '<rect x="' + (footL - 6.5) + '" y="' + (legEnd - 9) + '" width="13" height="11" fill="' + shoeC + '"/>';
+        p += '<rect x="' + (footR - 6.5) + '" y="' + (legEnd - 9) + '" width="13" height="11" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+    } else if (shoes.type === 'sneakers') {
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<rect x="' + (footL - 8.5) + '" y="' + (legEnd + 3) + '" width="17" height="3" rx="1.5" fill="#ecf0f1"/>';
+        p += '<rect x="' + (footR - 8.5) + '" y="' + (legEnd + 3) + '" width="17" height="3" rx="1.5" fill="#ecf0f1"/>';
+    } else {
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+    }
+
+    p += '<line x1="40" y1="66" x2="34" y2="88" stroke="' + SKIN + '" stroke-width="6" stroke-linecap="round"/>';
+    p += '<line x1="80" y1="66" x2="86" y2="88" stroke="' + SKIN + '" stroke-width="6" stroke-linecap="round"/>';
+
+    if (ttype === 'dress') {
+        p += '<path d="M42,84 L78,84 L88,120 L32,120 Z" fill="' + topC + '"/>';
+        p += '<rect x="38" y="62" width="44" height="26" rx="9" fill="' + topC + '"/>';
+    } else if (topC) {
+        p += '<rect x="38" y="62" width="44" height="34" rx="9" fill="' + topC + '"/>';
+        if (ttype === 'jacket' || ttype === 'coat') {
+            p += '<line x1="60" y1="68" x2="60" y2="96" stroke="rgba(0,0,0,0.25)" stroke-width="2"/>';
+            p += '<circle cx="55" cy="78" r="1.6" fill="#ffffff" opacity="0.9"/>';
+            p += '<circle cx="55" cy="88" r="1.6" fill="#ffffff" opacity="0.9"/>';
+            p += '<path d="M54,62 L60,70 L66,62 Z" fill="rgba(255,255,255,0.4)"/>';
+        }
+    }
+
+    if (ttype === 'shirt' || ttype === 'jacket' || ttype === 'coat') {
+        p += '<line x1="40" y1="66" x2="35" y2="84" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+        p += '<line x1="80" y1="66" x2="85" y2="84" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+    } else if (ttype === 'tshirt') {
+        p += '<line x1="40" y1="66" x2="36" y2="74" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+        p += '<line x1="80" y1="66" x2="84" y2="74" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+    }
+
+    p += '<rect x="56" y="54" width="8" height="10" fill="' + SKIN + '"/>';
+    p += '<circle cx="41" cy="44" r="3.5" fill="' + SKIN + '"/>';
+    p += '<circle cx="79" cy="44" r="3.5" fill="' + SKIN + '"/>';
+    p += '<circle cx="60" cy="42" r="19" fill="' + SKIN + '"/>';
+
+    p += '<circle cx="53" cy="43" r="3" fill="#ffffff"/>';
+    p += '<circle cx="67" cy="43" r="3" fill="#ffffff"/>';
+    p += '<circle cx="53" cy="43" r="1.8" fill="' + eyeC + '"/>';
+    p += '<circle cx="67" cy="43" r="1.8" fill="' + eyeC + '"/>';
+    p += '<circle cx="53.5" cy="42.5" r="0.7" fill="#2d3436"/>';
+    p += '<circle cx="67.5" cy="42.5" r="0.7" fill="#2d3436"/>';
+
+    p += '<path d="M59,45 Q61,48 59,49" stroke="' + SKIN_DARK + '" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    p += '<path d="M54,51 Q60,56 66,51" stroke="#c0623b" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+
+    if (l.beard) {
+        p += '<path d="M44,44 Q45,60 60,61 Q75,60 76,44 L76,49 Q73,57 60,58 Q47,57 44,49 Z" fill="#5d4037"/>';
+        p += '<ellipse cx="56" cy="49.5" rx="3.2" ry="1.6" fill="#5d4037"/>';
+        p += '<ellipse cx="64" cy="49.5" rx="3.2" ry="1.6" fill="#5d4037"/>';
+    }
+
+    if (l.glasses) {
+        p += '<circle cx="53" cy="43" r="6.5" fill="rgba(255,255,255,0.2)" stroke="#2d3436" stroke-width="1.8"/>';
+        p += '<circle cx="67" cy="43" r="6.5" fill="rgba(255,255,255,0.2)" stroke="#2d3436" stroke-width="1.8"/>';
+        p += '<path d="M59.5,42 Q60,41 60.5,42" stroke="#2d3436" stroke-width="1.8" fill="none"/>';
+        p += '<line x1="46.5" y1="42" x2="41.5" y2="40" stroke="#2d3436" stroke-width="1.6"/>';
+        p += '<line x1="73.5" y1="42" x2="78.5" y2="40" stroke="#2d3436" stroke-width="1.6"/>';
+    }
+
+    p += '<path d="M41.4,38 A19,19 0 0 1 78.6,38 Z" fill="' + hairC + '"/>';
+    if (curly) {
+        var bumpX = [42.5, 44, 50, 56, 60, 64, 70, 76, 77.5];
+        var bumpY = [35, 31.8, 25.8, 23.5, 23, 23.5, 25.8, 31.8, 35];
+        for (var bi = 0; bi < bumpX.length; bi++) {
+            p += '<circle cx="' + bumpX[bi] + '" cy="' + bumpY[bi] + '" r="5" fill="' + hairC + '"/>';
+        }
+    }
+    if (girl) {
+        p += '<path d="M41.4,38 Q37.5,54 42,66 L50,62 Q46,50 47.5,38 Z" fill="' + hairC + '"/>';
+        p += '<path d="M78.6,38 Q82.5,54 78,66 L70,62 Q74,50 72.5,38 Z" fill="' + hairC + '"/>';
+    }
+
+    if (hatC) {
+        p += '<path d="M48,29 L48,15 Q48,10 53,10 L67,10 Q72,10 72,15 L72,29 Z" fill="' + hatC + '"/>';
+        p += '<ellipse cx="60" cy="29" rx="23" ry="4.5" fill="' + hatC + '"/>';
+    }
+
+    if (l.item) {
+        p += '<text class="item-emoji" x="101" y="88" font-size="27" text-anchor="middle">' + l.item + '</text>';
+    }
+
+    p += '</svg>';
+    return p;
+}
+
+function init() {
+    rounds.forEach(function(r) {
+        totalStatements += r.statements.length;
+    });
+    currentRound = 0;
+    currentStmt = 0;
+    score = 0;
+    totalAnswered = 0;
+    document.getElementById('completion-screen').classList.add('hidden');
+    document.getElementById('game-area').classList.remove('hidden');
+    renderRound();
+}
+
+function renderRound() {
+    answered = false;
+    var round = rounds[currentRound];
+    document.getElementById('round-label').textContent = "Γύρος " + (currentRound + 1) + " από " + rounds.length;
+    var cardHtml = charSVG(round.look);
+    cardHtml += '<div class="char-name">' + round.name + '</div>';
+    cardHtml += '<div class="char-desc">' + round.desc + '</div>';
+    document.getElementById('character-card').innerHTML = cardHtml;
+    renderStatement();
+}
+
+function renderStatement() {
+    answered = false;
+    var round = rounds[currentRound];
+    var stmt = round.statements[currentStmt];
+    updateProgress();
+
+    var html = '<div class="statement-card" id="stmt-card">';
+    html += '<div class="stmt-text">«' + stmt.text + '»</div>';
+    html += '<div class="btn-row">';
+    html += '<button class="btn-answer true-btn" id="btn-true" onclick="handleAnswer(true)">Αλήθεια ✅</button>';
+    html += '<button class="btn-answer false-btn" id="btn-false" onclick="handleAnswer(false)">Ψέμα ❌</button>';
+    html += '</div>';
+    html += '</div>';
+
+    document.getElementById('statement-area').innerHTML = html;
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('btn-next').classList.add('hidden');
+}
+
+function handleAnswer(userAnswer) {
+    if (answered) return;
+    answered = true;
+
+    var round = rounds[currentRound];
+    var stmt = round.statements[currentStmt];
+    var isCorrect = (userAnswer === stmt.answer);
+
+    if (isCorrect) {
+        score++;
+    }
+    totalAnswered++;
+
+    var card = document.getElementById('stmt-card');
+    var fb = document.getElementById('feedback');
+
+    if (isCorrect) {
+        card.classList.add('correct');
+        fb.textContent = '🎉 Σωστό! Μπράβο!';
+        fb.className = 'feedback correct-fb';
+    } else {
+        card.classList.add('wrong');
+        var correctAnswer = stmt.answer ? 'Αλήθεια' : 'Ψέμα';
+        fb.textContent = '😢 Λάθος! Η σωστή απάντηση είναι: ' + correctAnswer;
+        fb.className = 'feedback wrong-fb';
+    }
+
+    document.getElementById('btn-true').disabled = true;
+    document.getElementById('btn-false').disabled = true;
+
+    updateProgress();
+
+    if (currentStmt < round.statements.length - 1 || currentRound < rounds.length - 1) {
+        document.getElementById('btn-next').classList.remove('hidden');
+    } else {
+        setTimeout(showCompletion, 1200);
+    }
+}
+
+function nextStatement() {
+    var round = rounds[currentRound];
+    if (currentStmt < round.statements.length - 1) {
+        currentStmt++;
+        renderStatement();
+    } else {
+        currentRound++;
+        currentStmt = 0;
+        if (currentRound < rounds.length) {
+            renderRound();
+        } else {
+            showCompletion();
+        }
+    }
+}
+
+function updateProgress() {
+    var pct = (totalAnswered / totalStatements) * 100;
+    var bar = document.getElementById('progress-fill');
+    bar.style.width = pct + '%';
+    bar.textContent = totalAnswered + ' / ' + totalStatements;
+}
+
+function showCompletion() {
+    document.getElementById('game-area').classList.add('hidden');
+    var cs = document.getElementById('completion-screen');
+    cs.classList.remove('hidden');
+
+    var pct = score / totalStatements;
+    var starCount = pct >= 0.9 ? 3 : (pct >= 0.6 ? 2 : 1);
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        starsHtml += (i < starCount) ? '⭐' : '☆';
+    }
+    document.getElementById('stars').textContent = starsHtml;
+    document.getElementById('score-text').textContent = 'Σκορ: ' + score + ' / ' + totalStatements;
+
+    var msg = '';
+    if (pct === 1) msg = 'Τέλειο! Τα ξέρεις όλα! 🏆';
+    else if (pct >= 0.8) msg = 'Πολύ καλό! Μπράβο! 🌟';
+    else if (pct >= 0.6) msg = 'Καλό! Συνέχισε έτσι! 💪';
+    else msg = 'Προσπάθησε ξανά! Μπορείς! 🤗';
+    document.getElementById('score-detail').textContent = msg;
+}
+
+document.getElementById('btn-next').addEventListener('click', nextStatement);
+document.getElementById('btn-restart').addEventListener('click', init);
+
+init();
+</script>
+</body>
+</html>

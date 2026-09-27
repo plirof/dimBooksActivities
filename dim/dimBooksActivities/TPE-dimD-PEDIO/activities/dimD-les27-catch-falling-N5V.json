@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Τηλεκπαίδευση Σωστά-Λάθος",
+  "subtitle": "Πιάσε τις ΣΩΣΤΕΣ προτάσεις για τηλεδιασκέψεις!",
+  "instructions": "Πιάσε μόνο τις σωστές προτάσεις. Απόφυγε τις λανθασμένες!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 5,
+  "items": [
+    { "text": "Μικρόφωνο = ακούγεται η φωνή μου", "correct": true, "color": "#4CAF50" },
+    { "text": "Κάμερα = ακούγεται η φωνή μου", "correct": false, "color": "#f44336" },
+    { "text": "Κόκκινο κουμπί = τερματισμός κλήσης", "correct": true, "color": "#2196F3" },
+    { "text": "Chat = άμεσο μήνυμα κειμένου", "correct": true, "color": "#9C27B0" },
+    { "text": "Presenter = μόνο ακούω", "correct": false, "color": "#FF9800" },
+    { "text": "Share = μοιράζομαι την οθόνη μου", "correct": true, "color": "#00BCD4" },
+    { "text": "Browser = φυλλομετρητής", "correct": true, "color": "#8BC34A" },
+    { "text": "WebEX = επεξεργαστής κειμένου", "correct": false, "color": "#E91E63" },
+    { "text": "Συνδέομαι με URL αίθουσας", "correct": true, "color": "#3F51B5" },
+    { "text": "Τηλεκπαίδευση = χρειάζεται ταξίδι", "correct": false, "color": "#FF5722" }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "title": "TuxPaint και Animation",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "draw",
+      "name": "Εργαλεία Ζωγραφικής",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "anim",
+      "name": "Δημιουργία Κινούμενων Σχεδίων",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Πινέλο", "category": "draw" },
+    { "id": "item2", "text": "Γέμισμα χρώματος", "category": "draw" },
+    { "id": "item3", "text": "Νέο (New)", "category": "draw" },
+    { "id": "item4", "text": "Αποθήκευση (Save)", "category": "draw" },
+    { "id": "item5", "text": "Προβολή διαφανειών", "category": "anim" },
+    { "id": "item6", "text": "GIF", "category": "anim" },
+    { "id": "item7", "text": "Αναπαραγωγή", "category": "anim" },
+    { "id": "item8", "text": "Ταχύτητα εναλλαγής", "category": "anim" }
+  ]
+}

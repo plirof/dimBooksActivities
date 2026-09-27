@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σημάδια Ιού",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια που είναι σημάδια προσβολής από κακόβουλο λογισμικό",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Αργός υπολογιστής", "correct": true, "color": "#4caf50" },
+    { "text": "Γρήγορος υπολογιστής", "correct": false, "color": "#f44336" },
+    { "text": "Πολλά pop-ups", "correct": true, "color": "#2196f3" },
+    { "text": "Νέες μπάρες εργαλείων", "correct": true, "color": "#ff9800" },
+    { "text": "Κανονική λειτουργία", "correct": false, "color": "#9c27b0" },
+    { "text": "Κολλάει συχνά", "correct": true, "color": "#00bcd4" },
+    { "text": "Στέλνει αρχεία μόνο του", "correct": true, "color": "#8bc34a" },
+    { "text": "Καθαρή οθόνη", "correct": false, "color": "#ff5722" },
+    { "text": "Ξαφνικές διαφημίσεις", "correct": true, "color": "#607d8b" },
+    { "text": "Τα πάντα κανονικά", "correct": false, "color": "#e91e63" },
+    { "text": "Λαμβάνει αρχεία μόνο του", "correct": true, "color": "#3f51b5" },
+    { "text": "Καμία αλλαγή", "correct": false, "color": "#795548" }
+  ]
+}

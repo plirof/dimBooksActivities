@@ -1,0 +1,21 @@
+{
+  "title": "Εντολές micro:bit",
+  "subtitle": "Σύρε κάθε εντολή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "screen", "name": "Οθόνη LED", "color": "#4CAF50" },
+    { "id": "music", "name": "Μουσική", "color": "#E91E63" },
+    { "id": "events", "name": "Συμβάντα", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "s1", "text": "🖼️ Εμφάνιση εικονιδίου (καρδιά)", "category": "screen" },
+    { "id": "s2", "text": "🧹 Καθαρισμός οθόνης", "category": "screen" },
+    { "id": "s3", "text": "⏱️ Παύση (ms)", "category": "screen" },
+    { "id": "m1", "text": "🎵 Εκκίνηση μελωδίας «γενέθλια»", "category": "music" },
+    { "id": "m2", "text": "⏹️ Διακοπή μελωδίας", "category": "music" },
+    { "id": "m3", "text": "🎚️ Αλλαγή τέμπο (ρυθμός)", "category": "music" },
+    { "id": "m4", "text": "🔁 Looping in background", "category": "music" },
+    { "id": "e1", "text": "🔘 Όταν πιεστεί κουμπί Α", "category": "events" },
+    { "id": "e2", "text": "🔘 Όταν πιεστεί κουμπί Β", "category": "events" },
+    { "id": "e3", "text": "📳 Όταν κουνηθεί (shake)", "category": "events" }
+  ]
+}

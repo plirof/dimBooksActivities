@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ταξινόμηση",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με την ταξινόμηση",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με την ταξινόμηση δεδομένων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Ταξινόμηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φθίνουσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αύξουσα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Κριτήριο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Στήλη",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Κελί",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Hacking",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "IoT",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

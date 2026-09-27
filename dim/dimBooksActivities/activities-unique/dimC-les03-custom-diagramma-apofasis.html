@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Διάγραμμα Απόφασης</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+.container {
+    background: #fff;
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+h1 {
+    text-align: center;
+    color: #5b2c8e;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+.subtitle {
+    text-align: center;
+    color: #7c6f9c;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+.progress-bar-wrap {
+    background: #e8e0f0;
+    border-radius: 12px;
+    height: 18px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #43e97b, #38f9d7);
+    border-radius: 12px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+.progress-text {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #5b2c8e;
+}
+.scenario-card {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+.scenario-card .emoji-big {
+    font-size: 2.2rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.scenario-card p {
+    font-size: 1rem;
+    color: #5a3e1b;
+    margin-top: 6px;
+    font-weight: 600;
+}
+.diagram-area {
+    background: #f9f5ff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border: 2px dashed #c9b8e8;
+}
+.diagram-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+.drop-slot {
+    min-width: 120px;
+    min-height: 52px;
+    border: 2.5px dashed #b39ddb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    font-size: 0.85rem;
+    color: #9e8ec0;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    padding: 6px 10px;
+    text-align: center;
+    position: relative;
+}
+.drop-slot.drag-over {
+    background: #e8f5e9;
+    border-color: #43e97b;
+    transform: scale(1.04);
+}
+.drop-slot.filled {
+    border-style: solid;
+    border-color: #66bb6a;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 700;
+}
+.drop-slot.wrong {
+    border-color: #ef5350;
+    background: #ffebee;
+    animation: shake 0.4s ease;
+}
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+.arrow-down {
+    font-size: 1.6rem;
+    color: #7e57c2;
+    line-height: 1;
+}
+.diamond-shape {
+    width: 140px;
+    height: 70px;
+    background: linear-gradient(135deg, #e1bee7, #ce93d8);
+    transform: rotate(0deg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #4a148c;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    margin: 2px 0;
+}
+.diamond-label {
+    background: #f3e5f5;
+    color: #6a1b9a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.yes-no-labels {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    width: 100%;
+}
+.yes-label, .no-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    border-radius: 8px;
+}
+.yes-label { color: #2e7d32; background: #e8f5e9; }
+.no-label { color: #c62828; background: #ffebee; }
+.pieces-tray {
+    background: #ede7f6;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    min-height: 60px;
+}
+.drag-piece {
+    padding: 8px 14px;
+    border-radius: 12px;
+    cursor: grab;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    user-select: none;
+    touch-action: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+}
+.drag-piece:active { cursor: grabbing; transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.drag-piece.piece-condition {
+    background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+}
+.drag-piece.piece-action-yes {
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+.drag-piece.piece-action-no {
+    background: linear-gradient(135deg, #e53935, #b71c1c);
+}
+.drag-piece.piece-start {
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+}
+.drag-piece.piece-result-yes {
+    background: linear-gradient(135deg, #00897b, #00695c);
+}
+.drag-piece.piece-result-no {
+    background: linear-gradient(135deg, #f4511e, #d84315);
+}
+.drag-piece.used {
+    opacity: 0.35;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+.btn-check {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 36px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-check:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(118,75,162,0.4); }
+.btn-check:active { transform: translateY(0); }
+.btn-check:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.feedback {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 10px;
+    min-height: 28px;
+}
+.feedback.correct { color: #2e7d32; }
+.feedback.wrong { color: #c62828; }
+.completion-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 10px;
+}
+.completion-screen.show { display: flex; }
+.completion-screen .big-emoji {
+    font-size: 3.5rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 10px;
+}
+.completion-screen h2 {
+    color: #5b2c8e;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+.completion-screen .stars {
+    font-size: 2.5rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 10px;
+}
+.completion-screen p {
+    color: #7c6f9c;
+    font-size: 1rem;
+    margin-bottom: 14px;
+}
+.btn-replay {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #1b5e20;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.btn-replay:hover { transform: translateY(-2px); }
+.game-area { display: block; }
+.game-area.hidden { display: none; }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .diagram-area > * + * { margin-top: 6px; }
+  .diagram-row > * + * { margin-left: 10px; }
+  .g61c4 > * + * { margin-top: 4px; margin-left: 0; }
+  .g61r20 > * + * { margin-left: 20px; }
+  .yes-no-labels > * + * { margin-left: 60px; }
+  .pieces-tray > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🧩 Διάγραμμα Απόφασης</h1>
+    <p class="subtitle">Σύρε τα κομμάτια στις σωστές θέσεις!</p>
+    <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressFill"></div>
+        <span class="progress-text" id="progressText">0 / 3</span>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <div class="scenario-card" id="scenarioCard">
+            <div class="emoji-big">🎮🍎</div>
+            <p id="scenarioText"></p>
+        </div>
+
+        <div class="diagram-area" id="diagramArea"></div>
+
+        <div class="pieces-tray" id="piecesTray"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="btn-check" id="btnCheck" onclick="checkAnswer()">✔ Έλεγξε!</button>
+    </div>
+
+    <div class="completion-screen" id="completionScreen">
+        <div class="big-emoji">🏆</div>
+        <h2>Μπράβο!</h2>
+        <div class="stars" id="starsDisplay"></div>
+        <p id="completionMsg"></p>
+        <button class="btn-replay" onclick="restartGame()">🔄 Ξαναπαίξε!</button>
+    </div>
+</div>
+
+<script>
+var scenarios = [
+    {
+        title: "🍎 Παιχνίδι με Φρούτα",
+        description: "Αν ο ήρωας φάει φρούτο, τότε κερδίζει +1 πόντο!",
+        slots: [
+            { id: "slot-start", label: "Εκκίνηση", type: "start" },
+            { id: "slot-cond", label: "Συνθήκη", type: "condition" },
+            { id: "slot-yes", label: "Ναι → Ενέργεια", type: "action-yes" },
+            { id: "slot-no", label: "Όχι → Ενέργεια", type: "action-no" }
+        ],
+        pieces: [
+            { id: "p1", text: "🚀 Αρχή Παιχνιδιού", type: "start", targetSlot: "slot-start" },
+            { id: "p2", text: "❓ Ο ήρωας έφαγε φρούτο;", type: "condition", targetSlot: "slot-cond" },
+            { id: "p3", text: "✅ +1 Πόντος!", type: "action-yes", targetSlot: "slot-yes" },
+            { id: "p4", text: "❌ Συνεχίζω κανονικά", type: "action-no", targetSlot: "slot-no" }
+        ]
+    },
+    {
+        title: "👻 Φαντασματάκι",
+        description: "Αν ο ήρωας αγγίξει φαντασματάκι, τότε χάνει μια ζωή!",
+        slots: [
+            { id: "slot-start", label: "Εκκίνηση", type: "start" },
+            { id: "slot-cond", label: "Συνθήκη", type: "condition" },
+            { id: "slot-yes", label: "Ναι → Ενέργεια", type: "action-yes" },
+            { id: "slot-no", label: "Όχι → Ενέργεια", type: "action-no" }
+        ],
+        pieces: [
+            { id: "p1", text: "🚀 Αρχή Παιχνιδιού", type: "start", targetSlot: "slot-start" },
+            { id: "p2", text: "❓ Ο ήρωας άγγιξε φάντασμα;", type: "condition", targetSlot: "slot-cond" },
+            { id: "p3", text: "💔 -1 Ζωή!", type: "action-yes", targetSlot: "slot-yes" },
+            { id: "p4", text: "😊 Κανένα πρόβλημα", type: "action-no", targetSlot: "slot-no" }
+        ]
+    },
+    {
+        title: "⭐ Μπόνους Σταδίου",
+        description: "Αν ο παίκτης μαζέψει 10 νομίσματα, τότε κερδίζει μπόνους!",
+        slots: [
+            { id: "slot-start", label: "Εκκίνηση", type: "start" },
+            { id: "slot-cond", label: "Συνθήκη", type: "condition" },
+            { id: "slot-yes", label: "Ναι → Ενέργεια", type: "action-yes" },
+            { id: "slot-no", label: "Όχι → Ενέργεια", type: "action-no" }
+        ],
+        pieces: [
+            { id: "p1", text: "🚀 Αρχή Σταδίου", type: "start", targetSlot: "slot-start" },
+            { id: "p2", text: "❓ Ο παίκτης μάζεψε 10 νομίσματα;", type: "condition", targetSlot: "slot-cond" },
+            { id: "p3", text: "🎁 Μπόνους Σταδίου!", type: "action-yes", targetSlot: "slot-yes" },
+            { id: "p4", text: "🔄 Συνεχίζω να παίζω", type: "action-no", targetSlot: "slot-no" }
+        ]
+    }
+];
+
+var currentScenario = 0;
+var completedScenarios = 0;
+var totalScenarios = scenarios.length;
+var slotAssignments = {};
+var draggedPiece = null;
+var draggedPieceId = null;
+
+function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+}
+
+function buildDiagram(slots) {
+    var area = document.getElementById("diagramArea");
+    area.innerHTML = "";
+    slotAssignments = {};
+
+    var startRow = document.createElement("div");
+    startRow.className = "diagram-row";
+    var startSlot = document.createElement("div");
+    startSlot.className = "drop-slot";
+    startSlot.id = "slot-start";
+    startSlot.setAttribute("data-type", "start");
+    startSlot.innerHTML = '<span style="color:#bbb;font-size:0.8rem">🚀 Εκκίνηση</span>';
+    startRow.appendChild(startSlot);
+    area.appendChild(startRow);
+
+    var arrow1 = document.createElement("div");
+    arrow1.className = "arrow-down";
+    arrow1.textContent = "⬇";
+    area.appendChild(arrow1);
+
+    var condRow = document.createElement("div");
+    condRow.className = "diagram-row g61c4";
+    condRow.style.flexDirection = "column";
+    condRow.style.gap = "4px";
+    var diamondWrap = document.createElement("div");
+    diamondWrap.style.display = "flex";
+    diamondWrap.style.alignItems = "center";
+    diamondWrap.style.justifyContent = "center";
+    var diamond = document.createElement("div");
+    diamond.className = "diamond-shape";
+    diamond.innerHTML = '<div class="drop-slot" id="slot-cond" data-type="condition" style="border:none;min-width:130px;min-height:48px;background:transparent;font-size:0.78rem;color:#fff"><span style="color:#e1bee7;font-size:0.8rem">❓ Συνθήκη</span></div>';
+    diamondWrap.appendChild(diamond);
+    condRow.appendChild(diamondWrap);
+
+    var labels = document.createElement("div");
+    labels.className = "yes-no-labels";
+    labels.innerHTML = '<span class="yes-label">✅ ΝΑΙ</span><span class="no-label">❌ ΟΧΙ</span>';
+    condRow.appendChild(labels);
+    area.appendChild(condRow);
+
+    var branchesRow = document.createElement("div");
+    branchesRow.className = "diagram-row g61r20";
+    branchesRow.style.gap = "20px";
+    branchesRow.style.justifyContent = "center";
+
+    var yesCol = document.createElement("div");
+    yesCol.className = "g61c4";
+    yesCol.style.display = "flex";
+    yesCol.style.flexDirection = "column";
+    yesCol.style.alignItems = "center";
+    yesCol.style.gap = "4px";
+    var arrowY = document.createElement("div");
+    arrowY.className = "arrow-down";
+    arrowY.textContent = "⬇";
+    var yesSlot = document.createElement("div");
+    yesSlot.className = "drop-slot";
+    yesSlot.id = "slot-yes";
+    yesSlot.setAttribute("data-type", "action-yes");
+    yesSlot.innerHTML = '<span style="color:#bbb;font-size:0.8rem">✅ Ενέργεια (Ναι)</span>';
+    yesCol.appendChild(arrowY);
+    yesCol.appendChild(yesSlot);
+
+    var noCol = document.createElement("div");
+    noCol.className = "g61c4";
+    noCol.style.display = "flex";
+    noCol.style.flexDirection = "column";
+    noCol.style.alignItems = "center";
+    noCol.style.gap = "4px";
+    var arrowN = document.createElement("div");
+    arrowN.className = "arrow-down";
+    arrowN.textContent = "⬇";
+    var noSlot = document.createElement("div");
+    noSlot.className = "drop-slot";
+    noSlot.id = "slot-no";
+    noSlot.setAttribute("data-type", "action-no");
+    noSlot.innerHTML = '<span style="color:#bbb;font-size:0.8rem">❌ Ενέργεια (Όχι)</span>';
+    noCol.appendChild(arrowN);
+    noCol.appendChild(noSlot);
+
+    branchesRow.appendChild(yesCol);
+    branchesRow.appendChild(noCol);
+    area.appendChild(branchesRow);
+
+    setupDropSlots();
+}
+
+function buildPieces(pieces) {
+    var tray = document.getElementById("piecesTray");
+    tray.innerHTML = "";
+    var shuffled = shuffle(pieces);
+    for (var i = 0; i < shuffled.length; i++) {
+        var p = shuffled[i];
+        var el = document.createElement("div");
+        el.className = "drag-piece piece-" + p.type;
+        el.id = p.id;
+        el.setAttribute("data-type", p.type);
+        el.setAttribute("data-target", p.targetSlot);
+        el.textContent = p.text;
+        setupDrag(el);
+        tray.appendChild(el);
+    }
+}
+
+function setupDrag(el) {
+    el.addEventListener("mousedown", function(e) { startDrag(el, e.clientX, e.clientY); e.preventDefault(); });
+    el.addEventListener("touchstart", function(e) { startDrag(el, e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+}
+
+function startDrag(el, cx, cy) {
+    if (el.classList.contains("used")) return;
+    draggedPiece = el;
+    draggedPieceId = el.id;
+    var rect = el.getBoundingClientRect();
+    el.style.position = "fixed";
+    el.style.zIndex = "9999";
+    el.style.left = (cx - rect.width / 2) + "px";
+    el.style.top = (cy - rect.height / 2) + "px";
+    el.style.width = rect.width + "px";
+    el.style.pointerEvents = "none";
+    document.body.appendChild(el);
+}
+
+function moveDrag(cx, cy) {
+    if (!draggedPiece) return;
+    var rect = draggedPiece.getBoundingClientRect();
+    draggedPiece.style.left = (cx - rect.width / 2) + "px";
+    draggedPiece.style.top = (cy - rect.height / 2) + "px";
+}
+
+function endDrag(cx, cy) {
+    if (!draggedPiece) return;
+    var origTray = document.getElementById("piecesTray");
+    draggedPiece.style.display = "none";
+    var elemBelow = document.elementFromPoint(cx, cy);
+    draggedPiece.style.display = "";
+    var slot = null;
+    if (elemBelow) {
+        slot = elemBelow.closest(".drop-slot");
+    }
+    if (slot && !slot.classList.contains("filled")) {
+        var prevSlot = null;
+        for (var s in slotAssignments) {
+            if (slotAssignments[s] === draggedPieceId) {
+                prevSlot = s;
+                break;
+            }
+        }
+        if (prevSlot) {
+            var prevEl = document.getElementById(prevSlot);
+            if (prevEl) {
+                prevEl.classList.remove("filled");
+                var sc = scenarios[currentScenario];
+                for (var k = 0; k < sc.slots.length; k++) {
+                    if (sc.slots[k].id === prevSlot) {
+                        var lbl = sc.slots[k];
+                        prevEl.innerHTML = '<span style="color:#bbb;font-size:0.8rem">' + getSlotPlaceholder(lbl.type) + '</span>';
+                        break;
+                    }
+                }
+            }
+            delete slotAssignments[prevSlot];
+        }
+        slotAssignments[slot.id] = draggedPieceId;
+        slot.classList.add("filled");
+        slot.innerHTML = "";
+        slot.textContent = draggedPiece.textContent;
+    } else {
+        for (var s2 in slotAssignments) {
+            if (slotAssignments[s2] === draggedPieceId) {
+                delete slotAssignments[s2];
+                var sl = document.getElementById(s2);
+                if (sl) {
+                    sl.classList.remove("filled");
+                    var sc2 = scenarios[currentScenario];
+                    for (var k2 = 0; k2 < sc2.slots.length; k2++) {
+                        if (sc2.slots[k2].id === s2) {
+                            sl.innerHTML = '<span style="color:#bbb;font-size:0.8rem">' + getSlotPlaceholder(sc2.slots[k2].type) + '</span>';
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }
+    draggedPiece.style.position = "";
+    draggedPiece.style.zIndex = "";
+    draggedPiece.style.left = "";
+    draggedPiece.style.top = "";
+    draggedPiece.style.width = "";
+    draggedPiece.style.pointerEvents = "";
+    origTray.appendChild(draggedPiece);
+    draggedPiece = null;
+    draggedPieceId = null;
+}
+
+function getSlotPlaceholder(type) {
+    if (type === "start") return "🚀 Εκκίνηση";
+    if (type === "condition") return "❓ Συνθήκη";
+    if (type === "action-yes") return "✅ Ενέργεια (Ναι)";
+    if (type === "action-no") return "❌ Ενέργεια (Όχι)";
+    return "...";
+}
+
+document.addEventListener("mousemove", function(e) { moveDrag(e.clientX, e.clientY); });
+document.addEventListener("mouseup", function(e) { endDrag(e.clientX, e.clientY); });
+document.addEventListener("touchmove", function(e) { if (draggedPiece) { moveDrag(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); } }, { passive: false });
+document.addEventListener("touchend", function(e) { if (draggedPiece) { var t = e.changedTouches[0]; endDrag(t.clientX, t.clientY); } });
+
+function setupDropSlots() {
+    var slots = document.querySelectorAll(".drop-slot");
+    for (var i = 0; i < slots.length; i++) {
+        (function(slot) {
+            slot.addEventListener("dragover", function(e) { e.preventDefault(); });
+        })(slots[i]);
+    }
+}
+
+function checkAnswer() {
+    var sc = scenarios[currentScenario];
+    var allFilled = true;
+    var allCorrect = true;
+    for (var i = 0; i < sc.pieces.length; i++) {
+        var p = sc.pieces[i];
+        var slotId = p.targetSlot;
+        if (!slotAssignments[slotId]) {
+            allFilled = false;
+            break;
+        }
+    }
+    if (!allFilled) {
+        showFeedback("Τοποθέτησε όλα τα κομμάτια πρώτα!", "wrong");
+        return;
+    }
+    for (var j = 0; j < sc.pieces.length; j++) {
+        var piece = sc.pieces[j];
+        var assigned = slotAssignments[piece.targetSlot];
+        if (assigned !== piece.id) {
+            allCorrect = false;
+            var slotEl = document.getElementById(piece.targetSlot);
+            slotEl.classList.add("wrong");
+            setTimeout(function(el) { el.classList.remove("wrong"); }, 500, slotEl);
+        }
+    }
+    if (allCorrect) {
+        completedScenarios++;
+        showFeedback("🎉 Σωστά! Μπράβο!", "correct");
+        updateProgress();
+        setTimeout(function() {
+            if (currentScenario < totalScenarios - 1) {
+                currentScenario++;
+                loadScenario(currentScenario);
+            } else {
+                showCompletion();
+            }
+        }, 1200);
+    } else {
+        showFeedback("❌ Κάποια κομμάτια δεν είναι στη σωστή θέση. Ξαναδοκίμασε!", "wrong");
+    }
+}
+
+function showFeedback(msg, type) {
+    var fb = document.getElementById("feedback");
+    fb.textContent = msg;
+    fb.className = "feedback " + type;
+}
+
+function updateProgress() {
+    var pct = Math.round((completedScenarios / totalScenarios) * 100);
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressText").textContent = completedScenarios + " / " + totalScenarios;
+}
+
+function loadScenario(idx) {
+    var sc = scenarios[idx];
+    document.getElementById("scenarioText").textContent = sc.description;
+    document.querySelector(".scenario-card .emoji-big").textContent = sc.title.split(" ")[0];
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("feedback").className = "feedback";
+    buildDiagram(sc.slots);
+    buildPieces(sc.pieces);
+}
+
+function showCompletion() {
+    document.getElementById("gameArea").classList.add("hidden");
+    var cs = document.getElementById("completionScreen");
+    cs.classList.add("show");
+    var stars = completedScenarios;
+    var starsStr = "";
+    for (var i = 0; i < 3; i++) {
+        starsStr += i < stars ? "⭐" : "☆";
+    }
+    document.getElementById("starsDisplay").textContent = starsStr;
+    document.getElementById("completionMsg").textContent = "Ολοκλήρωσες " + completedScenarios + " από " + totalScenarios + " διαγράμματα!";
+}
+
+function restartGame() {
+    currentScenario = 0;
+    completedScenarios = 0;
+    slotAssignments = {};
+    updateProgress();
+    document.getElementById("gameArea").classList.remove("hidden");
+    document.getElementById("completionScreen").classList.remove("show");
+    loadScenario(0);
+}
+
+loadScenario(0);
+updateProgress();
+</script>
+</body>
+</html>

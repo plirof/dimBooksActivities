@@ -1,0 +1,65 @@
+{
+  "title": "Βρες τα Λάθη: Scratch",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αστερίας", "error": false},
+        {"text": "εμφανίζεται", "error": false},
+        {"text": "για", "error": false},
+        {"text": "πάντα", "error": true, "correct": "λίγο", "feedback": "Ο αστερίας εμφανίζεται για ΛΙΓΟ χρόνο, όχι πάντα!"},
+        {"text": "χρόνο", "error": false},
+        {"text": "στον", "error": false},
+        {"text": "βυθό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Έλλη", "error": false},
+        {"text": "κολυμπάει", "error": false},
+        {"text": "ακολουθώντας", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πληκτρολόγιο.", "error": true, "correct": "ποντίκι", "feedback": "Η Έλλη ακολουθεί το ΠΟΝΤΙΚΙ, όχι το πληκτρολόγιο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "τελεστής", "error": false},
+        {"text": "άρνησης", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ψέμα", "error": false},
+        {"text": "αλήθεια", "error": false},
+        {"text": "και", "error": false},
+        {"text": "το", "error": false},
+        {"text": "αλήθεια", "error": false},
+        {"text": "πιο", "error": true, "correct": "ψέμα", "feedback": "Ο τελεστής άρνησης κάνει ΑΛΗΘΕΙΑ -> ΨΕΜΑ, όχι πιο αλήθεια!"},
+        {"text": "αλήθεια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "Scratch", "error": false},
+        {"text": "δημιουργούμε", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "Στο Scratch δημιουργούμε ΚΑΙ παιχνίδια ΚΑΙ εφαρμογές!"},
+        {"text": "παιχνίδια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αστερίας", "error": false},
+        {"text": "πηγαίνει", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "ίδια", "error": true, "correct": "τυχαία", "feedback": "Ο αστερίας πάει σε ΤΥΧΑΙΑ θέση, όχι ίδια!"},
+        {"text": "θέση", "error": false},
+        {"text": "κάθε", "error": false},
+        {"text": "φορά.", "error": false}
+      ]
+    }
+  ]
+}

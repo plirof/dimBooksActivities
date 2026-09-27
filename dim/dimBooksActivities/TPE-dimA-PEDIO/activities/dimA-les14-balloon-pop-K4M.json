@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Διαδίκτυο",
+  "subtitle": "Μόνο ό,τι σχετίζεται με το διαδίκτυο!",
+  "instruction": "Σπάσε μόνο τα πράγματα που έχουν να κάνουν με το ΔΙΑΔΙΚΤΥΟ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Email", "correct": true, "color": "#FF6B6B" },
+    { "text": "Γραμματόσημο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Μήνυμα", "correct": true, "color": "#45B7D1" },
+    { "text": "Τραίνο", "correct": false, "color": "#96CEB4" },
+    { "text": "Υπολογιστής", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μολύβι", "correct": false, "color": "#DDA0DD" },
+    { "text": "Επικοινωνία", "correct": true, "color": "#98D8C8" },
+    { "text": "Κούνια", "correct": false, "color": "#F7DC6F" },
+    { "text": "Αποστολή", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κουτάλι", "correct": false, "color": "#85C1E9" }
+  ]
+}

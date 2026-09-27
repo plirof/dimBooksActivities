@@ -1,0 +1,48 @@
+{
+  "title": "ScratchJr vs Scratch",
+  "subtitle": "Ταίριαξε κάθε χαρακτηριστικό στη σωστή εφαρμογή",
+  "categories": [
+    {
+      "id": "jr",
+      "name": "SCRATCHJR",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "scratch",
+      "name": "SCRATCH",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Πλακίδια εντολών",
+      "category": "jr"
+    },
+    {
+      "id": "item2",
+      "text": "Blocks εντολών",
+      "category": "scratch"
+    },
+    {
+      "id": "item3",
+      "text": "Ήρωες με αυτοκόλλητα",
+      "category": "jr"
+    },
+    {
+      "id": "item4",
+      "text": "Ήρωες με αντικείμενα",
+      "category": "scratch"
+    },
+    {
+      "id": "item5",
+      "text": "Απλά σκηνικά",
+      "category": "jr"
+    },
+    {
+      "id": "item6",
+      "text": "Πολύπλοκα scripts",
+      "category": "scratch"
+    }
+  ]
+}

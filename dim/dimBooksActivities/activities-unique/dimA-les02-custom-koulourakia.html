@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+v260924 - διόρθωση σοβαρού λάθους: η αποδοχή καρτών συγκρίνει τη θέση στην ανακατεμένη λίστα (data-idx = σειρά εμφάνισης)
+	αντί για την πραγματική σειρά των βημάτων, οπότε το παιδί έπρεπε να πατά τις κάρτες από πάνω-προς-κάτω
+	ανεξαρτήτως νοήματος. Τώρα κάθε κάρτα κουβαλά το origIdx της και ο έλεγχος γίνεται στη σωστή σειρά.
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάχνω Κουλουράκια 🍪</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce4b8 0%, #f8d5a3 50%, #f0c27a 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(245,87,108,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.4rem; margin-bottom: 2px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #f5576c; }
+  .round { font-size: 1rem; color: #888; }
+  .task-area { text-align: center; margin-bottom: 14px; }
+  .task-area .big-emoji { font-size: 4rem; }
+  .task-area h2 { font-size: 1.3rem; color: #2d3436; margin: 4px 0; }
+  .task-area p { font-size: 1rem; color: #666; }
+  .sequence-area {
+    background: #fff8e7; border: 3px dashed #d4a353;
+    border-radius: 20px; padding: 14px; min-height: 120px;
+    margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: center;
+  }
+  .sequence-area .empty-msg { color: #b8944e; font-size: 1rem; padding: 20px; }
+  .seq-item {
+    background: #ffedd5; border: 2px solid #d4a353;
+    border-radius: 12px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1.1rem; font-weight: 600; color: #7a5d2e;
+  }
+  .seq-item .s-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #d4a353; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 700; flex-shrink: 0;
+  }
+  .options-area {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;
+  }
+  .opt-card {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 16px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s ease;
+  }
+  .opt-card:hover { border-color: #f5576c; transform: translateX(4px); }
+  .opt-card:active { transform: scale(.97); }
+  .opt-card .o-emoji { font-size: 1.8rem; flex-shrink: 0; }
+  .opt-card .o-text { font-size: 1.05rem; font-weight: 600; color: #2d3436; flex: 1; text-align: left; }
+  .opt-card.placed {
+    opacity: .4; pointer-events: none; border-color: #28a745;
+    transform: none !important;
+  }
+  .opt-card.wrong-flash {
+    border-color: #dc3545; background: #ffebee;
+    animation: shake .4s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(245,87,108,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .seq-item { font-size: 1rem; }
+    .opt-card .o-text { font-size: .95rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .sequence-area > * { margin: 4px; }
+  .seq-item > * + * { margin-left: 8px; }
+  .options-area > * + * { margin-top: 8px; }
+  .opt-card > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🍪 Φτιάχνω Κουλουράκια</h1>
+    <p>Βάλε τις οδηγίες στη σωστή σειρά!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="task-area">
+      <div class="big-emoji" id="taskEmoji">🍪</div>
+      <h2 id="taskTitle">Φτιάχνω κουλουράκια</h2>
+      <p id="taskDesc">Πάτα τις οδηγίες από κάτω με τη σωστή σειρά!</p>
+    </div>
+    <div class="sequence-area" id="sequenceArea">
+      <div class="empty-msg" id="emptyMsg">🔽 Πάτα τις οδηγίες από κάτω με τη σειρά!</div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options-area" id="optionsArea"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var rounds = [
+    {
+      emoji: '🍪', title: 'Φτιάχνω κουλουράκια',
+      steps: [
+        { emoji: '📖', text: 'Διαβάζω τη συνταγή' },
+        { emoji: '🥣', text: 'Φτιάχνω τη ζύμη' },
+        { emoji: '✋', text: 'Πλάθω κουλουράκια' },
+        { emoji: '🔥', text: 'Ψήνω στον φούρνο' },
+        { emoji: '🍪', text: 'Απολαμβάνω τα κουλουράκια!' }
+      ]
+    },
+    {
+      emoji: '✈️', title: 'Φτιάχνω χάρτινο αεροπλανάκι',
+      steps: [
+        { emoji: '📄', text: 'Παίρνω ένα χαρτί Α4' },
+        { emoji: '📐', text: 'Διπλώνω τη μέση' },
+        { emoji: '🔺', text: 'Διπλώνω τις γωνίες' },
+        { emoji: '🪁', text: 'Διπλώνω τις άκρες για φτερά' },
+        { emoji: '✈️', text: 'Εκτοξεύω το αεροπλάνο!' }
+      ]
+    },
+    {
+      emoji: '🏠', title: 'Φτιάχνω σπιτάκι από παζλ',
+      steps: [
+        { emoji: '🧩', text: 'Αδειάζω όλα τα κομμάτια' },
+        { emoji: '🔲', text: 'Βρίσκω τις γωνίες' },
+        { emoji: '🧱', text: 'Ενώνω τα κομμάτια της άκρης' },
+        { emoji: '🎨', text: 'Γεμίζω το εσωτερικό' },
+        { emoji: '🏠', text: 'Χαίρομαι το σπιτάκι μου!' }
+      ]
+    },
+    {
+      emoji: '🛏️', title: 'Στρώνω το κρεβάτι',
+      steps: [
+        { emoji: '🧹', text: 'Βγάζω τα μαξιλάρια' },
+        { emoji: '🛏️', text: 'Απλώνω το σεντόνι' },
+        { emoji: '🛌', text: 'Βάζω την κουβέρτα' },
+        { emoji: '🟣', text: 'Τοποθετώ τα μαξιλάρια' },
+        { emoji: '🧸', text: 'Βάζω το αγαπημένο μου λούτρινο' }
+      ]
+    }
+  ];
+
+  var currentRound = 0, score = 0, waiting = false, placedCount = 0;
+
+  function startGame() {
+    currentRound = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showRound();
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function showRound() {
+    if (currentRound >= rounds.length) { showResult(); return; }
+    waiting = false; placedCount = 0;
+    var r = rounds[currentRound];
+    document.getElementById('taskEmoji').textContent = r.emoji;
+    document.getElementById('taskTitle').textContent = r.title;
+    document.getElementById('taskDesc').textContent = 'Πάτα τις οδηγίες από κάτω με τη σωστή σειρά!';
+    document.getElementById('roundDisplay').textContent = (currentRound + 1) + '/' + rounds.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    var seq = document.getElementById('sequenceArea');
+    seq.innerHTML = '<div class="empty-msg">🔽 Πάτα τις οδηγίες από κάτω με τη σειρά!</div>';
+    var shuffled = shuffle(r.steps.slice().map(function(st, idx) {
+      return { emoji: st.emoji, text: st.text, origIdx: idx };
+    }));
+    var guard = 0;
+    while (shuffled.every(function(it, i) { return it.origIdx === i; }) && guard < 60) { shuffle(shuffled); guard++; }
+    var opts = document.getElementById('optionsArea');
+    opts.innerHTML = '';
+    for (var i = 0; i < shuffled.length; i++) {
+      (function(idx) {
+        var card = document.createElement('div');
+        card.className = 'opt-card';
+        card.setAttribute('data-idx', shuffled[idx].origIdx);
+        card.innerHTML = '<div class="o-emoji">' + shuffled[idx].emoji + '</div><div class="o-text">' + shuffled[idx].text + '</div>';
+        card.addEventListener('click', function() { if (!waiting) placeStep(this, shuffled, r); });
+        opts.appendChild(card);
+      })(i);
+    }
+  }
+
+  function placeStep(el, shuffled, r) {
+    if (el.classList.contains('placed')) return;
+    var idx = parseInt(el.getAttribute('data-idx'));
+    if (idx === placedCount) {
+      el.classList.remove('wrong-flash');
+      el.classList.add('placed');
+      var seq = document.getElementById('sequenceArea');
+      var empty = seq.querySelector('.empty-msg');
+      if (empty) empty.remove();
+      var item = document.createElement('div');
+      item.className = 'seq-item';
+      item.innerHTML = '<div class="s-num">' + (placedCount + 1) + '</div><div class="o-emoji">' + r.steps[placedCount].emoji + '</div><span>' + r.steps[placedCount].text + '</span>';
+      seq.appendChild(item);
+      placedCount++;
+      el.style.display = 'none';
+      if (placedCount === shuffled.length) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback correct';
+        fb.textContent = '✅ Μπράβο! ' + r.title + ' — τέλεια σειρά!';
+        waiting = true;
+        setTimeout(function() { currentRound++; showRound(); }, 1500);
+      }
+    } else {
+      el.classList.remove('wrong-flash');
+      void el.offsetWidth;
+      el.classList.add('wrong-flash');
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = rounds.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις όλες τις σειρές βημάτων!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

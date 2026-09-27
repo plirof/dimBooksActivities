@@ -1,0 +1,26 @@
+{
+  "title": "Εντολές ScratchJr",
+  "subtitle": "Σύρε κάθε εντολή στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "motion",
+      "name": "Εντολές Κίνησης",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "ctrl",
+      "name": "Εντολές Ελέγχου",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "category": "motion" },
+    { "id": "item2", "text": "ΠΗΓΑΙΝΕ ΣΤΗΝ ΑΡΧΗ", "category": "motion" },
+    { "id": "item3", "text": "ΠΗΔΑ", "category": "motion" },
+    { "id": "item4", "text": "ΟΡΙΣΕ ΤΑΧΥΤΗΤΑ", "category": "motion" },
+    { "id": "item5", "text": "ΕΠΑΝΑΛΑΒΕ", "category": "ctrl" },
+    { "id": "item6", "text": "Κόκκινο εξάγωνο (STOP)", "category": "ctrl" },
+    { "id": "item7", "text": "Αριθμός επαναλήψεων", "category": "ctrl" },
+    { "id": "item8", "text": "Βήματα στο πλαίσιο", "category": "motion" }
+  ]
+}

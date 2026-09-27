@@ -1,0 +1,37 @@
+{
+  "title": "Βρες τα Λάθη: Διαδραστικά Βιβλία",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαδραστικα", "error": true, "correct": "διαδραστικά", "feedback": "Λείπει ο τόνος" },
+        { "text": "βιβλία", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαβάζω", "error": false, "correct": "", "feedback": "" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "χαρτί", "error": true, "correct": "ψηφιακή συσκευή", "feedback": "Τα διαβάζω σε ψηφιακή συσκευή" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "βιβλια", "error": true, "correct": "βιβλία", "feedback": "Λείπει ο τόνος" },
+        { "text": "περιεχουν", "error": true, "correct": "περιέχουν", "feedback": "Λείπει ο τόνος" },
+        { "text": "μόνο", "error": true, "correct": "", "feedback": "Δεν περιέχουν μόνο κείμενο" },
+        { "text": "κειμενο", "error": true, "correct": "κείμενο", "feedback": "Λείπει ο τόνος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρω", "error": false, "correct": "", "feedback": "" },
+        { "text": "παω", "error": true, "correct": "πηγαίνω", "feedback": "Λάθος ορθογραφία" },
+        { "text": "στο", "error": false, "correct": "", "feedback": "" },
+        { "text": "βιβλιοπωλείο", "error": true, "correct": "ebooks.edu.gr", "feedback": "Τα βρίσκω στο διαδίκτυο, όχι βιβλιοπωλείο" }
+      ]
+    }
+  ]
+}

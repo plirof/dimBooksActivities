@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μηχανή Αναζήτησης</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#eff6ff;border-radius:12px;border-left:4px solid #3b82f6;padding:10px 14px;font-size:.85em;color:#1e3a5f;line-height:1.5}
+.info b{color:#1e40af}
+.browser{background:#fff;border-radius:16px;border:2px solid #bfdbfe;overflow:hidden}
+.browser-bar{background:#f1f5f9;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e2e8f0}
+.browser-dots{display:flex;gap:4px}
+.browser-dots span{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot-red{background:#ef4444}
+.dot-yellow{background:#f59e0b}
+.dot-green{background:#22c55e}
+.browser-url{flex:1;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:.8em;color:#64748b}
+.search-engine{padding:20px;text-align:center}
+.se-logo{font-size:2.5em;margin-bottom:8px}
+.se-title{font-size:1.4em;font-weight:800;color:#1e40af;margin-bottom:16px}
+.search-box{display:flex;gap:8px;max-width:500px;margin:0 auto;justify-content:center}
+.search-box input{flex:1;padding:10px 16px;border:2px solid #bfdbfe;border-radius:50px;font-size:.9em;outline:none}
+.search-box input:focus{border-color:#3b82f6}
+.search-box button{padding:10px 20px;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer}
+.search-box button:hover{transform:scale(1.05)}
+.results-area{padding:0 20px 20px;text-align:left}
+.result-item{background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;padding:12px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.result-item:hover{border-color:#3b82f6;background:#eff6ff}
+.result-item .r-url{font-size:.75em;color:#16a34a;margin-bottom:2px}
+.result-item .r-title{font-size:.95em;color:#1d4ed8;font-weight:600;margin-bottom:2px}
+.result-item .r-desc{font-size:.8em;color:#64748b}
+.result-item.correct{border-color:#22c55e;background:#f0fdf4}
+.result-item.wrong{border-color:#ef4444;background:#fef2f2}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#1e40af}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(30,64,175,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.tip-box{background:#fef9c3;border-radius:10px;padding:10px 14px;font-size:.85em;color:#713f12;line-height:1.5;margin-top:8px;display:none}
+.tip-box b{color:#a16207}
+@media(max-width:500px){.search-box{flex-direction:column}.search-box button{width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .browser-bar > * + * { margin-left: 8px; }
+  .browser-dots > * + * { margin-left: 4px; }
+  .search-box > * + * { margin-left: 8px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔍 Μηχανή Αναζήτησης</h1>
+<p>Μάθε πώς λειτουργεί η μηχανή αναζήτησης!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>Μηχανή αναζήτησης</b> είναι ένας δικτυακός τόπος που μας βοηθά να βρούμε πληροφορίες στο διαδίκτυο. Γράφουμε <b>λέξεις-κλειδιά</b> στο πλαίσιο αναζήτησης και πατάμε «Αναζήτηση»!</div>
+<div class="score-bar">⭐ Πρόκληση: <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="browser" id="browserArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="tip-box" id="tipBox"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextChallenge()">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var challenges=[
+{
+query:'Εθνικός Κήπος Αθηνών',
+tip:'Η μηχανή αναζήτησης ψάχνει σελίδες που περιέχουν αυτές τις λέξεις.',
+results:[
+{url:'www.athens-gardens.gr',title:'Εθνικός Κήπος Αθηνών — Ιστορία και Ώρες',desc:'Όλα όσα πρέπει να ξέρεις για τον Εθνικό Κήπο. Ώρες λειτουργίας, χάρτης, φωτογραφίες.',correct:true},
+{url:'www.athens-food.gr',title:'Φαγητό στην Αθήνα',desc:'Καλύτερα εστιατόρια και ταβέρνες στο κέντρο της Αθήνας. Κριτικές και τιμές.',correct:false},
+{url:'www.greek-gardens.gr',title:'Εθνικός Κήπος — Περίπατος στη φύση',desc:'Ανακάλυψε τα δέντρα, τα λουλούδια και τις λίμνες του Εθνικού Κήπου.',correct:true},
+{url:'www.athens-weather.gr',title:'Καιρός στην Αθήνα',desc:'Πρόγνωση καιρού για σήμερα και αύριο στην Αθήνα.',correct:false}
+]
+},
+{
+query:'δinitionopia 2026 Αθήνα',
+tip:'Αν κάνεις ορθογραφικό λάθος, η μηχανή μπορεί να προτείνει τη σωστή λέξη!',
+results:[
+{url:'www.olympics2026.gr',title:'Διεθνής Ολυμπιακή Επιτροπή',desc:'Επίσημη σελίδα για τους Ολυμπιακούς Αγώνες.',correct:false},
+{url:'www.athens-events.gr',title:'Διεθνής Ολυμπιάδα 2026 Αθήνα',desc:'Πρόγραμμα, αθλήματα και εισητήρια για τη Διεθνή Ολυμπιάδα 2026.',correct:true},
+{url:'www.athens-tickets.gr',title:'Εισιτήρια Διεθνούς Ολυμπιάδας',desc:'Αγόρασε εισιτήρια για τα αγωνίσματα της Ολυμπιάδας.',correct:true},
+{url:'www.greek-food.gr',title:'Ελληνικές Συνταγές',desc:'Οι καλύτερες συνταγές της ελληνικής κουζίνας.',correct:false}
+]
+},
+{
+query:'ζώα Αυστραλίας',
+tip:'Οι λέξεις-κλειδιά πρέπει να περιγράφουν αυτό που ψάχνουμε.',
+results:[
+{url:'www.australia-zoo.gr',title:'Ζώα της Αυστραλίας — Καγκουρό και Κοάλα',desc:'Μάθε για τα μοναδικά ζώα που ζουν μόνο στην Αυστραλία.',correct:true},
+{url:'www.africa-zoo.gr',title:'Ζώα της Αφρικής',desc:'Λιοντάρια, ελέφαντες και καμηλοπαρδάλεις στην αφρικανική σαβάνα.',correct:false},
+{url:'www.australia-travel.gr',title:'Ταξίδι στην Αυστραλία',desc:'Τι να δεις και τι να κάνεις στις διακοπές σου στην Αυστραλία.',correct:false},
+{url:'www.australia-wildlife.gr',title:'Άγρια Ζώα Αυστραλίας',desc:'Φωτογραφίες και πληροφορίες για την αυστραλιανή πανίδα.',correct:true}
+]
+},
+{
+query:'πώς φτιάχνω χαρτί πλοίο',
+tip:'Η λέξη «πώς» βοηθά να βρεις οδηγίες και βήματα.',
+results:[
+{url:'www.kids-crafts.gr',title:'Πώς να φτιάξεις ένα πλοίο από χαρτί',desc:'Βήμα-βήμα οδηγίες με εικόνες για χάρτινο πλοίο.',correct:true},
+{url:'www.paper-ships.gr',title:'Χάρτινα Πλοία — Κατασκευές για παιδιά',desc:'Εύκολες κατασκευές πλοίων από χαρτί και χαρτόνι.',correct:true},
+{url:'www.model-ships.gr',title:'Μοντέλα Πλοίων Ξύλινα',desc:'Ξύλινα μοντέλα πλοίων για συλλέκτες. Τιμές και παραγγελίες.',correct:false},
+{url:'www.kids-games.gr',title:'Παιχνίδια με Πλοία',desc:'Online παιχνίδια με πλοία και υποβρύχια.',correct:false}
+]
+},
+{
+query:'φεγγάρι διάστημα',
+tip:'Πολλές λέξεις-κλειδιά δίνουν πιο συγκεκριμένα αποτελέσματα.',
+results:[
+{url:'www.nasa-kids.gr',title:'Το Φεγγάρι — Ο δορυφόρος της Γης',desc:'Πληροφορίες για το φεγγάρι, τις φάσεις του και τις αποστολές.',correct:true},
+{url:'www.space-moon.gr',title:'Διάστημα και Φεγγάρι',desc:'Ανακάλυψε πώς δημιουργήθηκε το φεγγάρι και τι υπάρχει στην επιφάνειά του.',correct:true},
+{url:'www.movies.gr',title:'Ταινία: Ταξίδι στο Διάστημα',desc:'Κριτική της νέας ταινίας επιστημονικής φαντασίας.',correct:false},
+{url:'www.astrology.gr',title:'Ωροσκόπιο Μήνα',desc:'Πρόβλεψη για τον ωροσκόπιο σου αυτόν τον μήνα.',correct:false}
+]
+}
+];
+
+var currentChallenge=0;
+var score=0;
+var answered=0;
+
+function renderChallenge(){
+var ch=challenges[currentChallenge];
+var area=document.getElementById('browserArea');
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('tipBox').style.display='none';
+answered=0;
+
+var html='<div class="browser-bar"><div class="browser-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div><div class="browser-url">www.anazitisi.gr</div></div>';
+html+='<div class="search-engine">';
+html+='<div class="se-logo">🔍</div>';
+html+='<div class="se-title">Αναζήτηση</div>';
+html+='<div class="search-box"><input type="text" value="'+ch.query+'" readonly><button>🔍 Αναζήτηση</button></div>';
+html+='</div>';
+html+='<div class="results-area" id="resultsArea">';
+for(var i=0;i<ch.results.length;i++){
+var r=ch.results[i];
+html+='<div class="result-item" data-idx="'+i+'" data-correct="'+r.correct+'" onclick="selectResult(this)">';
+html+='<div class="r-url">🔗 '+r.url+'</div>';
+html+='<div class="r-title">'+r.title+'</div>';
+html+='<div class="r-desc">'+r.desc+'</div>';
+html+='</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+
+var tipBox=document.getElementById('tipBox');
+tipBox.innerHTML='💡 <b>Συμβουλή:</b> '+ch.tip;
+tipBox.style.display='block';
+}
+
+function selectResult(el){
+if(el.classList.contains('correct')||el.classList.contains('wrong'))return;
+var isCorrect=el.dataset.correct==='true';
+answered++;
+if(isCorrect){
+el.classList.add('correct');
+score++;
+showFeedback('✅ Σωστό! Αυτό το αποτέλεσμα είναι σχετικό!',true);
+}else{
+el.classList.add('wrong');
+showFeedback('❌ Αυτό το αποτέλεσμα δεν είναι σχετικό με την αναζήτηση.',false);
+}
+document.getElementById('scoreDisplay').textContent=score;
+var ch=challenges[currentChallenge];
+if(answered>=ch.results.length){
+document.getElementById('nextBtn').disabled=false;
+}else{
+var allAnswered=true;
+var items=document.querySelectorAll('.result-item');
+for(var i=0;i<items.length;i++){
+if(!items[i].classList.contains('correct')&&!items[i].classList.contains('wrong')){allAnswered=false;break;}
+}
+if(allAnswered)document.getElementById('nextBtn').disabled=false;
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},2500);
+}
+
+function nextChallenge(){
+if(currentChallenge<challenges.length-1){
+currentChallenge++;
+renderChallenge();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+var area=document.getElementById('browserArea');
+var totalResults=0;
+for(var i=0;i<challenges.length;i++){
+for(var j=0;j<challenges[i].results.length;j++){
+if(challenges[i].results[j].correct)totalResults++;
+}
+}
+var pct=Math.round(score/totalResults*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+var msg=pct===100?'Τέλεια! Αναγνωρίζεις τα σωστά αποτελέσματα!':pct>=70?'Μπράβο! Μαθαίνεις να διαλέγεις σωστά!':'Συνέχισε την προσπάθεια!';
+area.innerHTML='<div style="text-align:center;padding:30px"><div style="font-size:2.5em">'+stars+'</div><h3 style="color:#1e40af;margin:10px 0">Αποτέλεσμα: '+score+'/'+totalResults+'</h3><p style="font-size:1em;color:#64748b">'+msg+'</p><p style="font-size:.85em;color:#64748b;margin-top:8px">Βρήκες το '+pct+'% των σωστών αποτελεσμάτων!</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Συγχαρητήρια! Ολοκλήρωσες την πρόκληση!';
+document.getElementById('feedback').className='feedback ok';
+document.getElementById('tipBox').style.display='none';
+}
+
+function resetAll(){
+currentChallenge=0;
+score=0;
+answered=0;
+document.getElementById('scoreDisplay').textContent='0';
+document.getElementById('totalDisplay').textContent=countTotalCorrect();
+document.getElementById('nextBtn').style.display='inline-block';
+renderChallenge();
+}
+
+function countTotalCorrect(){
+var c=0;
+for(var i=0;i<challenges.length;i++){
+for(var j=0;j<challenges[i].results.length;j++){
+if(challenges[i].results[j].correct)c++;
+}
+}
+return c;
+}
+
+document.getElementById('totalDisplay').textContent=countTotalCorrect();
+renderChallenge();
+</script>
+</body>
+</html>

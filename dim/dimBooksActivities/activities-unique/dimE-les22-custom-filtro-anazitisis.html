@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φίλτρα Αναζήτησης | Μάθημα 22</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fffbeb,#fde68a);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#78350f;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#d97706;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#78350f;font-size:.75rem;font-weight:700;border:1px solid #fcd34d;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.search-bar{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid #fcd34d;border-radius:24px;padding:8px 14px;margin:8px 0}
+.search-bar .mag{font-size:1rem}
+.search-bar .query{flex:1;font-size:.78rem;color:#1e293b;font-weight:600}
+.filter-tabs{display:flex;gap:4px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.filter-tab{padding:6px 14px;border:2px solid #e2e8f0;border-radius:20px;font-size:.68rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fff;color:#64748b}
+.filter-tab:hover{border-color:#d97706}
+.filter-tab.active{border-color:#d97706;background:#fffbeb;color:#78350f}
+.results-area{margin:8px 0}
+.result-card{display:flex;align-items:center;gap:10px;padding:10px;border:2px solid #e2e8f0;border-radius:12px;margin:6px 0;cursor:pointer;transition:all .2s;background:#fafafa}
+.result-card:hover{border-color:#d97706;background:#fffbeb}
+.result-card .r-icon{font-size:1.4rem;flex-shrink:0}
+.result-card .r-content{flex:1}
+.result-card .r-title{font-size:.72rem;font-weight:700;color:#1e293b}
+.result-card .r-desc{font-size:.62rem;color:#64748b;margin-top:2px}
+.result-card.placed{opacity:.4;cursor:default;border-style:dashed}
+.drop-zones{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;justify-content:center}
+.drop-zone{min-width:120px;min-height:80px;border:2px dashed #d1d5db;border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .2s}
+.drop-zone .dz-label{font-size:.65rem;font-weight:700;color:#64748b}
+.drop-zone .dz-count{font-size:.6rem;color:#94a3b8}
+.drop-zone.img-zone{border-color:#8b5cf6;background:#faf5ff}
+.drop-zone.vid-zone{border-color:#ef4444;background:#fef2f2}
+.drop-zone.news-zone{border-color:#f59e0b;background:#fffbeb}
+.drop-zone.txt-zone{border-color:#3b82f6;background:#eff6ff}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#d97706;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#b45309}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #d97706;border-radius:10px;background:transparent;color:#d97706;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fffbeb}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .search-bar > * + * { margin-left: 6px; }
+  .filter-tabs > * { margin: 2px; }
+  .result-card > * + * { margin-left: 10px; }
+  .drop-zones > * { margin: 4px; }
+  .drop-zone > * + * { margin-top: 4px; }
+  .g61f6_0 > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔎 Φίλτρα Αναζήτησης</h1>
+<p class="subtitle">Ταξινόμησε τα αποτελέσματα αναζήτησης στο σωστό φίλτρο!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Θέμα:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var searches=[
+{
+query:'Ζώα απειλούμενα με εξαφάνιση στην Ελλάδα',
+results:[
+{title:'Φωτογραφίες της μεσογειακής φώκιας',desc:'Συλλογή εικόνων από το Αρχιπέλαγος',type:'img',icon:'🖼️'},
+{title:'Ντοκιμαντέρ: Οι σπάνιες χελώνες',desc:'Βίντεο 12 λεπτών για την Καρέτα-Καρέτα',type:'vid',icon:'🎬'},
+{title:'Νέα μέτρα προστασίας για τον αειφόρο γύπα',desc:'Εφημερίδα, 15 Μαρτίου 2025',type:'news',icon:'📰'},
+{title:'Κόκκινο βιβλίλιο απειλούμενων ειδών',desc:'Πλήρης κατάλογος από το ARCTUROS',type:'txt',icon:'📄'},
+{title:'Εικόνα: Ο κρινός της θάλασσας',desc:'Σπάνιο φυτό σε κίνδυνο',type:'img',icon:'🖼️'},
+{title:'Συνοπτικό βίντεο για το ελληνικό ελάφι',desc:'Εκπαιδευτικό βίντεο 3 λεπτών',type:'vid',icon:'🎬'}
+]
+},
+{
+query:'Έλληνες ολυμπιονίκες',
+results:[
+{title:'Φωτογραφίες από τους Ολυμπιακούς Αγώνες',desc:'Συλλογή εικόνων 2004-2024',type:'img',icon:'🖼️'},
+{title:'Μαρία Σελλάκης: Το χρυσό μετάλλιο',desc:'Ειδησεογραφικό ρεπορτάζ',type:'news',icon:'📰'},
+{title:'Τα κορυφαία 10 κατορθώματα',desc:'Άρθρο αναλυτικό',type:'txt',icon:'📄'},
+{title:'Κατακόμβη αθλημάτων - Highlights',desc:'Συλλογή βίντεο από αγώνες',type:'vid',icon:'🎬'},
+{title:'Φωτογραφίες του Σπίλιου Λούη',desc:'Ιστορικές εικόνες',type:'img',icon:'🖼️'},
+{title:'Ολυμπιακή επιτροπή: Δελτίο τύπου',desc:'Επίσημη ανακοίνωση 2025',type:'news',icon:'📰'}
+]
+},
+{
+query:'Βυζαντινή Αυτοκρατορία',
+results:[
+{title:'Χάρτης της Βυζαντινής Αυτοκρατορίας',desc:'Εικόνα με τα σύνορα του 600μ.Χ.',type:'img',icon:'🖼️'},
+{title:'Νέα ανακάλυψη: Βυζαντινά ψηφιδωτά',desc:'Αρχαιολογική είδηση',type:'news',icon:'📰'},
+{title:'Ιστορία της Βυζαντινής Αυτοκρατορίας',desc:'Λεπτομερές άρθρο εγκυκλοπαίδειας',type:'txt',icon:'📄'},
+{title:'Εικονική ξενάγηση στην Αγία Σοφία',desc:'Βίντεο 360 μοιρών',type:'vid',icon:'🎬'},
+{title:'Βυζαντινά νομίσματα - Συλλογή',desc:'Φωτογραφίες νομισμάτων',type:'img',icon:'🖼️'},
+{title:'Τέχνη και κουλτούρα των Βυζαντινών',desc:'Εκπαιδευτικό βίντεο',type:'vid',icon:'🎬'}
+]
+}
+];
+var curQ=0;
+var pts=0;
+var placed={};
+var checked=false;
+
+function initQ(){
+placed={};
+checked=false;
+}
+
+function render(){
+var search=searches[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+if(Object.keys(placed).length===0)initQ();
+var main=document.getElementById('main');
+var h='';
+h+='<div class="search-bar"><span class="mag">🔍</span><span class="query">'+search.query+'</span></div>';
+h+='<div style="font-size:.72rem;font-weight:700;color:#78350f;margin:6px 0;text-align:center">Κάνε κλικ σε κάθε αποτέλεσμα και επίλεξε σε ποιο φίλτρο ανήκει:</div>';
+h+='<div class="drop-zones">';
+var zones=[
+{id:'img',label:'🖼️ Εικόνες',cls:'img-zone'},
+{id:'vid',label:'🎬 Βίντεο',cls:'vid-zone'},
+{id:'news',label:'📰 Ειδήσεις',cls:'news-zone'},
+{id:'txt',label:'📄 Κείμενο',cls:'txt-zone'}
+];
+for(var z=0;z<zones.length;z++){
+var zone=zones[z];
+var count=search.results.filter(function(r,i){return placed[i]===zone.id;}).length;
+h+='<div class="drop-zone '+zone.cls+'">';
+h+='<div class="dz-label">'+zone.label+'</div>';
+h+='<div class="dz-count">'+count+' στοιχεία</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div class="results-area">';
+for(var i=0;i<search.results.length;i++){
+var r=search.results[i];
+var isPlaced=placed[i]!==undefined;
+var cls='result-card'+(isPlaced?' placed':'');
+h+='<div class="'+cls+'" onclick="showPicker('+i+')" id="result_'+i+'">';
+h+='<span class="r-icon">'+r.icon+'</span>';
+h+='<div class="r-content"><div class="r-title">'+r.title+'</div><div class="r-desc">'+r.desc+'</div></div>';
+if(isPlaced){
+var zoneLabel=zones.find(function(z){return z.id===placed[i];});
+h+='<span style="font-size:.65rem;font-weight:700;color:#78350f">'+(zoneLabel?zoneLabel.label:'')+'</span>';
+}
+h+='</div>';
+}
+h+='</div>';
+h+='<div id="pickerArea"></div>';
+var allPlaced=Object.keys(placed).length===search.results.length;
+if(checked){
+var correct=0;
+for(var i=0;i<search.results.length;i++){
+if(placed[i]===search.results[i].type)correct++;
+}
+var pct=Math.round(correct/search.results.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ Μπράβο! '+correct+'/'+search.results.length+' σωστά!':'❌ '+correct+'/'+search.results.length+' σωστά. Δοκίμασε ξανά!')+'</div>';
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Θέμα ▶</button>';
+}else{
+h+='<button class="check-btn" onclick="checkAnswer()"'+(allPlaced?'':' disabled')+'>✓ Έλεγχος Ταξινόμησης</button>';
+}
+main.innerHTML=h;
+}
+
+function showPicker(idx){
+if(placed[idx]!==undefined||checked)return;
+var pickerArea=document.getElementById('pickerArea');
+if(!pickerArea)return;
+var h='<div class="g61f6_0" style="display:flex;gap:6px;justify-content:center;margin:6px 0;flex-wrap:wrap">';
+h+='<button class="filter-tab" onclick="placeResult('+idx+',\'img\')">🖼️ Εικόνα</button>';
+h+='<button class="filter-tab" onclick="placeResult('+idx+',\'vid\')">🎬 Βίντεο</button>';
+h+='<button class="filter-tab" onclick="placeResult('+idx+',\'news\')">📰 Ειδήση</button>';
+h+='<button class="filter-tab" onclick="placeResult('+idx+',\'txt\')">📄 Κείμενο</button>';
+h+='</div>';
+pickerArea.innerHTML=h;
+}
+
+function placeResult(idx,type){
+placed[idx]=type;
+render();
+}
+
+function checkAnswer(){
+checked=true;
+render();
+}
+
+function nextQ(){
+if(curQ<searches.length-1){
+curQ++;
+initQ();
+render();
+}
+}
+
+initQ();
+render();
+</script>
+</body>
+</html>

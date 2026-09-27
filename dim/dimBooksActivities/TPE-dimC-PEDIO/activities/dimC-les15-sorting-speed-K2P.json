@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ιεραρχικός ή Ιστού",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα ΙΕΡΑΡΧΙΚΟΣ ή ΙΣΤΟΥ για κάθε χαρακτηριστικό!",
+  "categories": [
+    {"id": "ierarxikos", "name": "Ιεραρχικός Χάρτης", "color": "#e91e63", "key": "ArrowLeft"},
+    {"id": "istos", "name": "Χάρτης Ιστού", "color": "#4caf50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κεντρική έννοια στην κορυφή", "category": "ierarxikos"},
+    {"text": "Κεντρική έννοια στο κέντρο", "category": "istos"},
+    {"text": "Επίπεδα από πάνω προς κάτω", "category": "ierarxikos"},
+    {"text": "Ακτινωτή διάταξη", "category": "istos"},
+    {"text": "Μοιάζει με ιστό αράχνης", "category": "istos"},
+    {"text": "Πιο ειδικές έννοιες πιο κάτω", "category": "ierarxikos"},
+    {"text": "Φρούτα ανά εποχή", "category": "ierarxikos"},
+    {"text": "Μέσα μετακίνησης στην πόλη", "category": "istos"},
+    {"text": "Κορυφή = γενική έννοια", "category": "ierarxikos"},
+    {"text": "Όλες ισοδύναμες γύρω από κέντρο", "category": "istos"}
+  ],
+  "duration": 30
+}

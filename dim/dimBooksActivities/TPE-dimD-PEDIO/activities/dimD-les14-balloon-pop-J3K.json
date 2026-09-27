@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δίκτυα και Δρομολογητές",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για τον δρομολογητή",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Μεταφέρει δεδομένα", "correct": true, "color": "#4caf50" },
+    { "text": "Παίζει μουσική", "correct": false, "color": "#f44336" },
+    { "text": "Εκπέμπει Wi-Fi", "correct": true, "color": "#2196f3" },
+    { "text": "Αποφασίζει τη διαδρομή", "correct": true, "color": "#ff9800" },
+    { "text": "Είναι σαν τροχονόμος", "correct": true, "color": "#00bcd4" },
+    { "text": "Είναι σαν τηλεόραση", "correct": false, "color": "#9c27b0" },
+    { "text": "Συνδέεται με καλώδια", "correct": true, "color": "#8bc34a" },
+    { "text": "Προστατεύει από ιούς μόνο", "correct": false, "color": "#ff5722" },
+    { "text": "Προστατεύει δίκτυο με κωδικό", "correct": true, "color": "#607d8b" },
+    { "text": "Χρησιμοποιείται σε σπίτια", "correct": true, "color": "#3f51b5" },
+    { "text": "Ζωγραφίζει εικόνες", "correct": false, "color": "#e91e63" },
+    { "text": "Ασύρματη σύνδεση", "correct": true, "color": "#009688" }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Ερωτήματα Δεδομένων",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Ερώτημα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ερώτημνα",
+          "error": true,
+          "correct": "Ερώτημα",
+          "feedback": "Το σωστό είναι 'Ερώτημα' χωρίς 'ν'"
+        },
+        {
+          "text": "Ανάλυση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Συχνότητα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Συχνιότητα",
+          "error": true,
+          "correct": "Συχνότητα",
+          "feedback": "Το σωστό είναι 'Συχνότητα' με 'ο' και όχι 'ι'"
+        },
+        {
+          "text": "Διάγραμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Στατιστική",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Υπολογισμός",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Σθατιστική",
+          "error": true,
+          "correct": "Στατιστική",
+          "feedback": "Το σωστό είναι 'Στατιστική' με 'τ' και όχι 'θ'"
+        },
+        {
+          "text": "Ραβδόγραμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ραβδόραγμμα",
+          "error": true,
+          "correct": "Ραβδόγραμμα",
+          "feedback": "Το σωστό είναι 'Ραβδόγραμμα' με 'μ' και όχι 'γμ'"
+        },
+        {
+          "text": "Δεδομένα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

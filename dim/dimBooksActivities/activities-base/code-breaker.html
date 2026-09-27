@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μυστικός Κώδικας</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:700px;width:100%;padding:40px;text-align:center}
+h1{color:#667eea;font-size:2em;margin-bottom:10px}
+h2{color:#555;font-size:1.2em;margin-bottom:30px;font-weight:400}
+.encoded{font-size:2.5em;letter-spacing:10px;margin:20px 0;padding:20px;background:linear-gradient(135deg,#f5f7fa,#c3cfe2);border-radius:15px;min-height:80px;display:flex;align-items:center;justify-content:center}
+.key-table{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0;padding:15px;background:#f0f0ff;border-radius:12px}
+.key-item{display:flex;align-items:center;gap:5px;background:#fff;padding:8px 14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);font-size:1.1em}
+.key-item .symbol{font-size:1.4em}
+.key-item .arrow{color:#aaa;font-size:0.8em}
+.key-item .letter{font-weight:700;color:#764ba2}
+.hint{font-size:1.1em;color:#e74c3c;margin:15px 0;font-weight:600;background:#fff0f0;padding:10px;border-radius:10px}
+input[type="text"]{width:100%;max-width:350px;padding:15px;font-size:1.3em;border:3px solid #ddd;border-radius:12px;text-align:center;text-transform:uppercase;letter-spacing:3px;outline:none;transition:border-color 0.3s}
+input[type="text"]:focus{border-color:#667eea}
+.btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:15px 40px;font-size:1.1em;border-radius:12px;cursor:pointer;margin:15px 5px;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,0.4)}
+.btn:active{transform:translateY(0)}
+.score{font-size:1.5em;color:#764ba2;margin:20px 0}
+.progress{font-size:0.9em;color:#888;margin-bottom:15px}
+.feedback{font-size:1.2em;margin:15px 0;padding:12px;border-radius:10px}
+.feedback.correct{background:#d4edda;color:#155724}
+.feedback.wrong{background:#f8d7da;color:#721c24}
+.start-btn{font-size:1.3em;padding:18px 50px}
+.hidden{display:none}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div style="font-size:3em;margin-bottom:20px">🔐</div>
+<h1 id="title">Μυστικός Κώδικας</h1>
+<h2 id="subtitle">Αποκρυπτογράφησε το μήνυμα!</h2>
+<div id="startScreen">
+<button class="btn start-btn" onclick="startGame()">🎮 Ξεκίνα!</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="progress" id="progress"></div>
+<div class="encoded" id="encoded"></div>
+<div class="hint" id="hint"></div>
+<div class="key-table" id="keyTable"></div>
+<input type="text" id="answerInput" placeholder="Γράψε την απάντηση..." autocomplete="off">
+<div>
+<button class="btn" onclick="checkAnswer()">✓ Έλεγχος</button>
+</div>
+<div class="feedback hidden" id="feedback"></div>
+<div class="score">Σκορ: <span id="score">0</span></div>
+</div>
+<div id="endScreen" class="hidden">
+<div style="font-size:3em;margin-bottom:20px">🏆</div>
+<h1>Μπράβο!</h1>
+<div class="score" id="finalScore"></div>
+<p id="endMessage" style="color:#555;font-size:1.1em;margin:20px 0"></p>
+<button class="btn" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+let data=null,challenges=[],current=0,score=0;
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+if(dataFile){
+fetch(dataFile).then(r=>r.json()).then(d=>{data=d;document.getElementById('title').textContent=esc(data.title||'Μυστικός Κώδικας');document.getElementById('subtitle').textContent=esc(data.subtitle||'Αποκρυπτογράφησε το μήνυμα!');}).catch(e=>{document.getElementById('subtitle').textContent='Σφάλμα φόρτωσης δεδομένων';});
+}
+function startGame(){
+if(!data)return;
+challenges=[...data.challenges];
+current=0;score=0;
+document.getElementById('score').textContent='0';
+document.getElementById('startScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+showChallenge();
+}
+function showChallenge(){
+if(current>=challenges.length){endGame();return;}
+const c=challenges[current];
+document.getElementById('progress').textContent=`Πρόκληση ${current+1} από ${challenges.length}`;
+document.getElementById('encoded').textContent=c.encoded;
+document.getElementById('hint').textContent='💡 Υπόδειξη: '+c.hint;
+const kt=document.getElementById('keyTable');
+kt.innerHTML='';
+c.key.forEach(k=>{
+const item=document.createElement('div');
+item.className='key-item';
+item.innerHTML=`<span class="symbol">${esc(k.symbol)}</span><span class="arrow">→</span><span class="letter">${esc(k.letter)}</span>`;
+kt.appendChild(item);
+});
+document.getElementById('answerInput').value='';
+document.getElementById('answerInput').focus();
+document.getElementById('feedback').classList.add('hidden');
+}
+function checkAnswer(){
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden');
+const ans=document.getElementById('answerInput').value.trim().toUpperCase();
+const correct=challenges[current].answer.toUpperCase();
+if(ans===correct){
+fb.className='feedback correct';
+fb.textContent='✓ Σωστό! Μπράβο!';
+score++;
+document.getElementById('score').textContent=score;
+setTimeout(()=>{current++;showChallenge();},1200);
+}else{
+fb.className='feedback wrong';
+fb.textContent='✗ Λάθος! Δοκίμασε ξανά!';
+}
+}
+function endGame(){
+document.getElementById('gameScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.remove('hidden');
+document.getElementById('finalScore').textContent=`${score} / ${challenges.length}`;
+const pct=score/challenges.length;
+let msg='';
+if(pct===1)msg='Τέλειο! Είσαι αληθινός κρυπτογράφος! 🌟';
+else if(pct>=0.7)msg='Πολύ καλά! Συνέχισε έτσι! 😊';
+else msg='Προσπάθησε ξανά, μπορείς να τα καταφέρεις! 💪';
+document.getElementById('endMessage').textContent=msg;
+}
+document.addEventListener('keydown',function(e){if(e.key==='Enter'){const gs=document.getElementById('gameScreen');if(!gs.classList.contains('hidden'))checkAnswer();}});
+</script>
+</body>
+</html>

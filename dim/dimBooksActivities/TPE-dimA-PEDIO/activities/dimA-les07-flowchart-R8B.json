@@ -1,0 +1,12 @@
+{
+  "title": "Φτιάξε το διάγραμμα!",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Φτιάχνω μια ιστορία στο ScratchJr",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Σκέψου την ιστορία"},
+    {"id": 2, "type": "action", "text": "Διάλεξε τον ήρωα"},
+    {"id": 3, "type": "action", "text": "Βάλε τις εντολές"},
+    {"id": 4, "type": "action", "text": "Πάτα παιχνίδι!"}
+  ],
+  "correctOrder": [1, 2, 3, 4]
+}

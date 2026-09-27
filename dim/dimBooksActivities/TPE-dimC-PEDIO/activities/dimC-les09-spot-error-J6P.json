@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακή Εικόνα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Μία", "error": false},
+        {"text": "ψηφιολέξη", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "10", "error": true, "correct": "8", "feedback": "Μία ψηφιολέξη έχει 8 δυαδικά ψηφία, όχι 10!"},
+        {"text": "δυαδικά", "error": false},
+        {"text": "ψηφία.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "εικονοστοιχείο", "error": false},
+        {"text": "ονομάζεται", "error": false},
+        {"text": "και", "error": false},
+        {"text": "Byte.", "error": true, "correct": "pixel", "feedback": "Το εικονοστοιχείο ονομάζεται PIXEL, όχι Byte!"},
+        {"text": "", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "ασπρόμαυρη", "error": false},
+        {"text": "εικόνα", "error": false},
+        {"text": "χρειαζόμαστε", "error": false},
+        {"text": "2", "error": true, "correct": "1", "feedback": "Για ασπρόμαυρη εικόνα χρειαζόμαστε 1 bit, όχι 2!"},
+        {"text": "bit", "error": false},
+        {"text": "ανά", "error": false},
+        {"text": "pixel.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "1", "error": false},
+        {"text": "KB", "error": false},
+        {"text": "ισούται", "error": false},
+        {"text": "με", "error": false},
+        {"text": "100", "error": true, "correct": "1000", "feedback": "1 KB = 1000 B, όχι 100!"},
+        {"text": "Byte.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όσα", "error": false},
+        {"text": "περισσότερα", "error": false},
+        {"text": "χρώματα", "error": false},
+        {"text": "τόσο", "error": false},
+        {"text": "λιγότερα", "error": true, "correct": "περισσότερα", "feedback": "Περισσότερα χρώματα = ΠΕΡΙΣΣΟΤΕΡΑ bits, όχι λιγότερα!"},
+        {"text": "bit", "error": false},
+        {"text": "χρειαζόμαστε.", "error": false}
+      ]
+    }
+  ]
+}

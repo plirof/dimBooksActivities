@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φιλτράρισμα Αποτελεσμάτων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fbbf24);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#92400e,#d97706);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#fef9c3;border-radius:12px;border-left:4px solid #d97706;padding:10px 14px;font-size:.85em;color:#78350f;line-height:1.5}
+.info b{color:#92400e}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.filter-btn{padding:8px 16px;border:2px solid #fde68a;border-radius:50px;background:#fff;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s}
+.filter-btn:hover{transform:translateY(-2px);border-color:#d97706}
+.filter-btn.active{background:#d97706;color:#fff;border-color:#92400e}
+.filter-btn .fb-icon{margin-right:4px}
+.results-grid{display:flex;flex-direction:column;gap:8px;min-height:200px}
+.result-card{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #fde68a;border-radius:14px;padding:12px;transition:all .3s}
+.result-card.hidden{display:none}
+.result-card .rc-icon{font-size:2em;min-width:40px;text-align:center}
+.result-card .rc-content{flex:1}
+.result-card .rc-title{font-size:.9em;font-weight:600;color:#1e293b}
+.result-card .rc-source{font-size:.75em;color:#16a34a}
+.result-card .rc-desc{font-size:.78em;color:#64748b;margin-top:2px}
+.result-card .rc-type{font-size:.7em;padding:3px 8px;border-radius:20px;font-weight:600;display:inline-block;margin-top:4px}
+.type-webpage{background:#dbeafe;color:#1d4ed8}
+.type-image{background:#fce7f3;color:#be185d}
+.type-video{background:#fee2e2;color:#b91c1c}
+.type-map{background:#d1fae5;color:#047857}
+.type-news{background:#fef3c7;color:#92400e}
+.counter{text-align:center;font-size:.9em;color:#92400e;font-weight:600}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(146,64,14,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.quiz-question{background:#fffbeb;border-radius:14px;border:2px solid #fde68a;padding:14px;text-align:center}
+.quiz-question h3{color:#92400e;font-size:1em;margin-bottom:10px}
+.quiz-options{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.quiz-opt{padding:8px 18px;border:2px solid #e2e8f0;border-radius:50px;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s}
+.quiz-opt:hover{border-color:#d97706;background:#fef9c3}
+.quiz-opt.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.quiz-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
+.quiz-opt.disabled{pointer-events:none;opacity:.6}
+@media(max-width:500px){.filter-btn{padding:6px 12px;font-size:.8em}.result-card{padding:8px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .filter-bar > * { margin: 4px; }
+  .results-grid > * + * { margin-top: 8px; }
+  .result-card > * + * { margin-left: 12px; }
+  .controls > * + * { margin-left: 12px; }
+  .quiz-options > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔽 Φιλτράρισμα Αποτελεσμάτων</h1>
+<p>Μάθε να φιλτράρεις τα αποτελέσματα της αναζήτησής σου!</p>
+</div>
+<div class="area">
+<div class="info">💡 Οι μηχανές αναζήτησης έχουν <b>φίλτρα</b>! Μπορούμε να δούμε μόνο <b>εικόνες</b>, μόνο <b>βίντεο</b>, <b>χάρτες</b> ή <b>ειδήσεις</b>. Παίξε με τα φίλτρα παρακάτω!</div>
+<div id="phase1">
+<div class="filter-bar" id="filterBar"></div>
+<div class="counter" id="counter"></div>
+<div class="results-grid" id="resultsGrid"></div>
+<div class="quiz-question" id="quizArea" style="margin-top:12px"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var searchQuery='Ακρόπολη Αθήνας';
+var results=[
+{icon:'🏛️',title:'Η Ακρόπολη των Αθηνών — Ιστορία',source:'www.acropolis.gr',desc:'Η ιστορία της Ακρόπολης από την αρχαιότητα μέχρι σήμερα.',type:'webpage'},
+{icon:'📷',title:'Φωτογραφίες Ακρόπολης',source:'www.photos.gr',desc:'Εικόνες υψηλής ανάλυσης του Παρθενώνα και των Προπυλαίων.',type:'image'},
+{icon:'🎬',title:'Ξενάγηση στην Ακρόπολη (Βίντεο)',source:'www.youtube.gr',desc:'Βίντεο 10 λεπτών με ξενάγηση στην Ακρόπολη.',type:'video'},
+{icon:'🗺️',title:'Ακρόπολη στον Χάρτη',source:'www.maps.gr',desc:'Η τοποθεσία της Ακρόπολης στον χάρτη της Αθήνας.',type:'map'},
+{icon:'📰',title:'Νέα: Αναστηλώσεις στην Ακρόπολη',source:'www.news.gr',desc:'Τα τελευταία νέα για τις εργασίες αναστήλωσης.',type:'news'},
+{icon:'📷',title:'Ακρόπολη τη Νύχτα',source:'www.night-photos.gr',desc:'Εικόνες της φωτισμένης Ακρόπολης το βράδυ.',type:'image'},
+{icon:'🏛️',title:'Ωράριο Λειτουργίας Ακρόπολης',source:'www.visit-acropolis.gr',desc:'Ώρες, τιμές εισιτηρίων και συμβουλές επισκεπτών.',type:'webpage'},
+{icon:'🎬',title:'Παρθενώνας — Ντοκιμαντέρ',source:'www.youtube.gr',desc:'Ντοκιμαντέρ 30 λεπτών για την ιστορία του Παρθενώνα.',type:'video'},
+{icon:'📰',title:'Ακρόπολη: 3 Εκατομμύρια Επισκέπτες',source:'www.news.gr',desc:'Ρεκόρ επισκεπτών στην Ακρόπολη φέτος.',type:'news'},
+{icon:'🗺️',title:'Πώς να Πας στην Ακρόπολη',source:'www.directions.gr',desc:'Οδηγίες πρόσβασης με Μετρό και λεωφορείο.',type:'map'},
+{icon:'📷',title:'Ακρόπολη από Δρόμο',source:'www.streetview.gr',desc:'Εικόνες από δρόμους γύρω από τον βράχο της Ακρόπολης.',type:'image'},
+{icon:'🏛️',title:'Μουσείο Ακρόπολης',source:'www.acropolis-museum.gr',desc:'Επίσημη σελίδα του Μουσείου Ακρόπολης.',type:'webpage'}
+];
+
+var filters=[
+{id:'all',label:'🔍 Όλα',types:null},
+{id:'webpage',label:'🌐 Ιστοσελίδες',types:['webpage']},
+{id:'image',label:'📷 Εικόνες',types:['image']},
+{id:'video',label:'🎬 Βίντεο',types:['video']},
+{id:'map',label:'🗺️ Χάρτες',types:['map']},
+{id:'news',label:'📰 Ειδήσεις',types:['news']}
+];
+
+var quizzes=[
+{
+question:'Θέλεις να δεις πώς μοιάζει η Ακρόπολη. Ποιο φίλτρο πατάς;',
+correct:'image',
+options:['webpage','image','video','map']
+},
+{
+question:'Θέλεις να βρεις πώς να πας στην Ακρόπολη με λεωφορείο. Ποιο φίλτρο πατάς;',
+correct:'map',
+options:['webpage','image','map','news']
+},
+{
+question:'Θέλεις να δεις ένα βίντεο με ξενάγηση. Ποιο φίλτρο πατάς;',
+correct:'video',
+options:['image','video','webpage','news']
+},
+{
+question:'Θέλεις να διαβάσεις τα τελευταία νέα για την Ακρόπολη. Ποιο φίλτρο πατάς;',
+correct:'news',
+options:['map','webpage','news','image']
+},
+{
+question:'Θέλεις να βρεις τις ώρες λειτουργίας. Ποιο φίλτρο πατάς;',
+correct:'webpage',
+options:['webpage','image','video','map']
+}
+];
+
+var activeFilter='all';
+var currentQuiz=0;
+var quizScore=0;
+var quizLocked=false;
+
+function renderFilters(){
+var bar=document.getElementById('filterBar');
+bar.innerHTML='';
+for(var i=0;i<filters.length;i++){
+var f=filters[i];
+var btn=document.createElement('div');
+btn.className='filter-btn'+(f.id===activeFilter?' active':'');
+btn.innerHTML='<span class="fb-icon"></span>'+f.label;
+btn.dataset.filterId=f.id;
+btn.onclick=function(){setFilter(this.dataset.filterId);};
+bar.appendChild(btn);
+}
+}
+
+function renderResults(){
+var grid=document.getElementById('resultsGrid');
+grid.innerHTML='';
+var count=0;
+for(var i=0;i<results.length;i++){
+var r=results[i];
+var show=activeFilter==='all'||filters.find(function(f){return f.id===activeFilter;}).types.indexOf(r.type)!==-1;
+if(show){
+count++;
+var card=document.createElement('div');
+card.className='result-card';
+card.innerHTML='<div class="rc-icon">'+r.icon+'</div><div class="rc-content"><div class="rc-title">'+r.title+'</div><div class="rc-source">🔗 '+r.source+'</div><div class="rc-desc">'+r.desc+'</div><span class="rc-type type-'+r.type+'">'+typeLabel(r.type)+'</span></div>';
+grid.appendChild(card);
+}
+}
+document.getElementById('counter').textContent='Εμφανίζονται '+count+' από '+results.length+' αποτελέσματα';
+}
+
+function typeLabel(t){
+var labels={webpage:'Ιστοσελίδα',image:'Εικόνα',video:'Βίντεο',map:'Χάρτης',news:'Ειδήση'};
+return labels[t]||t;
+}
+
+function setFilter(id){
+activeFilter=id;
+renderFilters();
+renderResults();
+}
+
+function renderQuiz(){
+if(currentQuiz>=quizzes.length){
+showResult();
+return;
+}
+var q=quizzes[currentQuiz];
+quizLocked=false;
+document.getElementById('nextBtn').disabled=true;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+var area=document.getElementById('quizArea');
+var html='<h3>❓ Ερώτηση '+(currentQuiz+1)+'/'+quizzes.length+': '+q.question+'</h3><div class="quiz-options" id="quizOpts">';
+for(var i=0;i<q.options.length;i++){
+var opt=q.options[i];
+html+='<div class="quiz-opt" data-opt="'+opt+'" onclick="answerQuiz(this)">'+typeLabel(opt)+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function answerQuiz(el){
+if(quizLocked)return;
+quizLocked=true;
+var q=quizzes[currentQuiz];
+var chosen=el.dataset.opt;
+var opts=document.querySelectorAll('.quiz-opt');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.add('disabled');
+if(opts[i].dataset.opt===q.correct)opts[i].classList.add('correct');
+}
+if(chosen===q.correct){
+quizScore++;
+showFeedback('✅ Σωστό! Το φίλτρο «'+typeLabel(q.correct)+'» είναι το κατάλληλο!',true);
+setFilter(q.correct);
+}else{
+el.classList.add('wrong');
+showFeedback('❌ Λάθος! Το σωστό φίλτρο ήταν «'+typeLabel(q.correct)+'».',false);
+setFilter(q.correct);
+}
+document.getElementById('nextBtn').disabled=false;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextQuestion(){
+currentQuiz++;
+if(currentQuiz>=quizzes.length){
+showResult();
+}else{
+renderQuiz();
+}
+}
+
+function showResult(){
+var pct=Math.round(quizScore/quizzes.length*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+document.getElementById('quizArea').innerHTML='<div style="padding:16px"><div style="font-size:2em">'+stars+'</div><h3 style="color:#92400e;margin:8px 0">Σωστές απαντήσεις: '+quizScore+'/'+quizzes.length+'</h3><p style="color:#64748b;font-size:.9em">'+(pct>=80?'Μπράβο! Ξέρεις να χρησιμοποιείς τα φίλτρα!':'Συνέχισε! Θα τα μάθεις όλα!')+'</p></div>';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση φιλτραρίσματος!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+activeFilter='all';
+currentQuiz=0;
+quizScore=0;
+document.getElementById('nextBtn').style.display='inline-block';
+setFilter('all');
+renderQuiz();
+}
+
+renderFilters();
+renderResults();
+renderQuiz();
+</script>
+</body>
+</html>

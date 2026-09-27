@@ -1,0 +1,18 @@
+{
+  "title": "Διάγραμμα Venn: Ορολογία Scratch",
+  "subtitle": "Τοποθέτησε κάθε στοιχείο στη σωστή περιοχή!",
+  "circleA": { "label": "Ελληνικά", "color": "#4CAF50" },
+  "circleB": { "label": "Αγγλικά (Scratch)", "color": "#2196F3" },
+  "items": [
+    { "text": "Αντικείμενο", "zone": "A" },
+    { "text": "Sprite", "zone": "B" },
+    { "text": "Μορφή", "zone": "A" },
+    { "text": "Block", "zone": "B" },
+    { "text": "Πλακίδιο", "zone": "A" },
+    { "text": "Script", "zone": "B" },
+    { "text": "Σενάριο", "zone": "A" },
+    { "text": "Event", "zone": "B" },
+    { "text": "Συμβάν", "zone": "A" },
+    { "text": "Character", "zone": "B" }
+  ]
+}

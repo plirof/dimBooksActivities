@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κατασκευή Υπολογιστή | Μάθημα 12</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:700px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.scenario-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.scenario-box .s-icon{font-size:1.3rem;display:block;margin-bottom:2px}
+.scenario-box .s-text{color:#e2e8f0;font-size:.72rem;line-height:1.5}
+.budget-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0f172a;border-radius:10px;border:1px solid #334155;margin-bottom:10px}
+.budget-label{color:#94a3b8;font-size:.65rem;font-weight:600}
+.budget-amount{font-family:monospace;font-size:1.1rem;font-weight:700;color:#fbbf24}
+.budget-spent{font-size:.72rem;color:#64748b}
+.component-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));grid-gap:6px;margin-bottom:8px}
+.comp-card{padding:10px;background:#1e293b;border-radius:10px;border:2px solid #334155;cursor:pointer;transition:all .2s;text-align:center}
+.comp-card:hover{transform:translateY(-2px);border-color:#6366f1}
+.comp-card.selected{border-color:#a78bfa;background:#1e1b4b}
+.comp-card.chosen{border-color:#22c55e;background:#22c55e11}
+.comp-card .c-icon{font-size:1.4rem;display:block;margin-bottom:2px}
+.comp-card .c-name{color:#e2e8f0;font-size:.65rem;font-weight:700}
+.comp-card .c-spec{color:#64748b;font-size:.6rem}
+.comp-card .c-price{font-family:monospace;font-size:.72rem;font-weight:700;color:#fbbf24;margin-top:2px}
+.comp-category{color:#fbbf24;font-size:.68rem;font-weight:700;margin-bottom:4px;margin-top:4px}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+.chosen-list{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:6px;padding:6px;background:#0f172a;border-radius:8px;min-height:32px;border:1px dashed #334155}
+.chosen-item{padding:3px 8px;background:#1e1b4b;border-radius:6px;color:#a78bfa;font-size:.6rem;font-weight:600}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .budget-bar > * + * { margin-left: 8px; }
+  .nav-btns > * + * { margin-left: 6px; }
+  .chosen-list > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🛒 Κατασκεύασε τον Υπολογιστή σου</h1>
+<p class="subtitle">Διάλεξε τα κατάλληλα εξαρτήματα για κάθε χρήση, χωρίς να ξεπεράσεις τον προϋπολογισμό!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="scNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var scenarios=[
+{
+icon:'🎮',text:'Η Μαρία θέλει έναν υπολογιστή για gaming! Θέλει να παίζει σύγχρονα παιχνίδια με καλά γραφικά. Επίλεξε τα κατάλληλα εξαρτήματα.',
+budget:1200,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:false},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:true},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:false}
+],
+'RAM':[
+{name:'4 GB',spec:'Βασική μνήμη',price:40,right:false},
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:false},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:true}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:false},
+{name:'NVIDIA GTX',spec:'Καλή για gaming',price:300,right:true},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 1TB',spec:'Αργός, 1TB',price:50,right:false},
+{name:'SSD 256GB',spec:'Γρήγορος, 256GB',price:60,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:true}
+]
+},
+hint:'Για gaming είναι σημαντικά: καλός επεξεργαστής (i5), πολλή RAM (16GB) και ξεχωριστή κάρτα γραφικών (GTX).'
+},
+{
+icon:'📚',text:'Ο Γιώργος θέλει έναν υπολογιστή για διάβασμα, ίντερνετ και office. Δεν χρειάζεται ακριβά εξαρτήματα.',
+budget:500,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:true},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:false},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:false}
+],
+'RAM':[
+{name:'4 GB',spec:'Βασική μνήμη',price:40,right:true},
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:false},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:false}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:true},
+{name:'NVIDIA GTX',spec:'Καλή για gaming',price:300,right:false},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 1TB',spec:'Αργός, 1TB',price:50,right:true},
+{name:'SSD 256GB',spec:'Γρήγορος, 256GB',price:60,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:false}
+]
+},
+hint:'Για βασική χρήση, ένας i3 με 4GB RAM και ενσωματωμένα γραφικά είναι αρκετά. Ο HDD δίνει μεγάλο χώρο φθηνά.'
+},
+{
+icon:'🎬',text:'Η Ελένη θέλει υπολογιστή για επεξεργασία βίντεο και μουσικής παραγωγή. Χρειάζεται ταχύτητα και πολλή μνήμη!',
+budget:1500,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:false},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:false},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:true}
+],
+'RAM':[
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:false},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:false},
+{name:'32 GB',spec:'Πολύ μεγάλη μνήμη',price:200,right:true}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:false},
+{name:'NVIDIA GTX',spec:'Καλή για gaming',price:300,right:true},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 1TB',spec:'Αργός, 1TB',price:50,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:false},
+{name:'SSD 1TB',spec:'Γρήγορος, 1TB',price:180,right:true}
+]
+},
+hint:'Για βίντεο χρειάζεσαι: ισχυρό CPU (i7), πολλή RAM (32GB), καλή GPU (GTX) και γρήγορο SSD 1TB.'
+},
+{
+icon:'🏫',text:'Το σχολείο θέλει 10 υπολογιστές για το εργαστήριο πληροφορικής. Πρέπει να είναι οικονομικοί αλλά αξιόπιστοι.',
+budget:400,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:true},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:false},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:false}
+],
+'RAM':[
+{name:'4 GB',spec:'Βασική μνήμη',price:40,right:false},
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:true},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:false}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:true},
+{name:'NVIDIA GTX',spec:'Καλή για gaming',price:300,right:false},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 500GB',spec:'Αργός, 500GB',price:40,right:true},
+{name:'SSD 256GB',spec:'Γρήγορος, 256GB',price:60,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:false}
+]
+},
+hint:'Για σχολικό εργαστήριο: i3, 8GB RAM, ενσωματωμένα γραφικά και HDD 500GB. Οικονομική και αξιόπιστη λύση.'
+},
+{
+icon:'🎨',text:'Η Σοφία είναι graphic designer. Θέλει υπολογιστή με καλή οθόνη και ισχυρή GPU για σχεδίαση.',
+budget:1300,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:false},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:true},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:false}
+],
+'RAM':[
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:false},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:true},
+{name:'32 GB',spec:'Πολύ μεγάλη μνήμη',price:200,right:false}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:false},
+{name:'NVIDIA GTX',spec:'Καλή για σχέδια',price:300,right:true},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 1TB',spec:'Αργός, 1TB',price:50,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:true},
+{name:'SSD 1TB',spec:'Γρήγορος, 1TB',price:180,right:false}
+]
+},
+hint:'Για graphic design: i5, 16GB RAM, GTX GPU και γρήγορο SSD 512GB για γρήγορο άνοιγμα αρχείων.'
+},
+{
+icon:'🧑‍💻',text:'Ο Νίκος είναι προγραμματιστής. Θέλει υπολογιστή για προγραμματισμό, πολλές εφαρμογές ανοιχτές ταυτόχρονα και ελαφριά εικονικοποίηση.',
+budget:900,
+components:{
+'CPU':[
+{name:'Intel i3',spec:'2.5 GHz',price:150,right:false},
+{name:'Intel i5',spec:'3.2 GHz',price:250,right:true},
+{name:'Intel i7',spec:'3.8 GHz',price:400,right:false}
+],
+'RAM':[
+{name:'8 GB',spec:'Μεσαία μνήμη',price:70,right:false},
+{name:'16 GB',spec:'Μεγάλη μνήμη',price:120,right:true},
+{name:'32 GB',spec:'Πολύ μεγάλη μνήμη',price:200,right:false}
+],
+'GPU':[
+{name:'Ενσωματωμένη',spec:'Βασικά γραφικά',price:0,right:true},
+{name:'NVIDIA GTX',spec:'Καλή για gaming',price:300,right:false},
+{name:'NVIDIA RTX',spec:'Κορυφαία',price:600,right:false}
+],
+'Αποθήκευση':[
+{name:'HDD 1TB',spec:'Αργός, 1TB',price:50,right:false},
+{name:'SSD 256GB',spec:'Γρήγορος, 256GB',price:60,right:false},
+{name:'SSD 512GB',spec:'Γρήγορος, 512GB',price:100,right:true}
+]
+},
+hint:'Για προγραμματισμό: i5, 16GB RAM, ενσωματωμένα γραφικά αρκούν, SSD 512GB για γρήγορη μεταγλώττιση.'
+}
+];
+var current=0;
+var pts=0;
+var selections={};
+var checked=false;
+function render(){
+var sc=scenarios[current];
+checked=false;
+selections={};
+document.getElementById('scNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">📋 Σενάριο '+(current+1)+'</div>';
+h+='<div class="scenario-box"><span class="s-icon">'+sc.icon+'</span><div class="s-text">'+sc.text+'</div></div>';
+h+='<div class="budget-bar"><span class="budget-label">💰 Προϋπολογισμός:</span><span class="budget-amount" id="budgetDisplay">'+sc.budget+'€</span><span class="budget-spent" id="spentDisplay">(Διάλεξε εξαρτήματα)</span></div>';
+h+='<div class="chosen-list" id="chosenList"><span style="color:#475569;font-size:.6rem">Επίλεξε 1 από κάθε κατηγορία...</span></div>';
+var cats=Object.keys(sc.components);
+for(var c=0;c<cats.length;c++){
+var cat=cats[c];
+h+='<div class="comp-category">'+cat+'</div>';
+h+='<div class="component-grid">';
+var items=sc.components[cat];
+for(var i=0;i<items.length;i++){
+h+='<div class="comp-card" id="card_'+cat+'_'+i+'" onclick="selectComponent(\''+cat+'\','+i+')">';
+h+='<span class="c-icon">'+getIcon(cat,i)+'</span>';
+h+='<span class="c-name">'+items[i].name+'</span>';
+h+='<span class="c-spec">'+items[i].spec+'</span>';
+h+='<span class="c-price">'+items[i].price+'€</span>';
+h+='</div>';
+}
+h+='</div>';
+}
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkBuild()">✅ Έλεγχος Επιλογών</button></div>';
+h+='<div class="hint-box">💡 '+sc.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+updateBudget();
+}
+function getIcon(cat,idx){
+var map={
+'CPU':['🧩','🧩','🧩'],
+'RAM':['🔲','🔲','🔲'],
+'GPU':['🎨','🎨','🎨'],
+'Αποθήκευση':['💿','💿','💿']
+};
+return (map[cat]||['📦'])[idx]||'📦';
+}
+function selectComponent(cat,idx){
+if(checked)return;
+var sc=scenarios[current];
+if(selections[cat]!==undefined){
+var old=document.getElementById('card_'+cat+'_'+selections[cat]);
+if(old)old.classList.remove('selected','chosen');
+}
+selections[cat]=idx;
+var el=document.getElementById('card_'+cat+'_'+idx);
+if(el)el.classList.add('selected','chosen');
+updateBudget();
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function updateBudget(){
+var sc=scenarios[current];
+var total=0;
+var cats=Object.keys(sc.components);
+var chosenHTML='';
+for(var c=0;c<cats.length;c++){
+var cat=cats[c];
+if(selections[cat]!==undefined){
+var item=sc.components[cat][selections[cat]];
+total+=item.price;
+chosenHTML+='<span class="chosen-item">'+cat+': '+item.name+' ('+item.price+'€)</span>';
+}
+}
+var budgetEl=document.getElementById('budgetDisplay');
+var spentEl=document.getElementById('spentDisplay');
+if(total===0){
+spentEl.textContent='(Διάλεξε εξαρτήματα)';
+}else{
+spentEl.textContent='(Ξόδεψες: '+total+'€ από '+sc.budget+'€)';
+}
+var chosenList=document.getElementById('chosenList');
+if(chosenList){
+if(chosenHTML){chosenList.innerHTML=chosenHTML;}
+else{chosenList.innerHTML='<span style="color:#475569;font-size:.6rem">Επίλεξε 1 από κάθε κατηγορία...</span>';}
+}
+}
+function checkBuild(){
+var sc=scenarios[current];
+var cats=Object.keys(sc.components);
+var allSelected=true;
+for(var c=0;c<cats.length;c++){
+if(selections[cats[c]]===undefined){allSelected=false;break;}
+}
+if(!allSelected){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Επίλεξε ένα εξάρτημα από κάθε κατηγορία!';
+fb.className='feedback fail';
+return;
+}
+var total=0;
+var allCorrect=true;
+for(var c2=0;c2<cats.length;c2++){
+var cat=cats[c2];
+var idx=selections[cat];
+var item=sc.components[cat][idx];
+total+=item.price;
+if(!item.right){allCorrect=false;}
+}
+var fb=document.getElementById('feedback');
+var okCount=0;
+for(var c3=0;c3<cats.length;c3++){
+var cat=cats[c3];
+var idx2=selections[cat];
+if(sc.components[cat][idx2].right){okCount++;}
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+if(total>sc.budget){
+fb.textContent='❌ Ξεπέρασες τον προϋπολογισμό! ('+total+'€ από '+sc.budget+'€). Δοκίμασε πιο οικονομικά εξαρτήματα.';
+fb.className='feedback fail';
+}else if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Ιδανική επιλογή για το σενάριο! ('+okCount+'/'+cats.length+' σωστά)';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ '+okCount+'/'+cats.length+' σωστά. Κάποιες επιλογές δεν ταιριάζουν στο σενάριο. Δοκίμασε ξανά!';
+fb.className='feedback fail';
+}
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevSc()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextSc()"'+(current===scenarios.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function prevSc(){if(current>0){current--;render();}}
+function nextSc(){if(current<scenarios.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

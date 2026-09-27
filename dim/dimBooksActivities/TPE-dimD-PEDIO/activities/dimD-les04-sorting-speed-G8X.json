@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τύποι Πράξεων",
+  "subtitle": "Ταξινόμησε τις πράξεις!",
+  "instructions": "Βάλε κάθε πράξη στη σωστή κατηγορία",
+  "categories": [
+    { "id": "prosthesi", "name": "Πρόσθεση (+)", "color": "#4caf50", "key": "1" },
+    { "id": "afairesi", "name": "Αφαίρεση (-)", "color": "#f44336", "key": "2" },
+    { "id": "pollaplasiasmos", "name": "Πολλαπλασιασμός (×)", "color": "#2196f3", "key": "3" },
+    { "id": "diairesi", "name": "Διαίρεση (÷)", "color": "#ff9800", "key": "4" }
+  ],
+  "items": [
+    { "text": "10 + 10 = 20", "category": "prosthesi" },
+    { "text": "200 - 100 = 100", "category": "afairesi" },
+    { "text": "20 × 10 = 200", "category": "pollaplasiasmos" },
+    { "text": "200 ÷ 10 = 20", "category": "diairesi" },
+    { "text": "5 + 5 = 10", "category": "prosthesi" },
+    { "text": "200 - 50 = 150", "category": "afairesi" },
+    { "text": "40 × 5 = 200", "category": "pollaplasiasmos" },
+    { "text": "200 ÷ 8 = 25", "category": "diairesi" },
+    { "text": "15 + 15 = 30", "category": "prosthesi" },
+    { "text": "200 ÷ 20 = 10", "category": "diairesi" }
+  ],
+  "duration": 50
+}

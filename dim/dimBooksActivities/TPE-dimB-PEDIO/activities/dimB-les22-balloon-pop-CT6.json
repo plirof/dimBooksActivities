@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι γράφω;",
+  "subtitle": "Σπάσε μόνο αυτά που μπορώ να γράψω στον υπολογιστή",
+  "instruction": "Σπάσε μόνο πράγματα που μπορώ να γράψω στον υπολογιστή",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Πρόσκληση πάρτι", "correct": true, "color": "#4CAF50" },
+    { "text": "Ζωγραφιά", "correct": false, "color": "#f44336" },
+    { "text": "Λίστα ψωνιών", "correct": true, "color": "#4CAF50" },
+    { "text": "Μαγειρική", "correct": false, "color": "#f44336" },
+    { "text": "Στίχοι τραγουδιού", "correct": true, "color": "#4CAF50" },
+    { "text": "Γυμναστική", "correct": false, "color": "#f44336" },
+    { "text": "Λόγια για μένα", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#f44336" },
+    { "text": "Για το σχολείο", "correct": true, "color": "#4CAF50" },
+    { "text": "Κολύμπι", "correct": false, "color": "#f44336" }
+  ]
+}

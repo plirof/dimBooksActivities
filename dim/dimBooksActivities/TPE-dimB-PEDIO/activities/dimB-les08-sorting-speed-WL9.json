@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: micro:bit ή Υπολογιστής;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: micro:bit ή Υπολογιστής;",
+  "categories": [
+    {"id": "mbit", "name": "micro:bit", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "pc", "name": "Υπολογιστής", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Φωτάκια LED", "category": "mbit"},
+    {"text": "Μεγάλη οθόνη", "category": "pc"},
+    {"text": "Κουμπιά A και B", "category": "mbit"},
+    {"text": "Πληκτρολόγιο", "category": "pc"},
+    {"text": "Μικρόφωνο ενσωματωμένο", "category": "mbit"},
+    {"text": "Ποντίκι", "category": "pc"},
+    {"text": "Χωράει στην τσέπη", "category": "mbit"},
+    {"text": "Βαρύ μηχάνημα", "category": "pc"}
+  ],
+  "duration": 30
+}

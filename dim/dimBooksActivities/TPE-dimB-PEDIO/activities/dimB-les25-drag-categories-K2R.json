@@ -1,0 +1,26 @@
+{
+  "title": "Το Περιβάλλον της e-me",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "login",
+      "name": "Σύνδεση",
+      "color": "#2196F3"
+    },
+    {
+      "id": "env",
+      "name": "Περιβάλλον e-me",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Όνομα χρήστη (Username)", "category": "login" },
+    { "id": "i2", "text": "Κωδικός (Password)", "category": "login" },
+    { "id": "i3", "text": "ΠΣΔ μαθητικός λογαριασμός", "category": "login" },
+    { "id": "i4", "text": "Μηνύματα", "category": "env" },
+    { "id": "i5", "text": "Ειδοποιήσεις", "category": "env" },
+    { "id": "i6", "text": "Κυψέλες", "category": "env" },
+    { "id": "i7", "text": "Επαφές", "category": "env" },
+    { "id": "i8", "text": "Εικόνα προφίλ", "category": "env" }
+  ]
+}

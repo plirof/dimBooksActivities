@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Δικαιώματα & Απειλές",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "rights", "name": "Δικαιώματα GDPR", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "threats", "name": "Απειλές Διαδικτύου", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Δικαίωμα στη λήθη", "category": "rights"},
+    {"text": "Cyberbullying", "category": "threats"},
+    {"text": "Δικαίωμα διόρθωσης", "category": "rights"},
+    {"text": "Grooming", "category": "threats"},
+    {"text": "Δικαίωμα ενημέρωσης", "category": "rights"},
+    {"text": "Δυσλειτουργική χρήση", "category": "threats"},
+    {"text": "Δικαίωμα εναντίωσης", "category": "rights"},
+    {"text": "Απειλητικά μηνύματα", "category": "threats"},
+    {"text": "Πρόσβαση στα δεδομένα", "category": "rights"},
+    {"text": "Ψεύτικες φήμες", "category": "threats"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Στρατηγική Αντιγράφων - Backup</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#dbeafe;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#075985;text-align:center;line-height:1.5}
+.backup-scenario{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px}
+.scenario-display{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.scenario-device{font-size:2.5em}
+.scenario-text{flex:1}
+.scenario-title{font-weight:700;color:#475569;font-size:1em;margin-bottom:4px}
+.scenario-desc{font-size:.9em;color:#64748b}
+.backup-options{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.options-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));grid-gap:10px}
+.backup-btn{background:#fff;border:2px solid #fdba74;border-radius:10px;padding:12px;font-size:.9em;font-weight:700;color:#9a3412;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.backup-btn:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.backup-btn.selected{border-color:#0369a1;background:#e0f2fe}
+.backup-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.backup-icon{font-size:2em}
+.backup-name{font-weight:700}
+.backup-cap{font-size:.8em;color:#64748b}
+.btn-check{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#0369a1;margin-bottom:12px}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#0369a1;transform:scale(1.3)}
+@media(max-width:550px){.scenario-device{font-size:2em}.backup-icon{font-size:1.6em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .scenario-display > * + * { margin-left: 12px; }
+  .backup-btn > * + * { margin-top: 6px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>💾 Στρατηγική Αντιγράφων</h1>
+<p>Διάλεξε το κατάλληλο μέσο αντιγράφου για κάθε περίπτωση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Τα αντίγραφα ασφαλείας (backups) είναι πολύτιμα! Χρησιμοποιούμε διαφορετικά μέσα ανάλογα με την περίπτωση και τη συχνότητα!</div>
+
+<div class="score-display" id="scoreDisplay">Βαθμολογία: 0 / 5</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="backup-scenario">
+<div class="scenario-display">
+<div class="scenario-device" id="scenarioDevice">💻</div>
+<div class="scenario-text">
+<div class="scenario-title" id="scenarioTitle">Τα σημαντικά έγγραφα της δουλειάς</div>
+<div class="scenario-desc" id="scenarioDesc">Πρέπει να προστατεύονται καθημερινά!</div>
+</div>
+</div>
+</div>
+
+<div class="backup-options">
+<div class="options-label">🎯 Μέσα αντιγράφων:</div>
+<div class="option-grid" id="optionGrid">
+<div class="backup-btn" data-backup="cloud" onclick="selectBackup(this)">
+<div class="backup-icon">☁️</div>
+<div class="backup-name">Cloud</div>
+<div class="backup-cap">Αυτόματα, από παντού</div>
+</div>
+<div class="backup-btn" data-backup="external" onclick="selectBackup(this)">
+<div class="backup-icon">💿</div>
+<div class="backup-name">Εξωτερικός δίσκος</div>
+<div class="backup-cap">Μεγάλη χωρητικότητα</div>
+</div>
+<div class="backup-btn" data-backup="flash" onclick="selectBackup(this)">
+<div class="backup-icon">💾</div>
+<div class="backup-name">Μνήμη φλας</div>
+<div class="backup-cap">Μικρή, μεταφορά</div>
+</div>
+<div class="backup-btn" data-backup="network" onclick="selectBackup(this)">
+<div class="backup-icon">📡</div>
+<div class="backup-name">Δίκτυο NAS</div>
+<div class="backup-cap">Κοινόχρηστο, αυτόματα</div>
+</div>
+</div>
+</div>
+
+<button class="btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✅ Επιβεβαίωση</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentIndex=0;
+var score=0;
+var selectedBackup=null;
+
+var scenarios=[
+{
+  device:'💻',
+  title:'Τα σημαντικά έγγραφα της δουλειάς',
+  desc:'Πρέπει να προστατεύονται καθημερινά!',
+  correct:'cloud',
+  explanation:'Το Cloud προσφέρει αυτόματα καθημερινά αντίγραφα!'
+},
+{
+  device:'📸',
+  title:'Φωτογραφίες διακοπών (1000+ φώτο)',
+  desc:'Θέλω να τις κρατήσω για πάντα!',
+  correct:'external',
+  explanation:'Ο εξωτερικός δίσκος έχει μεγάλη χωρητικότητα για φωτογραφίες!'
+},
+{
+  device:'📝',
+  title:'Τρέχον έργο (περίπου 100MB)',
+  desc:'Θέλω να το μεταφέρω στο σπίτι',
+  correct:'flash',
+  explanation:'Η μνήμη φλας είναι μικρή αλλά εύκολη στη μεταφορά!'
+},
+{
+  device:'🏠',
+  title:'Αρχεία όλων των μελών της οικογένειας',
+  desc:'Κοινόχρηστα από όλους τους υπολογιστές',
+  correct:'network',
+  explanation:'Το NAS επιτρέπει κοινόχρηστη και αυτόματα αντίγραφα!'
+},
+{
+  device:'💼',
+  title:'Σημαντικές παρουσιάσεις',
+  desc:'Πρέπει να υπάρχουν και στο σπίτι και στο γραφείο',
+  correct:'external',
+  explanation:'Ο εξωτερικός δίσκος μπορεί να μεταφερθεί εύκολα!'
+}
+];
+
+function buildDots(){
+  var container=document.getElementById('progressDots');
+  container.innerHTML='';
+  for(var i=0;i<scenarios.length;i++){
+    var dot=document.createElement('div');
+    dot.className='dot';
+    dot.id='dot-'+i;
+    container.appendChild(dot);
+  }
+}
+
+function initChallenge(){
+  var scenario=scenarios[currentIndex];
+  document.getElementById('scenarioDevice').textContent=scenario.device;
+  document.getElementById('scenarioTitle').textContent=scenario.title;
+  document.getElementById('scenarioDesc').textContent=scenario.desc;
+  
+  var buttons=document.querySelectorAll('.backup-btn');
+  for(var i=0;i<buttons.length;i++){
+    buttons[i].classList.remove('selected');
+    buttons[i].disabled=false;
+  }
+  
+  selectedBackup=null;
+  document.getElementById('checkBtn').disabled=true;
+  updateDots();
+}
+
+function selectBackup(btn){
+  if(btn.disabled)return;
+  
+  var buttons=document.querySelectorAll('.backup-btn');
+  for(var i=0;i<buttons.length;i++){
+    buttons[i].classList.remove('selected');
+  }
+  btn.classList.add('selected');
+  selectedBackup=btn.dataset.backup;
+  document.getElementById('checkBtn').disabled=false;
+}
+
+function checkAnswer(){
+  if(!selectedBackup){
+    showFeedback('❌ Διάλεξε πρώτα ένα μέσω αντιγράφου!',false);
+    return;
+  }
+  
+  var scenario=scenarios[currentIndex];
+  var isCorrect=selectedBackup===scenario.correct;
+  
+  if(isCorrect){
+    score++;
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-ok');
+    showFeedback('✅ Σωστά! '+scenario.explanation,true);
+    
+    currentIndex++;
+    
+    if(currentIndex>=scenarios.length){
+      showFinalResult();
+    }else{
+      setTimeout(function(){
+        document.getElementById('feedback').textContent='';
+        document.getElementById('feedback').className='feedback';
+        initChallenge();
+      },1500);
+    }
+  }else{
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-wrong');
+    showFeedback('❌ Λάθος! '+scenario.explanation,false);
+    
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+      document.getElementById('feedback').className='feedback';
+      dot.classList.remove('done-wrong');
+      dot.classList.add('current');
+      
+      var buttons=document.querySelectorAll('.backup-btn');
+      for(var i=0;i<buttons.length;i++){
+        buttons[i].classList.remove('selected');
+        buttons[i].disabled=false;
+      }
+      selectedBackup=null;
+      document.getElementById('checkBtn').disabled=true;
+    },2000);
+  }
+  
+  updateScore();
+}
+
+function updateDots(){
+  var dots=document.querySelectorAll('.dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.remove('current');
+  }
+  document.getElementById('dot-'+currentIndex).classList.add('current');
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent='Βαθμολογία: '+score+' / '+scenarios.length;
+}
+
+function showFinalResult(){
+  document.getElementById('scenarioDevice').textContent='🏆';
+  document.getElementById('scenarioTitle').textContent='Ολοκληρώθηκε!';
+  document.getElementById('scenarioDesc').textContent='Καλά έκανες τα αντίγραφα!';
+  
+  var buttons=document.querySelectorAll('.backup-btn');
+  for(var i=0;i<buttons.length;i++){
+    buttons[i].disabled=true;
+  }
+  
+  document.getElementById('checkBtn').style.display='none';
+  
+  if(score===scenarios.length){
+    showFeedback('🏆 Τέλεια! Είσαι expert στα αντίγραφα ασφαλείας!',true);
+  }else if(score>=3){
+    showFeedback('👍 Καλά! '+score+'/'+scenarios.length+' σωστά!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+scenarios.length+' σωστά. Πρακτική περισσότερο!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+buildDots();
+initChallenge();
+</script>
+</body>
+</html>

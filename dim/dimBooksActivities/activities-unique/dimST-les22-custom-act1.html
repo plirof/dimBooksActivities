@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Forum: Νέο Θέμα → Απάντηση</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.forum-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:12px 16px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border-radius:10px}
+.new-thread-btn{padding:8px 18px;background:#fff;color:#667eea;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700;font-size:.9em}
+.new-thread-btn:hover{background:#f0f0ff}
+.thread-list{display:flex;flex-direction:column;gap:12px}
+.thread-item{padding:14px 16px;border:2px solid #eee;border-radius:12px;cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center}
+.thread-item:hover{border-color:#667eea;background:#f8f9ff;transform:translateX(4px)}
+.thread-title{font-weight:700;color:#333;font-size:1em}
+.thread-meta{font-size:.8em;color:#999;margin-top:4px}
+.thread-stats{text-align:right;font-size:.8em;color:#888}
+.new-thread-form{display:none;padding:20px;background:#f8f9ff;border-radius:14px;margin-bottom:20px;border:2px solid #667eea}
+.new-thread-form.active{display:block;animation:fadeIn .3s ease}
+.new-thread-form input,.new-thread-form textarea{width:100%;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9em;margin-bottom:12px}
+.new-thread-form input:focus,.new-thread-form textarea:focus{outline:none;border-color:#667eea}
+.new-thread-form textarea{resize:vertical;min-height:80px}
+.form-buttons{display:flex;gap:10px}
+.form-buttons button{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.9em}
+.btn-submit{background:#667eea;color:#fff}
+.btn-submit:hover{background:#764ba2}
+.btn-cancel{background:#eee;color:#666}
+.btn-cancel:hover{background:#ddd}
+.thread-view{display:none}
+.thread-view.active{display:block;animation:fadeIn .3s ease}
+.back-btn{display:inline-block;margin-bottom:15px;padding:8px 16px;background:#f0f0ff;color:#667eea;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.85em}
+.back-btn:hover{background:#e0e0ff}
+.thread-header-view{padding:16px;background:#f8f9ff;border-radius:12px;margin-bottom:16px}
+.thread-header-view h2{color:#333;font-size:1.15em}
+.thread-header-view .meta{color:#999;font-size:.8em;margin-top:4px}
+.messages{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.message{padding:14px;border-radius:12px;border-left:4px solid #667eea;background:#fafafa}
+.message.author{border-left-color:#fbbc04;background:#fffdf0}
+.message .msg-author{font-weight:700;color:#667eea;font-size:.85em;margin-bottom:4px}
+.message.author .msg-author{color:#e6a800}
+.message .msg-time{font-size:.75em;color:#bbb;margin-left:8px}
+.message .msg-body{color:#444;font-size:.9em;line-height:1.5}
+.reply-form{padding:16px;background:#f8f9ff;border-radius:12px;border:2px solid #eee}
+.reply-form textarea{width:100%;padding:10px;border:2px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9em;min-height:60px;resize:vertical;margin-bottom:10px}
+.reply-form textarea:focus{outline:none;border-color:#667eea}
+.reply-form button{padding:10px 20px;background:#667eea;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.9em}
+.reply-form button:hover{background:#764ba2}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .thread-list > * + * { margin-top: 12px; }
+  .form-buttons > * + * { margin-left: 10px; }
+  .messages > * + * { margin-top: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💬 Προσομοίωση Forum</h1>
+<p class="subtitle">Δημιούργησε νέα θέματα και απάντησε σε συζητήσεις</p>
+<div class="container">
+<div class="forum-header">
+<span>📋 Φόρουμ Τάξης ΣΤ'</span>
+<button class="new-thread-btn" onclick="showNewThreadForm()">➕ Νέο Θέμα</button>
+</div>
+<div class="new-thread-form" id="newThreadForm">
+<strong style="color:#667eea;margin-bottom:10px;display:block">📝 Δημιουργία Νέου Θέματος</strong>
+<input type="text" id="newTitle" placeholder="Τίτλος θέματος...">
+<textarea id="newMessage" placeholder="Γράψε το μήνυμά σου..."></textarea>
+<div class="form-buttons">
+<button class="btn-submit" onclick="createThread()">📤 Δημοσίευση</button>
+<button class="btn-cancel" onclick="hideNewThreadForm()">Ακύρωση</button>
+</div>
+</div>
+<div class="thread-list" id="threadList"></div>
+<div class="thread-view" id="threadView">
+<button class="back-btn" onclick="showThreadList()">← Πίσω στα Θέματα</button>
+<div class="thread-header-view" id="threadHeader"></div>
+<div class="messages" id="messagesList"></div>
+<div class="reply-form">
+<strong style="color:#667eea;display:block;margin-bottom:8px">✍️ Απάντηση</strong>
+<textarea id="replyText" placeholder="Γράψε την απάντησή σου..."></textarea>
+<button onclick="addReply()">📤 Αποστολή</button>
+</div>
+</div>
+</div>
+<script>
+let threads=[
+{id:1,title:"Πώς μπορώ να φτιάξω ένα παιχνίδι στο Scratch;",author:"Μαρία Κ.",time:"Σήμερα 10:30",replies:[
+{author:"Γιάννης Π.",body:"Μπορείς να ξεκινήσεις με τα βασικά κινούμενα σχέδια και μετά να προσθέσεις ερωτήσεις!",time:"Σήμερα 10:45"},
+{author:"Ελένη Δ.",body:"Δοκίμασε το tutorial στο Scratch για το Pong game, είναι πολύ εύκολο!",time:"Σήμερα 11:02"}
+]},
+{id:2,title:"Τι είναι το HTML και σε τι χρησιμεύει;",author:"Νίκος Σ.",time:"Χθες 16:20",replies:[
+{author:"Κώστας Μ.",body:"Το HTML είναι η γλώσσα με την οποία φτιάχνουμε ιστοσελίδες! Είναι πολύ εύκολη.",time:"Χθες 16:35"}
+]},
+{id:3,title:"Ασφαλής πλοήγηση στο διαδίκτυο",author:"Άννα Φ.",time:"Χθες 09:15",replies:[
+{author:"Δημήτρης Λ.",body:"Πάντα να ελέγχεις αν η σελίδα έχει https:// και το λευκό λουκέτο!",time:"Χθες 09:30"},
+{author:"Μαρία Κ.",body:"Μην δίνεις ποτέ προσωπικά σου στοιχεία σε άγνωστες ιστοσελίδες.",time:"Χθες 10:15"},
+{author:"Γιάννης Π.",body:"Ακούστε την κυρία! Η ασφάλεια στο διαδίκτυο είναι πολύ σημαντική! 🔒",time:"Χθες 10:45"}
+]}
+];
+let currentThread=null;
+let nextId=4;
+function renderThreadList(){
+const list=document.getElementById('threadList');
+list.innerHTML='';
+threads.forEach(t=>{
+const div=document.createElement('div');
+div.className='thread-item';
+div.innerHTML=`<div><div class="thread-title">📌 ${t.title}</div><div class="thread-meta">👤 ${t.author} · 🕐 ${t.time}</div></div><div class="thread-stats">💬 ${t.replies.length}<br>απαντήσεις</div>`;
+div.onclick=()=>openThread(t.id);
+list.appendChild(div);
+});
+}
+function showNewThreadForm(){document.getElementById('newThreadForm').classList.add('active')}
+function hideNewThreadForm(){document.getElementById('newThreadForm').classList.remove('active');document.getElementById('newTitle').value='';document.getElementById('newMessage').value=''}
+function createThread(){
+const title=document.getElementById('newTitle').value.trim();
+const msg=document.getElementById('newMessage').value.trim();
+if(!title||!msg)return;
+threads.unshift({id:nextId++,title,author:"Εσύ",time:"Τώρα",replies:[{author:"Εσύ",body:msg,time:"Τώρα",isAuthor:true}]});
+hideNewThreadForm();
+renderThreadList();
+}
+function openThread(id){
+currentThread=threads.find(t=>t.id===id);
+if(!currentThread)return;
+document.getElementById('threadList').style.display='none';
+document.getElementById('newThreadForm').classList.remove('active');
+document.querySelector('.new-thread-btn').style.display='none';
+document.getElementById('threadView').classList.add('active');
+document.getElementById('threadHeader').innerHTML=`<h2>📌 ${currentThread.title}</h2><div class="meta">👤 ${currentThread.author} · 🕐 ${currentThread.time} · 💬 ${currentThread.replies.length} απαντήσεις</div>`;
+renderMessages();
+}
+function renderMessages(){
+const list=document.getElementById('messagesList');
+list.innerHTML='';
+currentThread.replies.forEach(r=>{
+const div=document.createElement('div');
+div.className='message'+(r.isAuthor?' author':'');
+div.innerHTML=`<div><span class="msg-author">👤 ${r.author}</span><span class="msg-time">${r.time}</span></div><div class="msg-body">${r.body}</div>`;
+list.appendChild(div);
+});
+}
+function addReply(){
+const text=document.getElementById('replyText').value.trim();
+if(!text||!currentThread)return;
+currentThread.replies.push({author:"Εσύ",body:text,time:"Τώρα",isAuthor:true});
+document.getElementById('replyText').value='';
+renderMessages();
+document.getElementById('threadHeader').innerHTML=`<h2>📌 ${currentThread.title}</h2><div class="meta">👤 ${currentThread.author} · 🕐 ${currentThread.time} · 💬 ${currentThread.replies.length} απαντήσεις</div>`;
+}
+function showThreadList(){
+document.getElementById('threadList').style.display='flex';
+document.getElementById('threadView').classList.remove('active');
+document.querySelector('.new-thread-btn').style.display='';
+currentThread=null;
+renderThreadList();
+}
+renderThreadList();
+</script>
+</body>
+</html>

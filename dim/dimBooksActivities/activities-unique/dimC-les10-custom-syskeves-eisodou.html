@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Συσκευές Εισόδου και Εξόδου - dimC les10</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 4px;
+}
+h1 .emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.subtitle {
+    color: #e0d0ff;
+    text-align: center;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    max-width: 700px;
+}
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 24px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-fill {
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333;
+}
+.instructions {
+    text-align: center;
+    color: #555;
+    font-size: 0.88rem;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #f3ecff;
+    border-radius: 10px;
+    line-height: 1.4;
+}
+.cards-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 14px;
+    min-height: 50px;
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 2px dashed #ddd;
+}
+.device-card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: grab;
+    font-size: 0.88rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.3s;
+    touch-action: none;
+}
+.device-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.device-card.selected {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255,152,0,0.3);
+    transform: scale(1.05);
+}
+.device-card.placed {
+    opacity: 0.25;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+.device-card .emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.3rem;
+}
+.dragging-clone {
+    position: fixed;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0.92;
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #764ba2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+}
+.dragging-clone .emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.3rem;
+}
+.zones-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.drop-zone {
+    flex: 1;
+    min-width: 260px;
+    border-radius: 16px;
+    padding: 12px;
+    min-height: 130px;
+    transition: background 0.3s, border-color 0.3s, transform 0.2s;
+}
+.drop-zone.input-zone {
+    background: #e8f5e9;
+    border: 3px dashed #4caf50;
+}
+.drop-zone.output-zone {
+    background: #e3f2fd;
+    border: 3px dashed #2196f3;
+}
+.drop-zone.highlight {
+    transform: scale(1.02);
+}
+.drop-zone.input-zone.highlight {
+    background: #c8e6c9;
+    border-color: #2e7d32;
+    border-style: solid;
+}
+.drop-zone.output-zone.highlight {
+    background: #bbdefb;
+    border-color: #1565c0;
+    border-style: solid;
+}
+.zone-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    padding: 6px;
+    border-radius: 8px;
+}
+.input-zone .zone-header {
+    color: #2e7d32;
+    background: rgba(76,175,80,0.15);
+}
+.output-zone .zone-header {
+    color: #1565c0;
+    background: rgba(33,150,243,0.15);
+}
+.zone-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}
+.zone-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: bold;
+    animation: popIn 0.3s ease;
+}
+.input-zone .zone-item {
+    background: #a5d6a7;
+    color: #1b5e20;
+}
+.output-zone .zone-item {
+    background: #90caf9;
+    color: #0d47a1;
+}
+.zone-item .emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.1rem;
+}
+.feedback {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    min-height: 28px;
+    transition: opacity 0.3s;
+}
+.feedback.correct {
+    color: #4caf50;
+}
+.feedback.wrong {
+    color: #f44336;
+}
+.completion-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    z-index: 20000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.completion-overlay.show {
+    display: flex;
+}
+.completion-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 25px;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    animation: bounceIn 0.5s ease;
+}
+.completion-card h2 {
+    color: #4caf50;
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+.completion-card .congrats-sub {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+.stars-row {
+    font-size: 2.8rem;
+    margin: 12px 0 16px;
+}
+.star {
+    display: inline-block;
+    color: #ffd700;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    animation: starPop 0.5s ease backwards;
+    margin: 0 3px;
+}
+.star.empty {
+    color: #ddd;
+    text-shadow: none;
+}
+.completion-score {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 18px;
+}
+.btn-restart {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-weight: bold;
+}
+.btn-restart:hover {
+    transform: scale(1.05);
+}
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes starPop {
+    0% { transform: scale(0) rotate(-30deg); }
+    70% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .cards-area > * { margin: 4px; }
+  .device-card > * + * { margin-left: 6px; }
+  .dragging-clone > * + * { margin-left: 6px; }
+  .zones-container > * { margin: 6px; }
+  .zone-items > * { margin: 3px; }
+  .zone-item > * + * { margin-left: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1><span class="emoji-title">🖥️</span> Συσκευές Εισόδου και Εξόδου</h1>
+<p class="subtitle">Σύρε κάθε συσκευή στη σωστή κατηγορία!</p>
+<div class="container">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+        <span class="progress-text" id="progressText">0 / 10</span>
+    </div>
+    <div class="instructions">
+        Σύρε μια κάρτα πάνω στην κατηγορία ή πάτησέ την και μετά πάτησε τη ζώνη!
+    </div>
+    <div class="cards-area" id="cardsArea"></div>
+    <div class="zones-container">
+        <div class="drop-zone input-zone" id="inputZone" data-category="input">
+            <div class="zone-header">📥 Συσκευές Εισόδου</div>
+            <div class="zone-items" id="inputItems"></div>
+        </div>
+        <div class="drop-zone output-zone" id="outputZone" data-category="output">
+            <div class="zone-header">📤 Συσκευές Εξόδου</div>
+            <div class="zone-items" id="outputItems"></div>
+        </div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+</div>
+<div class="completion-overlay" id="completionOverlay">
+    <div class="completion-card">
+        <h2>🎉 Μπράβο!</h2>
+        <p class="congrats-sub">Τα κατάφερες περίφημα!</p>
+        <div class="stars-row" id="starsRow"></div>
+        <div class="completion-score" id="completionScore"></div>
+        <button class="btn-restart" id="btnRestart">🔄 Ξαναπαίξου</button>
+    </div>
+</div>
+<script>
+(function(){
+    var devices = [
+        { name: 'Πληκτρολόγιο', emoji: '⌨️', cat: 'input' },
+        { name: 'Ποντίκι', emoji: '🖱️', cat: 'input' },
+        { name: 'Οθόνη', emoji: '🖥️', cat: 'output' },
+        { name: 'Εκτυπωτής', emoji: '🖨️', cat: 'output' },
+        { name: 'Μικρόφωνο', emoji: '🎤', cat: 'input' },
+        { name: 'Ηχεία', emoji: '🔊', cat: 'output' },
+        { name: 'Φωτογραφική', emoji: '📷', cat: 'input' },
+        { name: 'Κινητό', emoji: '📱', cat: 'output' },
+        { name: 'Σαρωτής', emoji: '🖱️', cat: 'input' },
+        { name: 'Ακουστικά', emoji: '🎧', cat: 'output' }
+    ];
+
+    var placed = 0;
+    var score = 0;
+    var total = devices.length;
+    var selectedCard = null;
+    var dragCard = null;
+    var dragClone = null;
+    var dragOffX = 0;
+    var dragOffY = 0;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var isDragging = false;
+    var feedbackTimer = null;
+
+    function shuffle(a) {
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+    }
+
+    function init() {
+        var area = document.getElementById('cardsArea');
+        area.innerHTML = '';
+        document.getElementById('inputItems').innerHTML = '';
+        document.getElementById('outputItems').innerHTML = '';
+        placed = 0;
+        score = 0;
+        selectedCard = null;
+        dragCard = null;
+        dragClone = null;
+        isDragging = false;
+        updateProgress();
+
+        var shuffled = shuffle(devices.slice());
+        for (var i = 0; i < shuffled.length; i++) {
+            var d = shuffled[i];
+            var card = document.createElement('div');
+            card.className = 'device-card';
+            card.setAttribute('data-cat', d.cat);
+            card.setAttribute('data-name', d.name);
+            card.setAttribute('data-emoji', d.emoji);
+            card.innerHTML = '<span class="emoji">' + d.emoji + '</span><span>' + d.name + '</span>';
+            card.addEventListener('mousedown', onDown);
+            card.addEventListener('touchstart', onDown, { passive: false });
+            area.appendChild(card);
+        }
+
+        var zones = document.querySelectorAll('.drop-zone');
+        for (var z = 0; z < zones.length; z++) {
+            zones[z].addEventListener('click', onZoneClick);
+        }
+    }
+
+    function getPos(e) {
+        if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches.length > 0) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+    }
+
+    function onDown(e) {
+        var card = e.currentTarget;
+        if (card.classList.contains('placed')) return;
+        e.preventDefault();
+        var pos = getPos(e);
+        var rect = card.getBoundingClientRect();
+        dragOffX = pos.x - rect.left;
+        dragOffY = pos.y - rect.top;
+        dragStartX = pos.x;
+        dragStartY = pos.y;
+        dragCard = card;
+        isDragging = false;
+
+        if (selectedCard && selectedCard !== card) {
+            selectedCard.classList.remove('selected');
+        }
+        selectedCard = card;
+        card.classList.add('selected');
+    }
+
+    function onMove(e) {
+        if (!dragCard) return;
+        var pos = getPos(e);
+        if (!isDragging) {
+            var dx = pos.x - dragStartX;
+            var dy = pos.y - dragStartY;
+            if (Math.sqrt(dx * dx + dy * dy) < 8) return;
+            isDragging = true;
+            dragCard.classList.remove('selected');
+            selectedCard = null;
+            createClone(dragCard, pos);
+        }
+        if (isDragging && dragClone) {
+            e.preventDefault();
+            dragClone.style.left = (pos.x - dragOffX) + 'px';
+            dragClone.style.top = (pos.y - dragOffY) + 'px';
+            highlightZones(pos);
+        }
+    }
+
+    function onUp(e) {
+        if (!dragCard) return;
+        if (isDragging && dragClone) {
+            var pos = getPos(e);
+            var zone = getZoneAtPos(pos);
+            if (zone) {
+                handleDrop(dragCard, zone);
+            } else {
+                dragCard.style.opacity = '';
+            }
+            if (dragClone.parentNode) dragClone.parentNode.removeChild(dragClone);
+            dragClone = null;
+            clearHighlight();
+        }
+        dragCard = null;
+        isDragging = false;
+    }
+
+    function createClone(card, pos) {
+        dragClone = document.createElement('div');
+        dragClone.className = 'dragging-clone';
+        dragClone.innerHTML = card.innerHTML;
+        var rect = card.getBoundingClientRect();
+        dragClone.style.width = rect.width + 'px';
+        dragClone.style.left = (pos.x - dragOffX) + 'px';
+        dragClone.style.top = (pos.y - dragOffY) + 'px';
+        document.body.appendChild(dragClone);
+        card.style.opacity = '0.3';
+    }
+
+    function highlightZones(pos) {
+        var zones = document.querySelectorAll('.drop-zone');
+        for (var i = 0; i < zones.length; i++) {
+            var r = zones[i].getBoundingClientRect();
+            if (pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom) {
+                zones[i].classList.add('highlight');
+            } else {
+                zones[i].classList.remove('highlight');
+            }
+        }
+    }
+
+    function clearHighlight() {
+        var zones = document.querySelectorAll('.drop-zone');
+        for (var i = 0; i < zones.length; i++) zones[i].classList.remove('highlight');
+    }
+
+    function getZoneAtPos(pos) {
+        var zones = document.querySelectorAll('.drop-zone');
+        for (var i = 0; i < zones.length; i++) {
+            var r = zones[i].getBoundingClientRect();
+            if (pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom) {
+                return zones[i];
+            }
+        }
+        return null;
+    }
+
+    function onZoneClick(e) {
+        if (!selectedCard || isDragging) return;
+        if (selectedCard.classList.contains('placed')) return;
+        handleDrop(selectedCard, e.currentTarget);
+        selectedCard.classList.remove('selected');
+        selectedCard = null;
+    }
+
+    function handleDrop(card, zone) {
+        var cardCat = card.getAttribute('data-cat');
+        var zoneCat = zone.getAttribute('data-category');
+        var name = card.getAttribute('data-name');
+        var emoji = card.getAttribute('data-emoji');
+
+        if (cardCat === zoneCat) {
+            score++;
+            placed++;
+            card.classList.add('placed');
+            card.classList.remove('selected');
+            card.style.opacity = '';
+
+            var item = document.createElement('div');
+            item.className = 'zone-item';
+            item.innerHTML = '<span class="emoji">' + emoji + '</span><span>' + name + '</span>';
+            zone.querySelector('.zone-items').appendChild(item);
+
+            showFeedback(true, '✅ Σωστό! Μπράβο!');
+            updateProgress();
+
+            if (placed >= total) {
+                setTimeout(showCompletion, 900);
+            }
+        } else {
+            card.style.opacity = '';
+            card.classList.remove('selected');
+            showFeedback(false, '❌ Ωχ, δοκίμασε ξανά!');
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'shake 0.4s ease';
+            setTimeout(function() { card.style.animation = ''; }, 500);
+        }
+
+        if (selectedCard === card) selectedCard = null;
+    }
+
+    function showFeedback(ok, txt) {
+        var fb = document.getElementById('feedback');
+        fb.textContent = txt;
+        fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+        if (feedbackTimer) clearTimeout(feedbackTimer);
+        feedbackTimer = setTimeout(function() {
+            fb.textContent = '';
+            fb.className = 'feedback';
+        }, 1600);
+    }
+
+    function updateProgress() {
+        var pct = (placed / total) * 100;
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressText').textContent = placed + ' / ' + total;
+    }
+
+    function showCompletion() {
+        var overlay = document.getElementById('completionOverlay');
+        var starsRow = document.getElementById('starsRow');
+        var scoreDiv = document.getElementById('completionScore');
+
+        var starCount = 1;
+        if (score >= 9) starCount = 3;
+        else if (score >= 7) starCount = 2;
+
+        starsRow.innerHTML = '';
+        for (var i = 0; i < 3; i++) {
+            var s = document.createElement('span');
+            s.className = 'star' + (i < starCount ? '' : ' empty');
+            s.textContent = '★';
+            s.style.animationDelay = (i * 0.2) + 's';
+            starsRow.appendChild(s);
+        }
+
+        scoreDiv.textContent = score + ' / ' + total + ' σωστές απαντήσεις!';
+        overlay.classList.add('show');
+    }
+
+    function restartGame() {
+        document.getElementById('completionOverlay').classList.remove('show');
+        init();
+    }
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onUp);
+    document.getElementById('btnRestart').addEventListener('click', restartGame);
+
+    init();
+})();
+</script>
+</body>
+</html>

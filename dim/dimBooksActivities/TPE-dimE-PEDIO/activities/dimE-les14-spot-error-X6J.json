@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Δίκτυα",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "εξυπηρετητής", "error": false, "correct": "", "feedback": "" },
+        { "text": "ζητά", "error": true, "correct": "παρέχει", "feedback": "Ο εξυπηρετητής ΠΑΡΕΧΕΙ υπηρεσίες, δεν ζητά." },
+        { "text": "υπηρεσίες", "error": false, "correct": "", "feedback": "" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "τους", "error": false, "correct": "", "feedback": "" },
+        { "text": "πελάτες.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "LAN", "error": false, "correct": "", "feedback": "" },
+        { "text": "σημαίνει", "error": false, "correct": "", "feedback": "" },
+        { "text": "Δίκτυο", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ευρείας", "error": true, "correct": "Τοπικής", "feedback": "LAN = Local Area Network = Δίκτυο ΤΟΠΙΚΗΣ Περιοχής" },
+        { "text": "Περιοχής.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "πακέτα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεδομένων", "error": false, "correct": "", "feedback": "" },
+        { "text": "ταξιδεύουν", "error": false, "correct": "", "feedback": "" },
+        { "text": "μεμόνωση", "error": true, "correct": "ομαδικά", "feedback": "Τα πακέτα ταξιδεύουν μέσα από καλώδια και δρομολογητές, όχι μεμόνωση" },
+        { "text": "χωρίς", "error": false, "correct": "", "feedback": "" },
+        { "text": "δρομολογητές.", "error": true, "correct": "μέσω δρομολογητών", "feedback": "Τα πακέτα ΠΕΡΝΑΝΕ από δρομολογητές" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "WAN", "error": false, "correct": "", "feedback": "" },
+        { "text": "συνδέει", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπολογιστές", "error": false, "correct": "", "feedback": "" },
+        { "text": "μόνο", "error": true, "correct": "", "feedback": "Το WAN συνδέει δίκτυα σε ΜΕΓΑΛΕΣ γεωγραφικές περιοχές" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "ένα", "error": true, "correct": "μεγάλες", "feedback": "WAN = Wide Area Network = Δίκτυο ΜΕΓΑΛΗΣ γεωγραφικής εμβέλειας" },
+        { "text": "κτίριο.", "error": true, "correct": "περιοχές.", "feedback": "Το WAN καλύπτει πόλεις, περιφέρειες και χώρες" }
+      ]
+    }
+  ]
+}

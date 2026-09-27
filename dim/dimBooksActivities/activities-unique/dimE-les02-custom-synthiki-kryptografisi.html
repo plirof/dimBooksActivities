@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συνθήκες στο Αλγόριθμο | Μάθημα 2</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fef3c7,#fde68a);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#78350f;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#d97706;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#78350f;font-size:.75rem;font-weight:700;border:1px solid #fcd34d;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.algo-step{background:#fffbeb;border:2px solid #fde68a;border-radius:10px;padding:8px 12px;margin:6px 0;font-size:.72rem;color:#78350f;font-family:monospace}
+.algo-step.missing-step{border:2px dashed #d97706;background:#fff;cursor:pointer;transition:all .2s}
+.algo-step.missing-step:hover{background:#fffbeb}
+.algo-step.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.algo-step.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.opt-btn{display:block;width:100%;text-align:left;padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;margin:4px 0;font-size:.7rem;font-family:monospace;color:#334155;background:#fff;cursor:pointer;transition:all .2s}
+.opt-btn:hover{border-color:#d97706;background:#fffbeb}
+.opt-btn.selected{border-color:#d97706;background:#fef3c7;color:#78350f;font-weight:700}
+.opt-btn.correct-opt{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.opt-btn.wrong-opt{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:6px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#d97706;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#b45309}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #d97706;border-radius:10px;background:transparent;color:#d97706;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fffbeb}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🧩 Συνθήκες στο Αλγόριθμο</h1>
+<p class="subtitle">Διόρθωσε τον αλγόριθμο του Καίσαρα με τη σωστή συνθήκη!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόβλημα:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var questions=[
+{
+title:'Αλγόριθμος 2: Ειδική περίπτωση για Ω',
+algo:[
+'Επανάλαβε μέχρι να τελειώσουν όλα τα γράμματα',
+'  Διάβασε το επόμενο γράμμα',
+'  Βρες τη θέση του γράμματος στο αλφάβητο',
+'  ___ΕΔΕ___',
+'  Αλλιώς',
+'    Γράψε το γράμμα στη θέση + 3'
+],
+missingIdx:3,
+options:[
+'Αν το γράμμα είναι Ω, γράψε Δ',
+'Αν η θέση + 3 > 24, γράψε το γράμμα στη θέση (θέση + 3) - 24',
+'Αν το γράμμα είναι Ψ, γράψε Β',
+'Αν η θέση > 20, γράψε το γράμμα στη θέση + 3'
+],
+correct:1,
+explain:'Η σωστή συνθήκη ελέγχει αν θέση+3>24. Αν ναι, τυλίγουμε: (θέση+3)-24.'
+},
+{
+title:'Αλγόριθμος 3: Γενίκευση με μετατόπιση 5',
+algo:[
+'Επανάλαβε μέχρι να τελειώσουν όλα τα γράμματα',
+'  Διάβασε το επόμενο γράμμα',
+'  Βρες τη θέση του γράμματος στο αλφάβητο',
+'  ___ΕΔΕ___',
+'  Αλλιώς',
+'    Γράψε το γράμμα στη θέση + 5'
+],
+missingIdx:3,
+options:[
+'Αν η θέση + 5 > 24, γράψε το γράμμα στη θέση (θέση + 5) - 24',
+'Αν το γράμμα είναι Ω, γράψε Ε',
+'Αν η θέση > 19, γράψε Ω',
+'Αν η θέση + 5 < 24, γράψε το γράμμα στη θέση + 5'
+],
+correct:0,
+explain:'Γενική λύση: ελέγχουμε αν θέση+μετατόπιση>24 και αφαιρούμε 24.'
+},
+{
+title:'Λατινικό αλφάβητο: μετατόπιση 4 (26 γράμματα)',
+algo:[
+'Επανάλαβε μέχρι να τελειώσουν όλα τα γράμματα',
+'  Διάβασε το επόμενο γράμμα',
+'  Βρες τη θέση του γράμμα στο αλφάβητο (1-26)',
+'  ___ΕΔΕ___',
+'  Αλλιώς',
+'    Γράψε το γράμμα στη θέση + 4'
+],
+missingIdx:3,
+options:[
+'Αν η θέση > 22, γράψε το γράμμα στη θέση - 22',
+'Αν η θέση + 4 > 26, γράψε το γράμμα στη θέση (θέση + 4) - 26',
+'Αν το γράμμα είναι Z, γράψε D',
+'Αν η θέση < 4, γράψε το γράμμα στη θέση + 4'
+],
+correct:1,
+explain:'Για 26 γράμματα: θέση+4>26 σημαίνει τύλιγμα, άρα (θέση+4)-26.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+
+function initQ(){selected=-1;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var q=questions[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.78rem;font-weight:700;color:#78350f;text-align:center;margin:4px 0">'+q.title+'</div>';
+h+='<div class="info-text">Επίλεξε τη σωστή γραμμή κώδικα για το κενό (___ΕΔΕ___):</div>';
+for(var i=0;i<q.algo.length;i++){
+var cls='algo-step';
+if(i===q.missingIdx){
+if(checked){
+cls+=selected===q.correct?' correct':' wrong';
+h+='<div class="'+cls+'">'+q.options[q.correct]+'</div>';
+}else if(selected>=0){
+h+='<div class="algo-step" style="background:#fef3c7;border-color:#d97706">'+q.options[selected]+'</div>';
+}else{
+h+='<div class="algo-step missing-step">___ΕΔΕ___</div>';
+}
+}else{
+h+='<div class="'+cls+'">'+q.algo[i]+'</div>';
+}
+}
+if(!checked){
+h+='<div style="margin:8px 0">';
+for(var i=0;i<q.options.length;i++){
+var ocls='opt-btn';
+if(selected===i)ocls+=' selected';
+h+='<button class="'+ocls+'" onclick="selectOpt('+i+')">'+q.options[i]+'</button>';
+}
+h+='</div>';
+h+='<button class="check-btn" onclick="checkAnswer()"'+(selected<0?' disabled':'')+'>✓ Έλεγχος Απάντησης</button>';
+}else{
+if(selected===q.correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg ok">✅ Σωστό! '+q.explain+'</div>';
+}else{
+h+='<div class="result-msg bad">❌ Λάθος. '+q.explain+'</div>';
+}
+if(curQ<questions.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Πρόβλημα ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+
+function nextQ(){
+if(curQ<questions.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

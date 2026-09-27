@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Επικοινωνία με Ήχο και Βίντεο</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 800px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.scenario {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border-left: 4px solid #667eea;
+}
+.scenario-text {
+color: #333;
+line-height: 1.6;
+margin-bottom: 15px;
+}
+.scenario-question {
+font-weight: bold;
+color: #667eea;
+margin-bottom: 15px;
+}
+.options {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.option-btn {
+flex: 1;
+min-width: 120px;
+padding: 15px 20px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.option-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.option-btn.selected {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+margin-top: 15px;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.correct {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.wrong {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .options > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📞 Επικοινωνία με Ήχο και Βίντεο</h1>
+<p class="subtitle">Σενάρια για επικοινωνία μέσω e-me</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/5</div>
+
+<div class="container">
+<div class="scenario" id="scenario1">
+<div class="scenario-text">📱 Θέλεις να μιλήσεις με τη φίλη σου Μαρία στην e-me. Είναι συνδεδεμένη στην πλατφόρμα. Ποια ενέργεια θα κάνεις;</div>
+<div class="scenario-question">Επίλεξε τον κατάλληλο τρόπο επικοινωνίας:</div>
+<div class="options">
+<button class="option-btn" onclick="selectOption(1, 'voice')">🎤 Κλήση Ήχου</button>
+<button class="option-btn" onclick="selectOption(1, 'video')">📹 Βιντεοκλήση</button>
+<button class="option-btn" onclick="selectOption(1, 'text')">💬 Μήνυμα Κειμένου</button>
+</div>
+<div class="result-box" id="result1"></div>
+</div>
+
+<div class="scenario" id="scenario2">
+<div class="scenario-text">🔔 Η καμπανάκι στην e-me σου δείχνει ότι έχεις νέο αίτημα κλήσης από τον Γιώργο (συμμαθητή σου). Τι κάνεις;</div>
+<div class="scenario-question">Ποιο κουμπί πατάς;</div>
+<div class="options">
+<button class="option-btn" onclick="selectOption(2, 'accept')">📞 Αποδοχή</button>
+<button class="option-btn" onclick="selectOption(2, 'decline')">❌ Άρνηση</button>
+<button class="option-btn" onclick="selectOption(2, 'block')">🚫 Αποκλεισμός</button>
+</div>
+<div class="result-box" id="result2"></div>
+</div>
+
+<div class="scenario" id="scenario3">
+<div class="scenario-text">👨‍🏫 Ο δάσκαλος σου οργανώνει μια τηλεδιάσκεψη WebEX για το μάθημα. Πρέπει να συνδεθείς. Τι χρειάζεσαι;</div>
+<div class="scenario-question">Επιλέξε τα απαραίτητα:</div>
+<div class="options">
+<button class="option-btn" onclick="selectOption(3, 'mic')">🎤 Μικρόφωνο</button>
+<button class="option-btn" onclick="selectOption(3, 'camera')">📷 Κάμερα</button>
+<button class="option-btn" onclick="selectOption(3, 'browser')">🌐 Φυλλομετρητή</button>
+</div>
+<div class="result-box" id="result3"></div>
+</div>
+
+<div class="scenario" id="scenario4">
+<div class="scenario-text">💭 Θέλεις να πεις κάτι κατά τη διάρκεια της τηλεδιάσκεψης. Ποια είναι η σωστή διαδικασία;</div>
+<div class="scenario-question">Επίλεξε τη σωστή σειρά ενεργειών:</div>
+<div class="options">
+<button class="option-btn" onclick="selectOption(4, 'hand')">🙆 Σήκωμα Χεριού</button>
+<button class="option-btn" onclick="selectOption(4, 'speak')">🗣️ Μίλα Αμέσως</button>
+<button class="option-btn" onclick="selectOption(4, 'wait')">⏳ Περιμένεις</button>
+</div>
+<div class="result-box" id="result4"></div>
+</div>
+
+<div class="scenario" id="scenario5">
+<div class="scenario-text">👋 Θέλεις να αποχωρήσεις από τη τηλεδιάσκεψη. Ποιο κουμπί πατάς;</div>
+<div class="scenario-question">Επίλεξε το σωστό κουμπί:</div>
+<div class="options">
+<button class="option-btn" onclick="selectOption(5, 'red-x')">❌ Κόκκινο Χ</button>
+<button class="option-btn" onclick="selectOption(5, 'close')">🖥️ Κλείσιμο Παραθύρου</button>
+<button class="option-btn" onclick="selectOption(5, 'mute')">🔇 Σίγαση</button>
+</div>
+<div class="result-box" id="result5"></div>
+</div>
+</div>
+
+<div class="mascot">🎥</div>
+
+<script>
+const scenarios = {
+1: { correct: 'voice', text: 'Μπορείς να επικοινωνήσεις με φίλους με κλήση ήχου!' },
+2: { correct: 'accept', text: 'Αποδέχεσαι την κλήση από τον συμμαθητή σου!' },
+3: { correct: 'browser', text: 'Χρειάζεσαι φυλλομετρητή για να συνδεθείς στη διεύθυνση της τηλεδιάσκεψης!' },
+4: { correct: 'hand', text: 'Σήκω το χέρι σου και περιμένεις να σου δώσει ο δάσκαλος τον λόγο!' },
+5: { correct: 'red-x', text: 'Πατάς το κόκκινο κουμπί Χ για να αποχωρήσεις!' }
+};
+
+let score = 0;
+let selectedOptions = {};
+
+function selectOption(scenarioNum, option) {
+if (selectedOptions[scenarioNum]) return;
+
+selectedOptions[scenarioNum] = option;
+
+const scenarioEl = document.getElementById('scenario' + scenarioNum);
+const buttons = scenarioEl.querySelectorAll('.option-btn');
+buttons.forEach(btn => btn.classList.remove('selected'));
+
+event.target.classList.add('active');
+
+const resultBox = document.getElementById('result' + scenarioNum);
+const isCorrect = option === scenarios[scenarioNum].correct;
+
+resultBox.className = 'result-box show ' + (isCorrect ? 'correct' : 'wrong');
+
+if (isCorrect) {
+score++;
+document.getElementById('score').textContent = score;
+resultBox.innerHTML = '🎉 ' + scenarios[scenarioNum].text;
+} else {
+resultBox.innerHTML = '❌ Προσπάθησε ξανά! ' + scenarios[scenarioNum].text;
+}
+}
+</script>
+</body>
+</html>

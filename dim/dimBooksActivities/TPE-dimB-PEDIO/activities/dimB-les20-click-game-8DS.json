@@ -1,0 +1,14 @@
+{
+  "title": "Βρες τα Κουμπιά!",
+  "subtitle": "Κάνε κλικ στα σωστά κουμπιά",
+  "instructions": "Βρες τα κουμπιά: play, ένταση, μεγέθυνση",
+  "duration": 25,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "▶️", "color": "#C8E6C9" },
+    { "label": "🔊", "color": "#BBDEFB" },
+    { "label": "🔍+", "color": "#FFF9C4" },
+    { "label": "✖️", "color": "#FFCDD2" }
+  ]
+}

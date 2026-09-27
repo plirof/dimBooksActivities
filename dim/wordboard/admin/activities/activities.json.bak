@@ -1,0 +1,890 @@
+{
+    "activity_69823d3d3d8c36.76946590": {
+        "id": "activity_69823d3d3d8c36.76946590",
+        "title": "General Knowledge Quiz",
+        "type": "quiz",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "questions": [
+                {
+                    "question": "What is the capital of France?",
+                    "options": [
+                        "London",
+                        "Paris",
+                        "Berlin",
+                        "Madrid"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "What is 2 + 2?",
+                    "options": [
+                        "3",
+                        "4",
+                        "5",
+                        "6"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "What color is the sky?",
+                    "options": [
+                        "Green",
+                        "Red",
+                        "Blue",
+                        "Yellow"
+                    ],
+                    "correct": 2
+                },
+                {
+                    "question": "How many days in a week?",
+                    "options": [
+                        "5",
+                        "6",
+                        "7",
+                        "8"
+                    ],
+                    "correct": 2
+                },
+                {
+                    "question": "What animal says \"meow\"?",
+                    "options": [
+                        "Dog",
+                        "Cat",
+                        "Bird",
+                        "Cow"
+                    ],
+                    "correct": 1
+                }
+            ]
+        }
+    },
+    "activity_69823d3d3d8f49.18311911": {
+        "id": "activity_69823d3d3d8f49.18311911",
+        "title": "Animal Match",
+        "type": "match",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "pairs": [
+                {
+                    "left": "Cat",
+                    "right": "Meow"
+                },
+                {
+                    "left": "Dog",
+                    "right": "Bark"
+                },
+                {
+                    "left": "Cow",
+                    "right": "Moo"
+                },
+                {
+                    "left": "Duck",
+                    "right": "Quack"
+                },
+                {
+                    "left": "Sheep",
+                    "right": "Baa"
+                },
+                {
+                    "left": "Pig",
+                    "right": "Oink"
+                }
+            ]
+        }
+    },
+    "activity_69823d3d3d8fc0.43446795": {
+        "id": "activity_69823d3d3d8fc0.43446795",
+        "title": "Random Activities Wheel",
+        "type": "wheel",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "segments": [
+                "Read a book",
+                "Do a math problem",
+                "Draw a picture",
+                "Write a story",
+                "Exercise for 5 minutes",
+                "Sing a song",
+                "Clean your desk",
+                "Help a friend",
+                "Practice spelling",
+                "Answer a question"
+            ]
+        }
+    },
+    "activity_69823d3d3d9013.84167909": {
+        "id": "activity_69823d3d3d9013.84167909",
+        "title": "Simple Crossword",
+        "type": "crossword",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "grid": [
+                [
+                    "#",
+                    "#",
+                    "C",
+                    "A",
+                    "T",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "O",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "L",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "O",
+                    "#",
+                    "R",
+                    "E",
+                    "D",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "R",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "S",
+                    "U",
+                    "N",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "A",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "R",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ]
+            ],
+            "words": [
+                {
+                    "number": 1,
+                    "direction": "across",
+                    "clue": "Warm color",
+                    "answer": "RED",
+                    "row": 3,
+                    "col": 4
+                },
+                {
+                    "number": 2,
+                    "direction": "down",
+                    "clue": "Feline pet",
+                    "answer": "CAT",
+                    "row": 0,
+                    "col": 2
+                },
+                {
+                    "number": 3,
+                    "direction": "across",
+                    "clue": "Bright star in day",
+                    "answer": "SUN",
+                    "row": 6,
+                    "col": 0
+                }
+            ]
+        }
+    },
+    "activity_69823d3d3d9055.86320476": {
+        "id": "activity_69823d3d3d9055.86320476",
+        "title": "Fruit Word Search",
+        "type": "wordsearch",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "grid": [
+                [
+                    "A",
+                    "P",
+                    "P",
+                    "L",
+                    "E",
+                    "B",
+                    "A",
+                    "N",
+                    "A",
+                    "N",
+                    "A"
+                ],
+                [
+                    "G",
+                    "#",
+                    "I",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "R",
+                    "#",
+                    "N",
+                    "#",
+                    "O",
+                    "R",
+                    "A",
+                    "N",
+                    "G",
+                    "E"
+                ],
+                [
+                    "E",
+                    "#",
+                    "E",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "S",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "G",
+                    "R",
+                    "A",
+                    "P",
+                    "E",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "C",
+                    "H",
+                    "E",
+                    "R",
+                    "R",
+                    "Y",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ],
+                [
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#",
+                    "#"
+                ]
+            ],
+            "words": [
+                "APPLE",
+                "PINEAPPLE",
+                "ORANGE",
+                "GRAPE",
+                "CHERRY"
+            ]
+        }
+    },
+    "activity_69823d3d3d9098.15690076": {
+        "id": "activity_69823d3d3d9098.15690076",
+        "title": "Fill in the Blanks",
+        "type": "missingword",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "sentences": [
+                {
+                    "sentence": "The sun rises in the ___",
+                    "options": [
+                        "west",
+                        "east",
+                        "north",
+                        "south"
+                    ],
+                    "correct": "east"
+                },
+                {
+                    "sentence": "A dog has ___ legs",
+                    "options": [
+                        "two",
+                        "three",
+                        "four",
+                        "six"
+                    ],
+                    "correct": "four"
+                },
+                {
+                    "sentence": "Water boils at ___ degrees Celsius",
+                    "options": [
+                        "90",
+                        "100",
+                        "110",
+                        "120"
+                    ],
+                    "correct": "100"
+                },
+                {
+                    "sentence": "The largest planet is ___",
+                    "options": [
+                        "Earth",
+                        "Mars",
+                        "Jupiter",
+                        "Saturn"
+                    ],
+                    "correct": "Jupiter"
+                }
+            ]
+        }
+    },
+    "activity_69823d3d3d90d7.21034118": {
+        "id": "activity_69823d3d3d90d7.21034118",
+        "title": "Animal Groups",
+        "type": "groupsort",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "groups": [
+                {
+                    "name": "Farm Animals",
+                    "items": [
+                        "Cow",
+                        "Pig",
+                        "Chicken",
+                        "Sheep",
+                        "Horse"
+                    ]
+                },
+                {
+                    "name": "Wild Animals",
+                    "items": [
+                        "Lion",
+                        "Tiger",
+                        "Elephant",
+                        "Zebra",
+                        "Giraffe"
+                    ]
+                },
+                {
+                    "name": "Pets",
+                    "items": [
+                        "Dog",
+                        "Cat",
+                        "Hamster",
+                        "Rabbit",
+                        "Fish"
+                    ]
+                }
+            ]
+        }
+    },
+    "activity_69824e6c122289.18057558": {
+        "id": "activity_69824e6c122289.18057558",
+        "title": "aaaaa",
+        "type": "quiz",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "questions": [
+                {
+                    "question": "aaaa",
+                    "options": [
+                        "aaa",
+                        "sbbb",
+                        "bbccc",
+                        "ddd"
+                    ],
+                    "correct": 0
+                }
+            ]
+        }
+    },
+    "activity_698259768737f7.64337090": {
+        "id": "activity_698259768737f7.64337090",
+        "title": "\u03ba\u03b1\u03bb\u03b7\u03bc\u03ad\u03c1\u03b1",
+        "type": "wheel",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "segments": [
+                "\u03ba\u03b1\u03bb\u03b7\u03bc\u03ad\u03c1\u03b1",
+                "\u03ba\u03b1\u03bb\u03b7\u03bd\u03cd\u03c7\u03c4\u03b1",
+                "\u03ba\u03b1\u03bb\u03cc \u03bc\u03b5\u03c3\u03b7\u03bc\u03ad\u03c1\u03b9"
+            ]
+        }
+    },
+    "activity_698270ef686a40.78167699": {
+        "id": "activity_698270ef686a40.78167699",
+        "title": "\u03a4\u0395\u03a3\u03a4 \u03a6\u03a1\u039f\u03a5\u03a4\u0391 \u039b\u0391\u03a7\u0391\u039d\u0399\u039a\u0391",
+        "type": "wordsearch",
+        "created_by": "admin",
+        "created_date": "2026-02-03",
+        "data": {
+            "grid": [
+                [
+                    "\u03a3",
+                    "\u0395",
+                    "\u0399",
+                    "\u03a0",
+                    "\u039c",
+                    "\u0391",
+                    "\u03a1",
+                    "\u03a5",
+                    "\u039f",
+                    "\u039a",
+                    "\u03a1",
+                    "\u03a4"
+                ],
+                [
+                    "\u0391",
+                    "\u0397",
+                    "\u039e",
+                    "\u03a1",
+                    "\u0395",
+                    "\u03a4",
+                    "\u03a4",
+                    "\u0397",
+                    "\u03a8",
+                    "\u0391",
+                    "\u0391",
+                    "\u03a5"
+                ],
+                [
+                    "\u039d",
+                    "\u0396",
+                    "\u03a7",
+                    "\u03a6",
+                    "\u0394",
+                    "\u0399",
+                    "\u03a8",
+                    "\u03a0",
+                    "\u039e",
+                    "\u03a4",
+                    "\u03a0",
+                    "\u0391"
+                ],
+                [
+                    "\u03a8",
+                    "\u03a4",
+                    "\u0399",
+                    "\u0392",
+                    "\u03a3",
+                    "\u03a1",
+                    "\u0399",
+                    "\u0392",
+                    "\u0391",
+                    "\u039d",
+                    "\u03a7",
+                    "\u0393"
+                ],
+                [
+                    "\u03a5",
+                    "\u03a3",
+                    "\u039f",
+                    "\u0394",
+                    "\u0398",
+                    "\u0392",
+                    "\u039a",
+                    "\u03a4",
+                    "\u0392",
+                    "\u039b",
+                    "\u03a0",
+                    "\u0399"
+                ],
+                [
+                    "\u0392",
+                    "\u03a0",
+                    "\u03a0",
+                    "\u039c",
+                    "\u0394",
+                    "\u03a5",
+                    "\u0391",
+                    "\u0391",
+                    "\u0391",
+                    "\u03a8",
+                    "\u039a",
+                    "\u039c"
+                ],
+                [
+                    "\u0398",
+                    "\u03a3",
+                    "\u039f",
+                    "\u0396",
+                    "\u0391",
+                    "\u03a0",
+                    "\u0399",
+                    "\u0394",
+                    "\u039c",
+                    "\u03a1",
+                    "\u03a8",
+                    "\u0394"
+                ],
+                [
+                    "\u0395",
+                    "\u03a9",
+                    "\u0394",
+                    "\u03a8",
+                    "\u03a6",
+                    "\u03a4",
+                    "\u0399",
+                    "\u039f",
+                    "\u039f",
+                    "\u03a0",
+                    "\u0395",
+                    "\u0392"
+                ],
+                [
+                    "\u0396",
+                    "\u0393",
+                    "\u0398",
+                    "\u03a3",
+                    "\u039e",
+                    "\u03a7",
+                    "\u0391",
+                    "\u0399",
+                    "\u039d",
+                    "\u039f",
+                    "\u0399",
+                    "\u03a9"
+                ],
+                [
+                    "\u039e",
+                    "\u039f",
+                    "\u039e",
+                    "\u03a4",
+                    "\u0396",
+                    "\u0394",
+                    "\u0395",
+                    "\u03a0",
+                    "\u0399",
+                    "\u0393",
+                    "\u03a0",
+                    "\u0391"
+                ],
+                [
+                    "\u039a",
+                    "\u03a7",
+                    "\u039d",
+                    "\u03a9",
+                    "\u039d",
+                    "\u039f",
+                    "\u039e",
+                    "\u0393",
+                    "\u039d",
+                    "\u0392",
+                    "\u03a7",
+                    "\u03a5"
+                ],
+                [
+                    "\u039f",
+                    "\u03a0",
+                    "\u03a4",
+                    "\u03a8",
+                    "\u039f",
+                    "\u039d",
+                    "\u03a5",
+                    "\u039a",
+                    "\u03a3",
+                    "\u0391",
+                    "\u0392",
+                    "\u03a7"
+                ]
+            ],
+            "words": [
+                "\u03a0\u0391\u03a4\u0391\u03a4\u0391",
+                "\u039d\u03a4\u039f\u039c\u0391\u03a4\u0391",
+                "\u0391\u03a7\u039b\u0391\u0394\u0399",
+                "\u039a\u039f\u03a5\u03a1\u0391\u039c\u03a0\u0399\u0395\u03a3",
+                "\u039a\u0391\u039c\u03a0\u0399\u0391"
+            ],
+            "useGreekAlphabet": true
+        }
+    },
+    "activity_698fa36962d2b7.50900791": {
+        "id": "activity_698fa36962d2b7.50900791",
+        "title": "\u039c\u03ad\u03c1\u03b7 \u03c4\u03bf\u03c5 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae",
+        "type": "quiz",
+        "created_by": "admin",
+        "created_date": "2026-02-13",
+        "data": {
+            "questions": [
+                {
+                    "question": "\u03a0\u03ce\u03c2 \u03bb\u03ad\u03b3\u03b5\u03c4\u03b1\u03b9 \u03b7 \u03ba\u03b1\u03c1\u03c4\u03ad\u03bb\u03b1 \u03c0\u03bf\u03c5 \u03b2\u03bb\u03ad\u03c0\u03bf\u03c5\u03bc\u03b5;",
+                    "options": [
+                        "\u039f\u03b8\u03cc\u03bd\u03b7",
+                        "\u039a\u03ac\u03c1\u03c4\u03b1 \u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03ce\u03bd",
+                        "\u039a\u03ac\u03c1\u03c4\u03b1 \u03ae\u03c7\u03bf\u03c5",
+                        "\u039c\u03b7\u03c4\u03c1\u03b9\u03ba\u03ae"
+                    ],
+                    "correct": 0
+                },
+                {
+                    "question": "\u03a0\u03bf\u03b9\u03bf \u03ba\u03bf\u03bc\u03bc\u03ac\u03c4\u03b9 \u03b5\u03af\u03bd\u03b1\u03b9 \u03bf '\u03b5\u03b3\u03ba\u03ad\u03c6\u03b1\u03bb\u03bf\u03c2' \u03c4\u03bf\u03c5 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae;",
+                    "options": [
+                        "\u03a3\u03ba\u03bb\u03b7\u03c1\u03cc\u03c2 \u03b4\u03af\u03c3\u03ba\u03bf\u03c2",
+                        "\u0395\u03c0\u03b5\u03be\u03b5\u03c1\u03b3\u03b1\u03c3\u03c4\u03ae\u03c2",
+                        "\u039c\u03bd\u03ae\u03bc\u03b7 RAM",
+                        "\u03a4\u03c1\u03bf\u03c6\u03bf\u03b4\u03bf\u03c4\u03b9\u03ba\u03cc"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "\u03a4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03b7 \u03bc\u03bd\u03ae\u03bc\u03b7 RAM;",
+                    "options": [
+                        "\u0391\u03c0\u03bf\u03b8\u03ae\u03ba\u03b5\u03c5\u03c3\u03b7 \u03bc\u03bf\u03c5\u03c3\u03b9\u03ba\u03ae\u03c2",
+                        "\u03a0\u03c1\u03bf\u03c3\u03c9\u03c1\u03b9\u03bd\u03ae \u03bc\u03bd\u03ae\u03bc\u03b7",
+                        "\u0395\u03ba\u03c4\u03cd\u03c0\u03c9\u03c3\u03b7",
+                        "\u03a3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 \u03c3\u03c4\u03bf internet"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "\u03a0\u03bf\u03cd \u03b2\u03ac\u03b6\u03bf\u03c5\u03bc\u03b5 \u03c4\u03b1 CD\/DVD;",
+                    "options": [
+                        "Floppy",
+                        "DVD Drive",
+                        "USB Port",
+                        "Card Reader"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "\u03a4\u03b9 \u03c3\u03c5\u03bd\u03b4\u03ad\u03b5\u03b9 \u03cc\u03bb\u03b1 \u03c4\u03b1 \u03ba\u03bf\u03bc\u03bc\u03ac\u03c4\u03b9\u03b1 \u03c4\u03bf\u03c5 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae;",
+                    "options": [
+                        "\u039a\u03b1\u03bb\u03ce\u03b4\u03b9\u03b1",
+                        "\u039c\u03b7\u03c4\u03c1\u03b9\u03ba\u03ae \u03ba\u03ac\u03c1\u03c4\u03b1",
+                        "\u03a4\u03c1\u03bf\u03c6\u03bf\u03b4\u03bf\u03c4\u03b9\u03ba\u03cc",
+                        "\u03a0\u03bb\u03b1\u03af\u03c3\u03b9\u03bf"
+                    ],
+                    "correct": 1
+                }
+            ]
+        }
+    },
+    "activity_698fa51c5fa805.50296227": {
+        "id": "activity_698fa51c5fa805.50296227",
+        "title": "\u03a0\u03c1\u03bf\u03b3\u03c1\u03ac\u03bc\u03bc\u03b1\u03c4\u03b1 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae",
+        "type": "quiz",
+        "created_by": "publ2",
+        "created_date": "2026-02-13",
+        "data": {
+            "questions": [
+                {
+                    "question": "\u0393\u03b9\u03b1 \u03c4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf Word;",
+                    "options": [
+                        "\u0393\u03b9\u03b1 \u03b6\u03c9\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03ae",
+                        "\u0393\u03b9\u03b1 \u03bb\u03bf\u03b3\u03b1\u03c1\u03b9\u03b1\u03c3\u03bc\u03bf\u03cd\u03c2",
+                        "\u0393\u03b9\u03b1 \u03b3\u03c1\u03ac\u03c8\u03b9\u03bc\u03bf \u03ba\u03b5\u03b9\u03bc\u03ad\u03bd\u03c9\u03bd",
+                        "\u0393\u03b9\u03b1 \u03c0\u03b1\u03b9\u03c7\u03bd\u03af\u03b4\u03b9\u03b1"
+                    ],
+                    "correct": 2
+                },
+                {
+                    "question": "\u0393\u03b9\u03b1 \u03c4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf Paint;",
+                    "options": [
+                        "\u0393\u03b9\u03b1 \u03bc\u03bf\u03c5\u03c3\u03b9\u03ba\u03ae",
+                        "\u0393\u03b9\u03b1 \u03b6\u03c9\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03ae",
+                        "\u0393\u03b9\u03b1 \u03b2\u03af\u03bd\u03c4\u03b5\u03bf",
+                        "\u0393\u03b9\u03b1 \u03b1\u03c1\u03b9\u03b8\u03bc\u03bf\u03cd\u03c2"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "\u0393\u03b9\u03b1 \u03c4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf Calculator;",
+                    "options": [
+                        "\u0393\u03b9\u03b1 \u03c0\u03b1\u03b9\u03c7\u03bd\u03af\u03b4\u03b9\u03b1",
+                        "\u0393\u03b9\u03b1 \u03bc\u03b1\u03b8\u03b7\u03bc\u03b1\u03c4\u03b9\u03ba\u03ac",
+                        "\u0393\u03b9\u03b1 \u03b3\u03c1\u03ac\u03bc\u03bc\u03b1\u03c4\u03b1",
+                        "\u0393\u03b9\u03b1 \u03b5\u03b9\u03ba\u03cc\u03bd\u03b5\u03c2"
+                    ],
+                    "correct": 1
+                },
+                {
+                    "question": "\u03a4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf Internet Explorer \u03ae Chrome;",
+                    "options": [
+                        "\u0393\u03b9\u03b1 \u03b3\u03c1\u03ac\u03c8\u03b9\u03bc\u03bf",
+                        "\u0393\u03b9\u03b1 \u03c3\u03c7\u03ad\u03b4\u03b9\u03bf",
+                        "\u0393\u03b9\u03b1 \u03bd\u03b1 \u03bc\u03c0\u03b1\u03af\u03bd\u03bf\u03c5\u03bc\u03b5 \u03c3\u03c4\u03bf \u03af\u03bd\u03c4\u03b5\u03c1\u03bd\u03b5\u03c4",
+                        "\u0393\u03b9\u03b1 \u03bc\u03bf\u03c5\u03c3\u03b9\u03ba\u03ae"
+                    ],
+                    "correct": 2
+                },
+                {
+                    "question": "\u0393\u03b9\u03b1 \u03c4\u03b9 \u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf Notepad;",
+                    "options": [
+                        "\u0393\u03b9\u03b1 \u03c0\u03b1\u03b9\u03c7\u03bd\u03af\u03b4\u03b9\u03b1",
+                        "\u0393\u03b9\u03b1 \u03b1\u03c0\u03bb\u03cc \u03ba\u03b5\u03af\u03bc\u03b5\u03bd\u03bf",
+                        "\u0393\u03b9\u03b1 \u03b2\u03af\u03bd\u03c4\u03b5\u03bf",
+                        "\u0393\u03b9\u03b1 \u03c6\u03c9\u03c4\u03bf\u03b3\u03c1\u03b1\u03c6\u03af\u03b5\u03c2"
+                    ],
+                    "correct": 1
+                }
+            ]
+        }
+    },
+    "activity_69e87875361d49.33087674": {
+        "id": "activity_69e87875361d49.33087674",
+        "title": "\u039c\u03ad\u03c1\u03b7 \u03c4\u03bf\u03c5 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae",
+        "type": "wordsearch",
+        "created_by": "admin",
+        "created_date": "2026-04-22",
+        "data": {
+            "words": [
+                "\u039f\u0398\u039f\u039d\u0397",
+                "\u03a0\u039b\u0397\u039a\u03a4\u03a1\u039f\u039b\u039f\u0393\u0399\u039f",
+                "\u03a0\u039f\u039d\u03a4\u0399\u039a\u0399",
+                "\u03a3\u039a\u039b\u0397\u03a1\u039f\u03a3 \u0394\u0399\u03a3\u039a\u039f\u03a3",
+                "\u0395\u039a\u03a4\u03a5\u03a0\u03a9\u03a4\u0397\u03a3",
+                "\u0397\u03a7\u0395\u0399\u0391",
+                "\u039c\u0399\u039a\u03a1\u039f\u03a6\u03a9\u039d\u039f",
+                "\u039a\u0391\u039c\u0395\u03a1\u0391"
+            ],
+            "gridSize": 12,
+            "useGreekAlphabet": true
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dimST-les15-groupsort-cb9",
+    "title": "Θετικές και αρνητικές επιπτώσεις - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "groups": [
+            {
+                "name": "Κίνδυνοι διαδικτύου",
+                "items": [
+                    "Hacking",
+                    "Phishing",
+                    "Malware",
+                    "Cyberbullying"
+                ]
+            },
+            {
+                "name": "Μέτρα πρόληψης",
+                "items": [
+                    "Antivirus",
+                    "Ισχυροί κωδικοί",
+                    "Ενημέρωση λογισμικού",
+                    "Αποφυγή ανεπιθύμητων email"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les15",
+        "ασφάλεια"
+    ]
+}

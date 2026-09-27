@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εικόνα ή Σύνδεσμος;</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0e7ff,#fef08a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:720px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f5f3ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#6d28d9;text-align:center;line-height:1.5}
+.scenario-area{background:#f5f3ff;border-radius:16px;border:2px solid #c4b5fd;padding:20px;margin-bottom:14px;text-align:center;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scenario-emoji{font-size:2.8em;margin-bottom:10px}
+.scenario-text{font-size:1.1em;font-weight:600;color:#4c1d95;max-width:500px;line-height:1.5}
+.scenario-hint{font-size:.85em;color:#7c3aed;margin-top:8px;background:#ede9fe;padding:6px 14px;border-radius:30px}
+.choices{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.btn-choice{padding:14px 24px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;min-width:140px;justify-content:center}
+.btn-image{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.btn-image:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(217,119,6,.4)}
+.btn-link{background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff}
+.btn-link:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(37,99,235,.4)}
+.btn-wrong{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff}
+.btn-wrong:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(220,38,38,.4)}
+.btn-choice:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-next{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;transition:all .2s;display:none;margin:0 auto}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(109,40,217,.4)}
+.progress-bar{display:flex;justify-content:center;gap:6px;margin-bottom:12px}
+.progress-dot{width:16px;height:16px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.progress-dot.done-ok{background:#4ade80}
+.progress-dot.done-wrong{background:#f87171}
+.progress-dot.current{background:#8b5cf6;transform:scale(1.3)}
+.score-display{text-align:center;font-size:.9em;color:#6d28d9;margin-bottom:8px;font-weight:600}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:10px;min-height:36px;padding:8px;border-radius:12px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.btn-reset-wrap{text-align:center;margin-top:10px}
+.btn-reset{padding:10px 28px;border:none;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;background:#f0f0f0;color:#555;transition:all .2s}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:550px){.btn-choice{min-width:120px;padding:12px 18px;font-size:.9em}.scenario-text{font-size:1em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .choices > * { margin: 6px; }
+  .btn-choice > * + * { margin-left: 6px; }
+  .progress-bar > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🤔 Εικόνα ή Σύνδεσμος;</h1>
+<p>Διάλεξε τη σωστή ενέργεια για κάθε περίπτωση στο CmapTools!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στον εννοιολογικό χάρτη μπορείς να προσθέσεις <b>εικόνες</b> και <b>υπερσυνδέσμους</b> σε κάθε έννοια. Μήπως κάποια ενέργεια είναι λάθος;</div>
+<div class="progress-bar" id="progressBar"></div>
+<div class="score-display" id="scoreDisplay">Ερώτηση: 0 / 8</div>
+<div class="scenario-area" id="scenarioArea">
+<div class="scenario-emoji" id="sceneEmoji">🌍</div>
+<div class="scenario-text" id="sceneText">Πάτα «Αρχή» για να ξεκινήσεις!</div>
+</div>
+<div class="choices" id="choicesArea">
+<button class="btn-choice btn-image" id="btnImage" onclick="pick('image')" disabled>🖼️ Εικόνα</button>
+<button class="btn-choice btn-link" id="btnLink" onclick="pick('link')" disabled>🔗 Σύνδεσμος</button>
+<button class="btn-choice btn-wrong" id="btnWrong" onclick="pick('wrong')" disabled>❌ Λάθος</button>
+</div>
+<div class="feedback" id="feedback"></div>
+<button class="btn-next" id="btnNext" onclick="nextScene()">⏭️ Επόμενο</button>
+<div class="btn-reset-wrap">
+<button class="btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var scenes=[
+{
+emoji:'🖼️',
+text:'Βρίσκεις μία εικόνα για τον ήλιο και κάνεις «Αντιγραφή εικόνας». Μετά κάνεις δεξί κλικ στην έννοια «Ήλιος» και επιλέγεις «Επικόλληση».',
+answer:'image',
+explain:'Σωστά! Αντιγράφεις την εικόνα και την επικολλάς στην έννοια. Μετά την ορίζεις ως φόντο.'
+},
+{
+emoji:'🔗',
+text:'Βρίσκεις ένα βίντεο στο YouTube για τον ήλιο. Αντιγράφεις τη διεύθυνση URL και κάνεις δεξί κλικ στην έννοια «Ήλιος» → «Προσθήκη διεύθυνσης ιστού».',
+answer:'link',
+explain:'Σωστά! Έτσι προσθέτεις έναν υπερσύνδεσμο (URL) που ανοίγει το βίντεο.'
+},
+{
+emoji:'❌',
+text:'Θέλεις να βάλεις μία εικόνα στη έννοια «Φεγγάρι». Αντιγράφεις την εικόνα και μετά κάνεις διπλό κλικ πάνω στην έννοια για να γράψεις «Φεγγάρι».',
+answer:'wrong',
+explain:'Λάθος! Για να βάλεις εικόνα πρέπει να κάνεις δεξί κλικ στην έννοια και να επιλέξεις «Επικόλληση» — όχι διπλό κλικ!'
+},
+{
+emoji:'🖼️',
+text:'Θέλεις να διακοσμήσεις την έννοια «Δέντρο». Βρίσκεις μία εικόνα, την αντιγράφεις, κάνεις δεξί κλικ στην έννοια, επιλέγεις «Επικόλληση» και μετά «Ορισμός ως φόντο».',
+answer:'image',
+explain:'Σωστά! Η εικόνα μπαίνει ως φόντο στην έννοια και μπορείς να προσαρμόσεις το μέγεθός της.'
+},
+{
+emoji:'🔗',
+text:'Στον χάρτη σου για τον ήλιο, θες να συνδέσεις μία ιστοσελίδα που εξηγεί τις ηλιακές εκλείψεις. Αντιγράφεις το URL και κάνεις δεξί κλικ → «Προσθήκη διεύθυνσης ιστού».',
+answer:'link',
+explain:'Σωστά! Ο υπερσύνδεσμος εμφανίζεται στην έννοια και ανοίγει τη σελίδα όταν κάνεις κλικ.'
+},
+{
+emoji:'❌',
+text:'Για να προσθέσεις σύνδεσμο, αντιγράφεις το URL, κάνεις δεξί κλικ στην έννοια και επιλέγεις «Αντιγραφή».',
+answer:'wrong',
+explain:'Λάθος! Πρέπει να επιλέξεις «Προσθήκη διεύθυνσης ιστού», όχι «Αντιγραφή»!'
+},
+{
+emoji:'🖼️',
+text:'Η έννοια «Πλανήτες» έχει μόνο κείμενο. Θες να της βάλεις μία εικόνα ηλιακού συστήματος. Ακολουθείς: αντιγραφή εικόνας → δεξί κλικ → Επικόλληση → Ορισμός ως φόντο.',
+answer:'image',
+explain:'Σωστά! Αυτή είναι η σωστή διαδικασία για να προσθέσεις εικόνα σε μία έννοια.'
+},
+{
+emoji:'❌',
+text:'Βρίσκεις ένα βίντεο για τα ηφαίστεια. Αντιγράφεις το URL και κάνεις κλικ στην έννοια «Ηφαίστειο» → «Επικόλληση».',
+answer:'wrong',
+explain:'Λάθος! Για σύνδεσμο επιλέγουμε «Προσθήκη διεύθυνσης ιστού», όχι «Επικόλληση» (η Επικόλληση είναι για εικόνες).'
+}
+];
+
+var currentIndex=0;
+var score=0;
+var answered=false;
+
+function buildProgress(){
+var bar=document.getElementById('progressBar');
+bar.innerHTML='';
+for(var i=0;i<scenes.length;i++){
+var dot=document.createElement('div');
+dot.className='progress-dot';
+dot.id='pdot-'+i;
+bar.appendChild(dot);
+}
+}
+
+function showScene(){
+if(currentIndex>=scenes.length){
+showFinal();
+return;
+}
+var s=scenes[currentIndex];
+document.getElementById('sceneEmoji').textContent=s.emoji;
+document.getElementById('sceneText').textContent=s.text;
+document.getElementById('scoreDisplay').textContent='Ερώτηση: '+(currentIndex+1)+' / '+scenes.length;
+document.getElementById('btnImage').disabled=false;
+document.getElementById('btnLink').disabled=false;
+document.getElementById('btnWrong').disabled=false;
+document.getElementById('btnNext').style.display='none';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+answered=false;
+var dots=document.querySelectorAll('.progress-dot');
+for(var i=0;i<dots.length;i++)dots[i].classList.remove('current');
+document.getElementById('pdot-'+currentIndex).classList.add('current');
+}
+
+function pick(choice){
+if(answered)return;
+answered=true;
+var s=scenes[currentIndex];
+var correct=choice===s.answer;
+if(correct)score++;
+document.getElementById('btnImage').disabled=true;
+document.getElementById('btnLink').disabled=true;
+document.getElementById('btnWrong').disabled=true;
+var dot=document.getElementById('pdot-'+currentIndex);
+dot.classList.remove('current');
+dot.classList.add(correct?'done-ok':'done-wrong');
+var fb=document.getElementById('feedback');
+if(correct){
+fb.textContent='✅ '+s.explain;
+fb.className='feedback ok';
+}else{
+var correctLabel='Εικόνα';
+if(s.answer==='link')correctLabel='Σύνδεσμο';
+else if(s.answer==='wrong')correctLabel='Λάθος';
+fb.textContent='❌ Η σωστή απάντηση ήταν: «'+correctLabel+'». '+s.explain;
+fb.className='feedback fail';
+}
+document.getElementById('btnNext').style.display='block';
+}
+
+function nextScene(){
+currentIndex++;
+showScene();
+}
+
+function showFinal(){
+document.getElementById('sceneEmoji').textContent='🏁';
+document.getElementById('sceneText').textContent='Ολοκληρώθηκε!';
+document.getElementById('scoreDisplay').textContent='Αποτέλεσμα: '+score+' / '+scenes.length;
+document.getElementById('btnImage').disabled=true;
+document.getElementById('btnLink').disabled=true;
+document.getElementById('btnWrong').disabled=true;
+document.getElementById('btnNext').style.display='none';
+var fb=document.getElementById('feedback');
+if(score===scenes.length){
+fb.textContent='🎉 Τέλεια! Γνωρίζεις πότε να προσθέτεις εικόνα και πότε σύνδεσμο στον εννοιολογικό χάρτη! 🌟';
+fb.className='feedback ok';
+}else if(score>=6){
+fb.textContent='👍 Καλή δουλειά! '+score+'/'+scenes.length+' σωστά. Πρόσεξε: Επικόλληση = εικόνα, Προσθήκη ιστού = σύνδεσμος!';
+fb.className='feedback ok';
+}else{
+fb.textContent='🔍 '+score+'/'+scenes.length+' σωστά. Διάβασε ξανά το μάθημα 19 για να ξεχωρίζεις τις ενέργειες!';
+fb.className='feedback fail';
+}
+}
+
+function resetGame(){
+currentIndex=0;score=0;
+for(var i=0;i<scenes.length;i++){
+var dot=document.getElementById('pdot-'+i);
+if(dot){dot.className='progress-dot';}
+}
+document.getElementById('btnNext').style.display='none';
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+showScene();
+}
+
+buildProgress();showScene();
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "title": "Εξαρτήματα σε περιγραφές",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στο σωστό εξάρτημα",
+  "categories": [
+    {
+      "id": "cpu",
+      "name": "CPU",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "ram",
+      "name": "RAM",
+      "color": "#2196F3"
+    },
+    {
+      "id": "hdd",
+      "name": "HDD/SSD",
+      "color": "#FF9800"
+    },
+    {
+      "id": "gpu",
+      "name": "ΚΑΡΤΑ ΓΡΑΦΙΚΩΝ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Επεξεργάζεται εντολές",
+      "category": "cpu"
+    },
+    {
+      "id": "item2",
+      "text": "Προσωρινή μνήμη",
+      "category": "ram"
+    },
+    {
+      "id": "item3",
+      "text": "Μόνιμη αποθήκευση",
+      "category": "hdd"
+    },
+    {
+      "id": "item4",
+      "text": "Εικόνες/βίντεο",
+      "category": "gpu"
+    },
+    {
+      "id": "item5",
+      "text": "Γρήγορη πρόσβαση",
+      "category": "ram"
+    },
+    {
+      "id": "item6",
+      "text": "Εγκέφαλος",
+      "category": "cpu"
+    }
+  ]
+}

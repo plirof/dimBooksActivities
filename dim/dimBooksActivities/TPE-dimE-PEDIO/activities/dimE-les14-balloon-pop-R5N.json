@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δίκτυα",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με στοιχεία δικτύων!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Εξυπηρετητής", "correct": true, "color": "#4CAF50" },
+    { "text": "Πελάτης", "correct": true, "color": "#2196F3" },
+    { "text": "Δρομολογητής", "correct": true, "color": "#FF9800" },
+    { "text": "Πακέτο δεδομένων", "correct": true, "color": "#9C27B0" },
+    { "text": "LAN", "correct": true, "color": "#00BCD4" },
+    { "text": "WAN", "correct": true, "color": "#E91E63" },
+    { "text": "Πλυντήριο", "correct": false, "color": "#F44336" },
+    { "text": "Ψυγείο", "correct": false, "color": "#795548" },
+    { "text": "Μολύβι", "correct": false, "color": "#607D8B" },
+    { "text": "Βιβλίο", "correct": false, "color": "#FF5722" }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Ενσύρματη / Ασύρματη",
+  "subtitle": "Διάκρινε ενσύρματες από ασύρματες συνδέσεις",
+  "categories": [
+    {
+      "id": "wired",
+      "name": "ΕΝΣΥΡΜΑΤΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wireless",
+      "name": "ΑΣΥΡΜΑΤΗ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🔌 Καλώδιο δικτύου",
+      "category": "wired"
+    },
+    {
+      "id": "item2",
+      "text": "📶 Wi-Fi",
+      "category": "wireless"
+    },
+    {
+      "id": "item3",
+      "text": "🔵 Bluetooth",
+      "category": "wireless"
+    },
+    {
+      "id": "item4",
+      "text": "🔌 USB",
+      "category": "wired"
+    },
+    {
+      "id": "item5",
+      "text": "📶 4G/5G",
+      "category": "wireless"
+    },
+    {
+      "id": "item6",
+      "text": "🔌 Καλώδιο οθόνης",
+      "category": "wired"
+    }
+  ]
+}

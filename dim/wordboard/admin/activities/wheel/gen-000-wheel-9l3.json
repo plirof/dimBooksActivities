@@ -1,0 +1,14 @@
+{
+    "id": "gen-000-wheel-9l3",
+    "title": "καλημέρα",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "segments": [
+            "καλημέρα",
+            "καληνύχτα",
+            "καλό μεσημέρι"
+        ]
+    }
+}

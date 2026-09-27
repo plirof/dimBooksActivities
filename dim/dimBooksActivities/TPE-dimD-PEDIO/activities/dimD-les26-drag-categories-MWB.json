@@ -1,0 +1,53 @@
+{
+  "title": "Αίτημα σύνδεσης",
+  "subtitle": "Πώς διαχειρίζεσαι τα αιτήματα σύνδεσης;",
+  "categories": [
+    {
+      "id": "accept",
+      "name": "ΑΠΟΔΟΧΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "reject",
+      "name": "ΑΠΟΡΡΙΨΗ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "block",
+      "name": "ΑΠΟΚΛΕΙΣΜΟΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Συμμαθητής που ξέρω",
+      "category": "accept"
+    },
+    {
+      "id": "item2",
+      "text": "Άγνωστος",
+      "category": "reject"
+    },
+    {
+      "id": "item3",
+      "text": "Στέλνω προσβλητικό μήνυμα",
+      "category": "block"
+    },
+    {
+      "id": "item4",
+      "text": "Φίλος",
+      "category": "accept"
+    },
+    {
+      "id": "item5",
+      "text": "Δεν γνωρίζω",
+      "category": "reject"
+    },
+    {
+      "id": "item6",
+      "text": "Ενοχλητικός",
+      "category": "block"
+    }
+  ]
+}

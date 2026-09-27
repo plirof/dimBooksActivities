@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μηχανική Μάθηση: Μοτίβα | Μάθημα 20</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fdf2f8,#fbcfe8);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#831843;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#db2777;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#831843;font-size:.75rem;font-weight:700;border:1px solid #f9a8d4;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.phase-title{font-size:.85rem;font-weight:700;color:#831843;margin-bottom:8px;text-align:center}
+.train-box{background:#fdf2f8;border:2px solid #f9a8d4;border-radius:12px;padding:10px;margin:8px 0}
+.train-label{font-size:.72rem;font-weight:700;color:#831843;margin-bottom:6px}
+.train-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.train-item{display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:10px;background:#fff;border:2px solid #f9a8d4;font-size:1.4rem;min-width:60px}
+.train-item .label{font-size:.6rem;font-weight:700;color:#831843;margin-top:2px}
+.test-box{background:#fefce8;border:2px solid #fde047;border-radius:12px;padding:10px;margin:8px 0;text-align:center}
+.test-item{font-size:2rem;margin:6px 0}
+.test-q{font-size:.8rem;font-weight:700;color:#713f12;margin:6px 0}
+.cat-btns{display:flex;gap:10px;justify-content:center;margin:10px 0}
+.cat-btn{padding:12px 20px;border:3px solid #e2e8f0;border-radius:14px;font-size:1rem;cursor:pointer;transition:all .2s;min-width:100px;text-align:center;font-weight:700;background:#fff}
+.cat-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.cat-btn:active{transform:scale(.95)}
+.cat-btn.correct{border-color:#10b981;background:#dcfce7}
+.cat-btn.wrong{border-color:#ef4444;background:#fef2f2}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.pattern-box{background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:8px;margin:6px 0;font-size:.72rem;color:#14532d;line-height:1.4}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #db2777;border-radius:10px;background:transparent;color:#db2777;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fdf2f8}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer}
+.nav-prev{background:#83184322;color:#831843}
+.nav-next{background:#db2777;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .train-grid > * { margin: 3px; }
+  .cat-btns > * + * { margin-left: 10px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🤖 Μηχανική Μάθηση: Βρες το Μοτίβο!</h1>
+<p class="subtitle">Αναγνώρισε μοτίβα στα δεδομένα όπως κάνει η τεχνητή νοημοσύνη!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" onclick="prevQ()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" onclick="nextQ()">Επόμ. ▶</button>
+</div>
+<script>
+var challenges=[
+{
+title:'Γάτα ή Σκύλος;',
+trainData:[
+{emoji:'🐱',label:'Γάτα',clue:'Μικρά αυτιά, νιάου'},
+{emoji:'🐱',label:'Γάτα',clue:'Ψηλή ουρά'},
+{emoji:'🐱',label:'Γάτα',clue:'Προσέχει σαν κυνηγός'},
+{emoji:'🐶',label:'Σκύλος',clue:'Μεγάλα αυτιά, γαβ'},
+{emoji:'🐶',label:'Σκύλος',clue:'Κουνάει την ουρά'},
+{emoji:'🐶',label:'Σκύλος',clue:'Τρέχει πίσω από μπάλα'}
+],
+	testEmoji:'🐱',
+	testClue:'Μικρά αυτιά, νιάου',
+	correctAnswer:'Γάτα',
+	explanation:'Η εικόνα μοιάζει με γάτα: μικρά αυτιά, μικρό μέγεθος. Η ΤΝ αναγνωρίζει τα κοινά στοιχεία!'
+},
+{
+title:'Φρούτο ή Λαχανικό;',
+trainData:[
+{emoji:'🍎',label:'Φρούτο',clue:'Γλυκό, τρώγεται ωμό'},
+{emoji:'🍊',label:'Φρούτο',clue:'Χυμός, γλυκό'},
+{emoji:'🍌',label:'Φρούτο',clue:'Κίτρινο, γλυκό'},
+{emoji:'🥕',label:'Λαχανικό',clue:'Μαγειρεύεται, αλμυρό'},
+{emoji:'🥦',label:'Λαχανικό',clue:'Πράσινο, μαγειρεύεται'},
+{emoji:'🥒',label:'Λαχανικό',clue:'Σαλάτα, αλμυρό'}
+],
+	testEmoji:'🍇',
+	testClue:'Γλυκό, τρώγεται ωμό',
+	correctAnswer:'Φρούτο',
+	explanation:'Το σταφύλι είναι γλυκό, τρώγεται ωμό — κοινά στοιχεία με τα φρούτα!'
+},
+{
+title:'Μέρα ή Νύχτα;',
+trainData:[
+{emoji:'☀️',label:'Μέρα',clue:'Φως, ήλιος'},
+{emoji:'🌤️',label:'Μέρα',clue:'Συννεφιά αλλά φωτεινό'},
+{emoji:'🌈',label:'Μέρα',clue:'Ουράνιο τόξο, φως'},
+{emoji:'🌙',label:'Νύχτα',clue:'Σκοτάδι, φεγγάρι'},
+{emoji:'⭐',label:'Νύχτα',clue:'Αστέρια, σκοτάδι'},
+{emoji:'🌑',label:'Νύχτα',clue:'Σκοτεινός ουρανός'}
+],
+	testEmoji:'⛅',
+	testClue:'Συννεφιά αλλά φωτεινό',
+	correctAnswer:'Μέρα',
+	explanation:'Λίγα σύννεφα αλλά ακόμα φωτεινός ουρανός — μοιάζει περισσότερο με μέρα!'
+},
+{
+title:'Χειμώνας ή Καλοκαίρι;',
+trainData:[
+{emoji:'⛄',label:'Χειμώνας',clue:'Κρύο, χιόνι'},
+{emoji:'❄️',label:'Χειμώνας',clue:'Πάγος, κρύο'},
+{emoji:'🎿',label:'Χειμώνας',clue:'Σκι, κρύο'},
+{emoji:'🏖️',label:'Καλοκαίρι',clue:'Ζέστη, θάλασσα'},
+{emoji:'🍦',label:'Καλοκαίρι',clue:'Παγωτό, ζέστη'},
+{emoji:'🌞',label:'Καλοκαίρι',clue:'Ήλιος, ζέστη'}
+],
+	testEmoji:'☂️',
+	testClue:'Χρησιμοποιείται στη βροχή',
+	correctAnswer:'Χειμώνας',
+	explanation:'Η ομπρέλα χρησιμοποιείται συνήθως στη βροχή — κοινό με τον χειμώνα!'
+},
+{
+title:'Γράμμα ή Αριθμός;',
+trainData:[
+{emoji:'A',label:'Γράμμα',clue:'Αλφάβητο'},
+{emoji:'B',label:'Γράμμα',clue:'Αλφάβητο'},
+{emoji:'C',label:'Γράμμα',clue:'Αλφάβητο'},
+{emoji:'3',label:'Αριθμός',clue:'Μαθηματικά'},
+{emoji:'7',label:'Αριθμός',clue:'Μαθηματικά'},
+{emoji:'9',label:'Αριθμός',clue:'Μαθηματικά'}
+],
+	testEmoji:'X',
+	testClue:'Αλφάβητο',
+	correctAnswer:'Γράμμα',
+	explanation:'Το X είναι γράμμα του αλφαβήτου. Η ΤΝ μαθαίνει να ξεχωρίζει γράμματα από αριθμούς!'
+}
+];
+var curQ=0;
+var pts=0;
+var answered=null;
+
+function render(){
+var ch=challenges[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="phase-title">🔬 Πρόκληση: '+ch.title+'</div>';
+h+='<div class="train-box">';
+h+='<div class="train-label">📚 Δεδομένα Εκπαίδευσης (Τι έχει μάθει η εφαρμογή):</div>';
+h+='<div class="train-grid">';
+for(var i=0;i<ch.trainData.length;i++){
+var t=ch.trainData[i];
+h+='<div class="train-item"><span>'+t.emoji+'</span><span class="label">'+t.label+'</span></div>';
+}
+h+='</div></div>';
+	h+='<div class="test-box">';
+	h+='<div class="train-label">🆕 Νέο Δεδομένο — Πώς θα το ταξινομήσει η εφαρμογή;</div>';
+	h+='<div class="test-item">'+ch.testEmoji+'</div>';
+	h+='<div style="font-size:.72rem;color:#713f12;margin-top:4px">🔍 Χαρακτηριστικά: '+ch.testClue+'</div>';
+	h+='</div>';
+var cats=[];
+ch.trainData.forEach(function(t){if(cats.indexOf(t.label)===-1)cats.push(t.label);});
+h+='<div class="cat-btns">';
+for(var i=0;i<cats.length;i++){
+var cls='cat-btn';
+if(answered){
+if(cats[i]===ch.correctAnswer)cls+=' correct';
+if(answered===cats[i]&&cats[i]!==ch.correctAnswer)cls+=' wrong';
+}
+var dis=answered?' disabled':'';
+h+='<button class="'+cls+'" onclick="answer(\''+cats[i]+'\')"'+dis+'>'+cats[i]+'</button>';
+}
+h+='</div>';
+if(answered){
+var correct=answered===ch.correctAnswer;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστό! '+ch.explanation:'❌ Η σωστή απάντηση: '+ch.correctAnswer+'. '+ch.explanation)+'</div>';
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόκληση ▶</button>';
+}
+main.innerHTML=h;
+}
+
+function answer(cat){
+if(answered)return;
+answered=cat;
+render();
+}
+
+function nextQ(){
+if(curQ<challenges.length-1){
+curQ++;
+answered=null;
+render();
+}
+}
+
+function prevQ(){
+if(curQ>0){
+curQ--;
+answered=null;
+render();
+}
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "title": "Βρες τα Λάθη: Υγεία & Διαδίκτυο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "υπερβολική", "error": false},
+        {"text": "χρήση", "error": false},
+        {"text": "του", "error": false},
+        {"text": "διαδικτύου", "error": false},
+        {"text": "βοηθάει", "error": true, "correct": "βλάπτει", "feedback": "Η υπερβολική χρήση βλάπτει, δεν βοηθάει!"},
+        {"text": "την", "error": false},
+        {"text": "υγεία.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όταν", "error": false},
+        {"text": "είμαι", "error": false},
+        {"text": "πολλές", "error": false},
+        {"text": "ώρες", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "οθόνη", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "πρέπει", "feedback": "Πρέπει να κάνω διαλείμματα, δεν είναι προαιρετικό!"},
+        {"text": "να", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "διαλείμματα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "μάτια", "error": false},
+        {"text": "μου", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "επηρεάζονται", "error": true, "correct": "ξηραίνονται", "feedback": "Τα μάτια επηρεάζονται και παρουσιάζουν ξηροφθαλμία!"},
+        {"text": "από", "error": false},
+        {"text": "την", "error": false},
+        {"text": "οθόνη.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μελαγχολία", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πρόβλημα", "error": false},
+        {"text": "σωματικής", "error": true, "correct": "ψυχικής", "feedback": "Η μελαγχολία είναι πρόβλημα ψυχικής υγείας!"},
+        {"text": "υγείας.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αφιερώνομαι", "error": false},
+        {"text": "απεριόριστα", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαδίκτυο", "error": true, "correct": "όχι", "feedback": "Δεν μπορώ να αφιερώνομαι απεριόριστα, χρειάζομαι κανόνες!"},
+        {"text": "χωρίς", "error": false},
+        {"text": "κανόνες.", "error": false}
+      ]
+    }
+  ]
+}

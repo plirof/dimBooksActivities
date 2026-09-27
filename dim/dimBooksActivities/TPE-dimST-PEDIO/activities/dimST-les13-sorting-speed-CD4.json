@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εγκατάσταση ή Απεγκατάσταση;",
+  "subtitle": "Ταξινόμησε κάθε ενέργεια",
+  "instructions": "Πάτα αριστερό βέλος για Εγκατάσταση, δεξιό για Απεγκατάσταση",
+  "categories": [
+    { "id": "install", "name": "Εγκατάσταση", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "uninstall", "name": "Απεγκατάσταση", "color": "#f44336", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Αναζήτηση στο Store", "category": "install" },
+    { "text": "Ελευθέρωση χώρου στον δίσκο", "category": "uninstall" },
+    { "text": "Λήψη εφαρμογής Audacity", "category": "install" },
+    { "text": "Αφαίρεση εφαρμογής που δεν χρειάζεσαι", "category": "uninstall" },
+    { "text": "Προσθήκη νέου λογισμικού", "category": "install" },
+    { "text": "Διαγραφή παλιάς εφαρμογής", "category": "uninstall" },
+    { "text": "Κατέβασμα από αποθετήριο", "category": "install" },
+    { "text": "Αφαίρεση μέσω κέντρου ελέγχου", "category": "uninstall" },
+    { "text": "Νέα εφαρμογή εμφανίζεται ως εικονίδιο", "category": "install" },
+    { "text": "Ελευθερώνεται χώρος αποθήκευσης", "category": "uninstall" }
+  ],
+  "duration": 30
+}

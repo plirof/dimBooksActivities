@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ασφαλής Αναζήτηση | Μάθημα 22</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fef2f2,#fecaca);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#7f1d1d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#dc2626;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#7f1d1d;font-size:.75rem;font-weight:700;border:1px solid #fca5a5;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.scenario{background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:12px;margin:8px 0}
+.scenario .s-title{font-size:.8rem;font-weight:700;color:#7f1d1d;margin-bottom:4px}
+.scenario .s-text{font-size:.72rem;color:#334155;line-height:1.5}
+.action-cards{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.action-card{display:flex;align-items:flex-start;gap:10px;padding:10px;border:2px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all .2s;background:#fafafa}
+.action-card:hover{border-color:#dc2626;background:#fef2f2}
+.action-card .a-icon{font-size:1.4rem;flex-shrink:0}
+.action-card .a-text{flex:1;font-size:.72rem;color:#334155;line-height:1.4}
+.action-card.safe{border-color:#10b981;background:#dcfce7}
+.action-card.unsafe{border-color:#ef4444;background:#fef2f2}
+.action-card.wait{border-color:#f59e0b;background:#fef3c7}
+.action-card:active{transform:scale(.98)}
+.btns-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.abtn{padding:6px 12px;border:2px solid #d1d5db;border-radius:10px;font-size:.65rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fff}
+.abtn:hover{transform:scale(1.05)}
+.abtn.safe-sel{border-color:#10b981;background:#dcfce7;color:#065f46}
+.abtn.unsafe-sel{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#dc2626;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#b91c1c}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #dc2626;border-radius:10px;background:transparent;color:#dc2626;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fef2f2}
+.engine-box{background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:10px;margin:8px 0}
+.engine-box .e-title{font-size:.75rem;font-weight:700;color:#14532d;margin-bottom:6px}
+.engine-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-gap:6px}
+.engine-item{padding:8px;border:2px solid #86efac;border-radius:10px;text-align:center;font-size:.65rem;font-weight:700;color:#14532d;cursor:pointer;transition:all .2s;background:#fff}
+.engine-item:hover{background:#dcfce7}
+.engine-item.selected{background:#dcfce7;border-color:#10b981}
+.engine-item .eng-emoji{font-size:1.2rem;display:block;margin-bottom:2px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .action-cards > * + * { margin-top: 8px; }
+  .action-card > * + * { margin-left: 10px; }
+  .btns-row > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🛡️ Ασφαλής Αναζήτηση στο Διαδίκτυο</h1>
+<p class="subtitle">Αναγνώρισε ποιες πρακτικές είναι ασφαλείς και ποιες όχι!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Μέρος:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var parts=[
+{
+title:'Ασφαλής ή Όχι;',
+type:'judge',
+scenarios:[
+{text:'Χρησιμοποιείς τη μηχανή αναζήτησης Kiddle που είναι σχεδιασμένη για παιδιά.',correct:'safe',explain:'Η Kiddle φιλτράρει το ακατάλληλο περιεχόμενο — ασφαλής επιλογή!'},
+{text:'Κλικάρεις σε έναν σύνδεσμο από άγνωστο ιστότοπο που υπόσχεται δωρεάν παιχνίδια.',correct:'unsafe',explain:'Άγνωστοι ιστότοποι με «δωρεάν» προσφορές μπορεί να κρύβουν κινδύνους!'},
+{text:'Ενεργοποιείς το φίλτρο ασφαλούς αναζήτησης (SafeSearch) στο Google.',correct:'safe',explain:'Το SafeSearch φιλτράρει ακατάλληλο περιεχόμενο — πολύ καλή επιλογή!'},
+{text:'Δίνεις το όνομα και τη διεύθυνσή σου σε έναν ιστότοπο για να κερδίσεις ένα βραβείο.',correct:'unsafe',explain:'Ποτέ δεν δίνουμε προσωπικά δεδομένα σε ιστότοπους που δεν γνωρίζουμε!'},
+{text:'Αναζητάς πληροφορίες στο Φωτόδεντρο (photodentro.edu.gr) για σχολική εργασία.',correct:'safe',explain:'Το Φωτόδεντρο είναι αξιόπιστη εκπαιδευτική πηγή!'},
+{text:'Κατεβάζεις αρχείο από ιστότοπο με πολλές διαφημίσεις και αναδυόμενα παράθυρα.',correct:'unsafe',explain:'Ιστότοποι με πολλές διαφημίσεις και pop-ups είναι συχνά ανασφαλείς!'}
+]
+},
+{
+title:'Μηχανές Αναζήτησης για Παιδιά',
+type:'match',
+engines:[
+{name:'Kiddle',desc:'Φιλτράρει περιεχόμενο, ειδικά για παιδιά',emoji:'🔍'},
+{name:'KidzSearch',desc:'Περιέχει κατάλληλες πληροφορίες για παιδιά',emoji:'📚'},
+{name:'Safe Search Kids',desc:'Για παιδιά 5-14 ετών',emoji:'🛡️'}
+],
+questions:[
+{q:'Ποια μηχανή είναι κατάλληλη για παιδιά 5-14 ετών;',answer:'Safe Search Kids'},
+{q:'Ποια φιλτράρει επιβλαβές περιεχόμενο;',answer:'Kiddle'},
+{q:'Ποια περιέχει κατάλληλες πληροφορίες;',answer:'KidzSearch'}
+]
+},
+{
+title:'Σενάρια Ασφαλείας',
+type:'judge',
+scenarios:[
+{text:'Βλέπεις ένα αποτέλεσμα αναζήτησης με τίτλο «Κέρδισε iPhone ΤΩΡΑ!». Τι κάνεις;',correct:'unsafe',explain:'Αυτό είναι πιθανότατα ψέμα (spam/scam). Αγνόησέ το!'},
+{text:'Χρησιμοποιείς λέξεις-κλειδιά για να βρεις πληροφορίες για σχολική εργασία.',correct:'safe',explain:'Η σωστή χρήση λέξεων-κλειδιών είναι η καλύτερη μέθοδος αναζήτησης!'},
+{text:'Ένας φίλος σου στέλνει σύνδεσμο από άγνωστο ιστότοπο. Τον ανοίγεις αμέσως.',correct:'unsafe',explain:'Ποτέ δεν ανοίγουμε συνδέσμους από άγνωστες πηγές χωρίς να ελέγχουμε πρώτα!'},
+{text:'Ψάχνεις «Ζώα Ελλάδας» και επιλέγεις το φίλτρο «Εικόνες» για να δεις φωτογραφίες.',correct:'safe',explain:'Τα φίλτρα αναζήτησης μας βοηθούν να βρούμε ακριβώς αυτό που θέλουμε!'},
+{text:'Βρίσκεις μια σελίδα με επιστημονικές πληροφορίες αλλά έχει πολλά ορθογραφικά λάθη.',correct:'unsafe',explain:'Πολλά ορθογραφικά λάθη = πιθανώς μη αξιόπιστη πηγή!'},
+{text:'Χρησιμοποιείς το Google Scholar για να βρεις πληροφορίες γιαprojekt.',correct:'safe',explain:'Το Google Scholar αναζητά σε επιστημονικές πηγές — αξιόπιστο!'}
+]
+}
+];
+var curPart=0;
+var pts=0;
+var answers={};
+var checked=false;
+var matchAnswers={};
+
+function initPart(){
+answers={};
+checked=false;
+matchAnswers={};
+}
+
+function render(){
+var part=parts[curPart];
+document.getElementById('qNum').textContent=curPart+1;
+document.getElementById('pts').textContent=pts;
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.85rem;font-weight:700;color:#7f1d1d;margin-bottom:8px;text-align:center">📌 '+part.title+'</div>';
+if(part.type==='judge'){
+for(var i=0;i<part.scenarios.length;i++){
+var sc=part.scenarios[i];
+var ans=answers[i];
+var cls='action-card';
+if(ans==='safe')cls+=' safe';
+if(ans==='unsafe')cls+=' unsafe';
+h+='<div class="'+cls+'">';
+h+='<span class="a-icon">'+(i+1)+'</span>';
+h+='<div class="a-text"><div>'+sc.text+'</div>';
+if(!checked){
+h+='<div class="btns-row" style="margin-top:4px">';
+h+='<button class="abtn'+(ans==='safe'?' safe-sel':'')+'" onclick="judge('+i+',\'safe\')">✅ Ασφαλές</button>';
+h+='<button class="abtn'+(ans==='unsafe'?' unsafe-sel':'')+'" onclick="judge('+i+',\'unsafe\')">❌ Κίνδυνος</button>';
+h+='</div>';
+}
+if(checked){
+var ok=ans===sc.correct;
+h+='<div style="margin-top:4px;font-size:.6rem;color:'+(ok?'#14532d':'#dc2626')+'">'+(ok?'✅ ':'❌ ')+sc.explain+'</div>';
+}
+h+='</div></div>';
+}
+}else{
+h+='<div class="engine-box">';
+h+='<div class="e-title">🔍 Μηχανές Αναζήτησης για Παιδιά:</div>';
+h+='<div class="engine-grid">';
+for(var i=0;i<part.engines.length;i++){
+var e=part.engines[i];
+h+='<div class="engine-item"><span class="eng-emoji">'+e.emoji+'</span>'+e.name+'<div style="font-weight:400;font-size:.55rem;margin-top:2px">'+e.desc+'</div></div>';
+}
+h+='</div></div>';
+for(var i=0;i<part.questions.length;i++){
+var q=part.questions[i];
+var ans=matchAnswers[i];
+h+='<div class="action-card">';
+h+='<div class="a-text">';
+h+='<div style="font-weight:700;font-size:.72rem;color:#7f1d1d;margin-bottom:4px">Ερώτηση '+(i+1)+': '+q.q+'</div>';
+if(!checked){
+h+='<div class="btns-row">';
+for(var j=0;j<part.engines.length;j++){
+var eng=part.engines[j];
+h+='<button class="abtn'+(ans===eng.name?' safe-sel':'')+'" onclick="matchA('+i+',\''+eng.name+'\')">'+eng.name+'</button>';
+}
+h+='</div>';
+}
+if(checked){
+var ok=ans===q.answer;
+h+='<div style="font-size:.6rem;color:'+(ok?'#14532d':'#dc2626')+'">'+(ok?'✅ Σωστό!':'❌ Η σωστή απάντηση: '+q.answer)+'</div>';
+}
+h+='</div></div>';
+}
+}
+var allAnswered;
+if(part.type==='judge'){
+allAnswered=Object.keys(answers).length===part.scenarios.length;
+}else{
+allAnswered=Object.keys(matchAnswers).length===part.questions.length;
+}
+if(!checked){
+h+='<button class="check-btn" onclick="checkAnswer()"'+(allAnswered?'':' disabled')+'>✓ Έλεγχος Απαντήσεων</button>';
+}else{
+h+='<button class="next-btn" onclick="nextPart()">'+(curPart<parts.length-1?'Επόμενο Μέρος ▶':'Ολοκλήρωση ✨')+'</button>';
+}
+main.innerHTML=h;
+}
+
+function judge(idx,val){
+if(checked)return;
+answers[idx]=val;
+render();
+}
+
+function matchA(idx,name){
+if(checked)return;
+matchAnswers[idx]=name;
+render();
+}
+
+function checkAnswer(){
+var part=parts[curPart];
+var correct=0;
+if(part.type==='judge'){
+for(var i=0;i<part.scenarios.length;i++){
+if(answers[i]===part.scenarios[i].correct)correct++;
+}
+if(correct>=part.scenarios.length-1)pts+=10;
+}else{
+for(var i=0;i<part.questions.length;i++){
+if(matchAnswers[i]===part.questions[i].answer)correct++;
+}
+if(correct===part.questions.length)pts+=10;
+}
+document.getElementById('pts').textContent=pts;
+checked=true;
+render();
+}
+
+function nextPart(){
+if(curPart<parts.length-1){
+curPart++;
+initPart();
+render();
+}
+}
+
+initPart();
+render();
+</script>
+</body>
+</html>

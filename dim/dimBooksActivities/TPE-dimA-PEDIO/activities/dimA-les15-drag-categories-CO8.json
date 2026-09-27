@@ -1,0 +1,68 @@
+{
+  "title": "Εικονίδια σε 4 στήλες τύπων",
+  "subtitle": "Ταίριαξε την κατάληξη αρχείου στον σωστό τύπο",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "vid",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "audio",
+      "name": "ΗΧΟΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": ".jpg",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": ".mp4",
+      "category": "vid"
+    },
+    {
+      "id": "item3",
+      "text": ".mp3",
+      "category": "audio"
+    },
+    {
+      "id": "item4",
+      "text": ".txt",
+      "category": "text"
+    },
+    {
+      "id": "item5",
+      "text": ".png",
+      "category": "img"
+    },
+    {
+      "id": "item6",
+      "text": ".wav",
+      "category": "audio"
+    },
+    {
+      "id": "item7",
+      "text": ".doc",
+      "category": "text"
+    },
+    {
+      "id": "item8",
+      "text": ".avi",
+      "category": "vid"
+    }
+  ]
+}

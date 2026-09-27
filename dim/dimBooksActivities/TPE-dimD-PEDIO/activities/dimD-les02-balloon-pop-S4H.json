@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αν…Αλλιώς",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια που είναι σωστές προτάσεις για την εντολή Αν…Αλλιώς",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Δύο ενδεχόμενα", "correct": true, "color": "#4caf50" },
+    { "text": "Ένα ενδεχόμενο", "correct": false, "color": "#f44336" },
+    { "text": "Αν… Αλλιώς", "correct": true, "color": "#2196f3" },
+    { "text": "Μόνο Αν… τότε", "correct": false, "color": "#ff9800" },
+    { "text": "Συνθήκη και αντίθετο", "correct": true, "color": "#8bc34a" },
+    { "text": "Χωρίς συνθήκη", "correct": false, "color": "#9c27b0" },
+    { "text": "Αν φανάρι, περιμένεις", "correct": true, "color": "#00bcd4" },
+    { "text": "Τυχαία εκτέλεση", "correct": false, "color": "#ff5722" },
+    { "text": "Αλλιώς κοίτα αριστερά", "correct": true, "color": "#607d8b" },
+    { "text": "Εκτελούνται και τα δύο", "correct": false, "color": "#e91e63" }
+  ]
+}

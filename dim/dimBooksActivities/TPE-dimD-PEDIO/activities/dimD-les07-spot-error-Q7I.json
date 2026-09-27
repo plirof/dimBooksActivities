@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Χαρακτήρες Scratch",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Μάγισσα", "error": false, "correct": "Μάγισσα", "feedback": "" },
+        { "text": "Μαϊσσα", "error": true, "correct": "Μάγισσα", "feedback": "Γράφεται Μάγισσα" },
+        { "text": "Βάτραχος", "error": false, "correct": "Βάτραχος", "feedback": "" },
+        { "text": "Βατράχος", "error": true, "correct": "Βάτραχος", "feedback": "Ο τόνος στο Βάτραχος" },
+        { "text": "Πρίγκιπας", "error": false, "correct": "Πρίγκιπας", "feedback": "" },
+        { "text": "Πρίγκηπας", "error": true, "correct": "Πρίγκιπας", "feedback": "Γράφεται Πρίγκιπας με ι" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Βράχος", "error": false, "correct": "Βράχος", "feedback": "" },
+        { "text": "Βραχος", "error": true, "correct": "Βράχος", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Αντικείμενο", "error": false, "correct": "Αντικείμενο", "feedback": "" },
+        { "text": "Ενδυμασία", "error": false, "correct": "Ενδυμασία", "feedback": "" },
+        { "text": "Ξόρκι", "error": false, "correct": "Ξόρκι", "feedback": "" },
+        { "text": "Μεταμόρφωση", "error": false, "correct": "Μεταμόρφωση", "feedback": "" }
+      ]
+    }
+  ]
+}

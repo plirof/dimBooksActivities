@@ -1,0 +1,67 @@
+{
+    "id": "dimC-les22-crossword-29f",
+    "title": "Φτιάχνω κινούμενα σχέδια από εικόνες - Σταυρόλεξο",
+    "type": "crossword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "grid": [
+            [
+                "#",
+                "#",
+                "G",
+                "#",
+                "#",
+                "#",
+                "#",
+                "#",
+                "#"
+            ],
+            [
+                "A",
+                "N",
+                "I",
+                "M",
+                "A",
+                "T",
+                "I",
+                "O",
+                "N"
+            ],
+            [
+                "#",
+                "#",
+                "F",
+                "#",
+                "#",
+                "#",
+                "#",
+                "#",
+                "#"
+            ]
+        ],
+        "words": [
+            {
+                "number": 1,
+                "direction": "down",
+                "clue": "Μορφή κινούμενης εικόνας",
+                "answer": "GIF",
+                "row": 0,
+                "col": 2
+            },
+            {
+                "number": 2,
+                "direction": "across",
+                "clue": "Κινούμενα σχέδια στα αγγλικά",
+                "answer": "ANIMATION",
+                "row": 1,
+                "col": 0
+            }
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les22",
+        "animation"
+    ]
+}

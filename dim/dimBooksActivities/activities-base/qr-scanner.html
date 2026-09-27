@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Scanner</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:800px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.6em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:20px;font-weight:400}
+.score-bar{display:flex;justify-content:center;gap:25px;margin-bottom:20px;font-size:1em;color:#555}
+.score-bar span{font-weight:700;color:#667eea}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:15px;margin:20px 0}
+.qr-card{background:#f8f9fa;border:2px solid #e0e0e0;border-radius:15px;padding:15px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.qr-card:hover{border-color:#667eea;transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
+.qr-card.scanned{border-color:#4CAF50;background:#e8f5e9;cursor:default}
+.qr-card.wrong-scan{border-color:#f44336;background:#ffebee;cursor:default}
+.qr-img-wrap{margin:10px auto;text-align:center}
+.qr-img-wrap img{image-rendering:pixelated;border-radius:4px}
+.qr-label{margin-top:8px;font-size:.85em;color:#888}
+.scan-icon{font-size:2em;margin:5px 0}
+.quiz-panel{display:none;background:#f0f4ff;border-radius:15px;padding:20px;margin:20px 0;text-align:center}
+.quiz-panel.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.quiz-question{font-size:1.15em;color:#333;margin-bottom:15px;font-weight:600}
+.quiz-options{display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto}
+.quiz-opt{padding:12px 18px;border:2px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;font-size:1em;color:#333;transition:all .2s}
+.quiz-opt:hover{border-color:#667eea;background:#f0f0ff}
+.quiz-opt.correct{border-color:#4CAF50;background:#e8f5e9;color:#2e7d32}
+.quiz-opt.wrong{border-color:#f44336;background:#ffebee;color:#c62828}
+.quiz-opt.disabled{pointer-events:none;opacity:.6}
+.reveal-content{background:#fff;border-radius:10px;padding:12px;margin:12px 0;border:2px solid #667eea;font-size:.95em;color:#333}
+.new-round-btn{display:block;margin:20px auto 0;padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:transform .2s}
+.new-round-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.loading{text-align:center;padding:40px;color:#fff;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="qrcode.min.js"></script>
+</head>
+<body>
+<div class="container" id="app">
+<div class="loading">Φόρτωση...</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+function showError(msg){app.innerHTML='<div class="error">'+msg+'</div>'}
+
+if(!dataFile){showError('Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json στο URL.');throw new Error('No data file')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const allItems=data.qrItems;
+const cardsPerRound=Math.min(data.cardsPerRound||4,allItems.length);
+let score=0;
+let totalAnswered=0;
+let currentCards=[];
+let scannedIndex=-1;
+let quizActive=false;
+let renderTimer=null;
+
+function generateQRImg(text,size){
+  var qr=qrcode(0,'M');
+  qr.addData(text);
+  qr.make();
+  return qr.createImgTag(size||3,0);
+}
+
+function startRound(){
+  const shuffled=[...allItems].sort(()=>Math.random()-.5);
+  currentCards=shuffled.slice(0,cardsPerRound).map(item=>({...item,qrImg:generateQRImg(item.content),scanned:false}));
+  scannedIndex=-1;
+  quizActive=false;
+  render();
+}
+
+function render(){
+  const unscanned=currentCards.filter(c=>!c.scanned).length;
+
+  app.innerHTML=`
+    <h1>${esc(data.title)}</h1>
+    <h2>${esc(data.subtitle||'')}</h2>
+    <div class="score-bar">Σωστές: <span>${score}</span> | Συνολικά: <span>${totalAnswered}</span> | Απομένουν: <span>${unscanned}</span></div>
+    <div class="cards-grid" id="cardsGrid">
+      ${currentCards.map((card,i)=>{
+        if(card.scanned){
+          return`<div class="qr-card scanned">
+            <div class="scan-icon">${card.icon}</div>
+            <div class="reveal-content">${esc(card.content)}</div>
+            <div class="qr-label" style="color:#2e7d32">✓ Σκαναρισμένο</div>
+          </div>`;
+        }
+        return`<div class="qr-card" data-idx="${i}" onclick="scanCard(${i})">
+          <div class="scan-icon">📷</div>
+          <div class="qr-img-wrap">${card.qrImg}</div>
+          <div class="qr-label">Κλικ για σκάναρισμα</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="quiz-panel" id="quizPanel"></div>
+    ${unscanned===0?'<button class="new-round-btn" onclick="startRound()">Νέος Γύρος</button>':''}
+  `;
+}
+
+window.scanCard=function(idx){
+  if(currentCards[idx].scanned)return;
+  clearTimeout(renderTimer);
+  quizActive=false;
+  scannedIndex=idx;
+  quizActive=true;
+  const card=currentCards[idx];
+  const panel=document.getElementById('quizPanel');
+  panel.classList.add('active');
+  panel.innerHTML=`
+    <div class="quiz-question">Τι κρύβει αυτό το QR;</div>
+    <div style="font-size:1.5em;margin-bottom:10px">${card.icon}</div>
+    <div class="quiz-options">
+      ${card.options.map((opt,oi)=>`<button class="quiz-opt" data-oi="${oi}" onclick="answerQuiz(${idx},${oi})">${esc(opt)}</button>`).join('')}
+    </div>
+  `;
+};
+
+window.answerQuiz=function(cardIdx,optIdx){
+  const card=currentCards[cardIdx];
+  const correct=optIdx===card.correctIndex;
+  totalAnswered++;
+  if(correct){
+    score++;
+    card.scanned=true;
+  }
+  document.querySelectorAll('.quiz-opt').forEach(btn=>{
+    const oi=parseInt(btn.dataset.oi);
+    btn.classList.add('disabled');
+    if(oi===card.correctIndex)btn.classList.add('correct');
+    else if(oi===optIdx&&!correct)btn.classList.add('wrong');
+  });
+  quizActive=false;
+  clearTimeout(renderTimer);
+  renderTimer=setTimeout(()=>render(),1200);
+};
+
+window.startRound=function(){startRound()};
+
+startRound()
+}).catch(err=>showError('Σφάλμα φόρτωσης: '+esc(err.message)));
+</script>
+</body>
+</html>

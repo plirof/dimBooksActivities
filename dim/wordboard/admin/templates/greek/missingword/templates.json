@@ -1,0 +1,102 @@
+{
+  "templates": [
+    {
+      "id": "greek_missingword_animals_001",
+      "name": "Ζώα (Animals)",
+      "description": "Συμπλήρωσε τη λέξη για το ζώο",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "elementary"],
+      "items": [
+        {"text": "Ο _____ είναι ο καλύτερος φίλος του ανθρώπου.", "answer": "ΣΚΥΛΟΣ"},
+        {"text": "Η _____ λέει νιαου νιαου.", "answer": "ΓΑΤΑ"},
+        {"text": "Το _____ πετάει στον ουρανό.", "answer": "ΠΟΥΛΙ"},
+        {"text": "Το _____ ζει στη θάλασσα.", "answer": "ΨΑΡΙ"},
+        {"text": "Η _____ τρώει καρότα.", "answer": "ΚΟΥΝΕΛΙ"},
+        {"text": "Ο _____ έχει χαίτη.", "answer": "ΛΙΟΝΤΑΡΙ"},
+        {"text": "Το _____ είναι το πιο μεγάλο ζώο στη θάλασσα.", "answer": "ΦΑΛΑΙΝΑ"},
+        {"text": "Η _____ έχει προβατίνα.", "answer": "ΠΡΟΒΑΤΙΝΑ"}
+      ]
+    },
+    {
+      "id": "greek_missingword_family_001",
+      "name": "Οικογένεια (Family)",
+      "description": "Συμπλήρωσε τη λέξη για την οικογένεια",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "family", "elementary"],
+      "items": [
+        {"text": "Η _____ μεγάλωσε τους γονείς μου.", "answer": "ΓΙΑΓΙΑ"},
+        {"text": "Ο _____ μεγάλωσε τους γονείς μου.", "answer": "ΠΑΠΠΟΥΣ"},
+        {"text": "Η _____ είναι η μητέρα μου.", "answer": "ΜΑΜΑ"},
+        {"text": "Ο _____ είναι ο πατέρας μου.", "answer": "ΜΠΑΜΠΑΣ"},
+        {"text": "Ο _____ είναι αγόρι και έχει την ίδια μαμά με μένα.", "answer": "ΑΔΕΡΦΟΣ"},
+        {"text": "Η _____ είναι κορίτσι και έχει την ίδια μαμά με μένα.", "answer": "ΑΔΕΡΦΗ"}
+      ]
+    },
+    {
+      "id": "greek_missingword_colors_001",
+      "name": "Χρώματα (Colors)",
+      "description": "Συμπλήρωσε τη λέξη για το χρώμα",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "items": [
+        {"text": "Το μήλο είναι _____ χρώμα.", "answer": "ΚΟΚΚΙΝΟ"},
+        {"text": "Ο ουρανός είναι _____ χρώμα.", "answer": "ΜΠΛΕ"},
+        {"text": "Το γρασίδι είναι _____ χρώμα.", "answer": "ΠΡΑΣΙΝΟ"},
+        {"text": "Η μπανάνα είναι _____ χρώμα.", "answer": "ΚΙΤΡΙΝΟ"},
+        {"text": "Το πορτοκάλι είναι _____ χρώμα.", "answer": "ΠΟΡΤΟΚΑΛΙ"},
+        {"text": "Το σταφύλι είναι _____ χρώμα.", "answer": "ΜΩΒ"}
+      ]
+    },
+    {
+      "id": "greek_missingword_school_001",
+      "name": "Σχολείο (School)",
+      "description": "Συμπλήρωσε τη λέξη για το σχολείο",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "school", "elementary"],
+      "items": [
+        {"text": "Διαβάζω το _____ κάθε μέρα.", "answer": "ΒΙΒΛΙΟ"},
+        {"text": "Γράφω στο _____ τις ασκήσεις.", "answer": "ΤΕΤΡΑΔΙΟ"},
+        {"text": "Ζωγραφίζω με το _____.", "answer": "ΜΟΛΥΒΙ"},
+        {"text": "Σβήνω τα λάθη με τη _____ .", "answer": "ΓΟΜΑ"},
+        {"text": "Μετράω με τον _____ .", "answer": "ΧΑΡΑΚΑ"},
+        {"text": "Βάζω τα βιβλία στη _____ .", "answer": "ΤΣΑΝΤΑ"}
+      ]
+    },
+    {
+      "id": "greek_missingword_body_001",
+      "name": "Σώμα (Body)",
+      "description": "Συμπλήρωσε τη λέξη για το σώμα",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "body", "elementary"],
+      "items": [
+        {"text": "Βλέπω με τα _____ .", "answer": "ΜΑΤΙΑ"},
+        {"text": "Ακούω με τα _____ .", "answer": "ΑΥΤΙΑ"},
+        {"text": "Μυρίζω με τη _____ .", "answer": "ΜΥΤΗ"},
+        {"text": "Γεύομαι με τη _____ .", "answer": "ΓΛΩΣΣΑ"},
+        {"text": "Γράφω με το _____ .", "answer": "ΧΕΡΙ"},
+        {"text": "Περπατάω με τα _____ .", "answer": "ΠΟΔΙΑ"}
+      ]
+    },
+    {
+      "id": "greek_missingword_fruits_001",
+      "name": "Φρούτα (Fruits)",
+      "description": "Συμπλήρωσε τη λέξη για τα φρούτα",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["greek", "fruits", "food", "elementary"],
+      "items": [
+        {"text": "Το _____ είναι κόκκινο και νόστιμο.", "answer": "ΜΗΛΟ"},
+        {"text": "Η _____ είναι κίτρινη και μακριά.", "answer": "ΜΠΑΝΑΝΑ"},
+        {"text": "Το _____ είναι πορτοκαλί και ζουμερό.", "answer": "ΠΟΡΤΟΚΑΛΙ"},
+        {"text": "Τα _____ είναι μικρά και μωβ.", "answer": "ΣΤΑΦΥΛΙΑ"},
+        {"text": "Η _____ είναι κόκκινη και γλυκιά.", "answer": "ΦΡΑΟΥΛΑ"},
+        {"text": "Το _____ είναι κίτρινο και χωρίς κουκούτσια.", "answer": "ΚΑΡΠΟΥΖΙ"}
+      ]
+    }
+  ]
+}

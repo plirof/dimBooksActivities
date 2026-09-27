@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Scratch Ταχύτητα",
+  "subtitle": "Πιάσε τις σωστές!",
+  "instructions": "Πιάσε τις σωστές προτάσεις για ταχύτητα και βήματα",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "5 βήματα = πιο αργά", "correct": true, "color": "#4caf50" },
+    { "text": "15 βήματα = πιο αργά", "correct": false, "color": "#f44336" },
+    { "text": "10 × 10 = 100 βήματα", "correct": true, "color": "#2196f3" },
+    { "text": "10 × 10 = 10 βήματα", "correct": false, "color": "#ff9800" },
+    { "text": "20 × 5 = 100 βήματα", "correct": true, "color": "#8bc34a" },
+    { "text": "10 φορές = 10 βήματα", "correct": false, "color": "#9c27b0" },
+    { "text": "15 βήματα = πιο γρήγορα", "correct": true, "color": "#00bcd4" },
+    { "text": "Πράσινη σημαία = διαγραφή", "correct": false, "color": "#ff5722" }
+  ]
+}

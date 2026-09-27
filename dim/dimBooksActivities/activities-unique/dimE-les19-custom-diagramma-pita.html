@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάγραμμα Πίτα | Μάθημα 19</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fdf4ff,#e9d5ff);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#581c87;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#9333ea;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#581c87;font-size:.75rem;font-weight:700;border:1px solid #d8b4fe;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.pie-wrap{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin:10px 0}
+canvas{display:block;max-width:240px;max-height:240px}
+.legend{display:flex;flex-direction:column;gap:6px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:#334155}
+.legend-color{width:16px;height:16px;border-radius:4px;flex-shrink:0}
+.q-area{margin:10px 0}
+.q-text{font-size:.8rem;font-weight:600;color:#1e293b;margin-bottom:8px;line-height:1.4}
+.drop-zone{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;min-height:44px;padding:8px;border:2px dashed #d8b4fe;border-radius:10px;background:#faf5ff}
+.drop-slot{min-width:60px;min-height:36px;border:2px solid #e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:#fff;transition:all .2s;cursor:pointer}
+.drop-slot.filled{border-color:#9333ea;background:#f3e8ff;color:#581c87}
+.drag-items{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;justify-content:center}
+.drag-chip{padding:6px 14px;border:2px solid #d8b4fe;border-radius:20px;font-size:.75rem;font-weight:700;color:#581c87;background:#faf5ff;cursor:pointer;transition:all .2s;user-select:none}
+.drag-chip:hover{background:#f3e8ff;transform:translateY(-1px)}
+.drag-chip.used{opacity:.4;cursor:default}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.8rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#9333ea;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#7e22ce}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer}
+.nav-prev{background:#581c8722;color:#581c87}
+.nav-next{background:#9333ea;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .pie-wrap > * { margin: 8px; }
+  .legend > * + * { margin-top: 6px; }
+  .legend-item > * + * { margin-left: 6px; }
+  .drop-zone > * { margin: 3px; }
+  .drag-items > * { margin: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🥧 Διάγραμμα Πίτα</h1>
+<p class="subtitle">Διάβασε τα διαγράμματα πίτα και βρες τα σωστά δεδομένα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" onclick="prevQ()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" onclick="nextQ()">Επόμ. ▶</button>
+</div>
+<script>
+var quizzes=[
+{
+title:'Ψηφοφορία Εκδρομής',
+data:[{name:'Μουσείο',value:12,color:'#3b82f6'},{name:'Παραλία',value:8,color:'#f59e0b'}],
+total:20,
+questions:[
+{q:'Ποια επιλογή πήρε τους περισσότερους ψήφους;',answer:'Μουσείο',opts:['Μουσείο','Παραλία']},
+{q:'Ποιο ποσοστό (~%) πήρε η Παραλία;',answer:'40%',opts:['60%','40%','20%','80%']}
+]
+},
+{
+title:'Ελεύθερος Χρόνος',
+data:[{name:'Μουσική',value:10,color:'#8b5cf6'},{name:'Τηλεόραση',value:6,color:'#ef4444'},{name:'Παιχνίδι',value:16,color:'#10b981'},{name:'Βόλτα',value:14,color:'#f97316'},{name:'Βιβλίο',value:4,color:'#06b6d4'}],
+total:50,
+questions:[
+{q:'Ποια δραστηριότητα είναι η δημοφιλέστερη;',answer:'Παιχνίδι',opts:['Μουσική','Παιχνίδι','Βόλτα','Τηλεόραση']},
+{q:'Πόσα παιδιά προτιμούν Μουσική ή Βιβλίο μαζί;',answer:'14',opts:['10','14','16','20']}
+]
+},
+{
+title:'Χρώμα Αγαπημένο',
+data:[{name:'Μπλε',value:15,color:'#3b82f6'},{name:'Κόκκινο',value:10,color:'#ef4444'},{name:'Πράσινο',value:8,color:'#10b981'},{name:'Κίτρινο',value:7,color:'#f59e0b'}],
+total:40,
+questions:[
+{q:'Ποιο χρώμα πήρε 15 ψήφους;',answer:'Μπλε',opts:['Μπλε','Κόκκινο','Πράσινο','Κίτρινο']},
+{q:'Πόσα παιδιά ψήφισαν Κόκκινο ή Πράσινο;',answer:'18',opts:['15','18','22','25']}
+]
+},
+{
+title:'Κατοικίδια',
+data:[{name:'Σκύλος',value:18,color:'#f97316'},{name:'Γάτα',value:14,color:'#8b5cf6'},{name:'Ψάρι',value:5,color:'#06b6d4'},{name:'Πουλί',value:3,color:'#10b981'}],
+total:40,
+questions:[
+{q:'Ποιο κατοικίδιο είναι το πιο δημοφιλές;',answer:'Σκύλος',opts:['Σκύλος','Γάτα','Ψάρι','Πουλί']},
+{q:'Πόσα παιδιά προτιμούν γάτα ή ψάρι;',answer:'19',opts:['14','19','18','23']}
+]
+}
+];
+var curQ=0;
+var curSubQ=0;
+var pts=0;
+var answered=false;
+
+function drawPie(canvasId,data,total){
+var canvas=document.getElementById(canvasId);
+if(!canvas)return;
+var ctx=canvas.getContext('2d');
+var w=canvas.width,h=canvas.height;
+var cx=w/2,cy=h/2,r=Math.min(cx,cy)-10;
+ctx.clearRect(0,0,w,h);
+var startAngle=-Math.PI/2;
+for(var i=0;i<data.length;i++){
+var sliceAngle=2*Math.PI*data[i].value/total;
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.arc(cx,cy,r,startAngle,startAngle+sliceAngle);
+ctx.closePath();
+ctx.fillStyle=data[i].color;
+ctx.fill();
+ctx.strokeStyle='#fff';
+ctx.lineWidth=2;
+ctx.stroke();
+startAngle+=sliceAngle;
+}
+ctx.beginPath();
+ctx.arc(cx,cy,r*0.35,0,2*Math.PI);
+ctx.fillStyle='#fff';
+ctx.fill();
+ctx.font='bold 14px sans-serif';
+ctx.fillStyle='#334155';
+ctx.textAlign='center';
+ctx.textBaseline='middle';
+ctx.fillText(total,cx,cy);
+}
+
+function render(){
+var q=quizzes[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var subQ=q.questions[curSubQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.85rem;font-weight:700;color:#581c87;margin-bottom:6px">📌 '+q.title+'</div>';
+h+='<div class="pie-wrap">';
+h+='<canvas id="pieCanvas" width="240" height="240"></canvas>';
+h+='<div class="legend">';
+for(var i=0;i<q.data.length;i++){
+h+='<div class="legend-item"><span class="legend-color" style="background:'+q.data[i].color+'"></span>'+q.data[i].name+': '+q.data[i].value+'</div>';
+}
+h+='</div>';
+h+='</div>';
+h+='<div class="q-area">';
+h+='<div class="q-text">Ερώτηση '+(curSubQ+1)+'/'+q.questions.length+': '+subQ.q+'</div>';
+if(!answered){
+h+='<div class="drag-items">';
+for(var i=0;i<subQ.opts.length;i++){
+h+='<div class="drag-chip" onclick="selectAnswer(\''+subQ.opts[i]+'\')">'+subQ.opts[i]+'</div>';
+}
+h+='</div>';
+}else{
+var correct=answered===subQ.answer;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστό! Η απάντηση είναι '+subQ.answer:'❌ Η σωστή απάντηση είναι: '+subQ.answer)+'</div>';
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+if(curSubQ<q.questions.length-1){
+h+='<button class="check-btn" onclick="nextSubQ()">Επόμενη Ερώτηση ▶</button>';
+}else{
+h+='<button class="check-btn" onclick="nextQ()" style="background:#10b981">Επόμενο Διάγραμμα ▶</button>';
+}
+}
+h+='</div>';
+main.innerHTML=h;
+setTimeout(function(){drawPie('pieCanvas',q.data,q.total);},50);
+}
+
+function selectAnswer(val){
+if(answered)return;
+answered=val;
+render();
+}
+
+function nextSubQ(){
+curSubQ++;
+answered=false;
+render();
+}
+
+function nextQ(){
+if(curQ<quizzes.length-1){
+curQ++;
+curSubQ=0;
+answered=false;
+render();
+}
+}
+
+function prevQ(){
+if(curQ>0){
+curQ--;
+curSubQ=0;
+answered=false;
+render();
+}
+}
+
+render();
+</script>
+</body>
+</html>

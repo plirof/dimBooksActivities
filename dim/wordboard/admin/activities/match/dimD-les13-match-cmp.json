@@ -1,0 +1,40 @@
+{
+    "id": "dimD-les13-match-cmp",
+    "title": "Οι εφαρμογές του υπολογιστή - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "Scratch",
+                "right": "Προγραμματισμός"
+            },
+            {
+                "left": "Firefox \/ Chrome",
+                "right": "Φυλλομετρητής"
+            },
+            {
+                "left": "Writer \/ Word",
+                "right": "Επεξεργασία κειμένου"
+            },
+            {
+                "left": "Impress \/ PowerPoint",
+                "right": "Παρουσιάσεις"
+            },
+            {
+                "left": "Calc \/ Excel",
+                "right": "Υπολογιστικό φύλλο"
+            },
+            {
+                "left": "TuxPaint",
+                "right": "Ζωγραφική"
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les13",
+        "εφαρμογές"
+    ]
+}

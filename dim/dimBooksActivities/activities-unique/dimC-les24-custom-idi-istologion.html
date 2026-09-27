@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Είδη Ιστολογίων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f0fdf4,#4ade80);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#166534,#22c55e);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f0fdf4;border-radius:12px;border-left:4px solid #22c55e;padding:10px 14px;font-size:.85em;color:#14532d;line-height:1.5}
+.info b{color:#166534}
+.game-area{background:#f0fdf4;border-radius:16px;border:2px solid #bbf7d0;padding:16px;min-height:300px}
+.sort-area{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sort-col{flex:1;min-width:180px;background:#fff;border-radius:14px;border:2px solid #bbf7d0;padding:12px;min-height:180px}
+.sort-col h3{text-align:center;padding:8px;border-radius:10px;font-size:.9em;margin-bottom:10px}
+.col-personal h3{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.col-group h3{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
+.col-school h3{background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff}
+.sort-slots{min-height:100px;display:flex;flex-direction:column;gap:6px}
+.sort-slot{min-height:40px;border:2px dashed #e2e8f0;border-radius:10px;transition:all .3s;display:flex;align-items:center;justify-content:center;padding:6px;font-size:.82em;text-align:center}
+.sort-slot.filled{background:#f0fdf4;border-color:#22c55e;border-style:solid;color:#166534}
+.sort-slot.drag-over{border-color:#22c55e;background:#dcfce7;transform:scale(1.02)}
+.pool-area{background:#fff;border-radius:12px;border:2px dashed #bbf7d0;padding:12px}
+.pool-area h3{text-align:center;color:#166534;margin-bottom:8px;font-size:.9em}
+.item-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:40px}
+.item-card{padding:8px 14px;background:linear-gradient(135deg,#fff,#f0fdf4);border:2px solid #bbf7d0;border-radius:50px;cursor:grab;font-size:.82em;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.06);user-select:none;touch-action:none}
+.item-card:hover{transform:translateY(-2px);border-color:#22c55e}
+.item-card:active{cursor:grabbing}
+.item-card.dragging{opacity:.4}
+.item-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#166534,#22c55e);color:#fff}
+.btn-check:hover{transform:scale(1.05)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:36px;margin-top:10px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+@media(max-width:550px){.sort-col{min-width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .sort-area > * { margin: 6px; }
+  .sort-slots > * + * { margin-top: 6px; }
+  .item-pool > * { margin: 4px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📚 Είδη Ιστολογίων στο e-me</h1>
+<p>Ταξινόμησε τα ιστολόγια στη σωστή κατηγορία!</p>
+</div>
+<div class="area">
+<div class="info">💡 Στο <b>e-me</b> υπάρχουν 3 είδη ιστολογίων: <b>Πρόσωπο</b> (δικό σου blog), <b>Ομάδα/Κελί</b> (blog της ομάδας) και <b>Σχολείο</b> (επίσημο blog του σχολείου). Κάθε είδος έχει διαφορετικό σκοπό!</div>
+<div class="game-area">
+<div class="sort-area">
+<div class="sort-col col-personal">
+<h3>👤 Πρόσωπο</h3>
+<div class="sort-slots" id="personalSlots"></div>
+</div>
+<div class="sort-col col-group">
+<h3>👥 Ομάδα (Κελί)</h3>
+<div class="sort-slots" id="groupSlots"></div>
+</div>
+<div class="sort-col col-school">
+<h3>🏫 Σχολείο</h3>
+<div class="sort-slots" id="schoolSlots"></div>
+</div>
+</div>
+<div class="pool-area">
+<h3>Σύρε κάθε ιστολόγιο στη σωστή κατηγορία</h3>
+<div class="item-pool" id="itemPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkSort()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var items=[
+{text:'Τα χόμπι μου',target:'personal'},
+{text:'Το project της ομάδας μας',target:'group'},
+{text:'Ανακοινώσεις σχολείου',target:'school'},
+{text:'Η αγαπημένη μου ταινία',target:'personal'},
+{text:'Εργαστήριο Επιστημών (Ομάδα)',target:'group'},
+{text:'Εορτασμός 28ης Οκτωβρίου',target:'school'},
+{text:'Οι διακοπές μου',target:'personal'},
+{text:'Συζήτηση για το βιβλίο (Κελί)',target:'group'},
+{text:'Πρόγραμμα μαθημάτων',target:'school'},
+{text:'Οι ζωγραφιές μου',target:'personal'},
+{text:'Αθλητική ομάδα τάξης',target:'group'},
+{text:'Ημέρα Ανοιχτών Θυρών',target:'school'}
+];
+
+var counts={personal:4,group:4,school:4};
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initSlots(){
+var containers={personal:'personalSlots',group:'groupSlots',school:'schoolSlots'};
+for(var key in containers){
+var c=document.getElementById(containers[key]);
+c.innerHTML='';
+for(var i=0;i<counts[key];i++){
+var slot=document.createElement('div');
+slot.className='sort-slot';
+slot.dataset.slotId=key+'-'+i;
+slot.dataset.target=key;
+c.appendChild(slot);
+}
+}
+}
+
+function initPool(){
+var pool=document.getElementById('itemPool');
+pool.innerHTML='';
+var order=[];
+for(var i=0;i<items.length;i++)order.push(i);
+shuffle(order);
+for(var i=0;i<order.length;i++){
+var idx=order[i];
+var item=items[idx];
+var card=document.createElement('div');
+card.className='item-card';
+card.setAttribute('draggable','true');
+card.dataset.itemIdx=idx;
+card.dataset.target=item.target;
+card.textContent=item.text;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function dragStart(e,el){dragItem=el;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',el.dataset.itemIdx);}
+function dragEnd(e,el){el.classList.remove('dragging');dragItem=null;clearDragOver();}
+function touchStart(e,el){dragItem=el;el.classList.add('dragging');}
+function touchMove(e,el){
+e.preventDefault();var touch=e.touches[0];var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){var slot=elUnder.classList.contains('sort-slot')?elUnder:elUnder.closest('.sort-slot');
+if(slot&&!slot.classList.contains('filled')){slot.classList.add('drag-over');dragItem.dataset.targetSlot=slot.dataset.slotId;}else{dragItem.dataset.targetSlot='';}
+}else{dragItem.dataset.targetSlot='';}
+}
+function touchEnd(e,el){el.classList.remove('dragging');clearDragOver();if(el.dataset.targetSlot){tryPlace(el,el.dataset.targetSlot);}el.dataset.targetSlot='';}
+
+document.addEventListener('dragstart',function(e){if(!e.target.classList.contains('item-card'))e.preventDefault();});
+document.addEventListener('dragover',function(e){if(dragItem&&(e.target.classList.contains('sort-slot')||e.target.closest('.sort-slot')))e.preventDefault();});
+document.addEventListener('drop',function(e){
+e.preventDefault();if(!dragItem)return;
+var slot=e.target.classList.contains('sort-slot')?e.target:e.target.closest('.sort-slot');
+if(!slot||slot.classList.contains('filled'))return;
+tryPlace(dragItem,slot.dataset.slotId);
+});
+
+function tryPlace(card,slotId){
+var idx=parseInt(card.dataset.itemIdx);var item=items[idx];
+var parts=slotId.split('-');var target=parts[0];
+if(item.target!==target){showFeedback('❌ Λάθος! «'+item.text+'» δεν ανήκει εδώ.',false);return;}
+placements[slotId]=idx;card.classList.add('placed');
+var slotEl=document.querySelector('.sort-slot[data-slot-id="'+slotId+'"]');
+slotEl.classList.add('filled');slotEl.textContent=item.text;slotEl.dataset.placedIdx=idx;
+showFeedback('✅ Σωστά!',true);
+document.getElementById('checkBtn').disabled=Object.keys(placements).length<items.length;
+}
+
+function checkSort(){
+var correct=0;var slots=document.querySelectorAll('.sort-slot');
+for(var i=0;i<slots.length;i++){var slot=slots[i];if(slot.classList.contains('filled')){var idx=parseInt(slot.dataset.placedIdx);var target=slot.dataset.target;if(items[idx].target===target)correct++;}}
+var pct=Math.round(correct/items.length*100);
+if(pct===100){showFeedback('🎉 Τέλεια! Όλα τα ιστολόγια ταξινομήθηκαν σωστά!',true);}
+else{showFeedback('🔍 '+correct+'/'+items.length+' σωστά. Δοκίμασε ξανά!',false);}
+}
+
+function showFeedback(msg,isOk){var el=document.getElementById('feedback');el.textContent=msg;el.className='feedback '+(isOk?'ok':'fail');if(isOk)setTimeout(function(){el.className='feedback';},3000);}
+function clearDragOver(){var slots=document.querySelectorAll('.sort-slot.drag-over');for(var i=0;i<slots.length;i++)slots[i].classList.remove('drag-over');}
+
+function resetGame(){placements={};document.getElementById('feedback').className='feedback';document.getElementById('feedback').textContent='';document.getElementById('checkBtn').disabled=true;initSlots();initPool();}
+
+initSlots();initPool();document.getElementById('checkBtn').disabled=true;
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Συσκευή ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Συσκευή ή Όχι;",
+  "categories": [
+    {"id": "syskeyi", "name": "Συσκευή", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Οθόνη", "category": "syskeyi"},
+    {"text": "Κουτάλι", "category": "oxi"},
+    {"text": "Ποντίκι", "category": "syskeyi"},
+    {"text": "Κούκλα", "category": "oxi"},
+    {"text": "Κάμερα", "category": "syskeyi"},
+    {"text": "Καρέκλα", "category": "oxi"},
+    {"text": "Ηχεία", "category": "syskeyi"},
+    {"text": "Μαξιλάρι", "category": "oxi"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πανηγύρι και Καιρός! - Συνθήκες</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 50%, #fd79a8 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.start-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.start-screen .title-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 4rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.start-screen h1 {
+    color: #2d3436;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.start-screen .subtitle {
+    color: #636e72;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.start-screen .example-box {
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: left;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #2d3436;
+}
+
+.start-screen .example-box .example-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.start-screen .example-box .example-line > * + * {
+    margin-left: 8px;
+}
+
+.start-screen .example-box .highlight-if {
+    color: #d63031;
+    font-weight: bold;
+}
+
+.start-screen .example-box .highlight-then {
+    color: #00b894;
+    font-weight: bold;
+}
+
+.btn-start {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-start:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+    transform: translateY(-2px);
+}
+
+.btn-start:active {
+    transform: scale(0.95);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.game-header > * + * {
+    margin-left: 8px;
+    margin-top: 4px;
+}
+
+.game-header h2 {
+    color: #2d3436;
+    font-size: 1.3rem;
+}
+
+.score-display {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.instruction-text {
+    text-align: center;
+    color: #636e72;
+    font-size: 1rem;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+
+.conditions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 12px;
+    grid-gap: 12px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 550px) {
+    .conditions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.condition-card {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 3px dashed #b2bec3;
+    transition: all 0.3s ease;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+}
+
+.condition-card.drag-over {
+    border-color: #00b894;
+    background: #e6fff9;
+    transform: scale(1.03);
+}
+
+.condition-card.completed {
+    border-style: solid;
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.condition-card.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+.condition-header {
+    padding: 10px 12px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.condition-header > * + * {
+    margin-left: 6px;
+}
+
+.condition-header .cond-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.4rem;
+}
+
+.condition-drop-zone {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    min-height: 70px;
+    background: rgba(255,255,255,0.5);
+}
+
+.condition-drop-zone > * {
+    margin: 3px;
+}
+
+.drop-placeholder {
+    color: #b2bec3;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.placed-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    animation: popIn 0.3s ease;
+}
+
+.placed-item .placed-icon {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.6rem;
+}
+
+.placed-item .placed-name {
+    font-size: 0.7rem;
+    color: #636e72;
+    font-weight: 600;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.items-tray-title {
+    text-align: center;
+    color: #2d3436;
+    font-weight: bold;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+.items-tray {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 16px;
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-radius: 18px;
+    border: 3px solid #f9ca24;
+    min-height: 80px;
+}
+
+.items-tray > * {
+    margin: 5px;
+}
+
+.draggable-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border-radius: 14px;
+    padding: 10px 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    cursor: grab;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    touch-action: none;
+}
+
+.draggable-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.draggable-item:active {
+    cursor: grabbing;
+}
+
+.draggable-item.placed {
+    opacity: 0.25;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+
+.draggable-item .item-icon {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+.draggable-item .item-name {
+    font-size: 0.8rem;
+    color: #2d3436;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dragging-clone {
+    opacity: 0.9;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.feedback-bar {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 12px;
+    min-height: 32px;
+    transition: all 0.3s ease;
+}
+
+.feedback-bar.correct-fb {
+    color: #00b894;
+}
+
+.feedback-bar.wrong-fb {
+    color: #d63031;
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.completion-screen .star {
+    display: inline-block;
+    animation: starBounce 0.5s ease;
+}
+
+.completion-screen .star:nth-child(2) { animation-delay: 0.2s; }
+.completion-screen .star:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes starBounce {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.completion-screen h2 {
+    color: #2d3436;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #6c5ce7;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.completion-screen .score-detail {
+    color: #636e72;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.completion-screen .mistakes-text {
+    color: #b2bec3;
+    font-size: 1rem;
+    margin-bottom: 24px;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    transform: translateY(-2px);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="screen active" id="start-screen">
+        <div class="start-screen">
+            <span class="title-emoji">🎪</span>
+            <h1>Πανηγύρι και Καιρός!</h1>
+            <p class="subtitle">Πρόκειται για πανηγύρι! Αλλά τι καιρό κάνει;<br>Βρες τι πρέπει να πάρεις μαζί σου!</p>
+            <div class="example-box">
+                <div class="example-line"><span class="highlight-if">Αν</span> βρέχει, <span class="highlight-then">τότε</span> πάρε ομπρέλα! 🌧️☂️</div>
+                <div class="example-line"><span class="highlight-if">Αν</span> κάνει κρύο, <span class="highlight-then">τότε</span> φόρεσε κασκόλ! ❄️🧣</div>
+                <div class="example-line"><span class="highlight-if">Αν</span> έχει ήλιο, <span class="highlight-then">τότε</span> βάλε αντηλιακό! ☀️🧴</div>
+            </div>
+            <p class="subtitle">Σύρε κάθε αντικείμενο στη σωστή συνθήκη!</p>
+            <button class="btn-start" onclick="startGame()">Ξεκινάω! 🎉</button>
+        </div>
+    </div>
+
+    <div class="screen" id="game-screen">
+        <div class="game-header">
+            <h2>🎪 Πανηγύρι και Καιρός!</h2>
+            <div class="score-display" id="score-display">0 / 6</div>
+        </div>
+        <p class="instruction-text">Σύρε τα αντικείμενα στη σωστή κάρτα συνθήκης!</p>
+        <div class="conditions-grid" id="conditions-grid"></div>
+        <div class="items-tray-title">🎨 Αντικείμενα για το πανηγύρι:</div>
+        <div class="items-tray" id="items-tray"></div>
+        <div class="feedback-bar" id="feedback-bar"></div>
+    </div>
+
+    <div class="screen" id="end-screen">
+        <div class="completion-screen">
+            <span class="stars" id="stars-container"></span>
+            <h2 id="end-title"></h2>
+            <p class="score-text" id="end-score"></p>
+            <p class="score-detail" id="end-detail"></p>
+            <p class="mistakes-text" id="end-mistakes"></p>
+            <button class="btn-restart" onclick="restartGame()">Παίζω ξανά! 🔄</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+var conditions = [
+    { id: 'rain', text: 'Αν βρέχει...', icon: '\u{1F327}\uFE0F', color: '#0984e3', accepts: ['umbrella', 'boots'] },
+    { id: 'cold', text: 'Αν κάνει κρύο...', icon: '\u2744\uFE0F', color: '#00b894', accepts: ['jacket', 'scarf'] },
+    { id: 'sun', text: 'Αν έχει ήλιο...', icon: '\u2600\uFE0F', color: '#e17055', accepts: ['sunglasses', 'sunscreen'] }
+];
+
+var items = [
+    { id: 'umbrella', name: 'Ομπρέλα', icon: '\u2602\uFE0F', conditionId: 'rain' },
+    { id: 'boots', name: 'Μποτάκια', icon: '\u{1F462}', conditionId: 'rain' },
+    { id: 'jacket', name: 'Μπουφάν', icon: '\u{1F9E5}', conditionId: 'cold' },
+    { id: 'scarf', name: 'Κασκόλ', icon: '\u{1F9E3}', conditionId: 'cold' },
+    { id: 'sunglasses', name: 'Γυαλιά ηλίου', icon: '\u{1F576}\uFE0F', conditionId: 'sun' },
+    { id: 'sunscreen', name: 'Αντηλιακό', icon: '\u{1F9F4}', conditionId: 'sun' }
+];
+
+var placedCount = 0;
+var mistakes = 0;
+var dragState = { active: false, itemEl: null, clone: null, itemId: null, offsetX: 0, offsetY: 0 };
+
+function hexToRgba(hex, alpha) {
+    var r = parseInt(hex.substr(1, 2), 16);
+    var g = parseInt(hex.substr(3, 2), 16);
+    var b = parseInt(hex.substr(5, 2), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a;
+}
+
+function startGame() {
+    placedCount = 0;
+    mistakes = 0;
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    document.getElementById('end-screen').classList.remove('active');
+    buildConditions();
+    buildItems();
+    updateScore();
+    document.getElementById('feedback-bar').textContent = '';
+    document.getElementById('feedback-bar').className = 'feedback-bar';
+}
+
+function buildConditions() {
+    var grid = document.getElementById('conditions-grid');
+    grid.innerHTML = '';
+    conditions.forEach(function(cond) {
+        var card = document.createElement('div');
+        card.className = 'condition-card';
+        card.dataset.conditionId = cond.id;
+        card.dataset.accepts = JSON.stringify(cond.accepts);
+
+        var header = document.createElement('div');
+        header.className = 'condition-header';
+        header.style.background = 'linear-gradient(135deg, ' + hexToRgba(cond.color, 1) + ', ' + hexToRgba(cond.color, 0.8) + ')';
+        header.innerHTML = '<span class="cond-emoji">' + cond.icon + '</span> ' + cond.text;
+
+        var dropZone = document.createElement('div');
+        dropZone.className = 'condition-drop-zone';
+        dropZone.innerHTML = '<span class="drop-placeholder">Άφησε εδώ...</span>';
+
+        card.appendChild(header);
+        card.appendChild(dropZone);
+        grid.appendChild(card);
+    });
+}
+
+function buildItems() {
+    var tray = document.getElementById('items-tray');
+    tray.innerHTML = '';
+    var shuffled = shuffleArray(items);
+    shuffled.forEach(function(item) {
+        var el = document.createElement('div');
+        el.className = 'draggable-item';
+        el.dataset.itemId = item.id;
+        el.dataset.conditionId = item.conditionId;
+        el.innerHTML = '<span class="item-icon">' + item.icon + '</span><span class="item-name">' + item.name + '</span>';
+
+        el.addEventListener('mousedown', function(e) { onDragStart(e, el); });
+        el.addEventListener('touchstart', function(e) { onDragStart(e, el); }, { passive: false });
+
+        tray.appendChild(el);
+    });
+}
+
+function onDragStart(e, itemEl) {
+    if (itemEl.classList.contains('placed')) return;
+    e.preventDefault();
+
+    var touch = e.touches ? e.touches[0] : e;
+    var rect = itemEl.getBoundingClientRect();
+
+    dragState.active = true;
+    dragState.itemEl = itemEl;
+    dragState.itemId = itemEl.dataset.itemId;
+    dragState.offsetX = touch.clientX - rect.left;
+    dragState.offsetY = touch.clientY - rect.top;
+
+    var clone = itemEl.cloneNode(true);
+    clone.className = 'draggable-item dragging-clone';
+    clone.style.position = 'fixed';
+    clone.style.left = rect.left + 'px';
+    clone.style.top = rect.top + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    clone.style.margin = '0';
+    document.body.appendChild(clone);
+    dragState.clone = clone;
+
+    itemEl.style.opacity = '0.25';
+
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+    document.addEventListener('touchmove', onDragMove, { passive: false });
+    document.addEventListener('touchend', onDragEnd);
+}
+
+function onDragMove(e) {
+    if (!dragState.active || !dragState.clone) return;
+    e.preventDefault();
+    var touch = e.touches ? e.touches[0] : e;
+    dragState.clone.style.left = (touch.clientX - dragState.offsetX) + 'px';
+    dragState.clone.style.top = (touch.clientY - dragState.offsetY) + 'px';
+
+    highlightCardUnder(touch.clientX, touch.clientY);
+}
+
+function highlightCardUnder(x, y) {
+    var cards = document.querySelectorAll('.condition-card');
+    cards.forEach(function(card) {
+        var r = card.getBoundingClientRect();
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+            card.classList.add('drag-over');
+        } else {
+            card.classList.remove('drag-over');
+        }
+    });
+}
+
+function onDragEnd(e) {
+    if (!dragState.active) return;
+
+    var touch = e.changedTouches ? e.changedTouches[0] : e;
+    var droppedOnCard = false;
+
+    document.querySelectorAll('.condition-card').forEach(function(card) {
+        card.classList.remove('drag-over');
+        var r = card.getBoundingClientRect();
+        if (touch.clientX >= r.left && touch.clientX <= r.right && touch.clientY >= r.top && touch.clientY <= r.bottom) {
+            droppedOnCard = true;
+            var accepts = JSON.parse(card.dataset.accepts);
+            if (accepts.indexOf(dragState.itemId) !== -1) {
+                placeItem(dragState.itemId, dragState.itemEl, card);
+            } else {
+                wrongDrop(dragState.itemEl, card);
+            }
+        }
+    });
+
+    if (!droppedOnCard) {
+        dragState.itemEl.style.opacity = '1';
+    }
+
+    if (dragState.clone && dragState.clone.parentNode) {
+        dragState.clone.parentNode.removeChild(dragState.clone);
+    }
+    dragState.active = false;
+    dragState.clone = null;
+    dragState.itemEl = null;
+
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
+    document.removeEventListener('touchmove', onDragMove);
+    document.removeEventListener('touchend', onDragEnd);
+}
+
+function placeItem(itemId, itemEl, card) {
+    itemEl.classList.add('placed');
+    itemEl.style.opacity = '0.25';
+
+    var itemData = null;
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].id === itemId) { itemData = items[i]; break; }
+    }
+
+    var dropZone = card.querySelector('.condition-drop-zone');
+    var placeholder = dropZone.querySelector('.drop-placeholder');
+    if (placeholder) placeholder.remove();
+
+    var placed = document.createElement('div');
+    placed.className = 'placed-item';
+    placed.innerHTML = '<span class="placed-icon">' + itemData.icon + '</span><span class="placed-name">' + itemData.name + '</span>';
+    dropZone.appendChild(placed);
+
+    placedCount++;
+    updateScore();
+    showFeedback('Μπράβο! Το ' + itemData.name + ' είναι σωστό! ✅', true);
+
+    var accepts = JSON.parse(card.dataset.accepts);
+    var allPlaced = true;
+    for (var j = 0; j < accepts.length; j++) {
+        var found = card.querySelectorAll('.placed-item');
+        if (found.length < accepts.length) { allPlaced = false; break; }
+    }
+    if (allPlaced) {
+        card.classList.add('completed');
+    }
+
+    if (placedCount === items.length) {
+        setTimeout(showEndScreen, 1200);
+    }
+}
+
+function wrongDrop(itemEl, card) {
+    itemEl.style.opacity = '1';
+    mistakes++;
+    card.classList.add('shake');
+    setTimeout(function() { card.classList.remove('shake'); }, 500);
+    showFeedback('Δεν είναι σωστό! Δοκίμασε ξανά! ❌', false);
+}
+
+function updateScore() {
+    document.getElementById('score-display').textContent = placedCount + ' / ' + items.length;
+}
+
+function showFeedback(msg, correct) {
+    var fb = document.getElementById('feedback-bar');
+    fb.textContent = msg;
+    fb.className = 'feedback-bar ' + (correct ? 'correct-fb' : 'wrong-fb');
+    if (!correct) {
+        setTimeout(function() {
+            if (fb.classList.contains('wrong-fb')) {
+                fb.textContent = '';
+                fb.className = 'feedback-bar';
+            }
+        }, 2000);
+    }
+}
+
+function showEndScreen() {
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('end-screen').classList.add('active');
+
+    var stars = 1;
+    if (mistakes === 0) stars = 3;
+    else if (mistakes <= 3) stars = 2;
+
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        if (i < stars) {
+            starsHtml += '<span class="star">\u2B50</span>';
+        } else {
+            starsHtml += '<span class="star" style="opacity:0.2">\u2B50</span>';
+        }
+    }
+    document.getElementById('stars-container').innerHTML = starsHtml;
+
+    var titles = {
+        3: '\u{1F389} Εξαιρετικά! Τα ήξερες όλα!',
+        2: '\u{1F44D} Πολύ καλά! Μπράβο!',
+        1: '\u{1F60A} Μπράβο για την προσπάθεια!'
+    };
+    document.getElementById('end-title').textContent = titles[stars];
+    document.getElementById('end-score').textContent = 'Βρήκες όλα τα σωστά αντικείμενα!';
+    document.getElementById('end-detail').textContent = 'Τοποθέτησες σωστά ' + items.length + ' αντικείμενα.';
+    document.getElementById('end-mistakes').textContent = 'Λάθη: ' + mistakes;
+}
+
+function restartGame() {
+    document.getElementById('end-screen').classList.remove('active');
+    document.getElementById('start-screen').classList.add('active');
+}
+</script>
+</body>
+</html>

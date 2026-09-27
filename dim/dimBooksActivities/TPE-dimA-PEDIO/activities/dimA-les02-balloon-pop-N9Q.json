@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σειρά",
+  "subtitle": "Μόνο λέξεις σχετικές με τη σειρά!",
+  "instruction": "Σπάσε μόνο λέξεις που έχουν σχέση με τη ΣΕΙΡΑ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Πρώτα", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπάντα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Μετά", "correct": true, "color": "#45B7D1" },
+    { "text": "Πίτσα", "correct": false, "color": "#96CEB4" },
+    { "text": "Τέλος", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάλα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Αρχή", "correct": true, "color": "#98D8C8" },
+    { "text": "Σκύλος", "correct": false, "color": "#F7DC6F" },
+    { "text": "Βήμα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κούπα", "correct": false, "color": "#85C1E9" }
+  ]
+}

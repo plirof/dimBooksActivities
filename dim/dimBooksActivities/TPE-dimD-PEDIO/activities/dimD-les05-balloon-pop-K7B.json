@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Επανάλαβε ώσπου",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για το Επανάλαβε ώσπου",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Σταματάει με συνθήκη", "correct": true, "color": "#4caf50" },
+    { "text": "Χρειάζεται ακριβές νούμερο", "correct": false, "color": "#f44336" },
+    { "text": "Συνθήκη = αλήθεια → σταματάει", "correct": true, "color": "#2196f3" },
+    { "text": "Συνθήκη = ψέματα → σταματάει", "correct": false, "color": "#ff9800" },
+    { "text": "Αγγίζει όριο = συνθήκη", "correct": true, "color": "#8bc34a" },
+    { "text": "Χρειάζεται υπολογισμό βημάτων", "correct": false, "color": "#9c27b0" },
+    { "text": "Βρίσκεται στην κατηγορία ελέγχου", "correct": true, "color": "#00bcd4" },
+    { "text": "Βρίσκεται στην κατηγορία κίνησης", "correct": false, "color": "#ff5722" },
+    { "text": "Δεν χρειάζεται να ξέρεις βήματα", "correct": true, "color": "#607d8b" },
+    { "text": "Μόνο για γνωστές επαναλήψεις", "correct": false, "color": "#e91e63" }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Βρες τα Λάθη: Χαρακτηριστικά Website",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "URL", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "η", "error": false},
+        {"text": "διεύθυνση", "error": false},
+        {"text": "του", "error": false},
+        {"text": "φυλλομετρητή.", "error": true, "correct": "δικτυακού τόπου", "feedback": "Το URL είναι η διεύθυνση του ΔΙΚΤΥΑΚΟΥ ΤΟΠΟΥ, όχι του φυλλομετρητή!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ιδιοκτήτης", "error": false},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Ο ιδιοκτήτης μπορεί να είναι εταιρεία, οργάνωση Ή άτομο!"},
+        {"text": "εταιρεία.", "error": true, "correct": "εταιρεία, οργάνωση ή άτομο", "feedback": "Ο ιδιοκτήτης μπορεί να είναι και οργάνωση ή άτομο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "μενού", "error": false},
+        {"text": "περιέχει", "error": false},
+        {"text": "εικόνες", "error": true, "correct": "συνδέσμους", "feedback": "Το μενού περιέχει ΣΥΝΔΕΣΜΟΥΣ που οδηγούν σε ιστοσελίδες!"},
+        {"text": "για", "error": false},
+        {"text": "πλοήγηση.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "γραμμική", "error": false},
+        {"text": "δομή", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "υποκατηγορίες.", "error": true, "correct": "σελίδες με τη σειρά", "feedback": "Η γραμμική δομή βλέπει σελίδες με τη ΣΕΙΡΑ, χωρίς υποκατηγορίες!"}
+      ]
+    }
+  ]
+}

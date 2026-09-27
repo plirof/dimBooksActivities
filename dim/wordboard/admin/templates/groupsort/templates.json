@@ -1,0 +1,163 @@
+{
+  "templates": [
+    {
+      "id": "groupsort_animals_001",
+      "name": "Animal Classification",
+      "description": "Sort animals by their type",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["animals", "classification", "science"],
+      "groups": ["Mammals", "Birds", "Fish"],
+      "items": [
+        {"text": "Dog", "group": "Mammals"},
+        {"text": "Cat", "group": "Mammals"},
+        {"text": "Cow", "group": "Mammals"},
+        {"text": "Eagle", "group": "Birds"},
+        {"text": "Parrot", "group": "Birds"},
+        {"text": "Penguin", "group": "Birds"},
+        {"text": "Shark", "group": "Fish"},
+        {"text": "Salmon", "group": "Fish"},
+        {"text": "Goldfish", "group": "Fish"}
+      ]
+    },
+    {
+      "id": "groupsort_animals_002",
+      "name": "Farm vs Wild Animals",
+      "description": "Sort animals into farm animals and wild animals",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["animals", "farms", "classification"],
+      "groups": ["Farm Animals", "Wild Animals"],
+      "items": [
+        {"text": "Cow", "group": "Farm Animals"},
+        {"text": "Horse", "group": "Farm Animals"},
+        {"text": "Chicken", "group": "Farm Animals"},
+        {"text": "Pig", "group": "Farm Animals"},
+        {"text": "Sheep", "group": "Farm Animals"},
+        {"text": "Lion", "group": "Wild Animals"},
+        {"text": "Tiger", "group": "Wild Animals"},
+        {"text": "Elephant", "group": "Wild Animals"},
+        {"text": "Monkey", "group": "Wild Animals"},
+        {"text": "Zebra", "group": "Wild Animals"}
+      ]
+    },
+    {
+      "id": "groupsort_food_001",
+      "name": "Food Groups",
+      "description": "Sort foods into their food groups",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["food", "nutrition", "health"],
+      "groups": ["Fruits", "Vegetables", "Protein"],
+      "items": [
+        {"text": "Apple", "group": "Fruits"},
+        {"text": "Banana", "group": "Fruits"},
+        {"text": "Orange", "group": "Fruits"},
+        {"text": "Carrot", "group": "Vegetables"},
+        {"text": "Broccoli", "group": "Vegetables"},
+        {"text": "Spinach", "group": "Vegetables"},
+        {"text": "Chicken", "group": "Protein"},
+        {"text": "Fish", "group": "Protein"},
+        {"text": "Eggs", "group": "Protein"}
+      ]
+    },
+    {
+      "id": "groupsort_shapes_001",
+      "name": "Shape Classification",
+      "description": "Sort shapes by their properties",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["shapes", "geometry", "math"],
+      "groups": ["With Corners", "Without Corners"],
+      "items": [
+        {"text": "Square", "group": "With Corners"},
+        {"text": "Triangle", "group": "With Corners"},
+        {"text": "Rectangle", "group": "With Corners"},
+        {"text": "Pentagon", "group": "With Corners"},
+        {"text": "Circle", "group": "Without Corners"},
+        {"text": "Oval", "group": "Without Corners"},
+        {"text": "Semi-circle", "group": "Without Corners"}
+      ]
+    },
+    {
+      "id": "groupsort_weather_001",
+      "name": "Weather Types",
+      "description": "Sort weather conditions",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["weather", "science", "nature"],
+      "groups": ["Sunny", "Rainy", "Windy"],
+      "items": [
+        {"text": "Sunny", "group": "Sunny"},
+        {"text": "Hot", "group": "Sunny"},
+        {"text": "Clear sky", "group": "Sunny"},
+        {"text": "Rainy", "group": "Rainy"},
+        {"text": "Stormy", "group": "Rainy"},
+        {"text": "Drizzle", "group": "Rainy"},
+        {"text": "Windy", "group": "Windy"},
+        {"text": "Breezy", "group": "Windy"},
+        {"text": "Gusty", "group": "Windy"}
+      ]
+    },
+    {
+      "id": "groupsort_transportation_001",
+      "name": "Land Water Air",
+      "description": "Sort vehicles by where they travel",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["transportation", "vehicles", "geography"],
+      "groups": ["Land Vehicles", "Water Vehicles", "Air Vehicles"],
+      "items": [
+        {"text": "Car", "group": "Land Vehicles"},
+        {"text": "Bus", "group": "Land Vehicles"},
+        {"text": "Train", "group": "Land Vehicles"},
+        {"text": "Bicycle", "group": "Land Vehicles"},
+        {"text": "Boat", "group": "Water Vehicles"},
+        {"text": "Ship", "group": "Water Vehicles"},
+        {"text": "Submarine", "group": "Water Vehicles"},
+        {"text": "Airplane", "group": "Air Vehicles"},
+        {"text": "Helicopter", "group": "Air Vehicles"},
+        {"text": "Hot Air Balloon", "group": "Air Vehicles"}
+      ]
+    },
+    {
+      "id": "groupsort_seasons_001",
+      "name": "Seasons and Weather",
+      "description": "Match weather with seasons",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["seasons", "weather", "nature"],
+      "groups": ["Spring", "Summer", "Autumn", "Winter"],
+      "items": [
+        {"text": "Flowers bloom", "group": "Spring"},
+        {"text": "Rain showers", "group": "Spring"},
+        {"text": "Hot and sunny", "group": "Summer"},
+        {"text": "Beach trips", "group": "Summer"},
+        {"text": "Falling leaves", "group": "Autumn"},
+        {"text": "Cool temperatures", "group": "Autumn"},
+        {"text": "Snow", "group": "Winter"},
+        {"text": "Cold temperatures", "group": "Winter"},
+        {"text": "Scarves and gloves", "group": "Winter"}
+      ]
+    },
+    {
+      "id": "groupsort_feelings_001",
+      "name": "Happy or Sad",
+      "description": "Sort emotions into positive and negative",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["feelings", "emotions", "vocabulary"],
+      "groups": ["Happy Feelings", "Sad Feelings"],
+      "items": [
+        {"text": "Happy", "group": "Happy Feelings"},
+        {"text": "Joyful", "group": "Happy Feelings"},
+        {"text": "Excited", "group": "Happy Feelings"},
+        {"text": "Proud", "group": "Happy Feelings"},
+        {"text": "Sad", "group": "Sad Feelings"},
+        {"text": "Angry", "group": "Sad Feelings"},
+        {"text": "Tired", "group": "Sad Feelings"},
+        {"text": "Worried", "group": "Sad Feelings"}
+      ]
+    }
+  ]
+}

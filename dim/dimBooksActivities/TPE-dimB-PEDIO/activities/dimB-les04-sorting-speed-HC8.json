@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Μοτίβο ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Είναι Μοτίβο ή Όχι;",
+  "categories": [
+    {"id": "motivo", "name": "Μοτίβο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι Μοτίβο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μπροστά Δεξιά Μπροστά Δεξιά", "category": "motivo"},
+    {"text": "Μπροστά Πίσω Αριστερά Κάτω", "category": "oxi"},
+    {"text": "Κόκκινο Μπλε Κόκκινο Μπλε", "category": "motivo"},
+    {"text": "Κόκκινο Πράσινο Τετράγωνο", "category": "oxi"},
+    {"text": "1 2 1 2 1 2", "category": "motivo"},
+    {"text": "5 8 3 1 9", "category": "oxi"},
+    {"text": "Πήδημα Κούνημα Πήδημα Κούνημα", "category": "motivo"},
+    {"text": "Κάτσε Σήκω Τρέξιμο", "category": "oxi"}
+  ],
+  "duration": 30
+}

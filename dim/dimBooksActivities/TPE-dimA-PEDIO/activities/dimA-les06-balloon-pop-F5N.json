@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: ScratchJr",
+  "subtitle": "Μόνο λέξεις από το ScratchJr!",
+  "instruction": "Σπάσε μόνο λέξεις που βλέπεις ΣΤΟ SCRATCHJR!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Ήρωας", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπάλα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εντολή", "correct": true, "color": "#45B7D1" },
+    { "text": "Κουτάλι", "correct": false, "color": "#96CEB4" },
+    { "text": "Σκηνικό", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Βήμα", "correct": true, "color": "#98D8C8" },
+    { "text": "Κούνια", "correct": false, "color": "#F7DC6F" },
+    { "text": "Πρόγραμμα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κουβέρτα", "correct": false, "color": "#85C1E9" }
+  ]
+}

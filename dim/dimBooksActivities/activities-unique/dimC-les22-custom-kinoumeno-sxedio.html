@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κινουμένο Σχέδιο</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fce7f3,#f472b6);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#9d174d,#ec4899);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#fdf2f8;border-radius:12px;border-left:4px solid #ec4899;padding:10px 14px;font-size:.85em;color:#831843;line-height:1.5}
+.info b{color:#9d174d}
+.animation-box{background:#fdf2f8;border-radius:16px;border:2px solid #fbcfe8;padding:16px}
+.anim-preview{width:200px;height:200px;margin:0 auto 16px;background:#fff;border-radius:14px;border:2px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:4em;position:relative;overflow:hidden}
+.frames-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 0;justify-content:center;flex-wrap:wrap}
+.frame-card{width:70px;height:70px;background:#fff;border:2px solid #fbcfe8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.8em;cursor:pointer;transition:all .2s;flex-shrink:0}
+.frame-card:hover{border-color:#ec4899;transform:translateY(-2px)}
+.frame-card.active{border-color:#ec4899;background:#fdf2f8;transform:scale(1.1);box-shadow:0 4px 12px rgba(236,72,153,.3)}
+.frame-card.empty{border-style:dashed;opacity:.5;font-size:1em;color:#d1d5db}
+.frame-card .frame-num{position:absolute;top:2px;left:4px;font-size:.5em;color:#9d174d;font-weight:700}
+.controls-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{padding:10px 22px;border:none;border-radius:50px;font-size:.85em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-play{background:linear-gradient(135deg,#9d174d,#ec4899);color:#fff}
+.btn-play:hover{transform:scale(1.05)}
+.btn-stop{background:#f0f0f0;color:#555}
+.btn-stop:hover{background:#e0e0e0}
+.btn-clear{background:#fef2f2;color:#dc2626}
+.btn-clear:hover{background:#fee2e2}
+.speed-control{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:8px;font-size:.85em;color:#9d174d;font-weight:600}
+.speed-control input[type="range"]{width:120px;accent-color:#ec4899}
+.speed-label{min-width:40px;text-align:center}
+.pos-picker{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.pos-btn{width:50px;height:50px;border:2px solid #fbcfe8;border-radius:10px;background:#fff;cursor:pointer;font-size:1.5em;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.pos-btn:hover{border-color:#ec4899;transform:translateY(-2px)}
+.pos-btn.selected{border-color:#ec4899;background:#fdf2f8;box-shadow:0 0 0 2px #fbcfe8}
+.explanation{background:#fff;border-radius:12px;border:2px solid #fbcfe8;padding:14px;margin-top:8px;font-size:.85em;color:#6b7280;line-height:1.6}
+.explanation b{color:#9d174d}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+@media(max-width:500px){.frame-card{width:55px;height:55px;font-size:1.4em}.anim-preview{width:160px;height:160px;font-size:3em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .frames-strip > * { margin: 3px; }
+  .controls-row > * { margin: 5px; }
+  .speed-control > * + * { margin-left: 8px; }
+  .pos-picker > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎬 Κινουμένο Σχέδιο</h1>
+<p>Δημιούργησε τη δική σου animation τοποθετώντας καρέ!</p>
+</div>
+<div class="area">
+<div class="info">💡 Ένα <b>κινουμένο σχέδιο</b> (animation) δημιουργείται όταν εναλλάσσονται γρήγορα πολλές εικόνες που διαφέρουν ελάχιστα μεταξύ τους. Κάθε εικόνα λέγεται <b>καρέ</b> (frame). Όσο πιο γρήγορα αλλάζουν τα καρέ, τόσο πιο ομαλή είναι η κίνηση!</div>
+<div class="animation-box">
+<div class="anim-preview" id="animPreview">🏃</div>
+<div style="text-align:center;font-size:.85em;color:#9d174d;font-weight:600;margin-bottom:8px">Επίλεξε καρέ:</div>
+<div class="frames-strip" id="framesStrip"></div>
+<div class="controls-row">
+<button class="btn btn-play" id="playBtn" onclick="playAnimation()">▶️ Αναπαραγωγή</button>
+<button class="btn btn-stop" id="stopBtn" onclick="stopAnimation()" style="display:none">⏹️ Στοπ</button>
+<button class="btn btn-clear" onclick="clearFrames()">🗑️ Καθαρισμός</button>
+</div>
+<div class="speed-control">
+<span>🐢 Αργά</span>
+<input type="range" id="speedSlider" min="1" max="10" value="4" oninput="updateSpeed()">
+<span>🚀 Γρήγορα</span>
+<span class="speed-label" id="speedLabel">4 fps</span>
+</div>
+</div>
+<div style="text-align:center;font-size:.85em;color:#9d174d;font-weight:600;margin-top:4px">Επίλεξε θέση για κάθε καρέ:</div>
+<div class="pos-picker" id="posPicker"></div>
+<div class="explanation" id="explanation"></div>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var positions=[
+{emoji:'🏃',label:'Αριστερά',x:10,y:50},
+{emoji:'🏃',label:'Κέντρο-Αριστερά',x:30,y:50},
+{emoji:'🏃',label:'Κέντρο',x:50,y:50},
+{emoji:'🏃',label:'Κέντρο-Δεξιά',x:70,y:50},
+{emoji:'🏃',label:'Δεξιά',x:90,y:50}
+];
+
+var totalFrames=8;
+var frames=[];
+var currentFrameIdx=0;
+var selectedPos=2;
+var playing=false;
+var playInterval=null;
+var fps=4;
+
+function initFrames(){
+frames=[];
+for(var i=0;i<totalFrames;i++){
+frames.push({pos:0,empty:true});
+}
+}
+
+function renderFrameStrip(){
+var strip=document.getElementById('framesStrip');
+strip.innerHTML='';
+for(var i=0;i<totalFrames;i++){
+var card=document.createElement('div');
+card.className='frame-card'+(i===currentFrameIdx?' active':'')+(frames[i].empty?' empty':'');
+card.dataset.idx=i;
+if(frames[i].empty){
+card.textContent=(i+1);
+}else{
+card.textContent=positions[frames[i].pos].emoji;
+card.style.fontSize='1.4em';
+}
+card.onclick=function(){selectFrame(parseInt(this.dataset.idx));};
+strip.appendChild(card);
+}
+}
+
+function renderPosPicker(){
+var picker=document.getElementById('posPicker');
+picker.innerHTML='';
+for(var i=0;i<positions.length;i++){
+var btn=document.createElement('div');
+btn.className='pos-btn'+(i===selectedPos?' selected':'');
+btn.dataset.posIdx=i;
+btn.textContent=positions[i].emoji;
+btn.title=positions[i].label;
+btn.onclick=function(){
+selectedPos=parseInt(this.dataset.posIdx);
+renderPosPicker();
+applyPosToFrame();
+};
+picker.appendChild(btn);
+}
+}
+
+function selectFrame(idx){
+currentFrameIdx=idx;
+renderFrameStrip();
+renderPreview();
+updateExplanation();
+}
+
+function applyPosToFrame(){
+frames[currentFrameIdx]={pos:selectedPos,empty:false};
+renderFrameStrip();
+renderPreview();
+checkAnimation();
+updateExplanation();
+}
+
+function renderPreview(){
+var preview=document.getElementById('animPreview');
+if(frames[currentFrameIdx].empty){
+preview.innerHTML='<span style="font-size:1.5em;color:#d1d5db">Καρέ '+(currentFrameIdx+1)+'</span>';
+}else{
+var p=positions[frames[currentFrameIdx].pos];
+preview.innerHTML='<span style="position:absolute;left:'+p.x+'%;top:'+p.y+'%;transform:translate(-50%,-50%)">'+p.emoji+'</span>';
+}
+}
+
+function checkAnimation(){
+var filled=0;
+for(var i=0;i<totalFrames;i++){
+if(!frames[i].empty)filled++;
+}
+if(filled>=4){
+document.getElementById('feedback').innerHTML='🎬 Ωραία! Έχεις '+filled+' καρέ. Πάτα ▶️ για να δεις το animation!';
+document.getElementById('feedback').className='feedback ok';
+}
+}
+
+function playAnimation(){
+var filledFrames=[];
+for(var i=0;i<totalFrames;i++){
+if(!frames[i].empty)filledFrames.push(i);
+}
+if(filledFrames.length<2){
+document.getElementById('feedback').innerHTML='⚠️ Χρειάζεσαι τουλάχιστον 2 καρέ!';
+document.getElementById('feedback').className='feedback ok';
+return;
+}
+playing=true;
+document.getElementById('playBtn').style.display='none';
+document.getElementById('stopBtn').style.display='inline-block';
+var idx=0;
+playInterval=setInterval(function(){
+var fi=filledFrames[idx];
+var p=positions[frames[fi].pos];
+var preview=document.getElementById('animPreview');
+preview.innerHTML='<span style="position:absolute;left:'+p.x+'%;top:'+p.y+'%;transform:translate(-50%,-50%);font-size:4em">'+p.emoji+'</span>';
+currentFrameIdx=fi;
+renderFrameStrip();
+idx++;
+if(idx>=filledFrames.length)idx=0;
+},1000/fps);
+}
+
+function stopAnimation(){
+playing=false;
+clearInterval(playInterval);
+document.getElementById('playBtn').style.display='inline-block';
+document.getElementById('stopBtn').style.display='none';
+renderPreview();
+}
+
+function clearFrames(){
+stopAnimation();
+initFrames();
+currentFrameIdx=0;
+selectedPos=2;
+renderFrameStrip();
+renderPosPicker();
+renderPreview();
+updateExplanation();
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+}
+
+function updateSpeed(){
+fps=parseInt(document.getElementById('speedSlider').value);
+document.getElementById('speedLabel').textContent=fps+' fps';
+if(playing){
+stopAnimation();
+playAnimation();
+}
+}
+
+function updateExplanation(){
+var filled=0;
+for(var i=0;i<totalFrames;i++)if(!frames[i].empty)filled++;
+var el=document.getElementById('explanation');
+var html='<b>📚 Τι μαθαίνουμε:</b><br>';
+if(filled===0){
+html+='Διάλεξε μια θέση για τον χαρακτήρα στο καρέ '+(currentFrameIdx+1)+'. Κάθε καρέ είναι μια εικόνα της animation!';
+}else if(filled<4){
+html+='Έχεις '+filled+' καρέ. Συνέχισε να προσθέτεις καρέ σε διαφορετικές θέσεις. Η κίνηση δημιουργείται από τη <b>διαφορά</b> μεταξύ των καρέ!';
+}else{
+html+='Έχεις '+filled+' καρέ! Πατώντας ▶️ τα καρέ εναλλάσσονται με <b>'+fps+' καρέ/δευτερόλεπτο (fps)</b>. Όσα περισσότερα fps, τόσο πιο γρήγορη η κίνηση! Δοκίμασε να αλλάξεις την ταχύτητα με το ρυθμιστικό.';
+}
+el.innerHTML=html;
+}
+
+initFrames();
+renderFrameStrip();
+renderPosPicker();
+renderPreview();
+updateExplanation();
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "title": "Κίνδυνοι σε περιγραφές",
+  "subtitle": "Ταίριαξε κάθε κίνδυνο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "hack",
+      "name": "HACKING",
+      "color": "#F44336"
+    },
+    {
+      "id": "phish",
+      "name": "PHISHING",
+      "color": "#FF9800"
+    },
+    {
+      "id": "malware",
+      "name": "MALWARE",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "cyber",
+      "name": "CYBERBULLYING",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🔓 Παραβίαση λογαριασμού",
+      "category": "hack"
+    },
+    {
+      "id": "item2",
+      "text": "🎧 Απατηλό email",
+      "category": "phish"
+    },
+    {
+      "id": "item3",
+      "text": "🦠 Ιός",
+      "category": "malware"
+    },
+    {
+      "id": "item4",
+      "text": "😡 Εκφοβισμός",
+      "category": "cyber"
+    },
+    {
+      "id": "item5",
+      "text": "💀 Ransomware",
+      "category": "malware"
+    },
+    {
+      "id": "item6",
+      "text": "📧 «Κερδίσατε!»",
+      "category": "phish"
+    }
+  ]
+}

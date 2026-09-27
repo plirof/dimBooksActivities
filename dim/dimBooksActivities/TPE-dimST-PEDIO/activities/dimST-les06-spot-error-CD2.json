@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Μάντεψε τον Αριθμό",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ο", "error": false },
+        { "text": "υπολογιστής", "error": false },
+        { "text": "επιλέγει", "error": false },
+        { "text": "έναν", "error": false },
+        { "text": "σταθερό", "error": true, "correct": "τυχαίο", "feedback": "Ο υπολογιστής επιλέγει τυχαίο αριθμό, όχι σταθερό" },
+        { "text": "αριθμό.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "μεταβλητή", "error": false },
+        { "text": "του", "error": false },
+        { "text": "μυστικού", "error": false },
+        { "text": "αριθμού", "error": false },
+        { "text": "πρέπει", "error": false },
+        { "text": "να", "error": false },
+        { "text": "φαίνεται", "error": true, "correct": "δεν πρέπει να φαίνεται", "feedback": "Ο μυστικός αριθμός δεν πρέπει να εμφανίζεται στη σκηνή" },
+        { "text": "στη", "error": false },
+        { "text": "σκηνή.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Φτιάχνουμε", "error": false },
+        { "text": "μία", "error": true, "correct": "δύο", "feedback": "Χρειαζόμαστε δύο μεταβλητές: τον μυστικό αριθμό και τις προσπάθειες" },
+        { "text": "μεταβλητή", "error": false },
+        { "text": "για", "error": false },
+        { "text": "το", "error": false },
+        { "text": "παιχνίδι.", "error": false }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false },
+        { "text": "αλγόριθμος", "error": false },
+        { "text": "γράφεται", "error": false },
+        { "text": "πάντα", "error": false },
+        { "text": "με", "error": false },
+        { "text": " εντολές", "error": false },
+        { "text": "Scratch.", "error": true, "correct": "απλά βήματα σε ανθρώπινη γλώσσα", "feedback": "Ο αλγόριθμος γράφεται σε ανθρώπινη γλώσσα, όχι σε Scratch" }
+      ]
+    }
+  ]
+}

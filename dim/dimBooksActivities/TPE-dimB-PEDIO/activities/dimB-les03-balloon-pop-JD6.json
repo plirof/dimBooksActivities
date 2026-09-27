@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εντολές",
+  "subtitle": "Μόνο τις σωστές εντολές!",
+  "instruction": "Σπάσε μόνο τις ΣΩΣΤΕΣ εντολές επανάληψης!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Επανάλαβε 4 φορές", "correct": true, "color": "#FF6B6B" },
+    { "text": "Τρέξε τυχαία", "correct": false, "color": "#4ECDC4" },
+    { "text": "Προχώρα 1 βήμα", "correct": true, "color": "#45B7D1" },
+    { "text": "Κοιμήσου", "correct": false, "color": "#96CEB4" },
+    { "text": "Στρίψε δεξιά", "correct": true, "color": "#FFEAA7" },
+    { "text": "Φάε παγωτό", "correct": false, "color": "#DDA0DD" },
+    { "text": "Πήγαινε μπροστά", "correct": true, "color": "#98D8C8" },
+    { "text": "Κάνε διάλειμμα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Επανάλαβε 2 φορές", "correct": true, "color": "#BB8FCE" },
+    { "text": "Παίξε με μπάλα", "correct": false, "color": "#85C1E9" }
+  ]
+}

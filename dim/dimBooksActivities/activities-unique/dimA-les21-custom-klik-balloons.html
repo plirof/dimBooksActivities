@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Κλικ στα μπαλόνια! 🎈</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #26c6da, #00acc1);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(0,172,193,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #00838f; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .game-scene {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 20px; margin-bottom: 16px;
+    position: relative; min-height: 320px;
+    overflow: hidden;
+  }
+  .scene-sky {
+    position: absolute; top:0;right:0;bottom:0;left:0;
+    background: linear-gradient(180deg, #e3f2fd, #bbdefb);
+    border-radius: 24px;
+  }
+  .balloons-container {
+    position: relative; z-index: 2;
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center; align-items: flex-end;
+    min-height: 280px; padding: 20px 10px;
+  }
+  .balloon {
+    font-size: 3.5rem; cursor: pointer;
+    transition: all .15s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .balloon .b-label {
+    font-size: .75rem; font-weight: 600; color: #666;
+    background: rgba(255,255,255,.8);
+    border-radius: 8px; padding: 2px 8px;
+    margin-top: 4px; white-space: nowrap;
+  }
+  .balloon:active { transform: scale(.9); }
+  .balloon.pop { animation: popBalloon .4s ease forwards; }
+  @keyframes popBalloon { 0%{transform:scale(1); opacity:1} 50%{transform:scale(1.3); opacity:.5} 100%{transform:scale(0); opacity:0} }
+  .balloon.wrong { animation: wobble .4s ease; }
+  @keyframes wobble { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} }
+  .balloon.hint-glow { box-shadow: 0 0 20px rgba(255,193,7,.6); border-radius: 50%; }
+  .action-reminder {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    z-index: 5; background: rgba(255,255,255,.9);
+    border-radius: 14px; padding: 8px 18px;
+    font-size: 1rem; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #26c6da, #00acc1);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(0,172,193,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:active { transform: scale(.95); }
+  .next-btn {
+    position: relative; z-index: 5;
+    display: none; margin: 12px auto 0;
+    border: none; border-radius: 16px;
+    padding: 12px 28px; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    color: #fff; box-shadow: 0 4px 14px rgba(67,160,71,.35);
+  }
+  .next-btn:active { transform: scale(.95); }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .balloon { font-size: 2.8rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .balloons-container > * { margin: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎈 Κλικ στα μπαλόνια!</h1>
+    <p>Σκάσε τα μπαλόνια με τη σωστή κίνηση</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Γύρος 1/4</span>
+  </div>
+  <div class="instructions" id="mainInstructions">
+    👆 Πάτησε τα μπαλόνια που λένε <strong>Μονό κλικ</strong> και μετά αυτά που λένε <strong>Διπλό κλικ</strong>!
+  </div>
+  <div id="gameArea">
+    <div class="game-scene">
+      <div class="scene-sky"></div>
+      <div class="action-reminder" id="actionReminder">🎯 Σκάσε τα Μονό κλικ!</div>
+      <div class="balloons-container" id="balloonsContainer"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextStage()">⭐ Συνέχεια!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Έσκασες όλα τα μπαλόνια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var levels = [
+    { target: false, label: 'Μονό κλικ', emoji: '👆' },
+    { target: true, label: 'Διπλό κλικ', emoji: '👆👆' },
+    { target: false, label: 'Μονό κλικ', emoji: '👆' },
+    { target: true, label: 'Διπλό κλικ', emoji: '👆👆' }
+  ];
+
+  var balloonWords = [
+    { text: 'Επιλογή', isDouble: false },
+    { text: 'Άνοιγμα', isDouble: true },
+    { text: 'Κουμπί', isDouble: false },
+    { text: 'Εφαρμογή', isDouble: true },
+    { text: 'Εικονίδιο', isDouble: false },
+    { text: 'Αρχείο', isDouble: true },
+    { text: 'Μία φορά', isDouble: false },
+    { text: 'Δύο φορές', isDouble: true },
+    { text: 'Πάτησε', isDouble: false },
+    { text: 'Άνοιξε', isDouble: true },
+    { text: 'Διάλεξε', isDouble: false },
+    { text: 'Εκκίνηση', isDouble: true }
+  ];
+
+  var currentLevel = 0;
+  var score = 0;
+  var popped = 0;
+  var totalInLevel = 0;
+  var mistakes = 0;
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    var lv = levels[currentLevel];
+    popped = 0; mistakes = 0;
+    document.getElementById('roundDisplay').textContent = 'Γύρος ' + (currentLevel+1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'none';
+
+    var reminder = document.getElementById('actionReminder');
+    reminder.innerHTML = '🎯 Σκάσε τα <strong>' + lv.label + '</strong> ' + lv.emoji;
+
+    var container = document.getElementById('balloonsContainer');
+    container.innerHTML = '';
+
+    var correctWords = balloonWords.filter(function(w) { return w.isDouble === lv.target; });
+    var wrongWords = balloonWords.filter(function(w) { return w.isDouble !== lv.target; });
+    var selected = [];
+    var correctPool = correctWords.slice();
+    shuffle(correctPool);
+    for (var i = 0; i < Math.min(4, correctPool.length); i++) {
+      selected.push({ text: correctPool[i].text, target: true });
+    }
+    var wrongPool = wrongWords.slice();
+    shuffle(wrongPool);
+    for (var i = 0; i < Math.min(2, wrongPool.length); i++) {
+      selected.push({ text: wrongPool[i].text, target: false });
+    }
+    shuffle(selected);
+    totalInLevel = 0;
+    for (var i = 0; i < selected.length; i++) {
+      if (selected[i].target) totalInLevel++;
+    }
+
+    var emojis = ['🔴', '🔵', '🟢', '🟡', '🟠', '🟣'];
+    for (var i = 0; i < selected.length; i++) {
+      var ball = document.createElement('div');
+      ball.className = 'balloon';
+      ball.setAttribute('data-target', selected[i].target ? '1' : '0');
+      ball.innerHTML = '🎈<span class="b-label">' + emojis[i] + ' ' + selected[i].text + '</span>';
+      ball.addEventListener('click', function() { popBalloon(this); });
+      container.appendChild(ball);
+    }
+  }
+
+  function popBalloon(el) {
+    if (el.classList.contains('pop')) return;
+    var isTarget = el.getAttribute('data-target') === '1';
+    if (isTarget) {
+      el.classList.add('pop');
+      popped++;
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      if (popped >= totalInLevel) {
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback show true';
+        fb.textContent = '✅ Μπράβο! Βρήκες όλα τα ' + levels[currentLevel].label + '!';
+        document.getElementById('nextBtn').style.display = 'block';
+      }
+    } else {
+      el.classList.add('wrong');
+      setTimeout(function() { el.classList.remove('wrong'); }, 500);
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Αυτό δεν είναι ' + levels[currentLevel].label + '!';
+      setTimeout(function() { fb.style.display = 'none'; }, 800);
+    }
+  }
+
+  function nextStage() {
+    currentLevel++;
+    loadLevel();
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = levels.length * 4;
+    var e, ti, m;
+    if (score >= t-2) { e = '🏆'; ti = 'Τέλεια!'; m = 'Ξέρεις πότε να κάνεις μονό και πότε διπλό κλικ!' }
+    else if (score >= t-4) { e = '🎉'; ti = 'Μπράβο!'; m = 'Τα πήγες πολύ καλά!' }
+    else if (score >= t/2) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά!' }
+    else { e = '💪'; ti = 'Καλή αρχή!'; m = 'Μονό = επιλογή, Διπλό = άνοιγμα!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Έσκασες ' + score + ' μπαλόνια! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

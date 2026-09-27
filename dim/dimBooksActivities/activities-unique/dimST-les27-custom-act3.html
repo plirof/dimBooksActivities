@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σχόλιο Βίντεο + Timestamp</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.player-section{margin-bottom:20px}
+.video-display{background:#111;border-radius:14px;overflow:hidden;position:relative}
+.video-screen{height:260px;display:flex;align-items:center;justify-content:center;font-size:4em;color:#fff;position:relative}
+.video-overlay{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.play-btn-overlay{width:70px;height:70px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.8em;transition:all .2s;border:none;color:#fff}
+.play-btn-overlay:hover{background:rgba(255,255,255,.35);transform:scale(1.1)}
+.video-info-bar{padding:12px 16px;background:rgba(0,0,0,.8);color:#fff;display:flex;justify-content:space-between;align-items:center;font-size:.85em}
+.video-info-bar .title{font-weight:700}
+.video-info-bar .views{color:#ccc}
+.timeline{position:relative;height:6px;background:#333;margin:0;border-radius:0 0 14px 14px;overflow:hidden;cursor:pointer}
+.timeline-progress{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);transition:width .1s linear;border-radius:0 3px 3px 0}
+.timeline-markers{position:absolute;top:0;left:0;right:0;height:100%}
+.timestamp-marker{position:absolute;width:3px;height:100%;background:#fbbc04;cursor:pointer;transition:transform .2s}
+.timestamp-marker:hover{transform:scaleX(3)}
+.controls{display:flex;align-items:center;gap:12px;padding:12px 0}
+.ctrl-btn{width:40px;height:40px;border-radius:50%;border:none;background:#f0f0ff;color:#667eea;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ctrl-btn:hover{background:#667eea;color:#fff}
+.time-display{font-weight:700;color:#667eea;font-size:.95em;min-width:100px}
+.add-comment-btn{margin-left:auto;padding:8px 18px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.85em;transition:all .2s}
+.add-comment-btn:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(102,126,234,.3)}
+.add-comment-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.comment-form{display:none;padding:16px;background:#f8f9ff;border-radius:12px;margin-bottom:16px;border:2px solid #667eea;animation:fadeIn .3s ease}
+.comment-form.active{display:block}
+.comment-form textarea{width:100%;padding:10px;border:2px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9em;min-height:60px;resize:vertical;margin-bottom:10px}
+.comment-form textarea:focus{outline:none;border-color:#667eea}
+.comment-form .form-actions{display:flex;justify-content:space-between;align-items:center}
+.comment-form .form-actions span{font-size:.85em;color:#667eea;font-weight:600}
+.comment-form button{padding:8px 18px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.85em}
+.btn-send{background:#667eea;color:#fff}
+.btn-send:hover{background:#764ba2}
+.btn-cancel{background:#eee;color:#666}
+.comments-section h3{color:#333;margin-bottom:12px;font-size:1em}
+.comments-list{display:flex;flex-direction:column;gap:10px;max-height:350px;overflow-y:auto}
+.comment{padding:12px;background:#fafafa;border-radius:10px;border-left:4px solid #667eea;transition:all .2s}
+.comment:hover{background:#f5f5ff}
+.comment.highlight{border-left-color:#fbbc04;background:#fffdf0}
+.comment .comment-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.comment .comment-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;color:#fff;font-weight:700}
+.comment .comment-author{font-weight:700;font-size:.85em;color:#333}
+.comment .comment-time{font-size:.72em;color:#999;margin-left:auto;cursor:pointer}
+.comment .comment-time:hover{color:#667eea}
+.comment .comment-timestamp{font-size:.78em;color:#667eea;font-weight:600;background:#f0f0ff;padding:2px 8px;border-radius:10px}
+.comment .comment-body{font-size:.88em;color:#555;line-height:1.4;margin-top:4px}
+.comments-count{font-size:.85em;color:#888;font-weight:600}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .controls > * + * { margin-left: 12px; }
+  .comments-list > * + * { margin-top: 10px; }
+  .comment .comment-header > * + * { margin-left: 8px; }
+  .g61f8_0 > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💬 Σχόλια Βίντεο με Timestamp</h1>
+<p class="subtitle">Παρακολούθησε το βίντεο και πρόσθεσε σχόλια σε συγκεκριμένη στιγμή!</p>
+<div class="container">
+<div class="player-section">
+<div class="video-display">
+<div class="video-screen">
+🎬
+<div class="video-overlay">
+<button class="play-btn-overlay" id="playBtn" onclick="togglePlay()">▶</button>
+</div>
+</div>
+<div class="timeline" onclick="seekTimeline(event)">
+<div class="timeline-progress" id="timelineProgress" style="width:0%"></div>
+<div class="timeline-markers" id="timelineMarkers"></div>
+</div>
+<div class="video-info-bar">
+<span class="title">🎬 Μαθαίνω Προγραμματισμό με το Scratch</span>
+<span class="views">👁 15.2K προβολές</span>
+</div>
+</div>
+<div class="controls">
+<button class="ctrl-btn" onclick="togglePlay()" id="ctrlPlayBtn">▶</button>
+<button class="ctrl-btn" onclick="skipTime(-5)">⏪</button>
+<button class="ctrl-btn" onclick="skipTime(5)">⏩</button>
+<span class="time-display" id="timeDisplay">0:00 / 3:00</span>
+<button class="add-comment-btn" id="addCommentBtn" onclick="showCommentForm()">💬 Προσθήκη Σχολίου</button>
+</div>
+</div>
+<div class="comment-form" id="commentForm">
+<textarea id="commentText" placeholder="Γράψε το σχόλιό σου..."></textarea>
+<div class="form-actions">
+<span id="formTimestamp">⏱ Στιγμή: 0:00</span>
+<div class="g61f8_0" style="display:flex;gap:8px">
+<button class="btn-cancel" onclick="hideCommentForm()">Ακύρωση</button>
+<button class="btn-send" onclick="submitComment()">📤 Αποστολή</button>
+</div>
+</div>
+</div>
+<div class="comments-section">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3>💬 Σχόλια</h3>
+<span class="comments-count" id="commentsCount"></span>
+</div>
+<div class="comments-list" id="commentsList"></div>
+</div>
+</div>
+<script>
+let currentTime=0;
+const totalDuration=180;
+let isPlaying=false;
+let playInterval=null;
+const userColors=['#4285f4','#ea4335','#34a853','#fbbc04','#9c27b0','#ff6d00'];
+let comments=[
+{author:"Μαρία Κ.",avatar:"Μ",avatarColor:"#4285f4",time:25,text:"Σε αυτό το σημείο εξηγεί πολύ καλά τις βασικές εντολές!",ts:25},
+{author:"Γιάννης Π.",avatar:"Γ",avatarColor:"#ea4335",time:60,text:"Πολύ ωραίο! Ακριβώς αυτό έψαχνα.",ts:60},
+{author:"Ελένη Δ.",avatar:"Ε",avatarColor:"#34a853",time:90,text:"Μπράβο! Καταπληκτική εξήγηση των loops.",ts:90},
+{author:"Κώστας Μ.",avatar:"Κ",avatarColor:"#fbbc04",time:120,text:"Αυτό το κομμάτι με τα variables είναι το πιο σημαντικό!",ts:120},
+{author:"Νίκος Σ.",avatar:"Ν",avatarColor:"#9c27b0",time:150,text:"Τέλεια! Τώρα μπορώ να φτιάξω το δικό μου παιχνίδι 🎮",ts:150}
+];
+function formatTime(seconds){
+const m=Math.floor(seconds/60);
+const s=Math.floor(seconds%60);
+return m+':'+(s<10?'0':'')+s;
+}
+function updateDisplay(){
+document.getElementById('timeDisplay').textContent=formatTime(currentTime)+' / '+formatTime(totalDuration);
+document.getElementById('timelineProgress').style.width=(currentTime/totalDuration*100)+'%';
+document.getElementById('addCommentBtn').textContent='💬 Σχόλιο @ '+formatTime(currentTime);
+}
+function togglePlay(){
+isPlaying=!isPlaying;
+document.getElementById('playBtn').textContent=isPlaying?'⏸':'▶';
+document.getElementById('ctrlPlayBtn').textContent=isPlaying?'⏸':'▶';
+if(isPlaying){
+playInterval=setInterval(()=>{
+currentTime+=0.1;
+if(currentTime>=totalDuration){currentTime=totalDuration;togglePlay();}
+updateDisplay();
+},100);
+}else{
+clearInterval(playInterval);
+}
+}
+function skipTime(delta){currentTime=Math.max(0,Math.min(totalDuration,currentTime+delta));updateDisplay();}
+function seekTimeline(e){
+const rect=e.currentTarget.getBoundingClientRect();
+currentTime=(e.clientX-rect.left)/rect.width*totalDuration;
+updateDisplay();
+}
+function showCommentForm(){
+document.getElementById('commentForm').classList.add('active');
+document.getElementById('formTimestamp').textContent='⏱ Στιγμή: '+formatTime(Math.floor(currentTime));
+document.getElementById('commentText').value='';
+document.getElementById('commentText').focus();
+}
+function hideCommentForm(){document.getElementById('commentForm').classList.remove('active')}
+function submitComment(){
+const text=document.getElementById('commentText').value.trim();
+if(!text)return;
+comments.push({author:"Εσύ",avatar:"Ε",avatarColor:userColors[Math.floor(Math.random()*userColors.length)],time:Date.now(),text,ts:Math.floor(currentTime)});
+hideCommentForm();
+renderComments();
+renderMarkers();
+}
+function renderComments(){
+const list=document.getElementById('commentsList');
+list.innerHTML='';
+const sorted=[...comments].sort((a,b)=>a.ts-b.ts);
+sorted.forEach(c=>{
+const div=document.createElement('div');
+div.className='comment'+(c.author==='Εσύ'?' highlight':'');
+div.innerHTML=`<div class="comment-header"><div class="comment-avatar" style="background:${c.avatarColor}">${c.avatar}</div><span class="comment-author">${c.author}</span><span class="comment-timestamp" onclick="jumpTo(${c.ts})">⏱ ${formatTime(c.ts)}</span></div><div class="comment-body">${c.text}</div>`;
+list.appendChild(div);
+});
+document.getElementById('commentsCount').textContent=comments.length+' σχόλια';
+}
+function renderMarkers(){
+const container=document.getElementById('timelineMarkers');
+container.innerHTML='';
+comments.forEach(c=>{
+const marker=document.createElement('div');
+marker.className='timestamp-marker';
+marker.style.left=(c.ts/totalDuration*100)+'%';
+marker.title=formatTime(c.ts)+' - '+c.author;
+marker.onclick=(e)=>{e.stopPropagation();jumpTo(c.ts);};
+container.appendChild(marker);
+});
+}
+function jumpTo(ts){currentTime=ts;updateDisplay();}
+renderComments();
+renderMarkers();
+updateDisplay();
+</script>
+</body>
+</html>

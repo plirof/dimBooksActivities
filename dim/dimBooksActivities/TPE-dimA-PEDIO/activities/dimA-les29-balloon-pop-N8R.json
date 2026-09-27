@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σχήματα",
+  "subtitle": "Μόνο τα σωστά σχήματα!",
+  "instruction": "Σπάσε μόνο τα ΣΧΗΜΑΤΑ που μπορείς να ζωγραφίσεις!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κύκλος", "correct": true, "color": "#FF6B6B" },
+    { "text": "Καρέκλα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Τετράγωνο", "correct": true, "color": "#45B7D1" },
+    { "text": "Κουτάλι", "correct": false, "color": "#96CEB4" },
+    { "text": "Έλλειψη", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κούνια", "correct": false, "color": "#DDA0DD" },
+    { "text": "Ορθογώνιο", "correct": true, "color": "#98D8C8" },
+    { "text": "Γάτα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ευθεία", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μπάλα", "correct": false, "color": "#85C1E9" }
+  ]
+}

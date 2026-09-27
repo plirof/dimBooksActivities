@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Ανάλυση Δεδομένων",
+  "subtitle": "Πιάσε τις σωστές λέξεις της ανάλυσης δεδομένων",
+  "instructions": "Πιάσε τις σωστές έννοιες και άσε τις λάθος να πέσουν",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Ερώτημα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ανάλυση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Συχνότητα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Διάγραμμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Big Data",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Machine Learning",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

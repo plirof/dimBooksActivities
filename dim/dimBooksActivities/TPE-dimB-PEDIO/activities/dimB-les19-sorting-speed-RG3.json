@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Συσκευές ή Εφαρμογές;",
+  "subtitle": "Ταξινόμησε: είναι συσκευή ή εφαρμογή;",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία",
+  "categories": [
+    { "id": "siskeui", "name": "Συσκευή", "color": "#2196F3", "key": "A" },
+    { "id": "efarmogi", "name": "Εφαρμογή", "color": "#f44336", "key": "L" }
+  ],
+  "items": [
+    { "text": "Υπολογιστής", "category": "siskeui" },
+    { "text": "Φυλλομετρητής", "category": "efarmogi" },
+    { "text": "Ταμπλέτα", "category": "siskeui" },
+    { "text": "CmapTools", "category": "efarmogi" },
+    { "text": "Κινητό τηλέφωνο", "category": "siskeui" },
+    { "text": "Ζωγραφική", "category": "efarmogi" },
+    { "text": "Διαδραστικός πίνακας", "category": "siskeui" },
+    { "text": "Browser", "category": "efarmogi" },
+    { "text": "Φορητός υπολογιστής", "category": "siskeui" },
+    { "text": "Επεξεργαστής κειμένου", "category": "efarmogi" }
+  ],
+  "duration": 30
+}

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δικτυακός Τόπος ή Βιβλίο;</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef9c3,#fde047);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#a16207,#ca8a04);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px}
+.info{background:#fef9c3;border-radius:12px;border-left:4px solid #ca8a04;padding:10px 14px;font-size:.85em;color:#713f12;line-height:1.5;margin-bottom:12px}
+.info b{color:#a16207}
+.game-area{background:#fffbeb;border-radius:16px;border:2px solid #fde68a;padding:16px;min-height:300px}
+.sort-area{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sort-col{flex:1;min-width:200px;background:#fff;border-radius:14px;border:2px solid #fde68a;padding:12px;min-height:200px}
+.sort-col h3{text-align:center;padding:8px;border-radius:10px;font-size:.95em;margin-bottom:10px}
+.col-web h3{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.col-book h3{background:linear-gradient(135deg,#b45309,#d97706);color:#fff}
+.sort-slots{min-height:120px;display:flex;flex-direction:column;gap:6px}
+.sort-slot{min-height:44px;border:2px dashed #e2e8f0;border-radius:10px;transition:all .3s;display:flex;align-items:center;justify-content:center;padding:6px}
+.sort-slot.filled{background:#f0fdf4;border-color:#22c55e;border-style:solid}
+.sort-slot.drag-over{border-color:#3b82f6;background:#dbeafe;transform:scale(1.02)}
+.pool-area{background:#fff;border-radius:12px;border:2px dashed #fde68a;padding:12px}
+.pool-area h3{text-align:center;color:#a16207;margin-bottom:8px;font-size:.9em}
+.item-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:40px}
+.item-card{padding:8px 16px;background:linear-gradient(135deg,#fff,#fef9c3);border:2px solid #fde68a;border-radius:50px;cursor:grab;font-size:.85em;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.06);user-select:none;touch-action:none}
+.item-card:hover{transform:translateY(-2px);border-color:#ca8a04}
+.item-card:active{cursor:grabbing}
+.item-card.dragging{opacity:.4}
+.item-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#a16207,#ca8a04);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(161,98,7,.35)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;min-height:36px;margin-top:10px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+@media(max-width:550px){.sort-col{min-width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .sort-area > * { margin: 6px; }
+  .sort-slots > * + * { margin-top: 6px; }
+  .item-pool > * { margin: 4px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📖🌐 Δικτυακός Τόπος ή Βιβλίο;</h1>
+<p>Ταξινόμησε κάθε χαρακτηριστικό στη σωστή κατηγορία!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>Θυμάμαι:</b> Ένα βιβλίο έχει σελίδες που διαβάζονται με σειρά. Ένας <b>δικτυακός τόπος</b> έχει πολλές <b>ιστοσελίδες</b> που μπορείς να δεις όποια θέλεις, όχι απαραίτητα με σειρά, και περιέχει συνδέσμους.</div>
+<div class="game-area">
+<div class="sort-area">
+<div class="sort-col col-web">
+<h3>🌐 Δικτυακός Τόπος</h3>
+<div class="sort-slots" id="webSlots"></div>
+</div>
+<div class="sort-col col-book">
+<h3>📖 Βιβλίο</h3>
+<div class="sort-slots" id="bookSlots"></div>
+</div>
+</div>
+<div class="pool-area">
+<h3>Σύρε κάθε χαρακτηριστικό στη σωστή κατηγορία</h3>
+<div class="item-pool" id="itemPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkSort()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var items=[
+{text:'Οι σελίδες συνδέονται με συνδέσμους',target:'web'},
+{text:'Διαβάζεις τις σελίδες με σειρά',target:'book'},
+{text:'Χρειάζεται φυλλομετρητή (browser)',target:'web'},
+{text:'Χρειάζεται σύνδεση στο διαδίκτυο',target:'web'},
+{text:'Μπορείς να δεις όποια σελίδα θέλεις',target:'web'},
+{text:'Οι σελίδες είναι τυπωμένες σε χαρτί',target:'book'},
+{text:'Περιέχει ιστοσελίδες',target:'web'},
+{text:'Έχει εξώφυλλο και οπισθόφυλλο',target:'book'},
+{text:'Οι σελίδες έχουν URL/διεύθυνση',target:'web'},
+{text:'Μπορείς να το πάρεις μαζί σου παντού',target:'book'},
+{text:'Οι σελίδες ενημερώνονται εύκολα',target:'web'},
+{text:'Έχει σελιδοδείκτη',target:'book'},
+{text:'Έχει μενού πλοήγησης',target:'web'},
+{text:'Γράφτηκε από έναν συγγραφέα',target:'book'}
+];
+
+var webSlotCount=7;
+var bookSlotCount=7;
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initSlots(){
+var webContainer=document.getElementById('webSlots');
+var bookContainer=document.getElementById('bookSlots');
+webContainer.innerHTML='';
+bookContainer.innerHTML='';
+for(var i=0;i<webSlotCount;i++){
+var slot=document.createElement('div');
+slot.className='sort-slot';
+slot.dataset.slotId='web-'+i;
+slot.dataset.target='web';
+webContainer.appendChild(slot);
+}
+for(var i=0;i<bookSlotCount;i++){
+var slot=document.createElement('div');
+slot.className='sort-slot';
+slot.dataset.slotId='book-'+i;
+slot.dataset.target='book';
+bookContainer.appendChild(slot);
+}
+}
+
+function initPool(){
+var pool=document.getElementById('itemPool');
+pool.innerHTML='';
+var order=[];
+for(var i=0;i<items.length;i++)order.push(i);
+shuffle(order);
+for(var i=0;i<order.length;i++){
+var idx=order[i];
+var item=items[idx];
+var card=document.createElement('div');
+card.className='item-card';
+card.setAttribute('draggable','true');
+card.dataset.itemIdx=idx;
+card.dataset.target=item.target;
+card.textContent=item.text;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',el.dataset.itemIdx);
+}
+
+function dragEnd(e,el){
+el.classList.remove('dragging');
+dragItem=null;
+clearDragOver();
+}
+
+function touchStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){
+var slot=elUnder.classList.contains('sort-slot')?elUnder:elUnder.closest('.sort-slot');
+if(slot&&!slot.classList.contains('filled')){
+slot.classList.add('drag-over');
+dragItem.dataset.targetSlot=slot.dataset.slotId;
+}else{
+dragItem.dataset.targetSlot='';
+}
+}else{
+dragItem.dataset.targetSlot='';
+}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');
+clearDragOver();
+if(el.dataset.targetSlot){
+tryPlace(el,el.dataset.targetSlot);
+}
+el.dataset.targetSlot='';
+}
+
+document.addEventListener('dragstart',function(e){
+if(!e.target.classList.contains('item-card'))e.preventDefault();
+});
+document.addEventListener('dragover',function(e){
+if(dragItem&&(e.target.classList.contains('sort-slot')||e.target.closest('.sort-slot')))e.preventDefault();
+});
+document.addEventListener('drop',function(e){
+e.preventDefault();
+if(!dragItem)return;
+var slot=e.target.classList.contains('sort-slot')?e.target:e.target.closest('.sort-slot');
+if(!slot||slot.classList.contains('filled'))return;
+tryPlace(dragItem,slot.dataset.slotId);
+});
+
+function tryPlace(card,slotId){
+var idx=parseInt(card.dataset.itemIdx);
+var item=items[idx];
+var parts=slotId.split('-');
+var target=parts[0];
+if(item.target!==target){
+showFeedback('❌ Λάθος! «'+item.text+'» δεν ανήκει εδώ.',false);
+return;
+}
+placements[slotId]=idx;
+card.classList.add('placed');
+var slotEl=document.querySelector('.sort-slot[data-slot-id="'+slotId+'"]');
+slotEl.classList.add('filled');
+slotEl.textContent=item.text;
+slotEl.dataset.placedIdx=idx;
+showFeedback('✅ Μπράβο! Το τοποθέτησες σωστά!',true);
+var totalPlaced=Object.keys(placements).length;
+document.getElementById('checkBtn').disabled=totalPlaced<items.length;
+}
+
+function checkSort(){
+var webCorrect=0;
+var bookCorrect=0;
+var webTotal=0;
+var bookTotal=0;
+var slots=document.querySelectorAll('.sort-slot');
+for(var i=0;i<slots.length;i++){
+var slot=slots[i];
+if(slot.classList.contains('filled')){
+var idx=parseInt(slot.dataset.placedIdx);
+var target=slot.dataset.target;
+if(items[idx].target===target){
+if(target==='web')webCorrect++;
+else bookCorrect++;
+}
+if(target==='web')webTotal++;
+else bookTotal++;
+}
+}
+var total=webTotal+bookCorrect;
+var pct=Math.round((webCorrect+bookCorrect)/items.length*100);
+if(pct===100){
+showFeedback('🎉 Τέλεια! Όλα τα χαρακτηριστικά ταξινομήθηκαν σωστά! ✅',true);
+}else{
+showFeedback('🔍 '+(webCorrect+bookCorrect)+'/'+items.length+' σωστά. Δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},3000);
+}
+
+function clearDragOver(){
+var slots=document.querySelectorAll('.sort-slot.drag-over');
+for(var i=0;i<slots.length;i++)slots[i].classList.remove('drag-over');
+}
+
+function resetGame(){
+placements={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+document.getElementById('checkBtn').disabled=true;
+initSlots();
+initPool();
+}
+
+initSlots();
+initPool();
+document.getElementById('checkBtn').disabled=true;
+</script>
+</body>
+</html>

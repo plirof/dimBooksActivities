@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: e-me και ΠΣΔ",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "eme", "name": "e-me", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "schoolpress", "name": "Schoolpress", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Υποβολή εργασίας", "category": "eme"},
+    {"text": "Δημοσίευση άρθρου", "category": "schoolpress"},
+    {"text": "Αξιολόγηση απάντησης", "category": "eme"},
+    {"text": "Ψηφιακό περιοδικό", "category": "schoolpress"},
+    {"text": "Προθεσμία παράδοσης", "category": "eme"},
+    {"text": "Σχολική εφημερίδα", "category": "schoolpress"},
+    {"text": "Ανατροφοδότηση δασκάλου", "category": "eme"},
+    {"text": "Γράψιμο άρθρου", "category": "schoolpress"},
+    {"text": "Ανέβασμα αρχείων", "category": "eme"},
+    {"text": "Δημιουργία περιοδικού", "category": "schoolpress"}
+  ],
+  "duration": 30
+}

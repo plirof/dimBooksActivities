@@ -1,0 +1,19 @@
+{
+  "title": "Φίλος ή Εχθρός;",
+  "subtitle": "Σύρε κάθε στοιχείο στο σωστό αντικείμενο",
+  "categories": [
+    { "id": "starfish", "name": "Αστερίας (Φίλος)", "color": "#4CAF50" },
+    { "id": "pufferfish", "name": "Φουσκωτό Ψάρι (Εχθρός)", "color": "#F44336" },
+    { "id": "both", "name": "Και τα δύο", "color": "#607D8B" }
+  ],
+  "items": [
+    { "id": "s1", "text": "⭐ Αυξάνει πόντους κατά 1", "category": "starfish" },
+    { "id": "s2", "text": "❤️ Μειώνει ζωές κατά 1", "category": "pufferfish" },
+    { "id": "s3", "text": "🔊 Παίζει ήχο collect", "category": "starfish" },
+    { "id": "s4", "text": "🐟 Ακολουθεί την Έλλη (ολίσθηση)", "category": "pufferfish" },
+    { "id": "s5", "text": "🙈 Εμφανίζεται / Εξαφανίζεται", "category": "starfish" },
+    { "id": "s6", "text": "🔀 Τυχαία θέση στον βυθό", "category": "starfish" },
+    { "id": "s7", "text": "📏 Μέγεθος 50", "category": "both" },
+    { "id": "s8", "text": "🔄 Επαναληπτική συμπεριφορά", "category": "both" }
+  ]
+}

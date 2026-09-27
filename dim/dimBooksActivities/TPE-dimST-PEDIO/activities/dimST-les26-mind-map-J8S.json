@@ -1,0 +1,31 @@
+{
+  "title": "Νοητικός Χάρτης: Τηλεκπαίδευση",
+  "subtitle": "Τοποθέτησε τις λέξεις-κλειδιά στους σωστούς κλάδους",
+  "centralTopic": "Τηλεκπαίδευση",
+  "branches": [
+    {
+      "id": "sharing",
+      "label": "Διαμοιρασμός",
+      "color": "#e91e63",
+      "keywords": ["Share", "Screen", "Application", "Presenter", "Stop sharing"]
+    },
+    {
+      "id": "annotations",
+      "label": "Επισημείωση",
+      "color": "#2196f3",
+      "keywords": ["Εργαλειοθήκη", "Σχήματα", "Κείμενο", "Annotations", "Επισήμανση"]
+    },
+    {
+      "id": "whiteboard",
+      "label": "Ασπροπίνακας",
+      "color": "#4caf50",
+      "keywords": ["Whiteboard", "Σχεδίαση", "Αποθήκευση", "Κοινόχρηστος πίνακας"]
+    },
+    {
+      "id": "platforms",
+      "label": "Πλατφόρμες",
+      "color": "#ff9800",
+      "keywords": ["Webex", "e-me", "Σύγχρονη εκπαίδευση", "Τηλεδιάσκεψη"]
+    }
+  ]
+}

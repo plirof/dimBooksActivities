@@ -1,0 +1,20 @@
+{
+  "title": "Υποπρογράμματα Αλεξίας",
+  "subtitle": "Σύρε κάθε εντολή στο σωστό υποπρόγραμμα",
+  "categories": [
+    { "id": "dance", "name": "χορός", "color": "#E91E63" },
+    { "id": "cartwheel", "name": "ρόδα", "color": "#4CAF50" },
+    { "id": "back_cartwheel", "name": "ανάποδη ρόδα", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "d1", "text": "👕 Επόμενη ενδυμασία", "category": "dance" },
+    { "id": "d2", "text": "⏱️ Περίμενε (1 / Ρυθμός) δευτερόλεπτα", "category": "dance" },
+    { "id": "d3", "text": "🔄 Επανάλαβε μερικές φορές", "category": "dance" },
+    { "id": "c1", "text": "↻ Στρίψε δεξιά 15°", "category": "cartwheel" },
+    { "id": "c2", "text": "🔄 Επανάλαβε 24 φορές", "category": "cartwheel" },
+    { "id": "b1", "text": "↺ Στρίψε αριστερά 15°", "category": "back_cartwheel" },
+    { "id": "b2", "text": "🔄 Επανάλαβε 24 φορές", "category": "back_cartwheel" },
+    { "id": "b3", "text": "⬅️ Πλήκτρο αριστερού βέλους", "category": "back_cartwheel" },
+    { "id": "c3", "text": "➡️ Πλήκτρο δεξιού βέλους", "category": "cartwheel" }
+  ]
+}

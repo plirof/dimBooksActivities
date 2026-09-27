@@ -1,0 +1,58 @@
+{
+  "title": "Μορφοποιήσεις",
+  "subtitle": "Ταίριαξε κάθε μορφοποίηση στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "rotate",
+      "name": "ΠΕΡΙΣΤΡΟΦΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "size",
+      "name": "ΜΕΓΕΘΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "wrap",
+      "name": "ΑΝΑΔΙΠΛΩΣΗ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "orient",
+      "name": "ΠΡΟΣΑΝΑΤΟΛΙΣΜΟΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🔄 90°",
+      "category": "rotate"
+    },
+    {
+      "id": "item2",
+      "text": "🔍 150%",
+      "category": "size"
+    },
+    {
+      "id": "item3",
+      "text": "📜 Wrap",
+      "category": "wrap"
+    },
+    {
+      "id": "item4",
+      "text": "📄 Αριστερό",
+      "category": "orient"
+    },
+    {
+      "id": "item5",
+      "text": "🔄 180°",
+      "category": "rotate"
+    },
+    {
+      "id": "item6",
+      "text": "📃 Οριζόντιο",
+      "category": "orient"
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάξε animation: 4 ενδυμασίες + ταχύτητα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);min-height:100vh;display:flex;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;padding:30px}
+h1{text-align:center;color:#1e8449;font-size:1.5em;margin-bottom:20px}
+.frames-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+.frame-card{background:#dfe6e9;border-radius:14px;padding:10px;cursor:pointer;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.1);transition:transform .15s,box-shadow .15s}
+.frame-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.frame-card.active{border:3px solid #00b894;background:#e0f7e9}
+.frame-card canvas{display:block;border-radius:8px;image-rendering:pixelated}
+.frame-card .label{font-size:.8em;color:#666;margin-top:4px;font-weight:600}
+.preview-area{text-align:center;margin:20px 0}
+.preview-area h3{color:#555;margin-bottom:10px}
+.preview-canvas-wrap{display:inline-block;background:#2d3436;border-radius:16px;padding:12px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+#previewCanvas{display:block;border-radius:10px;image-rendering:pixelated}
+.frame-counter{text-align:center;font-size:1.1em;font-weight:700;color:#636e72;margin-top:8px}
+.slider-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:15px 0;flex-wrap:wrap}
+.slider-row label{font-weight:600;color:#333}
+.slider-row input[type=range]{width:200px;accent-color:#00b894}
+.slider-row .speed-val{font-weight:700;color:#00b894}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+button{padding:12px 28px;border:none;border-radius:14px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s}
+button:active{transform:scale(.96)}
+.btn-play{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff}
+.btn-stop{background:linear-gradient(135deg,#e17055,#d63031);color:#fff;display:none}
+.editor-panel{background:#f8f9fa;border-radius:14px;padding:16px;margin:15px 0;display:none}
+.editor-panel h4{color:#555;margin-bottom:10px;text-align:center}
+.pixel-grid{display:inline-grid;grid-gap:0;border:2px solid #bbb;border-radius:6px}
+.pixel-cell{width:20px;height:20px;cursor:pointer;border:1px solid #ddd;transition:background .1s}
+.pixel-cell.filled{background:#2d3436}
+.info-box{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff;border-radius:14px;padding:14px;text-align:center;font-size:.95em;margin-top:15px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .frames-row > * { margin: 6px; }
+  .slider-row > * { margin: 6px; }
+  .btn-row > * { margin: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎬 Φτιάξε το δικό σου animation! 🎨</h1>
+
+<div class="frames-row" id="framesRow"></div>
+
+<div class="preview-area">
+<h3>👁️ Προεπισκόπηση</h3>
+<div class="preview-canvas-wrap">
+<canvas id="previewCanvas" width="160" height="200"></canvas>
+</div>
+<div class="frame-counter" id="frameCounter">Ενδυμασία 1/4</div>
+</div>
+
+<div class="slider-row">
+<label>Ταχύτητα: αργά</label>
+<input type="range" id="speedSlider" min="1" max="10" value="5">
+<label>γρήγορα</label>
+<span class="speed-val" id="speedVal">5</span>
+</div>
+
+<div class="btn-row">
+<button class="btn-play" id="playBtn" onclick="togglePlay()">▶ Παίξε!</button>
+<button class="btn-stop" id="stopBtn" onclick="stopAnim()">⏸ Σταμάτα!</button>
+</div>
+
+<div class="editor-panel" id="editorPanel">
+<h4>✏️ Επεξεργασία Ενδυμασίας <span id="editLabel">1</span></h4>
+<div style="text-align:center">
+<div class="pixel-grid" id="pixelGrid"></div>
+</div>
+<div style="text-align:center;margin-top:8px">
+<button onclick="clearFrame()" style="background:linear-gradient(135deg,#636e72,#b2bec3);color:#fff;font-size:.9em;padding:8px 18px">🗑️ Καθάρισμα</button>
+</div>
+</div>
+
+<div class="info-box">
+💡 Το animation είναι αλλαγή ενδυμασιών σε ταχύτητα!<br>
+Κάνε κλικ σε ένα καρέ για να το επεξεργαστείς.
+</div>
+</div>
+
+<script>
+var COLS=8,ROWS=10,CELL=20;
+var frames=[];
+var curFrame=0,playing=false,playInterval=null,editFrame=-1;
+
+var defaultFrames=[
+[
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,0,1,1,0,0,0],
+[0,1,1,1,1,1,1,0],
+[0,0,0,1,1,0,0,0],
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,1,0,0,1,0,0]
+],
+[
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,0,1,1,0,0,0],
+[1,1,1,1,1,1,1,1],
+[0,0,0,1,1,0,0,0],
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,1,0,0,1,0,0]
+],
+[
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,0,1,1,0,0,0],
+[1,0,0,1,1,0,0,1],
+[1,0,0,1,1,0,0,1],
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,1,0,0,1,0,0]
+],
+[
+[0,0,0,1,1,0,0,0],
+[0,0,1,1,1,1,0,0],
+[0,0,1,0,0,1,0,0],
+[0,0,0,1,1,0,0,0],
+[0,0,0,1,1,0,0,0],
+[0,1,1,1,1,1,1,0],
+[1,0,0,1,1,0,0,1],
+[0,0,1,0,0,1,0,0],
+[0,1,0,0,0,0,1,0],
+[0,1,0,0,0,0,1,0]
+]
+];
+
+function deepCopy(a){return a.map(function(r){return r.slice()})}
+
+for(var i=0;i<4;i++) frames.push(deepCopy(defaultFrames[i]));
+
+function drawFrameOnCanvas(cvs,data,cellSize){
+var c=cvs.getContext('2d');
+cvs.width=COLS*cellSize;cvs.height=ROWS*cellSize;
+c.fillStyle='#fff';c.fillRect(0,0,cvs.width,cvs.height);
+for(var r=0;r<ROWS;r++){
+for(var col=0;col<COLS;col++){
+if(data[r][col]){
+c.fillStyle='#2d3436';
+c.fillRect(col*cellSize,r*cellSize,cellSize,cellSize);
+}
+}
+}
+}
+
+function buildFrameCards(){
+var row=document.getElementById('framesRow');row.innerHTML='';
+for(var i=0;i<4;i++){
+var card=document.createElement('div');
+card.className='frame-card'+(i===curFrame?' active':'');
+card.setAttribute('data-idx',i);
+var fc=document.createElement('canvas');
+drawFrameOnCanvas(fc,frames[i],12);
+card.appendChild(fc);
+var lbl=document.createElement('div');lbl.className='label';
+lbl.textContent='Καρέ '+(i+1);
+card.appendChild(lbl);
+card.onclick=(function(idx){return function(){editFrameClick(idx)}})(i);
+row.appendChild(card);
+}
+}
+
+function editFrameClick(idx){
+if(playing) return;
+editFrame=idx;
+document.getElementById('editorPanel').style.display='block';
+document.getElementById('editLabel').textContent=idx+1;
+buildPixelGrid();
+}
+
+function buildPixelGrid(){
+var grid=document.getElementById('pixelGrid');grid.innerHTML='';
+grid.style.gridTemplateColumns='repeat('+COLS+', '+CELL+'px)';
+var data=frames[editFrame];
+for(var r=0;r<ROWS;r++){
+for(var c=0;c<COLS;c++){
+var cell=document.createElement('div');
+cell.className='pixel-cell'+(data[r][c]?' filled':'');
+cell.setAttribute('data-r',r);cell.setAttribute('data-c',c);
+cell.onclick=function(){
+var rr=parseInt(this.getAttribute('data-r'));
+var cc=parseInt(this.getAttribute('data-c'));
+frames[editFrame][rr][cc]=frames[editFrame][rr][cc]?0:1;
+this.classList.toggle('filled');
+buildFrameCards();
+drawPreview();
+};
+grid.appendChild(cell);
+}
+}
+}
+
+function clearFrame(){
+if(editFrame<0) return;
+for(var r=0;r<ROWS;r++) for(var c=0;c<COLS;c++) frames[editFrame][r][c]=0;
+buildPixelGrid();
+buildFrameCards();
+drawPreview();
+}
+
+function drawPreview(){
+var pvs=document.getElementById('previewCanvas');
+drawFrameOnCanvas(pvs,frames[curFrame],20);
+document.getElementById('frameCounter').textContent='Ενδυμασία '+(curFrame+1)+'/4';
+}
+
+function togglePlay(){
+if(playing){stopAnim();return}
+playing=true;
+document.getElementById('playBtn').style.display='none';
+document.getElementById('stopBtn').style.display='inline-block';
+document.getElementById('editorPanel').style.display='none';
+editFrame=-1;
+var speed=parseInt(document.getElementById('speedSlider').value);
+var ms=Math.max(50,600-speed*55);
+playInterval=setInterval(function(){
+curFrame=(curFrame+1)%4;
+drawPreview();
+buildFrameCards();
+},ms);
+}
+
+function stopAnim(){
+playing=false;
+if(playInterval){clearInterval(playInterval);playInterval=null}
+document.getElementById('playBtn').style.display='inline-block';
+document.getElementById('stopBtn').style.display='none';
+}
+
+document.getElementById('speedSlider').addEventListener('input',function(){
+document.getElementById('speedVal').textContent=this.value;
+if(playing){
+stopAnim();
+togglePlay();
+}
+});
+
+buildFrameCards();
+drawPreview();
+</script>
+</body>
+</html>

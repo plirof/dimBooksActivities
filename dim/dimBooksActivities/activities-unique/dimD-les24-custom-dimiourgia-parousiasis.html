@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δημιουργία Παρουσίασης</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.instructions {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border-left: 4px solid #667eea;
+}
+.instructions-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 10px;
+font-size: 1.1rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.steps-list {
+color: #555;
+line-height: 1.8;
+}
+.slide-creator {
+background: linear-gradient(135deg, #f5f7fa, #e8ecf3);
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 25px;
+}
+.slide-preview {
+background: white;
+border-radius: 10px;
+padding: 20px;
+min-height: 200px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.slide-title-area {
+margin-bottom: 20px;
+}
+.slide-subtitle-area {
+margin-bottom: 20px;
+}
+.slide-image-area {
+background: #e0e0e0;
+border-radius: 10px;
+padding: 20px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px dashed #aaa;
+}
+.slide-image-area:hover {
+border-color: #667eea;
+background: #f0f0f0;
+}
+.form-group {
+margin-bottom: 15px;
+}
+.form-label {
+display: block;
+margin-bottom: 8px;
+font-weight: bold;
+color: #333;
+}
+.form-input {
+width: 100%;
+padding: 12px 15px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+.form-input:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.image-selection {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+grid-gap: 10px;
+margin-top: 15px;
+}
+.image-option {
+background: white;
+border-radius: 10px;
+padding: 10px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid #ddd;
+}
+.image-option:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.image-option.selected {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.image-icon {
+font-size: 2rem;
+margin-bottom: 5px;
+}
+.image-name {
+font-size: 0.75rem;
+color: #666;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 25px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.success {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.error {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.checklist {
+text-align: left;
+margin-top: 15px;
+padding: 15px;
+background: rgba(255,255,255,0.5);
+border-radius: 10px;
+}
+.checklist-item {
+padding: 8px 0;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.checklist-item.correct {
+color: #155724;
+}
+.checklist-item.wrong {
+color: #721c24;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .instructions-title > * + * { margin-left: 10px; }
+  .checklist-item > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Δημιουργία Παρουσίασης</h1>
+<p class="subtitle">Δημιουργήστε την πρώτη σας παρουσίαση ακολουθώντας τις οδηγίες!</p>
+
+<div class="container">
+<div class="instructions">
+<div class="instructions-title">📋 Οδηγίες για τη διαφάνεια τίτλου</div>
+<div class="steps-list">
+1. Στο πεδίο <strong>Τίτλος</strong> γράψτε «Η πρώτη μας παρουσίαση»<br>
+2. Στο πεδίο <strong>Υπότιτλος</strong> γράψτε το ονοματεπώνυμό σας<br>
+3. Μην ξεχάσετε να αποθηκεύσετε την παρουσίαση!
+</div>
+</div>
+
+<div class="slide-creator">
+<h3 style="color: #333; margin-bottom: 20px; text-align: center;">🎨 Προεπισκόπηση Διαφάνειας</h3>
+
+<div class="slide-preview">
+<div class="slide-title-area">
+<div class="form-label">Τίτλος:</div>
+<input type="text" class="form-input" id="slideTitle" placeholder="Γράψτε τον τίτλο..." value="">
+</div>
+
+<div class="slide-subtitle-area">
+<div class="form-label">Υπότιτλος:</div>
+<input type="text" class="form-input" id="slideSubtitle" placeholder="Γράψτε το ονοματεπώνυμό σας..." value="">
+</div>
+</div>
+
+<button class="btn" onclick="checkSlide()">✓ Ελέγξτε τη Διαφάνεια</button>
+</div>
+
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<div class="mascot">📽️</div>
+
+<script>
+function checkSlide() {
+const title = document.getElementById('slideTitle').value.trim();
+const subtitle = document.getElementById('slideSubtitle').value.trim();
+
+let checklist = [];
+
+if (title.length > 0) {
+checklist.push({
+text: 'Τίτλος: ' + title,
+correct: true
+});
+} else {
+checklist.push({
+text: 'Δεν γράψατε τίτλο',
+correct: false
+});
+}
+
+if (title === 'Η πρώτη μας παρουσίαση') {
+checklist.push({
+text: 'Ο τίτλος είναι «Η πρώτη μας παρουσίαση» ✓',
+correct: true
+});
+} else if (title.length > 0) {
+checklist.push({
+text: 'Ο τίτλος πρέπει να είναι «Η πρώτη μας παρουσίαση»',
+correct: false
+});
+}
+
+if (subtitle.length > 0) {
+checklist.push({
+text: 'Υπότιτλος: ' + subtitle,
+correct: true
+});
+} else {
+checklist.push({
+text: 'Δεν γράψατε υπότιτλο',
+correct: false
+});
+}
+
+const resultBox = document.getElementById('resultBox');
+const allCorrect = checklist.length >= 3 && checklist.every(item => item.correct);
+
+resultBox.className = 'result-box show ' + (allCorrect ? 'success' : 'error');
+
+let html = '<h3>' + (allCorrect ? '🎉 Εξαιρετικό!' : '❌ Λάθος!') + '</h3>';
+
+if (allCorrect) {
+html += '<p>Η διαφάνεια τίτλου ετοιμάστηκε σωστά!</p>';
+html += '<p>Συγχαρητήρια, ακολουθήσατε όλες τις οδηγίες!</p>';
+html += '<p style="margin-top: 10px;">💡 Μην ξεχάσετε να πατήσετε «Αποθήκευση»!</p>';
+} else {
+html += '<p>Η διαφάνεια δεν ετοιμάστηκε σωστά. Ελέγξτε:</p>';
+}
+
+html += '<div class="checklist">';
+checklist.forEach(item => {
+html += '<div class="checklist-item ' + (item.correct ? 'correct' : 'wrong') + '">' + item.text + '</div>';
+});
+html += '</div>';
+
+if (!allCorrect) {
+html += '<p style="margin-top: 15px;">Διορθώστε τα λάθη και προσπαθήστε ξανά!</p>';
+}
+
+resultBox.innerHTML = html;
+}
+</script>
+</body>
+</html>

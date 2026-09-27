@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Λαβύρινθος",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για τον λαβύρινθο",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Συνδυάζουμε πολλές πίστες", "correct": true, "color": "#4caf50" },
+    { "text": "Μόνο μία πίστα", "correct": false, "color": "#f44336" },
+    { "text": "Κολάμε με ταινία στο πάτωμα", "correct": true, "color": "#2196f3" },
+    { "text": "Βάζουμε σε κάθετη επιφάνεια", "correct": false, "color": "#ff9800" },
+    { "text": "Το ρομπότ βρίσκει έξοδο", "correct": true, "color": "#8bc34a" },
+    { "text": "Το ρομπότ κολλάει στον τοίχο", "correct": false, "color": "#9c27b0" },
+    { "text": "Οποιοδήποτε σχήμα λαβύρινθου", "correct": true, "color": "#00bcd4" },
+    { "text": "Μόνο τετράγωνο σχήμα", "correct": false, "color": "#ff5722" },
+    { "text": "Μαύρη γραμμή στο τέλος = στάση", "correct": true, "color": "#607d8b" },
+    { "text": "Δεν σταματάει ποτέ", "correct": false, "color": "#e91e63" }
+  ]
+}

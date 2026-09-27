@@ -1,0 +1,53 @@
+{
+  "title": "Τύποι ↔ υπολογισμός",
+  "subtitle": "Ταίριαξε κάθε τύπο στη σωστή λειτουργία",
+  "categories": [
+    {
+      "id": "sum",
+      "name": "ΑΘΡΟΙΣΜΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "add",
+      "name": "ΠΡΟΣΘΕΣΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "mult",
+      "name": "ΠΟΛΛΑΠΛΑΣΙΑΣΜΟΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "=SUM(B2:B10)",
+      "category": "sum"
+    },
+    {
+      "id": "item2",
+      "text": "=A1+B1",
+      "category": "add"
+    },
+    {
+      "id": "item3",
+      "text": "=C3*2",
+      "category": "mult"
+    },
+    {
+      "id": "item4",
+      "text": "=SUM(A1:A5)",
+      "category": "sum"
+    },
+    {
+      "id": "item5",
+      "text": "=D1+D2",
+      "category": "add"
+    },
+    {
+      "id": "item6",
+      "text": "=E1*3",
+      "category": "mult"
+    }
+  ]
+}

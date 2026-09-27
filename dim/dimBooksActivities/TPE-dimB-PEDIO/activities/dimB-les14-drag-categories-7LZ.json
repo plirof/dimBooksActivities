@@ -1,0 +1,53 @@
+{
+  "title": "Διαδίκτυο ή Παγκόσμιος Ιστός",
+  "subtitle": "Τι ανήκει στο Διαδίκτυο και τι στον Ιστό;",
+  "categories": [
+    {
+      "id": "internet",
+      "name": "ΔΙΑΔΙΚΤΥΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "web",
+      "name": "ΠΑΓΚΟΣΜΙΟΣ ΙΣΤΟΣ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Email",
+      "category": "internet"
+    },
+    {
+      "id": "item2",
+      "text": "💬 Chat",
+      "category": "internet"
+    },
+    {
+      "id": "item3",
+      "text": "🌐 Ιστοσελίδες",
+      "category": "web"
+    },
+    {
+      "id": "item4",
+      "text": "📹 Βιντεοκλήση",
+      "category": "internet"
+    },
+    {
+      "id": "item5",
+      "text": "🔍 Αναζήτηση Google",
+      "category": "web"
+    },
+    {
+      "id": "item6",
+      "text": "📁 FTP",
+      "category": "internet"
+    },
+    {
+      "id": "item7",
+      "text": "📰 Ειδήσεις online",
+      "category": "web"
+    }
+  ]
+}

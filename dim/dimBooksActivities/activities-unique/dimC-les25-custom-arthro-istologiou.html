@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Άρθρα Ιστολογίου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#f59e0b);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#9a3412,#ea580c);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#fff7ed;border-radius:12px;border-left:4px solid #ea580c;padding:10px 14px;font-size:.85em;color:#7c2d12;line-height:1.5}
+.info b{color:#9a3412}
+.editor-area{background:#fff7ed;border-radius:16px;border:2px solid #fed7aa;padding:16px}
+.editor-area h3{color:#9a3412;font-size:1em;margin-bottom:12px;text-align:center}
+.article-preview{background:#fff;border-radius:14px;border:2px solid #e2e8f0;overflow:hidden;margin-bottom:14px}
+.ap-header{padding:14px 18px;border-bottom:1px solid #e2e8f0}
+.ap-header .ap-title{font-size:1.1em;font-weight:700;color:#1e293b}
+.ap-meta{font-size:.75em;color:#94a3b8;margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
+.ap-body{padding:14px 18px;font-size:.9em;color:#374151;line-height:1.7;min-height:80px}
+.ap-body b{color:#1e293b}
+.ap-body i{color:#6b7280}
+.ap-tags{padding:8px 18px;border-top:1px solid #f1f5f9;display:flex;gap:6px;flex-wrap:wrap}
+.ap-tag{font-size:.75em;padding:3px 10px;background:#fff7ed;color:#9a3412;border-radius:20px;border:1px solid #fed7aa}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tool-btn{width:36px;height:36px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:1em;transition:all .2s;display:flex;align-items:center;justify-content:center;font-weight:700}
+.tool-btn:hover{border-color:#ea580c;background:#fff7ed}
+.tool-btn.active{border-color:#ea580c;background:#fed7aa;color:#9a3412}
+.form-group{margin-bottom:10px}
+.form-group label{font-size:.85em;font-weight:600;color:#9a3412;display:block;margin-bottom:4px}
+.form-group input,.form-group textarea{width:100%;padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.85em;font-family:inherit}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#ea580c}
+.form-group textarea{resize:vertical;min-height:80px}
+.parts-checklist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.part-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:10px;border:2px solid #fed7aa;font-size:.85em}
+.part-item .pi-check{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em}
+.part-item .pi-check.done{background:#22c55e;color:#fff}
+.part-item .pi-check.pending{background:#e2e8f0;color:#94a3b8}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-publish{background:linear-gradient(135deg,#9a3412,#ea580c);color:#fff}
+.btn-publish:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(154,52,18,.35)}
+.btn-publish:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.toolbar{gap:4px}.tool-btn{width:32px;height:32px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .ap-meta > * { margin: 5px; }
+  .ap-tags > * { margin: 3px; }
+  .toolbar > * { margin: 3px; }
+  .parts-checklist > * + * { margin-top: 8px; }
+  .part-item > * + * { margin-left: 8px; }
+  .controls > * + * { margin-left: 12px; }
+  @media(max-width:500px){
+    .toolbar > * { margin: 2px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>✍️ Γράψε ένα Άρθρο για το Ιστολόγιο</h1>
+<p>Μάθε τα μέρη ενός άρθρου και γράψε το δικό σου!</p>
+</div>
+<div class="area">
+<div class="info">💡 Κάθε <b>άρθρο</b> στο ιστολόγιο έχει: <b>τίτλο</b>, <b>περιεχόμενο</b> (κειμενο), <b>ετικέτες</b> (tags), <b>κατηγορία</b> και <b>ημερομηνία</b>. Μπορούμε να μορφοποιούμε το κείμενο με <b>έντονα</b> (bold) και <i>πλάγια</i> (italic).</div>
+<div class="editor-area">
+<h3>🔧 Εργαλειοθήκη Συγγραφέα</h3>
+<div class="parts-checklist" id="checklist">
+<div class="part-item"><div class="pi-check pending" id="chkTitle">☐</div>Τίτλος άρθρου</div>
+<div class="part-item"><div class="pi-check pending" id="chkContent">☐</div>Περιεχόμενο (τουλάχιστον 2 προτάσεις)</div>
+<div class="part-item"><div class="pi-check pending" id="chkFormat">☐</div>Μορφοποίηση (έντονα ή πλάγια)</div>
+<div class="part-item"><div class="pi-check pending" id="chkTags">☐</div>Ετικέτες (tags)</div>
+<div class="part-item"><div class="pi-check pending" id="chkCategory">☐</div>Κατηγορία</div>
+</div>
+<div class="article-preview" id="articlePreview">
+<div class="ap-header">
+<div class="ap-title" id="previewTitle">Τίτλος άρθρου...</div>
+<div class="ap-meta">
+<span id="previewDate">📅 —</span>
+<span id="previewCategory">📁 —</span>
+</div>
+</div>
+<div class="ap-body" id="previewBody"><span style="color:#94a3b8;font-style:italic">Γράψε το περιεχόμενο του άρθρου σου...</span></div>
+<div class="ap-tags" id="previewTags"></div>
+</div>
+<div class="form-group">
+<label>📌 Τίτλος άρθρου:</label>
+<input type="text" id="articleTitle" placeholder="π.χ. Η εκδρομή μας στο μουσείο" oninput="updatePreview()">
+</div>
+<div class="form-group">
+<label>✍️ Περιεχόμενο:</label>
+<div class="toolbar">
+<div class="tool-btn" id="btnBold" onclick="insertFormat('bold')" title="Έντονα"><b>B</b></div>
+<div class="tool-btn" id="btnItalic" onclick="insertFormat('italic')" title="Πλάγια"><i>I</i></div>
+</div>
+<textarea id="articleContent" placeholder="Γράψε εδώ το άρθρο σου... Χρησιμοποίησε **κείμενο** για έντονα και __κείμενο__ για πλάγια." oninput="updatePreview()" rows="5"></textarea>
+</div>
+<div class="form-group">
+<label>🏷️ Ετικέτες (tags) — χώρισε με κόμμα:</label>
+<input type="text" id="articleTags" placeholder="π.χ. εκδρομή, μουσείο, project" oninput="updatePreview()">
+</div>
+<div class="form-group">
+<label>📁 Κατηγορία:</label>
+<select id="articleCategory" onchange="updatePreview()">
+<option value="">— Επίλεξε κατηγορία —</option>
+<option value="Σχολείο">🏫 Σχολείο</option>
+<option value="Project">🔬 Project</option>
+<option value="Διασκέδαση">🎮 Διασκέδαση</option>
+<option value="Αθλητισμός">⚽ Αθλητισμός</option>
+<option value="Τέχνη">🎨 Τέχνη</option>
+</select>
+</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-publish" id="publishBtn" onclick="publishArticle()" disabled>🚀 Δημοσίευση Άρθρου</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+function updatePreview(){
+var title=document.getElementById('articleTitle').value.trim();
+var content=document.getElementById('articleContent').value;
+var tags=document.getElementById('articleTags').value.trim();
+var category=document.getElementById('articleCategory').value;
+
+document.getElementById('previewTitle').textContent=title||'Τίτλος άρθρου...';
+document.getElementById('previewCategory').textContent=category?'📁 '+category:'📁 —';
+
+var now=new Date();
+var dateStr=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
+document.getElementById('previewDate').textContent='📅 '+dateStr;
+
+if(content){
+var formatted=formatText(content);
+document.getElementById('previewBody').innerHTML=formatted;
+}else{
+document.getElementById('previewBody').innerHTML='<span style="color:#94a3b8;font-style:italic">Γράψε το περιεχόμενο του άρθρου σου...</span>';
+}
+
+var tagsContainer=document.getElementById('previewTags');
+tagsContainer.innerHTML='';
+if(tags){
+var tagList=tags.split(',').map(function(t){return t.trim();}).filter(function(t){return t;});
+for(var i=0;i<tagList.length;i++){
+var span=document.createElement('span');
+span.className='ap-tag';
+span.textContent='#'+tagList[i];
+tagsContainer.appendChild(span);
+}
+}
+
+updateChecklist(title,content,tags,category);
+updatePublishBtn();
+}
+
+function formatText(text){
+text=text.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+text=text.replace(/__(.+?)__/g,'<i>$1</i>');
+var paragraphs=text.split('\n');
+var html='';
+for(var i=0;i<paragraphs.length;i++){
+if(paragraphs[i].trim())html+='<p style="margin-bottom:8px">'+paragraphs[i]+'</p>';
+}
+return html;
+}
+
+function insertFormat(type){
+var textarea=document.getElementById('articleContent');
+var start=textarea.selectionStart;
+var end=textarea.selectionEnd;
+var text=textarea.value;
+var selected=text.substring(start,end);
+var marker=type==='bold'?'**':'__';
+var newText=text.substring(0,start)+marker+(selected||'κείμενο')+marker+text.substring(end);
+textarea.value=newText;
+textarea.focus();
+textarea.setSelectionRange(start+marker.length,start+marker.length+(selected||'κείμενο').length);
+updatePreview();
+}
+
+function updateChecklist(title,content,tags,category){
+var hasTitle=title.length>0;
+var hasContent=content.trim().split(/[.!?]/).filter(function(s){return s.trim().length>0;}).length>=2;
+var hasFormat=(content.indexOf('**')!==-1)||(content.indexOf('__')!==-1);
+var hasTags=tags.length>0;
+var hasCategory=category.length>0;
+
+setCheck('chkTitle',hasTitle);
+setCheck('chkContent',hasContent);
+setCheck('chkFormat',hasFormat);
+setCheck('chkTags',hasTags);
+setCheck('chkCategory',hasCategory);
+}
+
+function setCheck(id,done){
+var el=document.getElementById(id);
+if(done){el.textContent='✓';el.classList.add('done');el.classList.remove('pending');}
+else{el.textContent='☐';el.classList.remove('done');el.classList.add('pending');}
+}
+
+function updatePublishBtn(){
+var title=document.getElementById('articleTitle').value.trim();
+var content=document.getElementById('articleContent').value.trim();
+var tags=document.getElementById('articleTags').value.trim();
+var category=document.getElementById('articleCategory').value;
+var hasContent=content.split(/[.!?]/).filter(function(s){return s.trim().length>0;}).length>=2;
+var hasFormat=(content.indexOf('**')!==-1)||(content.indexOf('__')!==-1);
+document.getElementById('publishBtn').disabled=!(title&&hasContent&&tags&&category&&hasFormat);
+}
+
+function publishArticle(){
+var title=document.getElementById('articleTitle').value.trim();
+var content=document.getElementById('articleContent').value;
+var tags=document.getElementById('articleTags').value.trim();
+var category=document.getElementById('articleCategory').value;
+var formatted=formatText(content);
+
+document.getElementById('previewBody').innerHTML='<div style="text-align:center;padding:16px"><div style="font-size:2em">🎉</div><h3 style="color:#9a3412;margin:8px 0">Το άρθρο σου δημοσιεύθηκε!</h3><p style="color:#64748b;font-size:.9em;line-height:1.6"><b>📌 Τίτλος:</b> '+title+'<br><b>📁 Κατηγορία:</b> '+category+'<br><b>🏷️ Ετικέτες:</b> '+tags+'</p><p style="color:#22c55e;font-size:.85em;margin-top:8px">✅ Το άρθρο σου έχει τίτλο, περιεχόμενο με μορφοποίηση, ετικέτες και κατηγορία!</p></div>';
+
+document.querySelectorAll('.form-group').forEach(function(el){el.style.display='none';});
+document.querySelector('.toolbar').style.display='none';
+document.getElementById('publishBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Μπράβο! Έμαθες να γράφεις άρθρα με τίτλο, μορφοποίηση, ετικέτες και κατηγορία!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+document.getElementById('articleTitle').value='';
+document.getElementById('articleContent').value='';
+document.getElementById('articleTags').value='';
+document.getElementById('articleCategory').value='';
+document.querySelectorAll('.form-group').forEach(function(el){el.style.display='';});
+document.querySelector('.toolbar').style.display='flex';
+document.getElementById('publishBtn').style.display='';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+updatePreview();
+}
+
+updatePreview();
+</script>
+</body>
+</html>

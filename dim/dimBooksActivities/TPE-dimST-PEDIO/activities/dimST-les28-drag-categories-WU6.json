@@ -1,0 +1,63 @@
+{
+  "title": "Υπηρεσίες gov.gr",
+  "subtitle": "Ταίριαξε κάθε υπηρεσία στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "fyp",
+      "name": "E-ΦΥΠ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "pharm",
+      "name": "E-ΕΦΗΜΕΡΙΕΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "vivl",
+      "name": "ΒΙΒΛΙΑΡΙΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "krat",
+      "name": "ΚΡΑΤΗΣΕΙΣ",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "plir",
+      "name": "ΠΛΗΡΩΜΕΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🏥 Συνταγές",
+      "category": "fyp"
+    },
+    {
+      "id": "item2",
+      "text": "💊 Φαρμακευτική",
+      "category": "pharm"
+    },
+    {
+      "id": "item3",
+      "text": "🏥 Βιβλιάριο υγείας",
+      "category": "vivl"
+    },
+    {
+      "id": "item4",
+      "text": "🏨 Κρατήσεις",
+      "category": "krat"
+    },
+    {
+      "id": "item5",
+      "text": "💳 Πληρωμές",
+      "category": "plir"
+    },
+    {
+      "id": "item6",
+      "text": "📋 Συνταγογράφηση",
+      "category": "fyp"
+    }
+  ]
+}

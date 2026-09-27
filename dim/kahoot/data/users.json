@@ -1,0 +1,14 @@
+{
+    "users": [
+        {
+            "username": "admin",
+            "password": "$2y$10$eHjSVbBi0qcLmumn2PCaRO9qVzScGJK1mCKI7T5cv7\/VXWVSOdOOq",
+            "role": "admin"
+        },
+        {
+            "username": "teach",
+            "password": "$2y$10$fPllGhtRS56urBopbcZBSudkpfXuwCds7lvjD\/UW1NZnjnuSIm\/3O",
+            "role": "admin"
+        }
+    ]
+}

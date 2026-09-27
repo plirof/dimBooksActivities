@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βρες τις Λέξεις!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:15px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#43e97b;font-size:1.1em}
+.game-layout{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
+.grid-container{flex:0 0 auto}
+.grid{display:inline-grid;gap:2px;border:2px solid #43e97b;border-radius:8px;padding:3px;background:#f0fff0}
+.grid-cell{width:34px;height:34px;font-size:.95em;font-weight:700;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;background:#fff;color:#333;border:1px solid #e0e0e0;transition:all .15s}
+.grid-cell:hover{background:#e8f5e9}
+.grid-cell.selected{background:#c8e6c9;border-color:#4caf50;color:#1b5e20}
+.grid-cell.found{background:#a5d6a7;border-color:#4caf50;color:#1b5e20}
+.grid-cell.found-flash{animation:flashFound .5s}
+@keyframes flashFound{0%{transform:scale(1)}50%{transform:scale(1.2);background:#66bb6a}100%{transform:scale(1)}}
+.words-panel{flex:1;min-width:160px}
+.words-panel h3{color:#333;font-size:1em;margin-bottom:10px;text-align:center}
+.word-list{list-style:none}
+.word-list li{padding:6px 12px;margin-bottom:4px;border-radius:8px;font-size:1em;font-weight:600;color:#555;background:#f8f9fa;transition:all .3s}
+.word-list li.found{background:#c8e6c9;color:#2e7d32;text-decoration:line-through}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:15px;flex-wrap:wrap}
+.ctrl-btn{padding:10px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;color:#fff}
+.clear-btn{background:linear-gradient(135deg,#ef9a9a,#e53935)}
+.info{text-align:center;color:#888;font-size:.85em;margin-top:10px}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#43e97b;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const gridSize=data.gridSize||10;
+const words=data.words.map(w=>w.toUpperCase());
+const directions=data.directions||["H","V"];
+const greekLetters='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+let grid=[],foundWords=new Set(),selectStart=null,selectEnd=null;
+
+function generateGrid(){
+grid=Array.from({length:gridSize},()=>Array(gridSize).fill(''));
+const sortedWords=[...words].sort((a,b)=>b.length-a.length);
+const placed=[];
+for(const word of sortedWords){
+let placedOk=false;
+const dirs=[...directions].sort(()=>Math.random()-.5);
+for(const dir of dirs){
+if(placedOk)break;
+const attempts=100;
+for(let a=0;a<attempts;a++){
+const dr=dir==='V'?1:0;
+const dc=dir==='H'?1:0;
+const maxR=dir==='V'?gridSize-word.length:gridSize;
+const maxC=dir==='H'?gridSize-word.length:gridSize;
+if(maxR<=0||maxC<=0)continue;
+const r=Math.floor(Math.random()*maxR);
+const c=Math.floor(Math.random()*maxC);
+let canPlace=true;
+for(let i=0;i<word.length;i++){
+const nr=r+dr*i;const nc=c+dc*i;
+if(grid[nr][nc]!==''&&grid[nr][nc]!==word[i]){canPlace=false;break}
+}
+if(canPlace){
+for(let i=0;i<word.length;i++){grid[r+dr*i][c+dc*i]=word[i]}
+placed.push({word,row:r,col:c,dir,dr,dc});
+placedOk=true;break
+}
+}
+}
+}
+for(let r=0;r<gridSize;r++){
+for(let c=0;c<gridSize;c++){
+if(grid[r][c]==='')grid[r][c]=greekLetters[Math.floor(Math.random()*greekLetters.length)]
+}
+}
+return placed
+}
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle)}</h2>
+<p>Βρες τις κρυμμένες λέξεις στο πλέγμα! Κλίκαρε το πρώτο και το τελευταίο γράμμα κάθε λέξης.</p>
+<p>Λέξεις για εύρεση: ${words.length}</p>
+<button class="start-btn" onclick="startGame()">Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+foundWords=new Set();selectStart=null;selectEnd=null;
+const placed=generateGrid();
+const maxCellSize=34;
+const gridWidth=gridSize*(maxCellSize+2)+6;
+const containerWidth=Math.min(gridWidth+180,660);
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Βρέθηκαν: <span id="foundCount">0/${words.length}</span></div>
+</div>
+<div class="game-layout" id="gameLayout">
+<div class="grid-container">
+<div class="grid" id="gridEl" style="grid-template-columns:repeat(${gridSize},${maxCellSize}px)"></div>
+</div>
+<div class="words-panel">
+<h3>Λέξεις</h3>
+<ul class="word-list" id="wordList">
+${words.map(w=>'<li id="wl-'+esc(w)+'">'+esc(w)+'</li>').join('')}
+</ul>
+</div>
+</div>
+<div class="controls">
+<button class="ctrl-btn clear-btn" onclick="clearSelection()">Καθαρισμός</button>
+</div>
+<div class="info">Κλίκαρε το πρώτο και το τελευταίο γράμμα μιας λέξης</div>
+`;
+renderGrid()
+};
+
+function renderGrid(){
+const el=document.getElementById('gridEl');
+el.innerHTML='';
+for(let r=0;r<gridSize;r++){
+for(let c=0;c<gridSize;c++){
+const cell=document.createElement('div');
+cell.className='grid-cell';
+cell.textContent=grid[r][c];
+cell.dataset.row=r;cell.dataset.col=c;
+cell.onclick=()=>cellClick(r,c);
+el.appendChild(cell)
+}
+}
+}
+
+function cellClick(r,c){
+if(!selectStart){
+selectStart={r,c};
+highlightCell(r,c,'selected')
+}else{
+selectEnd={r,c};
+checkSelection()
+}
+}
+
+function highlightCell(r,c,cls){
+const cells=document.querySelectorAll('.grid-cell');
+cells.forEach(cell=>{
+if(+cell.dataset.row===r&&+cell.dataset.col===c)cell.classList.add(cls)
+})
+}
+
+function clearHighlight(){
+document.querySelectorAll('.grid-cell.selected').forEach(c=>c.classList.remove('selected'));
+selectStart=null;selectEnd=null
+}
+
+window.clearSelection=function(){clearHighlight()};
+
+function checkSelection(){
+const sr=selectStart.r,sc=selectStart.col||selectStart.c;
+const er=selectEnd.r,ec=selectEnd.c;
+const dr=Math.sign(er-sr);const dc=Math.sign(ec-sc);
+const lenR=Math.abs(er-sr);const lenC=Math.abs(ec-sc);
+let cells=[];
+if(dr===0&&dc!==0){
+for(let i=0;i<=lenC;i++)cells.push({r:sr,c:sc+dc*i})
+}else if(dc===0&&dr!==0){
+for(let i=0;i<=lenR;i++)cells.push({r:sr+dr*i,c:sc})
+}else if(lenR===lenC){
+for(let i=0;i<=lenR;i++)cells.push({r:sr+dr*i,c:sc+dc*i})
+}else{
+clearHighlight();return
+}
+const word=cells.map(({r,c})=>grid[r][c]).join('');
+const revWord=word.split('').reverse().join('');
+let matched=null;
+for(const w of words){
+if((w===word||w===revWord)&&!foundWords.has(w)){matched=w;break}
+}
+if(matched){
+foundWords.add(matched);
+cells.forEach(({r,c})=>{
+const cellsEl=document.querySelectorAll('.grid-cell');
+cellsEl.forEach(cell=>{
+if(+cell.dataset.row===r&&+cell.dataset.col===c){
+cell.classList.remove('selected');cell.classList.add('found','found-flash')
+}
+})
+});
+const li=document.getElementById('wl-'+matched);
+if(li)li.classList.add('found');
+document.getElementById('foundCount').textContent=foundWords.size+'/'+words.length;
+if(foundWords.size===words.length){
+setTimeout(showEnd,800)
+}
+}else{clearHighlight()}
+}
+
+function showEnd(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Μπράβο!</h2>
+<div class="final-score">${foundWords.size}/${words.length}</div>
+<div class="message">Βρήκες όλες τις λέξεις!</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

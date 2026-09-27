@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Scratch",
+  "subtitle": "Μόνο εντολές Scratch!",
+  "instruction": "Σπάσε μόνο τις ΕΝΤΟΛΕΣ ΣΤΟ SCRATCH!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Επανάλαβε", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εάν...τότε", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Εμφανίσου", "correct": true, "color": "#FFEAA7" },
+    { "text": "Καρέκλα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Εξαφανίσου", "correct": true, "color": "#98D8C8" },
+    { "text": "Μήλο", "correct": false, "color": "#F7DC6F" },
+    { "text": "Περίμενε", "correct": true, "color": "#BB8FCE" },
+    { "text": "Γάτα", "correct": false, "color": "#85C1E9" }
+  ]
+}

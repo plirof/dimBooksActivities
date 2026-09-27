@@ -1,0 +1,20 @@
+{
+  "title": "Προστασία από επιθέσεις",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "sign", "name": "Σημάδι προσβολής από ιό", "color": "#f44336" },
+    { "id": "protect", "name": "Μέτρο προστασίας", "color": "#4CAF50" },
+    { "id": "software", "name": "Είδος λογισμικού", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "i1", "text": "Αργός υπολογιστής, κολλάει", "category": "sign" },
+    { "id": "i2", "text": "Εγκατάσταση antivirus", "category": "protect" },
+    { "id": "i3", "text": "Ιός / virus", "category": "software" },
+    { "id": "i4", "text": "Pop-ups και αναδυόμενα παράθυρα", "category": "sign" },
+    { "id": "i5", "text": "Firewall / τείχος προστασίας", "category": "software" },
+    { "id": "i6", "text": "Αυτόματοι έλεγχοι σε τακτά διαστήματα", "category": "protect" },
+    { "id": "i7", "text": "Νέες μπάρες εργαλείων στον φυλλομετρητή", "category": "sign" },
+    { "id": "i8", "text": "Δημιουργία backup αρχείων", "category": "protect" },
+    { "id": "i9", "text": "Antivirus (λογισμικό προστασίας)", "category": "software" }
+  ]
+}

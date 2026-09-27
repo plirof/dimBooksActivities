@@ -1,0 +1,162 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακή Πολιτειότητα",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Οι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "ψηφιακοί",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πολίτες",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πρέπει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "να",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "κοινοποιούμε",
+          "error": true,
+          "correct": "προστατεύουν",
+          "feedback": "Πρέπει να προστατεύουν τα δικαιώματά τους, όχι να τα κοινοποιούν"
+        },
+        {
+          "text": "τα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "δικαιώματά",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τους",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Σκεφτόμαστε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "μία",
+          "error": true,
+          "correct": "δύο",
+          "feedback": "Σκεφτόμαστε ΔΥΟ φορές πριν κοινοποιήσουμε τα στοιχεία μας"
+        },
+        {
+          "text": "φορά",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πριν",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "κοινοποιήσουμε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "στοιχεία",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "μας",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Αντιμετωπίζουμε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τους",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "άλλους",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "μερικές",
+          "error": true,
+          "correct": "πάντοτε",
+          "feedback": "Αντιμετωπίζουμε τους άλλους ΠΑΝΤΟΤΕ με σεβασμό"
+        },
+        {
+          "text": "φορές",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "με",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "σεβασμό",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

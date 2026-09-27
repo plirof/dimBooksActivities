@@ -1,0 +1,24 @@
+{
+    "id": "dimB-les26-wheel-lbj",
+    "title": "Η ψηφιακή πλατφόρμα e-me - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Κυψέλη",
+            "Τοίχος",
+            "Μέλη",
+            "Υπεύθυνος",
+            "Αναρτήσεις",
+            "Σχόλια",
+            "Store",
+            "e-me"
+        ]
+    },
+    "tags": [
+        "dimB",
+        "les26",
+        "e-me"
+    ]
+}

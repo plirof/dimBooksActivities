@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τι περιέχει το βιβλίο;",
+  "subtitle": "Ταξινόμησε: χάρτινο ή διαδραστικό;",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "xartino", "name": "Χάρτινο Βιβλίο", "color": "#2196F3", "key": "A" },
+    { "id": "diadrastiko", "name": "Διαδραστικό Βιβλίο", "color": "#f44336", "key": "L" },
+    { "id": "kai_ta_duo", "name": "Και τα δύο", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Σελίδες χαρτιού", "category": "xartino" },
+    { "text": "Κουίζ με άμεση διόρθωση", "category": "diadrastiko" },
+    { "text": "Κείμενο μαθήματος", "category": "kai_ta_duo" },
+    { "text": "Ενσωματωμένο βίντεο", "category": "diadrastiko" },
+    { "text": "Εικόνες", "category": "kai_ta_duo" },
+    { "text": "Παιχνίδια μάθησης", "category": "diadrastiko" },
+    { "text": "Εξώφυλλο χαρτί", "category": "xartino" },
+    { "text": "Ήχος και μουσική", "category": "diadrastiko" },
+    { "text": "Δείκτης σελίδων", "category": "xartino" },
+    { "text": "Παρουσίαση slides", "category": "diadrastiko" }
+  ],
+  "duration": 30
+}

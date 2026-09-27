@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: ScratchJr ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: ScratchJr ή Όχι;",
+  "categories": [
+    {"id": "scratchjr", "name": "ScratchJr", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "ΕΜΦΑΝΙΣΟΥ", "category": "scratchjr"},
+    {"text": "Κούνια", "category": "oxi"},
+    {"text": "ΕΞΑΦΑΝΙΣΟΥ", "category": "scratchjr"},
+    {"text": "Κουτάλι", "category": "oxi"},
+    {"text": "Ιστορία", "category": "scratchjr"},
+    {"text": "Μπίλιες", "category": "oxi"},
+    {"text": "Ήρωας", "category": "scratchjr"},
+    {"text": "Κουβέρτα", "category": "oxi"}
+  ],
+  "duration": 30
+}

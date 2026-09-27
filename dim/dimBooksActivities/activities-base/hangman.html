@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v02_260523 - Fixed space handling
+
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κρεμάλα</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:15px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#667eea;font-size:1.1em}
+.hangman-area{display:flex;justify-content:center;margin-bottom:15px}
+.hangman-figure{position:relative;width:140px;height:180px}
+.hangman-part{position:absolute;background:#764ba2;display:none}
+.hangman-part.head{width:40px;height:40px;border:4px solid #764ba2;border-radius:50%;background:transparent;top:10px;left:50px}
+.hangman-part.body{width:4px;height:50px;top:54px;left:70px}
+.hangman-part.left-arm{width:4px;height:40px;top:60px;left:70px;transform:rotate(30deg);transform-origin:top center}
+.hangman-part.right-arm{width:4px;height:40px;top:60px;left:70px;transform:rotate(-30deg);transform-origin:top center}
+.hangman-part.left-leg{width:4px;height:45px;top:100px;left:70px;transform:rotate(20deg);transform-origin:top center}
+.hangman-part.right-leg{width:4px;height:45px;top:100px;left:70px;transform:rotate(-20deg);transform-origin:top center}
+.hangman-part.visible{display:block}
+.gallows-base{position:absolute;bottom:0;left:10px;width:80px;height:4px;background:#555}
+.gallows-pole{position:absolute;bottom:0;left:30px;width:4px;height:175px;background:#555}
+.gallows-top{position:absolute;top:0;left:30px;width:84px;height:4px;background:#555}
+.gallows-rope{position:absolute;top:4px;left:110px;width:4px;height:10px;background:#555}
+.word-area{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:15px}
+.word-letter{width:36px;height:42px;font-size:1.3em;font-weight:700;border-bottom:3px solid #764ba2;display:flex;align-items:flex-end;justify-content:center;color:#333;padding-bottom:2px}
+.word-letter.revealed{color:#2e7d32}
+.word-letter.space{border-bottom:none;width:20px}
+.hint-area{text-align:center;margin-bottom:15px;min-height:28px}
+.hint-text{color:#e65100;font-style:italic;font-size:.95em;background:#fff3e0;display:inline-block;padding:6px 14px;border-radius:10px}
+.category-badge{display:inline-block;background:#e8eaf6;color:#3f51b5;padding:4px 12px;border-radius:20px;font-size:.85em;margin-bottom:8px}
+.alphabet-area{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:15px}
+.alpha-btn{width:40px;height:40px;font-size:1em;font-weight:700;border:2px solid #667eea;border-radius:10px;background:#fff;color:#333;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.alpha-btn:hover:not(.used){background:#e8eaf6;transform:scale(1.1)}
+.alpha-btn.correct{background:#c8e6c9;border-color:#4caf50;color:#2e7d32;cursor:default}
+.alpha-btn.wrong{background:#ffcdd2;border-color:#f44336;color:#c62828;cursor:default}
+.alpha-btn.used{opacity:.4;cursor:default}
+.controls{display:flex;justify-content:center;gap:10px;margin-bottom:10px}
+.ctrl-btn{padding:10px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;color:#fff}
+.hint-btn{background:linear-gradient(135deg,#ffb74d,#ff9800)}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;min-height:26px;margin-bottom:10px}
+.feedback.win{color:#2e7d32}
+.feedback.lose{color:#c62828}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#667eea;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+let words=data.words;
+function shuffleArray(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
+shuffleArray(words);
+const maxWrong=data.maxWrong||6;
+var showGreekLetters=true;
+const alpha=showGreekLetters?'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'.split(''):'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+let currentWord=0,score=0,guessed=new Set(),wrongCount=0,hintShown=false,currentWordStr='';
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle)}</h2>
+<p>Μάντεψε τη λέξη πατώντας γράμματα. Προσοχή: κάθε λάθος φέρνει πιο κοντά την κρεμάλα!</p>
+<p>Λέξεις: ${words.length} | Μέγιστα λάθη: ${maxWrong}</p>
+<button class="start-btn" onclick="startGame()">Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+currentWord=0;score=0;showWord()
+};
+
+function showWord(){
+if(currentWord>=words.length){showEnd();return}
+const w=words[currentWord];
+currentWordStr=w.word;
+guessed=new Set();wrongCount=0;hintShown=false;
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Λέξη: <span>${currentWord+1}/${words.length}</span></div>
+<div class="stat">Σκορ: <span id="score">${score}</span></div>
+<div class="stat">Λάθη: <span id="wrongCount" style="color:#f44336">0/${maxWrong}</span></div>
+</div>
+${w.category?'<div style="text-align:center"><span class="category-badge">'+esc(w.category)+'</span></div>':''}
+<div class="hangman-area">
+<div class="hangman-figure">
+<div class="gallows-base"></div>
+<div class="gallows-pole"></div>
+<div class="gallows-top"></div>
+<div class="gallows-rope"></div>
+<div class="hangman-part head" id="hm-head"></div>
+<div class="hangman-part body" id="hm-body"></div>
+<div class="hangman-part left-arm" id="hm-left-arm"></div>
+<div class="hangman-part right-arm" id="hm-right-arm"></div>
+<div class="hangman-part left-leg" id="hm-left-leg"></div>
+<div class="hangman-part right-leg" id="hm-right-leg"></div>
+</div>
+</div>
+<div class="word-area" id="wordArea"></div>
+<div class="hint-area" id="hintArea"></div>
+<div class="alphabet-area" id="alphaArea"></div>
+<div class="controls">
+<button class="ctrl-btn hint-btn" onclick="showHint()">Υπόδειξη</button>
+</div>
+<div class="feedback" id="feedback"></div>
+`;
+renderWord();renderAlphabet()
+}
+
+function renderWord(){
+const area=document.getElementById('wordArea');
+if(!area)return;
+area.innerHTML='';
+  currentWordStr.split('').forEach(ch=>{
+    const div=document.createElement('div');
+    div.className='word-letter';
+    if(ch===' '){div.classList.add('space','revealed');div.textContent=' '}
+    else if(guessed.has(ch)){div.classList.add('revealed');div.textContent=ch}
+    area.appendChild(div)
+  })
+}
+
+function renderAlphabet(){
+const area=document.getElementById('alphaArea');
+if(!area)return;
+area.innerHTML='';
+alpha.forEach(letter=>{
+const btn=document.createElement('button');
+btn.className='alpha-btn';
+if(guessed.has(letter)){
+if(currentWordStr.includes(letter)){btn.classList.add('correct')}
+else{btn.classList.add('wrong')}
+btn.classList.add('used')
+}
+btn.textContent=letter;
+btn.onclick=()=>guessLetter(letter);
+area.appendChild(btn)
+})
+}
+
+function guessLetter(letter){
+if(guessed.has(letter))return;
+guessed.add(letter);
+if(currentWordStr.includes(letter)){
+renderWord();renderAlphabet();
+    if(currentWordStr.split('').filter(ch=>ch!==' ').every(ch=>guessed.has(ch))){
+score++;
+const sc=document.getElementById('score');
+if(sc)sc.textContent=score;
+const fb=document.getElementById('feedback');
+fb.className='feedback win';fb.textContent='Σωστό! Μπράβο!';
+setTimeout(()=>{currentWord++;showWord()},1200)
+}
+}else{
+wrongCount++;
+const wc=document.getElementById('wrongCount');
+if(wc)wc.textContent=wrongCount+'/'+maxWrong;
+updateHangman();renderAlphabet();
+if(wrongCount>=maxWrong){
+const fb=document.getElementById('feedback');
+fb.className='feedback lose';fb.textContent='Λυπάμαι! Η λέξη ήταν: '+currentWordStr;
+revealWord();disableAlphabet();
+setTimeout(()=>{currentWord++;showWord()},2500)
+}
+}
+}
+
+function updateHangman(){
+const parts=['head','body','left-arm','right-arm','left-leg','right-leg'];
+if(wrongCount<=parts.length){
+const el=document.getElementById('hm-'+parts[wrongCount-1]);
+if(el)el.classList.add('visible')
+}
+}
+
+function revealWord(){
+const letters=document.querySelectorAll('.word-letter');
+  currentWordStr.split('').forEach((ch,i)=>{if(letters[i]){letters[i].textContent=ch;if(ch!==' ')letters[i].classList.add('revealed')}})
+}
+
+function disableAlphabet(){
+document.querySelectorAll('.alpha-btn').forEach(b=>{b.classList.add('used');b.onclick=null})
+}
+
+window.showHint=function(){
+if(hintShown)return;
+hintShown=true;
+const ha=document.getElementById('hintArea');
+if(ha&&words[currentWord].hint){ha.innerHTML='<span class="hint-text">'+esc(words[currentWord].hint)+'</span>'}
+};
+
+function showEnd(){
+let msg=score===words.length?'Τέλεια! Τα βρήκες όλα!':score>=words.length*0.7?'Μπράβο! Πολύ καλά!':score>=words.length*0.4?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Τέλος Παιχνιδιού!</h2>
+<div class="final-score">${score}/${words.length}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Πέναλτι Κουίζ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{width:100%;height:100%;position:relative;background:#333}
+
+.scene{width:100%;height:100%;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#3a7bd5 0%,#6db3f2 48%,#5cb85c 50%,#3d8b3d 100%)}
+.grass{position:absolute;bottom:0;width:100%;height:50%;
+  background:repeating-linear-gradient(90deg,#5cb85c 0px,#5cb85c 35px,#4cae4c 35px,#4cae4c 70px)}
+.penalty-box{position:absolute;top:45%;left:12%;width:76%;height:55%;
+  border:2px solid rgba(255,255,255,0.2);border-top:none;z-index:1;pointer-events:none}
+
+.scoreboard{position:absolute;top:0;left:0;right:0;
+  background:rgba(0,0,0,0.7);color:#fff;padding:8px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;z-index:15}
+.scoreboard .goals{color:#FFD700;font-weight:700;font-size:17px}
+
+.goal-wrap{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:90%;max-width:560px}
+.goal-inner{position:relative;width:100%;padding-bottom:38%;height:0}
+
+.goal-frame{position:absolute;top:0;left:0;width:100%;height:100%;
+  border:5px solid #f5f5f5;border-bottom:none;border-radius:3px 3px 0 0;
+  box-shadow:inset 0 0 15px rgba(0,0,0,0.15),0 0 8px rgba(0,0,0,0.3)}
+.goal-frame.celebrate{box-shadow:0 0 15px rgba(255,215,0,0.6),0 0 30px rgba(255,215,0,0.3);transition:box-shadow .3s}
+
+.net{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 11px,rgba(255,255,255,0.18) 11px,rgba(255,255,255,0.18) 12px),
+    repeating-linear-gradient(0deg,transparent,transparent 11px,rgba(255,255,255,0.18) 11px,rgba(255,255,255,0.18) 12px);
+  pointer-events:none}
+.net.ripple{animation:netPulse .4s ease-out}
+@keyframes netPulse{0%{transform:scale(1)}30%{transform:scale(1.02) translateY(2px)}100%{transform:scale(1)}}
+
+.gk{position:absolute;top:calc(100% - 80px);left:50%;width:56px;height:80px;z-index:6;
+  transform:translateX(-50%);transition:left .4s ease-out,top .4s ease-out}
+.gk-body{width:100%;height:100%;transition:transform .4s ease-out;transform-origin:bottom center}
+.gk-head{width:24px;height:24px;background:linear-gradient(180deg,#e8c282,#deb887);border-radius:50%;margin:0 auto;border:1px solid #c9a06c}
+.gk-jersey{width:44px;height:26px;background:linear-gradient(180deg,#ef5350,#e53935);border-radius:4px;margin:1px auto 0;position:relative}
+.gk-arm{position:absolute;width:12px;height:24px;background:linear-gradient(180deg,#ef5350,#e53935);top:2px;border-radius:3px;transition:transform .3s ease-out;transform-origin:top center}
+.gk-arm.l{left:-11px;transform:rotate(-20deg)}.gk-arm.r{right:-11px;transform:rotate(20deg)}
+.gk-body.catch .gk-arm.l{transform:rotate(90deg)}
+.gk-body.catch .gk-arm.r{transform:rotate(-90deg)}
+.gk-shorts{width:30px;height:7px;background:#1565c0;margin:0 auto}
+.gk-legs{display:flex;justify-content:center;gap:4px;margin-top:1px}
+.gk-leg{width:11px;height:12px;background:#fff;border-radius:2px 2px 0 0}
+.gk-boot{width:15px;height:5px;background:#222;border-radius:1px 5px 4px 1px;margin-top:-1px;margin-left:-2px}
+
+.gk-body.dl{transform:translateX(-90px) rotate(-30deg) scaleX(1.3)}
+.gk-body.dr{transform:translateX(90px) rotate(30deg) scaleX(1.3)}
+.gk-body.dlu{transform:translateX(-80px) translateY(-18px) rotate(-35deg) scaleX(1.3)}
+.gk-body.dru{transform:translateX(80px) translateY(-18px) rotate(35deg) scaleX(1.3)}
+.gk-body.dld{transform:translateX(-70px) translateY(10px) rotate(-20deg) scaleX(1.2)}
+.gk-body.drd{transform:translateX(70px) translateY(10px) rotate(20deg) scaleX(1.2)}
+
+.zone{position:absolute;display:flex;align-items:center;justify-content:center;
+  text-align:center;background:rgba(255,255,255,0.1);border:2px dashed rgba(255,255,255,0.45);
+  border-radius:6px;color:#fff;font-weight:600;font-size:11px;line-height:1.15;
+  cursor:pointer;z-index:4;touch-action:manipulation;
+  text-shadow:1px 1px 2px rgba(0,0,0,0.7);padding:3px;overflow-wrap:break-word;
+  transition:background .12s}
+.zone:active{background:rgba(255,255,255,0.35)}
+.zone.off{pointer-events:none;opacity:.3}
+.zone.ok{border-color:#4CAF50;background:rgba(76,175,80,0.4);border-style:solid}
+.zone.no{border-color:#f44336;background:rgba(244,67,54,0.3);border-style:solid}
+
+.ball{position:absolute;width:28px;height:28px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff,#bbb);
+  border:2px solid #444;box-shadow:2px 2px 4px rgba(0,0,0,0.3);
+  z-index:8;left:calc(50% - 14px);top:58%}
+.ball.fly{transition:left .45s ease-in,top .45s ease-in}
+.ball.gone{display:none}
+
+.result{position:absolute;top:35%;left:50%;
+  transform:translate(-50%,-50%) scale(0);font-size:40px;font-weight:900;
+  z-index:20;pointer-events:none;opacity:0;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.6);transition:transform .25s ease-out,opacity .25s}
+.result.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.result.goal{color:#FFD700}.result.saved{color:#FF5252}
+
+.qarea{position:absolute;top:69%;left:50%;transform:translateX(-50%);
+  width:92%;max-width:520px;z-index:12;text-align:center;
+  background:rgba(0,0,0,0.6);color:#fff;padding:10px 14px;border-radius:10px}
+.qarea .qt{font-size:14px;line-height:1.3;margin-bottom:6px}
+.qarea .ctrls{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.qarea .fb{font-size:12px;flex:1;display:none;text-align:left}
+.qarea .fb.ok{color:#8BC34A;display:block}
+.qarea .fb.no{color:#FF5252;display:block}
+.nbtn{display:none;padding:7px 18px;background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;
+  touch-action:manipulation;white-space:nowrap}
+.nbtn:active{opacity:.85}
+
+.loading,.error-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#fff;font-size:1.1em;text-align:center;text-shadow:1px 1px 4px rgba(0,0,0,0.5)}
+
+.final{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.88);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;z-index:50;text-align:center;padding:20px}
+.final h2{font-size:1.5em;margin-bottom:6px}
+.final .bs{font-size:3em;font-weight:900;color:#FFD700;margin:6px 0}
+.final .fm{font-size:1em;margin-bottom:14px;color:#ccc}
+.rbtn{padding:11px 32px;background:linear-gradient(135deg,#4CAF50,#8BC34A);
+  color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;touch-action:manipulation}
+
+.spot{position:absolute;width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.5);left:calc(50% - 3px);top:56%;z-index:2}
+
+@media(min-width:500px){
+  .goal-wrap{width:72%}.goal-inner{padding-bottom:34%}
+  .zone{font-size:13px}
+  .qarea .qt{font-size:16px}
+  .ball{width:32px;height:32px;left:calc(50% - 16px)}
+  .result{font-size:54px}
+  .scoreboard{font-size:15px}.scoreboard .goals{font-size:20px}
+  .gk{width:66px;height:94px}
+  .gk-head{width:28px;height:28px}.gk-jersey{width:52px;height:32px}
+  .gk-arm{width:14px;height:28px}.gk-arm.l{left:-13px}.gk-arm.r{right:-13px}
+  .gk-shorts{width:36px;height:8px}
+  .gk-leg{width:13px;height:14px}.gk-boot{width:17px;height:6px;margin-left:-2px}
+  .gk-body.dl{transform:translateX(-120px) rotate(-30deg) scaleX(1.3)}
+  .gk-body.dr{transform:translateX(120px) rotate(30deg) scaleX(1.3)}
+  .gk-body.dlu{transform:translateX(-110px) translateY(-22px) rotate(-35deg) scaleX(1.3)}
+  .gk-body.dru{transform:translateX(110px) translateY(-22px) rotate(35deg) scaleX(1.3)}
+  .gk-body.dld{transform:translateX(-95px) translateY(12px) rotate(-20deg) scaleX(1.2)}
+  .gk-body.drd{transform:translateX(95px) translateY(12px) rotate(20deg) scaleX(1.2)}
+}
+@media(max-height:480px){
+  .goal-wrap{top:5%}.goal-inner{padding-bottom:30%}
+  .scoreboard{padding:4px 8px;font-size:11px}.scoreboard .goals{font-size:14px}
+  .qarea{top:64%;padding:6px 10px}.qarea .qt{font-size:11px}
+  .result{font-size:30px}
+  .scene{background:linear-gradient(180deg,#3a7bd5 0%,#6db3f2 42%,#5cb85c 44%,#3d8b3d 100%)}
+  .grass{height:56%}
+  .gk{width:44px;height:64px}.gk-head{width:20px;height:20px}.gk-jersey{width:36px;height:22px}
+  .gk-arm{width:10px;height:20px}.gk-arm.l{left:-9px}.gk-arm.r{right:-9px}
+  .gk-leg{width:9px;height:10px}.gk-boot{width:12px;height:4px}
+}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div id="app"><div class="loading">Φόρτωση...</div></div>
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+var params=new URLSearchParams(window.location.search);
+var dataFile=params.get('data');
+var app=document.getElementById('app');
+
+if(!dataFile){
+  app.innerHTML='<div class="error-msg">Δεν βρέθηκε αρχείο δεδομένων.<br>?data=αρχείο.json</div>';
+  throw new Error('No data');
+}
+
+fetch(dataFile).then(function(r){if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(function(data){
+
+var questions=data.questions.slice();
+for(var i=questions.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=questions[i];questions[i]=questions[j];questions[j]=t}
+
+var cur=0,score=0,answered=false;
+
+var Z={
+  2:[{t:'8%',l:'3%',w:'45%',h:'80%',d:'dl'},{t:'8%',l:'52%',w:'45%',h:'80%',d:'dr'}],
+  3:[{t:'5%',l:'2%',w:'30%',h:'85%',d:'dl'},{t:'5%',l:'35%',w:'30%',h:'85%',d:'dr'},{t:'5%',l:'68%',w:'30%',h:'85%',d:'dr'}],
+  4:[{t:'5%',l:'3%',w:'45%',h:'42%',d:'dlu'},{t:'5%',l:'52%',w:'45%',h:'42%',d:'dru'},{t:'53%',l:'3%',w:'45%',h:'42%',d:'dld'},{t:'53%',l:'52%',w:'45%',h:'42%',d:'drd'}],
+  5:[{t:'5%',l:'2%',w:'30%',h:'42%',d:'dlu'},{t:'5%',l:'35%',w:'30%',h:'42%',d:'dru'},{t:'5%',l:'68%',w:'30%',h:'42%',d:'dru'},{t:'53%',l:'8%',w:'38%',h:'42%',d:'dld'},{t:'53%',l:'52%',w:'38%',h:'42%',d:'drd'}],
+  6:[{t:'5%',l:'2%',w:'30%',h:'42%',d:'dlu'},{t:'5%',l:'35%',w:'30%',h:'42%',d:'dru'},{t:'5%',l:'68%',w:'30%',h:'42%',d:'dru'},{t:'53%',l:'2%',w:'30%',h:'42%',d:'dld'},{t:'53%',l:'35%',w:'30%',h:'42%',d:'drd'},{t:'53%',l:'68%',w:'30%',h:'42%',d:'drd'}]
+};
+
+var OPP={dl:'dr',dr:'dl',dlu:'drd',dru:'dld',dld:'dru',drd:'dlu'};
+
+function render(){
+  answered=false;
+  var q=questions[cur];
+  var isTF=q.type==='tf';
+  var zHTML='',correctDive='';
+
+  if(isTF){
+    var cv=(q.answer!==undefined?q.answer:q.correct).toString();
+    var items=[{label:'✓ ΑΛΗΘΕΙΑ',val:'true'},{label:'✗ ΨΕΜΑΤΑ',val:'false'}];
+    items.sort(function(){return Math.random()-.5});
+    var zp=Z[2];
+    for(var i=0;i<2;i++){
+      var ok=items[i].val===cv;
+      if(ok)correctDive=zp[i].d;
+      zHTML+='<div class="zone" data-ok="'+ok+'" data-dive="'+zp[i].d+'" style="top:'+zp[i].t+';left:'+zp[i].l+';width:'+zp[i].w+';height:'+zp[i].h+'" onclick="pick(this)">'+items[i].label+'</div>';
+    }
+  }else{
+    var opts=q.options.map(function(o,idx){return{text:o,i:idx}});
+    opts.sort(function(){return Math.random()-.5});
+    var n=Math.min(opts.length,6);
+    var zp=Z[n]||Z[4];
+    var pi=[];for(var k=0;k<zp.length;k++)pi.push(k);
+    pi.sort(function(){return Math.random()-.5});
+    for(var i=0;i<n;i++){
+      var ok=opts[i].i===q.correctIndex;
+      if(ok)correctDive=zp[pi[i]].d;
+      zHTML+='<div class="zone" data-ok="'+ok+'" data-dive="'+zp[pi[i]].d+'" style="top:'+zp[pi[i]].t+';left:'+zp[pi[i]].l+';width:'+zp[pi[i]].w+';height:'+zp[pi[i]].h+'" onclick="pick(this)">'+esc(opts[i].text)+'</div>';
+    }
+  }
+
+  app.innerHTML=
+    '<div class="scene" id="scene">'+
+      '<div class="grass"></div>'+
+      '<div class="penalty-box"></div>'+
+      '<div class="scoreboard"><span>Πέναλτι '+(cur+1)+'/'+questions.length+'</span><span class="goals">ΓΚΟΛ: '+score+'</span></div>'+
+      '<div class="goal-wrap"><div class="goal-inner"><div class="goal-frame" id="gf">'+
+        '<div class="net" id="net"></div>'+zHTML+
+        '<div class="gk" id="gk"><div class="gk-body" id="gkb">'+
+          '<div class="gk-head"></div>'+
+          '<div class="gk-jersey"><div class="gk-arm l"></div><div class="gk-arm r"></div></div>'+
+          '<div class="gk-shorts"></div>'+
+          '<div class="gk-legs"><div class="gk-leg"><div class="gk-boot"></div></div><div class="gk-leg"><div class="gk-boot"></div></div></div>'+
+        '</div></div>'+
+      '</div></div></div>'+
+      '<div class="spot"></div>'+
+      '<div class="ball" id="ball"></div>'+
+      '<div class="result" id="res"></div>'+
+    '</div>'+
+    '<div class="qarea">'+
+      '<div class="qt">'+esc(q.text)+'</div>'+
+      '<div class="ctrls"><div class="fb" id="fb"></div>'+
+      '<button class="nbtn" id="nbtn">'+(cur<questions.length-1?'Επόμενο Πέναλτι →':'Αποτέλεσμα')+'</button></div>'+
+    '</div>';
+
+  app.dataset.cd=correctDive;
+  document.getElementById('nbtn').onclick=function(){cur++;cur<questions.length?render():showFinal()};
+}
+
+window.pick=function(el){
+  if(answered)return;
+  answered=true;
+  var q=questions[cur];
+  var isOk=el.dataset.ok==='true';
+  var zoneDive=el.dataset.dive;
+  var correctDive=app.dataset.cd;
+
+  var ball=document.getElementById('ball');
+  var gkb=document.getElementById('gkb');
+  var gkWrap=document.getElementById('gk');
+  var net=document.getElementById('net');
+  var res=document.getElementById('res');
+  var fb=document.getElementById('fb');
+  var gf=document.getElementById('gf');
+
+  var sceneR=document.getElementById('scene').getBoundingClientRect();
+  var zoneR=el.getBoundingClientRect();
+  var gfR=document.getElementById('gf').getBoundingClientRect();
+
+  var tx=zoneR.left+zoneR.width/2-sceneR.left-ball.offsetWidth/2;
+  var ty=zoneR.top+zoneR.height/2-sceneR.top-ball.offsetHeight/2;
+
+  var zones=document.querySelectorAll('.zone');
+  for(var i=0;i<zones.length;i++)zones[i].classList.add('off');
+
+  ball.classList.add('fly');
+  void ball.offsetWidth;
+
+  if(isOk){
+    ball.style.left=tx+'px';
+    ball.style.top=ty+'px';
+    setTimeout(function(){gkb.classList.add(OPP[correctDive])},80);
+    setTimeout(function(){
+      res.textContent='ΓΚΟΛ!';
+      res.className='result goal show';
+      net.classList.add('ripple');
+      gf.classList.add('celebrate');
+      fb.textContent=q.explanation||'Σωστό! Μπράβο!';
+      fb.className='fb ok';
+      el.classList.remove('off');
+      el.classList.add('ok');
+      document.getElementById('nbtn').style.display='inline-block';
+    },550);
+    score++;
+  }else{
+    ball.style.left=tx+'px';
+    ball.style.top=ty+'px';
+
+    var zx=zoneR.left+zoneR.width/2-gfR.left;
+    var zy=zoneR.top+zoneR.height/2-gfR.top;
+    var gkH=gkWrap.offsetHeight;
+    var gkW=gkWrap.offsetWidth;
+
+    gkWrap.style.left=zx+'px';
+    gkWrap.style.top=(zy-gkH/2)+'px';
+    setTimeout(function(){gkb.classList.add('catch')},100);
+
+    setTimeout(function(){
+      ball.classList.add('gone');
+      res.textContent='ΑΣΤΟΧΗΣΕΣ!';
+      res.className='result saved show';
+      fb.textContent=q.explanation||'Δεν είναι σωστό.';
+      fb.className='fb no';
+      el.classList.remove('off');
+      el.classList.add('no');
+      var cz=document.querySelector('.zone[data-ok="true"]');
+      if(cz){cz.classList.remove('off');cz.classList.add('ok')}
+      document.getElementById('nbtn').style.display='inline-block';
+    },550);
+  }
+};
+
+function showFinal(){
+  var pct=Math.round(score/questions.length*100);
+  var msg=pct>=90?'Εξαιρετικά! Είσαι παίκτης!':pct>=70?'Μπράβο! Καλή ευστοχία!':pct>=50?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+  app.innerHTML='<div class="final"><h2>Τέλος Αγώνα!</h2><div class="bs">'+score+' / '+questions.length+'</div><div class="fm">'+msg+'</div><button class="rbtn" onclick="location.reload()">Ξαναδοκίμασε!</button></div>';
+}
+
+render();
+
+}).catch(function(err){
+  app.innerHTML='<div class="error-msg">Σφάλμα: '+esc(err.message)+'</div>';
+});
+</script>
+</body>
+</html>

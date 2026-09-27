@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Τηλεκπαίδευση - Μάθημα Πληροφορικής</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;display:flex;justify-content:center;padding:20px;}
+.container{background:#1e1e2f;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.4);max-width:800px;width:100%;padding:20px;color:#eee;}
+h1{text-align:center;color:#e94560;font-size:1.2rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.8rem;margin-bottom:12px;}
+.progress-bar{background:#333;border-radius:10px;height:20px;margin-bottom:12px;overflow:hidden;position:relative;}
+.progress-fill{background:linear-gradient(90deg,#e94560,#ff6b6b);height:100%;border-radius:10px;transition:width .5s;}
+.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.7rem;font-weight:bold;color:#fff;}
+.tasks-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;justify-content:center;}
+.task-badge{padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:bold;}
+.task-badge.pending{background:#444;color:#ccc;}
+.task-badge.done{background:#27ae60;color:#fff;}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;grid-gap:8px;margin-bottom:12px;}
+.video-box{border-radius:12px;padding:15px;text-align:center;position:relative;min-height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.video-box.teacher{grid-column:1/-1;background:linear-gradient(135deg,#2d3436,#636e72);}
+.video-box.student{background:linear-gradient(135deg,#2d3436,#4a5568);}
+.video-box .avatar{font-size:2.5rem;margin-bottom:5px;}
+.video-box .name{font-size:.85rem;font-weight:bold;color:#eee;}
+.video-box .role{font-size:.65rem;color:#aaa;}
+.video-box .hand-raised{position:absolute;top:8px;right:10px;font-size:1.2rem;animation:bounce 1s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.video-box .cam-off{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#aaa;}
+.video-box .mic-off{position:absolute;top:8px;left:10px;font-size:1rem;color:#e74c3c;}
+.video-box .mic-on{position:absolute;top:8px;left:10px;font-size:1rem;color:#27ae60;}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px;background:#2a2a3d;border-radius:12px;margin-bottom:12px;}
+.tool-btn{padding:8px 14px;border:none;border-radius:10px;cursor:pointer;font-size:.8rem;font-weight:bold;transition:all .2s;display:inline-flex;align-items:center;gap:4px;color:#fff;}
+.tool-btn:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.3);}
+.tool-btn.active{outline:2px solid #fff;outline-offset:2px;}
+.tool-btn.mic{background:#444;}
+.tool-btn.mic.off{background:#e74c3c;}
+.tool-btn.cam{background:#444;}
+.tool-btn.cam.off{background:#e74c3c;}
+.tool-btn.chat-btn{background:#2980b9;}
+.tool-btn.chat-btn.active{background:#3498db;}
+.tool-btn.hand{background:#444;}
+.tool-btn.hand.active{background:#f39c12;}
+.tool-btn.share{background:#8e44ad;}
+.tool-btn.exit{background:#e74c3c;}
+.chat-panel{display:none;background:#2a2a3d;border-radius:12px;padding:12px;max-height:200px;}
+.chat-panel.active{display:block;}
+.chat-messages{max-height:120px;overflow-y:auto;margin-bottom:8px;}
+.chat-msg{margin-bottom:6px;font-size:.8rem;}
+.chat-msg .chat-name{font-weight:bold;color:#e94560;}
+.chat-msg .chat-text{color:#ddd;}
+.chat-input-row{display:flex;gap:6px;}
+.chat-input{flex:1;padding:8px 10px;border:none;border-radius:8px;background:#3a3a4d;color:#eee;font-size:.8rem;outline:none;}
+.chat-input::placeholder{color:#888;}
+.chat-send{padding:8px 14px;border:none;border-radius:8px;background:#e94560;color:#fff;cursor:pointer;font-weight:bold;font-size:.8rem;}
+.share-notice{display:none;text-align:center;padding:10px;background:#8e44ad;border-radius:10px;margin-bottom:10px;font-weight:bold;font-size:.85rem;}
+.share-notice.active{display:block;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:100;justify-content:center;align-items:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#2a2a3d;border-radius:16px;padding:25px;text-align:center;max-width:350px;width:100%;color:#eee;}
+.modal h3{margin-bottom:15px;font-size:1.1rem;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+.modal-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-weight:bold;font-size:.9rem;transition:all .2s;}
+.modal-btn:hover{transform:translateY(-2px);}
+.modal-yes{background:#e74c3c;color:#fff;}
+.modal-no{background:#444;color:#eee;}
+.congrats{display:none;text-align:center;padding:30px 20px;}
+.congrats h2{color:#27ae60;font-size:1.5rem;margin-bottom:10px;}
+.congrats p{color:#ccc;font-size:.95rem;}
+.congrats .emoji{font-size:3.5rem;margin-bottom:12px;}
+@media(max-width:600px){
+.container{padding:12px;}
+.video-grid{grid-template-columns:1fr 1fr;}
+.video-box{min-height:80px;padding:10px;}
+.video-box .avatar{font-size:1.8rem;}
+.tool-btn{padding:6px 10px;font-size:.7rem;}
+.toolbar{gap:4px;}
+.tasks-row{gap:3px;}
+.task-badge{font-size:.6rem;padding:3px 7px;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tasks-row > * { margin: 3px; }
+  .toolbar > * { margin: 3px; }
+  .tool-btn > * + * { margin-left: 4px; }
+  .chat-input-row > * + * { margin-left: 6px; }
+  .modal-btns > * + * { margin-left: 10px; }
+  @media(max-width:600px){
+    .toolbar > * { margin: 2px; }
+    .tasks-row > * { margin: 1.5px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container" id="appContainer">
+<h1>💻 Τηλεκπαίδευση - Μάθημα Πληροφορικής</h1>
+<p class="subtitle">Μάθε να χρησιμοποιείς τα εργαλεία τηλεκπαίδευσης!</p>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<span class="progress-text" id="progressText">0/4 εργασίες</span>
+</div>
+
+<div class="tasks-row" id="tasksRow">
+<span class="task-badge pending" id="tBadge1">🎤 Σίγασε ήχο</span>
+<span class="task-badge pending" id="tBadge2">💬 Στείλε chat</span>
+<span class="task-badge pending" id="tBadge3">✋ Σήκωσε χέρι</span>
+<span class="task-badge pending" id="tBadge4">📷 Κλείσε κάμερα</span>
+</div>
+
+<div class="video-grid" id="videoGrid">
+<div class="video-box teacher" id="teacherBox">
+<div class="avatar">👩‍🏫</div>
+<div class="name">κυρία Μαρία</div>
+<div class="role">Δασκάλα</div>
+<span class="mic-on" id="teacherMic">🎤</span>
+</div>
+<div class="video-box student" id="youBox">
+<div class="avatar">🧑</div>
+<div class="name">Εσύ</div>
+<span class="mic-on" id="youMic">🎤</span>
+<span id="youHand" style="display:none;position:absolute;top:8px;right:10px;font-size:1.2rem;animation:bounce 1s infinite;">✋</span>
+</div>
+<div class="video-box student">
+<div class="avatar">👦</div>
+<div class="name">Γιάννης</div>
+<span class="mic-on">🎤</span>
+</div>
+<div class="video-box student">
+<div class="avatar">👧</div>
+<div class="name">Ελένη</div>
+<span class="mic-on">🎤</span>
+</div>
+</div>
+
+<div class="share-notice" id="shareNotice">📺 Οθόνη μοιράστηκε!</div>
+
+<div class="toolbar" id="toolbar">
+<button class="tool-btn mic" id="micBtn" onclick="toggleMic()">🎤 Ήχος</button>
+<button class="tool-btn cam" id="camBtn" onclick="toggleCam()">📷 Κάμερα</button>
+<button class="tool-btn chat-btn" id="chatToggle" onclick="toggleChat()">💬 Chat</button>
+<button class="tool-btn hand" id="handBtn" onclick="toggleHand()">✋ Χέρι</button>
+<button class="tool-btn share" id="shareBtn" onclick="toggleShare()">📤 Μοίρασε οθόνη</button>
+<button class="tool-btn exit" onclick="confirmExit()">📞 Έξοδος</button>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+<div class="chat-messages" id="chatMessages"></div>
+<div class="chat-input-row">
+<input type="text" class="chat-input" id="chatInput" placeholder="Γράψε μήνυμα..." maxlength="150">
+<button class="chat-send" onclick="sendChat()">📤</button>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="exitModal">
+<div class="modal">
+<h3>📞 Σίγουρα θέλεις να βγεις;</h3>
+<div class="modal-btns">
+<button class="modal-btn modal-yes" onclick="doExit()">Ναι, έξοδος</button>
+<button class="modal-btn modal-no" onclick="cancelExit()">Όχι, παραμένω</button>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+var state={mic:false,cam:false,hand:false,chat:false,share:false};
+var tasks={mute:false,chat:false,hand:false,cam:false};
+var chatData=[
+{from:'κυρία Μαρία',text:'Καλωσορίσατε στο μάθημα! 📚',time:'10:00'},
+{from:'Γιάννης',text:'Καλημέρα! 👋',time:'10:01'},
+{from:'Ελένη',text:'Καλημέρα! Έχω ερώτηση.',time:'10:02'}
+];
+var autoReplies=[
+{from:'κυρία Μαρία',text:'Πολύ καλή ερώτηση!'},
+{from:'Γιάννης',text:'Συμφωνώ! 😊'},
+{from:'Ελένη',text:'Εντάξει! 👍'},
+{from:'κυρία Μαρία',text:'Μπράβο, πολύ καλά!'},
+{from:'Γιάννης',text:'Ευχαριστώ!'}
+];
+
+function updateProgress(){
+var done=0;
+if(tasks.mute)done++;
+if(tasks.chat)done++;
+if(tasks.hand)done++;
+if(tasks.cam)done++;
+var pct=Math.round(done/4*100);
+document.getElementById('progressFill').style.width=pct+'%';
+document.getElementById('progressText').textContent=done+'/4 εργασίες';
+
+document.getElementById('tBadge1').className='task-badge '+(tasks.mute?'done':'pending');
+document.getElementById('tBadge2').className='task-badge '+(tasks.chat?'done':'pending');
+document.getElementById('tBadge3').className='task-badge '+(tasks.hand?'done':'pending');
+document.getElementById('tBadge4').className='task-badge '+(tasks.cam?'done':'pending');
+
+if(done===4){
+setTimeout(function(){
+document.getElementById('appContainer').querySelectorAll('.video-grid,.toolbar,.chat-panel,.progress-bar,.tasks-row,.share-notice').forEach(function(el){el.style.display='none';});
+document.getElementById('congrats').style.display='block';
+var c=document.createElement('div');
+c.className='congrats';
+c.id='congrats';
+c.innerHTML='<div class="emoji">🎉</div><h2>Μπράβο!</h2><p>Έμαθες να χρησιμοποιείς τα εργαλεία τηλεκπαίδευσης!<br>Ήχος, κάμερα, chat, χέρι — τα ξέρεις όλα!</p>';
+document.getElementById('appContainer').appendChild(c);
+c.style.display='block';
+},500);
+}
+}
+
+window.toggleMic=function(){
+state.mic=!state.mic;
+var btn=document.getElementById('micBtn');
+var micIcon=document.getElementById('youMic');
+if(state.mic){
+btn.className='tool-btn mic off';
+btn.textContent='🔇 Σίγαση';
+micIcon.className='mic-off';
+micIcon.textContent='🔇';
+}else{
+btn.className='tool-btn mic';
+btn.textContent='🎤 Ήχος';
+micIcon.className='mic-on';
+micIcon.textContent='🎤';
+}
+if(state.mic&&!tasks.mute){tasks.mute=true;updateProgress();}
+};
+
+window.toggleCam=function(){
+state.cam=!state.cam;
+var btn=document.getElementById('camBtn');
+var box=document.getElementById('youBox');
+var existing=box.querySelector('.cam-off');
+if(state.cam){
+btn.className='tool-btn cam off';
+btn.textContent='📷 Κάμερα κλειστή';
+var overlay=document.createElement('div');
+overlay.className='cam-off';
+overlay.textContent='📷 Κάμερα κλειστή';
+overlay.id='camOverlay';
+box.appendChild(overlay);
+}else{
+btn.className='tool-btn cam';
+btn.textContent='📷 Κάμερα';
+if(existing)existing.remove();
+}
+if(state.cam&&!tasks.cam){tasks.cam=true;updateProgress();}
+};
+
+window.toggleChat=function(){
+state.chat=!state.chat;
+document.getElementById('chatToggle').classList.toggle('active',state.chat);
+document.getElementById('chatPanel').classList.toggle('active',state.chat);
+if(state.chat)renderChat();
+};
+
+window.toggleHand=function(){
+state.hand=!state.hand;
+var btn=document.getElementById('handBtn');
+var handEl=document.getElementById('youHand');
+if(state.hand){
+btn.className='tool-btn hand active';
+btn.textContent='✋ Χέρι ↑';
+handEl.style.display='inline';
+}else{
+btn.className='tool-btn hand';
+btn.textContent='✋ Χέρι';
+handEl.style.display='none';
+}
+if(state.hand&&!tasks.hand){tasks.hand=true;updateProgress();}
+};
+
+window.toggleShare=function(){
+state.share=!state.share;
+var notice=document.getElementById('shareNotice');
+var btn=document.getElementById('shareBtn');
+if(state.share){
+notice.classList.add('active');
+btn.classList.add('active');
+btn.textContent='⏹️ Στοπ οθόνη';
+setTimeout(function(){notice.classList.remove('active');},3000);
+}else{
+notice.classList.remove('active');
+btn.classList.remove('active');
+btn.textContent='📤 Μοίρασε οθόνη';
+}
+};
+
+window.confirmExit=function(){document.getElementById('exitModal').classList.add('active');};
+window.cancelExit=function(){document.getElementById('exitModal').classList.remove('active');};
+window.doExit=function(){
+document.getElementById('exitModal').classList.remove('active');
+showNotice('👋 Βγήκες από το μάθημα.');
+};
+
+function renderChat(){
+var container=document.getElementById('chatMessages');
+container.innerHTML='';
+chatData.forEach(function(m){
+var div=document.createElement('div');
+div.className='chat-msg';
+var now=new Date();
+var timeStr=m.time||(now.getHours()+':'+String(now.getMinutes()).padStart(2,'0'));
+div.innerHTML='<span class="chat-name">'+esc(m.from)+':</span> <span class="chat-text">'+esc(m.text)+'</span> <span style="color:#666;font-size:.65rem;margin-left:5px;">'+timeStr+'</span>';
+container.appendChild(div);
+});
+container.scrollTop=container.scrollHeight;
+}
+
+function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+window.sendChat=function(){
+var input=document.getElementById('chatInput');
+var text=input.value.trim();
+if(!text)return;
+var now=new Date();
+var timeStr=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+chatData.push({from:'Εσύ',text:text,time:timeStr});
+if(!tasks.chat){tasks.chat=true;updateProgress();}
+input.value='';
+renderChat();
+
+setTimeout(function(){
+var reply=autoReplies[Math.floor(Math.random()*autoReplies.length)];
+var now2=new Date();
+var ts2=now2.getHours()+':'+String(now2.getMinutes()).padStart(2,'0');
+chatData.push({from:reply.from,text:reply.text,time:ts2});
+renderChat();
+},1500);
+};
+
+document.getElementById('chatInput').addEventListener('keydown',function(e){if(e.key==='Enter')sendChat();});
+
+function showNotice(msg){
+var n=document.createElement('div');
+n.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#27ae60;color:#fff;padding:12px 24px;border-radius:12px;font-weight:bold;z-index:200;box-shadow:0 4px 15px rgba(0,0,0,.3);';
+n.textContent=msg;
+document.body.appendChild(n);
+setTimeout(function(){n.remove();},2500);
+}
+
+renderChat();
+})();
+</script>
+</body>
+</html>

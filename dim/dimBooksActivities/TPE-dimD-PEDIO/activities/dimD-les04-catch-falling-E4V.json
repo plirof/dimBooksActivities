@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Σωστά Αποτελέσματα",
+  "subtitle": "Πιάσε τα σωστά!",
+  "instructions": "Πιάσε μόνο τις σωστές πράξεις",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "200 ÷ 10 = 20", "correct": true, "color": "#4caf50" },
+    { "text": "200 ÷ 10 = 15", "correct": false, "color": "#f44336" },
+    { "text": "200 ÷ 5 = 40", "correct": true, "color": "#2196f3" },
+    { "text": "200 ÷ 5 = 50", "correct": false, "color": "#ff9800" },
+    { "text": "20 × 10 = 200", "correct": true, "color": "#8bc34a" },
+    { "text": "20 × 10 = 100", "correct": false, "color": "#9c27b0" },
+    { "text": "200 ÷ 20 = 10", "correct": true, "color": "#00bcd4" },
+    { "text": "200 ÷ 20 = 12", "correct": false, "color": "#ff5722" }
+  ]
+}

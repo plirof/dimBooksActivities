@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Στοιχεία Παρουσίασης",
+  "subtitle": "Πιάσε τα στοιχεία παρουσίασης!",
+  "instructions": "Πιάσε στοιχεία και ενέργειες παρουσίασης. Απόφυγε τα μη σχετικά.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Τίτλος", "correct": true, "color": "#4caf50" },
+    { "text": "Διαφάνεια", "correct": true, "color": "#2196f3" },
+    { "text": "Εικόνα", "correct": true, "color": "#ff9800" },
+    { "text": "Αποθήκευση", "correct": true, "color": "#9c27b0" },
+    { "text": "Ιός υπολογιστή", "correct": false, "color": "#f44336" },
+    { "text": "Υπότιτλος", "correct": true, "color": "#00bcd4" },
+    { "text": "Κείμενο", "correct": true, "color": "#8bc34a" },
+    { "text": "Πλοήγηση", "correct": false, "color": "#f44336" },
+    { "text": "Προβολή (F5)", "correct": true, "color": "#e91e63" },
+    { "text": "Firewall", "correct": false, "color": "#f44336" }
+  ]
+}

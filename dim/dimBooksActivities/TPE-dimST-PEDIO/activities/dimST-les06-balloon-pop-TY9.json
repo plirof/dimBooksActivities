@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μάντεψε τον Αριθμό",
+  "subtitle": "Σπάσε μόνο τα σωστά στοιχεία του παιχνιδιού",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με το παιχνίδι «Μάντεψε τον αριθμό»",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Μεταβλητή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Τυχαίος αριθμός",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Μουσική",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Εντολή επιλογής",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μυστικός αριθμός",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ιστορία",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Πρόγραμμα Scratch",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Γεωγραφία",
+      "correct": false,
+      "color": "#607D8B"
+    }
+  ]
+}

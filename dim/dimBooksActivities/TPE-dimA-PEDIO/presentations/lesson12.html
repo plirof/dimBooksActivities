@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 12,
+  unit: "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα",
+  slides: [
+    { type:"title", title:"Μάθημα 12ο: Πώς χρησιμοποιώ τον υπολογιστή;" },
+    { type:"concept", text:"Ένα μηχάνημα ανοίγει όταν πατάμε ένα κουμπί. Τότε παίρνει ηλεκτρικό ρεύμα και το μηχάνημα λειτουργεί. Ο υπολογιστής λειτουργεί με τον ίδιο τρόπο." },
+    { type:"concept", text:"Πατάω το κουμπί και ανοίγω τον υπολογιστή. Σε λίγο βλέπω στην οθόνη τα εικονίδια. Για να κάνω μία εργασία, πρέπει να ανοίξω μία εφαρμογή." },
+    { type:"list", title:"Βασικές έννοιες", items:["Εικονίδια: μικρές εικόνες που αναπαριστούν εφαρμογές","Εφαρμογή: πρόγραμμα που κάνουμε εργασία","Παράθυρο: πλαίσιο όπου εμφανίζεται η εφαρμογή","Τερματισμός: κλείσιμο του υπολογιστή"] },
+    { type:"steps", title:"Πώς ανοίγω μια εφαρμογή", steps:["Κάνω κλικ στο εικονίδιο της εφαρμογής με το ποντίκι","Πατάω το πλήκτρο Enter του πληκτρολογίου","Ή κάνω διπλό κλικ στο εικονίδιο","Στην ταμπλέτα και στο κινητό πατάω με το δάχτυλο"] },
+    { type:"concept", text:"Ανοίγω την εφαρμογή και εμφανίζεται ένα πλαίσιο που λέγεται παράθυρο. Κάνω την εργασία μου μέσα στο παράθυρο. Κλείνω το παράθυρο με κλικ στο Χ πάνω δεξιά." },
+    { type:"steps", title:"Πώς κλείνω τον υπολογιστή", steps:["Στον υπολογιστή γραφείου ή φορητό: κάνω κλικ στη λέξη Τερματισμός","Στην ταμπλέτα και στο κινητό: πατάω με το δάχτυλο στο κουμπί τερματισμού"] },
+    { type:"list", title:"Ενδεικτικά εικονίδια εφαρμογών", items:["Ζωγραφική: για να δημιουργήσω σχέδια","Επεξεργαστής κειμένου: για να γράψω","Φυλλομετρητής: για να βρω πληροφορίες"] },
+    { type:"practice", title:"Συζητήστε", items:["Ποια εικονίδια βλέπετε στην οθόνη σας;","Πώς θα ανοίξετε την εφαρμογή ζωγραφικής;","Πώς θα κλείσετε τον υπολογιστή;"] },
+    { type:"assessment", check:"Μπορώ να ανοίγω και να χρησιμοποιώ εφαρμογές, και να τερματίζω σωστά τον υπολογιστή", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα. Μάθημα 12ο: Πώς χρησιμοποιώ τον υπολογιστή;",
+  "Ένα μηχάνημα ανοίγει όταν πατάμε ένα κουμπί. Τότε παίρνει ηλεκτρικό ρεύμα και το μηχάνημα λειτουργεί. Ο υπολογιστής λειτουργεί με τον ίδιο τρόπο.",
+  "Πατάω το κουμπί και ανοίγω τον υπολογιστή. Σε λίγο βλέπω στην οθόνη τα εικονίδια. Για να κάνω μία εργασία, πρέπει να ανοίξω μία εφαρμογή.",
+  "Βασικές έννοιες. Εικονίδια: μικρές εικόνες που αναπαριστούν εφαρμογές. Εφαρμογή: πρόγραμμα που κάνουμε εργασία. Παράθυρο: πλαίσιο όπου εμφανίζεται η εφαρμογή. Τερματισμός: κλείσιμο του υπολογιστή",
+  "Πώς ανοίγω μια εφαρμογή. Κάνω κλικ στο εικονίδιο της εφαρμογής με το ποντίκι. Πατάω το πλήκτρο Enter του πληκτρολογίου. Ή κάνω διπλό κλικ στο εικονίδιο. Στην ταμπλέτα και στο κινητό πατάω με το δάχτυλο",
+  "Ανοίγω την εφαρμογή και εμφανίζεται ένα πλαίσιο που λέγεται παράθυρο. Κάνω την εργασία μου μέσα στο παράθυρο. Κλείνω το παράθυρο με κλικ στο Χ πάνω δεξιά.",
+  "Πώς κλείνω τον υπολογιστή. Στον υπολογιστή γραφείου ή φορητό: κάνω κλικ στη λέξη Τερματισμός. Στην ταμπλέτα και στο κινητό: πατάω με το δάχτυλο στο κουμπί τερματισμού",
+  "Ενδεικτικά εικονίδια εφαρμογών. Ζωγραφική: για να δημιουργήσω σχέδια. Επεξεργαστής κειμένου: για να γράψω. Φυλλομετρητής: για να βρω πληροφορίες",
+  "Συζητήστε. Ποια εικονίδια βλέπετε στην οθόνη σας; Πώς θα ανοίξετε την εφαρμογή ζωγραφικής; Πώς θα κλείσετε τον υπολογιστή;",
+  "Μπορώ να ανοίγω και να χρησιμοποιώ εφαρμογές, και να τερματίζω σωστά τον υπολογιστή. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

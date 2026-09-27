@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υποπρογράμματα | Μάθημα 8</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ede9fe,#c4b5fd);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#4c1d95;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#7c3aed;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#4c1d95;font-size:.75rem;font-weight:700;border:1px solid #c4b5fd;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.sub-def{background:#f5f3ff;border:2px solid #c4b5fd;border-radius:12px;padding:10px;margin:8px 0}
+.sub-title{font-size:.78rem;font-weight:700;color:#4c1d95;text-align:center}
+.sub-desc{font-size:.7rem;color:#6d28d9;text-align:center;margin:4px 0}
+.match-row{display:flex;gap:8px;align-items:center;margin:6px 0;padding:8px;border-radius:10px;background:#f5f3ff;border:2px solid #e9d5ff}
+.match-left{flex:1;font-size:.72rem;font-weight:700;color:#4c1d95}
+.match-arrow{font-size:.8rem;color:#7c3aed}
+.match-right{flex:1;min-height:34px;border:2px dashed #c4b5fd;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:#94a3b8;cursor:pointer;transition:all .2s;padding:4px}
+.match-right:hover{background:#ede9fe;border-color:#7c3aed}
+.match-right.filled{border-style:solid;border-color:#7c3aed;background:#ede9fe;color:#4c1d95;font-weight:700}
+.match-right.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.match-right.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.block-pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.block-chip{padding:6px 10px;border:2px solid #e2e8f0;border-radius:20px;font-size:.65rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.block-chip:hover{border-color:#7c3aed;background:#f5f3ff}
+.block-chip.used{opacity:.3;cursor:default}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#7c3aed;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#6d28d9}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #7c3aed;border-radius:10px;background:transparent;color:#7c3aed;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f5f3ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .match-row > * + * { margin-left: 8px; }
+  .block-pool > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📦 Υποπρογράμματα</h1>
+<p class="subtitle">Αντίστοιξε τα υποπρογράμματα με τον κώδικά τους!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Μέρος:</span> <span id="qNum">1</span>/<span id="qTotal">2</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var parts=[
+{
+title:'Υποπρογράμματα Αλεξίας',
+intro:'Κάθε υποπρόγραμμα έχει όνομα και εντολές. Αντίστοιξε!',
+matches:[
+{left:'🩰 "χορός"',answer:'Αλλαγή ενδυμασιών + περίμενε'},
+{left:'🔄 "ρόδα"',answer:'Στρίψε δεξιά 15° × 24 φορές'},
+{left:'🔃 "ανάποδη ρόδα"',answer:'Στρίψε αριστερά 15° × 24 φορές'},
+{left:'🎵 "μουσική"',answer:'Παίξε ήχο μέχρι τέλους'},
+{left:'⏸️ "αρχική στάση"',answer:'Βάλε ενδυμασία 1'}
+]
+},
+{
+title:'Πλεονεκτήματα Υποπρογραμμάτων',
+intro:'Αντίστοιχε το πλεονέκτημα με την περιγραφή:',
+matches:[
+{left:'📝 Μικρότερος κώδικας',answer:'Γράφουμε τις εντολές μία φορά'},
+{left:'🔍 Ευανάγνωστο',answer:'Καταλαβαίνουμε τι κάνει κάθε μέρος'},
+{left:'🔧 Εύκολη διόρθωση',answer:'Αλλάζουμε κάτι μόνο σε ένα σημείο'},
+{left:'♻️ Επαναχρησιμοποίηση',answer:'Χρησιμοποιούμε το ίδιο υποπρόγραμμα πολλάκις'},
+{left:'🏗️ Οργάνωση',answer:'Χωρίζουμε το πρόγραμμα σε λογικά κομμάτια'}
+]
+}
+];
+var curQ=0,pts=0,answers={},checked=false,selectedChip=null;
+
+function initQ(){answers={};checked=false;selectedChip=null;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var p=parts[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="sub-def"><div class="sub-title">'+p.title+'</div><div class="sub-desc">'+p.intro+'</div></div>';
+var allAnswers=[];
+for(var i=0;i<p.matches.length;i++)allAnswers.push(p.matches[i].answer);
+var shuffled=allAnswers.slice().sort(function(){return Math.random()-.5;});
+h+='<div class="block-pool">';
+for(var i=0;i<shuffled.length;i++){
+var used=false;
+for(var j in answers){if(answers[j]===shuffled[i])used=true;}
+var cls='block-chip'+(used?' used':'');
+if(!used)h+='<div class="'+cls+'" onclick="pickChip(\''+esc(shuffled[i])+'\')">'+shuffled[i]+'</div>';
+else h+='<div class="'+cls+'">'+shuffled[i]+'</div>';
+}
+h+='</div>';
+for(var i=0;i<p.matches.length;i++){
+var filled=answers[i]!==undefined;
+var cls='match-right'+(filled?' filled':'');
+if(checked){cls+=answers[i]===p.matches[i].answer?' correct':' wrong';}
+h+='<div class="match-row">';
+h+='<span class="match-left">'+p.matches[i].left+'</span>';
+h+='<span class="match-arrow">→</span>';
+h+='<span class="'+cls+'" onclick="placeIn('+i+')">'+(filled?answers[i]:'Επίλεξε...')+'</span>';
+h+='</div>';
+}
+var allFilled=Object.keys(answers).length===p.matches.length;
+if(allFilled&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<p.matches.length;i++){if(answers[i]===p.matches[i].answer)correct++;}
+var pct=Math.round(correct/p.matches.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ '+correct+'/'+p.matches.length+' σωστά!':'❌ '+correct+'/'+p.matches.length+' σωστά.')+'</div>';
+if(curQ<parts.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Μέρος ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function esc(s){return s.replace(/'/g,'\\\'');}
+function pickChip(c){selectedChip=c;render();}
+function placeIn(idx){
+if(checked)return;
+if(selectedChip!==null){answers[idx]=selectedChip;selectedChip=null;render();}
+}
+function checkAnswer(){checked=true;render();}
+function nextQ(){if(curQ<parts.length-1){curQ++;initQ();render();}}
+
+initQ();render();
+</script>
+</body>
+</html>

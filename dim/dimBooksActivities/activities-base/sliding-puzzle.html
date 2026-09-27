@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παζλ Ολίσθησης</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1565c0 0%,#0d47a1 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.25);text-align:center}
+h1{color:#0d47a1;font-size:1.8rem;margin-bottom:5px}
+h2{color:#1565c0;font-size:1.1rem;margin-bottom:20px;font-weight:400}
+.start-btn,.restart-btn{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;border:none;padding:14px 40px;border-radius:50px;font-size:1.2rem;cursor:pointer;transition:transform .2s;margin-top:15px}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.info-bar{display:flex;justify-content:center;gap:30px;margin-bottom:15px;font-size:1rem;color:#1565c0;font-weight:600}
+.puzzle-grid{display:inline-grid;gap:6px;margin:15px auto;padding:10px;background:#e3f2fd;border-radius:12px}
+.tile{width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;border-radius:10px;cursor:pointer;transition:all .15s ease;user-select:none;background:linear-gradient(135deg,#42a5f5,#1e88e5);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.tile:hover{transform:scale(1.05);box-shadow:0 5px 15px rgba(0,0,0,.3)}
+.tile.empty{background:transparent;box-shadow:none;cursor:default}
+.tile.empty:hover{transform:none}
+.tile.correct{background:linear-gradient(135deg,#66bb6a,#43a047)}
+.end-screen h1{font-size:1.6rem;margin-bottom:10px}
+.end-screen .final-score{font-size:2.5rem;color:#0d47a1;font-weight:700;margin:10px 0}
+.end-screen .stars{font-size:2rem;margin:10px 0}
+.hidden{display:none!important}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+let gameData,size,tiles,emptyIdx,moves,timerInterval,seconds;
+
+if(!dataFile){
+app.innerHTML='<h1>Παζλ Ολίσθησης</h1><p style="color:#1565c0">Δεν βρέθηκε αρχείο δεδομένων.</p>';
+}else{
+fetch(dataFile).then(r=>r.json()).then(d=>{gameData=d;showStart()}).catch(()=>{app.innerHTML='<h1>Σφάλμα</h1><p style="color:#f44336">Δεν ήταν δυνατή η φόρτωση των δεδομένων.</p>'});
+}
+
+function showStart(){
+app.innerHTML='<div><h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><p style="color:#1565c0;margin:10px 0">'+esc(gameData.instructions)+'</p><div style="font-size:3rem;margin:20px 0">🧩</div><button class="start-btn" id="startBtn">Ξεκίνα!</button></div>';
+document.getElementById('startBtn').onclick=showGame;
+}
+
+function showGame(){
+size=gameData.size||3;
+moves=0;seconds=0;
+tiles=[];
+const total=size*size;
+for(let i=1;i<total;i++)tiles.push(i);
+tiles.push(0);
+emptyIdx=total-1;
+shuffle(100+Math.floor(Math.random()*100));
+timerInterval=setInterval(function(){seconds++;updateInfo()},1000);
+renderGame();
+}
+
+function shuffle(n){
+for(let i=0;i<n;i++){
+const neighbors=getNeighbors(emptyIdx);
+const pick=neighbors[Math.floor(Math.random()*neighbors.length)];
+tiles[emptyIdx]=tiles[pick];
+tiles[pick]=0;
+emptyIdx=pick;
+}
+}
+
+function getNeighbors(idx){
+const r=Math.floor(idx/size),c=idx%size;
+const n=[];
+if(r>0)n.push(idx-size);
+if(r<size-1)n.push(idx+size);
+if(c>0)n.push(idx-1);
+if(c<size-1)n.push(idx+1);
+return n;
+}
+
+function renderGame(){
+const total=size*size;
+let html='<div><h1>'+esc(gameData.title)+'</h1><div class="info-bar"><span>Κινήσεις: <strong id="moveCount">'+moves+'</strong></span><span>Χρόνος: <strong id="timer">'+formatTime(seconds)+'</strong></span></div><div class="puzzle-grid" style="grid-template-columns:repeat('+size+',80px)">';
+for(let i=0;i<total;i++){
+if(tiles[i]===0){
+html+='<div class="tile empty"></div>';
+}else{
+const isCorrect=tiles[i]===i+1;
+html+='<div class="tile'+(isCorrect?' correct':'')+'" onclick="moveTile('+i+')">'+tiles[i]+'</div>';
+}
+}
+html+='</div></div>';
+app.innerHTML=html;
+}
+
+function updateInfo(){
+const mc=document.getElementById('moveCount');
+const tm=document.getElementById('timer');
+if(mc)mc.textContent=moves;
+if(tm)tm.textContent=formatTime(seconds);
+}
+
+function formatTime(s){
+const m=Math.floor(s/60);
+const sec=s%60;
+return (m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
+}
+
+window.moveTile=function(idx){
+const neighbors=getNeighbors(idx);
+if(neighbors.indexOf(emptyIdx)===-1)return;
+tiles[emptyIdx]=tiles[idx];
+tiles[idx]=0;
+emptyIdx=idx;
+moves++;
+if(checkWin()){
+clearInterval(timerInterval);
+renderGame();
+setTimeout(showEnd,400);
+}else{
+renderGame();
+}
+};
+
+function checkWin(){
+for(let i=0;i<tiles.length-1;i++){
+if(tiles[i]!==i+1)return false;
+}
+return true;
+}
+
+function showEnd(){
+let stars='';
+if(moves<=30)stars='⭐⭐⭐';else if(moves<=60)stars='⭐⭐';else stars='⭐';
+app.innerHTML='<div class="end-screen"><h1>'+esc(gameData.title)+'</h1><div class="stars">'+stars+'</div><div class="final-score">Μπράο!</div><p style="color:#0d47a1;font-size:1.1rem;margin:10px 0">Κινήσεις: '+moves+' | Χρόνος: '+formatTime(seconds)+'</p><button class="restart-btn" id="restartBtn">Ξαναπαιξε!</button></div>';
+document.getElementById('restartBtn').onclick=showStart;
+}
+
+document.addEventListener('keydown',function(e){
+if(!document.querySelector('.puzzle-grid'))return;
+const r=Math.floor(emptyIdx/size),c=emptyIdx%size;
+let target=-1;
+if(e.key==='ArrowUp'&&r<size-1)target=emptyIdx+size;
+if(e.key==='ArrowDown'&&r>0)target=emptyIdx-size;
+if(e.key==='ArrowLeft'&&c<size-1)target=emptyIdx+1;
+if(e.key==='ArrowRight'&&c>0)target=emptyIdx-1;
+if(target>=0&&target<size*size){e.preventDefault();window.moveTile(target)}
+});
+</script>
+</body>
+</html>

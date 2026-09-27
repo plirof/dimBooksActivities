@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train AI: Γάτες & Σκύλοι | Μάθημα 20</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:16px;}
+.tabs{display:flex;gap:6px;margin-bottom:14px;}
+.tab{flex:1;padding:10px;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:.85rem;background:#e0e0e0;color:#666;transition:all .2s;}
+.tab.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.section{background:#f8f9ff;border-radius:14px;padding:16px;margin-bottom:14px;border:2px solid #e8eaf6;display:none;}
+.section.active{display:block;}
+.section-title{font-size:1rem;font-weight:700;color:#4527a0;margin-bottom:10px;text-align:center;}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:10px;margin:10px 0;}
+.feature-btn{padding:10px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;text-align:center;font-size:.8rem;font-weight:600;background:#fff;transition:all .2s;}
+.feature-btn.selected{border-color:#667eea;background:#ede9fe;color:#4527a0;}
+.feature-btn:hover{border-color:#667eea;}
+.animal-select{display:flex;gap:12px;justify-content:center;margin:10px 0;}
+.animal-btn{padding:12px 24px;border:3px solid #ddd;border-radius:14px;cursor:pointer;font-size:2rem;background:#fff;transition:all .2s;}
+.animal-btn.selected{border-color:#667eea;box-shadow:0 0 12px rgba(102,126,234,.3);}
+.animal-btn:hover{transform:scale(1.05);}
+.train-list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0;}
+.train-item{padding:6px 12px;border-radius:8px;font-size:.8rem;font-weight:600;color:#fff;}
+.train-item.cat{background:#f44336;}.train-item.dog{background:#2196f3;}
+.test-area{text-align:center;margin:10px 0;}
+.test-result{border-radius:12px;padding:14px;margin-top:10px;font-weight:700;font-size:1rem;}
+.test-result.correct{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;color:#166534;}
+.test-result.wrong{background:linear-gradient(135deg,#fef2f2,#fecaca);border:2px solid #f87171;color:#991b1b;}
+.btn{padding:10px 22px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;margin:4px;}
+.btn:hover{transform:translateY(-2px);}
+.btn-train{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-test{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.progress-bar{background:#e0e0e0;border-radius:8px;height:20px;margin:10px 0;overflow:hidden;}
+.progress-fill{height:100%;border-radius:8px;transition:width .3s;background:linear-gradient(90deg,#667eea,#764ba2);}
+.progress-text{font-size:.8rem;color:#666;text-align:center;margin-top:4px;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tabs > * + * { margin-left: 6px; }
+  .animal-select > * + * { margin-left: 12px; }
+  .train-list > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🤖 Train AI: Γάτες & Σκύλοι</h1>
+<p class="subtitle">Εκπαίδευσε την τεχνητή νοημοσύνη να ξεχωρίζει γάτες από σκύλους!</p>
+<div class="container">
+<div class="tabs">
+<button class="tab active" onclick="switchTab(0)">📚 Εκπαίδευση</button>
+<button class="tab" onclick="switchTab(1)">🧪 Τεστ</button>
+</div>
+<div class="section active" id="sec0">
+<div class="section-title">Step 1: Διάλεξε χαρακτηριστικά</div>
+<div class="feature-grid" id="features"></div>
+<div class="section-title" style="margin-top:12px;">Step 2: Διάλεξε ζώο</div>
+<div class="animal-select">
+<div class="animal-btn" onclick="selectAnimal('cat')" id="abCat">🐱</div>
+<div class="animal-btn" onclick="selectAnimal('dog')" id="abDog">🐶</div>
+</div>
+<div style="text-align:center;margin-top:10px;">
+<button class="btn btn-train" onclick="trainAI()">➕ Πρόσθεσε Παράδειγμα</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+<div class="progress-text" id="progText">0 παράδειγμα(α) — Χρειάζονται τουλάχιστον 4</div>
+<div class="train-list" id="trainList"></div>
+</div>
+<div class="section" id="sec1">
+<div class="section-title">🧪 Τεστ AI</div>
+<p style="text-align:center;color:#666;font-size:.85rem;margin-bottom:10px;">Διάλεξε χαρακτηριστικά και δες αν η AI μαντεύει σωστά!</p>
+<div class="feature-grid" id="testFeatures"></div>
+<div style="text-align:center;margin-top:10px;">
+<button class="btn btn-test" onclick="testAI()">🔍 Μάντεψε!</button>
+</div>
+<div class="test-result" id="testResult" style="display:none;"></div>
+</div>
+</div>
+<script>
+var features=['Μαλλιά','Ουρά','Μεγάλα Αυτιά','Μικρή Μύτη','Κυνηγάει','Γαυγίζει','Νιαουρίζει','Μεγάλος','Φιλικός'];
+var selectedFeatures={};var selectedAnimal=null;var trainingData=[];var testSelected={};
+features.forEach(function(f){selectedFeatures[f]=false;testSelected[f]=false;});
+function renderFeatures(containerId,selectedObj){
+var g=document.getElementById(containerId);g.innerHTML='';
+features.forEach(function(f){
+var b=document.createElement('div');b.className='feature-btn'+(selectedObj[f]?' selected':'');
+b.textContent=(selectedObj[f]?'✓ ':'')+f;
+b.onclick=function(){selectedObj[f]=!selectedObj[f];renderFeatures(containerId,selectedObj);};
+g.appendChild(b);
+});
+}
+function selectAnimal(type){
+selectedAnimal=type;
+document.getElementById('abCat').className='animal-btn'+(type==='cat'?' selected':'');
+document.getElementById('abDog').className='animal-btn'+(type==='dog'?' selected':'');
+}
+function trainAI(){
+if(!selectedAnimal){alert('Διάλεξε ζώο!');return;}
+var hasFeature=Object.values(selectedFeatures).some(function(v){return v;});
+if(!hasFeature){alert('Διάλεξε τουλάχιστον ένα χαρακτηριστικό!');return;}
+trainingData.push({features:Object.assign({},selectedFeatures),animal:selectedAnimal});
+features.forEach(function(f){selectedFeatures[f]=false;});
+selectedAnimal=null;renderFeatures('features',selectedFeatures);
+document.getElementById('abCat').className='animal-btn';document.getElementById('abDog').className='animal-btn';
+updateProgress();
+}
+function updateProgress(){
+var list=document.getElementById('trainList');list.innerHTML='';
+trainingData.forEach(function(d){
+var span=document.createElement('span');span.className='train-item '+(d.animal==='cat'?'cat':'dog');
+var fList=Object.keys(d.features).filter(function(f){return d.features[f];}).join(', ');
+span.textContent=(d.animal==='cat'?'🐱 Γάτα':'🐶 Σκύλος')+': '+fList;list.appendChild(span);
+});
+var pct=Math.min(100,trainingData.length*10);
+document.getElementById('progFill').style.width=pct+'%';
+document.getElementById('progText').textContent=trainingData.length+' παράδειγμα(α) — '+(trainingData.length<4?'Χρειάζονται τουλάχιστον 4':'Έτοιμο για τεστ!');
+}
+function testAI(){
+if(trainingData.length<4){document.getElementById('testResult').style.display='block';
+document.getElementById('testResult').className='test-result wrong';
+document.getElementById('testResult').textContent='⚠️ Χρειάζονται τουλάχιστον 4 παραδείγματα εκπαίδευσης!';
+return;}
+var hasFeature=Object.values(testSelected).some(function(v){return v;});
+if(!hasFeature){alert('Διάλεξε τουλάχιστον ένα χαρακτηριστικό!');return;}
+var catScore=0,dogScore=0;
+trainingData.forEach(function(d){
+var match=0;features.forEach(function(f){if(testSelected[f]&&d.features[f])match++;});
+if(d.animal==='cat')catScore+=match;else dogScore+=match;
+});
+var guess=catScore>=dogScore?'cat':'dog';
+var res=document.getElementById('testResult');res.style.display='block';
+res.className='test-result correct';
+res.textContent='🤖 Η AI μαντεύει: '+(guess==='cat'?'🐱 Γάτα!':'🐶 Σκύλος!')+' (Γάτα: '+catScore+' pts, Σκύλος: '+dogScore+' pts)';
+}
+function switchTab(idx){
+document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+document.querySelectorAll('.section').forEach(function(s,i){s.classList.toggle('active',i===idx);});
+if(idx===1)renderFeatures('testFeatures',testSelected);
+}
+renderFeatures('features',selectedFeatures);
+</script>
+</body>
+</html>

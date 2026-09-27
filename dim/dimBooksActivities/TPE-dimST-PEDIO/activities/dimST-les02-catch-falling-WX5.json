@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Αλγοριθμικές Έννοιες Παιχνιδιού",
+  "subtitle": "Πιάσε μόνο τις έννοιες του αλγορίθμου",
+  "instructions": "Χρησιμοποίησε τα βελάκια για να πιάσεις σωστές έννοιες!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "Μυστικός Αριθμός",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Επανάλαβε",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αν...τότε",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μουσική",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Αλλιώς",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Λογική έκφραση",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Μαγειρική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Τυχαίος αριθμός",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "Προσπάθειες",
+      "correct": true,
+      "color": "#FF5722"
+    }
+  ]
+}

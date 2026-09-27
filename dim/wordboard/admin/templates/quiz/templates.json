@@ -1,0 +1,214 @@
+{
+  "templates": [
+    {
+      "id": "quiz_math_addition_001",
+      "name": "Basic Addition Practice",
+      "description": "Simple addition problems for elementary students",
+      "category": "quiz",
+      "difficulty": "easy",
+      "tags": ["math", "addition", "elementary"],
+      "questions": [
+        {
+          "question": "What is 2 + 3?",
+          "options": ["4", "5", "6", "7"],
+          "correct": 1
+        },
+        {
+          "question": "What is 4 + 5?",
+          "options": ["7", "8", "9", "10"],
+          "correct": 2
+        },
+        {
+          "question": "What is 6 + 2?",
+          "options": ["7", "8", "9", "10"],
+          "correct": 1
+        },
+        {
+          "question": "What is 3 + 7?",
+          "options": ["9", "10", "11", "12"],
+          "correct": 1
+        },
+        {
+          "question": "What is 5 + 8?",
+          "options": ["12", "13", "14", "15"],
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": "quiz_math_multiplication_001",
+      "name": "Multiplication Facts 1-10",
+      "description": "Basic multiplication tables practice",
+      "category": "quiz",
+      "difficulty": "easy",
+      "tags": ["math", "multiplication", "elementary"],
+      "questions": [
+        {
+          "question": "What is 3 × 4?",
+          "options": ["10", "11", "12", "13"],
+          "correct": 2
+        },
+        {
+          "question": "What is 5 × 6?",
+          "options": ["25", "30", "35", "40"],
+          "correct": 1
+        },
+        {
+          "question": "What is 7 × 8?",
+          "options": ["48", "54", "56", "62"],
+          "correct": 2
+        },
+        {
+          "question": "What is 9 × 9?",
+          "options": ["72", "81", "90", "99"],
+          "correct": 1
+        },
+        {
+          "question": "What is 4 × 7?",
+          "options": ["24", "28", "32", "36"],
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": "quiz_vocabulary_001",
+      "name": "Common English Words",
+      "description": "Test knowledge of common English vocabulary",
+      "category": "quiz",
+      "difficulty": "easy",
+      "tags": ["english", "vocabulary", "elementary"],
+      "questions": [
+        {
+          "question": "Which word means 'a large animal with a trunk'?",
+          "options": ["Lion", "Elephant", "Giraffe", "Zebra"],
+          "correct": 1
+        },
+        {
+          "question": "Which word means 'to walk on snow'?",
+          "options": ["Ski", "Skate", "Trek", "Snowshoe"],
+          "correct": 3
+        },
+        {
+          "question": "Which word is the opposite of 'hot'?",
+          "options": ["Warm", "Cold", "Cool", "Fire"],
+          "correct": 1
+        },
+        {
+          "question": "Which word means 'a place where books are kept'?",
+          "options": ["Library", "Museum", "School", "Store"],
+          "correct": 0
+        },
+        {
+          "question": "Which word means 'very big'?",
+          "options": ["Huge", "Small", "Tiny", "Little"],
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": "quiz_science_animals_001",
+      "name": "Animal Classification",
+      "description": "Basic questions about animal groups",
+      "category": "quiz",
+      "difficulty": "easy",
+      "tags": ["science", "animals", "biology"],
+      "questions": [
+        {
+          "question": "Which animal is a mammal?",
+          "options": ["Eagle", "Shark", "Dolphin", "Frog"],
+          "correct": 2
+        },
+        {
+          "question": "Which animal lays eggs?",
+          "options": ["Cow", "Dog", "Chicken", "Cat"],
+          "correct": 2
+        },
+        {
+          "question": "Which animal is a reptile?",
+          "options": ["Turtle", "Bear", "Whale", "Rabbit"],
+          "correct": 0
+        },
+        {
+          "question": "Which animal can fly?",
+          "options": ["Bat", "Penguin", "Ostrich", "Peacock"],
+          "correct": 0
+        },
+        {
+          "question": "Which animal lives in water?",
+          "options": ["Lion", "Tiger", "Fish", "Elephant"],
+          "correct": 2
+        }
+      ]
+    },
+    {
+      "id": "quiz_geography_001",
+      "name": "World Capitals",
+      "description": "Test knowledge of country capitals",
+      "category": "quiz",
+      "difficulty": "medium",
+      "tags": ["geography", " capitals", "world"],
+      "questions": [
+        {
+          "question": "What is the capital of France?",
+          "options": ["Lyon", "Paris", "Marseille", "Nice"],
+          "correct": 1
+        },
+        {
+          "question": "What is the capital of Japan?",
+          "options": ["Osaka", "Kyoto", "Tokyo", "Yokohama"],
+          "correct": 2
+        },
+        {
+          "question": "What is the capital of Australia?",
+          "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+          "correct": 2
+        },
+        {
+          "question": "What is the capital of Brazil?",
+          "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+          "correct": 2
+        },
+        {
+          "question": "What is the capital of Canada?",
+          "options": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+          "correct": 3
+        }
+      ]
+    },
+    {
+      "id": "quiz_history_001",
+      "name": "Ancient Civilizations",
+      "description": "Basic questions about ancient civilizations",
+      "category": "quiz",
+      "difficulty": "medium",
+      "tags": ["history", "ancient", "civilizations"],
+      "questions": [
+        {
+          "question": "Which civilization built the pyramids?",
+          "options": ["Romans", "Greeks", "Egyptians", "Persians"],
+          "correct": 2
+        },
+        {
+          "question": "Where was democracy first practiced?",
+          "options": ["Rome", "Athens", "Sparta", "Alexandria"],
+          "correct": 1
+        },
+        {
+          "question": "Which empire was ruled by Julius Caesar?",
+          "options": ["Greek Empire", "Roman Empire", "Persian Empire", "Macedonian Empire"],
+          "correct": 1
+        },
+        {
+          "question": "Which civilization invented paper?",
+          "options": ["Egyptians", "Greeks", "Chinese", "Romans"],
+          "correct": 2
+        },
+        {
+          "question": "Where were the Olympic games first held?",
+          "options": ["Rome", "Athens", "Sparta", "Olympia"],
+          "correct": 3
+        }
+      ]
+    }
+  ]
+}

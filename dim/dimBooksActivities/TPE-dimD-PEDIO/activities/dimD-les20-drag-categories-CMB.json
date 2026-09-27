@@ -1,0 +1,48 @@
+{
+  "title": "Λέξεις-κλειδιά αναζήτησης",
+  "subtitle": "Διάκρινε καλές από κακές λέξεις-κλειδιά",
+  "categories": [
+    {
+      "id": "good",
+      "name": "ΚΑΛΗ ΛΕΞΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "bad",
+      "name": "ΚΑΚΗ ΛΕΞΗ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "«Ακρόπολη»",
+      "category": "good"
+    },
+    {
+      "id": "item2",
+      "text": "«πράγμα»",
+      "category": "bad"
+    },
+    {
+      "id": "item3",
+      "text": "«Ελληνική μυθολογία»",
+      "category": "good"
+    },
+    {
+      "id": "item4",
+      "text": "「」",
+      "category": "bad"
+    },
+    {
+      "id": "item5",
+      "text": "«ηλιακό σύστημα πλανήτες»",
+      "category": "good"
+    },
+    {
+      "id": "item6",
+      "text": "«asdf»",
+      "category": "bad"
+    }
+  ]
+}

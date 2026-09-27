@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακά Δεδομένα",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Εικονοστοιχείο", "error": false, "correct": "Εικονοστοιχείο", "feedback": "" },
+        { "text": "Εικονοστηχείο", "error": true, "correct": "Εικονοστοιχείο", "feedback": "Γράφεται Εικονοστοιχείο με ου" },
+        { "text": "Πίκσελ", "error": false, "correct": "Πίκσελ", "feedback": "" },
+        { "text": "Πηξέλ", "error": true, "correct": "Πίκσελ", "feedback": "Γράφεται Πίκσελ" },
+        { "text": "Δυαδικό", "error": false, "correct": "Δυαδικό", "feedback": "" },
+        { "text": "Δυάδικο", "error": true, "correct": "Δυαδικό", "feedback": "Γράφεται Δυαδικό" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Κωδικοποίηση", "error": false, "correct": "Κωδικοποίηση", "feedback": "" },
+        { "text": "Κωδηκοποίηση", "error": true, "correct": "Κωδικοποίηση", "feedback": "Γράφεται Κωδικοποίηση" },
+        { "text": "Στήλη", "error": false, "correct": "Στήλη", "feedback": "" },
+        { "text": "Στήλι", "error": true, "correct": "Στήλη", "feedback": "Γράφεται Στήλη" },
+        { "text": "Γραμμή", "error": false, "correct": "Γραμμή", "feedback": "" },
+        { "text": "Δαδομένα", "error": true, "correct": "Δεδομένα", "feedback": "Γράφεται Δεδομένα με ε" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Ταξινόμηση: Πού πάει ο δείκτης;",
+  "subtitle": "Κατεύθυνση ποντικιού!",
+  "instructions": "Πάτα: ΑΡΙΣΤΕΡΑ ή ΔΕΞΙΑ ή ΠΑΝΩ ή ΚΑΤΩ",
+  "categories": [
+    {"id": "aristera", "name": "Αριστερά ←", "color": "#2196F3", "key": "ArrowLeft"},
+    {"id": "dexia", "name": "Δεξιά →", "color": "#4CAF50", "key": "ArrowRight"},
+    {"id": "pano", "name": "Πάνω ↑", "color": "#FF9800", "key": "ArrowUp"},
+    {"id": "kato", "name": "Κάτω ↓", "color": "#f44336", "key": "ArrowDown"}
+  ],
+  "items": [
+    {"text": "Ποντίκι αριστερά → δείκτης...", "category": "aristera"},
+    {"text": "Ποντίκι δεξιά → δείκτης...", "category": "dexia"},
+    {"text": "Ποντίκι πάνω → δείκτης...", "category": "pano"},
+    {"text": "Ποντίκι κάτω → δείκτης...", "category": "kato"},
+    {"text": "Πληκτρολόγιο στα αριστερά", "category": "aristera"},
+    {"text": "Κλείσιμο παραθύρου δεξιά", "category": "dexia"},
+    {"text": "Μπάρα τίτλου πάνω", "category": "pano"},
+    {"text": "Γραμμή εργασιών κάτω", "category": "kato"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Τι δείκτης είσαι; 🎯</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(194,24,91,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #c2185b; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .match-area {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .cursor-show {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 28px 20px; text-align: center; margin-bottom: 8px;
+  }
+  .cursor-show .cs-icon { font-size: 5rem; display: block; margin-bottom: 8px; }
+  .cursor-show .cs-name { font-size: 1.2rem; font-weight: 700; color: #333; }
+  .cursor-show .cs-question { font-size: 1rem; color: #888; margin-top: 6px; }
+  .option-grid {
+    display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px;
+  }
+  .option-card {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 18px; padding: 16px 12px; text-align: center;
+    cursor: pointer; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .option-card .oc-emoji { font-size: 2.5rem; display: block; margin-bottom: 6px; }
+  .option-card .oc-title { font-size: 1.1rem; font-weight: 700; color: #333; }
+  .option-card:active:not(.disabled) { transform: scale(.95); }
+  .option-card.correct { border-color: #43a047; background: #e8f5e9; animation: pop .3s ease; }
+  .option-card.wrong { border-color: #e53935; background: #ffebee; animation: shake .35s ease; }
+  .option-card.disabled { pointer-events: none; opacity: .5; }
+  .option-card.reveal { border-color: #43a047; background: #e8f5e9; opacity: 1; }
+  @keyframes pop { 0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}60%{transform:translateX(5px)} }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(194,24,91,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:active { transform: scale(.95); }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .cursor-show .cs-icon { font-size: 4rem; }
+    .option-card .oc-emoji { font-size: 2rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .match-area > * + * { margin-top: 16px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎯 Τι δείκτης είσαι;</h1>
+    <p>Ταίριαξε τον δείκτη με τη δουλειά του</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ερώτηση 1/8</span>
+  </div>
+  <div class="instructions">
+    👀 Κοίτα τον δείκτη. Τι κάνει; Πάτησε τη σωστή απάντηση!
+  </div>
+  <div id="gameArea">
+    <div class="match-area">
+      <div class="cursor-show">
+        <span class="cs-icon" id="csIcon">👆</span>
+        <span class="cs-name" id="csName">Βέλος</span>
+        <span class="cs-question" id="csQuestion">Τι κάνω;</span>
+      </div>
+      <div class="option-grid" id="optionGrid"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Ξέρεις όλους τους δείκτες!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var questions = [
+    { icon: '👆', name: 'Βέλος', q: 'Τι κάνω;', answer: 0,
+      options: ['Επιλέγω και πατάω κουμπιά', 'Γράφω κείμενο', 'Περιμένω να φορτώσει', 'Ανοίγω σύνδεσμο'] },
+    { icon: '✋', name: 'Χεράκι', q: 'Τι κάνω;', answer: 1,
+      options: ['Σβήνω την οθόνη', 'Ανοίγω σύνδεσμο', 'Αλλάζω χρώμα', 'Κάνω zoom'] },
+    { icon: '📝', name: 'Δείκτης κειμένου', q: 'Τι κάνω;', answer: 2,
+      options: ['Ζωγραφίζω', 'Ανοίγω αρχείο', 'Γράφω γράμματα', 'Κλείνω παράθυρο'] },
+    { icon: '⏳', name: 'Αμμοδείκτης', q: 'Τι κάνω;', answer: 3,
+      options: ['Τρέχω γρήγορα', 'Αλλάζω σελίδα', 'Περιμένω — φορτώνει', 'Πατάω κουμπί'] },
+    { icon: '➕', name: 'Σταυρός', q: 'Τι κάνω;', answer: 0,
+      options: ['Αλλάζω μέγεθος', 'Γράφω κείμενο', 'Ανοίγω μενού', 'Παίζω μουσική'] },
+    { icon: '👆', name: 'Βέλος με +', q: 'Τι κάνω;', answer: 1,
+      options: ['Διαγράφω', 'Αντιγράφω', 'Μετακινώ', 'Εκτυπώνω'] },
+    { icon: '✋', name: 'Χεράκι που πιάνει', q: 'Τι κάνω;', answer: 2,
+      options: ['Πατάω κουμπί', 'Γράφω γράμμα', 'Σέρνω αντικείμενο', 'Κλείνω εφαρμογή'] },
+    { icon: '🔍', name: 'Μεγεθυντικός', q: 'Τι κάνω;', answer: 0,
+      options: ['Μεγεθύνω', 'Σμικρύνω', 'Τυπώνω', 'Αποθηκεύω'] }
+  ];
+
+  var shuffled = [];
+  var current = 0, score = 0;
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffled = shuffle(questions.slice());
+    current = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showQ();
+  }
+
+  function showQ() {
+    if (current >= shuffled.length) { showResult(); return; }
+    var q = shuffled[current];
+    document.getElementById('csIcon').textContent = q.icon;
+    document.getElementById('csName').textContent = q.name;
+    document.getElementById('csQuestion').textContent = q.q;
+    document.getElementById('roundDisplay').textContent = 'Ερώτηση ' + (current+1) + '/' + shuffled.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    var grid = document.getElementById('optionGrid');
+    grid.innerHTML = '';
+    var optEmojis = ['🟢', '🔵', '🟡', '🟠'];
+    var shuffledOpts = q.options.slice();
+    shuffle(shuffledOpts);
+    for (var i = 0; i < shuffledOpts.length; i++) {
+      var opt = document.createElement('div');
+      opt.className = 'option-card';
+      opt.setAttribute('data-correct', shuffledOpts[i] === q.options[q.answer] ? '1' : '0');
+      opt.innerHTML = '<span class="oc-emoji">' + optEmojis[i] + '</span><span class="oc-title">' + shuffledOpts[i] + '</span>';
+      opt.addEventListener('click', pick);
+      grid.appendChild(opt);
+    }
+  }
+
+  function pick(el) {
+    var q = shuffled[current];
+    var isCorrect = el.getAttribute('data-correct') === '1';
+    var all = document.querySelectorAll('.option-card');
+    for (var i = 0; i < all.length; i++) all[i].classList.add('disabled');
+    var fb = document.getElementById('feedback');
+    if (isCorrect) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      el.classList.add('correct');
+      fb.className = 'feedback show true';
+      fb.textContent = '✅ Μπράβο! Ο δείκτης ' + q.name + ' ' + q.options[q.answer].toLowerCase() + '!';
+      setTimeout(function() { current++; showQ(); }, 1200);
+    } else {
+      el.classList.add('wrong');
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].getAttribute('data-correct') === '1') all[i].classList.add('reveal');
+      }
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Ο δείκτης ' + q.name + ' ' + q.options[q.answer].toLowerCase() + '!';
+      setTimeout(function() { current++; showQ(); }, 1600);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = shuffled.length;
+    var e, ti, m;
+    if (score === t) { e = '🏆'; ti = 'Τέλεια!'; m = 'Είσαι ειδικός στους δείκτες!' }
+    else if (score >= 6) { e = '🎉'; ti = 'Μπράβο!'; m = 'Τα ξέρεις σχεδόν όλα!' }
+    else if (score >= 4) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά!' }
+    else { e = '💪'; ti = 'Καλή αρχή!'; m = 'Κάθε δείκτης έχει διαφορετική δουλειά!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + t + ' σωστά! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

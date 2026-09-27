@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εντολές Χορού",
+  "subtitle": "Μόνο εντολές για το πάρτι!",
+  "instruction": "Σπάσε μόνο ΕΝΤΟΛΕΣ για το ΠΑΡΤΙ ΧΟΡΟΥ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "ΣΤΡΙΨΕ ΔΕΞΙΑ", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κοιμάμαι", "correct": false, "color": "#4ECDC4" },
+    { "text": "ΣΤΡΙΨΕ ΑΡΙΣΤΕΡΑ", "correct": true, "color": "#45B7D1" },
+    { "text": "Μαγειρεύω", "correct": false, "color": "#96CEB4" },
+    { "text": "ΞΕΚΙΝΑ ΜΕ ΣΗΜΑΙΑ", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κάνω μπάνιο", "correct": false, "color": "#DDA0DD" },
+    { "text": "ΕΠΑΝΑΛΑΒΕ ΓΙΑ ΠΑΝΤΑ", "correct": true, "color": "#98D8C8" },
+    { "text": "Βλέπω τηλεόραση", "correct": false, "color": "#F7DC6F" },
+    { "text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "correct": true, "color": "#BB8FCE" },
+    { "text": "Διαβάζω βιβλίο", "correct": false, "color": "#85C1E9" }
+  ]
+}

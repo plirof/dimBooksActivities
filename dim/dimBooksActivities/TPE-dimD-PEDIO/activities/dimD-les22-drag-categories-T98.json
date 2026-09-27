@@ -1,0 +1,48 @@
+{
+  "title": "Email ή Ταχυδρομείο",
+  "subtitle": "Διάκρινε email από ταχυδρομείο",
+  "categories": [
+    {
+      "id": "email",
+      "name": "EMAIL",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "post",
+      "name": "ΤΑΧΥΔΡΟΜΕΙΟ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "⚡ Άμεση παράδοση",
+      "category": "email"
+    },
+    {
+      "id": "item2",
+      "text": "📦 Φάκελος",
+      "category": "post"
+    },
+    {
+      "id": "item3",
+      "text": "📧 Subject",
+      "category": "email"
+    },
+    {
+      "id": "item4",
+      "text": "🏷️ Γραμματόσημο",
+      "category": "post"
+    },
+    {
+      "id": "item5",
+      "text": "💰 Δωρεάν",
+      "category": "email"
+    },
+    {
+      "id": "item6",
+      "text": "📝 Χειρόγραφο",
+      "category": "post"
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ζυγαριά Μεγεθών Αρχείων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fbbf24);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{padding:16px;display:flex;flex-direction:column;gap:14px}
+.info{background:#fffbeb;border-radius:12px;border-left:4px solid #f59e0b;padding:10px 14px;font-size:.85em;color:#78350f;line-height:1.5}
+.info b{color:#92400e}
+.round-info{text-align:center;font-weight:600;color:#92400e;font-size:.9em}
+.scale-box{background:#fefce8;border-radius:16px;border:2px solid #fde68a;padding:24px 16px;position:relative}
+.scale-frame{position:relative;height:200px;display:flex;align-items:center;justify-content:center}
+.scale-pivot{width:16px;height:16px;background:#92400e;border-radius:50%;position:absolute;bottom:10px;left:50%;margin-left:-8px;z-index:2}
+.scale-beam{position:absolute;bottom:18px;left:10%;right:10%;height:6px;background:#92400e;border-radius:3px;transform-origin:50% 3px;transition:transform .6s cubic-bezier(.34,1.56,.64,1);z-index:1}
+.scale-beam.tilt-left{transform:rotate(-12deg)}
+.scale-beam.tilt-right{transform:rotate(12deg)}
+.scale-beam.balanced{transform:rotate(0deg)}
+.scale-pan{position:absolute;bottom:18px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
+.scale-pan-left{left:5%}
+.scale-pan-right{right:5%}
+.scale-pan.tilt-left{transform:translateY(8px)}
+.scale-pan.tilt-right{transform:translateY(8px)}
+.pan-card{background:#fff;border:2px solid #fde68a;border-radius:10px;padding:8px 12px;text-align:center;font-size:.8em;font-weight:600;color:#78350f;min-width:80px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.pan-card .sz{font-size:.75em;color:#92400e;font-weight:400;display:block;margin-top:2px}
+.pan-card.empty-card{color:#d4d4d4;border-style:dashed;font-weight:400;font-size:.75em}
+.scale-base{width:80%;height:20px;background:#92400e;border-radius:0 0 10px 10px;margin:0 auto;position:relative;top:-2px}
+.file-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:50px;padding:10px;background:#fefce8;border-radius:12px;border:2px solid #fde68a}
+.file-pool .fp-card{padding:8px 14px;background:#fff;border:2px solid #fde68a;border-radius:10px;cursor:pointer;transition:all .2s;font-size:.82em;font-weight:600;color:#78350f;user-select:none;touch-action:none}
+.file-pool .fp-card:hover{transform:translateY(-2px);border-color:#f59e0b;background:#fffbeb}
+.file-pool .fp-card.used{opacity:.3;pointer-events:none;text-decoration:line-through}
+.file-pool .fp-card.selected{border-color:#f59e0b;background:#fef3c7;transform:scale(1.08)}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-vs{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff}
+.btn-vs:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(146,64,14,.35)}
+.btn-vs:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.score-bar .sb-item{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:4px 12px;font-size:.8em;color:#92400e}
+@media(max-width:550px){.scale-pan{width:80px}.pan-card{font-size:.7em;padding:6px 8px;min-width:60px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 14px; }
+  .file-pool > * { margin: 4px; }
+  .controls > * { margin: 5px; }
+  .score-bar > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>⚖️ Ζυγαριά Μεγεθών Αρχείων</h1>
+<p>Σύγκρινε μεγέθη αρχείων στη ζυγαριά — ποιο είναι μεγαλύτερο;</p>
+</div>
+<div class="area">
+<div class="info">💡 Τα αρχεία έχουν <b>μέγεθος</b> που μετριέται σε <b>KB</b> (κιλομπάιτ), <b>MB</b> (μεγαμπάιτ) και <b>GB</b> (γιγαμπάιτ). 1 MB = 1024 KB, 1 GB = 1024 MB. Κείμενο = KB, Φωτογραφία = MB, Βίντεο = GB!</div>
+<div class="round-info">Γύρος <span id="roundNum">1</span>/<span id="roundTotal">8</span> — <span id="scoreStr">0</span> σωστά</div>
+<div class="scale-box">
+<div class="scale-frame">
+<div class="scale-pan scale-pan-left" id="panLeft"><div class="pan-card empty-card" id="panLeftCard">⬅️ επέλεξε αρχείο</div></div>
+<div class="scale-pan scale-pan-right" id="panRight"><div class="pan-card empty-card" id="panRightCard">επέλεξε αρχείο ➡️</div></div>
+<div class="scale-beam balanced" id="scaleBeam"></div>
+<div class="scale-pivot"></div>
+</div>
+<div class="scale-base"></div>
+</div>
+<div class="file-pool" id="filePool"></div>
+<div style="text-align:center;font-size:.8em;color:#92400e;font-weight:600">Πάτα ένα αρχείο για αριστερό μέρος, μετά ένα για δεξί — μετά πάτα «Σύγκρινε»</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-vs" id="vsBtn" onclick="compare()" disabled>⚖️ Σύγκρινε</button>
+<button class="btn btn-reset" onclick="nextRound()">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var rounds=[
+{files:[{n:'Απλό κείμενο.txt',s:'5 KB'},{n:'Φωτογραφία.jpg',s:'3 MB'},{n:'Βιβλίο.pdf',s:'2 MB'},{n:'Τραγούδι.mp3',s:'5 MB'},{n:'Σύντομο βίντεο.mp4',s:'30 MB'},{n:'Ταινία.mp4',s:'1.5 GB'},{n:'Εικόνα υψηλής ανάλυσης.png',s:'8 MB'},{n:'Παρουσίαση.pptx',s:'500 KB'}],win:0},
+{files:[{n:'Σημείωση.txt',s:'2 KB'},{n:'Λογότυπο.png',s:'150 KB'},{n:'Φωτογραφία κινητού.jpg',s:'2 MB'},{n:'Ηχογράφηση.mp3',s:'4 MB'},{n:'Μικρό βίντεο.mp4',s:'10 MB'},{n:'Ντοκιμαντέρ.mp4',s:'800 MB'},{n:'Πακέτο φωτογραφιών.zip',s:'25 MB'},{n:'e-βιβλίο.epub',s:'1 MB'}],win:0},
+{a:{n:'Κείμενο 10 σελίδων',s:'50 KB'},b:{n:'Φωτογραφία 8MP',s:'4 MB'},win:1},
+{a:{n:'Τραγούδι 3 λεπτών',s:'4 MB'},b:{n:'Ταινία 2 ωρών',s:'2 GB'},win:1},
+{a:{n:'Email με συνημμένο',s:'100 KB'},b:{n:'Παρουσίαση 30 slides',s:'2 MB'},win:1},
+{a:{n:'Σύντομο βίντεο 1 λεπτού',s:'15 MB'},b:{n:'e-βιβλίο 200 σελίδων',s:'2 MB'},win:0},
+{a:{n:'Φωτογραφία υψηλής ανάλυσης',s:'10 MB'},b:{n:'Πακέτο 100 φωτογραφιών.zip',s:'150 MB'},win:1},
+{a:{n:'Αρχείο Excel',s:'300 KB'},b:{n:'Αρχείο Word',s:'50 KB'},win:0}
+];
+
+var currentRound=0;
+var score=0;
+var leftChoice=null;
+var rightChoice=null;
+var phase='pool';
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function renderRound(){
+var r=rounds[currentRound];
+leftChoice=null;
+rightChoice=null;
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=rounds.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('vsBtn').disabled=true;
+document.getElementById('panLeftCard').className='pan-card empty-card';
+document.getElementById('panLeftCard').textContent='⬅️ επέλεξε αρχείο';
+document.getElementById('panRightCard').className='pan-card empty-card';
+document.getElementById('panRightCard').textContent='επέλεξε αρχείο ➡️';
+document.getElementById('scaleBeam').className='scale-beam balanced';
+var pool=document.getElementById('filePool');
+pool.innerHTML='';
+if(r.files){
+var items=r.files.slice();
+shuffle(items);
+for(var i=0;i<items.length;i++){
+(function(it){
+var div=document.createElement('div');
+div.className='fp-card';
+div.textContent=it.n+' ('+it.s+')';
+div.dataset.size=it.s;
+div.onclick=function(){pickFile(it,div);};
+pool.appendChild(div);
+})(items[i]);
+}
+phase='pool';
+}else if(r.a&&r.b){
+phase='pair';
+var items=[r.a,r.b];
+shuffle(items);
+for(var i=0;i<items.length;i++){
+(function(it){
+var div=document.createElement('div');
+div.className='fp-card';
+div.textContent=it.n+' ('+it.s+')';
+div.dataset.size=it.s;
+div.onclick=function(){pickFile(it,div);};
+pool.appendChild(div);
+})(items[i]);
+}
+}
+}
+
+function pickFile(item,el){
+if(phase==='pair'){
+if(leftChoice&&rightChoice)return;
+if(leftChoice&&leftChoice.n===item.n)return;
+if(rightChoice&&rightChoice.n===item.n)return;
+}
+if(leftChoice===null){
+leftChoice=item;
+document.getElementById('panLeftCard').className='pan-card';
+document.getElementById('panLeftCard').innerHTML=item.n+'<span class="sz">'+item.s+'</span>';
+el.classList.add('used');
+}else if(rightChoice===null&&phase==='pool'){
+var poolCards=document.querySelectorAll('.fp-card');
+for(var i=0;i<poolCards.length;i++){
+if(poolCards[i].textContent.includes(item.n))poolCards[i].classList.add('used');
+}
+rightChoice=item;
+document.getElementById('panRightCard').className='pan-card';
+document.getElementById('panRightCard').innerHTML=item.n+'<span class="sz">'+item.s+'</span>';
+document.getElementById('vsBtn').disabled=false;
+}else if(rightChoice===null&&phase==='pair'){
+rightChoice=item;
+document.getElementById('panRightCard').className='pan-card';
+document.getElementById('panRightCard').innerHTML=item.n+'<span class="sz">'+item.s+'</span>';
+el.classList.add('used');
+document.getElementById('vsBtn').disabled=false;
+}
+}
+
+function parseSize(s){
+s=s.trim().toUpperCase();
+var num=parseFloat(s);
+if(s.includes('GB'))return num*1024*1024;
+if(s.includes('MB'))return num*1024;
+if(s.includes('KB'))return num;
+return num;
+}
+
+function compare(){
+if(!leftChoice||!rightChoice)return;
+var lSize=parseSize(leftChoice.s);
+var rSize=parseSize(rightChoice.s);
+var beam=document.getElementById('scaleBeam');
+beam.className='scale-beam';
+var r=rounds[currentRound];
+var correct=false;
+if(r.win===0)correct=lSize>=rSize;
+else correct=rSize>=lSize;
+if(correct&&r.win===2)correct=lSize===rSize;
+if(lSize>rSize){
+beam.classList.add('tilt-left');
+}else if(rSize>lSize){
+beam.classList.add('tilt-right');
+}else{
+beam.classList.add('balanced');
+}
+if(correct){
+score++;
+showFeedback('✅ Σωστό! '+leftChoice.n+' ('+leftChoice.s+') vs '+rightChoice.n+' ('+rightChoice.s+')',true);
+document.getElementById('vsBtn').disabled=true;
+document.getElementById('scoreStr').textContent=score;
+setTimeout(function(){
+if(currentRound<rounds.length-1){currentRound++;renderRound();}
+else{showFinal();}
+},1800);
+}else{
+var bigger=lSize>rSize?leftChoice.n:rightChoice.n;
+showFeedback('❌ Λάθος! Το '+bigger+' είναι μεγαλύτερο. '+leftChoice.s+' vs '+rightChoice.s,false);
+document.getElementById('vsBtn').disabled=true;
+setTimeout(function(){
+if(currentRound<rounds.length-1){currentRound++;renderRound();}
+else{showFinal();}
+},2000);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/rounds.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! '+score+'/'+rounds.length+'! Γνωρίζεις πολύ καλά τα μεγέθη αρχείων!';
+else if(pct>=70)msg='👏 Μπράβο! '+score+'/'+rounds.length+' σωστά! Καλή αίσθηση μεγεθών!';
+else msg='💪 '+score+'/'+rounds.length+' σωστά. Δοκίμασε ξανά για να μάθεις τα μεγέθη!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=70?'ok':'fail');
+document.getElementById('filePool').innerHTML='<div style="text-align:center;padding:20px;font-size:1.1em;font-weight:700;color:#92400e">'+msg+'</div>';
+document.getElementById('vsBtn').disabled=true;
+}
+
+function nextRound(){
+if(currentRound<rounds.length-1){currentRound++;renderRound();}
+else showFinal();
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

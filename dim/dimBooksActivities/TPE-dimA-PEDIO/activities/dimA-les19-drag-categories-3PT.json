@@ -1,0 +1,48 @@
+{
+  "title": "Δάχτυλα σε πλήκτρα ποντικιού",
+  "subtitle": "Ποιο δάχτυλο χρησιμοποιούμε σε κάθε πλήκτρο;",
+  "categories": [
+    {
+      "id": "index",
+      "name": "ΔΕΙΚΤΗΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "middle",
+      "name": "ΜΕΣΑΙΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "thumb",
+      "name": "ΜΕΓΑΛΟΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αριστερό πλήκτρο",
+      "category": "index"
+    },
+    {
+      "id": "item2",
+      "text": "Δεξί πλήκτρο",
+      "category": "middle"
+    },
+    {
+      "id": "item3",
+      "text": "Ροδέλα",
+      "category": "thumb"
+    },
+    {
+      "id": "item4",
+      "text": "Στήριγμα",
+      "category": "middle"
+    },
+    {
+      "id": "item5",
+      "text": "Κίνηση",
+      "category": "index"
+    }
+  ]
+}

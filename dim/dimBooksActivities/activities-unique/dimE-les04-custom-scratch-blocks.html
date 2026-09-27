@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scratch Μπλοκ Παιχνιδιού | Μάθημα 4</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#eff6ff,#60a5fa);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#1e3a8a;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#2563eb;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#1e3a8a;font-size:.75rem;font-weight:700;border:1px solid #60a5fa;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.scene-card{background:#eff6ff;border:2px solid #bfdbfe;border-radius:12px;padding:10px;margin:6px 0}
+.scene-title{font-size:.78rem;font-weight:700;color:#1e3a8a;text-align:center;margin-bottom:4px}
+.scene-desc{font-size:.7rem;color:#1e40af;text-align:center}
+.block-opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.block-opt{padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;font-family:monospace}
+.block-opt:hover{border-color:#2563eb;background:#eff6ff}
+.block-opt.selected{border-color:#2563eb;background:#dbeafe;color:#1e3a8a;font-weight:700}
+.block-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.block-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.block-opt.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#1d4ed8}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #2563eb;border-radius:10px;background:transparent;color:#2563eb;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#eff6ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .block-opts > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎮 Scratch Μπλοκ Παιχνιδιού</h1>
+<p class="subtitle">Ποιο μπλοκ Scratch λύνει κάθε πρόβλημα στο παιχνίδι;</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόβλημα:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var problems=[
+{
+title:'🏊 Η Έλλη τρέμει όταν ακουμπάει το ποντίκι!',
+desc:'Όταν ο δείκτης του ποντίκιου ακουμπάει την Έλλη, αλλάζει κατεύθυνση συνεχώς.',
+q:'Ποιο μπλοκ λύνει το πρόβλημα;',
+opts:[
+'Αν <ΔΕΝ ακουμπά ποντίκι> τότε πήγαινε σε δείκτη ποντικιού',
+'Πήγαινε σε τυχαία θέση',
+'Μέγεθος 50%',
+'Επανάλαβε 10 φορές'
+],
+correct:0,
+explain:'Ο τελεστής "ΔΕΝ" (άρνηση) αποτρέπει το τρέμουλο: κινείται μόνο όταν ΔΕΝ ακουμπά το ποντίκι.'
+},
+{
+title:'⭐ Ο αστερίας πρέπει να εμφανίζεται σε τυχαίο σημείο!',
+desc:'Κάθε φορά που εμφανίζεται, πρέπει να είναι σε διαφορετικό σημείο του βυθού.',
+q:'Ποιο μπλοκ χρειάζεται;',
+opts:[
+'Πήγαινε σε x: τυχαίο, y: τυχαίο',
+'Πήγαινε σε x: 0, y: 0',
+'Γύρισε 90 μοίρες',
+'Άλλαξε μέγεθος κατά 10'
+],
+correct:0,
+explain:'Η εντολή "πήγαινε σε τυχαία θέση" βάζει τον αστερία σε τυχαίο σημείο.'
+},
+{
+title:'🏊 Η Έλλη πρέπει να ακολουθεί το ποντίκι συνέχεια!',
+desc:'Θέλουμε η Έλλη να κολυμπάει προς το ποντίκι χωρίς να σταματάει.',
+q:'Ποιο μπλοκ χρησιμοποιούμε;',
+opts:[
+'Πήγαινε σε δείκτη ποντικιού μέσα σε "Για πάντα"',
+'Πήγαινε σε δείκτη ποντικιού μέσα σε "Επανάλαβε 10"',
+'Γλίστρησε 1 δευτερόλεπτο σε x: 100',
+'Κοίτα σε δείκτη ποντικιού'
+],
+correct:0,
+explain:'Το "Για πάντα" κάνει την Έλλη να ακολουθεί το ποντίκι συνέχεια.'
+},
+{
+title:'⭐ Ο αστερίας κρύβεται και φαίνεται 10 φορές!',
+desc:'Πρέπει να εξαφανίζεται, να περιμένει, να εμφανίζεται και πάλι, 10 φορές συνολικά.',
+q:'Ποιο μπλοκ;',
+opts:[
+'Για πάντα: εξαφανίσου → περίμενε → εμφανίσου',
+'Επανάλαβε 10 φορές: εξαφανίσου → περίμενε → τυχαία θέση → εμφανίσου → περίμενε',
+'Αν αστερίας ακουμπάει Έλλη τότε...',
+'Όταν γίνει κλικ σε αστερία'
+],
+correct:1,
+explain:'Το "Επανάλαβε 10 φορές" κάνει ακριβώς 10 κύκλους εμφάνισης/εξαφάνισης.'
+},
+{
+title:'🔊 Πότε παίζει ήχο ο αστερίας;',
+desc:'Θέλουμε ένα ηχητικό εφέ όταν η Έλλη "φωτογραφίζει" τον αστερία.',
+q:'Ποια συνθήκη παίζει τον ήχο;',
+opts:[
+'Αν αστερίας ακουμπάει δείκτη ποντικιού',
+'Αν αστερίας ακουμπάει την Έλλη τότε παίξε ήχο',
+'Αν πλήκτρο χώρος πατημένο',
+'Όταν γίνει κλικ στην πράσινη σημαία'
+],
+correct:1,
+explain:'Ο ήχος παίζει όταν ο αστερίας ΑΚΟΥΜΠΑΕΙ την Έλλη (συνάντηση δύο sprites).'
+},
+{
+title:'📏 Ο αστερίας είναι πολύ μεγάλος!',
+desc:'Η Έλλη είναι κανονικού μεγέθους αλλά ο αστερίας φαίνεται τεράστιος.',
+q:'Τι κάνουμε;',
+opts:[
+'Αλλάζουμε τη θέση του αστερία',
+'Βάζουμε μέγεθος αστερία: 50%',
+'Κρύβουμε τον αστερία',
+'Προσθέτουμε νέο sprite'
+],
+correct:1,
+explain:'Μικραίνουμε το μέγεθος του αστερία (100→50) για να φαίνεται φυσιολογικός.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var p=problems[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="scene-card">';
+h+='<div class="scene-title">'+p.title+'</div>';
+h+='<div class="scene-desc">'+p.desc+'</div>';
+h+='</div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#1e3a8a;text-align:center;margin:4px 0">'+p.q+'</p>';
+h+='<div class="block-opts">';
+var order=[];
+for(var i=0;i<p.opts.length;i++)order.push(i);
+for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=order[i];order[i]=order[j];order[j]=tmp;}
+for(var v=0;v<order.length;v++){
+var i=order[v];
+var cls='block-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===p.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+p.opts[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===p.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+p.explain:'❌ '+p.explain)+'</div>';
+if(curQ<problems.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Πρόβλημα ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<problems.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

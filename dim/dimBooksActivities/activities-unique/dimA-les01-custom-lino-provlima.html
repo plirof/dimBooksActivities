@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λύνω το Πρόβλημα 🎯</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container { max-width: 540px; margin: 0 auto; }
+  .header {
+    text-align: center;
+    padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(67,233,123,.4);
+    margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.4rem; margin-bottom: 2px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #38a169; }
+  .round { font-size: 1rem; color: #888; }
+  .problem-card {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 24px 20px;
+    margin-bottom: 16px; text-align: center;
+  }
+  .problem-emoji { font-size: 4rem; margin-bottom: 8px; }
+  .problem-title { font-size: 1.3rem; font-weight: 700; color: #2d3436; margin-bottom: 4px; }
+  .problem-text { font-size: 1.1rem; color: #555; line-height: 1.5; }
+  .steps-list {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .step-option {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 16px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s ease;
+  }
+  .step-option:hover { border-color: #43e97b; transform: translateX(4px); }
+  .step-option:active { transform: scale(.97); }
+  .step-option .s-emoji { font-size: 1.8rem; flex-shrink: 0; }
+  .step-option .s-text { font-size: 1.05rem; font-weight: 600; color: #2d3436; flex: 1; text-align: left; }
+  .step-option .s-badge {
+    font-size: .75rem; padding: 4px 12px; border-radius: 20px;
+    font-weight: 700; flex-shrink: 0;
+  }
+  .step-option.selected-correct {
+    border-color: #28a745; background: #e8f5e9;
+  }
+  .step-option.selected-wrong {
+    border-color: #dc3545; background: #ffebee;
+    animation: shake .4s ease;
+  }
+  .step-option.reveal-wrong {
+    border-color: #dc3545; background: #ffebee; opacity: .6;
+  }
+  .step-option.reveal-correct {
+    border-color: #28a745; background: #e8f5e9;
+  }
+  .step-option.disabled { pointer-events: none; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .feedback.info { display: block; background: #d1ecf1; color: #0c5460; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(67,233,123,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .problem-emoji { font-size: 3rem; }
+    .step-option .s-text { font-size: .95rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .steps-list > * + * { margin-top: 10px; }
+  .step-option > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎯 Λύνω το Πρόβλημα</h1>
+    <p>Διάλεξε τα σωστά βήματα!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/6</span>
+  </div>
+  <div id="gameArea">
+    <div class="problem-card">
+      <div class="problem-emoji" id="probEmoji">🧤</div>
+      <div class="problem-title" id="probTitle">Βγαίνω έξω στο κρύο</div>
+      <div class="problem-text" id="probText">Ποια βήματα πρέπει να κάνω; Πάτα ΜΟΝΟ τα σωστά!</div>
+    </div>
+    <div class="steps-list" id="stepsList"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var problems = [
+    {
+      emoji: '🧤', title: 'Βγαίνω έξω στο κρύο',
+      correctSteps: [
+        { emoji: '🧥', text: 'Φοράω το μπουφάν μου' },
+        { emoji: '🧣', text: 'Βάζω κασκόλ και σκούφο' },
+        { emoji: '🧤', text: 'Φοράω γάντια' }
+      ],
+      wrongSteps: [
+        { emoji: '🩱', text: 'Φοράω μαγιό' },
+        { emoji: '🍦', text: 'Τρώω παγωτό' }
+      ],
+      feedbackText: 'Για να βγω έξω στο κρύο, φοράω μπουφάν, κασκόλ, σκούφο και γάντια!'
+    },
+    {
+      emoji: '🪴', title: 'Ποτίζω τα λουλούδια',
+      correctSteps: [
+        { emoji: '🚰', text: 'Γεμίζω το ποτιστήρι με νερό' },
+        { emoji: '🪴', text: 'Ποτίζω το χώμα της γλάστρας' },
+        { emoji: '🧽', text: 'Σκουπίζω αν χύσω νερό' }
+      ],
+      wrongSteps: [
+        { emoji: '📱', text: 'Παίζω με το κινητό' },
+        { emoji: '✂️', text: 'Κόβω τα φύλλα με ψαλίδι' }
+      ],
+      feedbackText: 'Για να ποτίσω, γεμίζω το ποτιστήρι, ποτίζω το χώμα και σκουπίζω!'
+    },
+    {
+      emoji: '🐕', title: 'Βγάζω βόλτα τον σκύλο',
+      correctSteps: [
+        { emoji: '🦮', text: 'Βάζω λουρί στον σκύλο' },
+        { emoji: '🦴', text: 'Παίρνω λιχουδιά για τον σκύλο' },
+        { emoji: '🚪', text: 'Ανοίγω την πόρτα και βγαίνω' }
+      ],
+      wrongSteps: [
+        { emoji: '🛌', text: 'Κάθομαι στο κρεβάτι' },
+        { emoji: '📺', text: 'Βλέζω τηλεόραση' }
+      ],
+      feedbackText: 'Για βόλτα, βάζω λουρί, παίρνω λιχουδιά και βγαίνω έξω!'
+    },
+    {
+      emoji: '🍽️', title: 'Στρώνω το τραπέζι',
+      correctSteps: [
+        { emoji: '🧹', text: 'Καθαρίζω το τραπέζι' },
+        { emoji: '🍽️', text: 'Βάζω πιάτα και ποτήρια' },
+        { emoji: '🥄', text: 'Βάζω πιρούνια και κουτάλια' },
+        { emoji: '🧻', text: 'Βάζω χαρτοπετσέτες' }
+      ],
+      wrongSteps: [
+        { emoji: '🧸', text: 'Βάζω τα παιχνίδια μου' },
+        { emoji: '📚', text: 'Ανοίγω τα βιβλία μου' }
+      ],
+      feedbackText: 'Για να στρώσω τραπέζι: καθαρίζω, βάζω πιάτα, μαχαιροπίρουνα και πετσέτες!'
+    },
+    {
+      emoji: '🧦', title: 'Ντύνομαι μόνος μου',
+      correctSteps: [
+        { emoji: '👕', text: 'Φοράω τη μπλούζα μου' },
+        { emoji: '👖', text: 'Φοράω το παντελόνι μου' },
+        { emoji: '🧦', text: 'Φοράω τις κάλτσες μου' },
+        { emoji: '👟', text: 'Φοράω τα παπούτσια μου' }
+      ],
+      wrongSteps: [
+        { emoji: '🎩', text: 'Βάζω καπέλο μέσα στο σπίτι' },
+        { emoji: '🕶️', text: 'Φοράω γυαλιά ηλίου το βράδυ' }
+      ],
+      feedbackText: 'Για να ντυθώ: φοράω μπλούζα, παντελόνι, κάλτσες και παπούτσια!'
+    },
+    {
+      emoji: '📚', title: 'Διαβάζω το μάθημά μου',
+      correctSteps: [
+        { emoji: '📖', text: 'Ανοίγω το βιβλίο μου' },
+        { emoji: '👀', text: 'Διαβάζω προσεκτικά' },
+        { emoji: '✏️', text: 'Γράφω τις ασκήσεις μου' },
+        { emoji: '✅', text: 'Ελέγχω αν είναι σωστά' }
+      ],
+      wrongSteps: [
+        { emoji: '📺', text: 'Ανοίγω την τηλεόραση' },
+        { emoji: '🎮', text: 'Παίζω ηλεκτρονικά παιχνίδια' }
+      ],
+      feedbackText: 'Για να διαβάσω: ανοίγω βιβλίο, διαβάζω, γράφω και ελέγχω!'
+    }
+  ];
+
+  var currentRound = 0;
+  var score = 0;
+  var waiting = false;
+  var selectedCount = 0;
+
+  function startGame() {
+    currentRound = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showProblem();
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function showProblem() {
+    if (currentRound >= problems.length) { showResult(); return; }
+    waiting = false; selectedCount = 0;
+    var p = problems[currentRound];
+    document.getElementById('probEmoji').textContent = p.emoji;
+    document.getElementById('probTitle').textContent = p.title;
+    document.getElementById('probText').textContent = 'Ποια βήματα πρέπει να κάνω; Πάτα ΜΟΝΟ τα σωστά!';
+    document.getElementById('roundDisplay').textContent = (currentRound + 1) + '/' + problems.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var all = [];
+    for (var i = 0; i < p.correctSteps.length; i++) {
+      all.push({ emoji: p.correctSteps[i].emoji, text: p.correctSteps[i].text, correct: true });
+    }
+    for (var i = 0; i < p.wrongSteps.length; i++) {
+      all.push({ emoji: p.wrongSteps[i].emoji, text: p.wrongSteps[i].text, correct: false });
+    }
+    all = shuffle(all);
+
+    var list = document.getElementById('stepsList');
+    list.innerHTML = '';
+    for (var i = 0; i < all.length; i++) {
+      (function(item) {
+        var card = document.createElement('div');
+        card.className = 'step-option';
+        card.innerHTML = '<div class="s-emoji">' + item.emoji + '</div><div class="s-text">' + item.text + '</div>';
+        card.addEventListener('click', function() { if (!waiting) selectStep(this, item); });
+        list.appendChild(card);
+      })(all[i]);
+    }
+  }
+
+  function selectStep(el, item) {
+    if (el.classList.contains('disabled') || el.classList.contains('selected-correct') || el.classList.contains('selected-wrong')) return;
+
+    if (item.correct) {
+      el.classList.add('selected-correct');
+      var badge = document.createElement('span');
+      badge.className = 's-badge';
+      badge.style.cssText = 'background:#28a745;color:#fff;font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:700;';
+      badge.textContent = '✅ Σωστά!';
+      el.appendChild(badge);
+      selectedCount++;
+
+      var correctItems = document.querySelectorAll('.step-option:not(.selected-correct):not(.selected-wrong)');
+      var totalCorrect = el.parentElement.querySelectorAll('.step-option').length;
+      var correctOnes = problems[currentRound].correctSteps;
+
+      if (selectedCount === correctOnes.length) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        var cards = document.querySelectorAll('.step-option');
+        for (var i = 0; i < cards.length; i++) cards[i].classList.add('disabled');
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback correct';
+        fb.textContent = '✅ Μπράβο! ' + problems[currentRound].feedbackText;
+        waiting = true;
+        setTimeout(function() {
+          currentRound++;
+          showProblem();
+        }, 2000);
+      }
+
+      var remainingCorrect = 0;
+      var allCards = document.querySelectorAll('.step-option');
+      for (var i = 0; i < allCards.length; i++) {
+        var txt = allCards[i].querySelector('.s-text');
+        if (txt) {
+          for (var j = 0; j < correctOnes.length; j++) {
+            if (txt.textContent === correctOnes[j].text && !allCards[i].classList.contains('selected-correct')) {
+              remainingCorrect++;
+            }
+          }
+        }
+      }
+      if (remainingCorrect === 0 && selectedCount < correctOnes.length) {
+      }
+    } else {
+      el.classList.add('selected-wrong', 'disabled');
+      var badge = document.createElement('span');
+      badge.className = 's-badge';
+      badge.style.cssText = 'background:#dc3545;color:#fff;font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:700;';
+      badge.textContent = '❌ Λάθος!';
+      el.appendChild(badge);
+
+      var fb = document.getElementById('feedback');
+      var correctOnes = problems[currentRound].correctSteps;
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Ωχ! Αυτό δεν ανήκει στα βήματα! ' + problems[currentRound].feedbackText;
+
+      var cards = document.querySelectorAll('.step-option');
+      for (var i = 0; i < cards.length; i++) cards[i].classList.add('disabled');
+
+      var correctCards = document.querySelectorAll('.step-option');
+      for (var i = 0; i < correctCards.length; i++) {
+        var txt = correctCards[i].querySelector('.s-text');
+        if (txt) {
+          for (var j = 0; j < correctOnes.length; j++) {
+            if (txt.textContent === correctOnes[j].text) {
+              correctCards[i].classList.add('reveal-correct');
+            }
+          }
+        }
+      }
+
+      waiting = true;
+      setTimeout(function() {
+        currentRound++;
+        showProblem();
+      }, 3000);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = problems.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Λύνεις όλα τα προβλήματα σαν εξπέρ!'; }
+    else if (score >= 4) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (score >= 3) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις καλύτερα!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

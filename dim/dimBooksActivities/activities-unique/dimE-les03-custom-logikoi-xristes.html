@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λογικοί Τελεστές | Μάθημα 3</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fdf4ff,#f0abfc);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#701a75;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#c026d3;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#701a75;font-size:.75rem;font-weight:700;border:1px solid #e879f9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.puzzle-row{display:flex;gap:6px;justify-content:center;align-items:center;margin:8px 0;flex-wrap:wrap}
+.puz-val{padding:6px 12px;border-radius:10px;font-size:.75rem;font-weight:700;border:2px solid}
+.puz-val.val-true{background:#dcfce7;color:#14532d;border-color:#86efac}
+.puz-val.val-false{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
+.puz-slot{min-width:70px;min-height:36px;border:2px dashed #c026d3;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fdf4ff}
+.puz-slot:hover{background:#fae8ff}
+.puz-slot.filled{border-style:solid;border-color:#a855f7;background:#f3e8ff;color:#701a75}
+.puz-result{padding:6px 14px;border-radius:10px;font-size:.78rem;font-weight:700;border:2px solid #c026d3;background:#fdf4ff;color:#701a75}
+.op-picker{display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.op-btn{padding:8px 18px;border:2px solid #e2e8f0;border-radius:10px;font-size:.78rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.op-btn:hover{border-color:#c026d3;background:#fdf4ff}
+.op-btn.selected{border-color:#a855f7;background:#f3e8ff;color:#701a75}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.truth-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.68rem}
+.truth-table th{background:#fdf4ff;color:#701a75;padding:6px;border:1px solid #e879f9;font-weight:700}
+.truth-table td{text-align:center;padding:5px;border:1px solid #e2e8f0}
+.truth-table td.t{background:#dcfce7;color:#14532d;font-weight:700}
+.truth-table td.f{background:#fef2f2;color:#dc2626;font-weight:700}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#c026d3;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#a21caf}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #c026d3;border-radius:10px;background:transparent;color:#c026d3;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fdf4ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .puzzle-row > * { margin: 3px; }
+  .op-picker > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>⚙️ Λογικοί Τελεστές</h1>
+<p class="subtitle">Βρες ποιος τελεστής (ΚΑΙ, Ή, ΟΧΙ) δίνει το σωστό αποτέλεσμα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var questions=[
+{a:{text:'Η Γη είναι σφαιρική',val:true},b:{text:'Η Σελήνη είναι κύβος',val:false},result:true,answer:'Ή'},
+{a:{text:'Τα ημερόψαρα ζουν στη θάλασσα',val:true},b:{text:'Οι γάτες έχουν 6 πόδια',val:false},result:false,answer:'ΚΑΙ'},
+{a:{text:'Η μέρα έχει 25 ώρες',val:false},b:{text:'Η ώρα έχει 60 λεπτά',val:true},result:false,answer:'ΚΑΙ'},
+{a:{text:'7 × 8 = 65',val:false},b:{text:'3 × 9 = 27',val:true},result:true,answer:'Ή'},
+{a:{text:'ΟΧΙ',val:null},b:{text:'Το νερό βράζει στους 100°C',val:true},neg:true,result:false,answer:'ΟΧΙ'}
+];
+var curQ=0,pts=0,selected=null,checked=false;
+
+function initQ(){selected=null;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var q=questions[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="info-text">Ποιος τελεστής κάνει την έκφραση <strong>'+(q.result?'ΑΛΗΘΗΣ':'ΨΕΥΔΗΣ')+'</strong>;</div>';
+h+='<div class="puzzle-row">';
+if(q.neg){
+h+='<span class="puz-slot'+(selected==='ΟΧΙ'?' filled':'')+'" onclick="pickOp(\'ΟΧΙ\')">'+(selected==='ΟΧΙ'?'ΟΧΙ':'???')+'</span>';
+h+='<span class="puz-val val-true">'+q.b.text+' (ΑΛΗΘΕΣ)</span>';
+}else{
+h+='<span class="puz-val '+(q.a.val?'val-true':'val-false')+'">'+q.a.text+' ('+(q.a.val?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+')</span>';
+h+='<span class="puz-slot'+(selected?' filled':'')+'" onclick="clearOp()">'+(selected||'???')+'</span>';
+h+='<span class="puz-val '+(q.b.val?'val-true':'val-false')+'">'+q.b.text+' ('+(q.b.val?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+')</span>';
+}
+h+='</div>';
+h+='<div class="puzzle-row"><span class="puz-result">= '+(q.result?'ΑΛΗΘΕΣ ✅':'ΨΕΥΔΕΣ ❌')+'</span></div>';
+if(!checked){
+h+='<div class="op-picker">';
+var ops=q.neg?['ΟΧΙ']:['ΚΑΙ','Ή','ΟΧΙ'];
+for(var i=0;i<ops.length;i++){
+var cls='op-btn'+(selected===ops[i]?' selected':'');
+h+='<button class="'+cls+'" onclick="pickOp(\''+ops[i]+'\')">'+ops[i]+'</button>';
+}
+h+='</div>';
+h+='<button class="check-btn" onclick="checkAnswer()"'+(selected===null?' disabled':'')+'>✓ Έλεγχος</button>';
+}else{
+var correct=selected===q.answer;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστό! Ο τελεστής '+q.answer+' δίνει '+(q.result?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+'!':'❌ Λάθος. Η σωστή απάντηση: '+q.answer)+'</div>';
+h+='<div class="info-text">Πίνακας Αλήθειας '+q.answer+':</div>';
+if(q.answer==='ΟΧΙ'){
+h+='<table class="truth-table"><tr><th>Α</th><th></th><th>ΟΧΙ Α</th></tr>';
+}else{
+h+='<table class="truth-table"><tr><th>Α</th><th>Β</th><th>Α '+q.answer+' Β</th></tr>';
+}
+var vals=[true,false];
+for(var i=0;i<vals.length;i++){
+for(var j=0;j<vals.length;j++){
+var res;
+if(q.answer==='ΚΑΙ')res=vals[i]&&vals[j];
+else if(q.answer==='Ή')res=vals[i]||vals[j];
+else res=!vals[i];
+h+='<tr><td class="'+(vals[i]?'t':'f')+'">'+(vals[i]?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+'</td>';
+if(q.answer!=='ΟΧΙ'){
+h+='<td class="'+(vals[j]?'t':'f')+'">'+(vals[j]?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+'</td>';
+}else{
+h+='<td>—</td>';
+}
+h+='<td class="'+(res?'t':'f')+'">'+(res?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+'</td></tr>';
+}
+}
+h+='</table>';
+if(curQ<questions.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόκληση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function pickOp(op){selected=op;render();}
+function clearOp(){selected=null;render();}
+
+function checkAnswer(){if(selected!==null){checked=true;render();}}
+
+function nextQ(){
+if(curQ<questions.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

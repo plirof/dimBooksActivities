@@ -1,0 +1,56 @@
+{
+  "title": "Βρες τα Λάθη: Αναζήτηση",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "φίλτρα", "error": false},
+        {"text": "αναζήτησης", "error": false},
+        {"text": "αυξάνουν", "error": true, "correct": "περιορίζουν", "feedback": "Τα φίλτρα ΠΕΡΙΟΡΙΖΟΥΝ τα αποτελέσματα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Kiddle", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μηχανή", "error": false},
+        {"text": "αναζήτησης", "error": false},
+        {"text": "για", "error": false},
+        {"text": "ενήλικες.", "error": true, "correct": "παιδιά", "feedback": "Το Kiddle είναι μηχανή αναζήτησης για ΠΑΙΔΙΑ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εικόνες", "error": false},
+        {"text": "δείχνουν", "error": false},
+        {"text": "πληροφορίες", "error": false},
+        {"text": "με", "error": false},
+        {"text": "κίνηση", "error": true, "correct": "οπτικές", "feedback": "Οι εικόνες δείχνουν ΟΠΤΙΚΕΣ πληροφορίες, όχι κίνηση!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "καταγράφουν", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Τα βίντεο καταγράφουν κίνηση ΚΑΙ ήχο!"},
+        {"text": "κίνηση.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μηχανή", "error": false},
+        {"text": "αναζήτησης", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Η μηχανή αναζήτησης ΜΠΟΡΕΙ να προτείνει λέξεις!"},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "προτείνει", "error": false},
+        {"text": "λέξεις.", "error": false}
+      ]
+    }
+  ]
+}

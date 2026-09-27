@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είδη Δεδομένων",
+  "subtitle": "Ταξινόμησε τα είδη δεδομένων στις σωστές κατηγορίες!",
+  "instructions": "Βάλε κάθε παράδειγμα στη σωστή κατηγορία",
+  "categories": [
+    { "id": "image", "name": "Εικόνα / Βίντεο", "color": "#2196f3", "key": "1" },
+    { "id": "audio", "name": "Ήχος", "color": "#ff9800", "key": "2" },
+    { "id": "text", "name": "Κείμενο / Αριθμοί", "color": "#4caf50", "key": "3" }
+  ],
+  "items": [
+    { "text": "Φωτογραφία", "category": "image" },
+    { "text": "Τραγούδι", "category": "audio" },
+    { "text": "Email", "category": "text" },
+    { "text": "Ταινία", "category": "image" },
+    { "text": "Ηχος τηλεφώνου", "category": "audio" },
+    { "text": "Αριθμός 42", "category": "text" },
+    { "text": "Σχεδιάκια Scratch", "category": "image" },
+    { "text": "Ηχογράφηση", "category": "audio" },
+    { "text": "Κώδικας γραμμάτων", "category": "text" },
+    { "text": "Βίντεο YouTube", "category": "image" }
+  ],
+  "duration": 45
+}

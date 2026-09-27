@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δυαδικά Ψηφία και Bytes - dimC les09</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #00b894 0%, #00cec9 50%, #0984e3 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.start-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.start-screen .title-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.start-screen h1 {
+    color: #2d3436;
+    font-size: 1.9rem;
+    margin-bottom: 8px;
+}
+
+.start-screen .subtitle {
+    color: #636e72;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.byte-visual {
+    background: linear-gradient(135deg, #2d3436, #636e72);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.byte-visual .byte-label {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #00cec9;
+}
+
+.byte-visual .bits-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.byte-visual .bit-cell {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.byte-visual .bit-cell.on {
+    background: #00cec9;
+    color: white;
+}
+
+.byte-visual .bit-cell.off {
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+}
+
+.byte-visual .bit-cell .bit-label {
+    font-size: 0.55rem;
+    opacity: 0.7;
+    margin-top: 1px;
+}
+
+.byte-visual .equation {
+    text-align: center;
+    font-size: 1.05rem;
+    margin-top: 10px;
+    color: #ffeaa7;
+    font-weight: bold;
+}
+
+.size-ladder {
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.size-ladder .ladder-title {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+
+.size-ladder .ladder-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+.size-ladder .ladder-item {
+    padding: 8px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+    min-width: 160px;
+}
+
+.btn-start {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-start:hover {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    transform: translateY(-2px);
+}
+
+.btn-start:active {
+    transform: scale(0.95);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-header h2 {
+    color: #2d3436;
+    font-size: 1.15rem;
+}
+
+.score-badge {
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 22px;
+    background: #dfe6e9;
+    border-radius: 11px;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00b894, #0984e3);
+    border-radius: 11px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+.question-card {
+    background: linear-gradient(135deg, #f8f9ff, #eee);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    border: 3px solid #d5d0f0;
+    text-align: center;
+}
+
+.question-card .q-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.question-card .q-text {
+    font-size: 1.15rem;
+    color: #2d3436;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.options-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+    background: white;
+    border: 3px solid #d5d0f0;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    color: #2d3436;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    line-height: 1.5;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.option-btn:hover {
+    border-color: #74b9ff;
+    background: #f0f7ff;
+    transform: translateX(4px);
+}
+
+.option-btn:active {
+    transform: scale(0.98);
+}
+
+.option-btn .option-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.option-btn.correct-selected {
+    border-color: #00b894;
+    background: #e6fff9;
+    animation: correctPulse 0.5s ease;
+}
+
+.option-btn.correct-selected .option-letter {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.option-btn.wrong-selected {
+    border-color: #d63031;
+    background: #fff0ec;
+    animation: shake 0.5s ease;
+}
+
+.option-btn.wrong-selected .option-letter {
+    background: linear-gradient(135deg, #e17055, #d63031);
+}
+
+.option-btn.show-correct {
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.option-btn.show-correct .option-letter {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.option-btn:disabled {
+    cursor: default;
+    transform: none;
+}
+
+.match-area {
+    margin-bottom: 16px;
+}
+
+.match-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 2px solid #eee;
+    flex-wrap: wrap;
+}
+
+.match-row:last-child {
+    border-bottom: none;
+}
+
+.match-item {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #2d3436;
+    min-width: 140px;
+    flex-shrink: 0;
+}
+
+.match-arrow {
+    font-size: 1.2rem;
+    color: #636e72;
+    flex-shrink: 0;
+}
+
+.match-cats {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.match-cat-btn {
+    padding: 8px 16px;
+    border: 3px solid #d5d0f0;
+    border-radius: 12px;
+    background: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    color: #2d3436;
+}
+
+.match-cat-btn:hover {
+    border-color: #74b9ff;
+    background: #f0f7ff;
+}
+
+.match-cat-btn.selected {
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    border-color: #0984e3;
+}
+
+.match-cat-btn.correct-cat {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border-color: #00b894;
+}
+
+.match-cat-btn.wrong-cat {
+    background: linear-gradient(135deg, #e17055, #d63031);
+    color: white;
+    border-color: #d63031;
+}
+
+.match-cat-btn:disabled {
+    cursor: default;
+}
+
+.feedback-area {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    min-height: 30px;
+}
+
+.feedback-area.correct-fb {
+    color: #00b894;
+}
+
+.feedback-area.wrong-fb {
+    color: #d63031;
+}
+
+.feedback-area .feedback-text {
+    display: inline-block;
+    animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.btn-next {
+    display: block;
+    margin: 0 auto;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    transform: translateY(-2px);
+}
+
+.btn-next:active {
+    transform: scale(0.95);
+}
+
+.btn-check-match {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 36px;
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+}
+
+.btn-check-match:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+    transform: translateY(-2px);
+}
+
+.btn-check-match:active {
+    transform: scale(0.95);
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.completion-screen .star {
+    display: inline-block;
+    animation: starBounce 0.5s ease;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.completion-screen .star:nth-child(1) { animation-delay: 0.1s; }
+.completion-screen .star:nth-child(2) { animation-delay: 0.3s; }
+.completion-screen .star:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes starBounce {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.completion-screen .star.dim {
+    opacity: 0.2 !important;
+    animation: none;
+}
+
+.completion-screen h2 {
+    color: #2d3436;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #0984e3;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.completion-screen .score-detail {
+    color: #636e72;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    transform: translateY(-2px);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .byte-visual .bits-row > * { margin: 3px; }
+  .size-ladder .ladder-items > * + * { margin-top: 6px; }
+  .game-header > * { margin: 4px; }
+  .options-area > * + * { margin-top: 10px; }
+  .option-btn > * + * { margin-left: 12px; }
+  .match-row > * { margin: 5px; }
+  .match-cats > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="screen active" id="start-screen">
+        <div class="start-screen">
+            <span class="title-emoji">&#128187;</span>
+            <h1>Δυαδικά Ψηφία και Bytes</h1>
+            <p class="subtitle">Τα πάντα στον υπολογιστή αποθηκεύονται<br>με δυαδικά ψηφία: 0 και 1!</p>
+            <div class="byte-visual">
+                <div class="byte-label">1 Byte = 8 bits</div>
+                <div class="bits-row">
+                    <div class="bit-cell on">1<div class="bit-label">bit</div></div>
+                    <div class="bit-cell off">0<div class="bit-label">bit</div></div>
+                    <div class="bit-cell on">1<div class="bit-label">bit</div></div>
+                    <div class="bit-cell on">1<div class="bit-label">bit</div></div>
+                    <div class="bit-cell off">0<div class="bit-label">bit</div></div>
+                    <div class="bit-cell on">1<div class="bit-label">bit</div></div>
+                    <div class="bit-cell off">0<div class="bit-label">bit</div></div>
+                    <div class="bit-cell on">1<div class="bit-label">bit</div></div>
+                </div>
+                <div class="equation">&#9312; 8 bits = 1 Byte &#9313; 1024 Bytes = 1 KB &#9314; 1024 KB = 1 MB &#9315; 1024 MB = 1 GB</div>
+            </div>
+            <div class="size-ladder">
+                <div class="ladder-title">&#128200; Μεγέθη από μικρότερο σε μεγαλύτερο:</div>
+                <div class="ladder-items">
+                    <div class="ladder-item" style="background:#636e72;font-size:0.85rem;width:60px">bit</div>
+                    <div class="ladder-item" style="background:#00b894;font-size:0.9rem;width:90px">Byte</div>
+                    <div class="ladder-item" style="background:#0984e3;font-size:0.95rem;width:120px">KB</div>
+                    <div class="ladder-item" style="background:#6c5ce7;font-size:1rem;width:150px">MB</div>
+                    <div class="ladder-item" style="background:#d63031;font-size:1.05rem;width:180px">GB</div>
+                </div>
+            </div>
+            <button class="btn-start" onclick="startQuiz()">&#128640; Ξεκινάω το Κουίζ!</button>
+        </div>
+    </div>
+
+    <div class="screen" id="game-screen">
+        <div class="game-header">
+            <h2>&#128187; Δυαδικά Ψηφία και Bytes</h2>
+            <div class="score-badge" id="score-badge">0 σωστές</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width:0%">0/10</div>
+        </div>
+        <div id="question-area"></div>
+    </div>
+
+    <div class="screen" id="end-screen">
+        <div class="completion-screen">
+            <span class="stars" id="stars-container"></span>
+            <h2 id="end-title"></h2>
+            <p class="score-text" id="end-score"></p>
+            <p class="score-detail" id="end-detail"></p>
+            <button class="btn-restart" onclick="restartQuiz()">&#128260; Ξαναπαίζω!</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+var questions = [
+    {
+        type: 'mc',
+        text: '&#128420; Πόσα δυαδικά ψηφία (bits) έχει ένα byte;',
+        options: ['2 bits', '4 bits', '8 bits', '16 bits'],
+        correct: 2,
+        explanation: 'Κάθε byte αποτελείται από 8 bits!'
+    },
+    {
+        type: 'mc',
+        text: '&#9311; Σε μια ασπρόμαυρη εικόνα, τι σημαίνει το ψηφίο 1;',
+        options: ['Λευκό pixel', 'Μαύρο pixel', 'Κενό pixel', 'Μεγάλο pixel'],
+        correct: 1,
+        explanation: 'Το 1 σημαίνει μαύρο pixel, το 0 σημαίνει λευκό!'
+    },
+    {
+        type: 'mc',
+        text: '&#128202; Μια ασπρόμαυρη εικόνα 8&#215;8 pixels έχει 64 pixels. Πόσα bytes χρειάζεται;',
+        options: ['1 byte', '8 bytes', '64 bytes', '8 bits'],
+        correct: 1,
+        explanation: '64 pixels = 64 bits. 64 / 8 = 8 bytes!'
+    },
+    {
+        type: 'mc',
+        text: '&#129504; Τι είναι ένα pixel (εικονοστοιχείο);',
+        options: ['Ένας αριθμός', 'Ένα μικρό τετραγωνάκι της εικόνας', 'Ένα byte', 'Ένα χρώμα'],
+        correct: 1,
+        explanation: 'Κάθε pixel είναι ένα μικρό τετραγωνάκι που σχηματίζει την εικόνα!'
+    },
+    {
+        type: 'mc',
+        text: '&#128230; Ποιο από τα παρακάτω είναι το ΜΕΓΑΛΥΤΕΡΟ μέγεθος;',
+        options: ['1 Byte', '1 KB', '1 MB', '1 GB'],
+        correct: 3,
+        explanation: '1 GB είναι το μεγαλύτερο! GB > MB > KB > Byte > bit'
+    },
+    {
+        type: 'match',
+        text: '&#128194; Αντιστοίχισε κάθε αντικείμενο με το σωστό μέγεθος!',
+        items: [
+            { label: '&#128196; Σελίδα κειμένου', answer: 'KB' },
+            { label: '&#128247; Φωτογραφία', answer: 'MB' },
+            { label: '&#128190; Σκληρός δίσκος', answer: 'GB' }
+        ],
+        categories: ['KB', 'MB', 'GB']
+    },
+    {
+        type: 'mc',
+        text: '&#127912; Μια χρωματιστή εικόνα χρειάζεται περισσότερα bits ανά pixel. Πόσα περίπου;',
+        options: ['1 bit', '4 bits', '8 bits', '24 bits'],
+        correct: 3,
+        explanation: 'Κάθε χρωματιστό pixel χρειάζεται 24 bits (3 bytes) - 8 bits για κάθε χρώμα!'
+    },
+    {
+        type: 'mc',
+        text: '&#128201; 1 KB (Kilobyte) ισούται περίπου με...',
+        options: ['8 bytes', '100 bytes', '1.000 bytes', '1.000.000 bytes'],
+        correct: 2,
+        explanation: '1 KB = 1024 bytes, περίπου 1.000 bytes!'
+    },
+    {
+        type: 'mc',
+        text: '&#128290; Ποια είναι η σωστή σειρά από μικρότερο σε μεγαλύτερο;',
+        options: [
+            'byte, bit, KB, MB, GB',
+            'bit, byte, KB, MB, GB',
+            'KB, MB, GB, byte, bit',
+            'bit, byte, MB, KB, GB'
+        ],
+        correct: 1,
+        explanation: 'bit &#8594; byte &#8594; KB &#8594; MB &#8594; GB, από μικρότερο σε μεγαλύτερο!'
+    },
+    {
+        type: 'mc',
+        text: '&#128248; Γιατί μια χρωματιστή φωτογραφία πιάνει περισσότερο χώρο από μια ασπρόμαυρη;',
+        options: [
+            'Έχει πιο ωραία χρώματα',
+            'Κάθε pixel χρειάζεται περισσότερα bits',
+            'Είναι πιο μεγάλη σε μέγεθος',
+            'Έχει περισσότερα pixels'
+        ],
+        correct: 1,
+        explanation: 'Κάθε χρωματιστό pixel χρειάζεται 24 bits αντί για 1 bit στο ασπρόμαυρο!'
+    }
+];
+
+var currentQuestion = 0;
+var score = 0;
+var answered = false;
+var matchSelections = {};
+
+function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a;
+}
+
+function startQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    answered = false;
+    matchSelections = {};
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    document.getElementById('end-screen').classList.remove('active');
+    updateProgress();
+    updateScore();
+    showQuestion();
+}
+
+function updateProgress() {
+    var total = questions.length;
+    var pct = (currentQuestion / total) * 100;
+    if (currentQuestion >= total) pct = 100;
+    var fill = document.getElementById('progress-fill');
+    fill.style.width = pct + '%';
+    fill.textContent = currentQuestion + '/' + total;
+}
+
+function updateScore() {
+    document.getElementById('score-badge').textContent = score + ' σωστές';
+}
+
+function showQuestion() {
+    if (currentQuestion >= questions.length) {
+        showEndScreen();
+        return;
+    }
+    answered = false;
+    matchSelections = {};
+    var q = questions[currentQuestion];
+    var area = document.getElementById('question-area');
+
+    var html = '';
+    html += '<div class="question-card">';
+    html += '<div class="q-number">' + (currentQuestion + 1) + '</div>';
+    html += '<div class="q-text">' + q.text + '</div>';
+    html += '</div>';
+
+    if (q.type === 'mc') {
+        html += renderMCOptions(q);
+    } else if (q.type === 'match') {
+        html += renderMatchOptions(q);
+    }
+
+    html += '<div class="feedback-area" id="feedback-area"></div>';
+    html += '<div id="next-area"></div>';
+
+    area.innerHTML = html;
+}
+
+function renderMCOptions(q) {
+    var letters = ['\u0391', '\u0392', '\u0393', '\u0394'];
+    var html = '<div class="options-area">';
+    q.options.forEach(function(opt, idx) {
+        html += '<button class="option-btn" data-idx="' + idx + '" data-correct="' + (idx === q.correct ? 'true' : 'false') + '" onclick="selectOption(this)">';
+        html += '<span class="option-letter">' + letters[idx] + '</span>';
+        html += '<span>' + opt + '</span>';
+        html += '</button>';
+    });
+    html += '</div>';
+    return html;
+}
+
+function renderMatchOptions(q) {
+    var html = '<div class="match-area">';
+    q.items.forEach(function(item, idx) {
+        html += '<div class="match-row">';
+        html += '<div class="match-item">' + item.label + '</div>';
+        html += '<div class="match-arrow">&#10132;</div>';
+        html += '<div class="match-cats" id="match-cats-' + idx + '">';
+        q.categories.forEach(function(cat) {
+            html += '<button class="match-cat-btn" data-item="' + idx + '" data-cat="' + cat + '" onclick="selectMatch(this,' + idx + ',\'' + cat + '\')">' + cat + '</button>';
+        });
+        html += '</div>';
+        html += '</div>';
+    });
+    html += '</div>';
+    html += '<div style="text-align:center;margin-bottom:16px">';
+    html += '<button class="btn-check-match" id="match-check-btn" onclick="checkMatch()">&#9989; Έλεγχος</button>';
+    html += '</div>';
+    return html;
+}
+
+function selectOption(btn) {
+    if (answered) return;
+    answered = true;
+    var isCorrect = btn.dataset.correct === 'true';
+    var q = questions[currentQuestion];
+    var allBtns = document.querySelectorAll('.option-btn');
+
+    allBtns.forEach(function(b) {
+        b.disabled = true;
+        if (b.dataset.correct === 'true') {
+            b.classList.add('show-correct');
+        }
+    });
+
+    var fb = document.getElementById('feedback-area');
+
+    if (isCorrect) {
+        btn.classList.add('correct-selected');
+        score++;
+        updateScore();
+        fb.className = 'feedback-area correct-fb';
+        fb.innerHTML = '<span class="feedback-text">&#9989; Σωστά! ' + q.explanation + '</span>';
+    } else {
+        btn.classList.add('wrong-selected');
+        fb.className = 'feedback-area wrong-fb';
+        fb.innerHTML = '<span class="feedback-text">&#10060; Δεν είναι σωστό. ' + q.explanation + '</span>';
+    }
+
+    showNextButton();
+}
+
+function selectMatch(btn, itemIdx, cat) {
+    if (answered) return;
+    var rowBtns = document.querySelectorAll('#match-cats-' + itemIdx + ' .match-cat-btn');
+    rowBtns.forEach(function(b) {
+        b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
+    matchSelections[itemIdx] = cat;
+}
+
+function checkMatch() {
+    if (answered) return;
+    var q = questions[currentQuestion];
+    var allSelected = q.items.length === Object.keys(matchSelections).length;
+    if (!allSelected) {
+        var fb = document.getElementById('feedback-area');
+        fb.className = 'feedback-area wrong-fb';
+        fb.innerHTML = '<span class="feedback-text">&#9888;&#65039; Συμπλήρωσε όλα τα αντιστοίχια πρώτα!</span>';
+        return;
+    }
+    answered = true;
+    var allCorrect = true;
+    q.items.forEach(function(item, idx) {
+        var rowBtns = document.querySelectorAll('#match-cats-' + idx + ' .match-cat-btn');
+        rowBtns.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.cat === item.answer) {
+                b.classList.remove('selected');
+                b.classList.add('correct-cat');
+            } else if (b.classList.contains('selected') && b.dataset.cat !== item.answer) {
+                b.classList.remove('selected');
+                b.classList.add('wrong-cat');
+                allCorrect = false;
+            }
+        });
+    });
+
+    var fb = document.getElementById('feedback-area');
+    if (allCorrect) {
+        score++;
+        updateScore();
+        fb.className = 'feedback-area correct-fb';
+        fb.innerHTML = '<span class="feedback-text">&#9989; Τέλεια! Μπράβο!</span>';
+    } else {
+        fb.className = 'feedback-area wrong-fb';
+        fb.innerHTML = '<span class="feedback-text">&#10060; Κάποια αντιστοίχιση δεν είναι σωστή. Δες τις σωστές απαντήσεις!</span>';
+    }
+
+    document.getElementById('match-check-btn').style.display = 'none';
+    showNextButton();
+}
+
+function showNextButton() {
+    var nextArea = document.getElementById('next-area');
+    var label = currentQuestion < questions.length - 1 ? '&#10132;&#65039; Επόμενο' : '&#127942; Αποτελέσματα';
+    nextArea.innerHTML = '<button class="btn-next" onclick="nextQuestion()">' + label + '</button>';
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    updateProgress();
+    showQuestion();
+}
+
+function showEndScreen() {
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('end-screen').classList.add('active');
+    var total = questions.length;
+    var stars = 1;
+    if (score >= 9) stars = 3;
+    else if (score >= 6) stars = 2;
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        if (i < stars) {
+            starsHtml += '<span class="star">&#11088;</span>';
+        } else {
+            starsHtml += '<span class="star dim">&#11088;</span>';
+        }
+    }
+    document.getElementById('stars-container').innerHTML = starsHtml;
+    var titles = {};
+    titles[3] = '&#127881; Εξαιρετικά! Ήσουν τέλειος/η!';
+    titles[2] = '&#128077; Πολύ καλά! Μπράβο!';
+    titles[1] = '&#128522; Καλή προσπάθεια! Δοκίμασε ξανά!';
+    document.getElementById('end-title').innerHTML = titles[stars];
+    document.getElementById('end-score').innerHTML = score + ' σωστές απαντήσεις από ' + total + '!';
+    document.getElementById('end-detail').innerHTML = '&#128202; Βαθμολογία: ' + Math.round((score / total) * 100) + '%';
+}
+
+function restartQuiz() {
+    document.getElementById('end-screen').classList.remove('active');
+    document.getElementById('start-screen').classList.add('active');
+}
+</script>
+</body>
+</html>

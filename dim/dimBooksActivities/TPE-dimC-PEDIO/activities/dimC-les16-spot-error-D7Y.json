@@ -1,0 +1,60 @@
+{
+  "title": "Βρες τα Λάθη: Βήματα Χάρτη",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πρώτα", "error": false},
+        {"text": "βρίσκω", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "συνδέσεις", "error": true, "correct": "έννοιες", "feedback": "Πρώτα βρίσκουμε τις ΕΝΝΟΙΕΣ, όχι τις συνδέσεις!"},
+        {"text": "από", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κείμενο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "έννοια", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "συνήθως", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "ρήμα.", "error": true, "correct": "ουσιαστικό", "feedback": "Η έννοια είναι συνήθως ΟΥΣΙΑΣΤΙΚΟ, όχι ρήμα! Η σύνδεση είναι ρήμα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "σύνδεση", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "συνήθως", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "επίθετο.", "error": true, "correct": "ρήμα", "feedback": "Η σύνδεση είναι συνήθως ΡΗΜΑ, όχι επίθετο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "βήμα", "error": false},
+        {"text": "ελέγχου", "error": false},
+        {"text": "διαβάζω", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Διαβάζουμε την ΠΡΟΤΑΣΗ (έννοια + σύνδεση + έννοια), όχι μόνο τη σύνδεση!"},
+        {"text": "τη", "error": false},
+        {"text": "σύνδεση.", "error": true, "correct": "πρόταση που σχηματίζεται.", "feedback": "Διαβάζουμε όλη την πρόταση για να ελέγξουμε!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αφού", "error": false},
+        {"text": "τελειώσω", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "πρέπει", "feedback": "Μετά την ολοκλήρωση ΜΠΟΡΟΥΜΕ να απαντήσουμε ερωτήσεις κοιτώντας τον χάρτη!"},
+        {"text": "να", "error": false},
+        {"text": "κοιτάξω", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "χάρτη.", "error": false}
+      ]
+    }
+  ]
+}

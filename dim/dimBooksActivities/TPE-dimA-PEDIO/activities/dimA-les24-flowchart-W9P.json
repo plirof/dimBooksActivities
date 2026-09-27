@@ -1,0 +1,13 @@
+{
+  "title": "Φτιάξε το Διάγραμμα: Κεφαλαία και Αριθμοί",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Πώς γράφω κεφαλαία και σβήνω",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Πατάω Caps Lock"},
+    {"id": 2, "type": "action", "text": "Βλέπω το λαμπάκι να ανάβει"},
+    {"id": 3, "type": "action", "text": "Πατάω τα γράμματα - βγαίνουν κεφαλαία"},
+    {"id": 4, "type": "decision", "text": "Έκανα λάθος;"},
+    {"id": 5, "type": "action", "text": "Πατάω Backspace για να σβήσω"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5]
+}

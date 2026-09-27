@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ψηφιακή Υπογραφή | Μάθημα 28</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#4ade80);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#14532d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#16a34a;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#14532d;font-size:.75rem;font-weight:700;border:1px solid #4ade80;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.doc-card{background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:10px;margin:6px 0}
+.doc-title{font-size:.78rem;font-weight:700;color:#14532d;text-align:center;margin-bottom:4px}
+.doc-desc{font-size:.7rem;color:#166534;text-align:center;margin-bottom:6px}
+.doc-icons{font-size:1.1rem;text-align:center;margin:4px 0}
+.concept-opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.concept-opt{padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s}
+.concept-opt:hover{border-color:#16a34a;background:#f0fdf4}
+.concept-opt.selected{border-color:#16a34a;background:#dcfce7;color:#14532d;font-weight:700}
+.concept-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.concept-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.concept-opt.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#15803d}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #16a34a;border-radius:10px;background:transparent;color:#16a34a;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0fdf4}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .concept-opts > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔏 Ψηφιακή Υπογραφή & Πιστοποιητικό</h1>
+<p class="subtitle">Ταίριαξε κάθε έγγραφο με τη σωστή έννοια!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Έγγραφο:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var docs=[
+{
+title:'📜 Πιστοποιτικό Γέννησης',
+desc:'Έγγραφο από τον Δήμο που βεβαιώνει τη γέννησή σου.',
+icons:'👶🏛️',
+q:'Τι χρησιμοποιεί ο Δήμος για να βεβαιώσει ότι το έγγραφο είναι αληθινό;',
+opts:['Ψηφιακή υπογραφή — ισχύει όσο και χειρόγραφη','Απλή σάρωση του εγγράφου','Φωτοτυπία με σφραγίδα','Email επιβεβαίωσης'],
+correct:0,
+explain:'Η ψηφιακή υπογραφή έχει την ίδια ισχύ με τη χειρόγραφη σε δημόσια έγγραφα.'
+},
+{
+title:'🎓 Απολυτήριο Λυκείου',
+desc:'Έγγραφο με τους βαθμούς σου από το σχολείο.',
+icons:'🏫📋',
+q:'Πώς βεβαιώνεται ότι το απολυτήριο είναι γνήσιο;',
+opts:['QR Code στο τέλος του εγγράφου','Τηλεφώνημα στο σχολείο','Χειρόγραφη υπογραφή μόνο','Ψηφιακό πιστοποιητικό που αποδεικνύει την ταυτότητα'],
+correct:3,
+explain:'Το ψηφιακό πιστοποιητικό πιστοποιεί την ταυτότητα αυτού που υπέγραψε.'
+},
+{
+title:'📋 Βεβαίωση Εγγράφου από gov.gr',
+desc:'Ένα έγγραφο με κωδικό επιβεβαίωσης.',
+icons:'🏛️🔐',
+q:'Τι εμφανίζεται στο κάτω μέρος κάθε σελίδας;',
+opts:['Μόνο το όνομα του υπαλλήλου','Αριθμός επιβεβαίωσης + QR Code','Μόνο η ημερομηνία','Καμία πληροφορία'],
+correct:1,
+explain:'Κάθε σελίδα φέρει μοναδικό αριθμό επιβεβαίωσης και QR Code.'
+},
+{
+title:'🔑 Δημιουργία Ψηφιακού Πιστοποιητικού',
+desc:'Πώς δημιουργείται ένα ψηφιακό πιστοποιητικό;',
+icons:'🔐➡️📝',
+q:'Ποια μέθοδος χρησιμοποιείται;',
+opts:['Απλή αποθήκευση αρχείου','Κρυπτογράφηση — μετατροπή σε αριθμούς, σύμβολα και γράμματα','Αποστολή SMS','Φωτογράφιση ταυτότητας'],
+correct:1,
+explain:'Η κρυπτογράφηση μετατρέπει δεδομένα σε κώδικα (αριθμούς, σύμβολα, γράμματα).'
+},
+{
+title:'📱 Σάρωση QR Code',
+desc:'Σκανάρεις ένα QR Code με το κινητό σου.',
+icons:'📱📷',
+q:'Τι χρειάζεσαι για να διαβάσεις ένα QR Code;',
+opts:['Ειδικό πρόγραμμα στον υπολογιστή μόνο','Συσκευή με κάμερα και πρόσβαση στο ίντερνετ','Ηλεκτρονική ταυτότητα','Κωδικό PIN'],
+correct:1,
+explain:'Χρειάζεσαι μόνο μια συσκευή με κάμερα και ίντερνετ!'
+},
+{
+title:'🖥️ Πύλη gov.gr',
+desc:'Η ψηφιακή πύλη του ελληνικού κράτους.',
+icons:'🇬🇷💻',
+q:'Τι μπορείς να βρεις στο gov.gr;',
+opts:['Μόνο πληροφορίες για την Ταυτότητα','Όλες τις ψηφιακές υπηρεσίες υπουργείων και φορέων','Μόνο εφαρμογές για κινητά','Τραπεζικές συναλλαγές'],
+correct:1,
+explain:'Το gov.gr φιλοξενεί όλες τις ψηφιακές υπηρεσίες του κράτους.'
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+function initQ(){selected=-1;checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var d=docs[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="doc-card">';
+h+='<div class="doc-icons">'+d.icons+'</div>';
+h+='<div class="doc-title">'+d.title+'</div>';
+h+='<div class="doc-desc">'+d.desc+'</div>';
+h+='</div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#14532d;text-align:center;margin:4px 0">'+d.q+'</p>';
+h+='<div class="concept-opts">';
+for(var i=0;i<d.opts.length;i++){
+var cls='concept-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===d.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+d.opts[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===d.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+d.explain:'❌ '+d.explain)+'</div>';
+if(curQ<docs.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Έγγραφο ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<docs.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

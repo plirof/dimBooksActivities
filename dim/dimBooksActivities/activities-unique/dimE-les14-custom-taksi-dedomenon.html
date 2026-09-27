@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξίδι Δεδομένων στο Δίκτυο | Μάθημα 14</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0c0c1d,#1a1a3e);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.controls{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.mode-btn{padding:6px 14px;border:2px solid #334155;border-radius:10px;background:#0f172a;color:#94a3b8;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.mode-btn:hover{border-color:#6366f1}
+.mode-btn.active{background:#6366f1;color:#fff;border-color:#818cf8}
+.send-btn{padding:8px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s}
+.send-btn:hover{transform:translateY(-2px)}
+.send-btn:disabled{opacity:.5;cursor:default;transform:none}
+.score-item{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.canvas-wrap{background:#0f172a;border-radius:16px;border:2px solid #1e293b;padding:8px;max-width:800px;width:100%;position:relative}
+canvas{width:100%;border-radius:10px;display:block}
+.legend{display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:.65rem;color:#94a3b8}
+.legend-dot{width:12px;height:12px;border-radius:50%}
+.info-panel{max-width:800px;width:100%;margin-top:8px}
+.step-bar{display:flex;gap:4px;align-items:center;margin-bottom:6px}
+.step{flex:1;height:6px;border-radius:3px;background:#1e293b;transition:all .3s}
+.step.done{background:#22c55e}
+.step.active{background:#fbbf24;animation:stepPulse 1s infinite}
+@keyframes stepPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.step-desc{background:#1e293b;border-radius:12px;padding:10px;border:1px solid #334155;min-height:40px}
+.step-desc .sd-title{color:#e2e8f0;font-size:.75rem;font-weight:700;margin-bottom:4px}
+.step-desc .sd-text{color:#94a3b8;font-size:.7rem;line-height:1.4}
+@media(max-width:600px){.controls{gap:4px}.mode-btn{padding:4px 10px;font-size:.65rem}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .controls > * { margin: 4px; }
+  .legend > * { margin: 5px; }
+  .legend-item > * + * { margin-left: 4px; }
+  .step-bar > * + * { margin-left: 4px; }
+  @media(max-width:600px){
+    .controls > * { margin: 2px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🌐 Ταξίδι Δεδομένων στο Δίκτυο</h1>
+<p class="subtitle">Δες πώς τα πακέτα δεδομένων ταξιδεύουν από τον πελάτη στον εξυπηρετητή!</p>
+<div class="controls">
+<button class="mode-btn active" id="btnLAN" onclick="setMode('lan')">🏠 LAN (Τοπικό)</button>
+<button class="mode-btn" id="btnWAN" onclick="setMode('wan')">🌍 WAN (Ευρύτερο)</button>
+<button class="send-btn" id="sendBtn" onclick="sendRequest()">📨 Στείλε Αίτημα</button>
+<span class="score-item">Πόντοι: <span id="pts">0</span></span>
+</div>
+<div class="canvas-wrap">
+<canvas id="c" width="780" height="380"></canvas>
+</div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Πελάτης (Client)</div>
+<div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Δρομολογητής (Router)</div>
+<div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Εξυπηρετητής (Server)</div>
+<div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Πακέτο Δεδομένων</div>
+</div>
+<div class="info-panel">
+<div class="step-bar" id="stepBar"></div>
+<div class="step-desc">
+<div class="sd-title" id="stepTitle">⏸️ Αναμονή</div>
+<div class="sd-text" id="stepText">Πάτα «Στείλε Αίτημα» για να δεις πώς τα δεδομένα ταξιδεύουν στο δίκτυο! Διάλεξε LAN ή WAN για διαφορετικό δίκτυο.</div>
+</div>
+</div>
+<script>
+var canvas=document.getElementById('c');
+var ctx=canvas.getContext('2d');
+var W=780,H=380;
+var mode='lan';
+var animating=false;
+var pts=0;
+var nodes=[];
+var edges=[];
+var packets=[];
+var steps=[
+{title:'1️⃣ Ο πελάτης στέλνει αίτημα',text:'Ο υπολογιστής σου (πελάτης) ζητά πληροφορίες από τον εξυπηρετητή. Τα δεδομένα χωρίζονται σε μικρά πακέτα!'},
+{title:'2️⃣ Πακέτα ταξιδεύουν μέσω δρομολογητών',text:'Κάθε πακέτο παίρνει ίσως διαφορετική διαδρομή μέσω δρομολογητών (routers). Μπορεί να μπερδευτεί η σειρά τους!'},
+{title:'3️⃣ Ο εξυπηρετητής δέχεται τα πακέτα',text:'Ο server λαμβάνει όλα τα πακέτα, τα βάζει στη σωστή σειρά και βρίσκει την πληροφορία που ζητήθηκε.'},
+{title:'4️⃣ Ο server απαντά με πληροφορίες',text:'Ο εξυπηρετητής στέλνει πίσω την πληροφορία (π.χ. ιστοσελίδα) σε νέα πακέτα προς τον πελάτη.'},
+{title:'5️⃣ Ο πελάτης λαμβάνει την απάντηση',text:'Ο υπολογιστής σου δέχεται τα πακέτα, τα ταξινομεί και εμφανίζει την πληροφορία! Το ταξίδι ολοκληρώθηκε!'}
+];
+var currentStep=-1;
+function buildLAN(){
+nodes=[
+{id:'client',x:80,y:190,r:28,label:'Πελάτης',emoji:'💻',color:'#3b82f6'},
+{id:'r1',x:240,y:120,r:18,label:'Router',emoji:'📡',color:'#f59e0b'},
+{id:'r2',x:240,y:260,r:18,label:'Router',emoji:'📡',color:'#f59e0b'},
+{id:'server',x:400,y:190,r:28,label:'Server',emoji:'🖥️',color:'#22c55e'},
+{id:'printer',x:400,y:60,r:18,label:'Εκτυπωτής',emoji:'🖨️',color:'#64748b'}
+];
+edges=[
+{from:'client',to:'r1'},{from:'client',to:'r2'},
+{from:'r1',to:'server'},{from:'r2',to:'server'},
+{from:'r1',to:'printer'}
+];
+}
+function buildWAN(){
+nodes=[
+{id:'client',x:80,y:190,r:28,label:'Πελάτης',emoji:'💻',color:'#3b82f6'},
+{id:'r1',x:200,y:80,r:18,label:'Router 1',emoji:'📡',color:'#f59e0b'},
+{id:'r2',x:200,y:300,r:18,label:'Router 2',emoji:'📡',color:'#f59e0b'},
+{id:'r3',x:400,y:150,r:18,label:'Router 3',emoji:'📡',color:'#f59e0b'},
+{id:'r4',x:400,y:280,r:18,label:'Router 4',emoji:'📡',color:'#f59e0b'},
+{id:'lan1',x:310,y:50,r:14,label:'LAN Α',emoji:'🏠',color:'#3b82f6'},
+{id:'lan2',x:500,y:50,r:14,label:'LAN Β',emoji:'🏫',color:'#8b5cf6'},
+{id:'server',x:620,y:190,r:28,label:'Server',emoji:'🖥️',color:'#22c55e'},
+{id:'r5',x:540,y:300,r:18,label:'Router 5',emoji:'📡',color:'#f59e0b'}
+];
+edges=[
+{from:'client',to:'r1'},{from:'client',to:'r2'},
+{from:'r1',to:'r3'},{from:'r1',to:'lan1'},
+{from:'r2',to:'r4'},{from:'r3',to:'r4'},
+{from:'r3',to:'server'},{from:'r4',to:'r5'},
+{from:'r5',to:'server'},{from:'lan1',to:'lan2'},
+{from:'lan2',to:'server'}
+];
+}
+function getNode(id){return nodes.find(function(n){return n.id===id;});}
+function setMode(m){
+if(animating)return;
+mode=m;
+document.getElementById('btnLAN').classList.toggle('active',m==='lan');
+document.getElementById('btnWAN').classList.toggle('active',m==='wan');
+if(m==='lan')buildLAN();else buildWAN();
+packets=[];
+currentStep=-1;
+buildStepBar();
+setStep(-1);
+document.getElementById('stepTitle').textContent='⏸️ Αναμονή';
+document.getElementById('stepText').textContent='Πάτα «Στείλε Αίτημα» για να δεις πώς τα δεδομένα ταξιδεύουν στο '+(m==='lan'?'τοπικό δίκτυο (LAN)':'δίκτυο ευρύτερης εμβέλειας (WAN)')+'!';
+draw();
+}
+function buildStepBar(){
+var bar=document.getElementById('stepBar');
+bar.innerHTML='';
+for(var i=0;i<5;i++){
+var s=document.createElement('div');
+s.className='step';
+s.id='stp'+i;
+bar.appendChild(s);
+}
+}
+function setStep(idx){
+currentStep=idx;
+for(var i=0;i<5;i++){
+var el=document.getElementById('stp'+i);
+if(!el)continue;
+el.className='step';
+if(i<idx)el.classList.add('done');
+if(i===idx)el.classList.add('active');
+}
+if(idx>=0&&idx<steps.length){
+document.getElementById('stepTitle').textContent=steps[idx].title;
+document.getElementById('stepText').textContent=steps[idx].text;
+}
+}
+function draw(){
+ctx.clearRect(0,0,W,H);
+var bg=ctx.createLinearGradient(0,0,0,H);
+bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#1e293b');
+ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+if(mode==='wan'){
+ctx.fillStyle='#1e293b88';
+ctx.font='10px sans-serif';
+ctx.fillStyle='#334155';
+ctx.textAlign='center';
+ctx.fillText('🌍 Δίκτυο ευρύτερης εμβέλειας (WAN) — πόλεις, χώρες',W/2,H-10);
+}else{
+ctx.fillStyle='#334155';
+ctx.textAlign='center';
+ctx.font='10px sans-serif';
+ctx.fillText('🏠 Τοπικό δίκτυο (LAN) — γραφείο, σπίτι, κτίριο',W/2,H-10);
+}
+for(var i=0;i<edges.length;i++){
+var e=edges[i];
+var a=getNode(e.from);var b=getNode(e.to);
+if(!a||!b)continue;
+ctx.beginPath();
+ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+ctx.strokeStyle='#334155';ctx.lineWidth=2;
+ctx.stroke();
+ctx.beginPath();
+ctx.arc((a.x+b.x)/2,(a.y+b.y)/2,2,0,Math.PI*2);
+ctx.fillStyle='#475569';ctx.fill();
+}
+for(var j=0;j<nodes.length;j++){
+var n=nodes[j];
+ctx.beginPath();
+ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+ctx.fillStyle=n.color+'33';
+ctx.fill();
+ctx.strokeStyle=n.color;
+ctx.lineWidth=2;
+ctx.stroke();
+ctx.font=n.r>20?'24px "Segoe UI Emoji","Noto Color Emoji",sans-serif':'16px "Segoe UI Emoji","Noto Color Emoji",sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(n.emoji,n.x,n.y);
+ctx.fillStyle='#94a3b8';ctx.font='bold 9px sans-serif';
+ctx.textBaseline='top';
+ctx.fillText(n.label,n.x,n.y+n.r+4);
+}
+for(var k=0;k<packets.length;k++){
+var p=packets[k];
+ctx.beginPath();
+ctx.arc(p.x,p.y,8,0,Math.PI*2);
+ctx.fillStyle=p.color||'#a78bfa';
+ctx.globalAlpha=p.alpha||1;
+ctx.fill();
+ctx.strokeStyle='#fff3';ctx.lineWidth=1;ctx.stroke();
+ctx.globalAlpha=1;
+if(p.label){
+ctx.fillStyle='#fff';ctx.font='bold 8px monospace';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(p.label,p.x,p.y);
+}
+}
+}
+function sendRequest(){
+if(animating)return;
+animating=true;
+document.getElementById('sendBtn').disabled=true;
+packets=[];
+var client=getNode('client');
+var server=getNode('server');
+var routes=findRoutes(client,server);
+var delay=mode==='wan'?1200:800;
+setStep(0);
+animateStep1(client,routes,delay);
+}
+function findRoutes(start,end){
+var allPaths=[];
+function dfs(current,path,visited){
+if(current.id===end.id){allPaths.push(path.slice());return;}
+var neighbors=[];
+for(var i=0;i<edges.length;i++){
+if(edges[i].from===current.id&&!visited[edges[i].to])neighbors.push(edges[i].to);
+if(edges[i].to===current.id&&!visited[edges[i].from])neighbors.push(edges[i].from);
+}
+for(var j=0;j<neighbors.length;j++){
+visited[neighbors[j]]=true;
+path.push(neighbors[j]);
+dfs(getNode(neighbors[j]),path,visited);
+path.pop();
+delete visited[neighbors[j]];
+}
+}
+var vis={};vis[start.id]=true;
+dfs(start,[start.id],vis);
+return allPaths;
+}
+function animateStep1(client,routes,delay){
+var nPackets=Math.min(routes.length,3);
+for(var i=0;i<nPackets;i++){
+var pkt={x:client.x,y:client.y,color:'#a78bfa',alpha:1,label:'P'+(i+1)};
+packets.push(pkt);
+}
+draw();
+setTimeout(function(){
+setStep(1);
+animateStep2(routes,nPackets,delay);
+},delay);
+}
+function animateStep2(routes,nPackets,delay){
+var totalSteps=40;
+var step=0;
+var animInt=setInterval(function(){
+step++;
+for(var i=0;i<nPackets&&i<routes.length;i++){
+var route=routes[i];
+var progress=step/totalSteps;
+var segIdx=Math.min(Math.floor(progress*(route.length-1)),route.length-2);
+var segProgress=(progress*(route.length-1))-segIdx;
+var from=getNode(route[segIdx]);
+var to=getNode(route[Math.min(segIdx+1,route.length-1)]);
+if(from&&to){
+packets[i].x=from.x+(to.x-from.x)*segProgress;
+packets[i].y=from.y+(to.y-from.y)*segProgress;
+}
+}
+draw();
+if(step>=totalSteps){
+clearInterval(animInt);
+setTimeout(function(){
+setStep(2);
+animateStep3(delay);
+},delay);
+}
+},30);
+}
+function animateStep3(delay){
+var server=getNode('server');
+packets=[];
+for(var i=0;i<3;i++){
+packets.push({x:server.x,y:server.y,color:'#22c55e',alpha:.6,label:'✓'});
+}
+draw();
+pts+=5;document.getElementById('pts').textContent=pts;
+setTimeout(function(){
+setStep(3);
+animateStep4(delay);
+},delay);
+}
+function animateStep4(delay){
+var client=getNode('client');
+var server=getNode('server');
+var routes=findRoutes(server,client);
+packets=[];
+var nPackets=Math.min(routes.length,2);
+for(var i=0;i<nPackets;i++){
+packets.push({x:server.x,y:server.y,color:'#fbbf24',alpha:1,label:'D'+(i+1)});
+}
+draw();
+var totalSteps=40;
+var step=0;
+var animInt=setInterval(function(){
+step++;
+for(var i=0;i<nPackets&&i<routes.length;i++){
+var route=routes[i];
+var progress=step/totalSteps;
+var segIdx=Math.min(Math.floor(progress*(route.length-1)),route.length-2);
+var segProgress=(progress*(route.length-1))-segIdx;
+var from=getNode(route[segIdx]);
+var to=getNode(route[Math.min(segIdx+1,route.length-1)]);
+if(from&&to){
+packets[i].x=from.x+(to.x-from.x)*segProgress;
+packets[i].y=from.y+(to.y-from.y)*segProgress;
+}
+}
+draw();
+if(step>=totalSteps){
+clearInterval(animInt);
+setTimeout(function(){
+setStep(4);
+animateStep5();
+},delay);
+}
+},30);
+}
+function animateStep5(){
+var client=getNode('client');
+packets=[{x:client.x,y:client.y,color:'#4ade80',alpha:1,label:'✓'}];
+draw();
+pts+=10;document.getElementById('pts').textContent=pts;
+animating=false;
+document.getElementById('sendBtn').disabled=false;
+}
+buildLAN();
+buildStepBar();
+draw();
+</script>
+</body>
+</html>

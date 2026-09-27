@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη: Συσκευές Υπολογιστή",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "πληκτρολόγιο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "συσκευή", "error": false},
+        {"text": "εξόδου.", "error": true, "correct": "εισόδου", "feedback": "Το πληκτρολόγιο είναι συσκευή ΕΙΣΟΔΟΥ, όχι εξόδου!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "σαρωτής", "error": false},
+        {"text": "περνάει", "error": false},
+        {"text": "ήχους", "error": true, "correct": "εικόνες", "feedback": "Ο σαρωτής περνάει εικόνες, όχι ήχους! Ήχους περνάει το μικρόφωνο."},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "ηχεία", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "συσκευή", "error": false},
+        {"text": "εισόδου.", "error": true, "correct": "εξόδου", "feedback": "Τα ηχεία είναι συσκευή ΕΞΟΔΟΥ! Βγάζουν ήχο από τον υπολογιστή."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "οθόνη", "error": false},
+        {"text": "αφής", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και είσοδο", "feedback": "Η οθόνη αφής κάνει ΕΙΣΟΔΟ και ΕΞΟΔΟ ταυτόχρονα!"},
+        {"text": "έξοδο.", "error": false}
+      ]
+    }
+  ]
+}

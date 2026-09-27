@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εφέ Παρουσίασης",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "transition", "name": "Εφέ Εναλλαγής", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "animation", "name": "Εφέ Κίνησης", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Σταδιακή εμφάνιση διαφάνειας", "category": "transition"},
+    {"text": "Εμφάνιση κειμένου ένα-ένα", "category": "animation"},
+    {"text": "Λάμψη μεταξύ διαφανειών", "category": "transition"},
+    {"text": "Αναπήδηση εικόνας", "category": "animation"},
+    {"text": "Σβήσιμο προηγούμενης διαφάνειας", "category": "transition"},
+    {"text": "Στροβιλισμός λέξεων", "category": "animation"},
+    {"text": "Ολίσθηση από δεξιά", "category": "transition"},
+    {"text": "Μεγέθυνση τίτλου", "category": "animation"},
+    {"text": "Εφαρμόζεται σε όλες τις διαφάνειες", "category": "transition"},
+    {"text": "Εφαρμόζεται σε συγκεκριμένα στοιχεία", "category": "animation"}
+  ],
+  "duration": 30
+}

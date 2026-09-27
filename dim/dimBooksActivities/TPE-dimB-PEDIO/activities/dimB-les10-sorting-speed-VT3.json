@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Νοσοκομείο ή Σχολείο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Νοσοκομείο ή Σχολείο;",
+  "categories": [
+    {"id": "nosok", "name": "Νοσοκομείο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "sxoleio", "name": "Σχολείο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Καρδιογράφημα", "category": "nosok"},
+    {"text": "Ασκήσεις μαθημάτων", "category": "sxoleio"},
+    {"text": "Φάρμακα", "category": "nosok"},
+    {"text": "Γράμμα γονέων", "category": "sxoleio"},
+    {"text": "Αισθητήρας υγείας", "category": "nosok"},
+    {"text": "Μουσική γιορτής", "category": "sxoleio"},
+    {"text": "Ιστορικό ασθενούς", "category": "nosok"},
+    {"text": "Μάθημα στην τάξη", "category": "sxoleio"}
+  ],
+  "duration": 30
+}

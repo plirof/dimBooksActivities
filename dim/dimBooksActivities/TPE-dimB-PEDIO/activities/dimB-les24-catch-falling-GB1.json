@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Εργαλεία Ζωγραφικής",
+  "subtitle": "Πιάσε μόνο τα εργαλεία",
+  "instructions": "Πιάσε εργαλεία ζωγραφικής. Απόφυγε υλικά υπολογιστή.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Πινέλο", "correct": true, "color": "#4CAF50" },
+    { "text": "Οθόνη", "correct": false, "color": "#f44336" },
+    { "text": "Σβήστρα", "correct": true, "color": "#4CAF50" },
+    { "text": "Εκτυπωτής", "correct": false, "color": "#f44336" },
+    { "text": "Γραμμές", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουτί", "correct": false, "color": "#f44336" },
+    { "text": "Χρώματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Καλώδιο", "correct": false, "color": "#f44336" },
+    { "text": "Σχήματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Πληκτρολόγιο", "correct": false, "color": "#f44336" }
+  ]
+}

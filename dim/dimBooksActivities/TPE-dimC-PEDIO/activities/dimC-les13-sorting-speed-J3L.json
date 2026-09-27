@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Σωστό ή Λάθος",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί ΣΩΣΤΟ ή ΛΑΘΟΣ για κάθε συμπεριφορά!",
+  "categories": [
+    {"id": "swsto", "name": "Σωστή Πρακτική", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος Πρακτική", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εγκαθιστώ antivirus", "category": "swsto"},
+    {"text": "Βάζω το όνομά μου ως κωδικό", "category": "lathos"},
+    {"text": "Ενημερώνω το antivirus", "category": "swsto"},
+    {"text": "Κάνω κλικ σε δώρα", "category": "lathos"},
+    {"text": "Χρησιμοποιώ ισχυρό κωδικό", "category": "swsto"},
+    {"text": "Μοιράζομαι τον κωδικό μου", "category": "lathos"},
+    {"text": "Αποσυνδέομαι στο τέλος", "category": "swsto"},
+    {"text": "Ανοίγω ασυνήθιστα email", "category": "lathos"},
+    {"text": "Προσέχω τι εγκαθιστώ", "category": "swsto"},
+    {"text": "Βάζω 123456 ως κωδικό", "category": "lathos"}
+  ],
+  "duration": 30
+}

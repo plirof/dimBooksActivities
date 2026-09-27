@@ -1,0 +1,53 @@
+{
+  "title": "Επαγγέλματα + χρήση υπολογιστή",
+  "subtitle": "Πώς χρησιμοποιεί ο καθένας τον υπολογιστή;",
+  "categories": [
+    {
+      "id": "doctor",
+      "name": "ΓΙΑΤΡΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "teacher",
+      "name": "ΔΑΣΚΑΛΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "engineer",
+      "name": "ΜΗΧΑΝΙΚΟΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ιατρικός φάκελος",
+      "category": "doctor"
+    },
+    {
+      "id": "item2",
+      "text": "Παρουσίαση μαθήματος",
+      "category": "teacher"
+    },
+    {
+      "id": "item3",
+      "text": "Σχεδιασμός γέφυρας",
+      "category": "engineer"
+    },
+    {
+      "id": "item4",
+      "text": "Εξετάσεις αίματος",
+      "category": "doctor"
+    },
+    {
+      "id": "item5",
+      "text": "Βαθμολόγιο",
+      "category": "teacher"
+    },
+    {
+      "id": "item6",
+      "text": "Υπολογισμός αντοχής",
+      "category": "engineer"
+    }
+  ]
+}

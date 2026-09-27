@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+v260924 - ολοκληρωτική ανακατασκευή. Το παλιό «Επόμενο/Πίσω» δεν μπορούσε να αλλάξει τη σειρά των καρτών
+	(το renderInstructions μηδένιζε το currentFocus, οπότε οι 2 πρώτες κάρτες απλώς εναλλάσσονταν).
+	Νέος τρόπος παιχνιδιού, ίδιος με τα υπόλοιπα drag-order της οικογένειας: το παιδί πατά τις κάρτες
+	μία-μία με τη σωστή σειρά, με άμεση ανατροφοδότηση (στήλες με αριθμούς, κουνήμα σε λάθος, κομφετί στη σωστή).
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ακολουθώ Οδηγίες ✈️ — Βάζω τα Βήματα στη Σειρά</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    padding: 12px; color: #333;
+    user-select: none; -webkit-user-select: none;
+  }
+  .app-container { max-width: 540px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(102,126,234,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.4rem; margin-bottom: 2px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #667eea; }
+  .round { font-size: 1rem; color: #888; }
+  .scene-box {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 16px 20px;
+    margin-bottom: 14px; text-align: center;
+  }
+  .scene-emoji { font-size: 3.4rem; margin-bottom: 4px; }
+  .scene-emoji.celebrate { animation: fly 1s ease infinite; }
+  @keyframes fly {
+    0%, 100% { transform: translateX(-8px) rotate(-6deg); }
+    50% { transform: translateX(8px) rotate(6deg); }
+  }
+  .scene-title { font-size: 1.3rem; font-weight: 700; color: #2d3436; margin-bottom: 2px; }
+  .scene-desc { font-size: 1rem; color: #666; }
+  .how-to {
+    background: #fffbeb; border: 2px dashed #f0a500; color: #8a5a00;
+    border-radius: 14px; padding: 9px 14px; margin-bottom: 14px;
+    text-align: center; font-size: .98rem; font-weight: 600;
+  }
+  .slots-area {
+    background: #fff; border-radius: 20px; padding: 12px;
+    margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+  }
+  .slot {
+    display: flex; align-items: center; gap: 12px;
+    border: 3px dashed #cfd6ff; border-radius: 14px;
+    padding: 8px 14px; min-height: 54px; background: #fafbff;
+    transition: all .2s ease;
+  }
+  .slot .slot-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #e4e8ff; color: #667eea;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1rem; flex-shrink: 0;
+  }
+  .slot .slot-q { color: #b0b6d8; font-weight: 700; font-size: .95rem; }
+  .slot.filled {
+    border-style: solid; border-color: #667eea;
+    background: #f0f4ff; animation: pop .35s ease;
+  }
+  .slot.filled .slot-num { background: #667eea; color: #fff; }
+  .slot .slot-emoji { font-size: 1.8rem; flex-shrink: 0; }
+  .slot .slot-text { font-size: 1.02rem; font-weight: 700; color: #2d3436; }
+  @keyframes pop {
+    0% { transform: scale(.96); }
+    55% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #fff3cd; color: #8a5a00; }
+  .options-area {
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
+  }
+  .opt-card {
+    background: #fff; border: 3px solid #e0e4ff;
+    border-radius: 16px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: all .2s ease;
+    box-shadow: 0 2px 8px rgba(102,126,234,.1);
+  }
+  .opt-card:hover { border-color: #667eea; transform: translateX(4px); }
+  .opt-card:active { transform: scale(.97); }
+  .opt-card .o-emoji { font-size: 1.9rem; flex-shrink: 0; }
+  .opt-card .o-text { font-size: 1.05rem; font-weight: 600; color: #2d3436; flex: 1; text-align: left; }
+  .opt-card.placed {
+    opacity: .35; pointer-events: none; border-color: #28a745;
+    transform: none !important;
+  }
+  .opt-card.wrong-flash {
+    border-color: #dc3545; background: #ffebee;
+    animation: shake .4s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .confetti-piece {
+    position: fixed; top: -40px; font-size: 1.6rem;
+    pointer-events: none; z-index: 50;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .scene-emoji { font-size: 2.8rem; }
+    .slot .slot-text, .opt-card .o-text { font-size: .95rem; }
+    .slot .slot-emoji, .opt-card .o-emoji { font-size: 1.6rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .slots-area > * + * { margin-top: 8px; }
+  .slot > * + * { margin-left: 12px; }
+  .options-area > * + * { margin-top: 10px; }
+  .opt-card > * + * { margin-left: 12px; }
+  .info-bar > * { margin: 0 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>✈️ Ακολουθώ Οδηγίες</h1>
+    <p>Βάζω τα βήματα στη σωστή σειρά!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="scene-box">
+      <div class="scene-emoji" id="sceneEmoji">✈️</div>
+      <div class="scene-title" id="sceneTitle"></div>
+      <div class="scene-desc" id="sceneDesc">Πάτα τις κάρτες από κάτω με τη σωστή σειρά!</div>
+    </div>
+    <div class="how-to">👆 Πάτα μία-μία τις κάρτες: πρώτα το βήμα 1, μετά το 2 και συνεχίζουμε!</div>
+    <div class="slots-area" id="slotsArea"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options-area" id="optionsArea"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var rounds = [
+    {
+      emoji: '✈️', title: 'Φτιάχνω χάρτινο αεροπλανάκι',
+      cheer: 'Το αεροπλανάκι είναι έτοιμο — φύγαμε! 🛫',
+      steps: [
+        { emoji: '📄', text: 'Παίρνω ένα χαρτί' },
+        { emoji: '🔻', text: 'Διπλώνω τις γωνίες στη μέση' },
+        { emoji: '🪁', text: 'Ανοίγω τις φτερούγες' },
+        { emoji: '✈️', text: 'Πετάω το αεροπλανάκι ψηλά!' }
+      ]
+    },
+    {
+      emoji: '🧼', title: 'Πλένω τα χεράκια μου',
+      cheer: 'Πεντακάθαρα χεράκια! ✨',
+      steps: [
+        { emoji: '🚰', text: 'Ανοίγω τη βρύση' },
+        { emoji: '🧼', text: 'Βάζω σαπούνι' },
+        { emoji: '🙌', text: 'Τρίβω καλά τα χεράκια' },
+        { emoji: '🧺', text: 'Τα σκουπίζω με την πετσέτα' }
+      ]
+    },
+    {
+      emoji: '🥪', title: 'Φτιάχνω ένα σάντουιτς',
+      cheer: 'Έτοιμο το σάντουιτς — καλή όρεξη! 😋',
+      steps: [
+        { emoji: '🍞', text: 'Βάζω ψωμί στο πιάτο' },
+        { emoji: '🧀', text: 'Βάζω το τυρί' },
+        { emoji: '🍅', text: 'Βάζω τη ντομάτα' },
+        { emoji: '🥪', text: 'Κλείνω με το άλλο ψωμί' }
+      ]
+    },
+    {
+      emoji: '🌱', title: 'Φυτεύω ένα λουλουδάκι',
+      cheer: 'Σε λίγες μέρες θα ανθίσει! 🌼',
+      steps: [
+        { emoji: '🪴', text: 'Παίρνω γλάστρα με χώμα' },
+        { emoji: '🌰', text: 'Βάζω τον σπόρο' },
+        { emoji: '💧', text: 'Το ποτίζω λίγο' },
+        { emoji: '☀️', text: 'Το βάζω στον ήλιο' },
+        { emoji: '🌻', text: 'Περιμένω να ανθίσει!' }
+      ]
+    }
+  ];
+
+  var currentRound = 0, score = 0, waiting = false, placedCount = 0;
+
+  function startGame() {
+    currentRound = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showRound();
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function isAlreadyOrdered(items) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].origIdx !== i) return false;
+    }
+    return true;
+  }
+
+  function showRound() {
+    if (currentRound >= rounds.length) { showResult(); return; }
+    waiting = false; placedCount = 0;
+    var r = rounds[currentRound];
+    document.getElementById('sceneEmoji').textContent = r.emoji;
+    document.getElementById('sceneEmoji').classList.remove('celebrate');
+    document.getElementById('sceneTitle').textContent = r.title;
+    document.getElementById('sceneDesc').textContent = 'Βάζουμε τα βήματα στη σωστή σειρά!';
+    document.getElementById('roundDisplay').textContent = (currentRound + 1) + '/' + rounds.length;
+    hideFeedback();
+
+    var slotsHtml = '';
+    for (var i = 0; i < r.steps.length; i++) {
+      slotsHtml += '<div class="slot" id="slot' + i + '"><span class="slot-num">' + (i + 1) + '</span><span class="slot-q">Ποιο είναι το βήμα ' + (i + 1) + ';</span></div>';
+    }
+    document.getElementById('slotsArea').innerHTML = slotsHtml;
+
+    var items = r.steps.map(function(st, idx) {
+      return { emoji: st.emoji, text: st.text, origIdx: idx };
+    });
+    var guard = 0;
+    do { shuffle(items); guard++; } while (isAlreadyOrdered(items) && guard < 60);
+
+    var opts = document.getElementById('optionsArea');
+    opts.innerHTML = '';
+    for (var k = 0; k < items.length; k++) {
+      (function(cardItem) {
+        var card = document.createElement('div');
+        card.className = 'opt-card';
+        card.setAttribute('data-orig', cardItem.origIdx);
+        card.innerHTML = '<div class="o-emoji">' + cardItem.emoji + '</div><div class="o-text">' + cardItem.text + '</div>';
+        card.addEventListener('click', function() { tapCard(card); });
+        opts.appendChild(card);
+      })(items[k]);
+    }
+  }
+
+  function hideFeedback() {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback';
+    fb.style.display = 'none';
+  }
+
+  function tapCard(cardEl) {
+    if (waiting) return;
+    if (cardEl.classList.contains('placed')) return;
+    var r = rounds[currentRound];
+    var orig = parseInt(cardEl.getAttribute('data-orig'), 10);
+    if (orig === placedCount) {
+      hideFeedback();
+      var slot = document.getElementById('slot' + placedCount);
+      slot.classList.add('filled');
+      slot.innerHTML = '<span class="slot-num">' + (placedCount + 1) + '</span><span class="slot-emoji">' + r.steps[placedCount].emoji + '</span><span class="slot-text">' + r.steps[placedCount].text + '</span>';
+      cardEl.classList.add('placed');
+      placedCount++;
+      if (placedCount === r.steps.length) {
+        waiting = true;
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        document.getElementById('sceneEmoji').classList.add('celebrate');
+        var fb = document.getElementById('feedback');
+        fb.className = 'feedback correct';
+        fb.style.display = 'block';
+        fb.textContent = '🎉 Μπράβο! ' + r.cheer;
+        throwConfetti();
+        setTimeout(function() {
+          currentRound++;
+          showRound();
+        }, 2200);
+      }
+    } else {
+      cardEl.classList.remove('wrong-flash');
+      void cardEl.offsetWidth;
+      cardEl.classList.add('wrong-flash');
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback wrong';
+      fb.style.display = 'block';
+      fb.textContent = '🤔 Ωχ! Το «' + cardEl.querySelector('.o-text').textContent + '» δεν είναι το επόμενο βήμα. Δοκίμασε άλλη κάρτα!';
+    }
+  }
+
+  function throwConfetti() {
+    var emojis = ['🎉', '⭐', '✨', '🎊', '🌈', '💫'];
+    for (var i = 0; i < 14; i++) {
+      (function() {
+        var s = document.createElement('span');
+        s.className = 'confetti-piece';
+        s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        s.style.left = (5 + Math.random() * 90) + 'vw';
+        s.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+        s.style.animationDelay = (Math.random() * 0.4) + 's';
+        document.body.appendChild(s);
+        setTimeout(function() { s.remove(); }, 3600);
+      })();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = rounds.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις πολύ καλά τις σειρές των βημάτων!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+    if (score === total) throwConfetti();
+  }
+
+  startGame();
+</script>
+</body>
+</html>

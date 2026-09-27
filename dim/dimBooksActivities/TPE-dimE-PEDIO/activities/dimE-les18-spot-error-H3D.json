@@ -1,0 +1,62 @@
+{
+  "title": "Βρες τα Λάθη: Υπολογιστικό Φύλλο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "τύπος", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "υπολογιστικό", "error": false},
+        {"text": "φύλλο", "error": false},
+        {"text": "ξεκινάει", "error": false},
+        {"text": "με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σύμβολο", "error": false},
+        {"text": "#.", "error": true, "correct": "=", "feedback": "Ο τύπος ξεκινάει με = και όχι με #!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "σύμβολο", "error": false},
+        {"text": "x", "error": true, "correct": "*", "feedback": "Ο πολλαπλασιασμός στο φύλλο γίνεται με *, όχι με x!"},
+        {"text": "χρησιμοποιείται", "error": false},
+        {"text": "για", "error": false},
+        {"text": "πολλαπλασιασμό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "λέξη", "error": false},
+        {"text": "SUM", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "γινόμενο.", "error": true, "correct": "άθροισμα", "feedback": "Η λέξη SUM σημαίνει άθροισμα, όχι γινόμενο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όταν", "error": false},
+        {"text": "σύρουμε", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "τύπο,", "error": false},
+        {"text": "αντιγράφεται", "error": false},
+        {"text": "το", "error": false},
+        {"text": "αποτέλεσμα.", "error": true, "correct": "ο τύπος", "feedback": "Αντιγράφεται ο τύπος και όχι το αποτέλεσμα!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Είναι", "error": false},
+        {"text": "καλύτερο", "error": false},
+        {"text": "στον", "error": false},
+        {"text": "τύπο", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράφουμε", "error": true, "correct": "κάνουμε κλικ στο", "feedback": "Είναι καλύτερο να κάνουμε κλικ στο κελί παρά να γράφουμε τον αριθμό!"},
+        {"text": "τον", "error": false},
+        {"text": "αριθμό.", "error": false}
+      ]
+    }
+  ]
+}

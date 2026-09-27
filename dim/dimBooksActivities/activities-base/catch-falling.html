@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v002-250622 - Fixed Iron browser compatibillity
+
+-->	
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πιάσε τα!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:15px;font-weight:400}
+.game-header{display:flex;justify-content:space-between;padding:10px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#4facfe;font-size:1.1em}
+.canvas-wrap{display:flex;justify-content:center;margin-bottom:10px}
+canvas{border-radius:12px;border:2px solid #b3e5fc;display:block;background:#e1f5fe}
+.start-screen,.end-screen{text-align:center;padding:30px 20px}
+.start-screen h2,.end-screen h2{color:#333;margin-bottom:10px}
+.start-screen p,.end-screen p{color:#666;margin-bottom:15px;line-height:1.5}
+.start-btn,.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.final-score{font-size:3em;color:#4facfe;font-weight:700}
+.message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.flash{animation:flashAnim .3s}
+@keyframes flashAnim{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+if(typeof CanvasRenderingContext2D!=='undefined'&&!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,radii){var r=typeof radii==='number'?radii:0;r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath()}}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const items=data.items||[];
+const fallSpeed=data.speed||2.5;
+const maxLives=data.lives||3;
+const spawnInterval=data.spawnInterval||1200;
+const winScore=data.winScore||15;
+const canvasW=600,canvasH=420;
+const basketW=100,basketH=40;
+let basketX,score,lives,gameRunning,fallingItems,spawnTimer,animFrame,keysDown={};
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle||'')}</h2>
+<p>${esc(data.instructions||'')}</p>
+<p>Στόχος: ${winScore} πόντοι | Ζωές: ${maxLives}</p>
+<button class="start-btn" onclick="startGame()">▶ Ξεκίνα!</button>
+</div>`
+}
+
+window.startGame=function(){
+score=0;lives=maxLives;gameRunning=true;fallingItems=[];
+basketX=(canvasW-basketW)/2;
+keysDown={};
+renderGame();
+if(typeof TouchControls!=='undefined'){
+TouchControls.create({
+container:app,
+directions:['left','right'],
+theme:{bg:'#e1f5fe',border:'#b3e5fc',active:'#b2ebf2',text:'#0288d1'},
+onPress:function(dName){keysDown['Arrow'+dName.charAt(0).toUpperCase()+dName.slice(1)]=true},
+onRelease:function(dName){keysDown['Arrow'+dName.charAt(0).toUpperCase()+dName.slice(1)]=false}
+});
+}
+spawnTimer=setInterval(spawnItem,spawnInterval);
+animFrame=requestAnimationFrame(gameLoop)
+};
+
+function renderGame(){
+const livesStr=Array(lives).fill('❤️').join('');
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Σκορ: <span id="scoreDisplay">${score}/${winScore}</span></div>
+<div class="stat">Ζωές: <span>${livesStr}</span></div>
+</div>
+<div class="canvas-wrap"><canvas id="catchCanvas" width="${canvasW}" height="${canvasH}"></canvas></div>
+`
+}
+
+function spawnItem(){
+if(!gameRunning)return;
+const item=items[Math.floor(Math.random()*items.length)];
+fallingItems.push({x:Math.random()*(canvasW-80)+40,y:-30,text:item.text,correct:item.correct,color:item.color})
+}
+
+function gameLoop(){
+if(!gameRunning)return;
+const canvas=document.getElementById('catchCanvas');
+if(!canvas){animFrame=requestAnimationFrame(gameLoop);return}
+const ctx=canvas.getContext('2d');
+if(keysDown['ArrowLeft'])basketX=Math.max(0,basketX-6);
+if(keysDown['ArrowRight'])basketX=Math.min(canvasW-basketW,basketX+6);
+ctx.clearRect(0,0,canvasW,canvasH);
+ctx.fillStyle='#e1f5fe';
+ctx.fillRect(0,0,canvasW,canvasH);
+const grad=ctx.createLinearGradient(0,0,0,canvasH);
+grad.addColorStop(0,'#e3f2fd');grad.addColorStop(1,'#bbdefb');
+ctx.fillStyle=grad;ctx.fillRect(0,0,canvasW,canvasH);
+for(let i=fallingItems.length-1;i>=0;i--){
+const fi=fallingItems[i];
+fi.y+=fallSpeed;
+ctx.save();
+ctx.fillStyle=fi.color;
+ctx.strokeStyle=fi.correct?'#4CAF50':'#f44336';
+ctx.lineWidth=2;
+const tw=ctx.measureText(fi.text).width;
+const bw=Math.max(tw+20,70),bh=30;
+const bx=fi.x-bw/2,by=fi.y-bh/2;
+ctx.beginPath();
+ctx.roundRect(bx,by,bw,bh,8);
+ctx.fill();ctx.stroke();
+ctx.fillStyle='#fff';
+ctx.font='bold 13px "Segoe UI",Tahoma,sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(fi.text,fi.x,fi.y);
+ctx.restore();
+if(fi.y>canvasH-10){fallingItems.splice(i,1);continue}
+if(fi.y>=canvasH-basketH-10&&fi.y<=canvasH-5&&fi.x>=basketX&&fi.x<=basketX+basketW){
+if(fi.correct){score++;const sEl=document.getElementById('scoreDisplay');if(sEl)sEl.textContent=score+'/'+winScore}
+else{lives--;const livesStr2=Array(Math.max(0,lives)).fill('❤️').join('');document.querySelectorAll('.stat span')[1].innerHTML=livesStr2}
+fallingItems.splice(i,1);
+if(score>=winScore){gameRunning=false;clearInterval(spawnTimer);cancelAnimationFrame(animFrame);showEnd(true);return}
+if(lives<=0){gameRunning=false;clearInterval(spawnTimer);cancelAnimationFrame(animFrame);showEnd(false);return}
+}
+}
+ctx.fillStyle='#795548';
+ctx.beginPath();
+ctx.roundRect(basketX,canvasH-basketH,basketW,basketH,6);
+ctx.fill();
+ctx.fillStyle='#5d4037';
+ctx.beginPath();
+ctx.roundRect(basketX+5,canvasH-basketH+5,basketW-10,basketH-10,4);
+ctx.fill();
+ctx.fillStyle='#fff';
+ctx.font='16px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('🧺',basketX+basketW/2,canvasH-basketH/2);
+animFrame=requestAnimationFrame(gameLoop)
+}
+
+function showEnd(won){
+clearInterval(spawnTimer);cancelAnimationFrame(animFrame);
+let msg=won?'Μπράβο! Τα πιάσεις όλα!':lives<=0?'Έχασες τις ζωές σου! Δοκίμασε ξανά!':'Τέλος!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="end-screen" style="display:block">
+<h2>${won?'Συγχαρητήρια!':'Τέλος!'}</h2>
+<div class="final-score">${score}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>
+</div>`
+}
+
+document.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();keysDown[e.key]=true}});
+document.addEventListener('keyup',function(e){keysDown[e.key]=false});
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

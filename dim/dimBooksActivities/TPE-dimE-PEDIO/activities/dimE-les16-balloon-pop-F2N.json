@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δεδομένα",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με στοιχεία δεδομένων και φύλλου!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κελί", "correct": true, "color": "#4CAF50" },
+    { "text": "Πίνακας", "correct": true, "color": "#2196F3" },
+    { "text": "Διάγραμμα", "correct": true, "color": "#FF9800" },
+    { "text": "Ερωτηματολόγιο", "correct": true, "color": "#9C27B0" },
+    { "text": "Μέγεθος αρχείου", "correct": true, "color": "#00BCD4" },
+    { "text": "Υπολογιστικό φύλλο", "correct": true, "color": "#E91E63" },
+    { "text": "Ψυγείο", "correct": false, "color": "#F44336" },
+    { "text": "Μολύβι", "correct": false, "color": "#795548" },
+    { "text": "Πλυντήριο", "correct": false, "color": "#607D8B" },
+    { "text": "Φούρνος", "correct": false, "color": "#FF5722" }
+  ]
+}

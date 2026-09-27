@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Αποθηκεύω τη ζωγραφιά μου 💾</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #4fc3f7, #29b6f6, #0288d1);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(2,136,209,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #0288d1; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .canvas-area {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 24px; text-align: center; margin-bottom: 16px;
+    min-height: 240px;
+    position: relative;
+  }
+  .drawing-place {
+    width: 100%; height: 160px;
+    border: 3px dashed #b0bec5; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; margin-bottom: 16px;
+    background: #fafafa;
+    transition: border-color .3s;
+  }
+  .toolbar {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .tool-btn {
+    border: none; border-radius: 14px; padding: 10px 16px;
+    font-size: 1.3rem; cursor: pointer; font-family: inherit;
+    background: #f5f5f5; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    transition: transform .15s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .tool-btn:active { transform: scale(.9); }
+  .tool-btn.active { background: #e3f2fd; border: 2px solid #42a5f5; }
+  .timer-bar {
+    width: 100%; height: 12px; background: #e0e0e0;
+    border-radius: 10px; overflow: hidden; margin-bottom: 12px;
+  }
+  .timer-fill {
+    height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a);
+    border-radius: 10px; transition: width .3s linear;
+  }
+  .timer-fill.danger { background: linear-gradient(90deg, #f44336, #ff9800); }
+  .save-area {
+    margin-top: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .save-btn {
+    border: none; border-radius: 20px; padding: 16px 40px;
+    font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; box-shadow: 0 6px 20px rgba(67,233,123,.4);
+    transition: transform .15s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .save-btn:active { transform: scale(.95); }
+  .save-btn:disabled { opacity: .5; transform: none !important; cursor: default; }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #4fc3f7, #0288d1);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(2,136,209,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .drawing-place { font-size: 3rem; }
+    .save-btn { padding: 14px 30px; font-size: 1.2rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .toolbar > * { margin: 5px; }
+  .save-area > * + * { margin-top: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>💾 Αποθηκεύω τη ζωγραφιά μου!</h1>
+    <p>Πάτα Αποθήκευση πριν χαθεί!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ζωγραφιά 1/6</span>
+  </div>
+  <div class="instructions">
+    🎨 Ζωγράφισε κάτι όμορφο και μετά πάτα <strong>Αποθήκευση</strong> πριν τελειώσει ο χρόνος!
+  </div>
+  <div id="gameArea">
+    <div class="canvas-area">
+      <div class="drawing-place" id="drawingPlace">🌸</div>
+      <div class="toolbar">
+        <button class="tool-btn" data-color="🌸">🌸</button>
+        <button class="tool-btn" data-color="🌻">🌻</button>
+        <button class="tool-btn" data-color="⭐">⭐</button>
+        <button class="tool-btn" data-color="🌈">🌈</button>
+        <button class="tool-btn" data-color="🦋">🦋</button>
+        <button class="tool-btn" data-color="🐱">🐱</button>
+      </div>
+      <div class="timer-bar">
+        <div class="timer-fill" id="timerFill" style="width:100%"></div>
+      </div>
+      <div class="save-area">
+        <button class="save-btn" id="saveBtn" onclick="doSave()">💾 Αποθήκευση!</button>
+      </div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Αποθήκευσες όλες τις ζωγραφιές!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var drawings = [
+    { emoji: '🌸', label: 'λουλούδι' },
+    { emoji: '🌻', label: 'ήλιο' },
+    { emoji: '⭐', label: 'αστέρι' },
+    { emoji: '🌈', label: 'ουράνιο τόξο' },
+    { emoji: '🦋', label: 'πεταλούδα' },
+    { emoji: '🐱', label: 'γατούλα' }
+  ];
+  var shuffled = [];
+  var current = 0, score = 0, timer = null, timeLeft = 0, totalTime = 5;
+  var saved = false;
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffled = shuffle(drawings.slice());
+    current = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showDrawing();
+  }
+
+  function showDrawing() {
+    if (current >= shuffled.length) { showResult(); return; }
+    saved = false;
+    var d = shuffled[current];
+    document.getElementById('drawingPlace').textContent = d.emoji;
+    document.getElementById('roundDisplay').textContent = 'Ζωγραφιά ' + (current+1) + '/' + shuffled.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('saveBtn').disabled = false;
+    var tools = document.querySelectorAll('.tool-btn');
+    for (var i = 0; i < tools.length; i++) {
+      tools[i].onclick = function() {
+        document.getElementById('drawingPlace').textContent = this.getAttribute('data-color');
+      };
+    }
+    timeLeft = totalTime;
+    document.getElementById('timerFill').style.width = '100%';
+    document.getElementById('timerFill').classList.remove('danger');
+    if (timer) clearInterval(timer);
+    timer = setInterval(function() {
+      timeLeft -= 0.1;
+      var pct = (timeLeft / totalTime) * 100;
+      document.getElementById('timerFill').style.width = Math.max(0, pct) + '%';
+      if (pct < 30) document.getElementById('timerFill').classList.add('danger');
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        if (!saved) {
+          document.getElementById('saveBtn').disabled = true;
+          var fb = document.getElementById('feedback');
+          fb.className = 'feedback show false';
+          fb.textContent = '❌ Ωχ! Χάθηκε η ζωγραφιά! Την επόμενη φορά πάτα Αποθήκευση!';
+          setTimeout(function() { current++; showDrawing(); }, 1800);
+        }
+      }
+    }, 100);
+  }
+
+  function doSave() {
+    if (saved) return;
+    saved = true;
+    clearInterval(timer);
+    score++;
+    document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+    document.getElementById('saveBtn').disabled = true;
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback show true';
+    fb.textContent = '✅ Μπράβο! Αποθήκευσες το ' + shuffled[current].label + '!';
+    setTimeout(function() { current++; showDrawing(); }, 1200);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = shuffled.length;
+    var e, ti, m;
+    if (score === t) { e = '🏆'; ti = 'Τέλεια!'; m = 'Αποθήκευσες όλες τις ζωγραφιές σου!' }
+    else if (score >= t-2) { e = '🎉'; ti = 'Μπράβο!'; m = 'Σχεδόν όλες αποθηκεύτηκαν!' }
+    else if (score >= t/2) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά να αποθηκεύσεις περισσότερες!' }
+    else { e = '💪'; ti = 'Προσπάθησε ξανά!'; m = 'Να θυμάσαι: Αποθήκευση πριν κλείσεις!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Αποθήκευσες ' + score + ' από ' + t + ' ζωγραφιές! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

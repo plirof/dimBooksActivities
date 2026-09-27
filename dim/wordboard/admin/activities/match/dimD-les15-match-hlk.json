@@ -1,0 +1,40 @@
+{
+    "id": "dimD-les15-match-hlk",
+    "title": "Προστατεύομαι από διαδικτυακές επιθέσεις - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "Ιός (virus)",
+                "right": "Κακόβουλο λογισμικό"
+            },
+            {
+                "left": "Antivirus",
+                "right": "Προστασία από ιούς"
+            },
+            {
+                "left": "Firewall",
+                "right": "Τείχος προστασίας"
+            },
+            {
+                "left": "Pop-ups",
+                "right": "Αναδυόμενα παράθυρα"
+            },
+            {
+                "left": "Download",
+                "right": "Λήψη λογισμικού"
+            },
+            {
+                "left": "Backup",
+                "right": "Αντίγραφο ασφαλείας"
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les15",
+        "ασφάλεια"
+    ]
+}

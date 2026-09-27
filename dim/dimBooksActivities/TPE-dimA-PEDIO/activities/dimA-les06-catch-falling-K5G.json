@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: ScratchJr",
+  "subtitle": "Πιάσε λέξεις από το ScratchJr!",
+  "instructions": "Πιάσε μόνο λέξεις από το SCRATCHJR! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Ήρωας", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπαλόνι", "correct": false, "color": "#f44336"},
+    {"text": "Εντολή", "correct": true, "color": "#2196F3"},
+    {"text": "Κούνια", "correct": false, "color": "#FF9800"},
+    {"text": "Σκηνικό", "correct": true, "color": "#9C27B0"},
+    {"text": "Κούκλα", "correct": false, "color": "#E91E63"},
+    {"text": "Βήμα", "correct": true, "color": "#009688"},
+    {"text": "Σβούρα", "correct": false, "color": "#FFC107"},
+    {"text": "Πρόγραμμα", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

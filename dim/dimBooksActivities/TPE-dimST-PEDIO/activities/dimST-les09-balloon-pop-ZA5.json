@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ηχο-γράφημα",
+  "subtitle": "Σπάσε μόνο τα στοιχεία του αισθητήρα ήχου",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με τον αισθητήρα ήχου και το ηχο-γράφημα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Μικρόφωνο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ηχο-γράφημα",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ένταση ήχου",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Θόρυβος",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μπάσκετ",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Κουμπί Β",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Γεωγραφία",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Ηχείο",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Κολύμβηση",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

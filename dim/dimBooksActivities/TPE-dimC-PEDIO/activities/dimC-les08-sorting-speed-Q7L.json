@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Κατηγορίες",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας εντολών!",
+  "categories": [
+    {"id": "kitrini", "name": "Κίτρινη (Control)", "color": "#FFC107", "key": "ArrowLeft"},
+    {"id": "portokali", "name": "Πορτοκαλί (Wait Until)", "color": "#FF9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Επανάλαβε για πάντα", "category": "kitrini"},
+    {"text": "Αν συναντήσεις εμπόδιο", "category": "portokali"},
+    {"text": "Επανάλαβε 10 φορές", "category": "kitrini"},
+    {"text": "Wait Until", "category": "portokali"},
+    {"text": "Επανάλαβε", "category": "kitrini"},
+    {"text": "Αν αγγίξει όριο", "category": "portokali"},
+    {"text": "Αν ... τότε", "category": "kitrini"},
+    {"text": "Αν αγγίξει αντικείμενο", "category": "portokali"},
+    {"text": "Για πάντα", "category": "kitrini"},
+    {"text": "Αν ακουμπάει κάτι", "category": "portokali"}
+  ],
+  "duration": 30
+}

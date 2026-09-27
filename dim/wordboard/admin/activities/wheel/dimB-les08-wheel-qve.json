@@ -1,0 +1,24 @@
+{
+    "id": "dimB-les08-wheel-qve",
+    "title": "Γνωρίζω το micro:bit - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "micro:bit",
+            "φωτάκια",
+            "κουμπιά",
+            "μικρόφωνο",
+            "ηχείο",
+            "Κατά την έναρξη",
+            "Για πάντα",
+            "Λήψη"
+        ]
+    },
+    "tags": [
+        "dimB",
+        "les08",
+        "micro:bit"
+    ]
+}

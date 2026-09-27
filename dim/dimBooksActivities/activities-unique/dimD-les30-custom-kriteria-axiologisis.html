@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κριτήρια Αξιολόγησης</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 800px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.criterion-card {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 20px;
+border-left: 4px solid #667eea;
+}
+.criterion-icon {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+.criterion-name {
+font-weight: bold;
+color: #333;
+font-size: 1.2rem;
+margin-bottom: 10px;
+}
+.criterion-desc {
+color: #555;
+line-height: 1.6;
+margin-bottom: 15px;
+}
+.match-box {
+background: white;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 15px;
+}
+.match-label {
+font-weight: bold;
+color: #667eea;
+margin-bottom: 10px;
+}
+.match-options {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.match-btn {
+flex: 1;
+min-width: 120px;
+padding: 12px 15px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 0.95rem;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.match-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+border-color: #667eea;
+}
+.match-btn.selected {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .match-options > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Κριτήρια Αξιολόγησης</h1>
+<p class="subtitle">Συνδέστε το κριτήριο με την περιγραφή του</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/5</div>
+
+<div class="container">
+<div class="criterion-card">
+<div class="criterion-icon">👤</div>
+<div class="criterion-name">Πατρότητα (Authority)</div>
+<div class="criterion-desc">Ποιος έγραψε το περιεχόμενο;</div>
+<div class="match-box">
+<div class="match-label">Συνδέστε με την περιγραφή:</div>
+<div class="match-options">
+<button class="match-btn" onclick="selectMatch(1, 'a')">Α. Ημερομηνία δημοσίευσης</button>
+<button class="match-btn" onclick="selectMatch(1, 'b')">Β. Στοιχεία δημιουργού</button>
+<button class="match-btn" onclick="selectMatch(1, 'c')">Γ. Διαφορετικές απόψεις</button>
+</div>
+</div>
+</div>
+
+<div class="criterion-card">
+<div class="criterion-icon">📅</div>
+<div class="criterion-name">Επικαιρότητα (Recency)</div>
+<div class="criterion-desc">Πότε δημοσιεύτηκε;</div>
+<div class="match-box">
+<div class="match-label">Συνδέστε με την περιγραφή:</div>
+<div class="match-options">
+<button class="match-btn" onclick="selectMatch(2, 'a')">Α. Ημερομηνία δημοσίευσης</button>
+<button class="match-btn" onclick="selectMatch(2, 'b')">Β. Τεκμηρίωση</button>
+<button class="match-btn" onclick="selectMatch(2, 'c')">Γ. Ουδετεία κράτους</button>
+</div>
+</div>
+</div>
+
+<div class="criterion-card">
+<div class="criterion-icon">🎯</div>
+<div class="criterion-name">Ακρίβεια (Accuracy)</div>
+<div class="criterion-desc">Πόσο σωστά είναι τα δεδομένα;</div>
+<div class="match-box">
+<div class="match-label">Συνδέστε με την περιγραφή:</div>
+<div class="match-options">
+<button class="match-btn" onclick="selectMatch(3, 'a')">Α. Στοιχεία δημιουργού</button>
+<button class="match-btn" onclick="selectMatch(3, 'b')">Β. Τεκμηρίωση</button>
+<button class="match-btn" onclick="selectMatch(3, 'c')">Γ. Ουδετεία κράτους</button>
+</div>
+</div>
+</div>
+
+<div class="criterion-card">
+<div class="criterion-icon">⚖️</div>
+<div class="criterion-name">Αντικειμενικότητα (Objectivity)</div>
+<div class="criterion-desc">Παρουσίαση πολλαπλών απόψεων</div>
+<div class="match-box">
+<div class="match-label">Συνδέστε με την περιγραφή:</div>
+<div class="match-options">
+<button class="match-btn" onclick="selectMatch(4, 'a')">Α. Στοιχεία δημιουργού</button>
+<button class="match-btn" onclick="selectMatch(4, 'b')">Β. Τεκμηρίωση</button>
+<button class="match-btn" onclick="selectMatch(4, 'c')">Γ. Διαφορετικές απόψεις</button>
+</div>
+</div>
+</div>
+
+<div class="criterion-card">
+<div class="criterion-icon">🏛️</div>
+<div class="criterion-name">Αξιοπιστία (Credibility)</div>
+<div class="criterion-desc">Μπορώ να εμπιστευτώ την πηγή;</div>
+<div class="match-box">
+<div class="match-label">Συνδέστε με την περιγραφή:</div>
+<div class="match-options">
+<button class="match-btn" onclick="selectMatch(5, 'a')">Α. Ημερομηνία δημοσίευσης</button>
+<button class="match-btn" onclick="selectMatch(5, 'b')">Β. Τεκμηρίωση</button>
+<button class="match-btn" onclick="selectMatch(5, 'c')">Γ. Ουδετεία κράτους</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mascot">🔎</div>
+
+<script>
+const correctMatches = {
+1: 'b',
+2: 'a',
+3: 'b',
+4: 'c',
+5: 'b'
+};
+
+let selectedMatches = {};
+let score = 0;
+
+function selectMatch(criterion, option) {
+if (selectedMatches[criterion]) return;
+
+selectedMatches[criterion] = option;
+
+const card = document.querySelector(`.criterion-card:nth-child(${criterion})`);
+const buttons = card.querySelectorAll('.match-btn');
+buttons.forEach(btn => btn.classList.remove('selected'));
+event.target.classList.add('selected');
+
+if (option === correctMatches[criterion]) {
+score++;
+document.getElementById('score').textContent = score;
+card.style.borderColor = '#27ae60';
+card.style.background = 'rgba(39, 174, 96, 0.1)';
+} else {
+card.style.borderColor = '#e74c3c';
+card.style.background = 'rgba(231, 76, 60, 0.1)';
+}
+
+buttons.forEach(btn => {
+btn.disabled = true;
+if (btn.textContent.includes(correctMatches[criterion])) {
+btn.style.background = '#27ae60';
+btn.style.color = 'white';
+btn.style.borderColor = '#27ae60';
+}
+});
+}
+</script>
+</body>
+</html>

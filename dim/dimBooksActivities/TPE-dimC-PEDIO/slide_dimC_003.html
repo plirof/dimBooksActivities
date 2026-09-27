@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Οι υπολογιστές παίρνουν αποφάσεις - Πληροφορική Γ' Δημοτικού</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e8f8f0;
+            color: #333;
+            line-height: 1.6;
+        }
+        .slideshow-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .slide {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #27ae60;
+        }
+        .slide-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .slide-subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .example-box {
+            background-color: #e8f8f0;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .flow-diagram {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .flow-box {
+            display: inline-block;
+            padding: 15px;
+            background-color: #e8f8f0;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            margin: 0 10px;
+            text-align: center;
+            min-width: 150px;
+        }
+        .flow-arrow {
+            font-size: 2em;
+            color: #27ae60;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .computer-decision {
+            background-color: #fff;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .decision-title {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .scratch-intro {
+            background-color: #f0f8ff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .scratch-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .scratch-features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .scratch-feature {
+            text-align: center;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px;
+            width: 200px;
+        }
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .game-example {
+            background-color: #fff9e6;
+            border: 2px dashed #f39c12;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .game-title {
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .nav-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .nav-btn:hover {
+            background-color: #229954;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Slide 1: Introduction -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">3. Οι υπολογιστές παίρνουν αποφάσεις</h1>
+                <p class="slide-subtitle">Μάθημα 3ο - Πληροφορική Γ' Δημοτικού</p>
+            </div>
+            <div class="content">
+                <p>Θυμήσου την απόφαση που έπρεπε να πάρει ο Ήρωνας στο 1ο μάθημα:</p>
+                <div class="example-box">
+                    <p><strong>Αν βρέχει, τότε πάρε ομπρέλα</strong></p>
+                </div>
+                <p>Όπως οι άνθρωποι έτσι και οι υπολογιστές χρειάζεται να παίρνουν αποφάσεις καθώς εκτελούν τα προγράμματά τους.</p>
+                <p>Δες πώς μπορούμε να σχεδιάσουμε ένα διάγραμμα που να δείχνει πώς θα αποφασίσει ο Ήρωνας αν θα πάρει μαζί του ομπρέλα ή όχι προτού βγει έξω.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Flowcharts -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Διαγράμματα Ροής</h1>
+                <p class="slide-subtitle">Γραφική αναπαράσταση αποφάσεων</p>
+            </div>
+            <div class="content">
+                <div class="flow-diagram">
+                    <div class="flow-box">
+                        <p><strong>Έξω βρέχει;</strong></p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <p><strong>ΝΑΙ</strong></p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <p>Πάρε ομπρέλα</p>
+                    </div>
+                </div>
+                <p class="example-title">Πώς λειτουργεί το διάγραμμα:</p>
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li>• Ο υπολογιστής ελέγχει αν η συνθήκη είναι αληθής</li>
+                    <li>• Αν η απάντηση είναι "ΝΑΙ", εκτελεί την εντολή</li>
+                    <li>• Αν η απάντηση είναι "ΟΧΙ", δεν κάνει τίποτα ή εκτελεί άλλη εντολή</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Computer Decisions in Games -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Οι υπολογιστές στα ηλεκτρονικά παιχνίδια</h1>
+                <p class="slide-subtitle">Πώς παίρνουν αποφάσεις</p>
+            </div>
+            <div class="content">
+                <div class="computer-decision">
+                    <p class="decision-title">Κανόνες ενός παιχνιδιού:</p>
+                    <p>Ο ήρωας κερδίζει έναν πόντο κάθε φορά που αγγίζει (τρώει) ένα φρούτο.</p>
+                    <p>Ο ήρωας χάνει μια ζωή αν αγγίξει το φαντασματάκι.</p>
+                    <div class="flow-diagram" style="margin-top: 20px;">
+                        <div class="flow-box">
+                            <p>Άγγιξε φρούτο;</p>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">
+                            <p><strong>ΝΑΙ</strong></p>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">
+                            <p>Πρόσθεσε πόντο</p>
+                        </div>
+                    </div>
+                    <div class="flow-diagram" style="margin-top: 20px;">
+                        <div class="flow-box">
+                            <p>Άγγιξε φαντασματάκι;</p>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">
+                            <p><strong>ΝΑΙ</strong></p>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">
+                            <p>Αφαίρεσε ζωή</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Introduction to Scratch -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Γνωριμία με το Scratch</h1>
+                <p class="slide-subtitle">Το περιβάλλον προγραμματισμού</p>
+            </div>
+            <div class="content">
+                <div class="scratch-intro">
+                    <p class="scratch-title">Το Scratch είναι ένα περιβάλλον προγραμματισμού</p>
+                    <p>Στο Scratch μπορείς να προγραμματίζεις φτιάχνοντας ιστορίες, παιχνίδια, κινούμενα σχέδια και πολλά άλλα.</p>
+                    <div class="scratch-features">
+                        <div class="scratch-feature">
+                            <div class="feature-icon">🎮</div>
+                            <p><strong>Παιχνίδια</strong></p>
+                            <p>Φτιάξε τα δικά σου παιχνίδια</p>
+                        </div>
+                        <div class="scratch-feature">
+                            <div class="feature-icon">🎬</div>
+                            <p><strong>Κινούμενα σχέδια</strong></p>
+                            <p>Δημιούργησε κινούμενα σχέδια</p>
+                        </div>
+                        <div class="scratch-feature">
+                            <div class="feature-icon">🎨</div>
+                            <p><strong>Ιστορίες</strong></p>
+                            <p>Γράψε και εικονογράφησε ιστορίες</p>
+                        </div>
+                    </div>
+                    <p class="example-title">Βασικές έννοιες του Scratch:</p>
+                    <ul style="list-style-type: none; padding-left: 20px;">
+                        <li>• <strong>Αντικείμενα</strong> (μορφές/χαρακτήρες - sprites)</li>
+                        <li>• <strong>Εντολές</strong> (πλακίδια - blocks)</li>
+                        <li>• <strong>Προγράμματα</strong> (σενάρια - scripts)</li>
+                        <li>• <strong>Γεγονότα</strong> (συμβάντα - events)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: First Scratch Program -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Το πρώτο σου πρόγραμμα στο Scratch</h1>
+                <p class="slide-subtitle">Φτιάξε το πρώτο σου σενάριο</p>
+            </div>
+            <div class="content">
+                <div class="example-box">
+                    <p class="example-title">Φτιάξε το πρώτο σενάριο για τη γατούλα:</p>
+                    <p>1. Βρες την κίτρινη εντολή <span style="background-color: #ffff99; padding: 2px 5px; border-radius: 3px;">when green flag clicked</span> στην κατηγορία εντολών <strong>Events</strong></p>
+                    <p>2. Βρες τη μοβ εντολή <span style="background-color: #ccccff; padding: 2px 5px; border-radius: 3px;">say "Hello!" for 2 seconds</span> στην κατηγορία εντολών <strong>Looks</strong></p>
+                    <p>3. Συνδέσε τις δύο εντολές μεταξύ τους</p>
+                    <p>4. Δοκίμασε το σενάριο πατώντας πάνω στην πράσινη σημαία</p>
+                </div>
+                <div class="flow-diagram" style="margin-top: 20px;">
+                    <div class="flow-box">
+                        <p>Κλικ στην πράσινη σημαία</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <p>Γατούλα λέει "Hello!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Τι έμαθα σε αυτό το μάθημα</h1>
+                <p class="slide-subtitle">Βασικά σημεία</p>
+            </div>
+            <div class="content">
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li>• <strong>Ότι και οι υπολογιστές χρειάζεται να παίρνουν αποφάσεις.</strong></li>
+                    <li>• <strong>Πώς να σχεδιάζω ένα διάγραμμα</strong> για να αναπαριστώ γραφικά μία απόφαση.</li>
+                    <li>• <strong>Τι είναι το Scratch</strong> και πώς λειτουργεί.</li>
+                    <li>• <strong>Πώς να φτιάχνω ένα έργο</strong> στο περιβάλλον προγραμματισμού Scratch.</li>
+                    <li>• <strong>Να βάζω χαρακτήρες</strong> μέσα στο έργο μου και να τους προγραμματίζω με εντολές.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="font-size: 1.5em; color: #27ae60;">"Οι υπολογιστές εκτελούν εντολές και παίρνουν αποφάσεις βάσει συνθηκών - ΑΛΗΘΕΙΑ ή ΨΕΜΑΤΑ"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="changeSlide(-1)">Προηγούμενο</button>
+            <button class="nav-btn" onclick="changeSlide(1)">Επόμενο</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Πληροφορική Γ' Δημοτικού - Αλγοριθμική - Προγραμματισμός - Ρομποτική</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+        }
+        
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            }
+            showSlide(currentSlide);
+        }
+        
+        // Auto-advance slides every 30 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 30000);
+    </script>
+</body>
+</html>

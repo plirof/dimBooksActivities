@@ -1,0 +1,15 @@
+{
+  "title": "Βρες τον Ιό!",
+  "subtitle": "Κάνε κλικ στα σημάδια κακόβουλου λογισμικού",
+  "instructions": "Βρες τα σημάδια: pop-ups, μπάρες, αργός υπολογιστής",
+  "duration": 25,
+  "maxTargets": 3,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "⚠️ Pop-up!", "color": "#FFCDD2" },
+    { "label": "🦠 Ιός", "color": "#FFCDD2" },
+    { "label": "📊 Νέα μπάρα", "color": "#FFE0B2" },
+    { "label": "🐢 Αργός", "color": "#FFF9C4" },
+    { "label": "✅ Κανονικό", "color": "#C8E6C9" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Ηχο-γράφημα",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τα στοιχεία που σχετίζονται με τον ήχο και το micro:bit",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Μικρόφωνο", "correct": true, "color": "#4CAF50" },
+    { "text": "Ηχείο", "correct": true, "color": "#2196F3" },
+    { "text": "Γράφημα", "correct": true, "color": "#FF9800" },
+    { "text": "Ένταση", "correct": true, "color": "#9C27B0" },
+    { "text": "Θόρυβος", "correct": true, "color": "#00BCD4" },
+    { "text": "Μελωδία", "correct": true, "color": "#8BC34A" },
+    { "text": "Κουμπί Α", "correct": true, "color": "#FF5722" },
+    { "text": "Κουμπί Β", "correct": true, "color": "#3F51B5" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#f44336" },
+    { "text": "Κυκλοφορία", "correct": false, "color": "#795548" },
+    { "text": "Βιβλιοθήκη", "correct": false, "color": "#607D8B" },
+    { "text": "Κήπος", "correct": false, "color": "#E91E63" }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Άρθρο ή Σελίδα;",
+  "subtitle": "Ταξινόμησε κάθε χαρακτηριστικό",
+  "instructions": "Πάτα αριστερά για άρθρο, δεξιά για σελίδα",
+  "categories": [
+    {
+      "id": "article",
+      "name": "Άρθρο",
+      "color": "#2196F3",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "page",
+      "name": "Σελίδα",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Έχει ετικέτες", "category": "article" },
+    { "text": "Δεν έχει ετικέτες", "category": "page" },
+    { "text": "Σαν ημερολόγιο", "category": "article" },
+    { "text": "Σταθερές πληροφορίες", "category": "page" },
+    { "text": "Πιο πρόσφατα πρώτα", "category": "article" },
+    { "text": "Σαν σελίδα βιβλίου", "category": "page" },
+    { "text": "Προστίθεται καθημερινά", "category": "article" },
+    { "text": "Παράδειγμα: Επικοινωνία", "category": "page" },
+    { "text": "Πολλαπλές ετικέτες", "category": "article" },
+    { "text": "Πάντα ίδιες πληροφορίες", "category": "page" },
+    { "text": "Αναζήτηση με ετικέτα", "category": "article" },
+    { "text": "Δεν αλλάζει συχνά", "category": "page" }
+  ],
+  "duration": 45
+}

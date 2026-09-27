@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πληκτρολόγηση</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);min-height:100vh;padding:20px;overflow:hidden}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;height:80vh;display:flex;flex-direction:column}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#ff9a9e;font-size:1.1em}
+.game-area{flex:1;position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fff5f5 100%);border-radius:12px;border:2px solid #f0f0f0}
+.falling-item{position:absolute;font-size:1.4em;font-weight:700;color:#333;padding:8px 14px;background:#fff;border:2px solid #e0e0e0;border-radius:10px;transition:none;user-select:none}
+.falling-item.hit{background:#e8f5e9;border-color:#4CAF50;color:#2e7d32;animation:hitAnim .3s}
+.falling-item.missed{background:#ffebee;border-color:#f44336;color:#c62828}
+@keyframes hitAnim{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(0);opacity:0}}
+.input-area{margin-top:10px;display:flex;gap:10px;align-items:center}
+.input-field{flex:1;padding:12px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:1.2em;text-align:center;outline:none}
+.input-field:focus{border-color:#ff9a9e}
+.input-field:disabled{background:#f5f5f5}
+.game-over{display:none;text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#ff9a9e;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#ff9a9e,#fecfef);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#ff9a9e,#fecfef);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const items=data.items;
+const hasWords=items.some(it=>it.key&&it.key.length>1&&it.key!=='backspace');
+const speed=data.speed||2;
+const lives=data.lives||3;
+const spawnInterval=data.spawnInterval||2000;
+let score=0,remaining=lives,gameRunning=false,gameLoop=null,spawnLoop=null;
+let activeItems=[];
+let itemId=0;
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle||'Πλήκτρα Ζωής!')}</h2>
+<p>${esc(data.instructions||'Πληκτρολόγησε τα γράμματα/λέξεις πριν πέσουν κάτω!')}</p>
+<p>Ζωές: ${'❤️'.repeat(lives)}</p>
+<button class="start-btn" onclick="startGame()">▶ Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+score=0;remaining=lives;activeItems=[];gameRunning=true;itemId=0;
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Σκορ: <span id="score">0</span></div>
+<div class="stat" id="livesDisplay">Ζωές: ${'❤️'.repeat(remaining)}</div>
+</div>
+<div class="game-area" id="gameArea"></div>
+<div class="input-area">
+<input type="text" class="input-field" id="inputField" placeholder="Πληκτρολόγησε..." autocomplete="off">
+</div>
+`;
+const field=document.getElementById('inputField');
+field.addEventListener('keydown',handleKeydown);
+if(hasWords)field.addEventListener('input',handleInput);
+field.focus();
+gameLoop=setInterval(updatePositions,50);
+spawnLoop=setInterval(spawnItem,spawnInterval);
+spawnItem()
+};
+
+function spawnItem(){
+if(!gameRunning)return;
+const item=items[Math.floor(Math.random()*items.length)];
+const id=itemId++;
+const area=document.getElementById('gameArea');
+if(!area)return;
+const areaWidth=area.offsetWidth-80;
+const left=Math.floor(Math.random()*areaWidth)+10;
+const el=document.createElement('div');
+el.className='falling-item';
+el.id='item-'+id;
+el.textContent=item.text;
+el.dataset.key=item.key||item.text;
+el.dataset.id=id;
+el.style.left=left+'px';
+el.style.top='0px';
+area.appendChild(el);
+activeItems.push({id,el,y:0,key:item.key||item.text})
+}
+
+function updatePositions(){
+if(!gameRunning)return;
+const area=document.getElementById('gameArea');
+if(!area)return;
+const maxY=area.offsetHeight-20;
+for(let i=activeItems.length-1;i>=0;i--){
+const item=activeItems[i];
+item.y+=speed;
+item.el.style.top=item.y+'px';
+if(item.y>=maxY){
+item.el.classList.add('missed');
+setTimeout(()=>{if(item.el.parentNode)item.el.remove()},300);
+activeItems.splice(i,1);
+remaining--;
+updateLives();
+if(remaining<=0)endGame()
+}
+}
+}
+
+function matchAndRemove(key){
+for(let i=0;i<activeItems.length;i++){
+if(activeItems[i].key.toLowerCase()===key.toLowerCase()){
+const item=activeItems[i];
+item.el.classList.add('hit');
+setTimeout(()=>{if(item.el.parentNode)item.el.remove()},300);
+activeItems.splice(i,1);
+score++;
+document.getElementById('score').textContent=score;
+return true
+}
+}
+return false
+}
+
+function handleKeydown(e){
+if(e.key==='Backspace'){
+e.preventDefault();
+matchAndRemove('backspace');
+return
+}
+if(e.key===' '){
+e.preventDefault();
+matchAndRemove(' ');
+return
+}
+if(e.key.length!==1)return;
+if(!hasWords){
+e.preventDefault();
+matchAndRemove(e.key)
+}
+}
+
+function handleInput(e){
+if(!hasWords)return;
+const val=e.target.value;
+if(!val)return;
+const lower=val.toLowerCase();
+for(let i=0;i<activeItems.length;i++){
+if(activeItems[i].key.toLowerCase()===lower){
+const item=activeItems[i];
+item.el.classList.add('hit');
+setTimeout(()=>{if(item.el.parentNode)item.el.remove()},300);
+activeItems.splice(i,1);
+score++;
+document.getElementById('score').textContent=score;
+e.target.value='';
+return
+}
+}
+const partial=activeItems.some(a=>a.key.length>1&&a.key.toLowerCase().startsWith(lower));
+if(!partial)e.target.value=''
+}
+
+function updateLives(){
+document.getElementById('livesDisplay').innerHTML='Ζωές: '+(remaining>0?'❤️'.repeat(remaining):'💔')
+}
+
+function endGame(){
+gameRunning=false;
+clearInterval(gameLoop);clearInterval(spawnLoop);
+activeItems.forEach(a=>{if(a.el.parentNode)a.el.remove()});
+activeItems=[];
+let msg=score>=15?'Εξαιρετικά!':score>=10?'Μπράβο! Πολύ καλά!':score>=5?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Τέλος Παιχνιδιού!</h2>
+<div class="final-score">${score}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

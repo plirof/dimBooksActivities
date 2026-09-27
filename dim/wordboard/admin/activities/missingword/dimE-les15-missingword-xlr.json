@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les15-missingword-xlr",
+    "title": "Προσέχω ποια λογισμικά εγκαθιστώ - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το κακόβουλο λογισμικό ονομάζεται ___.",
+                "options": [
+                    "malware",
+                    "software",
+                    "hardware",
+                    "freeware"
+                ],
+                "correct": "malware"
+            },
+            {
+                "sentence": "Το ___ είναι πιο ασφαλές από το http.",
+                "options": [
+                    "https",
+                    "ftp",
+                    "www",
+                    "html"
+                ],
+                "correct": "https"
+            },
+            {
+                "sentence": "Η διεύθυνση μιας ιστοσελίδας ονομάζεται ___.",
+                "options": [
+                    "URL",
+                    "IP",
+                    "CPU",
+                    "RAM"
+                ],
+                "correct": "URL"
+            },
+            {
+                "sentence": "Το όνομα του ιστότοπου στη διεύθυνση είναι το ___.",
+                "options": [
+                    "domain",
+                    "path",
+                    "πρωτόκολλο",
+                    "κωδικός"
+                ],
+                "correct": "domain"
+            },
+            {
+                "sentence": "Πρέπει να ___ λογισμικά μόνο από αξιόπιστες πηγές.",
+                "options": [
+                    "εγκαθιστούμε",
+                    "διαγράφουμε",
+                    "αντιγράφουμε",
+                    "μετακινούμε"
+                ],
+                "correct": "εγκαθιστούμε"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les15",
+        "ασφάλεια"
+    ]
+}

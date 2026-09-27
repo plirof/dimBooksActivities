@@ -1,0 +1,23 @@
+{
+  "title": "Διάγραμμα Venn: Εργαλεία Τηλεκπαίδευσης",
+  "subtitle": "Τοποθέτησε κάθε στοιχείο στη σωστή περιοχή!",
+  "circleA": { "label": "Διαμοιρασμός", "color": "#4CAF50" },
+  "circleB": { "label": "Ασπροπίνακας", "color": "#2196F3" },
+  "zoneLabels": {
+    "A": "Μόνο Διαμοιρασμός",
+    "B": "Μόνο Ασπροπίνακας",
+    "AB": "Και τα δύο",
+    "none": "Κανένα"
+  },
+  "items": [
+    { "text": "Κουμπί share", "zone": "A" },
+    { "text": "Start a new whiteboard", "zone": "B" },
+    { "text": "Εργαλειοθήκη σχεδίασης", "zone": "AB" },
+    { "text": "Screen / Application", "zone": "A" },
+    { "text": "Αποθήκευση σχεδίων", "zone": "B" },
+    { "text": "Χρήση σχημάτων", "zone": "AB" },
+    { "text": "Stop sharing", "zone": "A" },
+    { "text": "Προσθήκη κειμένου σε κενό πίνακα", "zone": "B" },
+    { "text": "Ορατό από όλη την τάξη", "zone": "AB" }
+  ]
+}

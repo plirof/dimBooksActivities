@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Πόντοι vs Ζωές",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τι ΑΥΞΑΝΕΙ τους ΠΟΝΤΟΥΣ ή ΜΕΙΩΝΕΙ τις ΖΩΕΣ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Αγγίζω αστερία (+1)", "correct": true, "color": "#4CAF50"},
+    {"text": "Αγγίζω ψάρι (-1 ζωή)", "correct": true, "color": "#2196F3"},
+    {"text": "Περπατάω στον βυθό", "correct": false, "color": "#f44336"},
+    {"text": "Φωτογραφίζω αστερία", "correct": true, "color": "#9C27B0"},
+    {"text": "Αγγίζω τοξικό ψάρι", "correct": true, "color": "#009688"},
+    {"text": "Κολυμπάω αργά", "correct": false, "color": "#FF9800"},
+    {"text": "Σκοράρω πόντο", "correct": true, "color": "#E91E63"},
+    {"text": "Ακούω ήχο", "correct": false, "color": "#FFC107"},
+    {"text": "Χάνω ζωή", "correct": true, "color": "#795548"},
+    {"text": "Βλέπω τον βυθό", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Βρες τα Λάθη: Ζωγραφική",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σχεδιάσω", "error": false},
+        {"text": "χρησιμοποιώ", "error": true, "correct": "χρειάζομαι", "feedback": "Λέμε «χρειάζομαι» κάτι για να σχεδιάσω!"},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Επιλέγω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "εργαλείο", "error": false},
+        {"text": "καρέκλα", "error": true, "correct": "μολύβι", "feedback": "Το εργαλείο λέγεται μολύβι, όχι καρέκλα!"},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ζωγραφίσω.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στην", "error": false},
+        {"text": "ταμπλέτα", "error": false},
+        {"text": "χρησιμοποιώ", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κατσαβίδι", "error": true, "correct": "δείκτη", "feedback": "Χρησιμοποιώ τον δείκτη του χεριού μου, όχι κατσαβίδι!"},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάνω", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "και", "error": false},
+        {"text": "αφήνω", "error": true, "correct": "σέρνω", "feedback": "Κρατάω πατημένο και σέρνω το ποντίκι!"},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι.", "error": false}
+      ]
+    }
+  ]
+}

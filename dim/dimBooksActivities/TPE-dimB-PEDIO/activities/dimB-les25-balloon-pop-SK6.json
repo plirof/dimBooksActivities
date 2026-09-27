@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Στοιχεία e-me",
+  "subtitle": "Σπάσε μόνο στοιχεία της πλατφόρμας e-me",
+  "instruction": "Σπάσε μόνο ό,τι ανήκει στο περιβάλλον της e-me",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Κυψέλες", "correct": true, "color": "#4CAF50" },
+    { "text": "Πινέλο", "correct": false, "color": "#f44336" },
+    { "text": "Επαφές", "correct": true, "color": "#4CAF50" },
+    { "text": "Σβήστρα", "correct": false, "color": "#f44336" },
+    { "text": "Μηνύματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουκούτσι", "correct": false, "color": "#f44336" },
+    { "text": "Ειδοποιήσεις", "correct": true, "color": "#4CAF50" },
+    { "text": "Τροχαλία", "correct": false, "color": "#f44336" },
+    { "text": "Προφίλ", "correct": true, "color": "#4CAF50" },
+    { "text": "Βίδα", "correct": false, "color": "#f44336" }
+  ]
+}

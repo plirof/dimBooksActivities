@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συνθήκη Λήξης — Επανάλαβε ώσπου στο Scratch</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#dbeafe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#1e3a5f;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.question-card{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:18px;margin-bottom:14px}
+.q-title{text-align:center;font-weight:700;color:#1e3a5f;font-size:1em;margin-bottom:12px}
+.q-desc{text-align:center;font-size:.9em;color:#475569;margin-bottom:14px;line-height:1.5}
+.scratch-code{background:#1e293b;border-radius:12px;padding:14px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.85em;line-height:2;text-align:left}
+.scratch-code .kw{color:#93c5fd;font-weight:700}
+.scratch-code .act{color:#a78bfa}
+.scratch-code .slot{display:inline-block;min-width:140px;padding:2px 10px;border-radius:6px;background:#334155;text-align:center;cursor:pointer;transition:all .2s;border:2px dashed #64748b;font-size:.88em;color:#94a3b8}
+.scratch-code .slot:hover{border-color:#2563eb;background:#1e3a4f}
+.scratch-code .slot.filled{border-style:solid;border-color:#2563eb;color:#fff;background:#1e3a5f}
+.options-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.opt-btn{padding:10px 18px;background:#eff6ff;border:2px solid #93c5fd;border-radius:14px;cursor:pointer;font-size:.88em;transition:all .2s;font-weight:600;color:#1e3a5f;user-select:none}
+.opt-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(37,99,235,.15);border-color:#2563eb}
+.opt-btn.selected{background:#2563eb;color:#fff;border-color:#1e3a5f}
+.opt-btn:disabled{opacity:.4;pointer-events:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(30,58,95,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.scratch-code{font-size:.75em;padding:10px}.slot{min-width:100px;font-size:.8em}.opt-btn{font-size:.8em;padding:8px 12px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .options-row > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎯 Επανάλαβε ώσπου — Σωστή Συνθήκη;</h1>
+<p>Διάλεξε τη σωστή συνθήκη που θα σταματήσει την επανάληψη στο Scratch!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch, η εντολή <b>«Επανάλαβε ώσπου»</b> τρέχει όσο η συνθήκη είναι <b>ΨΕΥΔΗΣ</b> και σταματάει όταν γίνει <b>ΑΛΗΘΗΣ</b>. Π.χ. «Επανάλαβε ώσπου <b>αγγίξει το όριο</b>»</div>
+<div class="score-bar">Ερώτηση <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var questions=[
+{
+desc:'🐱 Η γάτα κινείται μέχρι να φτάσει στο όριο της σκηνής.',
+code:'Κινήσου 10 βήματα',
+answer:'Αγγίζει το όριο;',
+options:['Αγγίζει το όριο;','Έκανε 10 βήματα;','Η γάτα είναι κοντά;','Πέρασαν 5 δευτερόλεπτα;'],
+explanation:'Η γάτα πρέπει να ΣΤΑΜΑΤΗΣΕΙ όταν αγγίξει το όριο της σκηνής!'
+},
+{
+desc:'🎨 Το αντικείμενο αλλάζει χρώμα μέχρι να γίνει κόκκινο.',
+code:'Αλλαγή χρώματος κατά 25',
+answer:'Χρώμα = κόκκινο;',
+options:['Χρώμα = κόκκινο;','Αλλαγή χρώματος 3 φορές;','Το χρώμα είναι ωραίο;','Πέρασε 1 δευτερόλεπτο;'],
+explanation:'Η αλλαγή χρώματος σταματά όταν το χρώμα γίνει κόκκινο!'
+},
+{
+desc:'🔊 Ο ήχος παίζει δυνατότερα μέχρι να φτάσει στο μέγιστο.',
+code:'Αύξηση έντασης κατά 10',
+answer:'Ένταση = μέγιστη;',
+options:['Ένταση = μέγιστη;','Παίζεται ο ήχος 5 φορές;','Ο ήχος ακούγεται;','Πέρασαν 10 δευτερόλεπτα;'],
+explanation:'Η αύξηση σταματά όταν η ένταση φτάσει στο μέγιστο!'
+},
+{
+desc:'📏 Η γραμμή μεγαλώνει μέχρι να φτάσει μήκος 200.',
+code:'Αύξηση μήκους κατά 5',
+answer:'Μήκος >= 200;',
+options:['Μήκος >= 200;','Αυξήθηκε 10 φορές;','Η γραμμή φαίνεται μεγάλη;','Πέρασαν 3 δευτερόλεπτα;'],
+explanation:'Η αύξηση σταματά όταν το μήκος φτάσει ή ξεπεράσει το 200!'
+},
+{
+desc:'⭐ Το αστέρι περιστρέφεται μέχρι να κάνει έναν πλήρη κύκλο (360 μοίρες).',
+code:'Περιστροφή κατά 15 μοίρες',
+answer:'Γωνία >= 360;',
+options:['Γωνία >= 360;','Περιστράφηκε 5 φορές;','Το αστέρι φαίνεται ωραίο;','Πέρασε 1 λεπτό;'],
+explanation:'Η περιστροφή σταματά όταν συμπληρωθεί ένας πλήρης κύκλος (360 μοίρες)!'
+},
+{
+desc:'🏃 Ο χαρακτήρας πηδάει μέχρι να φτάσει ύψος 100.',
+code:'Αύξηση ύψους κατά 10',
+answer:'Ύψος >= 100;',
+options:['Ύψος >= 100;','Έκανε 5 πηδήματα;','Ο χαρακτήρας φαίνεται ψηλός;','Πέρασαν 2 δευτερόλεπτα;'],
+explanation:'Το πήδημα σταματά όταν το ύψος φτάσει ή ξεπεράσει το 100!'
+}
+];
+
+var currentRound=0;
+var score=0;
+var selectedOption=null;
+
+function renderRound(){
+var q=questions[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=questions.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('checkBtn').disabled=true;
+selectedOption=null;
+var area=document.getElementById('gameArea');
+var html='<div class="question-card">';
+html+='<div class="q-title">'+q.desc+'</div>';
+html+='<div class="scratch-code">';
+html+='<div><span class="kw">Επανάλαβε ώσπου</span> (<span class="slot" id="condSlot" onclick="clearSlot()">??? Συνθήκη ???</span>)</div>';
+html+='<div style="padding-left:20px"><span class="act">'+q.code+'</span></div>';
+html+='<div><span class="kw">Τέλος</span></div>';
+html+='</div>';
+html+='</div>';
+html+='<div style="text-align:center;font-size:.85em;color:#1e3a5f;font-weight:600;margin-bottom:8px">Ποια συνθήκη πρέπει να μπει στο κενό;</div>';
+var order=[];
+for(var i=0;i<q.options.length;i++)order.push(i);
+for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=order[i];order[i]=order[j];order[j]=tmp;}
+html+='<div class="options-row">';
+for(var v=0;v<order.length;v++){
+var oi=order[v];
+html+='<div class="opt-btn" onclick="selectOption(this,\''+q.options[oi]+'\')">'+q.options[oi]+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function selectOption(el,val){
+document.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected');});
+el.classList.add('selected');
+selectedOption=val;
+var slot=document.getElementById('condSlot');
+slot.textContent=val;
+slot.classList.add('filled');
+document.getElementById('checkBtn').disabled=false;
+}
+
+function clearSlot(){
+if(!selectedOption)return;
+selectedOption=null;
+var slot=document.getElementById('condSlot');
+slot.textContent='??? Συνθήκη ???';
+slot.classList.remove('filled');
+document.getElementById('checkBtn').disabled=true;
+document.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected');});
+}
+
+function checkAnswer(){
+var q=questions[currentRound];
+if(selectedOption===q.answer){
+score++;
+showFeedback('🎉 Σωστά! '+q.explanation,true);
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+document.querySelectorAll('.opt-btn').forEach(function(b){b.disabled=true;});
+setTimeout(function(){
+if(currentRound<questions.length-1){currentRound++;renderRound();}
+else showFinal();
+},2000);
+}else{
+showFeedback('❌ Λάθος! Σκέψου: ποια συνθήκη πρέπει να γίνει ΑΛΗΘΗΣ για να σταματήσει η επανάληψη;',false);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/questions.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Κατανοείς πλήρως τη συνθήκη λήξης στο «Επανάλαβε ώσπου»!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+questions.length+' σωστά!';
+else msg='💪 '+score+'/'+questions.length+' σωστά. Η επανάληψη σταματά όταν η συνθήκη γίνει ΑΛΗΘΗΣ!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#1e3a5f">'+msg+'</div>';
+document.getElementById('checkBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

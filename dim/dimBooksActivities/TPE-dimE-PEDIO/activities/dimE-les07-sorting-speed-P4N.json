@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υπόβαθρο ή Αντικείμενο",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα Αριστερά για Υπόβαθρο, Δεξιά για Αντικείμενο!",
+  "categories": [
+    {"id": "bg", "name": "Υπόβαθρο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "obj", "name": "Αντικείμενο", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Βυθός", "category": "bg"},
+    {"text": "Έλλη", "category": "obj"},
+    {"text": "Κέρδισες!", "category": "bg"},
+    {"text": "Αστερίας", "category": "obj"},
+    {"text": "Έχασες!", "category": "bg"},
+    {"text": "Φουσκωτό ψάρι", "category": "obj"},
+    {"text": "Σκηνικό νίκης", "category": "bg"},
+    {"text": "Ήρωας παιχνιδιού", "category": "obj"},
+    {"text": "Κατηγορία Όψεις", "category": "bg"},
+    {"text": "Εντολές κίνησης", "category": "obj"}
+  ],
+  "duration": 30
+}

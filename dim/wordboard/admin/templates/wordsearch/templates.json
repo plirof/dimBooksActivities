@@ -1,0 +1,76 @@
+{
+  "templates": [
+    {
+      "id": "wordsearch_animals_001",
+      "name": "Farm Animals",
+      "description": "Find common farm animal names",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["animals", "farm", "elementary"],
+      "words": ["COW", "PIG", "HORSE", "CHICKEN", "DUCK", "SHEEP", "GOAT", "RABBIT"]
+    },
+    {
+      "id": "wordsearch_animals_002",
+      "name": "Wild Animals",
+      "description": "Find names of wild animals",
+      "category": "wordsearch",
+      "difficulty": "medium",
+      "tags": ["animals", "wild", "nature"],
+      "words": ["LION", "TIGER", "ELEPHANT", "GIRAFFE", "ZEBRA", "MONKEY", "PANDA", "KANGAROO", "SNAKE", "EAGLE"]
+    },
+    {
+      "id": "wordsearch_ocean_001",
+      "name": "Ocean Animals",
+      "description": "Find sea and ocean creatures",
+      "category": "wordsearch",
+      "difficulty": "medium",
+      "tags": ["animals", "ocean", "sea life"],
+      "words": ["FISH", "WHALE", "SHARK", "DOLPHIN", "OCTOPUS", "CRAB", "JELLYFISH", "STARFISH", "TURTLE", "SEAL"]
+    },
+    {
+      "id": "wordsearch_geography_001",
+      "name": "Continents",
+      "description": "Find the names of the seven continents",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["geography", "continents", "world"],
+      "words": ["ASIA", "AFRICA", "EUROPE", "NORTH AMERICA", "SOUTH AMERICA", "AUSTRALIA", "ANTARCTICA"]
+    },
+    {
+      "id": "wordsearch_geography_002",
+      "name": "Countries",
+      "description": "Find popular country names",
+      "category": "wordsearch",
+      "difficulty": "medium",
+      "tags": ["geography", "countries", "world"],
+      "words": ["FRANCE", "JAPAN", "CANADA", "BRAZIL", "EGYPT", "AUSTRALIA", "ITALY", "SPAIN", "MEXICO", "INDIA"]
+    },
+    {
+      "id": "wordsearch_science_001",
+      "name": "Solar System",
+      "description": "Find planets and space terms",
+      "category": "wordsearch",
+      "difficulty": "medium",
+      "tags": ["science", "space", "solar system"],
+      "words": ["MERCURY", "VENUS", "EARTH", "MARS", "JUPITER", "SATURN", "URANUS", "NEPTUNE", "MOON", "STAR"]
+    },
+    {
+      "id": "wordsearch_science_002",
+      "name": "Weather Words",
+      "description": "Find weather and climate terms",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["science", "weather", "climate"],
+      "words": ["RAIN", "SNOW", "SUN", "CLOUD", "WIND", "STORM", "FOG", "RAINBOW", "TEMPEST", "THUNDER"]
+    },
+    {
+      "id": "wordsearch_plants_001",
+      "name": "Plant Parts",
+      "description": "Find parts of a plant",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["science", "plants", "biology"],
+      "words": ["ROOT", "STEM", "LEAF", "FLOWER", "SEED", "PETAL", "POLLEN", "FRUIT", "BRANCH", "TRUNK"]
+    }
+  ]
+}

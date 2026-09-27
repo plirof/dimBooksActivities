@@ -1,0 +1,55 @@
+{
+  "title": "Βρες τα Λάθη: e-me και ΠΣΔ",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "e-me", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "μαθητής", "error": false},
+        {"text": "διαγράφει", "error": true, "correct": "υποβάλλει", "feedback": "Ο μαθητής ΥΠΟΒΑΛΛΕΙ την εργασία, ΔΕΝ τη διαγράφει!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Schoolpress", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "youtube.com", "error": true, "correct": "schoolpress.sch.gr", "feedback": "Το Schoolpress βρίσκεται στο schoolpress.sch.gr!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "αναδρομική", "error": false},
+        {"text": "τηλεκπαίδευση", "error": false},
+        {"text": "απαιτεί", "error": false},
+        {"text": "ταυτόχρονη", "error": true, "correct": "δεν απαιτεί", "feedback": "Η αναδρομική τηλεκπαίδευση ΔΕΝ απαιτεί ταυτόχρονη παρουσία!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "δάσκαλος", "error": false},
+        {"text": "βλέπει", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "εργασίες", "error": false},
+        {"text": "και", "error": false},
+        {"text": "δίνει", "error": false},
+        {"text": "τιμωρία", "error": true, "correct": "ανατροφοδότηση", "feedback": "Ο δάσκαλος δίνει ΑΝΑΤΡΟΦΟΔΟΤΗΣΗ, όχι τιμωρία!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "e-me", "error": false},
+        {"text": "μπορούμε", "error": false},
+        {"text": "να", "error": false},
+        {"text": "υποβάλουμε", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "ΔΕΝ μόνο κείμενο! Μπορούμε να υποβάλουμε και εικόνες και αρχεία!"}
+      ]
+    }
+  ]
+}

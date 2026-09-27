@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταχύτητα Κίνησης — Ποιος Φτάνει Πρώτος;</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0f2fe,#7dd3fc);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:900px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#0c4a6e,#0284c7);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f0f9ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#0c4a6e;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.race-box{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:16px;margin-bottom:14px}
+.race-track{display:flex;flex-direction:column;gap:16px;margin-bottom:10px}
+.lane{display:flex;align-items:center;gap:10px}
+.lane-label{width:90px;font-size:.85em;font-weight:700;color:#334155;text-align:right;flex-shrink:0}
+.lane-road{flex:1;height:44px;background:linear-gradient(90deg,#334155,#475569);border-radius:8px;position:relative;overflow:hidden}
+.lane-road .road-dashes{position:absolute;top:50%;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,#fbbf24 0px,#fbbf24 12px,transparent 12px,transparent 22px);transform:translateY(-50%)}
+.lane-sprite{position:absolute;top:50%;transform:translateY(-50%);font-size:1.5em;left:4px}
+.config-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.config-row .cfg-label{font-size:.82em;font-weight:600;color:#475569;min-width:80px;text-align:right}
+.config-row .scratch-block{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:.82em;font-weight:600;color:#fff}
+.block-rep{background:#f59e0b}
+.block-step{background:#3b82f6}
+.prediction-area{display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.pred-btn{padding:12px 22px;border-radius:14px;border:3px solid #e2e8f0;background:#fff;cursor:pointer;font-size:.9em;font-weight:700;transition:all .2s;text-align:center;min-width:120px;user-select:none}
+.pred-btn:hover{border-color:#0284c7;background:#f0f9ff;transform:translateY(-2px)}
+.pred-btn.selected{border-color:#0284c7;background:#e0f2fe;color:#0c4a6e}
+.pred-btn:disabled{opacity:.5;cursor:not-allowed}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-go{background:linear-gradient(135deg,#0c4a6e,#0284c7);color:#fff}
+.btn-go:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(12,74,110,.4)}
+.btn-go:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.explanation{background:#f0f9ff;border-radius:12px;padding:12px;margin-top:8px;font-size:.85em;color:#0c4a6e;text-align:center;line-height:1.5;display:none}
+@media(max-width:600px){.lane-label{width:60px;font-size:.75em}.config-row .cfg-label{min-width:60px;font-size:.75em}.pred-btn{min-width:90px;font-size:.8em;padding:10px 14px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .race-track > * + * { margin-top: 16px; }
+  .lane > * + * { margin-left: 10px; }
+  .config-row > * { margin: 4px; }
+  .config-row .scratch-block > * + * { margin-left: 4px; }
+  .prediction-area > * { margin: 7px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🏁 Ταχύτητα Κίνησης: Ποιος Φτάνει Πρώτος;</h1>
+<p>Πρόβλεψε ποιος χαρακτήρας θα πάει πιο μακριά!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Σύνολο = βήμα × επαναλήψεις</b> — Όσο μεγαλύτερο το σύνολο, τόσο πιο μακριά πάει ο χαρακτήρας! Μπορείς να προβλέψεις τον νικητή;</div>
+<div class="score-bar">Αγώνας <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="explanation" id="explanation"></div>
+<div class="controls">
+<button class="btn btn-go" id="goBtn" onclick="startRace()" disabled>🏁 Αγώνας!</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var races=[
+{
+sprites:[
+{emoji:'🐱',name:'Γάτα',step:20,reps:10},
+{emoji:'🐶',name:'Σκύλος',step:50,reps:3}
+],
+answer:0,
+explanation:'Η Γάτα (20×10=200) έχει μικρότερο βήμα αλλά περισσότερες επαναλήψεις από τον Σκύλο (50×3=150). Οι πολλές επαναλήψεις κερδίζουν!'
+},
+{
+sprites:[
+{emoji:'🐰',name:'Λαγός',step:30,reps:8},
+{emoji:'🐢',name:'Χελώνα',step:15,reps:12}
+],
+answer:0,
+explanation:'Ο Λαγός (30×8=240) έχει μεγαλύτερο βήμα και αρκετές επαναλήψεις. Η Χελώνα (15×12=180) μένει πίσω παρόλο που έχει περισσότερες επαναλήψεις.'
+},
+{
+sprites:[
+{emoji:'🦊',name:'Αλεπού',step:40,reps:5},
+{emoji:'🐻',name:'Αρκούδα',step:25,reps:10}
+],
+answer:1,
+explanation:'Η Αρκούδα (25×10=250) έχει μικρότερο βήμα αλλά 10 επαναλήψεις! Η Αλεπού (40×5=200) έχει μεγάλο βήμα αλλά μόνο 5. Η υπομονή κερδίζει!'
+},
+{
+sprites:[
+{emoji:'🐸',name:'Βάτραχος',step:15,reps:15},
+{emoji:'🦋',name:'Πεταλούδα',step:30,reps:6}
+],
+answer:0,
+explanation:'Ο Βάτραχος (15×15=225) κάνει πολλά μικρά άλματα. Η Πεταλούδα (30×6=180) προηγείται σε κάθε άλμα αλλά σταματά νωρίς. Ο Βάτραχος κερδίζει!'
+},
+{
+sprites:[
+{emoji:'🐎',name:'Άλογο',step:50,reps:5},
+{emoji:'🦘',name:'Καγκουρό',step:40,reps:8}
+],
+answer:1,
+explanation:'Το Καγκουρό (40×8=320) κερδίζει το Άλογο (50×5=250)! Παρόλο που το Άλογο έχει μεγαλύτερο βήμα, το Καγκουρό έχει περισσότερες επαναλήψεις.'
+},
+{
+sprites:[
+{emoji:'🦅',name:'Αετός',step:80,reps:3},
+{emoji:'🐝',name:'Μέλισσα',step:25,reps:8}
+],
+answer:0,
+explanation:'Ο Αετός (80×3=240) έχει τεράστιο βήμα! Η Μέλισσα (25×8=200) τρέχει περισσότερη ώρα αλλά το τεράστιο βήμα του Αετού κερδίζει!'
+}
+];
+
+var currentRound=0;
+var score=0;
+var prediction=-1;
+var racing=false;
+
+function renderRound(){
+var r=races[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=races.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('explanation').style.display='none';
+document.getElementById('goBtn').disabled=true;
+prediction=-1;
+racing=false;
+var area=document.getElementById('gameArea');
+var html='<div class="race-box">';
+var maxTotal=0;
+for(var i=0;i<r.sprites.length;i++){
+var t=r.sprites[i].step*r.sprites[i].reps;
+if(t>maxTotal)maxTotal=t;
+}
+html+='<div style="text-align:center;font-size:.9em;font-weight:700;color:#0c4a6e;margin-bottom:12px">🏁 Ποιος θα πάει πιο μακριά; — Πρόβλεψε τον νικητή!</div>';
+html+='<div class="race-track">';
+for(var i=0;i<r.sprites.length;i++){
+var s=r.sprites[i];
+html+='<div class="lane">';
+html+='<div class="lane-label">'+s.emoji+' '+s.name+'</div>';
+html+='<div class="lane-road" id="road'+i+'"><div class="road-dashes"></div><span class="lane-sprite" id="sprite'+i+'" style="left:4px">'+s.emoji+'</span></div>';
+html+='</div>';
+}
+html+='</div>';
+for(var i=0;i<r.sprites.length;i++){
+var s=r.sprites[i];
+html+='<div class="config-row">';
+html+='<span class="cfg-label">'+s.emoji+' '+s.name+':</span>';
+html+='<span class="scratch-block block-rep">Επανάλαβε '+s.reps+' φορές</span>';
+html+='<span class="scratch-block block-step">Κινήσου '+s.step+' βήματα</span>';
+html+='<span style="font-size:.8em;color:#64748b">= '+s.step+'×'+s.reps+' = '+(s.reps*s.step)+' σύνολο</span>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="prediction-area">';
+for(var i=0;i<r.sprites.length;i++){
+var s=r.sprites[i];
+html+='<div class="pred-btn" id="pred'+i+'" onclick="makePrediction('+i+')">'+s.emoji+' '+s.name+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function makePrediction(idx){
+if(racing)return;
+prediction=idx;
+var btns=document.querySelectorAll('.pred-btn');
+for(var i=0;i<btns.length;i++)btns[i].classList.remove('selected');
+document.getElementById('pred'+idx).classList.add('selected');
+document.getElementById('goBtn').disabled=false;
+}
+
+function startRace(){
+if(prediction<0||racing)return;
+racing=true;
+document.getElementById('goBtn').disabled=true;
+var btns=document.querySelectorAll('.pred-btn');
+for(var i=0;i<btns.length;i++)btns[i].disabled=true;
+var r=races[currentRound];
+var maxTotal=0;
+for(var i=0;i<r.sprites.length;i++){
+var t=r.sprites[i].step*r.sprites[i].reps;
+if(t>maxTotal)maxTotal=t;
+}
+var roadEl=document.getElementById('road0');
+var roadWidth=roadEl?roadEl.offsetWidth-20:400;
+var scale=roadWidth*0.85/maxTotal;
+var positions=[];
+var hopCounts=[];
+for(var i=0;i<r.sprites.length;i++){
+positions.push(4);
+hopCounts.push(0);
+document.getElementById('sprite'+i).style.left='4px';
+}
+var hopInterval=setInterval(function(){
+var anyMoved=false;
+for(var i=0;i<r.sprites.length;i++){
+if(hopCounts[i]<r.sprites[i].reps){
+positions[i]+=r.sprites[i].step*scale;
+hopCounts[i]++;
+document.getElementById('sprite'+i).style.left=positions[i]+'px';
+anyMoved=true;
+}
+}
+if(!anyMoved){
+clearInterval(hopInterval);
+var winnerIdx=0;
+var maxPos=positions[0];
+for(var i=1;i<positions.length;i++){
+if(positions[i]>maxPos){maxPos=positions[i];winnerIdx=i;}
+}
+var correct=prediction===winnerIdx;
+if(correct){
+score++;
+showFeedback('🎉 Σωστό! '+r.sprites[winnerIdx].emoji+' '+r.sprites[winnerIdx].name+' πήγε πιο μακριά με '+r.sprites[winnerIdx].step+'×'+r.sprites[winnerIdx].reps+'='+(r.sprites[winnerIdx].step*r.sprites[winnerIdx].reps)+'!',true);
+document.getElementById('scoreStr').textContent=score;
+}else{
+showFeedback('❌ Λάθος! Νικητής είναι '+r.sprites[winnerIdx].emoji+' '+r.sprites[winnerIdx].name+' ('+r.sprites[winnerIdx].step+'×'+r.sprites[winnerIdx].reps+'='+(r.sprites[winnerIdx].step*r.sprites[winnerIdx].reps)+')',false);
+}
+for(var i=0;i<r.sprites.length;i++){
+document.getElementById('sprite'+i).style.transition='all .3s';
+}
+document.getElementById('sprite'+winnerIdx).style.transform='scale(1.3)';
+var expl=document.getElementById('explanation');
+expl.textContent='💡 '+r.explanation;
+expl.style.display='block';
+setTimeout(function(){
+if(currentRound<races.length-1){currentRound++;renderRound();}
+else showFinal();
+},4000);
+}
+},280);
+}
+
+function showFinal(){
+var pct=Math.round(score/races.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Κατανοείς πλήρως πώς το βήμα και οι επαναλήψεις καθορίζουν την απόσταση!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+races.length+' σωστά!';
+else msg='💪 '+score+'/'+races.length+' σωστά. Θυμήσου: σύνολο = βήμα × επαναλήψεις!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#0c4a6e">'+msg+'</div>';
+document.getElementById('goBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

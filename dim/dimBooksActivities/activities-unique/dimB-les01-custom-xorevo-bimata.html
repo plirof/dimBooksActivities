@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Χορεύω με Επανάληψη 💃</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    padding: 12px;
+    color: #333;
+    touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f);
+    border-radius: 20px; color: #7a3b2e;
+    box-shadow: 0 6px 20px rgba(252,182,159,.4);
+    margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; }
+  .header p { font-size: .9rem; opacity: .85; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #f5576c; }
+  .level { font-size: 1rem; color: #888; }
+  .dance-area {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 20px; margin-bottom: 14px;
+    text-align: center; min-height: 180px;
+    position: relative;
+  }
+  .dancer { font-size: 5rem; line-height: 1; margin-bottom: 6px; transition: transform .3s; }
+  .dancer.dancing {
+    animation: spin 1.2s ease-in-out;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-10deg) scale(1.1); }
+    50% { transform: rotate(10deg) scale(1.15); }
+    75% { transform: rotate(-5deg) scale(1.05); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+  .dance-steps {
+    font-size: .95rem; color: #666; margin: 8px 0;
+    line-height: 1.6;
+  }
+  .dance-steps strong { color: #f5576c; }
+  .btn-dance {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: #fff; border: none; border-radius: 20px;
+    padding: 14px 32px; font-size: 1.3rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(245,87,108,.35);
+    transition: transform .15s;
+    margin-top: 8px;
+  }
+  .btn-dance:active { transform: scale(.95); }
+  .btn-dance:disabled { opacity: .5; pointer-events: none; }
+  .repeat-control {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    padding: 16px; margin-bottom: 14px;
+    text-align: center;
+  }
+  .repeat-control label { font-size: 1rem; font-weight: 700; color: #555; display: block; margin-bottom: 8px; }
+  .repeat-buttons {
+    display: flex; gap: 10px; justify-content: center;
+  }
+  .rep-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 3px solid #e8e8e8; background: #fff;
+    font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    transition: all .2s; font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rep-btn:active { transform: scale(.92); }
+  .rep-btn.selected { border-color: #f5576c; background: #fce4ec; color: #f5576c; }
+  .blocks-area {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    padding: 16px; margin-bottom: 14px;
+  }
+  .blocks-area h3 { font-size: 1rem; color: #888; margin-bottom: 8px; }
+  .block-row {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .cmd-block {
+    background: #fff3e0; border: 2px solid #ffcc80;
+    border-radius: 12px; padding: 8px 14px;
+    font-size: .9rem; font-weight: 600; color: #e65100;
+  }
+  .repeat-block {
+    background: #fce4ec; border: 2px solid #f48fb1;
+    border-radius: 14px; padding: 10px 16px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 700; color: #c2185b;
+  }
+  .repeat-block .rep-count {
+    background: #f5576c; color: #fff; border-radius: 50%;
+    width: 30px; height: 30px; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: .9rem;
+  }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.yay { background: #d4edda; color: #155724; }
+  .feedback.nay { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #f093fb, #f5576c); color: #fff;
+    border: none; border-radius: 16px; padding: 14px 36px;
+    font-size: 1.2rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 14px rgba(245,87,108,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:active { transform: scale(.95); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .dancer { font-size: 4rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .repeat-buttons > * + * { margin-left: 10px; }
+  .block-row > * { margin: 4px; }
+  .repeat-block > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>💃 Χορεύω με Επανάληψη</h1>
+    <p>Διάλεξε πόσες φορές θα χορέψουμε!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="level" id="levelDisplay">1/6</span>
+  </div>
+
+  <div id="gameArea">
+    <div class="dance-area">
+      <div class="dancer" id="dancerEmoji">💃</div>
+      <div class="dance-steps" id="danceSteps">
+        <strong>Βήματα:</strong> ⬅️ Αριστερά · ➡️ Δεξιά · 🙌 Χέρια ψηλά · 👏 Παλαμάκια
+      </div>
+      <button class="btn-dance" id="btnDance" onclick="doDance()">🎵 Χόρεψε!</button>
+    </div>
+
+    <div class="repeat-control">
+      <label>🔁 Πόσες φορές να επαναλάβουμε τα βήματα;</label>
+      <div class="repeat-buttons" id="repeatButtons">
+        <button class="rep-btn" data-val="1">1</button>
+        <button class="rep-btn" data-val="2">2</button>
+        <button class="rep-btn" data-val="3">3</button>
+        <button class="rep-btn" data-val="4">4</button>
+        <button class="rep-btn" data-val="5">5</button>
+      </div>
+    </div>
+
+    <div class="blocks-area">
+      <h3>📦 Το πρόγραμμα του χορού:</h3>
+      <div class="block-row">
+        <span class="repeat-block">
+          🔁 Επανάλαβε <span class="rep-count" id="repCountDisplay">2</span> φορές
+        </span>
+        <span class="cmd-block">⬅️ Αριστερά</span>
+        <span class="cmd-block">➡️ Δεξιά</span>
+        <span class="cmd-block">🙌 Χέρια ψηλά</span>
+        <span class="cmd-block">👏 Παλαμάκια</span>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+
+<script>
+  var levels = [
+    { steps: '⬅️ Αριστερά · ➡️ Δεξιά', correct: 2 },
+    { steps: '🙌 Χέρια ψηλά · 👏 Παλαμάκια', correct: 3 },
+    { steps: '⬅️ Αριστερά · ➡️ Δεξιά · 🙌 Χέρια ψηλά', correct: 4 },
+    { steps: '👏 Παλαμάκια · ⬅️ Αριστερά · ➡️ Δεξιά · 👏 Παλαμάκια', correct: 2 },
+    { steps: '🙌 Χέρια ψηλά · ⬅️ Αριστερά · ➡️ Δεξιά · 🙌 Χέρια ψηλά', correct: 3 },
+    { steps: '⬅️ Αριστερά · ➡️ Δεξιά · 🙌 Χέρια ψηλά · 👏 Παλαμάκια · ⬅️ Αριστερά', correct: 4 }
+  ];
+
+  var currentLevel = 0;
+  var score = 0;
+  var selectedRepeat = 2;
+  var completed = false;
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffle(levels);
+    currentLevel = 0;
+    score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnDance').disabled = false;
+    completed = false;
+    setupRepeatButtons();
+    loadLevel();
+  }
+
+  function setupRepeatButtons() {
+    var btns = document.querySelectorAll('.rep-btn');
+    for (var i = 0; i < btns.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() {
+          for (var j = 0; j < btns.length; j++) btns[j].classList.remove('selected');
+          btn.classList.add('selected');
+          selectedRepeat = parseInt(btn.getAttribute('data-val'));
+          document.getElementById('repCountDisplay').textContent = selectedRepeat;
+          document.getElementById('feedback').className = 'feedback';
+          document.getElementById('feedback').style.display = 'none';
+          completed = false;
+          document.getElementById('btnDance').disabled = false;
+        });
+      })(btns[i]);
+    }
+    btns[1].classList.add('selected');
+    selectedRepeat = 2;
+    document.getElementById('repCountDisplay').textContent = 2;
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) {
+      showResult();
+      return;
+    }
+    var lv = levels[currentLevel];
+    document.getElementById('levelDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('danceSteps').innerHTML = '<strong>Βήματα:</strong> ' + lv.steps;
+    document.getElementById('dancerEmoji').textContent = '💃';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnDance').disabled = false;
+    completed = false;
+  }
+
+  function doDance() {
+    if (completed) return;
+    var lv = levels[currentLevel];
+    var fb = document.getElementById('feedback');
+    document.getElementById('btnDance').disabled = true;
+
+    var dancer = document.getElementById('dancerEmoji');
+    dancer.classList.remove('dancing');
+    void dancer.offsetWidth;
+    dancer.classList.add('dancing');
+
+    var correct = (selectedRepeat === lv.correct);
+
+    setTimeout(function() {
+      if (correct) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        fb.className = 'feedback show yay';
+        fb.textContent = '✅ Μπράβο! ' + selectedRepeat + ' φορές είναι σωστά! Χόρεψες υπέροχα!';
+      } else {
+        fb.className = 'feedback show nay';
+        fb.textContent = '❌ Δεν ήταν ' + selectedRepeat + ' φορές! Δοκίμασε ' + lv.correct + ' φορές!';
+        setTimeout(function() {
+          document.getElementById('btnDance').disabled = false;
+          dancer.classList.remove('dancing');
+          fb.className = 'feedback';
+          fb.style.display = 'none';
+        }, 1500);
+        return;
+      }
+
+      completed = true;
+      setTimeout(function() {
+        currentLevel++;
+        loadLevel();
+      }, 1800);
+    }, 1200);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var pct = score / total;
+    var emoji, title, msg;
+    if (pct === 1) {
+      emoji = '🏆'; title = 'Τέλεια Χορεύτρια!';
+      msg = 'Βρήκες όλες τις επαναλήψεις! Είσαι αστέρι!';
+    } else if (pct >= 0.75) {
+      emoji = '🎉'; title = 'Μπράβο!';
+      msg = 'Χόρεψες υπέροχα!';
+    } else if (pct >= 0.5) {
+      emoji = '👍'; title = 'Ωραία!';
+      msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!';
+    } else {
+      emoji = '💪'; title = 'Καλή αρχή!';
+      msg = 'Προσπάθησε ξανά! Θα γίνεις σούπερ!';
+    }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

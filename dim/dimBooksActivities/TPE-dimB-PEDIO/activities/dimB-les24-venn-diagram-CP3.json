@@ -1,0 +1,24 @@
+{
+  "title": "Διάγραμμα Venn: TuxPaint ή Κειμενογράφος;",
+  "subtitle": "Πού ανήκει το κάθε εργαλείο;",
+  "circleA": {
+    "label": "TuxPaint (Ζωγραφική)",
+    "color": "#2196F3"
+  },
+  "circleB": {
+    "label": "Κειμενογράφος",
+    "color": "#f44336"
+  },
+  "items": [
+    { "text": "Πινέλο", "zone": "A" },
+    { "text": "Enter (παράγραφος)", "zone": "B" },
+    { "text": "Αποθήκευση", "zone": "AB" },
+    { "text": "Σβήστρα", "zone": "A" },
+    { "text": "Γραμματική", "zone": "B" },
+    { "text": "Χρώματα", "zone": "A" },
+    { "text": "Τόνος λέξεων", "zone": "B" },
+    { "text": "Εκτύπωση", "zone": "AB" },
+    { "text": "Σχήματα", "zone": "A" },
+    { "text": "Διαγραφή", "zone": "AB" }
+  ]
+}

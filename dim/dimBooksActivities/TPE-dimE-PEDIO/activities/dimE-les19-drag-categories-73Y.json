@@ -1,0 +1,48 @@
+{
+  "title": "Τύποι διαγραμμάτων",
+  "subtitle": "Ταίριαξε κάθε περίπτωση στο σωστό διάγραμμα",
+  "categories": [
+    {
+      "id": "bar",
+      "name": "ΡΑΒΔΟΓΡΑΜΜΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "pie",
+      "name": "ΚΥΚΛΙΚΟ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Σύγκριση τιμών",
+      "category": "bar"
+    },
+    {
+      "id": "item2",
+      "text": "Αναλογία τοις εκατό",
+      "category": "pie"
+    },
+    {
+      "id": "item3",
+      "text": "Κατηγορίες",
+      "category": "bar"
+    },
+    {
+      "id": "item4",
+      "text": "Μέρη του συνόλου",
+      "category": "pie"
+    },
+    {
+      "id": "item5",
+      "text": "Ύψος παιδιών",
+      "category": "bar"
+    },
+    {
+      "id": "item6",
+      "text": "Αγαπημένα φρούτα %",
+      "category": "pie"
+    }
+  ]
+}

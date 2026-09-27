@@ -1,0 +1,33 @@
+/* presentation.css — shared styles for all TPE-dim lesson presentations.
+   Loaded by every lessonNN.html via:
+   <link rel="stylesheet" href="../../tts/scripts/presentation.css">
+   Do NOT inline these in lesson files. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; background: #00598a; }
+.slide { display: none; width: 100vw; height: 100vh; padding: 6vmin; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; }
+.slide.active { display: flex; }
+.slide h1 { font-size: clamp(18px, 5vmin, 18px); color: #fff; margin-bottom: 2vmin; }
+.slide h2 { font-size: clamp(22px, 4vmin, 40px); color: #ea922c; margin-bottom: 2vmin; }
+.slide p { font-size: clamp(20px, 3.5vmin, 36px); line-height: 1.5; max-width: 80vw; }
+.slide .steps { display: flex; flex-wrap: wrap; gap: 2vmin; justify-content: center; margin-top: 3vmin; }
+.slide .step { background: rgba(255,255,255,0.12); border-radius: 2vmin; padding: 2.5vmin 3vmin; font-size: clamp(18px, 3vmin, 32px); min-width: 20vmin; }
+.slide .step .num { color: #ea922c; font-weight: bold; font-size: 1.3em; }
+.slide ul { text-align: left; font-size: clamp(18px, 3vmin, 32px); line-height: 1.8; list-style: none; }
+.slide ul li::before { content: "● "; color: #ea922c; }
+.slide .concept-text { font-size: clamp(22px, 4vmin, 40px); font-style: italic; color: #ea922c; max-width: 75vw; line-height: 1.5; }
+.slide .check { font-size: clamp(22px, 4vmin, 40px); color: #ea922c; margin-top: 3vmin; }
+.slide .end { color: #ea922c; margin-top: 4vmin; font-size: clamp(20px, 3.5vmin, 36px); }
+.slide .sub { font-size: clamp(18px, 3vmin, 32px); color: #ea922c; margin-top: -1vmin; margin-bottom: 2vmin; }
+.fade { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+#controls { position: fixed; bottom: 3vmin; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 3vmin; z-index: 100; }
+#controls button { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); color: #fff; font-size: clamp(20px, 3vmin, 32px); padding: 1.2vmin 2.5vmin; border-radius: 1.5vmin; cursor: pointer; min-width: 10vmin; transition: background 0.2s; }
+#controls button:hover { background: rgba(255,255,255,0.3); }
+#controls button:disabled { opacity: 0.3; cursor: default; }
+#counter { color: #fff; font-size: clamp(16px, 2.5vmin, 28px); min-width: 8vmin; text-align: center; font-variant-numeric: tabular-nums; }
+#dots { position: fixed; bottom: 11vmin; left: 0; right: 0; display: flex; justify-content: center; gap: 1.5vmin; z-index: 100; }
+.dot { width: clamp(8px, 1.2vmin, 14px); height: clamp(8px, 1.2vmin, 14px); border-radius: 50%; background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: background 0.2s; }
+.dot.active { background: #ea922c; }
+#speedBadge { position: fixed; top: 2vmin; right: 2vmin; background: rgba(0,0,0,0.5); color: #fff; padding: 1vmin 2vmin; border-radius: 1vmin; font-size: clamp(14px, 2vmin, 22px); z-index: 300; display: none; }
+#speedBadge.show { display: block; }

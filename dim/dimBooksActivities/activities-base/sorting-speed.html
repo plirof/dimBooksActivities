@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταχύτατη Ταξινόμηση</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#333;margin-bottom:5px;font-size:1.8em}
+h2{text-align:center;color:#666;margin-bottom:15px;font-size:1.1em;font-weight:400}
+.instructions{text-align:center;color:#888;margin-bottom:20px;font-size:0.95em;line-height:1.5}
+.timer-bar{width:100%;height:12px;background:#eee;border-radius:6px;margin-bottom:15px;overflow:hidden}
+.timer-fill{height:100%;background:linear-gradient(90deg,#fa709a,#fee140);border-radius:6px;transition:width 0.1s linear;width:100%}
+.item-display{font-size:3em;text-align:center;margin:30px 0;min-height:80px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;transition:all 0.2s}
+.item-display.flash-correct{background:#e8f5e9;border-radius:12px;color:#4CAF50}
+.item-display.flash-wrong{background:#ffebee;border-radius:12px;color:#f44336}
+.cat-buttons{display:flex;gap:15px;margin:20px 0}
+.cat-btn{flex:1;padding:20px;font-size:1.3em;border:3px solid #ddd;border-radius:15px;cursor:pointer;font-weight:bold;transition:all 0.2s;background:#fff}
+.cat-btn:hover{transform:scale(1.03)}
+.cat-btn:active{transform:scale(0.97)}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px}
+.score-text{font-size:1.2em;font-weight:bold;color:#333}
+.timer-text{font-size:1em;color:#666}
+.result-text{text-align:center;font-size:1.2em;margin:10px 0;min-height:30px;font-weight:bold}
+.btn{display:block;margin:10px auto;padding:12px 40px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#fa709a,#fee140);color:#fff;font-weight:bold;transition:transform 0.1s}
+.btn:hover{transform:scale(1.05)}
+.start-screen{text-align:center}
+.end-screen{text-align:center;display:none}
+.game-screen{display:none}
+.final-score{font-size:3em;color:#fa709a;margin:15px 0}
+.stats{margin:15px auto;max-width:300px;text-align:left}
+.stats div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #eee;font-size:1em}
+.stats .label{color:#666}
+.stats .value{font-weight:bold;color:#333}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div class="start-screen" id="startScreen">
+<h1 id="gameTitle"></h1>
+<h2 id="gameSubtitle"></h2>
+<p class="instructions" id="gameInstructions"></p>
+<button class="btn" id="startBtn">Έναρξη!</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="hud">
+<span class="score-text">Σκορ: <span id="scoreVal">0</span>/<span id="totalVal">0</span></span>
+<span class="timer-text">Χρόνος: <span id="timerVal">30</span>δ</span>
+</div>
+<div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+<div class="item-display" id="itemDisplay">—</div>
+<div class="result-text" id="resultText"></div>
+<div class="cat-buttons" id="catButtons"></div>
+</div>
+<div class="end-screen" id="endScreen">
+<h1>Τέλος Χρόνου!</h1>
+<div class="final-score" id="finalScore"></div>
+<div class="stats" id="stats"></div>
+<button class="btn" id="restartBtn">Ξαναπάιξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);const dataFile=params.get('data');
+let G=null,score=0,total=0,timeLeft=0,timerInterval=null,itemQueue=[],currentItem=null,waiting=false;
+function loadJSON(file){
+fetch(file).then(r=>r.json()).then(data=>{
+G=data;
+document.getElementById('gameTitle').textContent=G.title;
+document.getElementById('gameSubtitle').textContent=G.subtitle;
+document.getElementById('gameInstructions').textContent=G.instructions;
+}).catch(()=>{G=null;document.getElementById('gameTitle').textContent='Ταχύτατη Ταξινόμηση!';document.getElementById('gameSubtitle').textContent='Βάλε στη σωστή κατηγορία!';document.getElementById('gameInstructions').textContent='Σφάλμα φόρτωσης.'})
+}
+if(dataFile)loadJSON(dataFile);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{
+document.getElementById('endScreen').style.display='none';startGame();
+});
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){
+if(!G)return;
+score=0;total=0;timeLeft=G.duration;waiting=false;
+itemQueue=shuffle(G.items);
+document.getElementById('startScreen').style.display='none';
+document.getElementById('gameScreen').style.display='block';
+document.getElementById('endScreen').style.display='none';
+document.getElementById('scoreVal').textContent='0';
+document.getElementById('totalVal').textContent=itemQueue.length;
+document.getElementById('timerVal').textContent=timeLeft;
+document.getElementById('timerFill').style.width='100%';
+document.getElementById('resultText').textContent='';
+const catDiv=document.getElementById('catButtons');catDiv.innerHTML='';
+G.categories.forEach(cat=>{
+const btn=document.createElement('button');
+btn.className='cat-btn';btn.textContent=cat.name;
+btn.style.borderColor=cat.color;btn.style.color=cat.color;
+btn.addEventListener('click',()=>answer(cat.id));
+catDiv.appendChild(btn);
+});
+showNextItem();
+timerInterval=setInterval(()=>{
+timeLeft--;
+document.getElementById('timerVal').textContent=timeLeft;
+document.getElementById('timerFill').style.width=(timeLeft/G.duration*100)+'%';
+if(timeLeft<=0){clearInterval(timerInterval);endGame()}
+},1000);
+}
+function showNextItem(){
+if(itemQueue.length===0){clearInterval(timerInterval);endGame();return}
+currentItem=itemQueue.shift();
+const disp=document.getElementById('itemDisplay');
+disp.textContent=currentItem.text;
+disp.className='item-display';
+document.getElementById('resultText').textContent='';
+waiting=false;
+}
+function answer(catId){
+if(waiting||!currentItem)return;
+waiting=true;total++;
+const disp=document.getElementById('itemDisplay');
+const result=document.getElementById('resultText');
+if(catId===currentItem.category){
+score++;
+disp.className='item-display flash-correct';
+result.textContent='Σωστό! ✓';result.style.color='#4CAF50';
+}else{
+disp.className='item-display flash-wrong';
+result.textContent='Λάθος! Το σωστό είναι: '+currentItem.category.toUpperCase();result.style.color='#f44336';
+}
+document.getElementById('scoreVal').textContent=score;
+setTimeout(()=>{if(timeLeft>0)showNextItem()},600);
+}
+document.addEventListener('keydown',e=>{
+if(!G||!currentItem||waiting)return;
+for(const cat of G.categories){
+if(e.key===cat.key){answer(cat.id);break}
+}
+});
+function endGame(){
+clearInterval(timerInterval);currentItem=null;
+document.getElementById('gameScreen').style.display='none';
+document.getElementById('endScreen').style.display='block';
+document.getElementById('finalScore').textContent=score+'/'+total;
+const pct=total>0?Math.round(score/total*100):0;
+document.getElementById('stats').innerHTML=
+'<div><span class="label">Σωστές</span><span class="value" style="color:#4CAF50">'+score+'</span></div>'+
+'<div><span class="label">Λάθος</span><span class="value" style="color:#f44336">'+(total-score)+'</span></div>'+
+'<div><span class="label">Ακρίβεια</span><span class="value">'+pct+'%</span></div>';
+}
+</script>
+</body>
+</html>

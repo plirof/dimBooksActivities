@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Συνθήκες Αλήθεια ή Ψέματα",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε συνθήκη: είναι αλήθεια ή ψέματα όταν η γατούλα είναι στη μέση της σκηνής;",
+  "categories": [
+    { "id": "alitheia", "name": "Αλήθεια", "color": "#4caf50", "key": "1" },
+    { "id": "psemata", "name": "Ψέματα", "color": "#f44336", "key": "2" },
+    { "id": "oxi_syn", "name": "Δεν είναι συνθήκη", "color": "#9e9e9e", "key": "3" }
+  ],
+  "items": [
+    { "text": "Η γατούλα είναι στη μέση", "category": "psemata" },
+    { "text": "Η γατούλα δεν αγγίζει όριο", "category": "alitheia" },
+    { "text": "Γατούλα κάνει 10 βήματα", "category": "oxi_syn" },
+    { "text": "Η γατούλα αγγίζει όριο", "category": "psemata" },
+    { "text": "Η γατούλα δεν είναι στο κέντρο", "category": "alitheia" },
+    { "text": "Πράσινη σημαία πατημένη", "category": "oxi_syn" },
+    { "text": "Η σκηνή είναι άδεια", "category": "alitheia" },
+    { "text": "Υπάρχει φανάρι", "category": "alitheia" },
+    { "text": "Κίνηση 5 βημάτων", "category": "oxi_syn" },
+    { "text": "Η γατούλα βρίσκεται στο πεζοδρόμιο", "category": "alitheia" }
+  ],
+  "duration": 50
+}

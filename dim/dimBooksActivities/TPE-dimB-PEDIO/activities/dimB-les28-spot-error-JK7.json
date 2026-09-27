@@ -1,0 +1,41 @@
+{
+  "title": "Βρες τα Λάθη: Μηνύματα e-me",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Μπορώ", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "στείλω", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνυμα", "error": true, "correct": "μήνυμα", "feedback": "Λείπει ο τόνος" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "οποιονδηποτε", "error": true, "correct": "επαφές", "feedback": "Μόνο σε επαφές στέλνω μήνυμα" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ηρακλής", "error": true, "correct": "Ήρωνας", "feedback": "Ονομάζεται Ήρωνας, όχι Ηρακλής" },
+        { "text": "βλέπει", "error": false, "correct": "", "feedback": "" },
+        { "text": "νέο", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνυμα", "error": true, "correct": "μήνυμα", "feedback": "Λείπει ο τόνος" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "την", "error": false, "correct": "", "feedback": "" },
+        { "text": "Υπατία", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "απαντησω", "error": true, "correct": "απαντήσω", "feedback": "Λείπει ο τόνος" },
+        { "text": "πρέπει", "error": false, "correct": "", "feedback": "" },
+        { "text": "πρώτα", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαγραψω", "error": true, "correct": "διαβάσω", "feedback": "Πρέπει να διαβάσω πρώτα, όχι να διαγράψω" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "μήνυμα", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

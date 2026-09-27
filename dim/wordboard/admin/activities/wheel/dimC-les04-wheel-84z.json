@@ -1,0 +1,26 @@
+{
+    "id": "dimC-les04-wheel-84z",
+    "title": "Γνωριμία με το Scratch - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Scratch",
+            "Αντικείμενο",
+            "Μορφή",
+            "Χαρακτήρας (sprite)",
+            "Εντολή (block)",
+            "Σενάριο (script)",
+            "Συμβάν (event)",
+            "Σκηνή",
+            "Κατηγορία εντολών",
+            "Πράσινη σημαία"
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les04",
+        "Scratch"
+    ]
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Εργαλεία σε εικονίδια",
+  "subtitle": "Ταίριαξε κάθε εικονίδιο στο σωστό εργαλείο",
+  "categories": [
+    {
+      "id": "circle",
+      "name": "ΚΥΚΛΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "rect",
+      "name": "ΤΕΤΡΑΓΩΝΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "line",
+      "name": "ΓΡΑΜΜΗ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "eraser",
+      "name": "ΓΟΜΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "⭕ Στρογγυλό",
+      "category": "circle"
+    },
+    {
+      "id": "item2",
+      "text": "⬜ Τετράγωνο",
+      "category": "rect"
+    },
+    {
+      "id": "item3",
+      "text": "➖ Ευθεία",
+      "category": "line"
+    },
+    {
+      "id": "item4",
+      "text": "🧹 Σβήσιμο",
+      "category": "eraser"
+    },
+    {
+      "id": "item5",
+      "text": "🔵 Μπλε κύκλος",
+      "category": "circle"
+    },
+    {
+      "id": "item6",
+      "text": "🟥 Κόκκινο τετρ.",
+      "category": "rect"
+    }
+  ]
+}

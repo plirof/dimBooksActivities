@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 28 - Φωτόδεντρο: Αναζήτηση</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;padding:20px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;overflow:hidden}
+.top-bar{background:linear-gradient(135deg,#059669,#10b981);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top-bar .logo{font-size:1.8em}
+.top-bar h1{font-size:1.4em;flex:1}
+.search-bar{display:flex;gap:8px;width:100%;margin-top:10px}
+.search-bar input{flex:1;padding:12px 16px;border:none;border-radius:12px;font-size:1em}
+.search-bar input:focus{outline:none;box-shadow:0 0 0 3px rgba(255,255,255,.4)}
+.search-bar button{padding:12px 20px;background:#fff;color:#059669;border:none;border-radius:12px;font-size:1em;font-weight:700;cursor:pointer;transition:transform .2s}
+.search-bar button:hover{transform:scale(1.05)}
+.filters{padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid #eee}
+.cat-btn{padding:8px 14px;border:2px solid #e5e7eb;border-radius:20px;font-size:.9em;cursor:pointer;transition:all .2s;background:#fff}
+.cat-btn:hover{border-color:#10b981;background:#ecfdf5}
+.cat-btn.active{border-color:#10b981;background:#d1fae5;font-weight:700;color:#065f46}
+.type-filters{padding:12px 24px;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid #eee;background:#fafafa}
+.type-btn{padding:6px 12px;border:1px solid #ddd;border-radius:14px;font-size:.85em;cursor:pointer;transition:all .2s;background:#fff}
+.type-btn:hover{background:#ede9fe}
+.type-btn.active{background:#c4b5fd;border-color:#7c3aed;color:#fff;font-weight:700}
+.results{padding:20px 24px;min-height:200px}
+.results h3{color:#555;font-size:1em;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));grid-gap:14px}
+.card{background:#fff;border:2px solid #e5e7eb;border-radius:14px;padding:16px;cursor:pointer;transition:all .25s}
+.card:hover{border-color:#10b981;box-shadow:0 5px 20px rgba(16,185,129,.2);transform:translateY(-3px)}
+.card .card-icon{font-size:2em;margin-bottom:8px}
+.card .card-title{font-weight:700;color:#333;font-size:1em;margin-bottom:4px}
+.card .card-subj{color:#888;font-size:.85em;margin-bottom:8px}
+.card .badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.8em;font-weight:700}
+.badge.game{background:#dbeafe;color:#1d4ed8}
+.badge.video{background:#fce7f3;color:#be185d}
+.badge.exercise{background:#d1fae5;color:#065f46}
+.badge.presentation{background:#fef3c7;color:#92400e}
+.no-results{text-align:center;padding:40px 20px;color:#aaa;font-size:1.1em}
+.detail-view{display:none;padding:24px}
+.detail-view .back{background:none;border:none;color:#059669;font-size:1em;cursor:pointer;padding:6px 0;margin-bottom:14px;font-weight:700}
+.detail-view .back:hover{text-decoration:underline}
+.detail-card{background:#f0fdf4;border-radius:16px;padding:24px;border:2px solid #bbf7d0}
+.detail-card .d-icon{font-size:3em;margin-bottom:12px}
+.detail-card h2{color:#065f46;font-size:1.3em;margin-bottom:6px}
+.detail-card .d-subj{color:#059669;font-size:.95em;margin-bottom:4px}
+.detail-card .d-type{margin-bottom:14px}
+.detail-card .d-desc{color:#555;line-height:1.7;font-size:.95em;margin-bottom:18px}
+.open-btn{display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:transform .2s}
+.open-btn:hover{transform:scale(1.05)}
+.sim-page{display:none;padding:24px}
+.sim-page .back{background:none;border:none;color:#059669;font-size:1em;cursor:pointer;padding:6px 0;margin-bottom:14px;font-weight:700}
+.sim-page .back:hover{text-decoration:underline}
+.sim-content{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:16px;padding:30px;text-align:center;min-height:250px}
+.sim-content h2{color:#065f46;margin-bottom:14px;font-size:1.4em}
+.sim-content .sim-icon{font-size:4em;margin-bottom:16px}
+.sim-content p{color:#555;line-height:1.8;font-size:1em;max-width:500px;margin:0 auto}
+@media(max-width:600px){.top-bar h1{font-size:1.1em}.results-grid{grid-template-columns:1fr}.card{padding:14px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .top-bar > * { margin: 6px; }
+  .search-bar > * + * { margin-left: 8px; }
+  .filters > * { margin: 4px; }
+  .type-filters > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="top-bar">
+<span class="logo">🌳</span>
+<h1>Φωτόδεντρο</h1>
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="Αναζήτησε εκπαιδευτικό υλικό..." oninput="doSearch()">
+<button onclick="doSearch()">🔍 Αναζήτηση</button>
+</div>
+</div>
+
+<div class="filters" id="catFilters">
+<button class="cat-btn" onclick="toggleCat(this,'all')">📚 Όλα</button>
+<button class="cat-btn" onclick="toggleCat(this,'Επιστήμες')">🔬 Επιστήμες</button>
+<button class="cat-btn" onclick="toggleCat(this,'Μαθηματικά')">📐 Μαθηματικά</button>
+<button class="cat-btn" onclick="toggleCat(this,'Γλώσσα')">📝 Γλώσσα</button>
+<button class="cat-btn" onclick="toggleCat(this,'Πληροφορική')">💻 Πληροφορική</button>
+<button class="cat-btn" onclick="toggleCat(this,'Τέχνες')">🎨 Τέχνες</button>
+<button class="cat-btn" onclick="toggleCat(this,'Περιβάλλον')">🌍 Περιβάλλον</button>
+</div>
+
+<div class="type-filters" id="typeFilters">
+<button class="type-btn" onclick="toggleType(this,'all')">📋 Όλα</button>
+<button class="type-btn" onclick="toggleType(this,'Παιχνίδι')">🎮 Παιχνίδι</button>
+<button class="type-btn" onclick="toggleType(this,'Βίντεο')">🎬 Βίντεο</button>
+<button class="type-btn" onclick="toggleType(this,'Ασκήσεις')">📊 Ασκήσεις</button>
+<button class="type-btn" onclick="toggleType(this,'Παρουσίαση')">📖 Παρουσίαση</button>
+</div>
+
+<div class="results" id="resultsView">
+<h3 id="resultsTitle">🔎 Αποτελέσματα (12)</h3>
+<div class="results-grid" id="resultsGrid"></div>
+</div>
+
+<div class="detail-view" id="detailView">
+<button class="back" onclick="goBack()">⬅ Πίσω στα αποτελέσματα</button>
+<div class="detail-card" id="detailCard"></div>
+</div>
+
+<div class="sim-page" id="simPage">
+<button class="back" onclick="goBackToDetail()">⬅ Πίσω</button>
+<div class="sim-content" id="simContent"></div>
+</div>
+</div>
+
+<script>
+var resources=[
+{title:'Αλφάβητο',subject:'Γλώσσα',type:'Παιχνίδι',typeIcon:'🎮',icon:'🔤',badge:'game',desc:'Μάθε τα γράμματα του αλφαβήτου παίζοντας! Βρες τα γράμματα, τοποθέτησέ τα στη σωστή σειρά και φτιάξε λέξεις.'},
+{title:'Πρόσθεση και Αφαίρεση',subject:'Μαθηματικά',type:'Ασκήσεις',typeIcon:'📊',icon:'➕',badge:'exercise',desc:'Ασκήσεις πρόσθεσης και αφαίρεσης για την Γ\' Δημοτικού. Λύσε τις πράξεις και δες το σκορ σου!'},
+{title:'Ζώα του Δάσους',subject:'Περιβάλλον',type:'Βίντεο',typeIcon:'🎬',icon:'🦊',badge:'video',desc:'Ένα υπέροχο βίντεο που μας δείχνει τα ζώα που ζουν στο δάσος. Μάθε πώς ζουν και τι τρώνε!'},
+{title:'Πρώτα βήματα στον υπολογιστή',subject:'Πληροφορική',type:'Παρουσίαση',typeIcon:'📖',icon:'💻',badge:'presentation',desc:'Μια παρουσίαση που σου δείχνει τα βασικά μέρη του υπολογιστή: οθόνη, πληκτρολόγιο, ποντίκι και πολλά ακόμα!'},
+{title:'Χρώματα και Σχήματα',subject:'Τέχνες',type:'Παιχνίδι',typeIcon:'🎮',icon:'🎨',badge:'game',desc:'Αναγνώρισε τα χρώματα και τα γεωμετρικά σχήματα μέσα από διασκεδαστικά παιχνίδια!'},
+{title:'Το Σύμπαν',subject:'Επιστήμες',type:'Βίντεο',typeIcon:'🎬',icon:'🌌',badge:'video',desc:'Ταξίδεψε στο διάστημα! Μάθε για τον ήλιο, τη σελήνη, τα άστρα και τους πλανήτες του ηλιακού μας συστήματος.'},
+{title:'Συλλαβισμός',subject:'Γλώσσα',type:'Παιχνίδι',typeIcon:'🎮',icon:'✏️',badge:'game',desc:'Χώρισε τις λέξεις σε συλλαβές! Ένα παιχνίδι που σε βοηθά να μάθεις τον σωστό συλλαβισμό.'},
+{title:'Πολλαπλασιασμός',subject:'Μαθηματικά',type:'Ασκήσεις',typeIcon:'📊',icon:'✖️',badge:'exercise',desc:'Ασκήσεις πολλαπλασιασμού. Εξάσκησε τον πίνακα πολλαπλασιασμού με διασκεδαστικές ασκήσεις!'},
+{title:'Υγιεινή Διατροφή',subject:'Περιβάλλον',type:'Παρουσίαση',typeIcon:'📖',icon:'🥗',badge:'presentation',desc:'Τι πρέπει να τρώμε για να είμαστε υγιείς; Μάθε για τις τροφές και την πυραμίδα διατροφής!'},
+{title:'ScratchJr',subject:'Πληροφορική',type:'Παιχνίδι',typeIcon:'🎮',icon:'🐱',badge:'game',desc:'Μαθε προγραμματισμό παίζοντας! Φτιάξε τις δικές σου ιστορίες και animations με το ScratchJr.'},
+{title:'Μουσικά Όργανα',subject:'Τέχνες',type:'Βίντεο',typeIcon:'🎬',icon:'🎵',badge:'video',desc:'Ανακάλυψε τα μουσικά όργανα! Δες και άκουσε κιθάρα, πιάνο, βιολί και πολλά ακόμα.'},
+{title:'Νερό και Άνθρωπος',subject:'Επιστήμες',type:'Παρουσίαση',typeIcon:'📖',icon:'💧',badge:'presentation',desc:'Μάθε πόσο σημαντικό είναι το νερό για τη ζωή μας. Πώς το χρησιμοποιούμε και πώς πρέπει να το προστατεύουμε.'}
+];
+
+var activeCat='all';
+var activeType='all';
+var currentDetail=null;
+
+function normalize(s){return s.toLowerCase().replace(/ά/g,'α').replace(/έ/g,'ε').replace(/ή/g,'η').replace(/ί/g,'ι').replace(/ό/g,'ο').replace(/ύ/g,'υ').replace(/ώ/g,'ω')}
+
+function doSearch(){
+var query=normalize(document.getElementById('searchInput').value.trim());
+var filtered=[];
+for(var i=0;i<resources.length;i++){
+var r=resources[i];
+var matchCat=activeCat==='all'||r.subject===activeCat;
+var matchType=activeType==='all'||r.type===activeType;
+var matchSearch=!query||normalize(r.title).indexOf(query)!==-1||normalize(r.subject).indexOf(query)!==-1||normalize(r.type).indexOf(query)!==-1;
+if(matchCat&&matchType&&matchSearch) filtered.push(r);
+}
+renderResults(filtered);
+}
+
+function renderResults(list){
+var grid=document.getElementById('resultsGrid');
+var title=document.getElementById('resultsTitle');
+grid.innerHTML='';
+title.textContent='🔎 Αποτελέσματα ('+list.length+')';
+if(list.length===0){
+grid.innerHTML='<div class="no-results">Δεν βρέθηκαν αποτελέσματα. Δοκίμασε άλλη αναζήτηση! 🔍</div>';
+return;
+}
+for(var i=0;i<list.length;i++){
+var r=list[i];
+var card=document.createElement('div');
+card.className='card';
+card.setAttribute('data-index',resources.indexOf(r));
+card.innerHTML='<div class="card-icon">'+r.icon+'</div><div class="card-title">'+r.title+'</div><div class="card-subj">'+r.subject+'</div><span class="badge '+r.badge+'">'+r.typeIcon+' '+r.type+'</span>';
+card.onclick=(function(idx){return function(){showDetail(idx)}})(resources.indexOf(r));
+grid.appendChild(card);
+}
+}
+
+function toggleCat(btn,cat){
+var btns=document.querySelectorAll('#catFilters .cat-btn');
+for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+btn.classList.add('active');
+activeCat=cat;
+doSearch();
+}
+
+function toggleType(btn,type){
+var btns=document.querySelectorAll('#typeFilters .type-btn');
+for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+btn.classList.add('active');
+activeType=type;
+doSearch();
+}
+
+function showDetail(idx){
+currentDetail=idx;
+var r=resources[idx];
+var card=document.getElementById('detailCard');
+card.innerHTML='<div class="d-icon">'+r.icon+'</div><h2>'+r.title+'</h2><div class="d-subj">📚 '+r.subject+'</div><div class="d-type"><span class="badge '+r.badge+'">'+r.typeIcon+' '+r.type+'</span></div><p class="d-desc">'+r.desc+'</p><button class="open-btn" onclick="openResource()">▶ Άνοιγμα</button>';
+document.getElementById('resultsView').style.display='none';
+document.getElementById('detailView').style.display='block';
+document.getElementById('simPage').style.display='none';
+}
+
+function openResource(){
+var r=resources[currentDetail];
+var simContent=document.getElementById('simContent');
+var simTexts={
+'Παιχνίδι':'🎮 Τώρα παίζουμε! Φόρτωση του παιχνιδιού «'+r.title+'»... Χρησιμοποίησε το ποντίκι ή το πληκτρολόγιο για να παίξεις!',
+'Βίντεο':'🎬 Το βίντεο «'+r.title+'» ξεκινάει! Παρακολούθησε προσεκτικά και μάθε νέα πράγματα!',
+'Ασκήσεις':'📊 Οι ασκήσεις «'+r.title+'» είναι έτοιμες! Διάβασε την ερώτηση και διάλεξε τη σωστή απάντηση!',
+'Παρουσίαση':'📖 Η παρουσίαση «'+r.title+'» φορτώνεται... Περιήγηση στις διαφάνειες με τα βελάκια!'
+};
+simContent.innerHTML='<div class="sim-icon">'+r.icon+'</div><h2>'+r.title+'</h2><p>'+simTexts[r.type]+'</p><p style="margin-top:16px;color:#10b981;font-weight:700">✅ Αυτό είναι ένα προσομοιωμένο περιβάλλον για εκπαιδευτικούς σκοπούς.</p>';
+document.getElementById('detailView').style.display='none';
+document.getElementById('simPage').style.display='block';
+}
+
+function goBack(){
+document.getElementById('resultsView').style.display='block';
+document.getElementById('detailView').style.display='none';
+document.getElementById('simPage').style.display='none';
+}
+
+function goBackToDetail(){
+document.getElementById('detailView').style.display='block';
+document.getElementById('simPage').style.display='none';
+}
+
+document.querySelector('#catFilters .cat-btn').classList.add('active');
+document.querySelector('#typeFilters .type-btn').classList.add('active');
+doSearch();
+</script>
+</body>
+</html>

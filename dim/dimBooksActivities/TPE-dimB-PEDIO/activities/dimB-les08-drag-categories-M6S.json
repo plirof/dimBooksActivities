@@ -1,0 +1,26 @@
+{
+  "title": "Το micro:bit",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "hw",
+      "name": "Υλικά micro:bit",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "cmd",
+      "name": "Εντολές MakeCode",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Φωτάκια (LED)", "category": "hw" },
+    { "id": "item2", "text": "Κουμπιά", "category": "hw" },
+    { "id": "item3", "text": "Μικρόφωνο", "category": "hw" },
+    { "id": "item4", "text": "Ηχείο", "category": "hw" },
+    { "id": "item5", "text": "«εμφάνιση εικονιδίου»", "category": "cmd" },
+    { "id": "item6", "text": "«για πάντα»", "category": "cmd" },
+    { "id": "item7", "text": "«κατά την έναρξη»", "category": "cmd" },
+    { "id": "item8", "text": "«Λήψη»", "category": "cmd" }
+  ]
+}

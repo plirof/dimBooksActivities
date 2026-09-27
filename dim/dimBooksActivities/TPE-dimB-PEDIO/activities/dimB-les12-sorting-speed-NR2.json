@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Είσοδος ή Έξοδος;",
+  "subtitle": "Βάλε τη συσκευή στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Είσοδος ή Έξοδος;",
+  "categories": [
+    {"id": "eisodos", "name": "Είσοδος", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "exodos", "name": "Έξοδος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πληκτρολόγιο", "category": "eisodos"},
+    {"text": "Οθόνη", "category": "exodos"},
+    {"text": "Ποντίκι", "category": "eisodos"},
+    {"text": "Εκτυπωτής", "category": "exodos"},
+    {"text": "Μικρόφωνο", "category": "eisodos"},
+    {"text": "Ηχεία", "category": "exodos"},
+    {"text": "Κάμερα", "category": "eisodos"},
+    {"text": "Ακουστικά", "category": "exodos"}
+  ],
+  "duration": 30
+}

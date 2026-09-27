@@ -1,0 +1,46 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "αρχείο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ζωγράφισμα", "error": true, "correct": "αρχείο", "feedback": "Σωστά! Αλλά δοκίμασε να βρεις άλλο λάθος!"},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "φάκελος", "error": false},
+        {"text": "βάζει", "error": true, "correct": "έχει", "feedback": "Ο φάκελος ΈΧΕΙ αρχεία μέσα!"},
+        {"text": "τα", "error": false},
+        {"text": "αρχεία", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εικόνα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ήχος", "error": true, "correct": "αρχείο", "feedback": "Η εικόνα είναι ΑΡΧΕΙΟ, όχι ήχος!"},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "κείμενο", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ακούω", "error": true, "correct": "διαβάζω", "feedback": "Το κείμενο το ΔΙΑΒΑΖΟΥΜΕ!"},
+        {"text": "στο", "error": false},
+        {"text": "σχολείο.", "error": false}
+      ]
+    }
+  ]
+}

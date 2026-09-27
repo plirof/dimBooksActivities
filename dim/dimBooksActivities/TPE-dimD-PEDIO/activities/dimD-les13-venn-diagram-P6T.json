@@ -1,0 +1,23 @@
+{
+  "title": "Διάγραμμα Venn: Εφαρμογές Γραφείου",
+  "subtitle": "Τοποθέτησε τα στοιχεία στη σωστή περιοχή",
+  "circleA": {
+    "label": "Ελεύθερο Λογισμικό",
+    "color": "#2196f3"
+  },
+  "circleB": {
+    "label": "Εμπορικό Λογισμικό",
+    "color": "#ff9800"
+  },
+  "items": [
+    { "text": "LibreOffice Writer", "zone": "A" },
+    { "text": "Microsoft Word", "zone": "B" },
+    { "text": "LibreOffice Calc", "zone": "A" },
+    { "text": "Microsoft Excel", "zone": "B" },
+    { "text": "Firefox", "zone": "A" },
+    { "text": "Scratch", "zone": "A" },
+    { "text": "TuxPaint", "zone": "A" },
+    { "text": "Microsoft PowerPoint", "zone": "B" },
+    { "text": "Ηλεκτρικό ρεύμα", "zone": "none" }
+  ]
+}

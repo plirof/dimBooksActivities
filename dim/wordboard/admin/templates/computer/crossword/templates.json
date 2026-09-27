@@ -1,0 +1,94 @@
+{
+  "templates": [
+    {
+      "id": "computer_crossword_basics_001",
+      "name": "Βασικά του υπολογιστή",
+      "description": "Λέξεις για τον υπολογιστή",
+      "category": "computer_crossword",
+      "difficulty": "easy",
+      "tags": ["computer", "basics", "greek", "elementary"],
+      "words": [
+        {"word": "ΟΘΟΝΗ", "clue": "Εκεί βλέπουμε τις εικόνες"},
+        {"word": "ΠΛΗΚΤΡΟ", "clue": "Κομμάτι του πληκτρολογίου"},
+        {"word": "ΠΟΝΤΙΚΙ", "clue": "Το χρησιμοποιούμε για κλικ"},
+        {"word": "ΥΠΟΛΟΓΙΣΤΗΣ", "clue": "Ηλεκτρονική συσκευή"},
+        {"word": "ΣΚΛΗΡΟΣ", "clue": "Αποθηκεύει αρχεία"},
+        {"word": "ΗΧΕΙΟ", "clue": "Ακούμε ήχο"},
+        {"word": "ΓΡΑΜΜΗ", "clue": "Σύνδεση στο δίκτυο"},
+        {"word": "ΚΩΔΙΚΑΣ", "clue": "Για να μπούμε"}
+      ]
+    },
+    {
+      "id": "computer_crossword_programs_001",
+      "name": "Προγράμματα",
+      "description": "Λέξεις για προγράμματα",
+      "category": "computer_crossword",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "words": [
+        {"word": "WORD", "clue": "Γράφουμε κείμενα"},
+        {"word": "EXCEL", "clue": "Κάνουμε πίνακες"},
+        {"word": "PAINT", "clue": "Ζωγραφίζουμε"},
+        {"word": "EMAIL", "clue": "Στέλνουμε μηνύματα"},
+        {"word": "GAMES", "clue": "Παίζουμε"},
+        {"word": "FILES", "clue": "Αρχεία στον υπολογιστή"},
+        {"word": "CLICK", "clue": "Πατάμε το ποντίκι"},
+        {"word": "TYPES", "clue": "Γράφουμε στο πληκτρολόγιο"}
+      ]
+    },
+    {
+      "id": "computer_crossword_internet_001",
+      "name": "Διαδίκτυο",
+      "description": "Λέξεις για το ίντερνετ",
+      "category": "computer_crossword",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "words": [
+        {"word": "INTERNET", "clue": "Παγκόσμιο δίκτυο"},
+        {"word": "BROWSER", "clue": "Πρόγραμμα περιήγησης"},
+        {"word": "WEBSITE", "clue": "Ιστοσελίδα"},
+        {"word": "SEARCH", "clue": "Αναζήτηση"},
+        {"word": "LINK", "clue": "Σύνδεσμος σε σελίδα"},
+        {"word": "PASSWORD", "clue": "Μυστικός κωδικός"},
+        {"word": "ONLINE", "clue": "Συνδεδεμένος"},
+        {"word": "WEB", "clue": "Ιστός"}
+      ]
+    },
+    {
+      "id": "computer_crossword_safety_001",
+      "name": "Ασφάλεια",
+      "description": "Λέξεις για ασφαλή χρήση",
+      "category": "computer_crossword",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "greek", "elementary"],
+      "words": [
+        {"word": "ΑΣΦΑΛΕΙΑ", "clue": "Προστασία στον υπολογιστή"},
+        {"word": "ΚΩΔΙΚΟΣ", "clue": "Για να μπεις σε λογαριασμό"},
+        {"word": "ΓΟΝΕΙΣ", "clue": "Να τους λες τα πάντα"},
+        {"word": "ΞΕΝΟΣ", "clue": "Άγνωστος στο ίντερνετ"},
+        {"word": "ΔΙΑΛΕΙΜΜΑ", "clue": "Κάντο κάθε λίγο"},
+        {"word": "ΜΥΣΤΙΚΟ", "clue": "Ο κωδικός είναι αυτό"},
+        {"word": "ΠΡΟΣΟΧΗ", "clue": "Να είσαι προσεκτικός"},
+        {"word": "ΚΛΕΙΔΩΣΕ", "clue": "Κλείδωσε τον υπολογιστή"}
+      ]
+    },
+    {
+      "id": "computer_crossword_parts_001",
+      "name": "Μέρη",
+      "description": "Μέρη του υπολογιστή",
+      "category": "computer_crossword",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "words": [
+        {"word": "ΜΝΗΜΗ", "clue": "RAM - προσωρινή μνήμη"},
+        {"word": "ΕΠΕΞΕΡΓΑΣΤΗΣ", "clue": "Ο 'εγκέφαλος' του υπολογιστή"},
+        {"word": "ΚΑΡΤΑ", "clue": "Για γραφικά"},
+        {"word": "ΤΡΟΦΟΔΟΤΙΚΟ", "clue": "Δίνει ρεύμα"},
+        {"word": "ΠΛΑΙΣΙΟ", "clue": "Το κουτί του υπολογιστή"},
+        {"word": "ΟΘΟΝΗ", "clue": "Εκεί βλέπουμε"},
+        {"word": "ΠΛΗΚΤΡΑ", "clue": "Για να γράφουμε"},
+        {"word": "ΠΟΝΤΙΚΙ", "clue": "Για κλικ"}
+      ]
+    }
+  ]
+}

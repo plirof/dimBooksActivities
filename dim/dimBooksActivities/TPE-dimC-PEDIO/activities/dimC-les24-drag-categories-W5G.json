@@ -1,0 +1,26 @@
+{
+  "title": "Ιστολόγια στην e-me",
+  "subtitle": "Σύρε κάθε χαρακτηριστικό στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "user",
+      "name": "Ιστολόγιο Χρήστη",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "hive",
+      "name": "Ιστολόγιο Κυψέλης",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Προσωπικό ιστολόγιο", "category": "user" },
+    { "id": "item2", "text": "Ένας μόνο δημιουργός/διαχειριστής", "category": "user" },
+    { "id": "item3", "text": "Ανάδειξη σκέψεων και ιδεών", "category": "user" },
+    { "id": "item4", "text": "Προεγκατεστημένο στον κεντρικό χώρο", "category": "user" },
+    { "id": "item5", "text": "Συνεργατικό ιστολόγιο", "category": "hive" },
+    { "id": "item6", "text": "Όλα τα μέλη είναι συντάκτες", "category": "hive" },
+    { "id": "item7", "text": "Ανάδειξη δουλειάς ομάδας", "category": "hive" },
+    { "id": "item8", "text": "Ισότιμα δικαιώματα μελών", "category": "hive" }
+  ]
+}

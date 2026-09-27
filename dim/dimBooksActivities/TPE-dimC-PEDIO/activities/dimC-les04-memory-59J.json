@@ -1,0 +1,13 @@
+{
+  "title": "Όροι Scratch",
+  "subtitle": "Βρες την περιγραφή κάθε όρου",
+  "columns": 4,
+  "pairs": [
+    { "cardA": "Sprite", "cardB": "Ήρωας/χαρακτήρας" },
+    { "cardA": "Block", "cardB": "Εντολή/πλακίδιο" },
+    { "cardA": "Script", "cardB": "Σειρά εντολών" },
+    { "cardA": "Event", "cardB": "Γεγονός (π.χ. πράσινη σημαία)" },
+    { "cardA": "Stage", "cardB": "Σκηνή/σκηνικό" },
+    { "cardA": "Costume", "cardB": "Ενδυμασία χαρακτήρα" }
+  ]
+}

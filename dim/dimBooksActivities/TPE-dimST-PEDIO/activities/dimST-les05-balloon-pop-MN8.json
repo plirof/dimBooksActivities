@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αριθμητικές Πράξεις",
+  "subtitle": "Σπάσε τα μπαλόνια με σύμβολα πράξεων",
+  "instruction": "Σπάσε τα μπαλόνια με ΣΩΣΤΑ σύμβολα αριθμητικών πράξεων!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 45,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "+ Πρόσθεση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "# Διαίρεση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "- Αφαίρεση",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "* Πολλαπλασιασμός",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "@ Πρόσθεση",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "/ Διαίρεση",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Διαίρεση με 0",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "εάν... αλλιώς",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Διαγραφή αρχείου",
+      "correct": false,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Έλεγχος λαθών",
+      "correct": true,
+      "color": "#3F51B5"
+    }
+  ]
+}

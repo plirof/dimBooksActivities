@@ -1,0 +1,48 @@
+{
+  "title": "Τύποι υλικού ανά αποθετήριο",
+  "subtitle": "Ταίριαξε κάθε υλικό στο σωστό αποθετήριο",
+  "categories": [
+    {
+      "id": "fotodentro",
+      "name": "ΦΩΤΟΔΕΝΤΡΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "openlib",
+      "name": "ΑΝΟΙΧΤΗ ΒΙΒΛΙΟΘΗΚΗ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📚 Βιβλία μαθημάτων",
+      "category": "fotodentro"
+    },
+    {
+      "id": "item2",
+      "text": "📖 Διαδραστικά βιβλία",
+      "category": "openlib"
+    },
+    {
+      "id": "item3",
+      "text": "🧩 Ασκήσεις",
+      "category": "fotodentro"
+    },
+    {
+      "id": "item4",
+      "text": "📄 Εργασίες",
+      "category": "openlib"
+    },
+    {
+      "id": "item5",
+      "text": "🎬 Βίντεο",
+      "category": "fotodentro"
+    },
+    {
+      "id": "item6",
+      "text": "📊 Φύλλα εργασίας",
+      "category": "openlib"
+    }
+  ]
+}

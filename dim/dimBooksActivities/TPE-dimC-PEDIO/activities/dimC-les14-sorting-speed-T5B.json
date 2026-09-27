@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αρχείο ή Φάκελος",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί ΑΡΧΕΙΟ ή ΦΑΚΕΛΟΣ για κάθε στοιχείο!",
+  "categories": [
+    {"id": "archeio", "name": "Αρχείο", "color": "#2196f3", "key": "ArrowLeft"},
+    {"id": "fakelos", "name": "Φάκελος", "color": "#ff9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Φωτογραφία (jpeg)", "category": "archeio"},
+    {"text": "Τα έγγραφά μου", "category": "fakelos"},
+    {"text": "Τραγούδι (mp3)", "category": "archeio"},
+    {"text": "Επιφάνεια εργασίας", "category": "fakelos"},
+    {"text": "Βίντεο (mp4)", "category": "archeio"},
+    {"text": "Το χωριό", "category": "fakelos"},
+    {"text": "Κείμενο εργασίας", "category": "archeio"},
+    {"text": "Πληροφορίες", "category": "fakelos"},
+    {"text": "Ζωγραφιά (png)", "category": "archeio"},
+    {"text": "Φακέλος εκτύπωσης", "category": "fakelos"}
+  ],
+  "duration": 30
+}

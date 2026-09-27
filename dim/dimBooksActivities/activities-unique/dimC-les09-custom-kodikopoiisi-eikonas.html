@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κωδικοποίηση Εικόνας - dimC les09</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.start-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.start-screen .title-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.start-screen h1 {
+    color: #2d3436;
+    font-size: 1.9rem;
+    margin-bottom: 8px;
+}
+
+.start-screen .subtitle {
+    color: #636e72;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.start-screen .info-box {
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+    line-height: 2;
+    font-size: 1.05rem;
+    color: #2d3436;
+}
+
+.info-box .bit-visual {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+}
+
+.info-box .bit-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.bit-0 {
+    background: #dfe6e9;
+    color: #2d3436 !important;
+}
+
+.bit-1 {
+    background: #2d3436;
+    color: white !important;
+}
+
+.btn-start {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-start:hover {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    transform: translateY(-2px);
+}
+
+.btn-start:active {
+    transform: scale(0.95);
+}
+
+.mode-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.mode-tab {
+    flex: 1;
+    padding: 12px 10px;
+    border: 3px solid #d5d0f0;
+    border-radius: 14px;
+    background: white;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #636e72;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    touch-action: manipulation;
+}
+
+.mode-tab.active {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border-color: #6c5ce7;
+}
+
+.mode-tab:hover:not(.active) {
+    border-color: #a29bfe;
+    background: #f8f4ff;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-header h2 {
+    color: #2d3436;
+    font-size: 1.15rem;
+}
+
+.score-badge {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 22px;
+    background: #e8e0f0;
+    border-radius: 11px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+    border-radius: 11px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+.grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 3px;
+    background: #b2bec3;
+    padding: 6px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.pixel-cell {
+    width: 42px;
+    height: 42px;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    touch-action: manipulation;
+    border: 2px solid #dfe6e9;
+}
+
+.pixel-cell.on {
+    background: #2d3436;
+    border-color: #2d3436;
+}
+
+.pixel-cell:hover {
+    border-color: #6c5ce7;
+}
+
+.binary-display {
+    background: linear-gradient(135deg, #2d3436, #636e72);
+    border-radius: 14px;
+    padding: 14px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.binary-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-family: 'Courier New', monospace;
+    color: #dfe6e9;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+.binary-row:last-child {
+    margin-bottom: 0;
+}
+
+.row-label {
+    color: #a29bfe;
+    font-weight: bold;
+    font-size: 0.8rem;
+    min-width: 18px;
+}
+
+.bit-char {
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+}
+
+.bit-char.one {
+    color: #00cec9;
+    font-weight: bold;
+}
+
+.bit-char.zero {
+    color: #636e72;
+}
+
+.info-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.info-pill {
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    color: #2d3436;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.info-pill strong {
+    color: #6c5ce7;
+}
+
+.challenge-info {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.challenge-info .challenge-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 8px;
+}
+
+.challenge-info .challenge-hint {
+    font-size: 0.95rem;
+    color: #636e72;
+}
+
+.target-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 2px;
+    background: #b2bec3;
+    padding: 4px;
+    border-radius: 8px;
+    width: fit-content;
+    margin: 8px auto;
+}
+
+.target-cell {
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 3px;
+}
+
+.target-cell.on {
+    background: #2d3436;
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.btn-action {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    color: white;
+}
+
+.btn-check {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.btn-check:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+    transform: translateY(-2px);
+}
+
+.btn-clear {
+    background: linear-gradient(135deg, #e17055, #d63031);
+}
+
+.btn-clear:hover {
+    background: linear-gradient(135deg, #d63031, #e17055);
+    transform: translateY(-2px);
+}
+
+.btn-action:active {
+    transform: scale(0.95);
+}
+
+.feedback-area {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 12px;
+    min-height: 30px;
+}
+
+.feedback-area.correct-fb {
+    color: #00b894;
+}
+
+.feedback-area.wrong-fb {
+    color: #d63031;
+}
+
+.feedback-area .feedback-text {
+    display: inline-block;
+    animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.completion-screen .star {
+    display: inline-block;
+    animation: starBounce 0.5s ease;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.completion-screen .star:nth-child(1) { animation-delay: 0.1s; }
+.completion-screen .star:nth-child(2) { animation-delay: 0.3s; }
+.completion-screen .star:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes starBounce {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.completion-screen .star.dim {
+    opacity: 0.2 !important;
+    animation: none;
+}
+
+.completion-screen h2 {
+    color: #2d3436;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #6c5ce7;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.completion-screen .score-detail {
+    color: #636e72;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    transform: translateY(-2px);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+
+.btn-next-challenge {
+    padding: 12px 36px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+}
+
+.btn-next-challenge:hover {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    transform: translateY(-2px);
+}
+
+.btn-next-challenge:active {
+    transform: scale(0.95);
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .info-box .bit-visual > * { margin: 2px; }
+  .mode-tabs > * + * { margin-left: 8px; }
+  .game-header > * { margin: 4px; }
+  .grid-wrapper > * + * { margin-top: 16px; }
+  .binary-row > * + * { margin-left: 6px; }
+  .info-row > * { margin: 6px; }
+  .btn-row > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="screen active" id="start-screen">
+        <div class="start-screen">
+            <span class="title-emoji">&#127912;</span>
+            <h1>Κωδικοποίηση Εικόνας</h1>
+            <p class="subtitle">Μάθε πώς οι υπολογιστές αποθηκεύουν εικόνες<br>με τη βοήθεια δυαδικών ψηφίων (0 και 1)!</p>
+            <div class="info-box">
+                <div style="text-align:center;margin-bottom:8px">&#128187; Κάθε εικόνα είναι φτιαγμένη από <b>pixels</b> (εικονοστοιχεία)</div>
+                <div style="text-align:center;margin-bottom:8px">&#9311; Κάθε pixel είναι <b>λευκό (0)</b> ή <b>μαύρο (1)</b></div>
+                <div class="bit-visual">
+                    <div class="bit-box bit-1">1</div>
+                    <div class="bit-box bit-0">0</div>
+                    <div class="bit-box bit-1">1</div>
+                    <div class="bit-box bit-1">0</div>
+                    <div class="bit-box bit-0">0</div>
+                    <div class="bit-box bit-1">1</div>
+                    <div class="bit-box bit-0">0</div>
+                    <div class="bit-box bit-1">1</div>
+                    <div style="width:100%;text-align:center;font-size:0.9rem;color:#636e72">= 8 bits = 1 <b>Byte</b> (&#128230;)</div>
+                </div>
+                <div style="text-align:center">&#127912; Μια εικόνα 8&#215;8 pixels = 8 Bytes!</div>
+            </div>
+            <button class="btn-start" onclick="startApp()">&#128640; Ξεκινάω!</button>
+        </div>
+    </div>
+
+    <div class="screen" id="game-screen">
+        <div class="game-header">
+            <h2>&#127912; Κωδικοποίηση Εικόνας</h2>
+            <div class="score-badge" id="score-badge">0 / 5</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width:0%">0/5</div>
+        </div>
+        <div class="mode-tabs">
+            <button class="mode-tab active" id="tab-free" onclick="switchMode('free')">&#9999;&#65039; Ελεύθερη Ζωγραφική</button>
+            <button class="mode-tab" id="tab-challenge" onclick="switchMode('challenge')">&#127942; Προκλήσεις</button>
+        </div>
+        <div id="content-area"></div>
+    </div>
+
+    <div class="screen" id="end-screen">
+        <div class="completion-screen">
+            <span class="stars" id="stars-container"></span>
+            <h2 id="end-title"></h2>
+            <p class="score-text" id="end-score"></p>
+            <p class="score-detail" id="end-detail"></p>
+            <button class="btn-restart" onclick="restartApp()">&#128260; Ξαναπαίζω!</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+var GRID_SIZE = 8;
+var grid = [];
+var currentMode = 'free';
+var currentChallenge = 0;
+var score = 0;
+var challengeChecked = false;
+var isPainting = false;
+var paintValue = 1;
+
+var challenges = [
+    {
+        name: '&#10084;&#65039; Καρδιά',
+        hint: 'Ζωγράφισε μια καρδιά!',
+        pattern: [
+            0,1,1,0,0,1,1,0,
+            1,1,1,1,1,1,1,1,
+            1,1,1,1,1,1,1,1,
+            1,1,1,1,1,1,1,1,
+            0,1,1,1,1,1,1,0,
+            0,0,1,1,1,1,0,0,
+            0,0,0,1,1,0,0,0,
+            0,0,0,0,0,0,0,0
+        ]
+    },
+    {
+        name: '&#128073; Βέλος',
+        hint: 'Ζωγράφισε ένα βέλος που δείχνει πάνω!',
+        pattern: [
+            0,0,0,1,0,0,0,0,
+            0,0,1,1,1,0,0,0,
+            0,1,1,1,1,1,0,0,
+            0,0,0,1,0,0,0,0,
+            0,0,0,1,0,0,0,0,
+            0,0,0,1,0,0,0,0,
+            0,0,0,1,0,0,0,0,
+            0,0,0,0,0,0,0,0
+        ]
+    },
+    {
+        name: '&#128578; Χαμόγελο',
+        hint: 'Ζωγράφισε ένα χαμογελαστό πρόσωπο!',
+        pattern: [
+            0,0,1,1,1,1,0,0,
+            0,1,0,0,0,0,1,0,
+            1,0,1,0,0,1,0,1,
+            1,0,0,0,0,0,0,1,
+            1,0,1,0,0,1,0,1,
+            1,0,0,1,1,0,0,1,
+            0,1,0,0,0,0,1,0,
+            0,0,1,1,1,1,0,0
+        ]
+    },
+    {
+        name: '&#127968; Σπίτι',
+        hint: 'Ζωγράφισε ένα σπίτι με σκεπή και πόρτα!',
+        pattern: [
+            0,0,0,1,1,0,0,0,
+            0,0,1,1,1,1,0,0,
+            0,1,1,1,1,1,1,0,
+            1,1,1,1,1,1,1,1,
+            1,1,0,0,0,0,1,1,
+            1,1,0,0,0,0,1,1,
+            1,1,0,1,1,0,1,1,
+            1,1,1,1,1,1,1,1
+        ]
+    },
+    {
+        name: '&#128293; Γράμμα &#928;',
+        hint: 'Ζωγράφισε το ελληνικό γράμμα Π!',
+        pattern: [
+            1,1,1,1,1,1,1,1,
+            1,0,0,0,0,0,0,1,
+            1,0,0,0,0,0,0,1,
+            1,0,0,0,0,0,0,1,
+            1,0,0,0,0,0,0,1,
+            1,0,0,0,0,0,0,1,
+            1,0,0,0,0,0,0,1,
+            0,0,0,0,0,0,0,0
+        ]
+    }
+];
+
+function resetGrid() {
+    grid = [];
+    for (var i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+        grid.push(0);
+    }
+}
+
+function startApp() {
+    resetGrid();
+    currentMode = 'free';
+    currentChallenge = 0;
+    score = 0;
+    challengeChecked = false;
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    document.getElementById('end-screen').classList.remove('active');
+    updateProgress();
+    updateScore();
+    renderContent();
+}
+
+function switchMode(mode) {
+    currentMode = mode;
+    document.getElementById('tab-free').classList.toggle('active', mode === 'free');
+    document.getElementById('tab-challenge').classList.toggle('active', mode === 'challenge');
+    resetGrid();
+    challengeChecked = false;
+    renderContent();
+}
+
+function updateProgress() {
+    var total = challenges.length;
+    var pct = (currentChallenge / total) * 100;
+    if (currentMode === 'challenge') {
+        pct = (currentChallenge / total) * 100;
+    }
+    var fill = document.getElementById('progress-fill');
+    fill.style.width = pct + '%';
+    fill.textContent = currentChallenge + '/' + total;
+}
+
+function updateScore() {
+    document.getElementById('score-badge').textContent = score + ' / ' + challenges.length;
+}
+
+function renderContent() {
+    var area = document.getElementById('content-area');
+    if (currentMode === 'free') {
+        renderFreeMode(area);
+    } else {
+        renderChallengeMode(area);
+    }
+}
+
+function renderFreeMode(area) {
+    var html = '';
+    html += '<div class="grid-wrapper">';
+    html += buildGridHTML();
+    html += buildBinaryDisplay();
+    html += buildInfoRow();
+    html += '<div class="btn-row">';
+    html += '<button class="btn-action btn-clear" onclick="clearAllPixels()">&#128465; Καθαρισμός</button>';
+    html += '<button class="btn-action btn-check" onclick="fillRandom()">&#127922; Τυχαία</button>';
+    html += '</div>';
+    html += '</div>';
+    area.innerHTML = html;
+}
+
+function renderChallengeMode(area) {
+    if (currentChallenge >= challenges.length) {
+        showEndScreen();
+        return;
+    }
+    var ch = challenges[currentChallenge];
+    var html = '';
+    html += '<div class="challenge-info">';
+    html += '<div class="challenge-name">Πρόκληση ' + (currentChallenge + 1) + ': ' + ch.name + '</div>';
+    html += '<div class="challenge-hint">' + ch.hint + '</div>';
+    html += '<div style="margin-top:10px;font-size:0.9rem;color:#636e72">&#128065; Δες το μοτίβο και αναπαράστησέ το στο πλέγμα!</div>';
+    html += buildTargetGrid(ch.pattern);
+    html += '</div>';
+    html += '<div class="grid-wrapper">';
+    html += buildGridHTML();
+    html += buildBinaryDisplay();
+    html += buildInfoRow();
+    html += '<div id="challenge-feedback"></div>';
+    html += '<div class="btn-row">';
+    html += '<button class="btn-action btn-clear" onclick="clearAllPixels()">&#128465; Καθαρισμός</button>';
+    html += '<button class="btn-action btn-check" id="check-btn" onclick="checkChallenge()">&#9989; Έλεγχος</button>';
+    html += '</div>';
+    html += '<div id="next-btn-area"></div>';
+    html += '</div>';
+    area.innerHTML = html;
+    challengeChecked = false;
+}
+
+function buildGridHTML() {
+    var html = '<div class="pixel-grid" id="pixel-grid">';
+    for (var i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+        html += '<div class="pixel-cell' + (grid[i] ? ' on' : '') + '" data-idx="' + i + '"></div>';
+    }
+    html += '</div>';
+    return html;
+}
+
+function buildTargetGrid(pattern) {
+    var html = '<div class="target-grid">';
+    for (var i = 0; i < pattern.length; i++) {
+        html += '<div class="target-cell' + (pattern[i] ? ' on' : '') + '"></div>';
+    }
+    html += '</div>';
+    return html;
+}
+
+function buildBinaryDisplay() {
+    var html = '<div class="binary-display" id="binary-display">';
+    for (var r = 0; r < GRID_SIZE; r++) {
+        html += '<div class="binary-row">';
+        html += '<span class="row-label">' + (r + 1) + '</span>';
+        html += '<span>';
+        for (var c = 0; c < GRID_SIZE; c++) {
+            var val = grid[r * GRID_SIZE + c];
+            html += '<span class="bit-char ' + (val ? 'one' : 'zero') + '">' + val + '</span>';
+        }
+        html += '</span>';
+        html += '</div>';
+    }
+    html += '</div>';
+    return html;
+}
+
+function buildInfoRow() {
+    var onCount = 0;
+    for (var i = 0; i < grid.length; i++) {
+        if (grid[i]) onCount++;
+    }
+    var totalBits = GRID_SIZE * GRID_SIZE;
+    var totalBytes = totalBits / 8;
+    var html = '<div class="info-row">';
+    html += '<div class="info-pill"> &#9311; Pixels: <strong>' + onCount + ' μαύρα</strong></div>';
+    html += '<div class="info-pill"> &#128230; Μέγεθος: <strong>' + totalBits + ' bits = ' + totalBytes + ' Bytes</strong></div>';
+    html += '</div>';
+    return html;
+}
+
+function togglePixel(idx) {
+    grid[idx] = grid[idx] ? 0 : 1;
+    refreshGridUI();
+}
+
+function setPixel(idx, val) {
+    grid[idx] = val;
+}
+
+function refreshGridUI() {
+    var cells = document.querySelectorAll('#pixel-grid .pixel-cell');
+    for (var i = 0; i < cells.length; i++) {
+        if (grid[i]) {
+            cells[i].classList.add('on');
+        } else {
+            cells[i].classList.remove('on');
+        }
+    }
+    var bd = document.getElementById('binary-display');
+    if (bd) {
+        bd.outerHTML = buildBinaryDisplay();
+    }
+    var infoRows = document.querySelector('.info-row');
+    if (infoRows) {
+        infoRows.outerHTML = buildInfoRow();
+    }
+}
+
+function clearAllPixels() {
+    resetGrid();
+    challengeChecked = false;
+    refreshGridUI();
+    var fb = document.getElementById('challenge-feedback');
+    if (fb) fb.innerHTML = '';
+    var nba = document.getElementById('next-btn-area');
+    if (nba) nba.innerHTML = '';
+    var cb = document.getElementById('check-btn');
+    if (cb) cb.style.display = '';
+}
+
+function fillRandom() {
+    resetGrid();
+    for (var i = 0; i < grid.length; i++) {
+        grid[i] = Math.random() > 0.5 ? 1 : 0;
+    }
+    refreshGridUI();
+}
+
+function checkChallenge() {
+    if (challengeChecked) return;
+    if (currentChallenge >= challenges.length) return;
+    var target = challenges[currentChallenge].pattern;
+    var correct = true;
+    for (var i = 0; i < target.length; i++) {
+        if (grid[i] !== target[i]) {
+            correct = false;
+            break;
+        }
+    }
+    challengeChecked = true;
+    var fb = document.getElementById('challenge-feedback');
+    if (correct) {
+        score++;
+        updateScore();
+        fb.className = 'feedback-area correct-fb';
+        fb.innerHTML = '<span class="feedback-text">&#9989; Τέλεια! Μπράβο σου!</span>';
+    } else {
+        var matches = 0;
+        for (var i = 0; i < target.length; i++) {
+            if (grid[i] === target[i]) matches++;
+        }
+        var pct = Math.round((matches / target.length) * 100);
+        fb.className = 'feedback-area wrong-fb';
+        fb.innerHTML = '<span class="feedback-text">&#10060; Ξαναδοκίμασε! Συμπλήρωσες ' + pct + '% σωστά.</span>';
+    }
+    var cb = document.getElementById('check-btn');
+    if (cb) cb.style.display = 'none';
+    var nba = document.getElementById('next-btn-area');
+    if (nba) {
+        var label = currentChallenge < challenges.length - 1 ? '&#10132;&#65039; Επόμενη Πρόκληση' : '&#127942; Αποτελέσματα';
+        nba.innerHTML = '<div style="text-align:center;margin-top:12px"><button class="btn-next-challenge" onclick="nextChallenge()">' + label + '</button></div>';
+    }
+}
+
+function nextChallenge() {
+    currentChallenge++;
+    updateProgress();
+    resetGrid();
+    challengeChecked = false;
+    if (currentChallenge >= challenges.length) {
+        showEndScreen();
+    } else {
+        renderContent();
+    }
+}
+
+function showEndScreen() {
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('end-screen').classList.add('active');
+    var total = challenges.length;
+    var stars = 1;
+    if (score >= 5) stars = 3;
+    else if (score >= 3) stars = 2;
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        if (i < stars) {
+            starsHtml += '<span class="star">&#11088;</span>';
+        } else {
+            starsHtml += '<span class="star dim">&#11088;</span>';
+        }
+    }
+    document.getElementById('stars-container').innerHTML = starsHtml;
+    var titles = {};
+    titles[3] = '&#127881; Εξαιρετικά! Ήσουν τέλειος/η!';
+    titles[2] = '&#128077; Πολύ καλά! Μπράβο!';
+    titles[1] = '&#128522; Καλή προσπάθεια! Δοκίμασε ξανά!';
+    document.getElementById('end-title').innerHTML = titles[stars];
+    document.getElementById('end-score').textContent = score + ' σωστές προκλήσεις από ' + total + '!';
+    document.getElementById('end-detail').innerHTML = '&#128202; Βαθμολογία: ' + Math.round((score / total) * 100) + '%';
+}
+
+function restartApp() {
+    document.getElementById('end-screen').classList.remove('active');
+    document.getElementById('start-screen').classList.add('active');
+}
+
+document.addEventListener('mousedown', function(e) {
+    var cell = e.target.closest('.pixel-cell');
+    if (!cell) return;
+    e.preventDefault();
+    isPainting = true;
+    var idx = parseInt(cell.dataset.idx);
+    paintValue = grid[idx] ? 0 : 1;
+    setPixel(idx, paintValue);
+    refreshGridUI();
+});
+
+document.addEventListener('mousemove', function(e) {
+    if (!isPainting) return;
+    var cell = e.target.closest('.pixel-cell');
+    if (!cell) return;
+    e.preventDefault();
+    var idx = parseInt(cell.dataset.idx);
+    setPixel(idx, paintValue);
+    refreshGridUI();
+});
+
+document.addEventListener('mouseup', function() {
+    isPainting = false;
+});
+
+document.addEventListener('touchstart', function(e) {
+    var cell = e.target.closest('.pixel-cell');
+    if (!cell) return;
+    e.preventDefault();
+    isPainting = true;
+    var idx = parseInt(cell.dataset.idx);
+    paintValue = grid[idx] ? 0 : 1;
+    setPixel(idx, paintValue);
+    refreshGridUI();
+}, { passive: false });
+
+document.addEventListener('touchmove', function(e) {
+    if (!isPainting) return;
+    var touch = e.touches[0];
+    var el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!el) return;
+    var cell = el.closest('.pixel-cell');
+    if (!cell) return;
+    e.preventDefault();
+    var idx = parseInt(cell.dataset.idx);
+    setPixel(idx, paintValue);
+    refreshGridUI();
+}, { passive: false });
+
+document.addEventListener('touchend', function() {
+    isPainting = false;
+});
+</script>
+</body>
+</html>

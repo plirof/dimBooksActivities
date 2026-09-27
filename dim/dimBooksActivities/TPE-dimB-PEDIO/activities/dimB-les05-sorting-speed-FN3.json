@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Σωστό ή Λάθος;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Σωστό ή Λάθος;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Το μοτίβο ταιριάζει στο μονοπάτι", "category": "swsto"},
+    {"text": "Βγαίνει εκτός πλέγματος", "category": "lathos"},
+    {"text": "Φτάνει στο σπίτι", "category": "swsto"},
+    {"text": "Χαμένες εντολές", "category": "lathos"},
+    {"text": "Ο αριθμός επαναλήψεων ταιριάζει", "category": "swsto"},
+    {"text": "Λάθος κατεύθυνση στροφής", "category": "lathos"},
+    {"text": "Ακολουθεί το μονοπάτι σωστά", "category": "swsto"},
+    {"text": "Περισσότερες επαναλήψεις απ' όσες χρειάζεται", "category": "lathos"}
+  ],
+  "duration": 30
+}

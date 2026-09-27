@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Στοιχεία Χαρτών",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΣΤΟΙΧΕΙΑ ΕΝΝΟΙΟΛΟΓΙΚΩΝ ΧΑΡΤΩΝ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Κεντρική έννοια", "correct": true, "color": "#4CAF50"},
+    {"text": "Μαγειρική", "correct": false, "color": "#f44336"},
+    {"text": "Σχήμα", "correct": true, "color": "#2196F3"},
+    {"text": "Κολύμπι", "correct": false, "color": "#FF9800"},
+    {"text": "Γραμμή σύνδεσης", "correct": true, "color": "#9C27B0"},
+    {"text": "Ποδόσφαιρο", "correct": false, "color": "#E91E63"},
+    {"text": "Ιεραρχικό επίπεδο", "correct": true, "color": "#00BCD4"},
+    {"text": "Καθαριότητα", "correct": false, "color": "#FFC107"},
+    {"text": "Ακτίνα", "correct": true, "color": "#795548"},
+    {"text": "Ζωγραφική", "correct": false, "color": "#607D8B"}
+  ]
+}

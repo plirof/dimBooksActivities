@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Πέτρα-Ψαλίδι-Χαρτί 🪨✂️📄</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(102,126,234,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #667eea; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #e8f5e9; border: 2px dashed #66bb6a; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #2e7d32;
+  }
+  .microbit-box {
+    background: #fff; border-radius: 24px; padding: 16px;
+    margin-bottom: 14px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  }
+  .mb-frame {
+    display: inline-block; background: linear-gradient(135deg, #37474f, #546e7a);
+    border-radius: 16px; padding: 18px 22px; position: relative;
+  }
+  .mb-leds {
+    display: grid; grid-template-columns: repeat(5,1fr); grid-gap: 5px; margin-bottom: 14px;
+  }
+  .mb-led {
+    width: 26px; height: 26px; border-radius: 50%; background: #1a237e;
+    transition: all .3s;
+  }
+  .mb-led.on { background: #ff1744; box-shadow: 0 0 8px #ff1744; }
+  .mb-led.yellow { background: #ffeb3b; box-shadow: 0 0 8px #ffeb3b; }
+  .mb-led.green { background: #76ff03; box-shadow: 0 0 8px #76ff03; }
+  .mb-led.cyan { background: #00e5ff; box-shadow: 0 0 8px #00e5ff; }
+  .mb-buttons {
+    display: flex; gap: 20px; justify-content: center; margin-top: 10px;
+  }
+  .mb-btn {
+    border: none; border-radius: 50%; width: 50px; height: 50px;
+    font-size: 1.5rem; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,.3);
+    transition: transform .1s; font-family: inherit;
+  }
+  .mb-btn:active { transform: scale(.85); }
+  .mb-btn.a { background: #bbdefb; }
+  .mb-btn.b { background: #ffccbc; }
+  .mb-btn.logo { background: #ffd54f; border-radius: 30%!important; }
+  .mb-label { font-size: .7rem; color: #fff; margin-top: 4px; font-weight: 600; }
+  .play-area { text-align: center; }
+  .choices { display: flex; gap: 14px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+  .choice-btn {
+    background: #fff; border: 4px solid #e0e0e0; border-radius: 20px;
+    padding: 14px 20px; cursor: pointer; transition: all .2s;
+    text-align: center; user-select: none; -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .choice-btn:active { transform: scale(.9); }
+  .choice-btn .cb-emoji { font-size: 3rem; }
+  .choice-btn .cb-text { font-size: .9rem; font-weight: 700; color: #555; margin-top: 4px; }
+  .choice-btn.selected { border-color: #667eea; background: #e8eaf6; transform: scale(1.05); }
+  .choice-btn.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .choice-btn.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .choice-btn.disabled { pointer-events: none; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .feedback { text-align:center; padding:14px; border-radius:16px; font-size:1.1rem; font-weight:700; margin-bottom:12px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.yay { background:#d4edda; color:#155724; }
+  .feedback.nay { background:#f8d7da; color:#721c24; }
+  .result-screen { background:#fff; border-radius:24px; box-shadow:0 8px 28px rgba(0,0,0,.1); padding:40px 24px; text-align:center; display:none; }
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(102,126,234,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}.mb-led{width:22px;height:22px}.choice-btn .cb-emoji{font-size:2.5rem}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .mb-buttons > * + * { margin-left: 20px; }
+  .choices > * { margin: 7px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🪨 Πέτρα-Ψαλίδι-Χαρτί ✂️📄</h1>
+    <p>Πάτα τα κουμπιά του micro:bit για να παίξεις!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Γύρος 1</span>
+  </div>
+  <div class="instructions">🎮 Πάτα ένα κουμπί και μετά διάλεξε το σωστό σύμβολο!</div>
+  <div id="gameArea">
+    <div class="microbit-box">
+      <div class="mb-frame">
+        <div class="mb-leds" id="mbLeds"></div>
+        <div style="color:#fff;font-size:.8rem;font-weight:600;">🔲 micro:bit</div>
+        <div class="mb-buttons">
+          <div style="text-align:center"><button class="mb-btn a" id="pressA">A</button><div class="mb-label">🅰️</div></div>
+          <div style="text-align:center"><button class="mb-btn logo" id="pressLogo">🔶</button><div class="mb-label">Λογότυπο</div></div>
+          <div style="text-align:center"><button class="mb-btn b" id="pressB">B</button><div class="mb-label">🅱️</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="play-area">
+      <p style="font-weight:700;margin-bottom:8px;color:#2d3436;">Τι εμφανίζεται όταν το πατάς;</p>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var rounds = [
+    {btnName:'A', btnLabel:'🅰️', btnId:'a', patternKey:'scissors', correctIdx:0,
+     patterns:{
+       scissors:[[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]],
+       paper:[[0,1,1,1,0],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[0,1,1,1,0]],
+       rock:[[0,0,1,1,0],[0,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[0,1,1,1,0]]
+     },
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]},
+    {btnName:'B', btnLabel:'🅱️', btnId:'b', patternKey:'paper', correctIdx:1,
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]},
+    {btnName:'Logo', btnLabel:'🔶', btnId:'logo', patternKey:'rock', correctIdx:2,
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]},
+    {btnName:'A', btnLabel:'🅰️', btnId:'a', patternKey:'paper', correctIdx:1,
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]},
+    {btnName:'B', btnLabel:'🅱️', btnId:'b', patternKey:'rock', correctIdx:2,
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]},
+    {btnName:'Logo', btnLabel:'🔶', btnId:'logo', patternKey:'scissors', correctIdx:0,
+     choices:[{e:'✂️',t:'Ψαλίδι'},{e:'📄',t:'Χαρτί'},{e:'🪨',t:'Πέτρα'}]}
+  ];
+  var cur=0,score=0;
+
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function renderLEDs(round){
+    var grid=document.getElementById('mbLeds');grid.innerHTML='';
+    var p=round.patterns[round.patternKey];
+    for(var r=0;r<5;r++){for(var c=0;c<5;c++){
+      var d=document.createElement('div');d.className='mb-led'+(p[r][c]?' on':'');
+      grid.appendChild(d);
+    }}
+  }
+  function startGame(){
+    shuffle(rounds);cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    loadRound();
+  }
+  function loadRound(){
+    if(cur>=rounds.length){showResult();return;}
+    var r=rounds[cur];
+    document.getElementById('roundDisplay').textContent='Γύρος '+(cur+1)+'/'+rounds.length;
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    renderLEDs(r);
+    var ch=document.getElementById('choices');ch.innerHTML='';
+    for(var i=0;i<r.choices.length;i++){
+      (function(idx){
+        var b=document.createElement('button');b.className='choice-btn';
+        b.innerHTML='<div class="cb-emoji">'+r.choices[idx].e+'</div><div class="cb-text">'+r.choices[idx].t+'</div>';
+        b.addEventListener('click',function(){choose(idx);});
+        ch.appendChild(b);
+      })(i);
+    }
+    var btnA=document.getElementById('pressA');btnA.style.background=r.btnId==='a'?'#90caf9':'#bbdefb';
+    var btnB=document.getElementById('pressB');btnB.style.background=r.btnId==='b'?'#ffab91':'#ffccbc';
+    var btnLogo=document.getElementById('pressLogo');btnLogo.style.background=r.btnId==='logo'?'#ffca28':'#ffd54f';
+  }
+  function choose(idx){
+    var r=rounds[cur];var fb=document.getElementById('feedback');
+    var btns=document.querySelectorAll('.choice-btn');
+    for(var i=0;i<btns.length;i++)btns[i].classList.add('disabled');
+    if(idx===r.correctIdx){score++;
+      document.getElementById('scoreDisplay').textContent='⭐ '+score;
+      btns[idx].classList.add('correct');
+      fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Αυτό εμφανίζεται!';
+    }else{
+      btns[idx].classList.add('wrong');btns[r.correctIdx].classList.add('correct');
+      fb.className='feedback show nay';fb.textContent='❌ Το σωστό είναι: '+r.choices[r.correctIdx].t;
+    }
+    setTimeout(function(){cur++;loadRound();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=rounds.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Μπράβο! Ξέρεις το παιχνίδι Πέτρα-Ψαλίδι-Χαρτί στο micro:bit!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Τα πήγες πολύ καλά!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Βρήκες '+score+' από '+total+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

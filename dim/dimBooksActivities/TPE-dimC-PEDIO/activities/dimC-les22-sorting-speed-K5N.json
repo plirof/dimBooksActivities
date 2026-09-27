@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Animation",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Animation = γρήγορη προβολή εικόνων", "category": "swsto"},
+    {"text": "Μία εικόνα φτάνει για animation", "category": "lathos"},
+    {"text": "TuxPaint φτιάχνει κινούμενα", "category": "swsto"},
+    {"text": "Οι εικόνες πρέπει να είναι ίδιες", "category": "lathos"},
+    {"text": "GIF = κινούμενη εικόνα", "category": "swsto"},
+    {"text": "Πινέλο = εργαλείο σχεδίασης", "category": "swsto"},
+    {"text": "Χρειάζονται αργή εναλλαγή", "category": "lathos"},
+    {"text": "Ντίσνεϊ 1937 = Χιονάτη", "category": "swsto"},
+    {"text": "Γέμισμα = εργαλείο χρώματος", "category": "swsto"},
+    {"text": "Δεν αποθηκεύω τις εικόνες", "category": "lathos"}
+  ],
+  "duration": 30
+}

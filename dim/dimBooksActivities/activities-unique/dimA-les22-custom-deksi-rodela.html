@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Δεξί κλικ ή Ροδέλα; 🖱️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7, #ce93d8);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(106,27,154,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #6a1b9a; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .scenario {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 28px 20px; text-align: center; margin-bottom: 16px;
+  }
+  .scenario .sc-emoji { font-size: 4rem; display: block; margin-bottom: 10px; }
+  .scenario .sc-text { font-size: 1.2rem; font-weight: 700; color: #333; }
+  .scenario .sc-hint { font-size: 1rem; color: #888; margin-top: 8px; }
+  .mouse-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px;
+  }
+  .mouse-opt {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 18px; padding: 16px 10px; text-align: center;
+    cursor: pointer; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .mouse-opt .mo-emoji { font-size: 2.5rem; display: block; margin-bottom: 6px; }
+  .mouse-opt .mo-title { font-size: 1rem; font-weight: 700; color: #333; }
+  .mouse-opt:active:not(.disabled) { transform: scale(.95); }
+  .mouse-opt.correct { border-color: #43a047; background: #e8f5e9; animation: pop .3s ease; }
+  .mouse-opt.wrong { border-color: #e53935; background: #ffebee; animation: shake .35s ease; }
+  .mouse-opt.disabled { pointer-events: none; opacity: .5; }
+  .mouse-opt.reveal { border-color: #43a047; background: #e8f5e9; opacity: 1; }
+  @keyframes pop { 0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}60%{transform:translateX(5px)} }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(106,27,154,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:active { transform: scale(.95); }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .scenario .sc-emoji { font-size: 3rem; }
+    .mouse-opt .mo-emoji { font-size: 2rem; }
+    .mouse-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🖱️ Δεξί κλικ ή Ροδέλα;</h1>
+    <p>Διάλεξε τη σωστή κίνηση!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ερώτηση 1/9</span>
+  </div>
+  <div class="instructions">
+    👀 Κοίτα τι θέλεις να κάνεις. Πάτησε τη σωστή κίνηση του ποντικιού!
+  </div>
+  <div id="gameArea">
+    <div class="scenario">
+      <span class="sc-emoji" id="scEmoji">📋</span>
+      <span class="sc-text" id="scText">Θέλω να δω ένα μενού με επιλογές</span>
+      <span class="sc-hint" id="scHint">Τι θα πατήσω;</span>
+    </div>
+    <div class="mouse-grid" id="mouseGrid"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Ξέρεις όλες τις κινήσεις του ποντικιού!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var questions = [
+    { emoji: '📋', text: 'Θέλω να δω ένα μενού με επιλογές', answer: 0 },
+    { emoji: '📄', text: 'Θέλω να κυλήσω προς τα κάτω', answer: 1 },
+    { emoji: '✋', text: 'Θέλω να μετακινήσω ένα αρχείο', answer: 2 },
+    { emoji: '🔧', text: 'Θέλω να αλλάξω τις ρυθμίσεις', answer: 0 },
+    { emoji: '📃', text: 'Θέλω να δω την υπόλοιπη σελίδα', answer: 1 },
+    { emoji: '📁', text: 'Θέλω να σύρω έναν φάκελο αλλού', answer: 2 },
+    { emoji: '🎨', text: 'Θέλω να δω επιλογές χρωμάτων', answer: 0 },
+    { emoji: '🌐', text: 'Θέλω να κατεβώ σε μια ιστοσελίδα', answer: 1 },
+    { emoji: '🖼️', text: 'Θέλω να σύρω μια εικόνα στον φάκελο', answer: 2 }
+  ];
+
+  var mouseActions = [
+    { emoji: '👉', name: 'Δεξί κλικ' },
+    { emoji: '🔄', name: 'Ροδέλα' },
+    { emoji: '✋', name: 'Σύρε' }
+  ];
+
+  var shuffled = [];
+  var current = 0, score = 0;
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffled = shuffle(questions.slice());
+    current = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showQ();
+  }
+
+  function showQ() {
+    if (current >= shuffled.length) { showResult(); return; }
+    var q = shuffled[current];
+    document.getElementById('scEmoji').textContent = q.emoji;
+    document.getElementById('scText').textContent = q.text;
+    document.getElementById('scHint').textContent = 'Τι θα πατήσω;';
+    document.getElementById('roundDisplay').textContent = 'Ερώτηση ' + (current+1) + '/' + shuffled.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    var grid = document.getElementById('mouseGrid');
+    grid.innerHTML = '';
+    var shuffledActs = mouseActions.slice();
+    shuffle(shuffledActs);
+    for (var i = 0; i < shuffledActs.length; i++) {
+      var opt = document.createElement('div');
+      opt.className = 'mouse-opt';
+      var origIdx = -1;
+      for (var j = 0; j < mouseActions.length; j++) {
+        if (mouseActions[j].name === shuffledActs[i].name) { origIdx = j; break; }
+      }
+      opt.setAttribute('data-orig', origIdx);
+      opt.innerHTML = '<span class="mo-emoji">' + shuffledActs[i].emoji + '</span><span class="mo-title">' + shuffledActs[i].name + '</span>';
+      opt.addEventListener('click', pick);
+      grid.appendChild(opt);
+    }
+  }
+
+  function pick(el) {
+    var q = shuffled[current];
+    var idx = parseInt(el.getAttribute('data-orig'));
+    var correct = (idx === q.answer);
+    var all = document.querySelectorAll('.mouse-opt');
+    for (var i = 0; i < all.length; i++) all[i].classList.add('disabled');
+    var fb = document.getElementById('feedback');
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      el.classList.add('correct');
+      fb.className = 'feedback show true';
+      fb.textContent = '✅ Μπράβο! ' + mouseActions[idx].name + ' — σωστά!';
+      setTimeout(function() { current++; showQ(); }, 1000);
+    } else {
+      el.classList.add('wrong');
+      for (var i = 0; i < all.length; i++) {
+        if (parseInt(all[i].getAttribute('data-orig')) === q.answer) all[i].classList.add('reveal');
+      }
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Εδώ θέλει ' + mouseActions[q.answer].name + '!';
+      setTimeout(function() { current++; showQ(); }, 1400);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = shuffled.length;
+    var e, ti, m;
+    if (score === t) { e = '🏆'; ti = 'Τέλεια!'; m = 'Ξέρεις όλες τις κινήσεις του ποντικιού!' }
+    else if (score >= 7) { e = '🎉'; ti = 'Μπράβο!'; m = 'Τα πήγες πολύ καλά!' }
+    else if (score >= 4) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά!' }
+    else { e = '💪'; ti = 'Καλή αρχή!'; m = 'Δεξί κλικ = μενού, Ροδέλα = κύλιση, Σύρε = μετακίνηση!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + t + ' σωστά! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

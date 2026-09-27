@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Φωτόδεντρο ή Εκπαιδευτική Τηλεόραση;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Φωτόδεντρο ή Τηλεόραση;",
+  "categories": [
+    {"id": "fotodentro", "name": "Φωτόδεντρο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "tileorasi", "name": "Τηλεόραση", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Παιχνίδια", "category": "fotodentro"},
+    {"text": "Εκπομπές", "category": "tileorasi"},
+    {"text": "Κουίζ", "category": "fotodentro"},
+    {"text": "Σποτ", "category": "tileorasi"},
+    {"text": "Εφαρμογές", "category": "fotodentro"},
+    {"text": "Μορφωτικά προγράμματα", "category": "tileorasi"},
+    {"text": "Παρουσιάσεις", "category": "fotodentro"},
+    {"text": "Ιδρύθηκε το 1977", "category": "tileorasi"}
+  ],
+  "duration": 30
+}

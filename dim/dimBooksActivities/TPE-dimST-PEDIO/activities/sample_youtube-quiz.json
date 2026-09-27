@@ -1,0 +1,27 @@
+{
+  "videoId": "AuWfpTmds0I",
+  "title": "Video Quiz",
+  "questions": [
+    {
+      "time": 3,
+      "text": "Ποιο είναι το χρώμα του ουρανού;",
+      "type": "mc",
+      "options": ["Μπλε", "Κόκκινο", "Πράσινο", "Κίτρινο"],
+      "correctIndex": 0
+    },
+    {
+      "time": 10,
+      "text": "Πόσα είναι 2 + 2;",
+      "type": "mc",
+      "options": ["3", "4", "5", "6"],
+      "correctIndex": 1
+    },
+    {
+      "time": 150,
+      "text": "Ποια είναι η πρωτεύουσα της Ελλάδας;",
+      "type": "mc",
+      "options": ["Θεσσαλονίκη", "Πάτρα", "Αθήνα", "Ηράκλειο"],
+      "correctIndex": 2
+    }
+  ]
+}

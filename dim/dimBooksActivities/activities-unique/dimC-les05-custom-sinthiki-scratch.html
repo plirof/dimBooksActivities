@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βρες τη Συνθήκη!</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #5CB1D6 0%, #40A4C4 30%, #9966FF 100%);
+min-height: 100vh;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 5px;
+font-size: 1.8rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #d0e8ff;
+text-align: center;
+margin-bottom: 15px;
+font-size: 1rem;
+max-width: 700px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 25px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+background: #eee;
+border-radius: 10px;
+height: 24px;
+margin-bottom: 20px;
+overflow: hidden;
+position: relative;
+}
+.progress-fill {
+background: linear-gradient(90deg, #5CB1D6, #40A4C4);
+height: 100%;
+border-radius: 10px;
+transition: width 0.5s ease;
+}
+.progress-text {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 0.75rem;
+font-weight: bold;
+color: #333;
+}
+.question-counter {
+font-size: 0.85rem;
+color: #888;
+text-align: center;
+margin-bottom: 8px;
+font-weight: bold;
+}
+.scenario-box {
+background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 20px;
+text-align: center;
+}
+.scenario-emoji {
+font-size: 3rem;
+margin-bottom: 10px;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.scenario-text {
+font-size: 1.1rem;
+color: #333;
+line-height: 1.6;
+font-weight: bold;
+}
+.code-preview {
+background: #fff3e0;
+border-radius: 12px;
+padding: 15px;
+margin: 15px 0;
+border-left: 4px solid #FFAB19;
+text-align: left;
+}
+.code-line {
+display: flex;
+align-items: center;
+gap: 8px;
+margin: 4px 0;
+font-size: 0.95rem;
+}
+.code-indent {
+margin-left: 25px;
+}
+.block-inline {
+display: inline-block;
+padding: 4px 10px;
+border-radius: 6px;
+color: white;
+font-weight: bold;
+font-size: 0.85rem;
+}
+.block-inline.events { background: #FFBF00; color: #333; }
+.block-inline.control { background: #FFAB19; }
+.block-inline.sensing { background: #5CB1D6; }
+.block-inline.looks { background: #9966FF; }
+.block-inline.motion { background: #4C97FF; }
+.question-text {
+font-size: 1.05rem;
+color: #444;
+text-align: center;
+margin-bottom: 18px;
+font-weight: bold;
+line-height: 1.5;
+}
+.options-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-gap: 12px;
+margin-bottom: 20px;
+}
+.option-btn {
+padding: 16px 12px;
+border: 3px solid #ddd;
+border-radius: 14px;
+background: white;
+cursor: pointer;
+font-size: 0.95rem;
+font-weight: bold;
+color: #333;
+transition: all 0.2s ease;
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+user-select: none;
+-webkit-user-select: none;
+}
+.option-btn:hover {
+border-color: #5CB1D6;
+background: #f0f9ff;
+transform: translateY(-2px);
+}
+.option-btn:active {
+transform: translateY(0);
+}
+.option-emoji {
+font-size: 1.8rem;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.option-btn.selected-correct {
+border-color: #4CAF50;
+background: #E8F5E9;
+color: #2E7D32;
+}
+.option-btn.selected-wrong {
+border-color: #EF5350;
+background: #FFEBEE;
+color: #C62828;
+}
+.option-btn.reveal-correct {
+border-color: #4CAF50;
+background: #E8F5E9;
+color: #2E7D32;
+}
+.option-btn.disabled {
+pointer-events: none;
+opacity: 0.7;
+}
+.scratch-block-display {
+display: inline-block;
+padding: 6px 12px;
+border-radius: 8px;
+color: white;
+font-weight: bold;
+font-size: 0.9rem;
+position: relative;
+}
+.scratch-block-display::after {
+content: '';
+position: absolute;
+bottom: -3px;
+left: 8px;
+right: 8px;
+height: 3px;
+background: rgba(0,0,0,0.12);
+border-radius: 0 0 3px 3px;
+}
+.explanation {
+background: #E3F2FD;
+border-radius: 12px;
+padding: 15px;
+margin-top: 15px;
+font-size: 0.95rem;
+color: #1565C0;
+line-height: 1.5;
+display: none;
+text-align: center;
+border: 2px solid #90CAF9;
+}
+.explanation.show {
+display: block;
+}
+.btn {
+padding: 14px 30px;
+border: none;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.2s ease;
+display: block;
+margin: 0 auto;
+}
+.btn-next {
+background: linear-gradient(135deg, #5CB1D6, #40A4C4);
+color: white;
+margin-top: 15px;
+}
+.btn-next:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.btn-next:disabled {
+opacity: 0.5;
+cursor: default;
+transform: none;
+box-shadow: none;
+}
+.btn-retry {
+background: linear-gradient(135deg, #FF9800, #F57C00);
+color: white;
+margin-top: 10px;
+}
+.feedback {
+text-align: center;
+padding: 12px;
+border-radius: 12px;
+margin-top: 12px;
+font-size: 1rem;
+font-weight: bold;
+display: none;
+}
+.feedback.correct {
+background: #E8F5E9;
+color: #2E7D32;
+border: 2px solid #4CAF50;
+display: block;
+}
+.feedback.wrong {
+background: #FFEBEE;
+color: #C62828;
+border: 2px solid #EF5350;
+display: block;
+}
+.completion-screen {
+display: none;
+text-align: center;
+padding: 30px 20px;
+}
+.completion-screen h2 {
+font-size: 1.8rem;
+color: #333;
+margin-bottom: 10px;
+}
+.stars {
+font-size: 3rem;
+margin: 15px 0;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.score-text {
+font-size: 1.3rem;
+color: #555;
+margin-bottom: 20px;
+}
+.score-detail {
+font-size: 0.95rem;
+color: #888;
+margin-bottom: 15px;
+}
+.build-area {
+background: #fff8e1;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 20px;
+border: 3px dashed #FFB300;
+}
+.build-title {
+font-size: 1rem;
+font-weight: bold;
+color: #E65100;
+margin-bottom: 12px;
+text-align: center;
+}
+.build-slots {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.build-slot {
+background: rgba(0,0,0,0.05);
+border: 2px dashed #ccc;
+border-radius: 10px;
+min-height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.2s ease;
+padding: 8px;
+}
+.build-slot.highlight {
+border-color: #FF9800;
+background: rgba(255, 152, 0, 0.1);
+}
+.build-slot.filled {
+border-style: solid;
+cursor: pointer;
+}
+.build-slot .slot-hint {
+font-size: 0.85rem;
+color: #aaa;
+}
+.build-blocks {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+justify-content: center;
+margin-top: 12px;
+}
+.build-block {
+padding: 8px 14px;
+border-radius: 8px;
+color: white;
+font-weight: bold;
+font-size: 0.85rem;
+cursor: pointer;
+box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+transition: transform 0.15s ease;
+user-select: none;
+-webkit-user-select: none;
+}
+.build-block:hover {
+transform: translateY(-2px);
+}
+.build-block.selected {
+outline: 3px solid #333;
+outline-offset: 2px;
+}
+.build-block.used-block {
+opacity: 0.3;
+pointer-events: none;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .code-line > * + * { margin-left: 8px; }
+  .option-btn > * + * { margin-top: 6px; }
+  .build-slots > * + * { margin-top: 8px; }
+  .build-blocks > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Βρες τη Συνθήκη!</h1>
+<p class="subtitle">Μάθε τις συνθήκες του Scratch και φτιάξε τα σωστά προγράμματα!</p>
+<div class="container">
+<div id="gameArea">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<span class="progress-text" id="progressText">0 / 8</span>
+</div>
+<div id="questionArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="explanation" id="explanation"></div>
+<button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Επόμενο ➡️</button>
+</div>
+<div class="completion-screen" id="completionScreen">
+<h2>🎉 Υπέροχα! Τα έμαθες όλα!</h2>
+<div class="stars" id="stars"></div>
+<div class="score-text" id="scoreText"></div>
+<div class="score-detail" id="scoreDetail"></div>
+<button class="btn btn-retry" onclick="restartGame()">Παίξε ξανά! 🔄</button>
+</div>
+</div>
+<script>
+var questions = [
+{
+type: 'choice',
+emoji: '🐱🐶',
+scenario: 'Θέλουμε η γάτα να πει "Γεια!" όταν συναντά το σκυλάκι.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε πες "Γεια!"', cls: 'looks', indent: true }
+],
+question: 'Ποια συνθήκη χρειαζόμαστε;',
+options: [
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: false },
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: true },
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: false },
+{ text: 'πλήκτρο πατημένο', emoji: '⌨️', correct: false }
+],
+explanation: 'Η σωστή συνθήκη είναι «αγγίζει Σκυλάκι» γιατί θέλουμε η γάτα να αντιδράσει όταν ακουμπάει το σκυλάκι!'
+},
+{
+type: 'choice',
+emoji: '🐱🖱️',
+scenario: 'Θέλουμε η γάτα να πει "Μιαού!" όταν πάμε το ποντίκι πάνω της.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε πες "Μιαού!"', cls: 'looks', indent: true }
+],
+question: 'Ποια συνθήκη χρειαζόμαστε;',
+options: [
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: false },
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: false },
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: true },
+{ text: 'πλήκτρο Δ πατημένο', emoji: '⌨️', correct: false }
+],
+explanation: 'Η σωστή συνθήκη είναι «αγγίζει δείκτη ποντικιού» γιατί θέλουμε η γάτα να αντιδράσει όταν το ποντίκι του υπολογιστή είναι πάνω της!'
+},
+{
+type: 'choice',
+emoji: '🐱📐',
+scenario: 'Θέλουμε η γάτα να γυρίσει πίσω όταν φτάσει στην άκρη της σκηνής.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε γύρισε πίσω', cls: 'motion', indent: true }
+],
+question: 'Ποια συνθήκη χρειαζόμαστε;',
+options: [
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: false },
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: false },
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: true },
+{ text: 'πλήκτρο πατημένο', emoji: '⌨️', correct: false }
+],
+explanation: 'Η σωστή συνθήκη είναι «αγγίζει όριο σκηνής» γιατί θέλουμε η γάτα να γυρίσει όταν φτάνει στα όρια!'
+},
+{
+type: 'choice',
+emoji: '⌨️🐱',
+scenario: 'Θέλουμε η γάτα να κινηθεί όταν πατάμε το πλήκτρο δεξί βέλος.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε κινήσου 10 βήματα', cls: 'motion', indent: true }
+],
+question: 'Ποια συνθήκη χρειαζόμαστε;',
+options: [
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: false },
+{ text: 'πλήκτρο δεξί βέλος πατημένο', emoji: '⌨️', correct: true },
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: false },
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: false }
+],
+explanation: 'Η σωστή συνθήκη είναι «πλήκτρο δεξί βέλος πατημένο» γιατί θέλουμε η γάτα να κινείται όταν πατάμε το βέλος!'
+},
+{
+type: 'choice',
+emoji: '🐱🐶',
+scenario: 'Θέλουμε η γάτα να αλλάξει κοστούμι όταν ακουμπάει το σκυλάκι.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε άλλαξε κοστούμι', cls: 'looks', indent: true }
+],
+question: 'Ποια συνθήκη χρειαζόμαστε;',
+options: [
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: false },
+{ text: 'πλήκτρο πατημένο', emoji: '⌨️', correct: false },
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: true },
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: false }
+],
+explanation: 'Η σωστή συνθήκη είναι «αγγίζει Σκυλάκι» γιατί θέλουμε η γάτα να αλλάξει όταν συναντά το σκυλάκι!'
+},
+{
+type: 'choice',
+emoji: '🐱🎨',
+scenario: 'Θέλουμε η γάτα να πει "Ωχ!" όταν αγγίζει την άκρη και να σταματήσει.',
+codePreview: [
+{ text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ text: '⬥ αν', cls: 'control', indent: false },
+{ text: '???', cls: 'sensing', indent: true },
+{ text: 'τότε πες "Ωχ!"', cls: 'looks', indent: true }
+],
+question: 'Ποια συνθήκη ΔΕΝ είναι η σωστή;',
+options: [
+{ text: 'αγγίζει όριο σκηνής', emoji: '📐', correct: false },
+{ text: 'αγγίζει Σκυλάκι', emoji: '🐶', correct: true },
+{ text: 'αγγίζει δείκτη ποντικιού', emoji: '🖱️', correct: false },
+{ text: 'πλήκτρο πατημένο', emoji: '⌨️', correct: false }
+],
+explanation: 'Η συνθήκη «αγγίζει Σκυλάκι» δεν μας βοηθάει εδώ — θέλουμε «αγγίζει όριο σκηνής» γιατί η γάτα φτάνει στην άκρη!'
+},
+{
+type: 'build',
+emoji: '🐱💬',
+scenario: 'Φτιάξε το πρόγραμμα: η γάτα λέει "Γεια σου!" όταν αγγίζει το σκυλάκι.',
+slots: ['Τι γεγονός ξεκινά το πρόγραμμα;', 'Ποια εντολή ελέγχου;', 'Ποια συνθήκη;', 'Τι κάνει η γάτα;'],
+correctOrder: ['event-flag', 'control-if', 'sensing-dog', 'looks-say'],
+blocks: [
+{ id: 'event-flag', text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ id: 'control-if', text: 'αν ⬥ τότε', cls: 'control' },
+{ id: 'sensing-dog', text: '🔵 αγγίζει Σκυλάκι;', cls: 'sensing' },
+{ id: 'looks-say', text: '💬 πες "Γεια σου!"', cls: 'looks' }
+]
+},
+{
+type: 'build',
+emoji: '🐱🔄🐶',
+scenario: 'Φτιάξε το πλήρες πρόγραμμα: η γάτα ελέγχει αν αγγίζει το σκυλάκι και λέει "Φίλοι!"',
+slots: ['Γεγονός', 'Εντολή ελέγχου', 'Συνθήκη', 'Ενέργεια'],
+correctOrder: ['event-flag2', 'control-if2', 'sensing-dog2', 'looks-say2'],
+blocks: [
+{ id: 'looks-say2', text: '💬 πες "Φίλοι!"', cls: 'looks' },
+{ id: 'sensing-dog2', text: '🔵 αγγίζει Σκυλάκι;', cls: 'sensing' },
+{ id: 'event-flag2', text: '🚩 όταν πατηθεί πράσινη σημαία', cls: 'events' },
+{ id: 'control-if2', text: 'αν ⬥ τότε', cls: 'control' }
+]
+}
+];
+
+var currentQuestion = 0;
+var score = 0;
+var answered = false;
+var selectedBuildSlot = -1;
+var buildPlaced = [];
+
+function loadQuestion() {
+var q = questions[currentQuestion];
+var area = document.getElementById('questionArea');
+answered = false;
+selectedBuildSlot = -1;
+buildPlaced = [];
+document.getElementById('nextBtn').disabled = true;
+document.getElementById('feedback').className = 'feedback';
+document.getElementById('feedback').style.display = 'none';
+document.getElementById('explanation').className = 'explanation';
+
+if (q.type === 'choice') {
+renderChoiceQuestion(q, area);
+} else {
+renderBuildQuestion(q, area);
+}
+}
+
+function renderChoiceQuestion(q, area) {
+var html = '<div class="question-counter">Ερώτηση ' + (currentQuestion + 1) + ' / ' + questions.length + '</div>';
+
+html += '<div class="scenario-box">';
+html += '<div class="scenario-emoji">' + q.emoji + '</div>';
+html += '<div class="scenario-text">' + q.scenario + '</div>';
+html += '</div>';
+
+if (q.codePreview) {
+html += '<div class="code-preview">';
+for (var i = 0; i < q.codePreview.length; i++) {
+var line = q.codePreview[i];
+var indent = line.indent ? ' code-indent' : '';
+html += '<div class="code-line' + indent + '"><span class="scratch-block-display ' + line.cls + '">' + line.text + '</span></div>';
+}
+html += '</div>';
+}
+
+html += '<div class="question-text">' + q.question + '</div>';
+
+html += '<div class="options-grid">';
+for (var j = 0; j < q.options.length; j++) {
+html += '<div class="option-btn" data-index="' + j + '" onclick="selectOption(' + j + ')">';
+html += '<span class="option-emoji">' + q.options[j].emoji + '</span>';
+html += '<span>' + q.options[j].text + '</span>';
+html += '</div>';
+}
+html += '</div>';
+
+area.innerHTML = html;
+}
+
+function renderBuildQuestion(q, area) {
+var html = '<div class="question-counter">Ερώτηση ' + (currentQuestion + 1) + ' / ' + questions.length + '</div>';
+
+html += '<div class="scenario-box">';
+html += '<div class="scenario-emoji">' + q.emoji + '</div>';
+html += '<div class="scenario-text">' + q.scenario + '</div>';
+html += '</div>';
+
+html += '<div class="build-area">';
+html += '<div class="build-title">🧱 Πάτα τα μπλοκ με τη σειρά — γεμίζουν τα κουτάκια ένα-ένα. Αν κάνεις λάθος, πάτα το κουτάκι για να το αδειάσεις.</div>';
+
+html += '<div class="build-slots">';
+buildPlaced = new Array(q.slots.length).fill(null);
+for (var i = 0; i < q.slots.length; i++) {
+html += '<div class="build-slot" data-slot="' + i + '" onclick="clickBuildSlot(' + i + ')">';
+html += '<span class="slot-hint">' + (i + 1) + '. ' + q.slots[i] + '</span>';
+html += '</div>';
+}
+html += '</div>';
+
+html += '<div class="build-blocks">';
+for (var j = 0; j < q.blocks.length; j++) {
+html += '<div class="build-block ' + q.blocks[j].cls + '" data-bid="' + q.blocks[j].id + '" onclick="clickBuildBlock(\'' + q.blocks[j].id + '\')">' + q.blocks[j].text + '</div>';
+}
+html += '</div>';
+html += '</div>';
+
+html += '<button class="btn btn-next" onclick="checkBuild()" style="background:linear-gradient(135deg,#4CAF50,#45a049);margin-top:10px;">✔ Έλεγξε!</button>';
+
+area.innerHTML = html;
+}
+
+function selectOption(index) {
+if (answered) return;
+answered = true;
+
+var q = questions[currentQuestion];
+var btns = document.querySelectorAll('.option-btn');
+var fb = document.getElementById('feedback');
+var correct = q.options[index].correct;
+
+for (var i = 0; i < btns.length; i++) {
+btns[i].classList.add('disabled');
+if (q.options[i].correct) {
+btns[i].classList.add('reveal-correct');
+}
+}
+
+if (correct) {
+score++;
+btns[index].classList.add('selected-correct');
+fb.className = 'feedback correct';
+fb.style.display = 'block';
+fb.textContent = '🎉 Σωστό! Μπράβο σου!';
+} else {
+btns[index].classList.add('selected-wrong');
+fb.className = 'feedback wrong';
+fb.style.display = 'block';
+fb.textContent = '❌ Δεν είναι σωστό. Δες την εξήγηση παρακάτω!';
+}
+
+document.getElementById('explanation').textContent = '💡 ' + q.explanation;
+document.getElementById('explanation').classList.add('show');
+document.getElementById('nextBtn').disabled = false;
+}
+
+function clickBuildBlock(blockId) {
+if (answered) return;
+
+var block = document.querySelector('.build-block[data-bid="' + blockId + '"]');
+if (block.classList.contains('used-block')) return;
+
+var allBlocks = document.querySelectorAll('.build-block');
+for (var i = 0; i < allBlocks.length; i++) {
+allBlocks[i].classList.remove('selected');
+}
+block.classList.add('selected');
+
+var q = questions[currentQuestion];
+for (var j = 0; j < q.blocks.length; j++) {
+if (q.blocks[j].id === blockId) {
+for (var s = 0; s < buildPlaced.length; s++) {
+if (!buildPlaced[s]) {
+buildPlaced[s] = q.blocks[j];
+var slot = document.querySelector('.build-slot[data-slot="' + s + '"]');
+slot.innerHTML = '<span class="scratch-block-display ' + q.blocks[j].cls + '">' + q.blocks[j].text + '</span>';
+slot.classList.add('filled');
+block.classList.add('used-block');
+block.classList.remove('selected');
+
+checkBuildComplete();
+return;
+}
+}
+}
+}
+}
+
+function clickBuildSlot(slotIndex) {
+if (answered) return;
+if (buildPlaced[slotIndex]) {
+var removedBlock = buildPlaced[slotIndex];
+buildPlaced[slotIndex] = null;
+
+var q = questions[currentQuestion];
+var slot = document.querySelector('.build-slot[data-slot="' + slotIndex + '"]');
+slot.innerHTML = '<span class="slot-hint">' + (slotIndex + 1) + '. ' + q.slots[slotIndex] + '</span>';
+slot.classList.remove('filled');
+
+var allBlocks = document.querySelectorAll('.build-block');
+for (var i = 0; i < allBlocks.length; i++) {
+if (allBlocks[i].getAttribute('data-bid') === removedBlock.id) {
+allBlocks[i].classList.remove('used-block');
+}
+}
+}
+}
+
+function checkBuildComplete() {
+for (var i = 0; i < buildPlaced.length; i++) {
+if (!buildPlaced[i]) return;
+}
+}
+
+function checkBuild() {
+if (answered) return;
+var q = questions[currentQuestion];
+var fb = document.getElementById('feedback');
+
+var allFilled = true;
+for (var i = 0; i < buildPlaced.length; i++) {
+if (!buildPlaced[i]) { allFilled = false; break; }
+}
+
+if (!allFilled) {
+fb.className = 'feedback wrong';
+fb.style.display = 'block';
+fb.textContent = '⚠️ Βάλε όλα τα μπλοκ πρώτα!';
+return;
+}
+
+var correct = true;
+for (var j = 0; j < q.correctOrder.length; j++) {
+if (buildPlaced[j].id !== q.correctOrder[j]) { correct = false; break; }
+}
+
+answered = true;
+
+if (correct) {
+score++;
+fb.className = 'feedback correct';
+fb.style.display = 'block';
+fb.textContent = '🎉 Σωστό! Τέλεια δουλειά!';
+} else {
+fb.className = 'feedback wrong';
+fb.style.display = 'block';
+fb.textContent = '❌ Δεν είναι ακριβώς έτσι. Σκέψου τη σειρά: Γεγονός → Αν → Συνθήκη → Ενέργεια!';
+}
+
+document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+currentQuestion++;
+updateProgress();
+
+if (currentQuestion < questions.length) {
+loadQuestion();
+} else {
+showCompletion();
+}
+}
+
+function updateProgress() {
+var pct = Math.round((currentQuestion / questions.length) * 100);
+document.getElementById('progressFill').style.width = pct + '%';
+document.getElementById('progressText').textContent = currentQuestion + ' / ' + questions.length;
+}
+
+function showCompletion() {
+document.getElementById('gameArea').style.display = 'none';
+document.getElementById('completionScreen').style.display = 'block';
+
+var starCount = score >= 7 ? 3 : (score >= 5 ? 2 : 1);
+var starsStr = '';
+for (var i = 0; i < 3; i++) {
+starsStr += i < starCount ? '⭐' : '☆';
+}
+document.getElementById('stars').textContent = starsStr;
+document.getElementById('scoreText').textContent = 'Βαθμολογία: ' + score + ' / ' + questions.length;
+
+var pct = Math.round((score / questions.length) * 100);
+var msg = '';
+if (pct === 100) msg = 'Τέλεια! Ξέρεις τα πάντα για τις συνθήκες!';
+else if (pct >= 75) msg = 'Πολύ καλά! Μπράβο σου!';
+else if (pct >= 50) msg = 'Καλή προσπάθεια! Συνέχισε!';
+else msg = 'Δοκίμασε ξανά, μπορείς να τα καταφέρεις!';
+document.getElementById('scoreDetail').textContent = msg;
+}
+
+function restartGame() {
+currentQuestion = 0;
+score = 0;
+updateProgress();
+document.getElementById('gameArea').style.display = 'block';
+document.getElementById('completionScreen').style.display = 'none';
+loadQuestion();
+}
+
+updateProgress();
+loadQuestion();
+</script>
+</body>
+</html>

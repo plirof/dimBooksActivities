@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κίνδυνοι Διαδικτύου | Μάθημα 15</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:750px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.category-tabs{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.cat-tab{padding:6px 12px;border-radius:8px;font-size:.65rem;font-weight:600;cursor:pointer;border:2px solid #334155;background:#1e293b;color:#94a3b8;transition:all .2s}
+.cat-tab:hover{border-color:#6366f1}
+.cat-tab.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.cat-tab.ok{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.cat-tab.fail{background:#ef444422;color:#f87171;border-color:#ef4444}
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));grid-gap:6px;margin-bottom:8px}
+item-card{padding:10px;background:#1e293b;border-radius:10px;border:2px solid #334155;cursor:pointer;transition:all .2s;text-align:center;display:block}
+item-card:hover{transform:translateY(-2px);border-color:#6366f1}
+item-card.selected{border-color:#a78bfa;background:#1e1b4b}
+item-card.correct{border-color:#22c55e;background:#22c55e11}
+item-card.wrong{border-color:#ef4444;background:#ef444422}
+item-card .i-icon{font-size:1.5rem;display:block;margin-bottom:2px}
+item-card .i-text{color:#e2e8f0;font-size:.65rem;font-weight:600;display:block}
+item-card .i-desc{color:#64748b;font-size:.58rem;display:block;margin-top:2px}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .category-tabs > * { margin: 2px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🛡️ Κίνδυνοι & Ασφάλεια στο Διαδίκτυο</h1>
+<p class="subtitle">Κατηγοριοποίησε κάθε κίνδυνο ή μέτρο προστασίας στη σωστή κατηγορία!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Επίπεδο:</span> <span id="lvlNum">1</span>/7</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var levels=[
+{
+title:'🔓 Τύποι Απειλών',desc:'Ταξινόμησε κάθε απειλή στη σωστή κατηγορία',
+categories:['Hacking','Phishing','Malware'],
+items:[
+{icon:'🔑',text:'Παραβίαση λογαριασμού',desc:'Κάποιος μπαίνει στο email σου χωρίς άδεια',cat:0},
+{icon:'📧',text:'Email που ζητάει κωδικούς',desc:'Προσποιείται ότι είναι τράπεζα',cat:1},
+{icon:'🦠',text:'Ιός που σβήνει αρχεία',desc:'Κακόβουλο λογισμικό',cat:2},
+{icon:'💻',text:'Εισβολή σε σύστημα',desc:'Παραβίαση υπολογιστή εξ αποστάσεως',cat:0},
+{icon:'🎣',text:'Ψεύτικη σελίδα login',desc:'Αντιγράφει γνωστή ιστοσελίδα',cat:1},
+{icon:'🚫',text:'Ransomware',desc:'Κλειδώνει αρχεία και ζητά λύτρα',cat:2}
+],
+hint:'Hacking = παραβίαση συστημάτων, Phishing = απάτη για κλοπή δεδομένων, Malware = κακόβουλο λογισμικό.'
+},
+{
+title:'🛡️ Μέτρα Προστασίας',desc:'Ποια μέτρα προστατεύουν από τι;',
+categories:['Antivirus','Κωδικοί','Ενημερώσεις'],
+items:[
+{icon:'🛡️',text:'Πρόγραμμα προστασίας',desc:'Ανιχνεύει και αφαιρεί ιούς',cat:0},
+{icon:'🔑',text:'Ισχυρός κωδικός',desc:'Με κεφαλαία, μικρά, αριθμούς & σύμβολα',cat:1},
+{icon:'🔄',text:'Update συστήματος',desc:'Διορθώνει τρύπες ασφαλείας',cat:2},
+{icon:'🔍',text:'Τακτική σάρωση',desc:'Έλεγχος για κακόβουλο λογισμικό',cat:0},
+{icon:'🔐',text:'Διπλή ταυτοποίηση',desc:'Επιπλέον επίπεδο ασφαλείας',cat:1},
+{icon:'⬆️',text:'Patch ασφαλείας',desc:'Ενημέρωση για ευπάθειες',cat:2}
+],
+hint:'Το antivirus προστατεύει από ιούς. Ισχυροί κωδικοί προστατεύουν λογαριασμούς. Οι ενημερώσεις διορθώνουν ευπάθειες.'
+},
+{
+title:'🔗 IoT (Διαδίκτυο των Πραγμάτων)',desc:'Ποιες συσκευές είναι IoT;',
+categories:['Συσκευή IoT','Όχι IoT'],
+items:[
+{icon:'🌡️',text:'Έξυπνος θερμοστάτης',desc:'Ρυθμίζεται μέσω διαδικτύου',cat:0},
+{icon:'💡',text:'Έξυπνος λαμπτήρας',desc:'Ανάβει/σβήνει από app',cat:0},
+{icon:'📱',text:'Κινητό τηλέφωνο',desc:'Κλασική συσκευή επικοινωνίας',cat:1},
+{icon:'🚪',text:'Έξυπνη κλειδαριά',desc:'Ανοίγει με κωδικό από απόσταση',cat:0},
+{icon:'📖',text:'Βιβλίο',desc:'Αναλογικό, χωρίς σύνδεση',cat:1},
+{icon:'🚗',text:'Αυτόνομο όχημα',desc:'Οδηγείται χωρίς οδηγό',cat:0}
+],
+hint:'IoT = συσκευές συνδεδεμένες στο διαδίκτυο που ανταλλάσσουν δεδομένα χωρίς ανθρώπινη παρέμβαση.'
+},
+{
+title:'🚨 Διαδικτυακή Συμπεριφορά',desc:'Σωστή ή λανθασμένη συμπεριφορά;',
+categories:['Σωστή ✅','Λανθασμένη ❌'],
+items:[
+{icon:'🔒',text:'Χρήση ισχυρού κωδικού',desc:'Μεγάλος, με σύμβολα και αριθμούς',cat:0},
+{icon:'📢',text:'Cyberbullying',desc:'Εκφοβισμός μέσω διαδικτύου',cat:1},
+{icon:'🙈',text:'Κοινή χρήση κωδικού',desc:'Δίνεις τον κωδικό σου σε φίλο',cat:1},
+{icon:'🚫',text:'Αναφορά spam',desc:'Μαρκάρεις ύποπτο email',cat:0},
+{icon:'📱',text:'Υπερβολικός χρόνος οθόνης',desc:'Πολλές ώρες στα social media',cat:1},
+{icon:'🔍',text:'Έλεγχος απορρήτου',desc:'Ελέγχεις ποιος βλέπει τα στοιχεία σου',cat:0}
+],
+hint:'Η ασφαλής συμπεριφορά περιλαμβάνει ισχυρούς κωδικούς, αναφορά spam και έλεγχο απορρήτου.'
+},
+{
+title:'🏘️ Εφαρμογές IoT',desc:'Σε ποιον τομέα ανήκει κάθε εφαρμογή IoT;',
+categories:['Έξυπνο Σπίτι','Έξυπνη Πόλη','Υγεία'],
+items:[
+{icon:'🌡️',text:'Αυτόματος θερμοστάτης',desc:'Ρύθμιση θέρμανσης από app',cat:0},
+{icon:'🚦',text:'Φανάρια κυκλοφορίας',desc:'Προσαρμόζονται στην κίνηση',cat:1},
+{icon:'💓',text:'Βιοαισθητήρας παλμού',desc:'Μετράει καρδιακό ρυθμό',cat:2},
+{icon:'💡',text:'Έξυπνος φωτισμός',desc:'Ανάβει με αισθητήρα κίνησης',cat:0},
+{icon:'♻️',text:'Κάδοι απορριμμάτων',desc:'Ειδοποιούν όταν γεμίσουν',cat:1},
+{icon:'🩺',text:'Αισθητήρας πίεσης',desc:'Μετράει πίεση αίματος',cat:2}
+],
+hint:'Το IoT εφαρμόζεται σε πολλούς τομείς: έξυπνα σπίτια, έξυπνες πόλεις, υγεία, μεταφορές και γεωργία.'
+},
+{
+title:'🌾 IoT στη Γεωργία',desc:'Ποιες εφαρμογές είναι IoT στη γεωργία;',
+categories:['IoT Γεωργία','Όχι IoT'],
+items:[
+{icon:'💧',text:'Αυτόματο πότισμα',desc:'Βάσει υγρασίας εδάφους',cat:0},
+{icon:'🌱',text:'Αισθητήρας υγρασίας',desc:'Μετράει υγρασία στο χώμα',cat:0},
+{icon:'🧑‍🌾',text:'Κλασικό όργωμα',desc:'Με τρακτέρ και εργάτη',cat:1},
+{icon:'🚜',text:'Αυτόνομο τρακτέρ',desc:'Οδηγείται χωρίς οδηγό',cat:0},
+{icon:'🌾',text:'Μάζεμα με το χέρι',desc:'Παραδοσιακή συγκομιδή',cat:1},
+{icon:'📡',text:'Drone παρακολούθησης',desc:'Επιβλέπει χωράφια από αέρος',cat:0}
+],
+hint:'Η γεωργία ακριβείας χρησιμοποιεί IoT αισθητήρες για αυτόματο πότισμα, drones και αυτόνομα τρακτέρ.'
+},
+{
+title:'🧑‍⚖️ Πρόληψη & Αντιμετώπιση',desc:'Τι πρέπει να κάνεις σε κάθε περίπτωση;',
+categories:['Σωστή ενέργεια ✅','Λάθος ενέργεια ❌'],
+items:[
+{icon:'📧',text:'Ύποπτο email',desc:'Το διαγράφεις χωρίς να το ανοίξεις',cat:0},
+{icon:'🔗',text:'Άγνωστος σύνδεσμος',desc:'Κάνεις κλικ από περιέργεια',cat:1},
+{icon:'🔑',text:'Κωδικός σε site',desc:'Βεβαιώνεσαι ότι έχει HTTPS',cat:0},
+{icon:'📱',text:'Προσωπικά δεδομένα',desc:'Τα δημοσιεύεις σε όλα τα social',cat:1},
+{icon:'🦠',text:'Υποψία ιού',desc:'Τρέχεις antivirus και ειδοποιείς τεχνικό',cat:0},
+{icon:'👤',text:'Άγνωστος σε chat',desc:'Δίνεις το τηλέφωνό σου',cat:1}
+],
+hint:'Η ασφάλεια ξεκινά από εμάς: δεν ανοίγουμε ύποπτα links, προστατεύουμε τα δεδομένα μας και ενημερώνουμε το antivirus.'
+}
+];
+var current=0;
+var pts=0;
+var selections={};
+var checked=false;
+function render(){
+var lv=levels[current];
+checked=false;
+selections={};
+document.getElementById('lvlNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+lv.title+'</div>';
+h+='<div style="color:#64748b;font-size:.68rem;margin-bottom:8px">'+lv.desc+'</div>';
+h+='<div class="category-tabs" id="catTabs">';
+for(var c=0;c<lv.categories.length;c++){
+h+='<div class="cat-tab" id="cat'+c+'" onclick="selectCategory('+c+')">'+getCatIcon(c,lv)+lv.categories[c]+'</div>';
+}
+h+='</div>';
+h+='<div class="item-grid" id="itemGrid">';
+for(var i=0;i<lv.items.length;i++){
+var sel=selections[i]!==undefined?' selected':'';
+h+='<item-card class="item-card'+sel+'" id="item'+i+'" onclick="selectItem('+i+')">';
+h+='<span class="i-icon">'+lv.items[i].icon+'</span>';
+h+='<span class="i-text">'+lv.items[i].text+'</span>';
+h+='<span class="i-desc">'+lv.items[i].desc+'</span>';
+h+='</item-card>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:4px"><button class="btn-check" id="checkBtn" onclick="checkCats()">✅ Έλεγχος Κατηγοριών</button></div>';
+h+='<div class="hint-box">💡 '+lv.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function getCatIcon(idx,lv){
+if(lv.categories[idx].includes('✅'))return '✅ ';
+if(lv.categories[idx].includes('❌'))return '❌ ';
+var icons={0:'🔴 ',1:'🔵 ',2:'🟢 '};
+return icons[idx]||'';
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevLvl()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextLvl()"'+(current===levels.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectCategory(catIdx){
+if(checked)return;
+var selectedItem=findSelectedItem();
+if(selectedItem===null)return;
+selections[selectedItem]=catIdx;
+updateItemVisuals();
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function findSelectedItem(){
+var lv=levels[current];
+for(var i=0;i<lv.items.length;i++){
+var el=document.getElementById('item'+i);
+if(el&&el.classList.contains('selected'))return i;
+}
+return null;
+}
+function selectItem(idx){
+if(checked)return;
+var lv=levels[current];
+for(var i=0;i<lv.items.length;i++){
+var el=document.getElementById('item'+i);
+if(el)el.classList.remove('selected');
+}
+var el2=document.getElementById('item'+idx);
+if(el2)el2.classList.add('selected');
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function updateItemVisuals(){
+var lv=levels[current];
+for(var i=0;i<lv.items.length;i++){
+var el=document.getElementById('item'+i);
+if(!el)continue;
+if(selections[i]!==undefined){
+el.classList.add('selected');
+el.style.borderColor='#a78bfa';
+}else{
+el.classList.remove('selected');
+el.style.borderColor='';
+}
+}
+for(var c=0;c<lv.categories.length;c++){
+var catEl=document.getElementById('cat'+c);
+}
+}
+function checkCats(){
+var lv=levels[current];
+var allSelected=true;
+for(var i=0;i<lv.items.length;i++){
+if(selections[i]===undefined){allSelected=false;break;}
+}
+if(!allSelected){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Πρέπει να κατηγοριοποιήσεις όλα τα στοιχεία! Επίλεξε ένα στοιχείο και μετά πάτα στην κατηγορία.';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var i2=0;i2<lv.items.length;i2++){
+var correct=lv.items[i2].cat;
+var userSel=selections[i2];
+var el=document.getElementById('item'+i2);
+if(el){
+el.classList.remove('selected');
+if(userSel===correct){el.classList.add('correct');}
+else{el.classList.add('wrong');allCorrect=false;}
+}
+}
+for(var c2=0;c2<lv.categories.length;c2++){
+var catEl2=document.getElementById('cat'+c2);
+if(catEl2)catEl2.style.pointerEvents='none';
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι κατηγοριοποιήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες κατηγοριοποιήσεις είναι λάθος. Τα κόκκινα είναι λάθος, τα πράσινα σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevLvl(){if(current>0){current--;render();}}
+function nextLvl(){if(current<levels.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

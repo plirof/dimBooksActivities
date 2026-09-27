@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταχύτητα Πληκτρολόγησης</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#fc466b 0%,#3f5efb 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:30px;text-align:center}
+h1{color:#4a4a4a;font-size:1.8em;margin-bottom:5px}
+h2{color:#7f8c8d;font-size:1.1em;font-weight:normal;margin-bottom:15px}
+.instructions{background:#f8f0ff;border-radius:15px;padding:15px;margin-bottom:20px;color:#555;font-size:0.95em;line-height:1.5}
+.target-text{background:#f8f9fa;border-radius:15px;padding:20px;margin:15px 0;font-size:1.3em;line-height:1.8;text-align:left;letter-spacing:0.5px;border:2px solid #e0e0e0}
+.target-text .char{display:inline;padding:1px 0;border-radius:3px;transition:all 0.1s}
+.char.correct{background:#d4edda;color:#155724}
+.char.wrong{background:#f8d7da;color:#721c24}
+.char.current{border-bottom:3px solid #3f5efb}
+.char.pending{color:#999}
+.timer{font-size:1.2em;color:#e74c3c;font-weight:bold;margin:10px 0}
+.typing-area textarea{width:100%;height:80px;padding:15px;border:3px solid #ddd;border-radius:15px;font-size:1.1em;outline:none;resize:none;font-family:inherit;transition:border-color 0.3s}
+.typing-area textarea:focus{border-color:#3f5efb}
+.stats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:20px 0}
+.stat{background:#f0f4ff;border-radius:15px;padding:15px 20px;min-width:120px}
+.stat .label{color:#7f8c8d;font-size:0.85em;margin-bottom:5px}
+.stat .value{color:#2c3e50;font-size:1.5em;font-weight:bold}
+.btn{background:linear-gradient(135deg,#3f5efb,#fc466b);color:#fff;border:none;padding:12px 30px;border-radius:15px;font-size:1.1em;cursor:pointer;transition:all 0.3s;box-shadow:0 5px 15px rgba(63,94,251,0.3);margin:5px}
+.btn:hover{transform:translateY(-2px)}
+.result-box{background:linear-gradient(135deg,#3f5efb,#fc466b);color:#fff;padding:25px;border-radius:15px;margin:20px 0;animation:popIn 0.5s ease}
+.result-box p{margin:8px 0;font-size:1.1em}
+.result-box .big{font-size:2em;font-weight:bold}
+.start-screen .emoji{font-size:3em;margin:10px 0}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@media(max-width:500px){.container{padding:15px}.target-text{font-size:1.1em}.stat{min-width:80px;padding:10px}}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+let gameData=null;
+let currentText='';
+let startTime=null;
+let timerInterval=null;
+let finished=false;
+
+if(!dataFile){document.getElementById('app').innerHTML='<h1>Δεν βρέθηκαν δεδομένα</h1><p>Πρόσθεσε ?data=archivo.json στο URL</p>';}
+
+function loadGame(){
+fetch(dataFile).then(r=>r.json()).then(d=>{gameData=d;showStart();}).catch(()=>{document.getElementById('app').innerHTML='<h1>Σφάλμα φόρτωσης</h1>';});
+}
+
+function showStart(){
+clearInterval(timerInterval);
+const app=document.getElementById('app');
+app.innerHTML='<div class="start-screen"><div class="emoji">⌨️</div><h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><br><button class="btn" onclick="startRound()">Ξεκίνα! 🚀</button></div>';
+}
+
+function startRound(){
+const idx=Math.floor(Math.random()*gameData.texts.length);
+currentText=gameData.texts[idx];
+startTime=null;
+finished=false;
+clearInterval(timerInterval);
+const app=document.getElementById('app');
+app.innerHTML='<h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><div class="target-text" id="targetText"></div><div class="timer" id="timer">⏱️ 0.0 δευτερόλεπτα</div><div class="typing-area"><textarea id="typeInput" placeholder="Αρχίσε να πληκτρολογείς εδώ..." autofocus></textarea></div><div id="progress" style="margin:10px 0;color:#7f8c8d;font-size:0.95em">Πρόοδος: 0%</div><br><button class="btn" onclick="showStart()">Αρχική 🏠</button>';
+document.getElementById('typeInput').addEventListener('input',function(){onType(this.value)});
+updateDisplay('');
+document.getElementById('typeInput').focus();
+}
+
+function updateDisplay(typed){
+if(finished)return;
+const targetEl=document.getElementById('targetText');
+if(!targetEl)return;
+let textDisplay='';
+for(let i=0;i<currentText.length;i++){
+let cls='pending';
+if(i<typed.length){
+cls=typed[i]===currentText[i]?'correct':'wrong';
+}else if(i===typed.length){
+cls='current';
+}
+textDisplay+='<span class="char '+cls+'">'+esc(currentText[i])+'</span>';
+}
+targetEl.innerHTML=textDisplay;
+const timerEl=document.getElementById('timer');
+if(timerEl){
+const elapsed=startTime?((Date.now()-startTime)/1000).toFixed(1):'0.0';
+timerEl.textContent='⏱️ '+elapsed+' δευτερόλεπτα';
+}
+const progressEl=document.getElementById('progress');
+if(progressEl){
+let progress=Math.min(Math.round((typed.length/currentText.length)*100),100);
+progressEl.textContent='Πρόοδος: '+progress+'%';
+}
+}
+
+function onType(val){
+if(finished)return;
+if(!startTime&&val.length>0){
+startTime=Date.now();
+}
+if(val.length>=currentText.length){
+finished=true;
+clearInterval(timerInterval);
+val=val.substring(0,currentText.length);
+showResults(val);
+return;
+}
+updateDisplay(val);
+}
+
+function showResults(typed){
+const elapsed=(Date.now()-startTime)/1000;
+let correct=0;
+for(let i=0;i<currentText.length;i++){
+if(typed[i]===currentText[i])correct++;
+}
+const accuracy=Math.round((correct/currentText.length)*100);
+const cpm=Math.round((correct/elapsed)*60);
+const app=document.getElementById('app');
+let emoji='💪';
+if(accuracy>=95&&cpm>=100)emoji='🏆';
+else if(accuracy>=80)emoji='👍';
+app.innerHTML='<h1>'+esc(gameData.title)+'</h1><div class="result-box"><div class="big">'+emoji+'</div><p>Χρόνος: <strong>'+elapsed.toFixed(1)+'</strong> δευτερόλεπτα</p><p>Ακρίβεια: <strong>'+accuracy+'%</strong></p><p>Χαρακτήρες/λεπτό: <strong>'+cpm+'</strong></p></div><div class="stats"><div class="stat"><div class="label">Σωστοί χαρακτήρες</div><div class="value">'+correct+'/'+currentText.length+'</div></div></div><br><button class="btn" onclick="startRound()">Ξαναδοκίμασε! 🔄</button><button class="btn" onclick="showStart()">Αρχική 🏠</button>';
+}
+
+if(dataFile)loadGame();
+</script>
+</body>
+</html>

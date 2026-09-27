@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Λειτουργίες Αρχείων",
+  "subtitle": "Σπάσε τα μπαλόνια με σωστές λειτουργίες αρχείων!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν πραγματικές λειτουργίες του εξερευνητή αρχείων.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Αντιγραφή",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "Διαγραφή",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "Επικόλληση",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "Μετακίνηση",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "Αποκοπή",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "Επαναφορά",
+      "correct": true,
+      "color": "#8bc34a"
+    },
+    {
+      "text": "Αλλοίωση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Θόλωση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Κατεδάφιση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Δημιουργία φακέλου",
+      "correct": true,
+      "color": "#e91e63"
+    }
+  ]
+}

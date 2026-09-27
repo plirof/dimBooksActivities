@@ -1,0 +1,118 @@
+{
+  "templates": [
+    {
+      "id": "crossword_animals_001",
+      "name": "Animal Friends",
+      "description": "Common animals and their facts",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["animals", "vocabulary", "elementary"],
+      "words": [
+        {"word": "CAT", "clue": "A popular pet that says meow"},
+        {"word": "DOG", "clue": "A loyal pet that barks"},
+        {"word": "BIRD", "clue": "An animal that can fly"},
+        {"word": "FISH", "clue": "An animal that lives in water"},
+        {"word": "MOUSE", "clue": "A small animal with a long tail"},
+        {"word": "COW", "clue": "A farm animal that gives milk"},
+        {"word": "PIG", "clue": "A farm animal that says oink"},
+        {"word": "HORSE", "clue": "A large animal people ride"}
+      ]
+    },
+    {
+      "id": "crossword_colors_001",
+      "name": "Colors",
+      "description": "Learn color names",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["colors", "vocabulary", "elementary"],
+      "words": [
+        {"word": "RED", "clue": "The color of an apple"},
+        {"word": "BLUE", "clue": "The color of the sky"},
+        {"word": "GREEN", "clue": "The color of grass"},
+        {"word": "YELLOW", "clue": "The color of the sun"},
+        {"word": "ORANGE", "clue": "The color of an orange fruit"},
+        {"word": "PURPLE", "clue": "The color of grapes"},
+        {"word": "PINK", "clue": "The color of flamingos"},
+        {"word": "BLACK", "clue": "The color of the night sky"}
+      ]
+    },
+    {
+      "id": "crossword_science_001",
+      "name": "Human Body",
+      "description": "Parts of the human body",
+      "category": "crossword",
+      "difficulty": "medium",
+      "tags": ["science", "body", "biology"],
+      "words": [
+        {"word": "HEAD", "clue": "The top part of your body where your brain is"},
+        {"word": "ARM", "clue": "Body part used for hugging"},
+        {"word": "LEG", "clue": "Body part used for walking"},
+        {"word": "HAND", "clue": "Body part with five fingers"},
+        {"word": "FOOT", "clue": "Body part at the end of your leg"},
+        {"word": "EYE", "clue": "Body part used for seeing"},
+        {"word": "EAR", "clue": "Body part used for hearing"},
+        {"word": "NOSE", "clue": "Body part used for smelling"},
+        {"word": "MOUTH", "clue": "Body part used for eating and talking"},
+        {"word": "HEART", "clue": "Body organ that pumps blood"}
+      ]
+    },
+    {
+      "id": "crossword_shapes_001",
+      "name": "Shapes",
+      "description": "Geometric shapes and their properties",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["math", "geometry", "shapes"],
+      "words": [
+        {"word": "CIRCLE", "clue": "A round shape with no corners"},
+        {"word": "SQUARE", "clue": "A shape with four equal sides"},
+        {"word": "TRIANGLE", "clue": "A shape with three sides"},
+        {"word": "RECTANGLE", "clue": "A shape with four sides and four corners"},
+        {"word": "STAR", "clue": "A shape with five points"},
+        {"word": "HEART", "clue": "A shape that looks like a heart"},
+        {"word": "OVAL", "clue": "A stretched-out circle"},
+        {"word": "DIAMOND", "clue": "A shape like a tilted square"}
+      ]
+    },
+    {
+      "id": "crossword_space_001",
+      "name": "Space Exploration",
+      "description": "Words about space and astronomy",
+      "category": "crossword",
+      "difficulty": "medium",
+      "tags": ["science", "space", "astronomy"],
+      "words": [
+        {"word": "STAR", "clue": "A ball of burning gas in space"},
+        {"word": "MOON", "clue": "Earth's natural satellite"},
+        {"word": "PLANET", "clue": "A large object that orbits a star"},
+        {"word": "EARTH", "clue": "The planet we live on"},
+        {"word": "ROCKET", "clue": "A vehicle that travels to space"},
+        {"word": "ASTRONAUT", "clue": "A person who travels to space"},
+        {"word": "GALAXY", "clue": "A huge group of stars"},
+        {"word": "COMET", "clue": "A space object with a glowing tail"},
+        {"word": "ORBIT", "clue": "The path an object takes around a star"},
+        {"word": "NEBULA", "clue": "A cloud of gas and dust in space"}
+      ]
+    },
+    {
+      "id": "crossword_ocean_001",
+      "name": "Ocean Life",
+      "description": "Sea creatures and ocean vocabulary",
+      "category": "crossword",
+      "difficulty": "medium",
+      "tags": ["science", "ocean", "animals"],
+      "words": [
+        {"word": "WHALE", "clue": "The largest animal in the ocean"},
+        {"word": "SHARK", "clue": "A fish with sharp teeth"},
+        {"word": "DOLPHIN", "clue": "A smart sea mammal"},
+        {"word": "OCTOPUS", "clue": "An animal with eight arms"},
+        {"word": "CRAB", "clue": "A sea animal that walks sideways"},
+        {"word": "CORAL", "clue": "Colorful structures in the sea"},
+        {"word": "SEAL", "clue": "A sea mammal that barks"},
+        {"word": "TURTLE", "clue": "A reptile that lives in the sea"},
+        {"word": "JELLYFISH", "clue": "A wobbly sea creature with stinging tentacles"},
+        {"word": "SEAWEED", "clue": "Plants that grow in the ocean"}
+      ]
+    }
+  ]
+}

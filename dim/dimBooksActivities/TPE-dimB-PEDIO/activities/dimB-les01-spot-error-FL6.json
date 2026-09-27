@@ -1,0 +1,45 @@
+{
+  "title": "Βρες τα Λάθη: Επαναλήψεις",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Επανάλαβε", "error": false},
+        {"text": "5", "error": false},
+        {"text": "φορές", "error": false},
+        {"text": "πήγαινε", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "βήμα", "error": true, "correct": "βήμα", "feedback": "Το 'βήμα' είναι σωστό! Ψάξε καλύτερα!"},
+        {"text": "πάνω.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βάλε", "error": false},
+        {"text": "οδοντόπαστα", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "χτένα", "error": true, "correct": "οδοντόβουρτσα", "feedback": "Βάζουμε οδοντόπαστα στην οδοντόβουρτσα, όχι στην χτένα!"},
+        {"text": "σου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Επανάλαβε", "error": false},
+        {"text": "για", "error": false},
+        {"text": "όλους", "error": false},
+        {"text": "τους", "error": false},
+        {"text": "δασκάλους", "error": true, "correct": "συμμαθητές", "feedback": "Μοιράζουμε στους συμμαθητές, όχι στους δασκάλους!"},
+        {"text": "σου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εποχές", "error": false},
+        {"text": "του", "error": false},
+        {"text": "μήνα", "error": true, "correct": "χρόνου", "feedback": "Λέμε εποχές του χρόνου, όχι του μήνα!"},
+        {"text": "επαναλαμβάνονται.", "error": false}
+      ]
+    }
+  ]
+}

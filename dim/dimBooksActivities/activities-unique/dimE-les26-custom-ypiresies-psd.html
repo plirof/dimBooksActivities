@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπηρεσίες ΠΣΔ | Μάθημα 26</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0f9ff,#38bdf8);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#0c4a6e;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#0284c7;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#0c4a6e;font-size:.75rem;font-weight:700;border:1px solid #38bdf8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.match-grid{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.match-row{display:flex;align-items:center;gap:6px}
+.match-left{flex:1;padding:8px 10px;background:#f0f9ff;border:2px solid #bae6fd;border-radius:10px;font-size:.7rem;font-weight:700;color:#0c4a6e}
+.match-arrow{font-size:.9rem;color:#0284c7;min-width:20px;text-align:center}
+.match-right-select{flex:1.2;padding:8px 10px;border:2px solid #e2e8f0;border-radius:10px;font-size:.68rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;text-align:left}
+.match-right-select:hover{border-color:#0284c7;background:#f0f9ff}
+.match-right-select.selected{border-color:#0284c7;background:#e0f2fe;color:#0c4a6e;font-weight:700}
+.match-right-select.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.match-right-select.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.match-right-select.disabled{pointer-events:none;opacity:.8}
+.desc-shown{font-size:.62rem;color:#64748b;font-style:italic;margin-top:2px}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#0284c7;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#0369a1}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #0284c7;border-radius:10px;background:transparent;color:#0284c7;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0f9ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .match-grid > * + * { margin-top: 8px; }
+  .match-row > * + * { margin-left: 6px; }
+  .g61f4_0 > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔗 Υπηρεσίες ΠΣΔ</h1>
+<p class="subtitle">Ταίριαξε κάθε υπηρεσία με τη σωστή περιγραφή!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Γύρος:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var rounds=[
+{
+title:'🏫 Υπηρεσίες ΠΣΔ',
+pairs:[
+{service:'e-me Εργασίες',desc:'Ο δάσκαλος αναθέτει εργασίες και εσύ υποβάλλεις απαντήσεις'},
+{service:'SchoolPress',desc:'Δημιουργία ηλεκτρονικών περιοδικών & εφημερίδων'},
+{service:'European School Radio',desc:'Μαθητικό διαδικτυακό ραδιόφωνο & ακρόαση'},
+{service:'Blog (ιστολόγιο)',desc:'Οποιοσδήποτε χρήστης μπορεί να γράφει άρθρα ελεύθερα'},
+{service:'Podcast',desc:'Ηχητική ηχογράφηση που ακούς όποτε θέλεις στο ίντερνετ'}
+]
+},
+{
+title:'⚙️ Χαρακτηριστικά Υπηρεσιών',
+pairs:[
+{service:'e-me Εργασίες',desc:'Περιλαμβάνει περιγραφή εργασίας και προθεσμία υποβολής'},
+{service:'SchoolPress',desc:'Χρειάζεται έγκριση αρχισυντάκτη για δημοσίευση'},
+{service:'European School Radio',desc:'Chat χωρίς σύνδεση ΠΣΔ, ανέβασμα μέσω δασκάλου'},
+{service:'Blog (ιστολόγιο)',desc:'Δεν χρειάζεται έγκριση — δημοσιεύεις απευθείας'},
+{service:'Playlist',desc:'Λίστα βίντεο/ήχων που παίζονται με σειρά'}
+]
+},
+{
+title:'🔑 Λεπτομέρειες',
+pairs:[
+{service:'e-me Εργασίες',desc:'Η απάντηση μπορεί να έχει κείμενο, εικόνες, ήχο, βίντεο'},
+{service:'SchoolPress',desc:'Μόνο δάσκαλοι δημιουργούν περιοδικό, μαθητές γράφουν άρθρα'},
+{service:'European School Radio',desc:'Διεύθυνση: europeanschoolradio.eu'},
+{service:'Podcast',desc:'Δεν είναι ζωντανή εκπομπή — ακούς όποτε θέλεις'},
+{service:'Playlist',desc:'Μπορείς να ορίσεις τη σειρά αναπαραγωγής'}
+]
+}
+];
+var curQ=0,pts=0,selected={},checked=false,shuffledDescs=[],cyclePos={};
+function initQ(){
+  selected={};
+  checked=false;
+  cyclePos={};
+  var r=rounds[curQ];
+  shuffledDescs=r.pairs.map(function(p,i){return{desc:p.desc,idx:i};});
+  for(var i=shuffledDescs.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=shuffledDescs[i];shuffledDescs[i]=shuffledDescs[j];shuffledDescs[j]=t;
+  }
+}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var r=rounds[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<p style="font-size:.75rem;font-weight:700;color:#0c4a6e;text-align:center;margin:4px 0">'+r.title+'</p>';
+h+='<div class="match-grid">';
+for(var i=0;i<r.pairs.length;i++){
+var p=r.pairs[i];
+h+='<div class="match-row">';
+h+='<div class="match-left">'+p.service+'</div>';
+h+='<div class="match-arrow">→</div>';
+var selIdx=selected[i];
+var cls='match-right-select';
+if(checked){
+if(selIdx!==undefined){
+var chosenDesc=shuffledDescs[selIdx].desc;
+if(chosenDesc===p.desc)cls+=' correct';
+else cls+=' wrong';
+}
+cls+=' disabled';
+}else if(selIdx!==undefined){
+cls+=' selected';
+}
+var displayText=selIdx!==undefined?shuffledDescs[selIdx].desc:'(κλικ για επιλογή)';
+if(selIdx!==undefined){
+var chosenPair=r.pairs.find(function(pp){return pp.desc===shuffledDescs[selIdx].desc;});
+if(chosenPair)displayText=chosenPair.service+': '+shuffledDescs[selIdx].desc;
+else displayText=shuffledDescs[selIdx].desc;
+}
+h+='<div class="'+cls+'" onclick="toggleSelect('+i+')">'+displayText+'</div>';
+h+='</div>';
+}
+h+='</div>';
+if(!checked){
+h+='<p style="font-size:.62rem;color:#64748b;text-align:center;margin:4px 0">Κλικ στο δεξί κουτάκι για εναλλαγή περιγραφής</p>';
+h+='<div class="g61f4_0" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:6px 0">';
+for(var i=0;i<shuffledDescs.length;i++){
+var alreadyUsed=false;
+for(var k in selected){if(selected[k]===i)alreadyUsed=true;}
+if(!alreadyUsed){
+h+='<div style="font-size:.6rem;padding:4px 8px;background:#e0f2fe;border-radius:6px;color:#0c4a6e">'+shuffledDescs[i].desc.substring(0,30)+'...</div>';
+}
+}
+h+='</div>';
+}
+var allSelected=Object.keys(selected).length===r.pairs.length;
+if(!checked&&allSelected){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Αντιστοίχισης</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<r.pairs.length;i++){
+if(selected[i]!==undefined&&shuffledDescs[selected[i]].desc===r.pairs[i].desc)correct++;
+}
+var allCorrect=correct===r.pairs.length;
+if(allCorrect)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(allCorrect?'ok':'bad')+'">'+(allCorrect?'✅ Τέλεια! Όλες οι αντιστοιχίσεις σωστές!':'❌ '+correct+'/'+r.pairs.length+' σωστές')+'</div>';
+if(curQ<rounds.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενος Γύρος ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function toggleSelect(rowIdx){
+	if(checked)return;
+	if(cyclePos[rowIdx]===undefined)cyclePos[rowIdx]=0;
+	else cyclePos[rowIdx]++;
+	if(cyclePos[rowIdx]>=shuffledDescs.length){
+		delete selected[rowIdx];
+		delete cyclePos[rowIdx];
+	}else{
+		selected[rowIdx]=cyclePos[rowIdx];
+	}
+	render();
+}
+function checkAnswer(){
+if(Object.keys(selected).length===rounds[curQ].pairs.length){checked=true;render();}
+}
+function nextQ(){
+if(curQ<rounds.length-1){curQ++;initQ();render();}
+}
+initQ();render();
+</script>
+</body>
+</html>

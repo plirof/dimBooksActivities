@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Λογισμικό ή Υλικό",
+  "subtitle": "Μόνο λέξεις που είναι ΛΟΓΙΣΜΙΚΟ!",
+  "instruction": "Σπάσε μόνο τις λέξεις που είναι ΛΟΓΙΣΜΙΚΟ (εφαρμογές/προγράμματα)!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Εφαρμογή γραφής", "correct": true, "color": "#FF6B6B" },
+    { "text": "Πληκτρολόγιο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Πρόγραμμα ζωγραφικής", "correct": true, "color": "#45B7D1" },
+    { "text": "Οθόνη", "correct": false, "color": "#96CEB4" },
+    { "text": "Φυλλομετρητής", "correct": true, "color": "#FFEAA7" },
+    { "text": "Εκτυπωτής", "correct": false, "color": "#DDA0DD" },
+    { "text": "Πρόγραμμα προγραμματισμού", "correct": true, "color": "#98D8C8" },
+    { "text": "Ποντίκι", "correct": false, "color": "#F7DC6F" },
+    { "text": "Εφαρμογή χαρτών", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μνήμη", "correct": false, "color": "#85C1E9" }
+  ]
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υποπρογράμματα: Χορός με Ρυθμιστές | Μάθημα 8</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.4rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.9rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:20px;}
+.stage{background:#fff3e0;border-radius:14px;border:3px solid #ff9800;overflow:hidden;margin-bottom:14px;position:relative;height:200px;}
+.stage canvas{width:100%;height:100%;}
+.sliders{display:grid;grid-template-columns:1fr 1fr;grid-gap:12px;margin-bottom:14px;}
+.slider-group{background:#f8f9ff;border-radius:12px;padding:12px;border:2px solid #e8eaf6;}
+.slider-group label{display:block;font-weight:700;color:#4527a0;font-size:.85rem;margin-bottom:6px;}
+.slider-group input[type="range"]{width:100%;accent-color:#667eea;}
+.slider-group .val{float:right;font-weight:800;color:#764ba2;}
+.block-preview{background:#f5f5f5;border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;}
+.scratch-block{display:inline-block;padding:6px 14px;border-radius:8px;color:#fff;font-weight:700;font-size:.8rem;margin:3px;}
+.scratch-block.hat{background:#f9a825;border-radius:14px 14px 8px 8px;}
+.scratch-block.motion{background:#42a5f5;}
+.scratch-block.control{background:#66bb6a;}
+.scratch-block.myblocks{background:linear-gradient(135deg,#ff6f00,#ff8f00);}
+.btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:10px 22px;border:none;border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn-play{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-stop{background:linear-gradient(135deg,#f7971e,#ffd200);color:#333;}
+.sub-name{font-size:.75rem;color:#fff;background:#e65100;padding:2px 8px;border-radius:4px;margin-left:4px;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .btn-row > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💃 Υποπρόγραμμα: Χορός</h1>
+<p class="subtitle">Άλλαξε βήματα, στροφές και επαναλήψεις με ρυθμιστές!</p>
+<div class="container">
+<div class="stage"><canvas id="sc" width="700" height="200"></canvas></div>
+<div class="sliders">
+<div class="slider-group">
+<label>👣 Βήματα: <span class="val" id="stepsVal">5</span></label>
+<input type="range" id="steps" min="1" max="20" value="5" oninput="updateSliders()">
+</div>
+<div class="slider-group">
+<label>🔄 Στροφές (μοίρες): <span class="val" id="turnVal">90</span>°</label>
+<input type="range" id="turn" min="15" max="180" step="15" value="90" oninput="updateSliders()">
+</div>
+<div class="slider-group">
+<label>🔁 Επαναλήψεις: <span class="val" id="repsVal">4</span></label>
+<input type="range" id="reps" min="1" max="12" value="4" oninput="updateSliders()">
+</div>
+<div class="slider-group">
+<label>⏱️ Ταχύτητα: <span class="val" id="speedVal">5</span></label>
+<input type="range" id="speed" min="1" max="10" value="5" oninput="updateSliders()">
+</div>
+</div>
+<div class="block-preview" id="blockPreview"></div>
+<div class="btn-row">
+<button class="btn btn-play" onclick="playDance()">▶ Παίξε Χορό</button>
+<button class="btn btn-stop" onclick="stopDance()">⏹ Σταμάτα</button>
+</div>
+</div>
+<script>
+var c=document.getElementById('sc'),cx=c.getContext('2d'),W=700,H=200;
+var steps=5,turn=90,reps=4,speed=5;
+var playing=false,animId,stepIdx=0,angle=0,x,y;
+function updateSliders(){
+steps=+document.getElementById('steps').value;turn=+document.getElementById('turn').value;
+reps=+document.getElementById('reps').value;speed=+document.getElementById('speed').value;
+document.getElementById('stepsVal').textContent=steps;document.getElementById('turnVal').textContent=turn;
+document.getElementById('repsVal').textContent=reps;document.getElementById('speedVal').textContent=speed;
+updatePreview();
+}
+function updatePreview(){
+var html='<div class="scratch-block hat">🟢 Όταν πράσινη σημαία</div><br>';
+html+='<div class="scratch-block myblocks">Όρισε "χορός"<span class="sub-name">My Blocks</span></div><br>';
+html+='<div class="scratch-block control">Επανάλαβε '+reps+' φορές</div><br>';
+html+='<div class="scratch-block motion">Κινήσου '+steps+' βήματα</div> ';
+html+='<div class="scratch-block motion">Στρίψε '+turn+'°</div>';
+document.getElementById('blockPreview').innerHTML=html;
+}
+function drawChar(){
+cx.clearRect(0,0,W,H);
+cx.fillStyle='#fff3e0';cx.fillRect(0,0,W,H);
+cx.save();cx.translate(x,y);cx.rotate(angle*Math.PI/180);
+cx.fillStyle='#ff8a65';cx.beginPath();cx.arc(0,-12,10,0,Math.PI*2);cx.fill();
+cx.fillStyle='#ff6e40';cx.beginPath();cx.ellipse(0,4,8,16,0,0,Math.PI*2);cx.fill();
+cx.fillStyle='#ff8a65';cx.fillRect(-12,0,6,14);cx.fillRect(6,0,6,14);
+cx.fillStyle='#333';cx.beginPath();cx.arc(-3,-14,2,0,Math.PI*2);cx.arc(3,-14,2,0,Math.PI*2);cx.fill();
+cx.beginPath();cx.arc(0,-8,3,0,Math.PI);cx.stroke();
+cx.restore();
+cx.fillStyle='#aaa';cx.font='12px sans-serif';cx.textAlign='center';cx.fillText('Βήμα '+(Math.floor(stepIdx/2)+1)+'/'+reps,W/2,H-8);
+}
+function animate(){
+if(!playing)return;
+var totalSteps=reps*2;
+if(stepIdx>=totalSteps){playing=false;drawChar();return;}
+var isMove=stepIdx%2===0;
+if(isMove){
+var rad=angle*Math.PI/180;x+=Math.cos(rad)*steps*3;y+=Math.sin(rad)*steps*3;
+x=Math.max(20,Math.min(W-20,x));y=Math.max(20,Math.min(H-20,y));
+}else{angle=(angle+turn)%360;}
+drawChar();stepIdx++;
+setTimeout(function(){animId=requestAnimationFrame(animate);},600-speed*50);
+}
+function playDance(){x=W/2;y=H/2;angle=-90;stepIdx=0;playing=true;animate();}
+function stopDance(){playing=false;cancelAnimationFrame(animId);}
+updateSliders();x=W/2;y=H/2;angle=-90;drawChar();
+</script>
+</body>
+</html>

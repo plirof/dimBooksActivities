@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Έγγραφο ή Παρουσίαση;",
+  "subtitle": "Σπάσε τα μπαλόνια που αφορούν τα έγγραφα",
+  "instruction": "Σπάσε τα μπαλόνια που περιγράφουν χαρακτηριστικά των ΕΓΓΡΑΦΩΝ (όχι παρουσιάσεων)",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2200,
+  "balloons": [
+    {
+      "text": "Λεπτομερές κείμενο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εκτύπωση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Σύντομες πληροφορίες",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ιστορία ή ποίημα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ομιλητής προβάλλει",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Σχολική εργασία",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Εντυπωσιακές διαφάνειες",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Εφημερίδα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ελκυστική προβολή",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αναφορά εργασίας",
+      "correct": true,
+      "color": "#4CAF50"
+    }
+  ]
+}

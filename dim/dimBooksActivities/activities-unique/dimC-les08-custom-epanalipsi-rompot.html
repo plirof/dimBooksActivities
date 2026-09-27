@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Επανάληψη στο Ρομπότ</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+.container {
+    background: #fff;
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+h1 {
+    text-align: center;
+    color: #1a2980;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+.emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.subtitle {
+    text-align: center;
+    color: #26d0ce;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+.progress-bar-wrap {
+    background: #e0f7fa;
+    border-radius: 12px;
+    height: 20px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1a2980, #26d0ce);
+    border-radius: 12px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+.progress-text {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #1a2980;
+}
+.challenge-card {
+    background: linear-gradient(135deg, #00897b, #26d0ce);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+    text-align: center;
+    color: white;
+}
+.challenge-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.challenge-card p {
+    font-size: 0.85rem;
+    opacity: 0.95;
+}
+.game-content { display: block; }
+.game-content.hidden { display: none; }
+.blocks-palette {
+    margin-bottom: 14px;
+}
+.blocks-palette h3 {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.palette-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    min-height: 50px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 10px;
+    border: 2px dashed #ccc;
+}
+.block {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    touch-action: none;
+    white-space: nowrap;
+    position: relative;
+}
+.block:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.block:active { cursor: grabbing; transform: scale(1.05); }
+.block.forward { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.block.wait { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+.block.stop { background: linear-gradient(135deg, #f44336, #ef5350); }
+.block.loop { background: linear-gradient(135deg, #9C27B0, #BA68C8); }
+.block.back { background: linear-gradient(135deg, #2196F3, #64B5F6); }
+.block.turn { background: linear-gradient(135deg, #00BCD4, #4DD0E1); }
+.block.in-loop { margin-left: 20px; }
+.block.dragging { opacity: 0.5; }
+.program-area {
+    margin-bottom: 14px;
+}
+.program-area h3 {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.drop-zone {
+    min-height: 80px;
+    background: #e8f5e9;
+    border-radius: 12px;
+    padding: 10px;
+    border: 2px dashed #4CAF50;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: background 0.2s;
+}
+.drop-zone.drag-over { background: #c8e6c9; border-color: #2E7D32; }
+.drop-zone-hint {
+    text-align: center;
+    color: #999;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+.placed-block {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.placed-block .block { cursor: pointer; margin: 0; }
+.placed-block .remove-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ef5350;
+    color: white;
+    border: none;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.sim-area {
+    margin-bottom: 14px;
+}
+.sim-area h3 {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.sim-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 2px;
+    background: #ddd;
+    border-radius: 12px;
+    padding: 4px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.sim-cell {
+    background: #f5f5f5;
+    border-radius: 3px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    position: relative;
+}
+.sim-cell.sim-obstacle { background: #ff6b6b; }
+.sim-cell.sim-obstacle::after {
+    content: '';
+    width: 50%;
+    height: 50%;
+    background: #c0392b;
+    border-radius: 3px;
+}
+.sim-cell.sim-target { background: #81c784; }
+.sim-cell.sim-target::after {
+    content: '';
+    width: 60%;
+    height: 60%;
+    background: #4caf50;
+    border-radius: 50%;
+    border: 2px dashed #2e7d32;
+}
+.sim-cell.sim-path { background: #e3f2fd; }
+.sim-robot {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    z-index: 5;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    color: white;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.btn:active { transform: translateY(0); }
+.btn-check { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.btn-reset { background: linear-gradient(135deg, #e53935, #ef5350); }
+.btn-run { background: linear-gradient(135deg, #1a2980, #26d0ce); }
+.btn-next { background: linear-gradient(135deg, #9C27B0, #E040FB); }
+.result-msg {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    min-height: 28px;
+    margin-bottom: 10px;
+    color: #1a2980;
+}
+.completion-screen {
+    display: none;
+    text-align: center;
+    padding: 30px 20px;
+}
+.completion-screen.show { display: block; }
+.completion-screen h2 {
+    font-size: 1.6rem;
+    color: #1a2980;
+    margin-bottom: 10px;
+}
+.completion-screen .big-emoji {
+    font-size: 4rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin: 15px 0;
+}
+.completion-screen p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+.completion-stars {
+    font-size: 2.5rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 15px;
+}
+.feedback-correct {
+    background: #e8f5e9;
+    border: 2px solid #4CAF50;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #2e7d32;
+    font-weight: bold;
+}
+.feedback-wrong {
+    background: #ffebee;
+    border: 2px solid #f44336;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #c62828;
+    font-weight: bold;
+}
+.indent-marker {
+    display: inline-block;
+    width: 20px;
+    border-left: 3px solid #9C27B0;
+    margin-left: 8px;
+    height: 100%;
+    position: absolute;
+    left: -8px;
+    top: 0;
+    bottom: 0;
+}
+.loop-bracket {
+    border-left: 3px solid #9C27B0;
+    padding-left: 15px;
+    margin-left: 8px;
+    margin-bottom: 2px;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+.pulse { animation: pulse 0.5s ease-in-out; }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .palette-blocks > * { margin: 4px; }
+  .drop-zone > * + * { margin-top: 6px; }
+  .placed-block > * + * { margin-left: 6px; }
+  .controls > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+    <h1><span class="emoji-title">&#x1F916;</span> Επανάληψη στο Ρομπότ</h1>
+    <p class="subtitle">Βάλε τις εντολές στη σωστή σειρά!</p>
+
+    <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressFill"></div>
+        <div class="progress-text" id="progressText">Πρόκληση 1 / 4</div>
+    </div>
+
+    <div class="game-content" id="gameContent">
+        <div class="challenge-card" id="challengeCard">
+            <h2 id="challengeTitle">Πρόκληση 1</h2>
+            <p id="challengeDesc">Φτιάξε το πρόγραμμα: Μπροστά, Σταμάτα</p>
+        </div>
+
+        <div class="blocks-palette">
+            <h3>&#x1F4E6; Διαθέσιμες Εντολές (σύρε ή πάτα)</h3>
+            <div class="palette-blocks" id="palette"></div>
+        </div>
+
+        <div class="program-area">
+            <h3>&#x1F4CB; Το Πρόγραμμά σου</h3>
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-hint" id="dropHint">&#x1F4CC; Σύρε τις εντολές εδώ ή πάτεςέ τες</div>
+            </div>
+        </div>
+
+        <div class="result-msg" id="resultMsg"></div>
+
+        <div class="sim-area" id="simArea">
+            <h3>&#x1F3AE; Προσομοίωση</h3>
+            <div class="sim-grid" id="simGrid"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-check" id="btnCheck" onclick="checkProgram()">&#10003; Έλεγχος</button>
+            <button class="btn btn-run" id="btnRun" onclick="runSimulation()" style="display:none">&#9654; Τρέξιμο</button>
+            <button class="btn btn-reset" id="btnReset" onclick="resetChallenge()">&#8635; Καθαρισμός</button>
+        </div>
+    </div>
+
+    <div class="completion-screen" id="completionScreen">
+        <h2>&#127942; Συναγερισμός!</h2>
+        <div class="big-emoji" id="compEmoji">&#x1F916;</div>
+        <p id="compMsg">Τα κατάφερες τέλεια!</p>
+        <div class="completion-stars" id="compStars"></div>
+        <button class="btn btn-next" id="btnNext" onclick="nextChallenge()">&#9197; Επόμενη Πρόκληση</button>
+    </div>
+</div>
+
+<script>
+var currentChallenge = 0;
+var placedBlocks = [];
+var simRunning = false;
+var totalStars = 0;
+var challengeStars = [];
+var simCols = 8;
+var simRows = 5;
+var simGrid = [];
+var simRobot = { r: 0, c: 0 };
+var simDir = 0;
+var SIM_DR = [0, 1, 0, -1];
+var SIM_DC = [1, 0, -1, 0];
+
+var ROBOT = '\u{1F916}';
+
+var BLOCK_DEFS = {
+    'forward': { text: '\u27A1 Μπροστά', cls: 'forward' },
+    'forward-cont': { text: '\u27A1 Μπροστά συνεχώς', cls: 'forward' },
+    'wait': { text: '\u23F3 Περίμενε μέχρι εμπόδιο', cls: 'wait' },
+    'stop': { text: '\u{1F6D1} Σταμάτα', cls: 'stop' },
+    'loop': { text: '\u{1F501} Επανάλαβε για πάντα', cls: 'loop' },
+    'back': { text: '\u2B05 Πίσω', cls: 'back' },
+    'turn-r': { text: '\u27A1\uFE0F S\u03C4\u03C1\u03AF\u03C8\u03B5 \u03B4\u03B5\u03BE\u03B9\u03AC', cls: 'turn' },
+    'turn-l': { text: '\u2B05\uFE0F S\u03C4\u03C1\u03AF\u03C8\u03B5 \u03B1\u03C1\u03B9\u03C3\u03C4\u03B5\u03C1\u03AC', cls: 'turn' }
+};
+
+var challenges = [
+    {
+        title: '\u03A0\u03C1\u03CC\u03C4\u03BB\u03B7\u03B7 1: \u039C\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC \u03BA\u03B1\u03B9 \u03A3\u03C4\u03B1\u03BC\u03AC\u03C4\u03B1',
+        desc: '\u03A6\u03C4\u03B9\u03AC\u03BE\u03B5: \u039C\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC \u2192 \u03A3\u03C4\u03B1\u03BC\u03AC\u03C4\u03B1',
+        available: ['forward', 'stop'],
+        correct: ['forward', 'stop'],
+        sim: {
+            cols: 8, rows: 3,
+            start: { r: 1, c: 0 },
+            obstacles: [{ r: 1, c: 5 }],
+            target: { r: 1, c: 4 }
+        }
+    },
+    {
+        title: '\u03A0\u03C1\u03CC\u03C4\u03BB\u03B7\u03B7 2: \u03A0\u03B5\u03C1\u03AF\u03BC\u03B5\u03BD\u03B5 \u03BC\u03AD\u03C7\u03C1\u03B9 \u03B5\u03BC\u03C0\u03CC\u03B4\u03B9\u03BF',
+        desc: '\u03A6\u03C4\u03B9\u03AC\u03BE\u03B5: \u039C\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC \u03C3\u03C5\u03BD\u03B5\u03C7\u03CE\u03C2 \u2192 \u03A0\u03B5\u03C1\u03AF\u03BC\u03B5\u03BD\u03B5 \u03BC\u03AD\u03C7\u03C1\u03B9 \u03B5\u03BC\u03C0\u03CC\u03B4\u03B9\u03BF \u2192 \u03A3\u03C4\u03B1\u03BC\u03AC\u03C4\u03B1',
+        available: ['forward-cont', 'wait', 'stop', 'turn-r'],
+        correct: ['forward-cont', 'wait', 'stop'],
+        sim: {
+            cols: 8, rows: 3,
+            start: { r: 1, c: 0 },
+            obstacles: [{ r: 1, c: 6 }],
+            target: { r: 1, c: 5 }
+        }
+    },
+    {
+        title: '\u03A0\u03C1\u03CC\u03C4\u03BB\u03B7\u03B7 3: \u03A3\u03C4\u03C1\u03AF\u03C8\u03B5 \u03BA\u03B1\u03B9 \u03A0\u03AC\u03B5 \u03C0\u03AF\u03C3\u03C9',
+        desc: '\u03A6\u03C4\u03B9\u03AC\u03BE\u03B5: \u039C\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC \u2192 \u03A0\u03B5\u03C1\u03AF\u03BC\u03B5\u03BD\u03B5 \u2192 \u03A0\u03AF\u03C3\u03C9 \u2192 \u03A3\u03C4\u03C1\u03AF\u03C8\u03B5 \u03B4\u03B5\u03BE\u03B9\u03AC',
+        available: ['forward-cont', 'wait', 'stop', 'back', 'turn-r', 'turn-l'],
+        correct: ['forward-cont', 'wait', 'back', 'turn-r'],
+        sim: {
+            cols: 8, rows: 5,
+            start: { r: 2, c: 0 },
+            obstacles: [{ r: 2, c: 5 }, { r: 3, c: 4 }],
+            target: { r: 3, c: 7 }
+        }
+    },
+    {
+        title: '\u03A0\u03C1\u03CC\u03C4\u03BB\u03B7\u03B7 4: \u0395\u03C0\u03B1\u03BD\u03AC\u03BB\u03B1\u03B2\u03B5 \u03B3\u03B9\u03B1 \u03C0\u03AC\u03BD\u03C4\u03B1!',
+        desc: '\u03A6\u03C4\u03B9\u03AC\u03BE\u03B5: \u0395\u03C0\u03B1\u03BD\u03AC\u03BB\u03B1\u03B2\u03B5 \u03B3\u03B9\u03B1 \u03C0\u03AC\u03BD\u03C4\u03B1 { \u039C\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC, \u03A0\u03B5\u03C1\u03AF\u03BC\u03B5\u03BD\u03B5, \u03A0\u03AF\u03C3\u03C9, \u03A3\u03C4\u03C1\u03AF\u03C8\u03B5 }',
+        available: ['loop', 'forward-cont', 'wait', 'stop', 'back', 'turn-r', 'turn-l'],
+        correct: ['loop', 'forward-cont', 'wait', 'back', 'turn-r'],
+        sim: {
+            cols: 8, rows: 6,
+            start: { r: 0, c: 0 },
+            obstacles: [{ r: 0, c: 4 }, { r: 1, c: 4 }, { r: 2, c: 4 }],
+            target: { r: 5, c: 7 }
+        }
+    }
+];
+
+function initPalette() {
+    var ch = challenges[currentChallenge];
+    var pal = document.getElementById('palette');
+    pal.innerHTML = '';
+    var shuffled = ch.available.slice();
+    for (var i = shuffled.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = tmp;
+    }
+    for (var k = 0; k < shuffled.length; k++) {
+        var id = shuffled[k];
+        var def = BLOCK_DEFS[id];
+        var el = document.createElement('div');
+        el.className = 'block ' + def.cls;
+        el.textContent = def.text;
+        el.dataset.blockId = id;
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            addToProgram(this.dataset.blockId);
+        });
+        el.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            addToProgram(this.dataset.blockId);
+        });
+        pal.appendChild(el);
+    }
+}
+
+function addToProgram(blockId) {
+    if (simRunning) return;
+    placedBlocks.push(blockId);
+    renderProgram();
+    document.getElementById('resultMsg').textContent = '';
+}
+
+function renderProgram() {
+    var dz = document.getElementById('dropZone');
+    dz.innerHTML = '';
+    if (placedBlocks.length === 0) {
+        var hint = document.createElement('div');
+        hint.className = 'drop-zone-hint';
+        hint.innerHTML = '\u{1F4CC} \u03A3\u03CD\u03C1\u03B5 \u03C4\u03B9\u03C2 \u03B5\u03BD\u03C4\u03BF\u03BB\u03AD\u03C2 \u03B5\u03B4\u03CE \u03AE \u03C0\u03AC\u03C4\u03B5\u03C3\u03AD \u03C4\u03B1\u03C2';
+        dz.appendChild(hint);
+        return;
+    }
+    var inLoop = false;
+    for (var i = 0; i < placedBlocks.length; i++) {
+        var id = placedBlocks[i];
+        var def = BLOCK_DEFS[id];
+        var wrapper = document.createElement('div');
+        wrapper.className = 'placed-block';
+
+        if (id === 'loop') {
+            inLoop = true;
+        }
+
+        var block = document.createElement('div');
+        block.className = 'block ' + def.cls;
+        if (inLoop && id !== 'loop') {
+            block.style.marginLeft = '20px';
+            block.style.borderLeft = '3px solid #9C27B0';
+        }
+        block.textContent = def.text;
+        block.dataset.index = i;
+
+        (function(idx) {
+            block.addEventListener('click', function(e) {
+                e.stopPropagation();
+                removeFromProgram(idx);
+            });
+        })(i);
+
+        wrapper.appendChild(block);
+        dz.appendChild(wrapper);
+    }
+}
+
+function removeFromProgram(index) {
+    if (simRunning) return;
+    placedBlocks.splice(index, 1);
+    renderProgram();
+    document.getElementById('resultMsg').textContent = '';
+}
+
+function checkProgram() {
+    if (simRunning) return;
+    var ch = challenges[currentChallenge];
+    var correct = true;
+    if (placedBlocks.length !== ch.correct.length) {
+        correct = false;
+    } else {
+        for (var i = 0; i < ch.correct.length; i++) {
+            if (placedBlocks[i] !== ch.correct[i]) {
+                correct = false;
+                break;
+            }
+        }
+    }
+
+    var resultEl = document.getElementById('resultMsg');
+    if (correct) {
+        resultEl.innerHTML = '<div class="feedback-correct">\u2705 \u03A3\u03C9\u03C3\u03C4\u03CC! \u03A4\u03CC\u03C1\u03B1 \u03C0\u03AC\u03C4\u03B1 "\u03A4\u03C1\u03AD\u03BE\u03B9\u03BC\u03BF" \u03B3\u03B9\u03B1 \u03BD\u03B1 \u03B4\u03B5\u03B9\u03C2 \u03C4\u03BF \u03C1\u03BF\u03BC\u03C0\u03CC\u03C4!</div>';
+        document.getElementById('btnRun').style.display = '';
+        challengeStars[currentChallenge] = 1;
+    } else {
+        resultEl.innerHTML = '<div class="feedback-wrong">\u274C \u0394\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C3\u03C9\u03C3\u03C4\u03CC. \u039E\u03B1\u03BD\u03AC\u03B4\u03BF\u03BA\u03AF\u03BC\u03B1\u03C3\u03B5!</div>';
+        document.getElementById('btnRun').style.display = 'none';
+    }
+}
+
+function initSimGrid() {
+    var ch = challenges[currentChallenge];
+    var s = ch.sim;
+    simCols = s.cols;
+    simRows = s.rows;
+    simDir = 0;
+    simRobot = { r: s.start.r, c: s.start.c };
+    simGrid = [];
+    for (var r = 0; r < simRows; r++) {
+        simGrid[r] = [];
+        for (var c = 0; c < simCols; c++) {
+            simGrid[r][c] = 'empty';
+        }
+    }
+    for (var i = 0; i < s.obstacles.length; i++) {
+        simGrid[s.obstacles[i].r][s.obstacles[i].c] = 'obstacle';
+    }
+    simGrid[s.target.r][s.target.c] = 'target';
+    renderSimGrid();
+}
+
+function renderSimGrid() {
+    var el = document.getElementById('simGrid');
+    el.innerHTML = '';
+    el.style.gridTemplateColumns = 'repeat(' + simCols + ', 1fr)';
+    for (var r = 0; r < simRows; r++) {
+        for (var c = 0; c < simCols; c++) {
+            var cell = document.createElement('div');
+            cell.className = 'sim-cell';
+            cell.dataset.r = r;
+            cell.dataset.c = c;
+            if (simGrid[r][c] === 'obstacle') {
+                cell.classList.add('sim-obstacle');
+            } else if (simGrid[r][c] === 'target') {
+                cell.classList.add('sim-target');
+            } else if (simGrid[r][c] === 'path') {
+                cell.classList.add('sim-path');
+            }
+            if (r === simRobot.r && c === simRobot.c) {
+                var rob = document.createElement('div');
+                rob.className = 'sim-robot';
+                rob.textContent = ROBOT;
+                rob.id = 'simRobotEl';
+                cell.style.position = 'relative';
+                cell.appendChild(rob);
+            }
+            el.appendChild(cell);
+        }
+    }
+}
+
+function getSimCell(r, c) {
+    var cells = document.querySelectorAll('.sim-cell');
+    return cells[r * simCols + c];
+}
+
+function runSimulation() {
+    if (simRunning) return;
+    simRunning = true;
+    document.getElementById('btnCheck').disabled = true;
+    document.getElementById('btnRun').disabled = true;
+    document.getElementById('btnReset').disabled = true;
+
+    var ch = challenges[currentChallenge];
+    initSimGrid();
+
+    if (currentChallenge === 3) {
+        runLoopSimulation(ch);
+    } else {
+        runLinearSimulation(ch);
+    }
+}
+
+function runLinearSimulation(ch) {
+    var steps = [];
+    for (var i = 0; i < placedBlocks.length; i++) {
+        var id = placedBlocks[i];
+        if (id === 'forward' || id === 'forward-cont') {
+            steps.push({ type: 'forward' });
+        } else if (id === 'wait') {
+            steps.push({ type: 'wait-until-obstacle' });
+        } else if (id === 'stop') {
+            steps.push({ type: 'stop' });
+        } else if (id === 'back') {
+            steps.push({ type: 'back' });
+        } else if (id === 'turn-r') {
+            steps.push({ type: 'turn-r' });
+        } else if (id === 'turn-l') {
+            steps.push({ type: 'turn-l' });
+        }
+    }
+    executeSteps(steps, 0, ch);
+}
+
+function executeSteps(steps, idx, ch) {
+    if (idx >= steps.length) {
+        finishSim(ch);
+        return;
+    }
+    var step = steps[idx];
+    if (step.type === 'forward') {
+        var maxSteps = 20;
+        moveForwardSeries(0, maxSteps, function() {
+            executeSteps(steps, idx + 1, ch);
+        }, ch);
+    } else if (step.type === 'wait-until-obstacle') {
+        var max2 = 20;
+        moveForwardSeries(0, max2, function() {
+            executeSteps(steps, idx + 1, ch);
+        }, ch);
+    } else if (step.type === 'stop') {
+        finishSim(ch);
+    } else if (step.type === 'back') {
+        doMoveBack(function() {
+            executeSteps(steps, idx + 1, ch);
+        });
+    } else if (step.type === 'turn-r') {
+        simDir = (simDir + 1) % 4;
+        setTimeout(function() {
+            executeSteps(steps, idx + 1, ch);
+        }, 300);
+    } else if (step.type === 'turn-l') {
+        simDir = (simDir + 3) % 4;
+        setTimeout(function() {
+            executeSteps(steps, idx + 1, ch);
+        }, 300);
+    }
+}
+
+function moveForwardSeries(count, max, callback, ch) {
+    if (count >= max) { callback(); return; }
+    var nr = simRobot.r + SIM_DR[simDir];
+    var nc = simRobot.c + SIM_DC[simDir];
+    if (nr < 0 || nr >= simRows || nc < 0 || nc >= simCols) {
+        callback();
+        return;
+    }
+    if (simGrid[nr][nc] === 'obstacle') {
+        callback();
+        return;
+    }
+    simGrid[simRobot.r][simRobot.c] = 'path';
+    simRobot.r = nr;
+    simRobot.c = nc;
+    renderSimGrid();
+    if (nr === ch.sim.target.r && nc === ch.sim.target.c) {
+        return;
+    }
+    setTimeout(function() {
+        moveForwardSeries(count + 1, max, callback, ch);
+    }, 200);
+}
+
+function doMoveBack(callback) {
+    var nr = simRobot.r - SIM_DR[simDir];
+    var nc = simRobot.c - SIM_DC[simDir];
+    if (nr >= 0 && nr < simRows && nc >= 0 && nc < simCols && simGrid[nr][nc] !== 'obstacle') {
+        simRobot.r = nr;
+        simRobot.c = nc;
+        renderSimGrid();
+    }
+    setTimeout(callback, 300);
+}
+
+function runLoopSimulation(ch) {
+    var loopIterations = 0;
+    var maxIterations = 6;
+
+    function runOneIteration() {
+        if (loopIterations >= maxIterations) {
+            finishSim(ch);
+            return;
+        }
+        loopIterations++;
+        runLoopBody(0, ch, function() {
+            runOneIteration();
+        });
+    }
+    runOneIteration();
+}
+
+function runLoopBody(stepIdx, ch, doneCallback) {
+    var innerBlocks = placedBlocks.slice(1);
+    if (stepIdx >= innerBlocks.length) {
+        doneCallback();
+        return;
+    }
+    var id = innerBlocks[stepIdx];
+    if (id === 'forward-cont') {
+        var maxS = 5;
+        moveForwardSeries(0, maxS, function() {
+            runLoopBody(stepIdx + 1, ch, doneCallback);
+        }, ch);
+    } else if (id === 'wait') {
+        var maxW = 5;
+        moveForwardSeries(0, maxW, function() {
+            runLoopBody(stepIdx + 1, ch, doneCallback);
+        }, ch);
+    } else if (id === 'back') {
+        doMoveBack(function() {
+            runLoopBody(stepIdx + 1, ch, doneCallback);
+        });
+    } else if (id === 'turn-r') {
+        simDir = (simDir + 1) % 4;
+        setTimeout(function() {
+            runLoopBody(stepIdx + 1, ch, doneCallback);
+        }, 300);
+    } else if (id === 'turn-l') {
+        simDir = (simDir + 3) % 4;
+        setTimeout(function() {
+            runLoopBody(stepIdx + 1, ch, doneCallback);
+        }, 300);
+    } else if (id === 'stop') {
+        finishSim(ch);
+    } else {
+        runLoopBody(stepIdx + 1, ch, doneCallback);
+    }
+}
+
+function finishSim(ch) {
+    simRunning = false;
+    document.getElementById('btnCheck').disabled = false;
+    document.getElementById('btnRun').disabled = false;
+    document.getElementById('btnReset').disabled = false;
+
+    var onTarget = (simRobot.r === ch.sim.target.r && simRobot.c === ch.sim.target.c);
+    var resultEl = document.getElementById('resultMsg');
+    if (onTarget) {
+        challengeStars[currentChallenge] = 3;
+        resultEl.innerHTML = '<div class="feedback-correct">\u{1F389} \u03A4\u03BF \u03C1\u03BF\u03BC\u03C0\u03CC\u03C4 \u03AD\u03C6\u03C4\u03B1\u03C3\u03B5 \u03C3\u03C4\u03BF\u03BD \u03C3\u03C4\u03CC\u03C7\u03BF! 3 \u2B50</div>';
+    } else {
+        challengeStars[currentChallenge] = 1;
+        resultEl.innerHTML = '<div class="feedback-correct">\u2705 \u03A3\u03C9\u03C3\u03C4\u03CC \u03C0\u03C1\u03CC\u03B3\u03C1\u03B1\u03BC\u03BC\u03B1! \u03A4\u03BF \u03C1\u03BF\u03BC\u03C0\u03CC\u03C4 \u03AD\u03BA\u03B1\u03BD\u03B5 \u03B1\u03C5\u03C4\u03CC \u03C0\u03BF\u03C5 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9.</div>';
+    }
+    showCompletionScreen(challengeStars[currentChallenge]);
+}
+
+function showCompletionScreen(stars) {
+    var gc = document.getElementById('gameContent');
+    var cs = document.getElementById('completionScreen');
+    gc.classList.add('hidden');
+    cs.classList.add('show');
+
+    var starsStr = '';
+    for (var i = 0; i < 3; i++) {
+        starsStr += i < stars ? '\u2B50' : '\u26AA';
+    }
+    document.getElementById('compStars').textContent = starsStr;
+
+    totalStars = 0;
+    for (var j = 0; j < challengeStars.length; j++) {
+        if (challengeStars[j]) totalStars += challengeStars[j];
+    }
+
+    if (currentChallenge >= challenges.length - 1) {
+        document.getElementById('compMsg').textContent = '\u039F\u03BB\u03BF\u03BA\u03BB\u03AE\u03C1\u03C9\u03C3\u03B5\u03C2 \u03CC\u03BB\u03B5\u03C2 \u03C4\u03B9\u03C2 \u03C0\u03C1\u03BF\u03BA\u03BB\u03AE\u03C3\u03B5\u03B9\u03C2! \u03A3\u03CD\u03BD\u03BF\u03BB\u03BF: ' + totalStars + ' / ' + (challenges.length * 3) + ' \u03B1\u03C3\u03C4\u03AD\u03C1\u03B9\u03B1!';
+        document.getElementById('btnNext').textContent = '\u{1F504} \u0391\u03C0\u03CC \u03C4\u03B7\u03BD \u03B1\u03C1\u03C7\u03AE';
+    } else {
+        document.getElementById('compMsg').textContent = '\u039C\u03C0\u03C1\u03AC\u03B2\u03BF! \u039A\u03AD\u03C1\u03B4\u03B9\u03C3\u03B5\u03C2 ' + stars + ' \u03B1\u03C3\u03C4\u03AD\u03C1\u03B9\u03B1!';
+        document.getElementById('btnNext').textContent = '\u{1F697} \u0395\u03C0\u03CC\u03BC\u03B5\u03BD\u03B7 \u03A0\u03C1\u03CC\u03BA\u03BB\u03B7\u03C3\u03B7';
+    }
+}
+
+function nextChallenge() {
+    var gc = document.getElementById('gameContent');
+    var cs = document.getElementById('completionScreen');
+    gc.classList.remove('hidden');
+    cs.classList.remove('show');
+
+    if (currentChallenge >= challenges.length - 1) {
+        currentChallenge = 0;
+        totalStars = 0;
+        challengeStars = [];
+    } else {
+        currentChallenge++;
+    }
+    loadChallenge();
+}
+
+function resetChallenge() {
+    if (simRunning) return;
+    placedBlocks = [];
+    renderProgram();
+    document.getElementById('resultMsg').textContent = '';
+    document.getElementById('btnRun').style.display = 'none';
+    initSimGrid();
+}
+
+function loadChallenge() {
+    var ch = challenges[currentChallenge];
+    document.getElementById('challengeTitle').textContent = ch.title;
+    document.getElementById('challengeDesc').textContent = ch.desc;
+    document.getElementById('progressFill').style.width = (currentChallenge / challenges.length * 100) + '%';
+    document.getElementById('progressText').textContent = '\u03A0\u03C1\u03CC\u03BA\u03BB\u03B7\u03C3\u03B7 ' + (currentChallenge + 1) + ' / ' + challenges.length;
+    document.getElementById('resultMsg').textContent = '';
+    document.getElementById('btnRun').style.display = 'none';
+    document.getElementById('btnCheck').disabled = false;
+    document.getElementById('btnRun').disabled = false;
+    document.getElementById('btnReset').disabled = false;
+    placedBlocks = [];
+    initPalette();
+    renderProgram();
+    initSimGrid();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadChallenge();
+});
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '1')) return;
+  var F = [['.sim-cell', 1]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+</body>
+</html>

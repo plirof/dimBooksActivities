@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χτίσε τον Αλγόριθμο | Μάθημα 1</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fce7f3,#f9a8d4);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#9d174d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#db2777;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#9d174d;font-size:.75rem;font-weight:700;border:1px solid #f9a8d4;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.goal-box{background:#fdf2f8;border:2px solid #fbcfe8;border-radius:12px;padding:10px;margin:6px 0;text-align:center}
+.goal-icon{font-size:1.3rem;margin-bottom:2px}
+.goal-title{font-size:.78rem;font-weight:700;color:#9d174d}
+.goal-desc{font-size:.7rem;color:#be185d;margin-top:2px}
+.build-area{background:#faf5ff;border:2px dashed #d8b4fe;border-radius:12px;padding:10px;margin:8px 0;min-height:80px}
+.build-label{font-size:.68rem;font-weight:700;color:#7c3aed;margin-bottom:4px;text-align:center}
+.build-empty{font-size:.65rem;color:#a1a1aa;text-align:center;padding:12px 0;font-style:italic}
+.b-step{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;margin-bottom:4px;font-size:.72rem;color:#14532d}
+.b-step .b-num{width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0}
+.b-step .b-text{flex:1}
+.b-step .b-remove{background:none;border:none;font-size:.9rem;cursor:pointer;padding:2px;color:#ef4444;flex-shrink:0}
+.b-step .b-move{background:none;border:none;font-size:.75rem;cursor:pointer;padding:2px;color:#64748b;flex-shrink:0}
+.b-step .b-move:hover{color:#334155}
+.b-step.checked-correct{border-color:#16a34a;background:#f0fdf4}
+.b-step.checked-wrong{border-color:#dc2626;background:#fef2f2}
+.b-step.checked-misplaced{border-color:#f59e0b;background:#fefce8}
+.pool-title{font-size:.7rem;font-weight:700;color:#9d174d;text-align:center;margin:6px 0 4px}
+.pool{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.p-item{padding:7px 12px;border:2px solid #fbcfe8;border-radius:10px;font-size:.68rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s}
+.p-item:hover{border-color:#db2777;background:#fdf2f8}
+.p-item.used{opacity:.35;pointer-events:none}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#db2777;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#be185d}
+.check-btn:disabled{opacity:.5;cursor:not-allowed}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #db2777;border-radius:10px;background:transparent;color:#db2777;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fdf2f8}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .b-step > * + * { margin-left: 6px; }
+  .pool > * { margin: 2.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏗️ Χτίσε τον Αλγόριθμο</h1>
+<p class="subtitle">Διάλεξε τα σωστά βήματα και βάλτα στη σωστή σειρά!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόβλημα:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var puzzles=[
+{
+title:'🚶 Διάσχιση δρόμου',
+goal:'Πώς περνάς με ασφάλεια τον δρόμο;',
+correct:['Σταματάω στο πεζοδρόμιο','Κοιτάζω αριστερά','Κοιτάζω δεξιά','Αν δεν έρχονται αυτοκίνητα, περνώ'],
+distractors:['Κλείνω τα μάτια μου','Τρέχω γρήγορα χωρίς να κοιτάζω']
+},
+{
+title:'🧼 Πλύσιμο χεριών',
+goal:'Πώς πλένεις σωστά τα χέρια σου;',
+correct:['Βρέχω τα χέρια μου','Βάζω σαπούνι','Τρίβω καλά για 20 δευτερόλεπτα','Ξεπλένω με νερό','Σκουπίζω με πετσέτα'],
+distractors:['Βάζω τα χέρια στις τσέπες','Φυσάω τα χέρια μου']
+},
+{
+title:'📞 Τηλεφώνημα σε φίλο',
+goal:'Πώς παίρνεις τηλέφωνο έναν φίλο;',
+correct:['Ξεκλειδώνω το κινητό','Ανοίγω την εφαρμογή τηλεφώνου','Επιλέγω την επαφή του φίλου','Πατάω «Κλήση»','Μιλάω με τον φίλο μου'],
+distractors:['Γράφω ένα γράμμα','Χτυπάω την οθόνη δυνατά']
+},
+{
+title:'🌱 Φύτεμα λουλουδιού',
+goal:'Πώς φυτεύεις ένα λουλούδι σε γλάστρα;',
+correct:['Βάζω χώμα στη γλάστρα','Κάνω μια τρύπα στο χώμα','Βάζω το φυτό μέσα','Σκεπάζω τις ρίζες με χώρα','Προσθέτω λίγο νερό','Βάζω τη γλάστρα στον ήλιο'],
+distractors:['Βάζω το φυτό στο ψυγείο','Κόβω τα φύλλα']
+},
+{
+title:'🍞 Φτιάχνω τοστ',
+goal:'Πώς φτιάχνεις ένα ζεστό τοστ;',
+correct:['Παίρνω δύο φέτες ψωμί','Βάζω τυρί πάνω στη μία φέτα','Κλείνω με τη δεύτερη φέτα','Βάζω το τοστ στην τοστιέρα','Περιμένω 3 λεπτά','Βγάζω το τοστ και τρώω'],
+distractors:['Βάζω το ψωμί στο ψυγείο','Πετάω το τυρί']
+}
+];
+var curQ=0,pts=0,userSteps=[],checked=false;
+function initQ(){userSteps=[];checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var p=puzzles[curQ];
+var main=document.getElementById('main');
+var pool=[];
+for(var i=0;i<p.correct.length;i++)pool.push(p.correct[i]);
+for(var i=0;i<p.distractors.length;i++)pool.push(p.distractors[i]);
+shuffle(pool);
+var h='';
+h+='<div class="goal-box"><div class="goal-icon">'+p.title+'</div><div class="goal-title">🎯 Στόχος</div><div class="goal-desc">'+p.goal+'</div></div>';
+h+='<div class="build-area"><div class="build-label">📋 Ο Αλγόριθμός μου</div>';
+if(userSteps.length===0){
+h+='<div class="build-empty">Πάτα βήματα από κάτω για να χτίσεις τον αλγόριθμο...</div>';
+}else{
+for(var i=0;i<userSteps.length;i++){
+var cls='b-step';
+if(checked){
+if(i<p.correct.length&&userSteps[i]===p.correct[i])cls+=' checked-correct';
+else if(p.correct.indexOf(userSteps[i])>=0)cls+=' checked-misplaced';
+else cls+=' checked-wrong';
+}
+h+='<div class="'+cls+'">';
+h+='<span class="b-num">'+(i+1)+'</span>';
+h+='<span class="b-text">'+userSteps[i]+'</span>';
+if(!checked){
+if(i>0)h+='<button class="b-move" onclick="moveUp('+i+')">▲</button>';
+if(i<userSteps.length-1)h+='<button class="b-move" onclick="moveDown('+i+')">▼</button>';
+h+='<button class="b-remove" onclick="removeStep('+i+')">✕</button>';
+}
+h+='</div>';
+}
+}
+h+='</div>';
+h+='<div class="pool-title">🧩 Διαθέσιμα Βήματα</div>';
+h+='<div class="pool">';
+for(var i=0;i<pool.length;i++){
+var used=userSteps.indexOf(pool[i])>=0;
+h+='<div class="p-item'+(used?' used':'')+'" onclick="addStep('+i+')">'+pool[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&userSteps.length>0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Αλγορίθμου</button>';
+}
+if(checked){
+var correct=true;
+for(var i=0;i<p.correct.length;i++){
+if(i>=userSteps.length||userSteps[i]!==p.correct[i]){correct=false;break;}
+}
+if(userSteps.length!==p.correct.length)correct=false;
+if(correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg ok">✅ Σωστά! Έχτισες τον αλγόριθμο σωστά!</div>';
+if(curQ<puzzles.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Πρόβλημα ▶</button>';
+}
+}else{
+var s=userSteps.filter(function(s){return p.correct.indexOf(s)>=0;}).length;
+h+='<div class="result-msg bad">❌ '+s+'/'+p.correct.length+' σωστά. Πράσινο=θέση σωστή, Κίτρινο=σωστό βήμα λάθος θέση, Κόκκινο=λάθος βήμα. Δοκίμασε ξανά!</div>';
+h+='<button class="check-btn" onclick="checked=false;render();">🔄 Δοκίμασε ξανά</button>';
+}
+}
+main.innerHTML=h;
+}
+function addStep(i){
+if(checked)return;
+var p=puzzles[curQ];
+var pool=[];
+for(var j=0;j<p.correct.length;j++)pool.push(p.correct[j]);
+for(var j=0;j<p.distractors.length;j++)pool.push(p.distractors[j]);
+shuffle(pool);
+if(userSteps.indexOf(pool[i])<0){
+userSteps.push(pool[i]);
+render();
+}
+}
+function removeStep(i){
+if(checked)return;
+userSteps.splice(i,1);
+render();
+}
+function moveUp(i){
+if(checked||i<=0)return;
+var t=userSteps[i];userSteps[i]=userSteps[i-1];userSteps[i-1]=t;
+render();
+}
+function moveDown(i){
+if(checked||i>=userSteps.length-1)return;
+var t=userSteps[i];userSteps[i]=userSteps[i+1];userSteps[i+1]=t;
+render();
+}
+function checkAnswer(){
+if(userSteps.length===0)return;
+checked=true;
+render();
+}
+function nextQ(){
+if(curQ<puzzles.length-1){curQ++;initQ();render();}
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+initQ();render();
+</script>
+</body>
+</html>

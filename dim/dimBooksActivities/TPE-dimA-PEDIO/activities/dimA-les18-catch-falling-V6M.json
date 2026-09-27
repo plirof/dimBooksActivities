@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Μεγαλώνω τον Χάρτη",
+  "subtitle": "Πιάσε λέξεις-σύνδεσμους!",
+  "instructions": "Πιάσε μόνο ΛΕΞΕΙΣ ΠΟΥ ΜΠΟΡΟΥΝ ΝΑ ΜΠΟΥΝ πάνω στις ΓΡΑΜΜΕΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Χωρίζονται σε", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάλα", "correct": false, "color": "#f44336"},
+    {"text": "Όπως", "correct": true, "color": "#2196F3"},
+    {"text": "Κουζίνα", "correct": false, "color": "#FF9800"},
+    {"text": "Είναι", "correct": true, "color": "#9C27B0"},
+    {"text": "Καρέκλα", "correct": false, "color": "#E91E63"},
+    {"text": "Πηγαίνει", "correct": true, "color": "#009688"},
+    {"text": "Ποτήρι", "correct": false, "color": "#FFC107"},
+    {"text": "Ζώα", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"},
+    {"text": "Φεύγει", "correct": true, "color": "#3F51B5"},
+    {"text": "Τραπέζι", "correct": false, "color": "#8BC34A"}
+  ]
+}

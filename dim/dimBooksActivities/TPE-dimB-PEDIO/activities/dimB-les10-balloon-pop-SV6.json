@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ψηφιακές Συσκευές",
+  "subtitle": "Μόνο ψηφιακές συσκευές!",
+  "instruction": "Σπάσε μόνο ΨΗΦΙΑΚΕΣ ΣΥΣΚΕΥΕΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Έξυπνο ρολόι", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουτάλι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Πλοηγός", "correct": true, "color": "#45B7D1" },
+    { "text": "Ξύστρα", "correct": false, "color": "#96CEB4" },
+    { "text": "Σκούπα ρομπότ", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κουβέρτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Μηχάνημα πληρωμής", "correct": true, "color": "#98D8C8" },
+    { "text": "Μαξιλάρι", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ταμπλέτα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κάδος", "correct": false, "color": "#85C1E9" }
+  ]
+}

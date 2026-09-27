@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Βήματα Έρευνας",
+  "subtitle": "Πιάσε τα σωστά βήματα συλλογής δεδομένων",
+  "instructions": "Πιάσε τα σωστά βήματα και άσε τα λάθος να πέσουν",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Ερώτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Απάντηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φόρμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Δεδομένα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Δημοσκόπηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πίνακας",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πρόγραμμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Μεταβλητή",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

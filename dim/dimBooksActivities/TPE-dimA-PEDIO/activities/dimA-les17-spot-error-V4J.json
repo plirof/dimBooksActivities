@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Εννοιολογικός Χάρτης",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "εννοιολογικός", "error": false},
+        {"text": "χάρτης", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "τρίγωνα", "error": true, "correct": "σχήματα", "feedback": "Ο χάρτης έχει σχήματα (τετράγωνα, κύκλους), όχι μόνο τρίγωνα!"},
+        {"text": "και", "error": false},
+        {"text": "γραμμές.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μέσα", "error": false},
+        {"text": "στα", "error": false},
+        {"text": "σχήματα", "error": false},
+        {"text": "ζωγραφίζω", "error": true, "correct": "γράφω", "feedback": "Μέσα στα σχήματα γράφουμε λέξεις, δεν ζωγραφίζουμε!"},
+        {"text": "λέξεις.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "σχήματα", "error": false},
+        {"text": "δεν", "error": true, "correct": "ενώνονται", "feedback": "Τα σχήματα ενώνονται με γραμμές!"},
+        {"text": "με", "error": false},
+        {"text": "γραμμές.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αλλάξω", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "χάρτη", "error": false},
+        {"text": "χρησιμοποιώ", "error": false},
+        {"text": "πινέλο", "error": true, "correct": "γόμα", "feedback": "Χρησιμοποιώ μολύβι και γόμα για να αλλάξω τον χάρτη!"},
+        {"text": "και", "error": false},
+        {"text": "μολύβι.", "error": false}
+      ]
+    }
+  ]
+}

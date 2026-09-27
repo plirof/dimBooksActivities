@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les11-missingword-30w",
+    "title": "Χαρούμενα γενέθλια! (micro:bit) - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το micro:bit είναι ένας μικρός ___ υπολογιστής.",
+                "options": [
+                    "προγραμματίσιμος",
+                    "αναλογικός",
+                    "μηχανικός",
+                    "φθηνός"
+                ],
+                "correct": "προγραμματίσιμος"
+            },
+            {
+                "sentence": "Προγραμματίζουμε το micro:bit με το περιβάλλον ___.",
+                "options": [
+                    "MakeCode",
+                    "Scratch",
+                    "Paint",
+                    "Word"
+                ],
+                "correct": "MakeCode"
+            },
+            {
+                "sentence": "Μικρά φωτάκια στο micro:bit ονομάζονται ___.",
+                "options": [
+                    "LED",
+                    "LCD",
+                    "USB",
+                    "CPU"
+                ],
+                "correct": "LED"
+            },
+            {
+                "sentence": "Η μελωδία «Χρόνια Πολλά» παίζεται με την εντολή «Παίξε ___».",
+                "options": [
+                    "μελωδία",
+                    "βίντεο",
+                    "κείμενο",
+                    "εικόνα"
+                ],
+                "correct": "μελωδία"
+            },
+            {
+                "sentence": "Όταν ___ το micro:bit, μπορεί να αντιδράσει.",
+                "options": [
+                    "ταρακουνήσουμε",
+                    "ανοίξουμε",
+                    "κλείσουμε",
+                    "δούμε"
+                ],
+                "correct": "ταρακουνήσουμε"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les11",
+        "microbit"
+    ]
+}

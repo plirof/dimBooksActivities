@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι είναι Μοτίβο;",
+  "subtitle": "Μόνο ό,τι είναι μοτίβο!",
+  "instruction": "Σπάσε μόνο αυτά που είναι ΜΟΤΙΒΟ που επαναλαμβάνεται!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κόκκινο Μπλε Κόκκινο Μπλε", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μοναδικό σχέδιο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Τρίγωνο Κύκλος Τρίγωνο", "correct": true, "color": "#45B7D1" },
+    { "text": "Τυχαίος αριθμός", "correct": false, "color": "#96CEB4" },
+    { "text": "Ημέρα Νύχτα Ημέρα Νύχτα", "correct": true, "color": "#FFEAA7" },
+    { "text": "Χάος", "correct": false, "color": "#DDA0DD" },
+    { "text": "Α Β Α Β Α Β", "correct": true, "color": "#98D8C8" },
+    { "text": "Ακατάστατα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Μπλε Μπλε Μπλε Μπλε", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κάθε φορά διαφορετικό", "correct": false, "color": "#85C1E9" }
+  ]
+}

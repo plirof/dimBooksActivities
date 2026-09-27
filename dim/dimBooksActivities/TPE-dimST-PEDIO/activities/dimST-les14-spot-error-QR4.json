@@ -1,0 +1,46 @@
+{
+  "title": "Βρες τα Λάθη: Δίκτυα και Πρωτόκολλα",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "ταχύτητα", "error": false },
+        { "text": "του", "error": false },
+        { "text": "διαδικτύου", "error": false },
+        { "text": "μετριέται", "error": false },
+        { "text": "σε", "error": false },
+        { "text": "GB.", "error": true, "correct": "Mbps", "feedback": "Η ταχύτητα μετριέται σε Mbps ή Gbps, όχι σε GB" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "SMTP", "error": false },
+        { "text": "χρησιμοποιείται", "error": false },
+        { "text": "για", "error": false },
+        { "text": "τη", "error": false },
+        { "text": "λήψη", "error": true, "correct": "αποστολή", "feedback": "Το SMTP χρησιμοποιείται για ΑΠΟΣΤΟΛΗ email. Για λήψη είναι το POP3/IMAP" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false },
+        { "text": "διεύθυνση", "error": false },
+        { "text": "MAC", "error": false },
+        { "text": "μπορεί", "error": false },
+        { "text": "να", "error": false },
+        { "text": "αλλάξει.", "error": true, "correct": "δεν μπορεί να αλλάξει", "feedback": "Η MAC δίνεται από το εργοστάσιο και δεν αλλάζει" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false },
+        { "text": "FTP", "error": false },
+        { "text": "χρησιμοποιείται", "error": false },
+        { "text": "για", "error": false },
+        { "text": "ιστοσελίδες.", "error": true, "correct": "μεταφορά αρχείων", "feedback": "Το FTP είναι για μεταφορά αρχείων. Για ιστοσελίδες είναι το HTTP/HTTPS" }
+      ]
+    }
+  ]
+}

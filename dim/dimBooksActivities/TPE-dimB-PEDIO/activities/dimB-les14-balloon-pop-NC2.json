@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υπηρεσίες Διαδικτύου",
+  "subtitle": "Μόνο υπηρεσίες διαδικτύου!",
+  "instruction": "Σπάσε μόνο ΥΠΗΡΕΣΙΕΣ ΔΙΑΔΙΚΤΥΟΥ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Email", "correct": true, "color": "#FF6B6B" },
+    { "text": "Βιβλιοθήκη", "correct": false, "color": "#4ECDC4" },
+    { "text": "Βιντεοκλήση", "correct": true, "color": "#45B7D1" },
+    { "text": "Ταχυδρομείο χαρτιού", "correct": false, "color": "#96CEB4" },
+    { "text": "Chat", "correct": true, "color": "#FFEAA7" },
+    { "text": "Τηλεφωνητής", "correct": false, "color": "#DDA0DD" },
+    { "text": "Παγκόσμιος ιστός", "correct": true, "color": "#98D8C8" },
+    { "text": "Ραδιόφωνο", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ιστοσελίδα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Εφημερίδα", "correct": false, "color": "#85C1E9" }
+  ]
+}

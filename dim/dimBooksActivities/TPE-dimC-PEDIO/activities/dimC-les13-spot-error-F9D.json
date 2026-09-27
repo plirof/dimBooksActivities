@@ -1,0 +1,60 @@
+{
+  "title": "Βρες τα Λάθη: Ασφάλεια",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ιός", "error": false},
+        {"text": "προστατεύει", "error": true, "correct": "προκαλεί ζημιά", "feedback": "Ο ιός ΠΡΟΚΑΛΕΙ ΖΗΜΙΑ, δεν προστατεύει!"},
+        {"text": "τον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ενημερώνουμε", "error": true, "correct": "πρέπει να ενημερώνουμε", "feedback": "ΠΡΕΠΕΙ να ενημερώνουμε το antivirus συχνά για νέους ιούς!"},
+        {"text": "το", "error": false},
+        {"text": "antivirus.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Καλό", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βάζω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "όνομά", "error": true, "correct": "κάτι δύσκολο", "feedback": "Δεν βάζουμε το όνομά μας ως κωδικό, είναι εύκολο να μαντευτεί!"},
+        {"text": "μου", "error": false},
+        {"text": "ως", "error": false},
+        {"text": "κωδικό.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "οποιοδήποτε", "error": true, "correct": "", "feedback": "Δεν κάνουμε κλικ σε ασυνήθιστα μηνύματα ή δώρα στο διαδίκτυο!"},
+        {"text": "μήνυμα", "error": true, "correct": "ασφαλές μήνυμα", "feedback": "Προσέχουμε ποια μηνύματα ανοίγουμε!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "κωδικός", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "3", "error": true, "correct": "8", "feedback": "Ο κωδικός πρέπει να έχει ΤΟΥΛΑΧΙΣΤΟΝ 8 χαρακτήρες!"},
+        {"text": "χαρακτήρες.", "error": false}
+      ]
+    }
+  ]
+}

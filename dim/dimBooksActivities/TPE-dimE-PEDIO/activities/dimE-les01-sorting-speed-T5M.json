@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Καίσαρας",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "meth", "name": "Μέθοδος Καίσαρα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "prog", "name": "Προγραμματισμός", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αντικατάσταση γραμμάτων", "category": "meth"},
+    {"text": "Μεταβλητή", "category": "prog"},
+    {"text": "Μετατόπιση 3", "category": "meth"},
+    {"text": "Αλγόριθμος", "category": "prog"},
+    {"text": "Πίνακας κωδικοποίησης", "category": "meth"},
+    {"text": "Επανάληψη", "category": "prog"},
+    {"text": "Κρυπτογράφηση", "category": "meth"},
+    {"text": "Τιμή μεταβλητής", "category": "prog"},
+    {"text": "Καίσαρας", "category": "meth"},
+    {"text": "Υποπρόβλημα", "category": "prog"}
+  ],
+  "duration": 30
+}

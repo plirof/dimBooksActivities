@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πίνακας Αντικατάστασης | Μάθημα 1</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#faf5ff,#e9d5ff);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#581c87;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#7c3aed;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#581c87;font-size:.75rem;font-weight:700;border:1px solid #c4b5fd;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.table-row{display:flex;gap:2px;justify-content:center;flex-wrap:wrap;margin:4px 0}
+.table-cell{width:36px;height:36px;border:2px solid #e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#334155;background:#fafafa;cursor:default}
+.table-cell.header{background:#f5f3ff;color:#581c87;border-color:#c4b5fd}
+.table-cell.arrow{background:transparent;border:none;color:#7c3aed;font-size:.7rem}
+.table-cell.missing{border:2px dashed #7c3aed;background:#faf5ff;cursor:pointer;transition:all .2s}
+.table-cell.missing:hover{background:#ede9fe}
+.table-cell.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.table-cell.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.letter-picker{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.letter-opt{width:34px;height:34px;border:2px solid #e2e8f0;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.letter-opt:hover{border-color:#7c3aed;background:#f5f3ff}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:6px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#7c3aed;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#6d28d9}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #7c3aed;border-radius:10px;background:transparent;color:#7c3aed;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#faf5ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .table-row > * { margin: 1px; }
+  .letter-picker > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📋 Πίνακας Αντικατάστασης</h1>
+<p class="subtitle">Συμπλήρωσε τον πίνακα κρυπτογράφησης του Καίσαρα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Μέρος:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var alpha='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+var parts=[3,4,5];
+var curQ=0,pts=0,answers={},checked=false,selectedMissing=-1;
+
+function initQ(){answers={};checked=false;selectedMissing=-1;}
+
+function getMissing(disp){
+var missing=[];
+var positions=[0,2,4,7,9,11,14,16,18,20,23];
+for(var i=0;i<positions.length;i++)missing.push(positions[i]);
+return missing;
+}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var disp=parts[curQ];
+var missing=getMissing(disp);
+var main=document.getElementById('main');
+var h='';
+h+='<div class="info-text">Μετατόπιση: <strong>'+disp+'</strong> θέσεις — Βρες τα γράμματα που λείπουν (με μπλε περίγραμμα)</div>';
+h+='<div class="table-row">';
+for(var i=0;i<24;i++){
+h+='<div class="table-cell header">'+alpha[i]+'</div>';
+}
+h+='</div>';
+h+='<div class="table-row">';
+for(var i=0;i<24;i++){
+h+='<div class="table-cell arrow">↓</div>';
+}
+h+='</div>';
+h+='<div class="table-row">';
+for(var i=0;i<24;i++){
+if(missing.indexOf(i)!==-1){
+if(answers[i]!==undefined){
+var correct=alpha[(i+disp)%24];
+var cls='table-cell'+(answers[i]===correct?' correct':' wrong');
+h+='<div class="'+cls+'">'+answers[i]+'</div>';
+}else{
+var sel=selectedMissing===i?' missing selected':' missing';
+h+='<div class="table-cell'+sel+'" onclick="selectMissing('+i+')">?</div>';
+}
+}else{
+h+='<div class="table-cell">'+alpha[(i+disp)%24]+'</div>';
+}
+}
+h+='</div>';
+if(!checked&&selectedMissing>=0){
+h+='<div class="info-text">Επίλεξε το σωστό γράμμα για τη θέση <strong>'+alpha[selectedMissing]+'</strong>:</div>';
+h+='<div class="letter-picker">';
+for(var i=0;i<24;i++){
+h+='<button class="letter-opt" onclick="pickLetter(\''+alpha[i]+'\')">'+alpha[i]+'</button>';
+}
+h+='</div>';
+}
+var allFilled=Object.keys(answers).length===missing.length;
+if(allFilled&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Πίνακα</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<missing.length;i++){
+var idx=missing[i];
+if(answers[idx]===alpha[(idx+disp)%24])correct++;
+}
+var pct=Math.round(correct/missing.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ Εξαιρετικά! '+correct+'/'+missing.length+' σωστά!':'❌ '+correct+'/'+missing.length+' σωστά.')+'</div>';
+if(curQ<parts.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενος Πίνακας ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function selectMissing(idx){
+if(checked)return;
+if(answers[idx]!==undefined)return;
+selectedMissing=idx;
+render();
+}
+
+function pickLetter(letter){
+if(selectedMissing<0||checked)return;
+answers[selectedMissing]=letter;
+var disp=parts[curQ];
+var correct=alpha[(selectedMissing+disp)%24];
+if(letter!==correct){
+var wrongIdx=selectedMissing;
+setTimeout(function(){delete answers[wrongIdx];render();},500);
+}
+selectedMissing=-1;
+render();
+}
+
+function checkAnswer(){checked=true;render();}
+
+function nextQ(){
+if(curQ<parts.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "title": "Μάζεψε τα βήματα του αλγορίθμου!",
+  "subtitle": "Κάνε κλικ στα σωστά βήματα πριν εξαφανιστούν",
+  "instructions": "Κάνε κλικ στα βήματα του αλγορίθμου! Προσοχή στα λάθος βήματα!",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "📝", "color": "#c8e6c9" },
+    { "label": "🔄", "color": "#bbdefb" },
+    { "label": "🔀", "color": "#ffe0b2" },
+    { "label": "⚡", "color": "#f8bbd0" },
+    { "label": "✅", "color": "#d1c4e9" },
+    { "label": "💡", "color": "#fff9c4" }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "title": "Κατηγορίες Εντολών Scratch",
+  "subtitle": "Ταξινόμησε τις εντολές στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "motion",
+      "name": "ΚΙΝΗΣΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "control",
+      "name": "ΕΛΕΓΧΟΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "sensing",
+      "name": "ΑΙΣΘΗΤΗΡΕΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Κινήσου 10 βήματα",
+      "category": "motion"
+    },
+    {
+      "id": "item2",
+      "text": "Πήγαινε σε Σπιτάκι",
+      "category": "motion"
+    },
+    {
+      "id": "item3",
+      "text": "Αν... τότε",
+      "category": "control"
+    },
+    {
+      "id": "item4",
+      "text": "Μέχρι... επανάλαβε",
+      "category": "control"
+    },
+    {
+      "id": "item5",
+      "text": "Αγγίζει όριο σκηνής;",
+      "category": "sensing"
+    },
+    {
+      "id": "item6",
+      "text": "Αγγίζει Σκυλάκι;",
+      "category": "sensing"
+    },
+    {
+      "id": "item7",
+      "text": "Δείκτης ποντικιού κοντά;",
+      "category": "sensing"
+    },
+    {
+      "id": "item8",
+      "text": "Γύρνα δεξιά 15 μοίρες",
+      "category": "motion"
+    },
+    {
+      "id": "item9",
+      "text": "Περίμενε 1 δευτερόλεπτο",
+      "category": "control"
+    }
+  ]
+}

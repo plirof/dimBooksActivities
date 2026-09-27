@@ -1,0 +1,53 @@
+{
+  "title": "Βρες τα Λάθη: Μεταβλητές",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "πόντοι", "error": false},
+        {"text": "αρχικοποιούνται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "τέλος", "error": true, "correct": "αρχή", "feedback": "Οι μεταβλητές αρχικοποιούνται στην ΑΡΧΗ του προγράμματος!"},
+        {"text": "του", "error": false},
+        {"text": "προγράμματος.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ζωές", "error": false},
+        {"text": "αρχικά", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "5.", "error": true, "correct": "3", "feedback": "Η Έλλη έχει 3 ζωές αρχικά, όχι 5!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "πόντοι", "error": false},
+        {"text": "μειώνονται", "error": true, "correct": "αυξάνονται", "feedback": "Οι πόντοι ΑΥΞΑΝΟΝΤΑΙ όταν αγγίζουμε αστερία, δεν μειώνονται!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "μειώσουμε", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "ζωές", "error": false},
+        {"text": "βάζουμε", "error": false},
+        {"text": "+1", "error": true, "correct": "-1", "feedback": "Για μείωση βάζουμε -1, όχι +1!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "φουσκωτό", "error": false},
+        {"text": "ψάρι", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "φιλικό", "error": true, "correct": "τοξικό/εχθρικό", "feedback": "Το φουσκωτό ψάρι είναι ΤΟΞΙΚΟ και ΕΧΘΡΟΣ!"}
+      ]
+    }
+  ]
+}

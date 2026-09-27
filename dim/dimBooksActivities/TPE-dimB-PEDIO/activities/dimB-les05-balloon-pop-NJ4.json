@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σωστό ή Λάθος;",
+  "subtitle": "Μόνο τα σωστά προγράμματα!",
+  "instruction": "Σπάσε μόνο τα ΣΩΣΤΑ προγράμματα!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Επανάλαβε 3 φορές: 1 μπροστά", "correct": true, "color": "#FF6B6B" },
+    { "text": "Επανάλαβε 0 φορές: μπροστά", "correct": false, "color": "#4ECDC4" },
+    { "text": "Μπροστά Δεξιά × 4 φορές", "correct": true, "color": "#45B7D1" },
+    { "text": "Δεξιά Δεξιά Δεξιά Δεξιά", "correct": false, "color": "#96CEB4" },
+    { "text": "Το μοτίβο ταιριάζει", "correct": true, "color": "#FFEAA7" },
+    { "text": "Ο αριθμός είναι λάθος", "correct": false, "color": "#DDA0DD" },
+    { "text": "Το πρόγραμμα δουλεύει σωστά", "correct": true, "color": "#98D8C8" },
+    { "text": "Βγήκε εκτός πλέγματος", "correct": false, "color": "#F7DC6F" },
+    { "text": "Το μοτίβο επαναλαμβάνεται σωστά", "correct": true, "color": "#BB8FCE" },
+    { "text": "Έλειψαν εντολές", "correct": false, "color": "#85C1E9" }
+  ]
+}

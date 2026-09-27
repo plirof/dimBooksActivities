@@ -1,0 +1,15 @@
+{
+  "title": "Πίστα Αγώνων",
+  "subtitle": "Οδήγησε το ρομπότ στην πίστα με ακρίβεια!",
+  "gridSize": 6,
+  "start": { "row": 5, "col": 0 },
+  "goal": { "row": 0, "col": 5 },
+  "obstacles": [
+    { "row": 1, "col": 0 },
+    { "row": 1, "col": 1 },
+    { "row": 3, "col": 4 },
+    { "row": 3, "col": 5 },
+    { "row": 2, "col": 2 },
+    { "row": 4, "col": 3 }
+  ]
+}

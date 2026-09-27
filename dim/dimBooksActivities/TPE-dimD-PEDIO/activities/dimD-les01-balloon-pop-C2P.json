@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αλγοριθμικές Έννοιες",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν έννοιες σχετικές με τους αλγόριθμους",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Βήματα σε σειρά", "correct": true, "color": "#4caf50" },
+    { "text": "Τυχαία σειρά", "correct": false, "color": "#f44336" },
+    { "text": "Εντολή επανάληψης", "correct": true, "color": "#2196f3" },
+    { "text": "Εντολή επιλογής", "correct": true, "color": "#ff9800" },
+    { "text": "Βήματα χωρίς σειρά", "correct": false, "color": "#9c27b0" },
+    { "text": "Αν… τότε", "correct": true, "color": "#00bcd4" },
+    { "text": "Χειρισμός γεγονότων", "correct": true, "color": "#8bc34a" },
+    { "text": "Δεν χρειάζεται σειρά", "correct": false, "color": "#ff5722" },
+    { "text": "Επανάλαβε Χ φορές", "correct": true, "color": "#607d8b" },
+    { "text": "Λύση χωρίς βήματα", "correct": false, "color": "#e91e63" },
+    { "text": "Αλγόριθμος", "correct": true, "color": "#3f51b5" },
+    { "text": "Τυχαία λύση", "correct": false, "color": "#795548" }
+  ]
+}

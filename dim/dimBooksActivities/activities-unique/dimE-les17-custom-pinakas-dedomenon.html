@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Θεωρία Υπολογιστικού Φύλλου | Μάθημα 17</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ecfdf5,#a7f3d0);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#065f46;font-size:1.15rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#10b981;font-size:.72rem;text-align:center;margin-bottom:8px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#065f46;font-size:.75rem;font-weight:700;border:1px solid #6ee7b7;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.main{max-width:680px;width:100%}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:16px;margin-bottom:10px}
+.tab-bar{display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.tab{padding:8px 16px;border:2px solid #d1d5db;border-radius:10px;background:#fff;color:#6b7280;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.tab:hover{border-color:#10b981}
+.tab.active{border-color:#10b981;background:#ecfdf5;color:#065f46}
+.term-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:10px}
+.term-card{padding:14px;border-radius:14px;border:2px solid #e2e8f0;background:#fafafa;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.term-card:hover{border-color:#10b981;transform:translateY(-2px)}
+.term-card .t-emoji{font-size:2em;display:block;margin-bottom:6px}
+.term-card .t-name{font-size:.8rem;font-weight:700;color:#1e293b}
+.term-card.selected{border-color:#6366f1;background:#eef2ff;transform:scale(1.03)}
+.term-card.matched{border-color:#10b981;background:#ecfdf5;opacity:.6}
+.def-card{grid-column:1/-1;padding:14px;border-radius:14px;border:2px solid #d1d5db;background:#fffbeb;text-align:center;cursor:pointer;transition:all .2s;min-height:60px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#1e293b;line-height:1.5;user-select:none}
+.def-card:hover{border-color:#f59e0b}
+.def-card.waiting{color:#94a3b8}
+.def-card.correct{border-color:#10b981;background:#ecfdf5;color:#065f46;font-weight:600}
+.def-card.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.mc-box{background:#f9fafb;border-radius:14px;padding:14px;margin-bottom:8px}
+.mc-q{font-size:.82rem;font-weight:600;color:#1e293b;margin-bottom:10px;line-height:1.5}
+.mc-opts{display:flex;flex-direction:column;gap:6px}
+.mc-btn{padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;font-size:.78rem;font-weight:600;color:#334155;cursor:pointer;transition:all .2s;text-align:left}
+.mc-btn:hover{border-color:#6366f1;background:#eef2ff}
+.mc-btn.correct{border-color:#10b981;background:#ecfdf5;color:#065f46}
+.mc-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.mc-btn:disabled{cursor:default;opacity:.7}
+.explain-box{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.7rem;line-height:1.5}
+.explain-box.show{display:block}
+.explain-box.ok{background:#ecfdf5;color:#065f46;border-left:3px solid #10b981}
+.explain-box.bad{background:#fef2f2;color:#dc2626;border-left:3px solid #ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#065f4622;color:#065f46}
+.nav-next{background:#10b981;color:#fff}
+@media(max-width:480px){.term-grid{grid-template-columns:1fr}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .tab-bar > * { margin: 3px; }
+  .mc-opts > * + * { margin-top: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📗 Θεωρία Υπολογιστικού Φύλλου</h1>
+<p class="subtitle">Μάθε τα βασικά μέρη και τις έννοιες του υπολογιστικού φύλλου!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ερώτηση:</span> <span id="qNum">1</span>/<span id="qTotal">9</span></span>
+</div>
+<div class="main" id="main"></div>
+<script>
+var sections=[
+{
+title:'📌 Βασικές Έννοιες',
+type:'match',
+terms:[
+{id:'cell',emoji:'🔲',name:'Κελί',def:'Ένα ορθογώνιο κουτάκι όπου γράφουμε δεδομένα (αριθμούς, κείμενο).'},
+{id:'row',emoji:'↔️',name:'Γραμμή',def:'Οριζόντια σειρά από κελιά. Ονομάζεται με αριθμό (1,2,3...).'},
+{id:'col',emoji:'↕️',name:'Στήλη',def:'Κάθετη σειρά από κελιά. Ονομάζεται με γράμμα (A,B,C...).'},
+{id:'sheet',emoji:'📄',name:'Φύλλο Εργασίας',def:'Η μεγάλη επιφάνεια με χιλιάδες κελιά όπου δουλεύουμε.'}
+]
+},
+{
+title:'📌 Αναγνώριση Κελιών',
+type:'match',
+terms:[
+{id:'ref',emoji:'📍',name:'Αναφορά Κελιού',def:'Το όνομα ενός κελιού. Π.χ. το κελί στη στήλη Β, γραμμή 3 λέγεται Β3.'},
+{id:'range',emoji:'📎',name:'Περιοχή Κελιών',def:'Ομάδα κελιών. Γράφεται με άνω και κάτω τελεία, π.χ. Α1:Γ3.'},
+{id:'active',emoji:'🎯',name:'Ενεργό Κελί',def:'Το κελί που έχουμε επιλέξει και μπορούμε να γράψουμε. Έχει έντονο περίγραμμα.'}
+]
+},
+{
+title:'📌 Χρήσεις Υπολογιστικού Φύλλου',
+type:'match',
+terms:[
+{id:'calc',emoji:'🧮',name:'Υπολογισμοί',def:'Το υπολογιστικό φύλλο κάνει πράξεις αυτόματα με τύπους (π.χ. =Α1+Β2).'},
+{id:'chart',emoji:'📊',name:'Διαγράμματα',def:'Μπορούμε να φτιάξουμε γραφικές παραστάσεις από τα δεδομένα μας.'},
+{id:'sort',emoji:'🔤',name:'Ταξινόμηση',def:'Βάζουμε τα δεδομένα σε σειρά (αλφαβητικά, από το μικρότερο στο μεγαλύτερο).'}
+]
+},
+{
+title:'❓ Ερωτήσεις Θεωρίας',
+type:'quiz',
+questions:[
+{
+q:'Τι είναι ένα υπολογιστικό φύλλο;',
+opts:['Ένα πρόγραμμα ζωγραφικής','Ένα πρόγραμμα για οργάνωση και υπολογισμό δεδομένων σε κελιά','Ένα πρόγραμμα για επεξεργασία κειμένου','Ένα παιχνίδι υπολογιστή'],
+correct:1,
+explain:'Το υπολογιστικό φύλλο (π.χ. Excel, LibreOffice Calc) οργανώνει δεδομένα σε κελιά και κάνει υπολογισμούς.'
+},
+{
+q:'Από τι αποτελείται ένα υπολογιστικό φύλλο;',
+opts:['Μόνο από γραμμές','Μόνο από στήλες','Από κελιά, γραμμές και στήλες','Από διαγράμματα και εικόνες'],
+correct:2,
+explain:'Το υπολογιστικό φύλλο έχει κελιά τοποθετημένα σε γραμμές (οριζόντια) και στήλες (κάθετα).'
+},
+{
+q:'Πώς ονομάζεται το κελί που βρίσκεται στη στήλη C, γραμμή 5;',
+opts:['5C','C5','Γ5','C,5'],
+correct:1,
+explain:'Πρώτα γράφουμε το γράμμα της στήλης (C) και μετά τον αριθμό της γραμμής (5) → C5.'
+}
+]
+}
+];
+var currentSection=0;
+var currentQuestion=0;
+var pts=0;
+var matched={};
+var selectedTerm=null;
+var quizAnswered={};
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function render(){
+var sec=sections[currentSection];
+document.getElementById('qNum').textContent=currentSection+1;
+document.getElementById('qTotal').textContent=sections.length;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="tab-bar">';
+for(var i=0;i<sections.length;i++){
+var act=i===currentSection?' active':'';
+h+='<div class="tab'+act+'" onclick="goToSection('+i+')">'+sections[i].title+'</div>';
+}
+h+='</div>';
+if(sec.type==='match'){
+h+=renderMatch(sec);
+}else{
+h+=renderQuiz(sec);
+}
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function renderMatch(sec){
+var h='';
+h+='<div class="term-grid" id="termGrid">';
+var terms=shuffle(sec.terms.slice());
+for(var i=0;i<terms.length;i++){
+var t=terms[i];
+var matchedClass=matched[currentSection+'_'+t.id]?' matched':'';
+var selClass=selectedTerm===currentSection+'_'+t.id?' selected':'';
+h+='<div class="term-card'+matchedClass+selClass+'" id="term_'+t.id+'" onclick="clickTerm(\''+t.id+'\')"><span class="t-emoji">'+t.emoji+'</span><span class="t-name">'+t.name+'</span></div>';
+}
+h+='<div class="def-card waiting" id="defCard">👆 Πάτα πρώτα έναν όρο από πάνω</div>';
+h+='</div>';
+return h;
+}
+function renderQuiz(sec){
+var q=sec.questions[currentQuestion];
+var h='';
+h+='<div class="mc-box">';
+h+='<div class="mc-q">'+q.q+'</div>';
+h+='<div class="mc-opts">';
+var ansKey=currentSection+'_'+currentQuestion;
+for(var i=0;i<q.opts.length;i++){
+var cls='mc-btn';
+if(quizAnswered[ansKey]!==undefined){
+cls+=i===q.correct?' correct':'';
+cls+=i===quizAnswered[ansKey]&&i!==q.correct?' wrong':'';
+}
+h+='<button class="'+cls+'" onclick="answerQuiz('+i+')"'+(quizAnswered[ansKey]!==undefined?' disabled':'')+'>'+String.fromCharCode(945+i)+'. '+q.opts[i]+'</button>';
+}
+h+='</div>';
+if(quizAnswered[ansKey]!==undefined){
+h+='<div class="explain-box show '+(quizAnswered[ansKey]===q.correct?'ok':'bad')+'">'+(quizAnswered[ansKey]===q.correct?'✅ ':'❌ ')+q.explain+'</div>';
+}
+h+='</div>';
+h+='<div class="nav-btns" style="justify-content:space-between">';
+h+='<button class="nav-btn nav-prev" onclick="prevQuizQ()"'+(currentQuestion===0?' disabled':'')+'>◀ Προηγ. Ερώτηση</button>';
+h+='<span style="font-size:.7rem;color:#64748b">Ερώτηση '+(currentQuestion+1)+'/'+sec.questions.length+'</span>';
+h+='<button class="nav-btn nav-next" onclick="nextQuizQ()"'+(currentQuestion===sec.questions.length-1?' disabled':'')+'>Επόμενη Ερώτηση ▶</button>';
+h+='</div></div>';
+return h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevSec()"'+(currentSection===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextSec()"'+(currentSection===sections.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function clickTerm(id){
+var sec=sections[currentSection];
+var term=sec.terms.find(function(t){return t.id===id;});
+if(!term||matched[currentSection+'_'+id])return;
+if(selectedTerm===currentSection+'_'+id){
+selectedTerm=null;
+document.getElementById('defCard').textContent='👆 Πάτα πρώτα έναν όρο από πάνω';
+document.getElementById('defCard').className='def-card waiting';
+renderMatchSection();
+return;
+}
+selectedTerm=currentSection+'_'+id;
+renderMatchSection();
+var defCard=document.getElementById('defCard');
+defCard.textContent='❓ '+term.def;
+defCard.className='def-card';
+defCard.onclick=function(){matchTerm(id);};
+}
+function matchTerm(id){
+if(!selectedTerm)return;
+var sec=sections[currentSection];
+var term=sec.terms.find(function(t){return t.id===id;});
+if(!term||matched[currentSection+'_'+id])return;
+var defCard=document.getElementById('defCard');
+if(defCard.classList.contains('done'))return;
+document.getElementById('defCard').className='def-card correct';
+document.getElementById('defCard').textContent='✅ '+term.def;
+matched[currentSection+'_'+id]=true;
+pts+=5;
+document.getElementById('pts').textContent=pts;
+selectedTerm=null;
+var allMatched=sec.terms.every(function(t){return matched[currentSection+'_'+t.id];});
+if(allMatched){
+setTimeout(function(){
+document.getElementById('defCard').textContent='🎉 Μπράβο! Όλοι οι όροι αντιστοιχήθηκαν!';
+document.getElementById('defCard').className='def-card correct';
+},300);
+}
+renderMatchSection();
+}
+function renderMatchSection(){
+var sec=sections[currentSection];
+for(var i=0;i<sec.terms.length;i++){
+var t=sec.terms[i];
+var el=document.getElementById('term_'+t.id);
+if(!el)continue;
+var cls='term-card';
+if(matched[currentSection+'_'+t.id])cls+=' matched';
+else if(selectedTerm===currentSection+'_'+t.id)cls+=' selected';
+el.className=cls;
+}
+}
+function answerQuiz(idx){
+var sec=sections[currentSection];
+var q=sec.questions[currentQuestion];
+var ansKey=currentSection+'_'+currentQuestion;
+if(quizAnswered[ansKey]!==undefined)return;
+quizAnswered[ansKey]=idx;
+if(idx===q.correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+}
+render();
+}
+function prevQuizQ(){if(currentQuestion>0){currentQuestion--;render();}}
+function nextQuizQ(){if(currentQuestion<secQuestionsLen()-1){currentQuestion++;render();}}
+function secQuestionsLen(){var sec=sections[currentSection];return sec.type==='quiz'?sec.questions.length:1;}
+function goToSection(i){if(i>=0&&i<sections.length){currentSection=i;currentQuestion=0;render();}}
+function prevSec(){if(currentSection>0){currentSection--;currentQuestion=0;render();}}
+function nextSec(){if(currentSection<sections.length-1){currentSection++;currentQuestion=0;render();}}
+render();
+</script>
+</body>
+</html>

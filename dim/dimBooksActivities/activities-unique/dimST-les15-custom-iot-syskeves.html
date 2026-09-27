@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT Συσκευές | Μάθημα 15</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:700px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.room-view{background:#1e293b;border-radius:14px;border:2px solid #334155;overflow:hidden;margin-bottom:10px}
+.room-header{background:#0f172a;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #334155}
+.room-header .rh-icon{font-size:1.2rem}
+.room-header .rh-title{color:#e2e8f0;font-size:.72rem;font-weight:600}
+.room-body{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:8px;padding:12px;min-height:180px}
+.iot-device{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;background:#0f172a;border-radius:10px;border:2px solid #334155;cursor:pointer;transition:all .3s;gap:4px}
+.iot-device:hover{transform:translateY(-3px);border-color:#6366f1}
+.iot-device.active{background:#1e1b4b;border-color:#a78bfa}
+.iot-device.used{background:#22c55e11;border-color:#22c55e}
+.iot-device .d-icon{font-size:1.6rem}
+.iot-device .d-name{color:#e2e8f0;font-size:.62rem;font-weight:600;text-align:center}
+.iot-device .d-status{font-size:.55rem;color:#64748b}
+.room-controls{display:flex;gap:6px;justify-content:center;padding:8px;background:#0f172a;border-top:1px solid #334155;flex-wrap:wrap}
+.ctrl-btn{padding:5px 12px;border:none;border-radius:6px;font-size:.6rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#94a3b8}
+.ctrl-btn:hover{background:#475569;color:#e2e8f0}
+.ctrl-btn.on{background:#6366f1;color:#fff}
+.task-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #fbbf24}
+.task-box .t-icon{font-size:1.1rem;display:block;margin-bottom:2px}
+.task-box .t-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .room-header > * + * { margin-left: 6px; }
+  .iot-device > * + * { margin-top: 4px; }
+  .room-controls > * { margin: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏠 Εξερεύνηση IoT Συσκευών</h1>
+<p class="subtitle">Ανακάλυψε ποιες συσκευές είναι «έξυπνες» και συνδέονται στο διαδίκτυο!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Δωμάτιο:</span> <span id="roomNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var rooms=[
+{
+icon:'🛋️',name:'Σαλόνι',
+devices:[
+{icon:'💡',name:'Έξυπνος λαμπτήρας',iot:true,desc:'Ανάβει/σβήνει από κινητό'},
+{icon:'📺',name:'Smart TV',iot:true,desc:'Συνδέεται στο internet'},
+{icon:'🌡️',name:'Απλό θερμόμετρο',iot:false,desc:'Δείχνει θερμοκρασία'},
+{icon:'🎵',name:'Έξυπνο ηχείο',iot:true,desc:'Με φωνητικό βοηθό'},
+{icon:'📖',name:'Βιβλίο',iot:false,desc:'Χάρτινο, όχι ηλεκτρονικό'},
+{icon:'🚪',name:'Έξυπνη κλειδαριά',iot:true,desc:'Ανοίγει με κωδικό από app'}
+],
+task:'Επίλεξε όλες τις IoT συσκευές στο σαλόνι (πάτα πάνω τους για ενεργοποίηση).',
+hint:'IoT συσκευές είναι αυτές που συνδέονται στο διαδίκτυο και ελέγχονται από απόσταση.'
+},
+{
+icon:'🍳',name:'Κουζίνα',
+devices:[
+{icon:'☕',name:'Έξυπνη καφετιέρα',iot:true,desc:'Προγραμματισμός από app'},
+{icon:'🧊',name:'Ψυγείο',iot:false,desc:'Απλό, παλιό μοντέλο'},
+{icon:'🔥',name:'Έξυπνος φούρνος',iot:true,desc:'Προθέρμανση από απόσταση'},
+{icon:'🍞',name:'Φρυγανιέρα',iot:false,desc:'Απλή συσκευή'},
+{icon:'📷',name:'Έξυπνη κάμερα',iot:true,desc:'Παρακολούθηση από κινητό'},
+{icon:'🔪',name:'Μαχαίρι',iot:false,desc:'Αναλογικό εργαλείο'}
+],
+task:'Βρες ποιες συσκευές στην κουζίνα είναι IoT!',
+hint:'Μία συσκευή IoT μπορεί να ελέγχεται ή να στέλνει δεδομένα μέσω διαδικτύου.'
+},
+{
+icon:'🌳',name:'Κήπος',
+devices:[
+{icon:'💧',name:'Αυτόματο πότισμα',iot:true,desc:'Βάσει υγρασίας εδάφους'},
+{icon:'🌱',name:'Γλάστρα',iot:false,desc:'Απλό φυτό'},
+{icon:'📡',name:'Αισθητήρας καιρού',iot:true,desc:'Μετράει θερμοκρασία/υγρασία'},
+{icon:'🔦',name:'Ηλιακό φως',iot:true,desc:'Ανάβει αυτόματα το βράδυ'},
+{icon:'🪴',name:'Ποτιστήρι',iot:false,desc:'Χειροκίνητο πότισμα'},
+{icon:'🎥',name:'Κάμερα κήπου',iot:true,desc:'Ασφάλεια από απόσταση'}
+],
+task:'Ποιες συσκευές στον κήπο είναι IoT; Ενεργοποίησέ τες!',
+hint:'Ακόμα και ο κήπος μπορεί να έχει IoT: αισθητήρες εδάφους, αυτόματο πότισμα, έξυπνο φωτισμό.'
+},
+{
+icon:'🛏️',name:'Υπνοδωμάτιο',
+devices:[
+{icon:'🌡️',name:'Έξυπνος θερμοστάτης',iot:true,desc:'Ρύθμιση θερμοκρασίας από app'},
+{icon:'🛋️',name:'Κρεβάτι',iot:false,desc:'Απλό έπιπλο'},
+{icon:'🔊',name:'Έξυπνο ρολόι',iot:true,desc:'Συνδέεται στο κινητό'},
+{icon:'🪟',name:'Έξυπνες κουρτίνες',iot:true,desc:'Ανοίγουν αυτόματα'},
+{icon:'👕',name:'Ντουλάπα',iot:false,desc:'Απλό έπιπλο'},
+{icon:'🖼️',name:'Κορνίζα',iot:false,desc:'Απλή κορνίζα'}
+],
+task:'Ενεργοποίησε τις IoT συσκευές στο υπνοδωμάτιο!',
+hint:'Ακόμα και κουρτίνες και ρολόγια μπορούν να είναι IoT αν συνδέονται στο διαδίκτυο.'
+},
+{
+icon:'🏢',name:'Έξυπνη Πόλη',
+devices:[
+{icon:'🚦',name:'Έξυπνα φανάρια',iot:true,desc:'Προσαρμόζονται στην κίνηση'},
+{icon:'🚗',name:'Αυτόνομο όχημα',iot:true,desc:'Οδηγείται μόνο του'},
+{icon:'🅿️',name:'Απλό παρκινγκ',iot:false,desc:'Χωρίς αισθητήρες'},
+{icon:'♻️',name:'Έξυπνος κάδος',iot:true,desc:'Ειδοποιεί όταν γεμίσει'},
+{icon:'🏗️',name:'Απλό κτίριο',iot:false,desc:'Χωρίς αυτοματισμούς'},
+{icon:'🌳',name:'Αισθητήρας αέρα',iot:true,desc:'Μετράει ποιότητα αέρα'}
+],
+task:'Ποιες εφαρμογές ανήκουν σε μία έξυπνη πόλη;',
+hint:'Οι έξυπνες πόλεις χρησιμοποιούν IoT για κυκλοφορία, απορρίμματα, στάθμευση και ποιότητα αέρα.'
+},
+{
+icon:'🏥',name:'Υγεία',
+devices:[
+{icon:'💓',name:'Βιοαισθητήρας παλμού',iot:true,desc:'Μετράει καρδιακό ρυθμό'},
+{icon:'🩺',name:'Απλό στηθοσκόπιο',iot:false,desc:'Αναλογικό όργανο'},
+{icon:'📱',name:'Smartwatch υγείας',iot:true,desc:'Καταγραφή βημάτων/ύπνου'},
+{icon:'💊',name:'Έξυπνο χάπι',iot:true,desc:'Ειδοποιεί για λήψη φαρμάκου'},
+{icon:'📋',name:'Χαρτί υγείας',iot:false,desc:'Απλό έγγραφο'},
+{icon:'🩸',name:'Αισθητήρας γλυκόζης',iot:true,desc:'Συνεχής μέτρηση σακχάρου'}
+],
+task:'Ενεργοποίησε τις IoT συσκευές υγείας!',
+hint:'Στην υγεία, το IoT βοηθά στην παρακολούθηση ασθενών από απόσταση με αισθητήρες και smartwatches.'
+}
+];
+var current=0;
+var pts=0;
+var active={};
+var checked=false;
+function render(){
+var r=rooms[current];
+checked=false;
+active={};
+document.getElementById('roomNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+r.icon+' '+r.name+'</div>';
+h+='<div class="task-box"><span class="t-icon">📋</span><div class="t-text">'+r.task+'</div></div>';
+h+='<div class="room-view">';
+h+='<div class="room-header"><span class="rh-icon">'+r.icon+'</span><span class="rh-title">'+r.name+'</span></div>';
+h+='<div class="room-body" id="roomBody">';
+for(var i=0;i<r.devices.length;i++){
+var d=r.devices[i];
+var cls='iot-device'+(active[i]?' active':'');
+h+='<div class="'+cls+'" id="dev'+i+'" onclick="toggleDevice('+i+')">';
+h+='<span class="d-icon">'+d.icon+'</span>';
+h+='<span class="d-name">'+d.name+'</span>';
+h+='<span class="d-status">'+(d.iot?'🔄 Συνδεδεμένη':'🔌 Απλή')+'</span>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div class="room-controls" id="roomControls">';
+h+='</div>';
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkRoom()">✅ Έλεγχος Επιλογών</button></div>';
+h+='<div class="hint-box">💡 '+r.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevRoom()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextRoom()"'+(current===rooms.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function toggleDevice(idx){
+if(checked)return;
+active[idx]=!active[idx];
+var el=document.getElementById('dev'+idx);
+if(el)el.classList.toggle('active');
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkRoom(){
+var r=rooms[current];
+var allCorrect=true;
+for(var i=0;i<r.devices.length;i++){
+var el=document.getElementById('dev'+i);
+if(!el)continue;
+var isActive=active[i]===true;
+var shouldBe=r.devices[i].iot;
+if(isActive===shouldBe){
+el.classList.add('used');
+}else{
+allCorrect=false;
+el.classList.add(isActive?'wrong':'');
+if(!isActive&&shouldBe)el.style.borderColor='#fbbf24';
+}
+el.classList.remove('active');
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Εντόπισες όλες τις IoT συσκευές!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ Κάποιες επιλογές είναι λάθος. Οι πράσινες είναι σωστές, οι κίτρινες είναι IoT που δεν επέλεξες.';
+fb.className='feedback fail';
+}
+}
+function prevRoom(){if(current>0){current--;render();}}
+function nextRoom(){if(current<rooms.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

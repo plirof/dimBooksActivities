@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αλλαγή Υπόβαθρου | Μάθημα 7</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fdf2f8,#fbcfe8);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#831843;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#db2777;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#831843;font-size:.75rem;font-weight:700;border:1px solid #fbcfe8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.step-list{margin:8px 0}
+.step-item{display:flex;align-items:center;gap:8px;padding:10px;border:2px solid #fce7f3;border-radius:10px;margin:4px 0;cursor:pointer;transition:all .2s;background:#fff;user-select:none}
+.step-item:hover{border-color:#db2777;background:#fdf2f8}
+.step-item.placed{opacity:.4;cursor:default;border-style:dashed}
+.step-num{width:26px;height:26px;border-radius:50%;background:#fdf2f8;border:2px solid #db2777;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#db2777;flex-shrink:0}
+.step-text{font-size:.7rem;color:#334155;flex:1}
+.slot-area{margin:8px 0}
+.slot{display:flex;align-items:center;gap:8px;padding:8px 10px;border:2px dashed #fbcfe8;border-radius:10px;margin:3px 0;min-height:38px;background:#fdf2f8;transition:all .2s}
+.slot.filled{border-style:solid;border-color:#db2777;background:#fff}
+.slot.correct-slot{border-color:#22c55e;background:#dcfce7}
+.slot.wrong-slot{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.slot.correct-slot .step-text,.slot.wrong-slot .step-text{font-weight:700}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#db2777;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#be185d}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #db2777;border-radius:10px;background:transparent;color:#db2777;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fdf2f8}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .step-item > * + * { margin-left: 8px; }
+  .slot > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🖼️ Αλλαγή Υπόβαθρου</h1>
+<p class="subtitle">Βάλε τα βήματα στη σωστή σειρά για νίκη/ήττα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Μέρος:</span> <span id="qNum">1</span>/<span id="qTotal">2</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var parts=[
+{
+title:'Δημιουργία Υποβάθρων Νίκης/Ήττας',
+steps:[
+'Πάτα πάνω στο Υπόβαθρο (κάτω από τη λέξη Σκηνή)',
+'Μετονόμασε το πρώτο υπόβαθρο σε "Βυθός"',
+'Δεξί κλικ → Διπλασιασμός → Όνομα "Νίκη"',
+'Εργαλείο κειμένου (Τ) → Γράψε "Κέρδισε!"',
+'Διπλασιασμός "Νίκη" → Όνομα "Ήττα"',
+'Άλλαξε κείμενο σε "Έχασες!"'
+]
+},
+{
+title:'Προγραμματιστική Αλλαγή Υπόβαθρου',
+steps:[
+'Αρχή προγράμματος: Βάλε υπόβαθρο "Βυθός"',
+'Βάλε "Επανάλαβε ώστου" με συνθήκη τερματισμού',
+'Μετά την επανάληψη: βάλε "Αν...Αλλιώς"',
+'Αν πόντοι=10: άλλαξε υπόβαθρο σε "Νίκη"',
+'Αλλιώς: άλλαξε υπόβαθρο σε "Ήττα"',
+'Κρύψε όλους τους χαρακτήρες στο τέλος'
+]
+}
+];
+var curQ=0,pts=0,placed={},checked=false;
+
+function initQ(){placed={};checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var p=parts[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.78rem;font-weight:700;color:#831843;text-align:center;margin:4px 0">'+p.title+'</div>';
+h+='<div class="info-text">Κάνε κλικ στα βήματα με τη σωστή σειρά:</div>';
+h+='<div class="step-list">';
+for(var i=0;i<p.steps.length;i++){
+if(placed[i]===undefined){
+h+='<div class="step-item" onclick="placeStep('+i+')"><span class="step-text">'+p.steps[i]+'</span></div>';
+}
+}
+h+='</div>';
+h+='<div class="slot-area">';
+var slotOrder=[];
+for(var i=0;i<p.steps.length;i++){
+if(placed[i]!==undefined)slotOrder.push({origIdx:i,slotIdx:placed[i]});
+}
+slotOrder.sort(function(a,b){return a.slotIdx-b.slotIdx;});
+for(var s=0;s<p.steps.length;s++){
+if(s<slotOrder.length){
+var si=slotOrder[s];
+var isCorrect=si.origIdx===s;
+var cls='slot filled'+(checked?(isCorrect?' correct-slot':' wrong-slot'):'');
+h+='<div class="'+cls+'"><span class="step-num">'+(s+1)+'</span><span class="step-text">'+p.steps[si.origIdx]+'</span></div>';
+}else{
+h+='<div class="slot"><span class="step-num">'+(s+1)+'</span><span class="step-text" style="color:#94a3b8">Κάνε κλικ...</span></div>';
+}
+}
+h+='</div>';
+var allPlaced=Object.keys(placed).length===p.steps.length;
+if(allPlaced&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Σειράς</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<p.steps.length;i++){if(placed[i]===i)correct++;}
+var pct=Math.round(correct/p.steps.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ '+correct+'/'+p.steps.length+' σωστά!':'❌ '+correct+'/'+p.steps.length+' σωστά.')+'</div>';
+if(curQ<parts.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Μέρος ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function placeStep(idx){
+if(checked||placed[idx]!==undefined)return;
+placed[idx]=Object.keys(placed).length;
+render();
+}
+
+function checkAnswer(){checked=true;render();}
+
+function nextQ(){
+if(curQ<parts.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

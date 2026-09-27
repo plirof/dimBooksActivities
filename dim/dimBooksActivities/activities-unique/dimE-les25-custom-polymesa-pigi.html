@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πολυμέσα στην Παρουσίαση | Μάθημα 25</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ecfdf5,#34d399);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#064e3b;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#059669;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#064e3b;font-size:.75rem;font-weight:700;border:1px solid #34d399;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.scenario{background:#ecfdf5;border:2px solid #a7f3d0;border-radius:12px;padding:10px;margin:8px 0}
+.scenario-title{font-size:.78rem;font-weight:700;color:#064e3b;text-align:center;margin-bottom:6px}
+.scenario-desc{font-size:.7rem;color:#065f46;text-align:center;margin-bottom:8px}
+.cat-row{display:flex;gap:8px;justify-content:center;margin:6px 0}
+.cat-box{flex:1;max-width:200px;border:2px dashed #a7f3d0;border-radius:12px;padding:8px;text-align:center;min-height:60px}
+.cat-label{font-size:.7rem;font-weight:700;margin-bottom:4px}
+.cat-label.net{color:#0891b2}
+.cat-label.pc{color:#7c3aed}
+.cat-items{min-height:40px}
+.drag-item{padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;margin:4px 0;text-align:center}
+.drag-item:hover{border-color:#059669;background:#ecfdf5}
+.drag-item.placed{opacity:.4;pointer-events:none}
+.drag-item.selected{border-color:#059669;background:#d1fae5;font-weight:700;color:#064e3b}
+.cat-box.drop-target{border-color:#059669;border-style:solid;background:#ecfdf5;cursor:pointer}
+.cat-box.drop-target:hover{background:#d1fae5}
+.drag-item.in-cat{margin:4px 2px;font-size:.65rem;border-color:#059669}
+.drag-item.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.drag-item.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#059669;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#047857}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #059669;border-radius:10px;background:transparent;color:#059669;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#ecfdf5}
+.items-pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.reset-btn{display:block;margin:4px auto;padding:6px 16px;border:2px solid #d1d5db;border-radius:8px;background:transparent;color:#6b7280;font-size:.68rem;cursor:pointer}
+.reset-btn:hover{background:#f9fafb}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .cat-row > * + * { margin-left: 8px; }
+  .items-pool > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎬 Πολυμέσα στην Παρουσίαση</h1>
+<p class="subtitle">Τοποθέτησε κάθε είδος πολυμέσου στη σωστή πηγή!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var rounds=[
+{
+title:'📷 Πώς θα βάλω βίντεο;',
+desc:'Θέλεις να βάλεις ένα βίντεο με εξplanation. Διάλεξε: από Ίντερνετ ή από Υπολογιστή;',
+items:[
+{text:'Αντιγράφω URL από το YouTube',cat:'net'},
+{text:'Αρχείο → Εισαγωγή → Βίντεο',cat:'pc'},
+{text:'Κάνω δεξί κλικ → Επικόλληση συνδέσμου',cat:'net'},
+{text:'Εντοπίζω αρχείο .mp4 στον υπολογιστή',cat:'pc'}
+]
+},
+{
+title:'🎵 Πώς θα βάλω ήχο;',
+desc:'Θέλεις μουσική υπόκρουση. Από πού θα την πάρεις;',
+items:[
+{text:'Αντιγράφω link από ιστοσελίδα με μουσική',cat:'net'},
+{text:'Αρχείο → Εισαγωγή → Ήχος → αρχείο .mp3',cat:'pc'},
+{text:'Ψάχνω "ελεύθερη μουσική" στο ίντερνετ',cat:'net'},
+{text:'Έχω ήχο αποθηκευμένο στο φλασάκι μου',cat:'pc'}
+]
+},
+{
+title:'📝 Κείμενο σε έγγραφο',
+desc:'Θέλεις να βάλεις πολυμέσα σε έγγραφο κειμένου.',
+items:[
+{text:'Αντιγράφω URL βίντεο και κάνω Ctrl+click',cat:'net'},
+{text:'Εισαγωγή → Πολυμέσα → Βίντεο από αρχείο',cat:'pc'},
+{text:'Βρίσκω βίντεο στο ίντερνετ και αντιγράφω link',cat:'net'},
+{text:'Εντοπίζω το αρχείο και κάνω διπλό κλικ',cat:'pc'}
+]
+},
+{
+title:'🖼️ Πλεονεκτήματα και Μειονεκτήματα',
+desc:'Ποια είναι τα πλεονεκτήματα / μειονεκτήματα κάθε πηγής;',
+items:[
+{text:'Δεν χρειάζεται ίντερνετ',cat:'pc'},
+{text:'Εύκολη εύρεση δωρεάν περιεχομένου',cat:'net'},
+{text:'Πιο καλή ποιότητα ήχου/εικόνας',cat:'pc'},
+{text:'Ποικιλία επιλογών',cat:'net'}
+]
+},
+{
+title:'⚖️ Πότε τι χρησιμοποιώ;',
+desc:'Σε κάθε περίπτωση, τι θα προτιμήσεις;',
+items:[
+{text:'Δεν έχω ίντερνετ στο σχολείο → αρχείο από PC',cat:'pc'},
+{text:'Θέλω γρήγορα ένα τραγούδι → YouTube link',cat:'net'},
+{text:'Θέλω υψηλή ποιότητα βίντεο → το έχω σε αρχείο',cat:'pc'},
+{text:'Θέλω να βρω εικόνες → αναζήτηση στο ίντερνετ',cat:'net'}
+]
+}
+];
+var curQ=0,pts=0,placements={},checked=false,selectedItem=-1;
+function initQ(){placements={};checked=false;selectedItem=-1;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var r=rounds[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="scenario"><div class="scenario-title">'+r.title+'</div><div class="scenario-desc">'+r.desc+'</div></div>';
+var netItems=[],pcItems=[];
+for(var k in placements){
+var item=r.items[k];
+if(placements[k]==='net')netItems.push({idx:k,text:item.text,cat:item.cat});
+else if(placements[k]==='pc')pcItems.push({idx:k,text:item.text,cat:item.cat});
+}
+h+='<div class="cat-row">';
+var dt=selectedItem>=0?' drop-target':'';
+h+='<div class="cat-box'+dt+'" onclick="dropInCat(\'net\')"><div class="cat-label net">🌐 Ίντερνετ</div><div class="cat-items" id="catNet">';
+for(var i=0;i<netItems.length;i++){
+var ni=netItems[i];
+var cls='drag-item in-cat';
+if(checked){cls+=ni.cat==='net'?' correct':' wrong';}
+h+='<div class="'+cls+'">'+ni.text+'</div>';
+}
+h+='</div></div>';
+h+='<div class="cat-box'+dt+'" onclick="dropInCat(\'pc\')"><div class="cat-label pc">💻 Υπολογιστής</div><div class="cat-items" id="catPc">';
+for(var i=0;i<pcItems.length;i++){
+var pi=pcItems[i];
+var cls='drag-item in-cat';
+if(checked){cls+=pi.cat==='pc'?' correct':' wrong';}
+h+='<div class="'+cls+'">'+pi.text+'</div>';
+}
+h+='</div></div>';
+h+='</div>';
+var placed=Object.keys(placements).length;
+h+='<p style="font-size:.68rem;color:#64748b;text-align:center;margin:4px 0">Κλικ σε ένα στοιχείο και μετά σε κατηγορία:</p>';
+h+='<div class="items-pool">';
+for(var i=0;i<r.items.length;i++){
+var isPlaced=placements.hasOwnProperty(i);
+var cls='drag-item'+(isPlaced?' placed':'');
+if(!isPlaced&&i===selectedItem)cls+=' selected';
+h+='<div class="'+cls+'" onclick="selectItem('+i+')">'+r.items[i].text+'</div>';
+}
+h+='</div>';
+if(!checked&&placed===r.items.length){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Κατηγοριών</button>';
+}
+if(checked){
+var allCorrect=true;
+for(var i=0;i<r.items.length;i++){
+if(placements[i]!==r.items[i].cat)allCorrect=false;
+}
+var correctCount=0;
+for(var i=0;i<r.items.length;i++){
+if(placements[i]===r.items[i].cat)correctCount++;
+}
+var earned=Math.round(correctCount/r.items.length*10);
+pts+=earned;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(allCorrect?'ok':'bad')+'">'+(allCorrect?'✅ Τέλεια! Όλα στη σωστή κατηγορία!':'❌ '+correctCount+'/'+r.items.length+' σωστά. Θυμήσου: URL/link = Ίντερνετ, αρχείο = Υπολογιστή')+'</div>';
+if(curQ<rounds.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Σενάριο ▶</button>';
+}
+}
+h+='<button class="reset-btn" onclick="initQ();render();">🔄 Ξανά</button>';
+main.innerHTML=h;
+}
+function selectItem(idx){
+	if(checked)return;
+	if(selectedItem===idx){selectedItem=-1;render();return;}
+	if(placements.hasOwnProperty(idx)){
+		delete placements[idx];
+		selectedItem=idx;
+		render();
+		return;
+	}
+	selectedItem=idx;
+	render();
+}
+function dropInCat(cat){
+	if(selectedItem>=0&&!checked){
+		placements[selectedItem]=cat;
+		selectedItem=-1;
+		render();
+	}
+}
+function checkAnswer(){checked=true;render();}
+function nextQ(){if(curQ<rounds.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

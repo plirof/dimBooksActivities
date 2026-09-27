@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Κλικ",
+  "subtitle": "Πιάστε λέξεις για κλικ!",
+  "instructions": "Πιάσε μόνο λέξεις σχετικές με ΚΛΙΚ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Κλικ", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάνιο", "correct": false, "color": "#f44336"},
+    {"text": "Διπλό κλικ", "correct": true, "color": "#2196F3"},
+    {"text": "Σκάλες", "correct": false, "color": "#FF9800"},
+    {"text": "Επιλογή", "correct": true, "color": "#9C27B0"},
+    {"text": "Κουρτίνα", "correct": false, "color": "#E91E63"},
+    {"text": "Άνοιγμα", "correct": true, "color": "#009688"},
+    {"text": "Φουρνός", "correct": false, "color": "#FFC107"},
+    {"text": "Αριστερό", "correct": true, "color": "#795548"},
+    {"text": "Κρεβάτι", "correct": false, "color": "#607D8B"},
+    {"text": "Εφαρμογή", "correct": true, "color": "#3F51B5"},
+    {"text": "Νεροχύτης", "correct": false, "color": "#8BC34A"}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τύποι Απαντήσεων",
+  "subtitle": "Ταξινόμησε τις ερωτήσεις βάσει τύπου απάντησης",
+  "instructions": "Πάτα αριστερά για Ναι/Όχι, δεξιά για Αριθμό ή Λέξεις",
+  "categories": [
+    {
+      "id": "yesno",
+      "name": "Ναι / Όχι",
+      "color": "#4CAF50",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "other",
+      "name": "Αριθμός ή Λέξεις",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Σου αρέσει το παγωτό;", "category": "yesno" },
+    { "text": "Πόσα παγωτά τρως;", "category": "other" },
+    { "text": "Ποια γεύση προτιμάς;", "category": "other" },
+    { "text": "Έχεις ίντερνετ στο σπίτι;", "category": "yesno" },
+    { "text": "Πόσες ώρες μπροστά στην οθόνη;", "category": "other" },
+    { "text": "Χρησιμοποιείς tablet;", "category": "yesno" },
+    { "text": "Ποιο άθλημα προτιμάς;", "category": "other" },
+    { "text": "Αθλείσαι καθημερινά;", "category": "yesno" },
+    { "text": "Πόσες ώρες αθλείσαι;", "category": "other" },
+    { "text": "Έχεις κατοικίδιο;", "category": "yesno" },
+    { "text": "Ποιο είναι το αγαπημένο σου ζώο;", "category": "other" },
+    { "text": "Σου αρέσει το διάβασμα;", "category": "yesno" }
+  ],
+  "duration": 45
+}

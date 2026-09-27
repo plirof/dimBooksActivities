@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πειραματίσου: άλλαξε βήματα και επαναλήψεις</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;padding:30px}
+h1{text-align:center;color:#4a3f8a;font-size:1.6em;margin-bottom:20px}
+h1 span{font-size:1.2em}
+.program-block{background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);border-radius:16px;padding:20px;margin:15px 0;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+.program-block h3{color:#d35400;margin-bottom:12px;font-size:1.1em}
+.block-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:6px 0;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:10px}
+.block-row label{font-weight:600;color:#333;font-size:.95em}
+.block-row input[type=number]{width:60px;padding:6px 8px;border:2px solid #e17055;border-radius:10px;font-size:1em;text-align:center;font-weight:700;color:#d35400}
+.block-row input:focus{outline:none;border-color:#d63031;box-shadow:0 0 8px rgba(214,48,49,.3)}
+.result-badge{display:inline-block;background:#00b894;color:#fff;padding:4px 14px;border-radius:20px;font-weight:700;margin-left:8px;font-size:.95em}
+.canvas-area{background:linear-gradient(180deg,#dfe6e9,#b2bec3);border-radius:16px;margin:20px 0;overflow:hidden;position:relative}
+canvas{display:block;width:100%;height:auto}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+button{padding:12px 28px;border:none;border-radius:14px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s,box-shadow .15s}
+button:active{transform:scale(.96)}
+.btn-run{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff}
+.btn-reset{background:linear-gradient(135deg,#636e72,#b2bec3);color:#fff}
+.info-box{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff;border-radius:14px;padding:16px;text-align:center;font-size:1.05em;margin-top:10px}
+.cat-emoji{font-size:1.3em}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .block-row > * { margin: 4px; }
+  .btn-row > * { margin: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🐱 Πειραματίσου με τα προγράμματα! 🐱</h1>
+
+<div class="program-block">
+<h3>📦 Πρόγραμμα 1 — Βήματα</h3>
+<div class="block-row">
+<label>ΕΠΑΝΑΛΑΒΕ</label>
+<input type="number" id="n1" min="1" max="20" value="3">
+<label>φορές {</label>
+</div>
+<div class="block-row" style="margin-left:20px">
+<label>ΚΙΝΗΣΟΥ ΜΠΡΟΣΤΑ</label>
+<input type="number" id="x1" min="1" max="20" value="2">
+<label>βήματα }</label>
+</div>
+</div>
+
+<div class="program-block">
+<h3>🔄 Πρόγραμμα 2 — Στροφή</h3>
+<div class="block-row">
+<label>ΕΠΑΝΑΛΑΒΕ</label>
+<input type="number" id="n2" min="1" max="36" value="3">
+<label>φορές {</label>
+</div>
+<div class="block-row" style="margin-left:20px">
+<label>ΣΤΡΙΨΕ ΔΕΞΙΑ }</label>
+</div>
+</div>
+
+<div class="info-box" id="calcBox">
+Σύνολο βημάτων: 3 × 2 = <span class="result-badge">6</span>
+</div>
+
+<div class="canvas-area">
+<canvas id="cvs" width="760" height="360"></canvas>
+</div>
+
+<div class="btn-row">
+<button class="btn-run" onclick="runProgram()">▶ Εκτέλεση</button>
+<button class="btn-reset" onclick="resetCat()">↺ Επαναφορά</button>
+</div>
+</div>
+
+<script>
+var cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+var catX=80,catY=180,catAngle=0,animating=false;
+var GRID=40;
+
+function drawGrid(){
+ctx.clearRect(0,0,cvs.width,cvs.height);
+ctx.fillStyle='#e8ecef';
+ctx.fillRect(0,0,cvs.width,cvs.height);
+ctx.strokeStyle='#ccd1d4';
+ctx.lineWidth=1;
+for(var x=0;x<cvs.width;x+=GRID){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,cvs.height);ctx.stroke()}
+for(var y=0;y<cvs.height;y+=GRID){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cvs.width,y);ctx.stroke()}
+}
+
+function drawCat(){
+ctx.save();
+ctx.translate(catX,catY);
+ctx.rotate(catAngle*Math.PI/180);
+ctx.font='42px serif';
+ctx.textAlign='center';
+ctx.textBaseline='middle';
+ctx.shadowColor='rgba(0,0,0,.45)';
+ctx.shadowBlur=6;
+ctx.shadowOffsetY=2;
+ctx.fillStyle='#b23419';
+ctx.fillText('🐱',0,0);
+ctx.restore();
+}
+
+function drawTrail(trail){
+ctx.fillStyle='rgba(160,40,18,0.9)';
+for(var i=0;i<trail.length;i++){
+ctx.beginPath();
+ctx.arc(trail[i].x,trail[i].y,8,0,Math.PI*2);
+ctx.fill();
+ctx.fillStyle='rgba(255,255,255,0.85)';
+ctx.beginPath();
+ctx.arc(trail[i].x,trail[i].y,2.5,0,Math.PI*2);
+ctx.fill();
+ctx.fillStyle='rgba(160,40,18,0.9)';
+}
+}
+
+function render(trail){
+drawGrid();
+if(trail&&trail.length) drawTrail(trail);
+drawCat();
+}
+
+function updateCalc(){
+var n=parseInt(document.getElementById('n1').value)||0;
+var x=parseInt(document.getElementById('x1').value)||0;
+var res=n*x;
+document.getElementById('calcBox').innerHTML=
+'Σύνολο βημάτων: '+n+' × '+x+' = <span class="result-badge">'+res+'</span>';
+}
+
+document.getElementById('n1').addEventListener('input',updateCalc);
+document.getElementById('x1').addEventListener('input',updateCalc);
+
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+async function runProgram(){
+if(animating) return;
+animating=true;
+resetCat();
+await sleep(300);
+
+var n1=parseInt(document.getElementById('n1').value)||1;
+var x1=parseInt(document.getElementById('x1').value)||1;
+var n2=parseInt(document.getElementById('n2').value)||1;
+var trail=[];
+
+for(var i=0;i<n1;i++){
+for(var j=0;j<x1;j++){
+var rad=catAngle*Math.PI/180;
+var nx=catX+Math.cos(rad)*GRID;
+var ny=catY+Math.sin(rad)*GRID;
+if(nx<20||nx>cvs.width-20||ny<20||ny>cvs.height-20) break;
+trail.push({x:catX,y:catY});
+catX=nx;catY=ny;
+render(trail);
+await sleep(250);
+}
+}
+
+for(var i=0;i<n2;i++){
+catAngle+=90;
+catAngle=catAngle%360;
+render(trail);
+await sleep(300);
+}
+
+animating=false;
+}
+
+function resetCat(){
+animating=false;
+catX=80;catY=180;catAngle=0;
+render([]);
+}
+
+render([]);
+updateCalc();
+</script>
+</body>
+</html>

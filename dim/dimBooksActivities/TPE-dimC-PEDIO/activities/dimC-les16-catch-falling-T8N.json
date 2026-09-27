@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Έννοιες Υπολογιστικού Συστήματος",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΕΝΝΟΙΕΣ για χάρτη υπολογιστικού συστήματος! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Επεξεργαστής", "correct": true, "color": "#4CAF50"},
+    {"text": "Τρέξιμο", "correct": false, "color": "#f44336"},
+    {"text": "Λογισμικό", "correct": true, "color": "#2196F3"},
+    {"text": "Μαγειρική", "correct": false, "color": "#FF9800"},
+    {"text": "Μνήμη", "correct": true, "color": "#9C27B0"},
+    {"text": "Κολύμπι", "correct": false, "color": "#E91E63"},
+    {"text": "Εφαρμογές", "correct": true, "color": "#00BCD4"},
+    {"text": "Ζωγραφική", "correct": false, "color": "#FFC107"},
+    {"text": "Υλικό", "correct": true, "color": "#795548"},
+    {"text": "Ποδόσφαιρο", "correct": false, "color": "#607D8B"}
+  ]
+}

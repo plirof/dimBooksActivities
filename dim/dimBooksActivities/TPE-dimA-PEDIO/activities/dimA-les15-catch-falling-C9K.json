@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Αρχεία",
+  "subtitle": "Πιάσε μόνο τύπους αρχείων!",
+  "instructions": "Πιάσε μόνο τα ΑΡΧΕΙΑ (εικόνα, βίντεο, ήχος, κείμενο)! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Εικόνα", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Βίντεο", "correct": true, "color": "#2196F3"},
+    {"text": "Γάτα", "correct": false, "color": "#FF9800"},
+    {"text": "Ήχος", "correct": true, "color": "#9C27B0"},
+    {"text": "Κούνια", "correct": false, "color": "#E91E63"},
+    {"text": "Κείμενο", "correct": true, "color": "#009688"},
+    {"text": "Μπάλα", "correct": false, "color": "#FFC107"},
+    {"text": "Αρχείο", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

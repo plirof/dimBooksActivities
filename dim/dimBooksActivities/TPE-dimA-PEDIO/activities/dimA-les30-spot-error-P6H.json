@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Φωτόδεντρο & Τηλεόραση",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "Φωτόδεντρο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "παιχνιδι", "error": true, "correct": "υπηρεσία", "feedback": "Το Φωτόδεντρο είναι υπηρεσία, όχι παιχνίδι!"},
+        {"text": "του", "error": false},
+        {"text": "Υπουργείου", "error": false},
+        {"text": "Παιδείας.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "Φωτόδεντρο", "error": false},
+        {"text": "υπάρχουν", "error": false},
+        {"text": " μόνο ", "error": true, "correct": "", "feedback": "Δεν υπάρχουν μόνο παιχνίδια, αλλά και βίντεο, εφαρμογές, παρουσιάσεις!"},
+        {"text": "παιχνίδια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Εκπαιδευτική", "error": false},
+        {"text": "Τηλεόραση", "error": false},
+        {"text": "ιδρύθηκε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "1970", "error": true, "correct": "1977", "feedback": "Ιδρύθηκε το 1977, όχι το 1970!"},
+        {"text": "χρόνια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "χρόνο", "error": false},
+        {"text": "παρουσιάζονται", "error": false},
+        {"text": "περισσότερες", "error": false},
+        {"text": "από", "error": false},
+        {"text": "100", "error": true, "correct": "600", "feedback": "Περισσότερες από 600 εκπομπές ετησίως!"},
+        {"text": "εκπομπές.", "error": false}
+      ]
+    }
+  ]
+}

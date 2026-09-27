@@ -1,0 +1,54 @@
+{
+  "title": "Βρες τα Λάθη: Creative Commons",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "άδεια", "error": false},
+        {"text": "Creative", "error": false},
+        {"text": "Commons", "error": false},
+        {"text": "απαγορεύει", "error": true, "correct": "επιτρέπει", "feedback": "Οι άδειες CC ΕΠΙΤΡΕΠΟΥΝ τον διαμοιρασμό, δεν τον απαγορεύουν!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Αναφορά", "error": false},
+        {"text": "Δημιουργού", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "προαιρετική", "error": true, "correct": "υποχρεωτική", "feedback": "Η Αναφορά Δημιουργού είναι ΥΠΟΧΡΕΩΤΙΚΗ σε κάθε άδεια CC!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "πνευματικά", "error": false},
+        {"text": "δικαιώματα", "error": false},
+        {"text": "προστατεύουν", "error": false},
+        {"text": "μόνο", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "βιβλία", "error": true, "correct": "όλα τα έργα", "feedback": "Τα πνευματικά δικαιώματα προστατεύουν ΟΛΑ τα έργα: εικόνες, μουσική, άρθρα κ.λπ."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όχι", "error": false},
+        {"text": "Παράγωγα", "error": false},
+        {"text": "Έργα", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "επιτρέπεται", "error": true, "correct": "απαγορεύεται", "feedback": "Όχι Παράγωγα Έργα σημαίνει ότι ΑΠΑΓΟΡΕΥΕΤΑΙ η μετατροπή του έργου!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "Παρόμοια", "error": false},
+        {"text": "Διανομή", "error": false},
+        {"text": "απαιτεί", "error": false},
+        {"text": "διαφορετική", "error": true, "correct": "την ίδια", "feedback": "Η Παρόμοια Διανομή απαιτεί ΤΗΝ ΙΔΙΑ άδεια στα παράγωγα έργα!"}
+      ]
+    }
+  ]
+}

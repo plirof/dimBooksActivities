@@ -1,0 +1,195 @@
+<!-- v002-260919: up/down buttons as tap fallback for touch screens -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σειροθέτηση Βημάτων</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:25px;font-weight:400}
+.steps-list{display:flex;flex-direction:column;gap:10px;margin-bottom:25px;min-height:200px;padding:10px;background:#f8f9fa;border-radius:12px}
+.step-item{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;cursor:grab;font-size:1em;color:#333;user-select:none;transition:all .2s}
+.step-item:hover{border-color:#43e97b;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.step-item.dragging{opacity:.4;transform:scale(.95)}
+.step-item.drag-over-top{border-top:3px solid #43e97b}
+.step-item.drag-over-bottom{border-bottom:3px solid #43e97b}
+.step-num{display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:#43e97b;color:#fff;border-radius:50%;font-weight:700;font-size:.85em;flex-shrink:0}
+.step-text{flex:1}
+.move-btns{display:flex;flex-direction:column;gap:3px;flex-shrink:0}
+.move-btn{border:1px solid #c8e6c9;background:#f1f8e9;color:#2e7d32;border-radius:6px;width:38px;height:26px;font-size:.8em;cursor:pointer;line-height:1;transition:all .15s;touch-action:manipulation}
+.move-btn:hover:not(:disabled){background:#43e97b;color:#fff}
+.move-btn:disabled{opacity:.3;cursor:default}
+.check-btn{display:block;margin:0 auto;padding:12px 40px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;color:#333;font-weight:600}
+.check-btn:hover{transform:scale(1.05)}
+.result-area{margin-top:20px;padding:20px;border-radius:12px;text-align:center;display:none}
+.result-area.correct{background:#e8f5e9;border:2px solid #4CAF50}
+.result-area.wrong{background:#fff3e0;border:2px solid #ff9800}
+.result-area h3{margin-bottom:8px}
+.result-area p{color:#666;margin-bottom:15px}
+.step-item.correct-step{border-color:#4CAF50;background:#f1f8e9}
+.step-item.wrong-step{border-color:#f44336;background:#ffebee}
+.restart-btn{padding:10px 30px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;border:none;border-radius:12px;font-size:1em;cursor:pointer;font-weight:600}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.hint{color:#999;font-size:.85em;text-align:center;margin-bottom:15px}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json</div>';throw new Error('No data')}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+let steps=[...data.steps].sort(()=>Math.random()-.5);
+let checked=false;
+
+function render(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>${esc(data.subtitle||'Βάλε τα βήματα στη σωστή σειρά')}</h2>
+<div class="hint">Σύρε τα βήματα πάνω-κάτω — ή πάτα τα βελάκια ▲▼ για να αλλάξεις τη σειρά</div>
+<div class="steps-list" id="stepsList">
+${steps.map((s,i)=>`<div class="step-item" draggable="true" data-idx="${i}">
+<span class="step-num">${i+1}</span>
+<span class="step-text">${esc(s.text)}</span>
+<span class="move-btns"><button class="move-btn" data-idx="${i}" data-dir="-1" aria-label="Μετακίνηση πάνω"${i===0?' disabled':''}>&#9650;</button><button class="move-btn" data-idx="${i}" data-dir="1" aria-label="Μετακίνηση κάτω"${i===steps.length-1?' disabled':''}>&#9660;</button></span>
+</div>`).join('')}
+</div>
+<button class="check-btn" id="checkBtn">Έλεγχος Σειράς</button>
+<div class="result-area" id="result"></div>
+`;
+checked=false;
+setupDragDrop();
+document.getElementById('checkBtn').onclick=checkOrder;
+}
+
+function performDrop(dragIdx,dropIdx,clientY){
+if(checked||dragIdx===null||dragIdx===dropIdx)return;
+const list=document.getElementById('stepsList');
+if(!list)return;
+const items=list.querySelectorAll('.step-item');
+const dropItem=items[dropIdx];
+if(!dropItem)return;
+const rect=dropItem.getBoundingClientRect();
+const midY=rect.top+rect.height/2;
+const moved=steps.splice(dragIdx,1)[0];
+const newDropIdx=dropIdx>dragIdx?dropIdx-1:dropIdx;
+const insertAt=clientY<midY?newDropIdx:newDropIdx+1;
+steps.splice(insertAt,0,moved);
+render()
+}
+
+function setupDragDrop(){
+const list=document.getElementById('stepsList');
+let dragIdx=null;
+list.querySelectorAll('.move-btn').forEach(btn=>{
+btn.addEventListener('click',e=>{
+e.stopPropagation();
+if(checked)return;
+const idx=parseInt(btn.dataset.idx);
+const ni=idx+parseInt(btn.dataset.dir);
+if(ni<0||ni>=steps.length)return;
+const tmp=steps[idx];steps[idx]=steps[ni];steps[ni]=tmp;
+render()
+});
+});
+list.querySelectorAll('.step-item').forEach(item=>{
+item.addEventListener('dragstart',e=>{
+if(checked)return;
+dragIdx=parseInt(item.dataset.idx);
+item.classList.add('dragging');
+e.dataTransfer.effectAllowed='move'
+});
+item.addEventListener('dragend',()=>{
+item.classList.remove('dragging');
+list.querySelectorAll('.step-item').forEach(i=>{i.classList.remove('drag-over-top','drag-over-bottom')});
+renderNums()
+});
+item.addEventListener('dragover',e=>{
+e.preventDefault();
+if(checked)return;
+const rect=item.getBoundingClientRect();
+const midY=rect.top+rect.height/2;
+list.querySelectorAll('.step-item').forEach(i=>{i.classList.remove('drag-over-top','drag-over-bottom')});
+if(e.clientY<midY){item.classList.add('drag-over-top')}else{item.classList.add('drag-over-bottom')}
+});
+item.addEventListener('drop',e=>{
+e.preventDefault();
+performDrop(dragIdx,parseInt(item.dataset.idx),e.clientY)
+});
+item.addEventListener('touchstart',e=>{
+if(checked||e.target.closest('.move-btn'))return;
+dragIdx=parseInt(item.dataset.idx);
+item.classList.add('dragging')
+},{passive:true});
+item.addEventListener('touchmove',e=>{
+e.preventDefault();
+if(checked||dragIdx===null)return;
+const touch=e.touches[0];
+list.querySelectorAll('.step-item').forEach(i=>{i.classList.remove('drag-over-top','drag-over-bottom')});
+const overItem=document.elementFromPoint(touch.clientX,touch.clientY);
+if(!overItem)return;
+const stepItem=overItem.closest('.step-item');
+if(stepItem){
+const rect=stepItem.getBoundingClientRect();
+const midY=rect.top+rect.height/2;
+if(touch.clientY<midY){stepItem.classList.add('drag-over-top')}else{stepItem.classList.add('drag-over-bottom')}
+}
+},{passive:false});
+item.addEventListener('touchend',e=>{
+if(checked||dragIdx===null)return;
+item.classList.remove('dragging');
+list.querySelectorAll('.step-item').forEach(i=>{i.classList.remove('drag-over-top','drag-over-bottom')});
+const touch=e.changedTouches[0];
+const overItem=document.elementFromPoint(touch.clientX,touch.clientY);
+if(!overItem)return;
+const stepItem=overItem.closest('.step-item');
+if(stepItem){
+const dropIdx=parseInt(stepItem.dataset.idx);
+performDrop(dragIdx,dropIdx,touch.clientY)
+}
+dragIdx=null
+})
+})
+}
+
+function renderNums(){
+document.querySelectorAll('.step-item').forEach((item,i)=>{item.querySelector('.step-num').textContent=i+1})
+}
+
+function checkOrder(){
+checked=true;
+let correct=0;
+const correctOrder=data.steps.map(s=>s.text);
+document.querySelectorAll('.step-item').forEach((item,i)=>{
+if(steps[i].text===correctOrder[i]){correct++;item.classList.add('correct-step')}else{item.classList.add('wrong-step')}
+item.draggable=false;item.style.cursor='default'
+});
+const total=steps.length;
+const result=document.getElementById('result');
+if(correct===total){
+result.className='result-area correct';
+result.innerHTML=`<h3>🎉 Τέλεια! Όλα σωστά!</h3><p>${data.successMessage||'Μπράβο! Βρήκες τη σωστή σειρά!'}</p><button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>`
+}else{
+result.className='result-area wrong';
+result.innerHTML=`<h3>Υπάρχουν ${total-correct} λάθη</h3><p>Σκέψου ξανά τη σειρά και δοκίμασε!</p><button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>`
+}
+result.style.display='block';
+document.getElementById('checkBtn').style.display='none'
+}
+
+render()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

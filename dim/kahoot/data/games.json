@@ -1,0 +1,613 @@
+{
+    "active_games": {
+        "9577": {
+            "quiz_id": "sample_geography_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "aaaa1": {
+                    "joined_at": 1770145398
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "4881": {
+            "quiz_id": "sample_science_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "aaaa1": {
+                    "joined_at": 1770145480
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "9679": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "aaaa1": {
+                    "joined_at": 1770145954
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "8247": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 2,
+            "participants": {
+                "aaaa": {
+                    "joined_at": 1770146716
+                }
+            },
+            "question_start_time": 1770146803,
+            "question_end_time": null
+        },
+        "5547": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "aaaaa": {
+                    "joined_at": 1770150485
+                },
+                "5547": {
+                    "joined_at": 1770150530
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "9871": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 5,
+            "participants": {
+                "9871": {
+                    "joined_at": 1770150782
+                }
+            },
+            "question_start_time": 1770150962,
+            "question_end_time": null
+        },
+        "5502": {
+            "quiz_id": "69825d7002ea32.45227205",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 1,
+            "participants": {
+                "5502": {
+                    "joined_at": 1770151301
+                }
+            },
+            "question_start_time": 1770151328,
+            "question_end_time": null
+        },
+        "7123": {
+            "quiz_id": "69825d7002ea32.45227205",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 2,
+            "participants": {
+                "aaa": {
+                    "joined_at": 1770161128
+                }
+            },
+            "question_start_time": 1770161166,
+            "question_end_time": null
+        },
+        "9584": {
+            "quiz_id": "69825d7002ea32.45227205",
+            "host": "admin",
+            "status": "waiting",
+            "current_question": 0,
+            "participants": [],
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "1624": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "aaaaaaaa": {
+                    "joined_at": 1770193893
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "8071": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "8071": {
+                    "joined_at": 1770193979
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "1078": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 2,
+            "participants": {
+                "iron": {
+                    "joined_at": 1770194316
+                },
+                "chrome": {
+                    "joined_at": 1770194328
+                }
+            },
+            "question_start_time": 1770194387,
+            "question_end_time": null
+        },
+        "2406": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": [],
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "3754": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 5,
+            "participants": {
+                "c3754": {
+                    "joined_at": 1770194509
+                },
+                "s3754": {
+                    "joined_at": 1770194519
+                }
+            },
+            "question_start_time": 1770194655,
+            "question_end_time": null
+        },
+        "1711": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 3,
+            "participants": {
+                "BATARAS": {
+                    "joined_at": 1770197218
+                },
+                "KOYLOYRAKI": {
+                    "joined_at": 1770197220
+                },
+                "nasos": {
+                    "joined_at": 1770197221
+                },
+                "PARASXOS": {
+                    "joined_at": 1770197221
+                },
+                "ELENA AGGELIKI": {
+                    "joined_at": 1770197225
+                },
+                "Fluffy": {
+                    "joined_at": 1770197225
+                },
+                "G A": {
+                    "joined_at": 1770197244
+                },
+                "FOTINI": {
+                    "joined_at": 1770197253
+                },
+                "D S": {
+                    "joined_at": 1770197255
+                },
+                "ACHSTEF": {
+                    "joined_at": 1770197261
+                },
+                "THANKIKO": {
+                    "joined_at": 1770197265
+                },
+                "XRIST": {
+                    "joined_at": 1770197290
+                }
+            },
+            "question_start_time": 1770197417,
+            "question_end_time": null
+        },
+        "9529": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 5,
+            "participants": {
+                "Axilleas": {
+                    "joined_at": 1770200256
+                },
+                "DAVID GIORGOS": {
+                    "joined_at": 1770200274
+                },
+                "KIMVNAS": {
+                    "joined_at": 1770200277
+                },
+                "odusseas": {
+                    "joined_at": 1770200292
+                },
+                "ALEX KOSTAS": {
+                    "joined_at": 1770200324
+                },
+                "KATERINA IOANNA": {
+                    "joined_at": 1770200335
+                },
+                "EVITAAA DANAHHH": {
+                    "joined_at": 1770200357
+                },
+                "Electra.M-Fotini.x": {
+                    "joined_at": 1770200363
+                },
+                "HELEN.M-IRIDA.E.": {
+                    "joined_at": 1770200364
+                },
+                "alexjimalex     s": {
+                    "joined_at": 1770200368
+                }
+            },
+            "question_start_time": 1770200506,
+            "question_end_time": null
+        },
+        "7506": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 3,
+            "participants": {
+                "iron": {
+                    "joined_at": 1770200621
+                },
+                "chrom05": {
+                    "joined_at": 1770200634
+                },
+                "srv": {
+                    "joined_at": 1770200673
+                }
+            },
+            "question_start_time": 1770201045,
+            "question_end_time": null
+        },
+        "6958": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 5,
+            "participants": {
+                "IRON": {
+                    "joined_at": 1770201844
+                },
+                "srv": {
+                    "joined_at": 1770201854
+                }
+            },
+            "question_start_time": 1770202009,
+            "question_end_time": null
+        },
+        "8391": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 2,
+            "participants": {
+                "srv": {
+                    "joined_at": 1770202048
+                },
+                "iron": {
+                    "joined_at": 1770202056
+                },
+                "clntCrhome": {
+                    "joined_at": 1770202075
+                }
+            },
+            "question_start_time": 1770202132,
+            "question_end_time": null
+        },
+        "8153": {
+            "quiz_id": "698288bcd20dd7.92604317",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 2,
+            "participants": {
+                "clnt": {
+                    "joined_at": 1770202766
+                },
+                "iron": {
+                    "joined_at": 1770202773
+                },
+                "srv": {
+                    "joined_at": 1770202782
+                }
+            },
+            "question_start_time": 1770202839,
+            "question_end_time": null
+        },
+        "9530": {
+            "quiz_id": "698288bcd20dd7.92604317",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "clnt": {
+                    "joined_at": 1770203103
+                },
+                "ironnn": {
+                    "joined_at": 1770203119
+                },
+                "asdsadrvevssevsfs": {
+                    "joined_at": 1770203138
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "9873": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "top10": {
+                    "joined_at": 1770274342
+                },
+                "george soto": {
+                    "joined_at": 1770274348
+                },
+                "SL67": {
+                    "joined_at": 1770274349
+                },
+                "magic": {
+                    "joined_at": 1770274350
+                },
+                "kwnsof": {
+                    "joined_at": 1770274351
+                },
+                "poopy": {
+                    "joined_at": 1770274355
+                },
+                "cute girl": {
+                    "joined_at": 1770274376
+                },
+                "papaki.gr": {
+                    "joined_at": 1770274406
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "5148": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": [],
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "1080": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": [],
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "8362": {
+            "quiz_id": "sample_math_001",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 5,
+            "participants": {
+                "\u03a3\u03c0\u03c5\u03c1\u03af\u03b4\u03c9\u03bd83": {
+                    "joined_at": 1770275814
+                },
+                "\u039c\u03b9\u03c7\u03ac\u03bb\u03b7\u03c2": {
+                    "joined_at": 1770275815
+                },
+                "\u03a3\u03c4\u03ad\u03c6\u03b1\u03bd\u03bf\u03c2": {
+                    "joined_at": 1770275817
+                },
+                "834453534": {
+                    "joined_at": 1770275825
+                },
+                "\u0394\u03b7\u03bc\u03ae\u03c4\u03c1\u03b7\u03c2": {
+                    "joined_at": 1770275825
+                },
+                "\u03a0\u03ad\u03c4\u03c1\u03bf\u03c5": {
+                    "joined_at": 1770275843
+                },
+                "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03bf\u03c2": {
+                    "joined_at": 1770275846
+                },
+                "\u039b\u03ac\u03bc\u03c0\u03c1\u03bf\u03c2": {
+                    "joined_at": 1770275853
+                }
+            },
+            "question_start_time": 1770276033,
+            "question_end_time": null
+        },
+        "5595": {
+            "quiz_id": "6982a000000001.12345678",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "\u0391\u03b8\u03b1\u03bd\u03ac\u03c3\u03b9\u03bf\u03c2": {
+                    "joined_at": 1770369530
+                },
+                "\u03a3\u03c0\u03c5\u03c1\u03af\u03b4\u03c9\u03bdCHR": {
+                    "joined_at": 1770369547
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "3017": {
+            "quiz_id": "698288bcd20dd7.92604317",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 2,
+            "participants": {
+                "\u03a3\u03c4\u03ad\u03c6\u03b1\u03bd\u03bf\u03c2": {
+                    "joined_at": 1770460387
+                },
+                "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2": {
+                    "joined_at": 1770460397
+                }
+            },
+            "question_start_time": 1770460444,
+            "question_end_time": null
+        },
+        "9996": {
+            "quiz_id": "698288bcd20dd7.92604317",
+            "host": "admin",
+            "status": "ended",
+            "current_question": 2,
+            "participants": {
+                "\u03a7\u03c1\u03ae\u03c3\u03c4\u03bf\u03c2": {
+                    "joined_at": 1770460475
+                },
+                "\u0395\u03bb\u03ad\u03bd\u03b7\u03c2": {
+                    "joined_at": 1770460479
+                },
+                "\u039b\u03ac\u03bc\u03c0\u03c1\u03bf\u03c2": {
+                    "joined_at": 1770460483
+                }
+            },
+            "question_start_time": 1770460551,
+            "question_end_time": null
+        },
+        "9631": {
+            "quiz_id": "dimE-les06-kahoot-M2P",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 1,
+            "participants": {
+                "\u03a7\u03c1\u03ae\u03c3\u03c4\u03bf\u03c2": {
+                    "joined_at": 1778578396
+                },
+                "\u039b\u03ac\u03bc\u03c0\u03c1\u03bf\u03c2": {
+                    "joined_at": 1778578407
+                },
+                "\u0394\u03b7\u03bc\u03ae\u03c4\u03c1\u03b7\u03c2": {
+                    "joined_at": 1778578418
+                },
+                "\u0391\u03bd\u03b1\u03c3\u03c4\u03b1\u03c3\u03af\u03bf\u03c5": {
+                    "joined_at": 1778578455
+                },
+                "\u03a3\u03c4\u03ad\u03c6\u03b1\u03bd\u03bf\u03c2": {
+                    "joined_at": 1778578485
+                },
+                "local": {
+                    "joined_at": 1778578531
+                }
+            },
+            "question_start_time": 1778578585,
+            "question_end_time": null
+        },
+        "8566": {
+            "quiz_id": "dimC-les02-kahoot-C2D",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 6,
+            "participants": {
+                "\u0395\u03c5\u03b1\u03b3\u03b3\u03b5\u03bb\u03af\u03b1": {
+                    "joined_at": 1778579556
+                },
+                "\u0395\u03bc\u03bc\u03b1\u03bd\u03bf\u03c5\u03ae\u03bb": {
+                    "joined_at": 1778579580
+                },
+                "\u0391\u03bb\u03ad\u03be\u03b1\u03bd\u03b4\u03c1\u03bf\u03c2": {
+                    "joined_at": 1778579590
+                }
+            },
+            "question_start_time": 1778580002,
+            "question_end_time": null
+        },
+        "7371": {
+            "quiz_id": "dimC-les01-kahoot-A1B",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 0,
+            "participants": {
+                "\u039a\u03c5\u03c1\u03b9\u03ac\u03ba\u03b7\u03c2": {
+                    "joined_at": 1778580618
+                },
+                "\u03a6\u03ce\u03c4\u03b9\u03bf\u03c2": {
+                    "joined_at": 1778580629
+                }
+            },
+            "question_start_time": null,
+            "question_end_time": null
+        },
+        "3913": {
+            "quiz_id": "dimE-les03-kahoot-P9C",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 6,
+            "participants": {
+                "\u0391\u03bb\u03ad\u03be\u03b1\u03bd\u03b4\u03c1\u03bf\u03c2": {
+                    "joined_at": 1778580985
+                },
+                "\u03a6\u03ce\u03c4\u03b9\u03bf\u03c2": {
+                    "joined_at": 1778580996
+                }
+            },
+            "question_start_time": 1778583864,
+            "question_end_time": null
+        },
+        "9089": {
+            "quiz_id": "dimE-les04-kahoot-A3F",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 4,
+            "participants": {
+                "\u03a7\u03c1\u03ae\u03c3\u03c4\u03bf\u03c2": {
+                    "joined_at": 1778583894
+                },
+                "\u03a6\u03ce\u03c4\u03b9\u03bf\u03c2": {
+                    "joined_at": 1778583903
+                }
+            },
+            "question_start_time": 1778585120,
+            "question_end_time": null
+        },
+        "2944": {
+            "quiz_id": "dimC-les07-kahoot-M7B",
+            "host": "admin",
+            "status": "playing",
+            "current_question": 3,
+            "participants": {
+                "\u039c\u03b9\u03c7\u03b1\u03ae\u03bb": {
+                    "joined_at": 1778585153
+                },
+                "Arthur": {
+                    "joined_at": 1778585168
+                }
+            },
+            "question_start_time": 1778585337,
+            "question_end_time": null
+        }
+    }
+}

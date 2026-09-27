@@ -1,0 +1,58 @@
+{
+  "title": "Προσωπικά ή Μη",
+  "subtitle": "Διάκρινε τα προσωπικά από τα μη προσωπικά δεδομένα",
+  "categories": [
+    {
+      "id": "personal",
+      "name": "ΠΡΟΣΩΠΙΚΑ",
+      "color": "#F44336"
+    },
+    {
+      "id": "nonpersonal",
+      "name": "ΜΗ ΠΡΟΣΩΠΙΚΑ",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "👤 Όνομα",
+      "category": "personal"
+    },
+    {
+      "id": "item2",
+      "text": "🏠 Διεύθυνση",
+      "category": "personal"
+    },
+    {
+      "id": "item3",
+      "text": "✉️ Email",
+      "category": "personal"
+    },
+    {
+      "id": "item4",
+      "text": "👁️ Χρώμα ματιών",
+      "category": "personal"
+    },
+    {
+      "id": "item5",
+      "text": "📷 Φωτογραφία",
+      "category": "personal"
+    },
+    {
+      "id": "item6",
+      "text": "📍 Τοποθεσία",
+      "category": "personal"
+    },
+    {
+      "id": "item7",
+      "text": "🎨 Αγαπημένο χρώμα",
+      "category": "nonpersonal"
+    },
+    {
+      "id": "item8",
+      "text": "🍕 Αγαπημένο φαγητό",
+      "category": "nonpersonal"
+    }
+  ]
+}

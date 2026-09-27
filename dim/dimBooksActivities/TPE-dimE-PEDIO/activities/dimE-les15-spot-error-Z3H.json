@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Ασφάλεια Διαδικτύου",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "URL", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "όνομα", "error": true, "correct": "η διεύθυνση", "feedback": "Το URL είναι η ΗΛΕΚΤΡΟΝΙΚΗ ΔΙΕΥΘΥΝΣΗ, όχι το όνομα" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπολογιστή.", "error": true, "correct": "ιστοσελίδας.", "feedback": "Το URL αναφέρεται σε ιστοσελίδα, όχι σε υπολογιστή" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "αυθεντικοποίηση", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Η αυθεντικοποίηση ΕΠΙτρέπει μόνο σε εξουσιοδοτημένους χρήστες" },
+        { "text": "πρέπει", "error": true, "correct": "προστατεύει", "feedback": "Η αυθεντικοποίηση ΠΡΟΣΤΑΤΕΥΕΙ τα δεδομένα" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεδομένα.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Μπορώ", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "κατεβάσω", "error": false, "correct": "", "feedback": "" },
+        { "text": "λογισμικό", "error": false, "correct": "", "feedback": "" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "οποιονδήποτε", "error": true, "correct": "αξιόπιστο", "feedback": "Πρέπει να κατεβάζουμε μόνο από ΑΞΙΟΠΙΣΤΟΥΣ ιστότοπους" },
+        { "text": "ιστότοπο.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "HTTPS", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Το HTTPS εξασφαλίζει ΚΡΥΠΤΟΓΡΑΦΗΜΕΝΗ σύνδεση" },
+        { "text": "έχει", "error": true, "correct": "είναι", "feedback": "Το HTTPS ΕΙΝΑΙ πρωτόκολλο ασφαλούς σύνδεσης" },
+        { "text": "κανένα", "error": true, "correct": "ασφαλές", "feedback": "Το HTTPS είναι ΑΣΦΑΛΕΣ πρωτόκολλο" },
+        { "text": "πρωτόκολλο.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

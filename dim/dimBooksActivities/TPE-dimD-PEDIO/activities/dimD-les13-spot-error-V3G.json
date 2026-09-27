@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Εφαρμογές Υπολογιστή",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Φυλλομετρητής", "error": false, "correct": "Φυλλομετρητής", "feedback": "" },
+        { "text": "Φυλλομετρητης", "error": true, "correct": "Φυλλομετρητής", "feedback": "Γράφεται Φυλλομετρητής με τόνο" },
+        { "text": "Λογισμικό", "error": false, "correct": "Λογισμικό", "feedback": "" },
+        { "text": "Λογισμήκο", "error": true, "correct": "Λογισμικό", "feedback": "Γράφεται Λογισμικό" },
+        { "text": "Λειτουργικό", "error": false, "correct": "Λειτουργικό", "feedback": "" },
+        { "text": "Λιτουργικό", "error": true, "correct": "Λειτουργικό", "feedback": "Γράφεται Λειτουργικό" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Εφαρμογή", "error": false, "correct": "Εφαρμογή", "feedback": "" },
+        { "text": "Εφαρμή", "error": true, "correct": "Εφαρμογή", "feedback": "Γράφεται Εφαρμογή" },
+        { "text": "Επιφάνεια", "error": false, "correct": "Επιφάνεια", "feedback": "" },
+        { "text": "Επιφάνια", "error": true, "correct": "Επιφάνεια", "feedback": "Γράφεται Επιφάνεια" },
+        { "text": "Ανάλυση", "error": false, "correct": "Ανάλυση", "feedback": "" },
+        { "text": "Ανάληψη", "error": true, "correct": "Ανάλυση", "feedback": "Γράφεται Ανάλυση" }
+      ]
+    }
+  ]
+}

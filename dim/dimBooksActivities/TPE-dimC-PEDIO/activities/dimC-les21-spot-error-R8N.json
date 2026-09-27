@@ -1,0 +1,47 @@
+{
+  "title": "Βρες τα Λάθη: Επιλογή Αποτελεσμάτων",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Διαλέγω", "error": false},
+        {"text": "πάντα", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πρώτο", "error": true, "correct": "", "feedback": "Δεν διαλέγουμε ΠΟΤΕ το πρώτο χωρίς να ελέγχουμε!"},
+        {"text": "αποτέλεσμα", "error": false},
+        {"text": "χωρίς", "error": true, "correct": "ελέγχοντας", "feedback": "Πρέπει να ΕΛΕΓΧΟΥΜΕ τα αποτελέσματα πριν επιλέξουμε!"},
+        {"text": "σκέψη.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "πρέπει", "feedback": "ΠΡΕΠΕΙ να ελέγχουμε την πηγή κάθε πληροφορίας!"},
+        {"text": "να", "error": false},
+        {"text": "ελέγχω", "error": false},
+        {"text": "την", "error": false},
+        {"text": "πηγή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "περιγραφές", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Οι περιγραφές ΒΟΗΘΟΥΝ να καταλάβουμε το περιεχόμενο!"},
+        {"text": "βοηθούν", "error": false},
+        {"text": "καθόλου.", "error": true, "correct": "πολύ", "feedback": "Οι περιγραφές βοηθούν ΠΟΛΥ! Μας δίνουν ιδέα για το περιεχόμενο."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "εμπιστεύομαι", "error": false},
+        {"text": "κάθε", "error": true, "correct": "όχι κάθε", "feedback": "ΔΕΝ εμπιστευόμαστε κάθε πηγή! Προτιμάμε αξιόπιστες."},
+        {"text": "πηγή", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαδίκτυο.", "error": false}
+      ]
+    }
+  ]
+}

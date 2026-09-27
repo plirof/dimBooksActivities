@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υγεία & Διαδίκτυο",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "somatiki", "name": "Σωματική Υγεία", "color": "#e91e63", "key": "ArrowLeft"},
+    {"id": "psychiki", "name": "Ψυχική Υγεία", "color": "#9C27B0", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ξηροφθαλμία", "category": "somatiki"},
+    {"text": "Μελαγχολία", "category": "psychiki"},
+    {"text": "Ημικρανία", "category": "somatiki"},
+    {"text": "Ενοχές", "category": "psychiki"},
+    {"text": "Πόνος στη μέση", "category": "somatiki"},
+    {"text": "Άγχος", "category": "psychiki"},
+    {"text": "Καρπιαίος σωλήνας", "category": "somatiki"},
+    {"text": "Αδιαφορία", "category": "psychiki"},
+    {"text": "Μούδιασμα δαχτύλων", "category": "somatiki"},
+    {"text": "Κατάθλιψη", "category": "psychiki"}
+  ],
+  "duration": 30
+}

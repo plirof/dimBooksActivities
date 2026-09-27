@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Δεξί Κλικ και Σύρε",
+  "subtitle": "Πιάστε ενέργειες ποντικιού!",
+  "instructions": "Πιάσε μόνο ΕΝΕΡΓΕΙΕΣ ΠΟΝΤΙΚΙΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Δεξί κλικ", "correct": true, "color": "#f44336"},
+    {"text": "Ποδήλατο", "correct": false, "color": "#4CAF50"},
+    {"text": "Κύλιση", "correct": true, "color": "#2196F3"},
+    {"text": "Μπάνιο", "correct": false, "color": "#FF9800"},
+    {"text": "Σύρσιμο", "correct": true, "color": "#9C27B0"},
+    {"text": "Μαγειρική", "correct": false, "color": "#E91E63"},
+    {"text": "Μετακίνηση", "correct": true, "color": "#009688"},
+    {"text": "Κολύμπι", "correct": false, "color": "#FFC107"},
+    {"text": "Επιλογές", "correct": true, "color": "#795548"},
+    {"text": "Καθαρισμός", "correct": false, "color": "#607D8B"},
+    {"text": "Λίστα", "correct": true, "color": "#3F51B5"},
+    {"text": "Πλύσιμο", "correct": false, "color": "#8BC34A"}
+  ]
+}

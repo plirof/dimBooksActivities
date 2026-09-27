@@ -1,0 +1,46 @@
+{
+  "title": "Βρες τα Λάθη: Μηχανές Αναζήτησης",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μηχανή", "error": false},
+        {"text": "αναζήτησης", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μία", "error": false},
+        {"text": "συσκευή.", "error": true, "correct": "ιστοσελίδα", "feedback": "Η μηχανή αναζήτησης είναι ΙΣΤΟΣΕΛΙΔΑ, όχι συσκευή!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Γράφω", "error": false},
+        {"text":"όποια", "error": false},
+        {"text": "λέξη", "error": false},
+        {"text": "θέλω", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "πλαίσιο", "error": false},
+        {"text": "κειμένου.", "error": true, "correct": "αναζήτησης", "feedback": "Γράφω στο ΠΛΑΙΣΙΟ ΑΝΑΖΗΤΗΣΗΣ, όχι κειμένου!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "αποτελέσματα", "error": false},
+        {"text": "δείχνουν", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Τα αποτελέσματα δείχνουν ιστοσελίδες, βίντεο ΚΑΙ εικόνες!"},
+        {"text": "εικόνες.", "error": true, "correct": "ιστοσελίδες, βίντεο και εικόνες", "feedback": "Τα αποτελέσματα περιλαμβάνουν ιστοσελίδες, βίντεο ΚΑΙ εικόνες!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ελέγχω", "error": true, "correct": "πρέπει να ελέγχω", "feedback": "Είναι ΠΟΛΥ ΣΗΜΑΝΤΙΚΟ να ελέγχεις τα αποτελέσματα!"},
+        {"text": "τα", "error": false},
+        {"text": "αποτελέσματα.", "error": false}
+      ]
+    }
+  ]
+}

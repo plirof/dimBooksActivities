@@ -1,0 +1,15 @@
+{
+  "title": "Έλεγξε την Πηγή!",
+  "subtitle": "Κάνε κλικ στα στοιχεία αξιολόγησης",
+  "instructions": "Βρες: συγγραφέας, ημερομηνία, email, πηγή",
+  "duration": 30,
+  "maxTargets": 3,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "✍️ Συγγραφέας", "color": "#C8E6C9" },
+    { "label": "📆 Ημερομηνία", "color": "#BBDEFB" },
+    { "label": "📧 Email", "color": "#FFF9C4" },
+    { "label": "🔗 Πηγή", "color": "#E1BEE7" },
+    { "label": "❌ Λείπει", "color": "#FFCDD2" }
+  ]
+}

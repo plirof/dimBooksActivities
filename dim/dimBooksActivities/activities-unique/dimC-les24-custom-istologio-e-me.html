@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ιστολόγιο στο e-me</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ccfbf1,#2dd4bf);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#134e4a,#14b8a6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f0fdfa;border-radius:12px;border-left:4px solid #14b8a6;padding:10px 14px;font-size:.85em;color:#134e4a;line-height:1.5}
+.info b{color:#115e59}
+.builder{background:#f0fdfa;border-radius:16px;border:2px solid #99f6e4;padding:16px}
+.builder h3{color:#115e59;font-size:1em;margin-bottom:12px;text-align:center}
+.blog-preview{background:#fff;border-radius:14px;border:2px solid #e2e8f0;overflow:hidden;margin-bottom:14px}
+.blog-header{background:linear-gradient(135deg,#134e4a,#14b8a6);color:#fff;padding:14px 18px}
+.blog-header .bh-title{font-size:1.1em;font-weight:700}
+.blog-header .bh-desc{font-size:.8em;opacity:.9;margin-top:4px}
+.blog-header .bh-type{font-size:.75em;padding:3px 10px;background:rgba(255,255,255,.2);border-radius:20px;display:inline-block;margin-top:6px}
+.blog-body{padding:14px}
+.blog-body .bb-empty{text-align:center;color:#94a3b8;font-style:italic;padding:20px;font-size:.9em}
+.blog-body .bb-article{background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;padding:10px;margin-bottom:8px}
+.bb-article .ba-title{font-size:.9em;font-weight:700;color:#1e293b}
+.bb-article .ba-date{font-size:.7em;color:#94a3b8;margin-top:2px}
+.bb-article .ba-excerpt{font-size:.8em;color:#64748b;margin-top:4px;line-height:1.4}
+.bb-article .ba-tags{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.bb-article .ba-tag{font-size:.7em;padding:2px 8px;background:#ccfbf1;color:#115e59;border-radius:20px}
+.form-group{margin-bottom:10px}
+.form-group label{font-size:.85em;font-weight:600;color:#115e59;display:block;margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.85em;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#14b8a6}
+.form-group textarea{resize:vertical;min-height:60px}
+.articles-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.article-mini{display:flex;align-items:center;gap:8px;padding:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px}
+.article-mini .am-num{width:24px;height:24px;border-radius:50%;background:#14b8a6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7em;font-weight:700}
+.article-mini .am-title{flex:1;font-size:.85em;color:#1e293b;font-weight:600}
+.article-mini .am-del{cursor:pointer;color:#ef4444;font-size:1.1em}
+.article-mini .am-del:hover{color:#b91c1c}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#134e4a,#14b8a6);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(19,78,74,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-add{background:#14b8a6;color:#fff}
+.btn-add:hover{background:#0d9488}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.blog-preview{margin-bottom:10px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .bb-article .ba-tags > * { margin: 2px; }
+  .articles-list > * + * { margin-top: 8px; }
+  .article-mini > * + * { margin-left: 8px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📝 Δημιούργησε το Ιστολόγιό σου στο e-me</h1>
+<p>Φτιάξε το δικό σου blog με τίτλο, περιγραφή και άρθρα!</p>
+</div>
+<div class="area">
+<div class="info">💡 Το <b>ιστολόγιο</b> (blog) είναι ένας ψηφιακός χώρος όπου μπορούμε να δημοσιεύουμε <b>άρθρα</b>, σκέψεις και σχολική δουλειά. Στο <b>e-me</b> υπάρχουν ιστολόγια χρηστών και ιστολόγια ομάδων (κελιών).</div>
+<div class="builder">
+<h3>🔧 Κατασκευή Ιστολογίου</h3>
+<div class="blog-preview" id="blogPreview">
+<div class="blog-header">
+<div class="bh-title" id="previewTitle">Το Ιστολόγιό μου</div>
+<div class="bh-desc" id="previewDesc">Περιγραφή ιστολογίου...</div>
+<div class="bh-type" id="previewType">📄 Πρόσωπο</div>
+</div>
+<div class="blog-body" id="previewBody"><div class="bb-empty">Δεν υπάρχουν άρθρα ακόμα. Πρόσθεσε το πρώτο σου!</div></div>
+</div>
+<div class="form-group">
+<label>📌 Τίτλος ιστολογίου:</label>
+<input type="text" id="blogTitle" placeholder="π.χ. Το Σχολείο μου" oninput="updatePreview()">
+</div>
+<div class="form-group">
+<label>📝 Περιγραφή:</label>
+<textarea id="blogDesc" placeholder="π.χ. Άρθρα για ταprojects μας στην τάξη" oninput="updatePreview()"></textarea>
+</div>
+<div class="form-group">
+<label>📁 Τύπος ιστολογίου:</label>
+<select id="blogType" onchange="updatePreview()">
+<option value="personal">👤 Πρόσωπο (δικό μου)</option>
+<option value="group">👥 Ομάδα (του κελιού)</option>
+<option value="school">🏫 Σχολείο</option>
+</select>
+</div>
+<div style="background:#f0fdfa;border-radius:12px;padding:12px;border:1px solid #99f6e4;margin-top:4px">
+<label style="font-size:.9em;font-weight:600;color:#115e59;display:block;margin-bottom:8px">➕ Πρόσθεσε άρθρο:</label>
+<div class="form-group">
+<input type="text" id="articleTitle" placeholder="Τίτλος άρθρου...">
+</div>
+<div class="form-group">
+<textarea id="articleContent" placeholder="Σύντομο περιεχόμενο..." rows="2"></textarea>
+</div>
+<div class="form-group">
+<input type="text" id="articleTags" placeholder="Ετικέτες (π.χ. επιστήμη, project)">
+</div>
+<button class="btn btn-add" onclick="addArticle()">➕ Προσθήκη Άρθρου</button>
+</div>
+<div class="articles-list" id="articlesList"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="publishBtn" onclick="publishBlog()" disabled>🚀 Δημοσίευση</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var articles=[];
+
+function updatePreview(){
+var title=document.getElementById('blogTitle').value||'Το Ιστολόγιό μου';
+var desc=document.getElementById('blogDesc').value||'Περιγραφή ιστολογίου...';
+var type=document.getElementById('blogType').value;
+var typeLabels={personal:'👤 Πρόσωπο',group:'👥 Ομάδα (κελί)',school:'🏫 Σχολείο'};
+document.getElementById('previewTitle').textContent=title;
+document.getElementById('previewDesc').textContent=desc;
+document.getElementById('previewType').textContent=typeLabels[type];
+updatePublishBtn();
+}
+
+function addArticle(){
+var title=document.getElementById('articleTitle').value.trim();
+var content=document.getElementById('articleContent').value.trim();
+var tags=document.getElementById('articleTags').value.trim();
+if(!title){showFeedback('⚠️ Γράψε έναν τίτλο για το άρθρο!',false);return;}
+if(!content){showFeedback('⚠️ Γράψε περιεχόμενο για το άρθρο!',false);return;}
+
+var now=new Date();
+var dateStr=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
+var tagList=tags?tags.split(',').map(function(t){return t.trim();}):[];
+
+articles.push({title:title,content:content,tags:tagList,date:dateStr});
+document.getElementById('articleTitle').value='';
+document.getElementById('articleContent').value='';
+document.getElementById('articleTags').value='';
+
+renderArticles();
+renderPreviewArticles();
+updatePublishBtn();
+showFeedback('✅ Το άρθρο «'+title+'» προστέθηκε!',true);
+}
+
+function removeArticle(idx){
+articles.splice(idx,1);
+renderArticles();
+renderPreviewArticles();
+updatePublishBtn();
+}
+
+function renderArticles(){
+var list=document.getElementById('articlesList');
+list.innerHTML='';
+for(var i=0;i<articles.length;i++){
+var a=articles[i];
+var div=document.createElement('div');
+div.className='article-mini';
+div.innerHTML='<div class="am-num">'+(i+1)+'</div><div class="am-title">'+a.title+'</div><span class="am-del" onclick="removeArticle('+i+')">✕</span>';
+list.appendChild(div);
+}
+}
+
+function renderPreviewArticles(){
+var body=document.getElementById('previewBody');
+if(articles.length===0){
+body.innerHTML='<div class="bb-empty">Δεν υπάρχουν άρθρα ακόμα. Πρόσθεσε το πρώτο σου!</div>';
+return;
+}
+var html='';
+for(var i=0;i<articles.length;i++){
+var a=articles[i];
+html+='<div class="bb-article"><div class="ba-title">'+a.title+'</div><div class="ba-date">📅 '+a.date+'</div><div class="ba-excerpt">'+a.content.substring(0,100)+(a.content.length>100?'...':'')+'</div>';
+if(a.tags.length>0){
+html+='<div class="ba-tags">';
+for(var j=0;j<a.tags.length;j++){
+html+='<span class="ba-tag">#'+a.tags[j]+'</span>';
+}
+html+='</div>';
+}
+html+='</div>';
+}
+body.innerHTML=html;
+}
+
+function updatePublishBtn(){
+var hasTitle=document.getElementById('blogTitle').value.trim().length>0;
+var hasDesc=document.getElementById('blogDesc').value.trim().length>0;
+var hasArticles=articles.length>0;
+document.getElementById('publishBtn').disabled=!(hasTitle&&hasDesc&&hasArticles);
+}
+
+function publishBlog(){
+var title=document.getElementById('blogTitle').value;
+var desc=document.getElementById('blogDesc').value;
+var type=document.getElementById('blogType').value;
+var typeLabels={personal:'Πρόσωπο',group:'Ομάδα',school:'Σχολείο'};
+
+var body=document.getElementById('previewBody');
+body.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:2.5em">🎉</div><h3 style="color:#115e59;margin:10px 0">Το ιστολόγιό σου δημοσιεύθηκε!</h3><p style="color:#64748b;font-size:.9em;line-height:1.6"><b>📌 Τίτλος:</b> '+title+'<br><b>📝 Περιγραφή:</b> '+desc+'<br><b>📁 Τύπος:</b> '+typeLabels[type]+'<br><b>📄 Άρθρα:</b> '+articles.length+'</p><p style="color:#14b8a6;font-size:.85em;margin-top:10px">✅ Έχεις τίτλο, περιγραφή, τύπο και '+articles.length+' άρθρα!</p></div>';
+
+document.querySelectorAll('.form-group, .articles-list').forEach(function(el){el.style.display='none';});
+document.querySelector('div[style*="background:#f0fdfa"]').style.display='none';
+document.getElementById('publishBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Μπράβο! Δημιούργησες το δικό σου ιστολόγιο!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},2500);
+}
+
+function resetAll(){
+articles=[];
+document.getElementById('blogTitle').value='';
+document.getElementById('blogDesc').value='';
+document.getElementById('blogType').value='personal';
+document.getElementById('articleTitle').value='';
+document.getElementById('articleContent').value='';
+document.getElementById('articleTags').value='';
+document.querySelectorAll('.form-group, .articles-list').forEach(function(el){el.style.display='';});
+var addArea=document.querySelector('div[style*="background:#f0fdfa"]');
+if(addArea)addArea.style.display='';
+document.getElementById('publishBtn').style.display='';
+updatePreview();
+renderArticles();
+renderPreviewArticles();
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+}
+
+updatePreview();
+</script>
+</body>
+</html>

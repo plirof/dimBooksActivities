@@ -1,0 +1,26 @@
+{
+  "title": "Διάγραμμα Venn: micro:bit vs Scratch",
+  "subtitle": "Τοποθέτησε τα στοιχεία στη σωστή περιοχή!",
+  "circleA": {
+    "label": "micro:bit",
+    "color": "#4CAF50"
+  },
+  "circleB": {
+    "label": "Scratch",
+    "color": "#2196F3"
+  },
+  "items": [
+    { "text": "Μικροελεγκτής", "zone": "A" },
+    { "text": "Κουμπί Α και Β", "zone": "A" },
+    { "text": "Οθόνη LED", "zone": "A" },
+    { "text": "Συμβάν κούνημα", "zone": "A" },
+    { "text": "MakeCode", "zone": "A" },
+    { "text": "Χαρακτήρες και σενάρια", "zone": "B" },
+    { "text": "Πράσινη σημαία", "zone": "B" },
+    { "text": "Υποπρογράμματα", "zone": "B" },
+    { "text": "Μηνύματα", "zone": "B" },
+    { "text": "Εντολή για πάντα", "zone": "AB" },
+    { "text": "Εντολές μουσικής", "zone": "AB" },
+    { "text": "Περιβάλλον προγραμματισμού", "zone": "AB" }
+  ]
+}

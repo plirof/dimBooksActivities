@@ -1,0 +1,47 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Γράφω", "error": false},
+        {"text": "με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": true, "correct": "πληκτρολόγιο", "feedback": "Γράφουμε με το πληκτρολόγιο, όχι με το ποντίκι!"},
+        {"text": "στο", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βλέπω", "error": false},
+        {"text": "εικόνες", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "κάμερα", "error": true, "correct": "οθόνη", "feedback": "Βλέπουμε εικόνες στην οθόνη, όχι στην κάμερα!"},
+        {"text": "του", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ακούω", "error": false},
+        {"text": "ήχο", "error": false},
+        {"text": "από", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "ακουστικά", "error": true, "correct": "ηχεία", "feedback": "Τα ακουστικά τα φοράμε, τον ήχο τον ακούμε από τα ηχεία!"},
+        {"text": "του", "error": false},
+        {"text": "δωματίου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "κάμερα", "error": false},
+        {"text": "βγάζει", "error": false},
+        {"text": "ήχο", "error": true, "correct": "φωτογραφίες", "feedback": "Η κάμερα βγάζει φωτογραφίες, όχι ήχο!"},
+        {"text": "στο", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    }
+  ]
+}

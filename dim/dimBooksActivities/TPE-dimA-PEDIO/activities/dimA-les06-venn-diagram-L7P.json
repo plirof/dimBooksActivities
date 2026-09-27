@@ -1,0 +1,17 @@
+{
+  "title": "Διάγραμμα Venn: ScratchJr ή Παιχνίδι",
+  "subtitle": "Βάλε κάθε πράγμα στη σωστή θέση!",
+  "circleA": { "label": "ScratchJr", "color": "#FF9800" },
+  "circleB": { "label": "Παιχνίδι", "color": "#4CAF50" },
+  "items": [
+    { "text": "Ήρωας", "zone": "A" },
+    { "text": "Μπαλόνι", "zone": "B" },
+    { "text": "Εντολή", "zone": "A" },
+    { "text": "Κούκλα", "zone": "B" },
+    { "text": "Σκηνικό", "zone": "A" },
+    { "text": "Μπάλα", "zone": "B" },
+    { "text": "Βήμα", "zone": "A" },
+    { "text": "Σβούρα", "zone": "B" },
+    { "text": "Τετραγωνάκια", "zone": "A" }
+  ]
+}

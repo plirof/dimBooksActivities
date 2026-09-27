@@ -1,0 +1,39 @@
+{
+  "title": "Βρες τα Λάθη: Σειρά",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πρώτα", "error": false},
+        {"text": "ψήνω", "error": true, "correct": "διαβάζω", "feedback": "Δεν ψήνουμε πρώτα! Πρώτα διαβάζουμε τη συνταγή!"},
+        {"text": "τη", "error": false},
+        {"text": "συνταγή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μετά", "error": false},
+        {"text": "πλάθω", "error": true, "correct": "φτιάχνω", "feedback": "Πριν πλάσω, φτιάχνω τη ζύμη!"},
+        {"text": "τη", "error": false},
+        {"text": "ζύμη.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κλείνω", "error": true, "correct": "Ανοίγω", "feedback": "Πρώτα ανοίγω την τσάντα, μετά βάζω πράγματα!"},
+        {"text": "την", "error": false},
+        {"text": "τσάντα", "error": false},
+        {"text": "πρώτα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "τέλος", "error": false},
+        {"text": "ανοίγω", "error": true, "correct": "κλείνω", "feedback": "Στο τέλος κλείνουμε την τσάντα!"},
+        {"text": "τη", "error": false},
+        {"text": "τσάντα.", "error": false}
+      ]
+    }
+  ]
+}

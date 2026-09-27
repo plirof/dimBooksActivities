@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Κωδικοί Πρόσβασης",
+  "subtitle": "Πιάσε τις σωστές πρακτικές κωδικών!",
+  "instructions": "Πιάσε τις σωστές πρακτικές για κωδικούς πρόσβασης. Απόφυγε τις κακές.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Γράμματα + Αριθμοί", "correct": true, "color": "#4caf50" },
+    { "text": "Μακρύς κωδικός", "correct": true, "color": "#2196f3" },
+    { "text": "Μυστικός κωδικός", "correct": true, "color": "#ff9800" },
+    { "text": "123456", "correct": false, "color": "#f44336" },
+    { "text": "Διαφορετικός σε κάθε site", "correct": true, "color": "#9c27b0" },
+    { "text": "password", "correct": false, "color": "#f44336" },
+    { "text": "Σύμβολα (!@#$)", "correct": true, "color": "#00bcd4" },
+    { "text": "Το όνομά μου", "correct": false, "color": "#f44336" },
+    { "text": "Δεν τον μοιράζομαι", "correct": true, "color": "#8bc34a" },
+    { "text": "Ημερομηνία γέννησης", "correct": false, "color": "#f44336" }
+  ]
+}

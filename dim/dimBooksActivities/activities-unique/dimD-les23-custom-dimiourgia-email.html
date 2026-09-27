@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δημιουργία Ηλεκτρονικού Μηνύματος</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 800px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.instruction-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border-left: 4px solid #667eea;
+}
+.instruction-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 10px;
+font-size: 1.1rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.instruction-steps {
+color: #555;
+line-height: 1.8;
+}
+.email-form {
+display: flex;
+flex-direction: column;
+gap: 20px;
+margin-bottom: 25px;
+}
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.form-label {
+font-weight: bold;
+color: #333;
+font-size: 1rem;
+}
+.form-input {
+padding: 12px 15px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+.form-input:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.form-textarea {
+padding: 12px 15px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 1rem;
+min-height: 120px;
+resize: vertical;
+font-family: inherit;
+transition: all 0.3s ease;
+}
+.form-textarea:focus {
+outline: none;
+border-color: #667eea;
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+.attachment-section {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+}
+.attachment-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.1rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.attachments-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+grid-gap: 15px;
+}
+.attachment-item {
+background: white;
+border-radius: 10px;
+padding: 15px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 3px solid #ddd;
+}
+.attachment-item:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.attachment-item.selected {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.attachment-icon {
+font-size: 2.5rem;
+margin-bottom: 8px;
+}
+.attachment-name {
+font-size: 0.85rem;
+color: #666;
+font-weight: 500;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 25px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.success {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.error {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.result-checklist {
+text-align: left;
+margin-top: 15px;
+padding: 15px;
+background: rgba(255,255,255,0.5);
+border-radius: 10px;
+}
+.result-checklist-item {
+padding: 8px 0;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.result-checklist-item.correct {
+color: #155724;
+}
+.result-checklist-item.wrong {
+color: #721c24;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .instruction-title > * + * { margin-left: 10px; }
+  .email-form > * + * { margin-top: 20px; }
+  .form-group > * + * { margin-top: 8px; }
+  .attachment-title > * + * { margin-left: 10px; }
+  .result-checklist-item > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📧 Δημιουργία Ηλεκτρονικού Μηνύματος</h1>
+<p class="subtitle">Στείλτε μήνυμα στον διπλανό ή στη διπλανή σας ακολουθώντας τις οδηγίες!</p>
+
+<div class="container">
+<div class="instruction-box">
+<div class="instruction-title">📋 Οδηγίες για την αποστολή μηνύματος</div>
+<div class="instruction-steps">
+1. Στο <strong>Θέμα</strong> γράψτε τη λέξη «Καλημέρα»<br>
+2. Στο <strong>Κείμενο μηνύματος</strong> γράψτε τη φράση «Εύχομαι να έχεις μια υπέροχη μέρα»<br>
+3. <strong>Επισυνάψτε</strong> μια εικόνα από τον υπολογιστή σας
+</div>
+</div>
+
+<div class="email-form">
+<div class="form-group">
+<label class="form-label">📌 Προς:</label>
+<input type="text" class="form-input" id="recipient" placeholder="Γράψτε το email του παραλήπτη..." value="diplanos@school.gr">
+</div>
+
+<div class="form-group">
+<label class="form-label">📝 Θέμα:</label>
+<input type="text" class="form-input" id="subject" placeholder="Το θέμα του μηνύματος...">
+</div>
+
+<div class="form-group">
+<label class="form-label">💬 Κείμενο μηνύματος:</label>
+<textarea class="form-textarea" id="message" placeholder="Γράψτε το μήνυμά σας..."></textarea>
+</div>
+</div>
+
+<div class="attachment-section">
+<div class="attachment-title">📎 Επιλέξτε εικόνα για επισύναψη (κάντε κλικ)</div>
+<div class="attachments-grid">
+<div class="attachment-item" data-type="image" onclick="selectAttachment(this)">
+<div class="attachment-icon">🏔️</div>
+<div class="attachment-name">Φωτογραφία_Βουνου.jpg</div>
+</div>
+<div class="attachment-item" data-type="image" onclick="selectAttachment(this)">
+<div class="attachment-icon">🐱</div>
+<div class="attachment-name">Γάτα.png</div>
+</div>
+<div class="attachment-item" data-type="image" onclick="selectAttachment(this)">
+<div class="attachment-icon">🌺</div>
+<div class="attachment-name">Λουλούδια.jpg</div>
+</div>
+<div class="attachment-item" data-type="image" onclick="selectAttachment(this)">
+<div class="attachment-icon">🌅</div>
+<div class="attachment-name">Ηλιοβασίλεμα.png</div>
+</div>
+<div class="attachment-item" data-type="document" onclick="selectAttachment(this)">
+<div class="attachment-icon">📄</div>
+<div class="attachment-name">Αναφορά_Εργασίας.pdf</div>
+</div>
+<div class="attachment-item" data-type="document" onclick="selectAttachment(this)">
+<div class="attachment-icon">📊</div>
+<div class="attachment-name">Δεδομένα.xlsx</div>
+</div>
+</div>
+</div>
+
+<button class="btn" onclick="sendEmail()">📤 Αποστολή Μηνύματος</button>
+
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<div class="mascot">📬</div>
+
+<script>
+let selectedAttachment = null;
+
+function selectAttachment(element) {
+if (selectedAttachment) {
+selectedAttachment.classList.remove('selected');
+}
+element.classList.add('selected');
+selectedAttachment = element;
+}
+
+function sendEmail() {
+const recipient = document.getElementById('recipient').value.trim();
+const subject = document.getElementById('subject').value.trim();
+const message = document.getElementById('message').value.trim();
+
+let checklist = [];
+
+if (recipient.length > 0) {
+checklist.push({
+text: '✓ Παραλήπτης: ' + recipient,
+correct: true
+});
+} else {
+checklist.push({
+text: '✗ Δεν ορίσατε παραλήπτη',
+correct: false
+});
+}
+
+if (subject === 'Καλημέρα') {
+checklist.push({
+text: '✓ Θέμα: «Καλημέρα» (σωστό)',
+correct: true
+});
+} else if (subject.length > 0) {
+checklist.push({
+text: '✗ Θέμα: Πρέπει να είναι «Καλημέρα»',
+correct: false
+});
+} else {
+checklist.push({
+text: '✗ Δεν γράψατε θέμα',
+correct: false
+});
+}
+
+if (message === 'Εύχομαι να έχεις μια υπέροχη μέρα') {
+checklist.push({
+text: '✓ Κείμενο: «Εύχομαι να έχεις μια υπέροχη μέρα» (σωστό)',
+correct: true
+});
+} else if (message.length > 0) {
+checklist.push({
+text: '✗ Κείμενο: Πρέπει να είναι «Εύχομαι να έχεις μια υπέροχη μέρα»',
+correct: false
+});
+} else {
+checklist.push({
+text: '✗ Δεν γράψατε κείμενο μηνύματος',
+correct: false
+});
+}
+
+if (selectedAttachment && selectedAttachment.dataset.type === 'image') {
+checklist.push({
+text: '✓ Επισύναψη: ' + selectedAttachment.querySelector('.attachment-name').textContent + ' (εικόνα - σωστό)',
+correct: true
+});
+} else if (selectedAttachment) {
+checklist.push({
+text: '✗ Επισύναψη: Πρέπει να είναι εικόνα, όχι έγγραφο',
+correct: false
+});
+} else {
+checklist.push({
+text: '✗ Δεν επιλέξατε επισύναψη εικόνας',
+correct: false
+});
+}
+
+const resultBox = document.getElementById('resultBox');
+const allCorrect = checklist.every(item => item.correct);
+
+resultBox.className = 'result-box show ' + (allCorrect ? 'success' : 'error');
+
+let html = '<h3>' + (allCorrect ? '🎉 Εξαιρετικό!' : '❌ Λάθος!') + '</h3>';
+
+if (allCorrect) {
+html += '<p>Το μήνυμά σας ετοιμάστηκε σωστά και μπορεί να σταλούν!</p>';
+html += '<p>Συγχαρητήρια, ακολουθήσατε όλες τις οδηγίες!</p>';
+} else {
+html += '<p>Το μήνυμα δεν ετοιμάστηκε σωστά. Ελέγξτε:</p>';
+}
+
+html += '<div class="result-checklist">';
+checklist.forEach(item => {
+html += '<div class="result-checklist-item ' + (item.correct ? 'correct' : 'wrong') + '">' + item.text + '</div>';
+});
+html += '</div>';
+
+if (!allCorrect) {
+html += '<p style="margin-top: 15px;">Διορθώστε τα λάθη και προσπαθήστε ξανά!</p>';
+}
+
+resultBox.innerHTML = html;
+}
+
+document.getElementById('recipient').addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+e.preventDefault();
+}
+});
+</script>
+</body>
+</html>

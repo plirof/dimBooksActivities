@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Το Πληκτρολόγιο",
+  "subtitle": "Μόνο λέξεις για πληκτρολόγιο!",
+  "instruction": "Σπάσε μόνο λέξεις σχετικές με το ΠΛΗΚΤΡΟΛΟΓΙΟ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Γράμματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπάνιο", "correct": false, "color": "#f44336" },
+    { "text": "Αριθμοί", "correct": true, "color": "#2196F3" },
+    { "text": "Κούπα", "correct": false, "color": "#FF9800" },
+    { "text": "Κέρσορας", "correct": true, "color": "#9C27B0" },
+    { "text": "Σκάλες", "correct": false, "color": "#E91E63" },
+    { "text": "Πλήκτρο", "correct": true, "color": "#FFC107" },
+    { "text": "Φουρνός", "correct": false, "color": "#00BCD4" },
+    { "text": "Λέξη", "correct": true, "color": "#3F51B5" },
+    { "text": "Κουρτίνα", "correct": false, "color": "#795548" },
+    { "text": "Υπολογιστής", "correct": true, "color": "#FF9800" },
+    { "text": "Κρεβάτι", "correct": false, "color": "#607D8B" }
+  ]
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated gov.gr</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:900px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.gov-header{text-align:center;margin-bottom:20px;padding:16px;background:linear-gradient(90deg,#0d47a1,#1565c0);color:#fff;border-radius:12px}
+.gov-header h2{font-size:1.2em;margin-bottom:2px}
+.gov-header p{font-size:.8em;opacity:.85}
+.breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:16px;font-size:.85em;color:#888;flex-wrap:wrap}
+.breadcrumb span{cursor:pointer;color:#667eea;transition:color .2s}
+.breadcrumb span:hover{color:#764ba2;text-decoration:underline}
+.breadcrumb .separator{color:#ccc}
+.breadcrumb .current{color:#333;font-weight:600;cursor:default}
+.breadcrumb .current:hover{text-decoration:none;color:#333}
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));grid-gap:16px}
+.category-card{padding:24px 16px;text-align:center;border-radius:14px;border:2px solid #eee;cursor:pointer;transition:all .2s;background:#fafafa}
+.category-card:hover{border-color:#667eea;transform:translateY(-4px);box-shadow:0 6px 20px rgba(102,126,234,.2);background:#fff}
+.category-card .icon{font-size:2.5em;margin-bottom:10px;display:block}
+.category-card .label{font-weight:700;color:#333;font-size:.9em}
+.services-list{display:flex;flex-direction:column;gap:12px}
+.service-card{padding:16px 20px;border:2px solid #eee;border-radius:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;background:#fafafa}
+.service-card:hover{border-color:#667eea;background:#fff;transform:translateX(4px)}
+.service-card .svc-icon{font-size:1.8em}
+.service-card .svc-info h4{color:#333;font-size:.95em}
+.service-card .svc-info p{color:#888;font-size:.8em;margin-top:2px}
+.steps-view{padding:20px;background:#f8f9ff;border-radius:14px}
+.steps-view h3{color:#333;margin-bottom:16px;font-size:1.1em}
+.step{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.step-number{min-width:36px;height:36px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
+.step-content h4{color:#333;font-size:.95em;margin-bottom:2px}
+.step-content p{color:#666;font-size:.85em;line-height:1.5}
+.step.completed .step-number{background:#34a853}
+.step.active .step-number{background:linear-gradient(90deg,#667eea,#764ba2);box-shadow:0 0 0 4px rgba(102,126,234,.2)}
+.simulate-btn{display:inline-block;margin-top:16px;padding:12px 28px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:700;font-size:.95em;transition:all .2s}
+.simulate-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,.4)}
+.result-box{display:none;margin-top:16px;padding:20px;background:#e6f4ea;border:2px solid #34a853;border-radius:12px;text-align:center;color:#1b7a34;font-weight:600;animation:fadeIn .5s ease}
+.result-box.show{display:block}
+.result-box .result-icon{font-size:3em;margin-bottom:8px}
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .breadcrumb > * { margin: 3px; }
+  .services-list > * + * { margin-top: 12px; }
+  .service-card > * + * { margin-left: 14px; }
+  .step > * + * { margin-left: 14px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏛️ gov.gr Προσομοίωση</h1>
+<p class="subtitle">Μάθε πώς λειτουργούν οι ψηφιακές υπηρεσίες του κράτους</p>
+<div class="container">
+<div class="gov-header">
+<h2>🇬🇷 gov.gr</h2>
+<p>Ψηφιακές Υπηρεσίες της Ελληνικής Δημοκρατίας</p>
+</div>
+<div class="breadcrumb" id="breadcrumb"></div>
+<div class="view active" id="categoriesView"></div>
+<div class="view" id="servicesView"></div>
+<div class="view" id="stepsView"></div>
+</div>
+<script>
+const data={
+"Πιστοποιητικά":{icon:"📜",services:[
+{name:"Πιστοποιητικό Οικογενειακής Κατάστασης",icon:"👨‍👩‍👧‍👦",desc:"Λήψη πιστοποιητικού από το μητρώο",steps:["Σύνδεση με taxisnet","Επιλογή μελών οικογένειας","Λήψη πιστοποιητικού σε PDF"]},
+{name:"Αστυνομική Ταυτότητα",icon:"🪪",desc:"Αίτηση για νέα ταυτότητα",steps:["Σύνδεση με taxisnet","Συμπλήρωση αίτησης","Κράτηση ραντεβού"]}
+]},
+"Υγεία":{icon:"🏥",services:[
+{name:"Συνταγογράφηση",icon:"💊",desc:"Ηλεκτρονική συνταγή από γιατρό",steps:["Σύνδεση με AMKA","Επιλογή φαρμάκων","Αποστολή συνταγής στο φαρμακείο"]},
+{name:"Ραντεβού σε νοσοκομείο",icon:"📅",desc:"Ηλεκτρονικό ραντεβού",steps:["Επιλογή νοσοκομείου","Επιλογή ειδικότητας","Επιλογή ημερομηνίας και ώρας"]},
+{name:"Εμβολιασμοί",icon:"💉",desc:"Πρόγραμμα εμβολιασμών",steps:["Σύνδεση με AMKA","Προβολή προγράμματος","Κράτηση ραντεβού εμβολιασμού"]}
+]},
+"Οικογένεια":{icon:"👨‍👩‍👦",services:[
+{name:"Γέννηση παιδιού",icon:"👶",desc:"Δήλωση γέννησης",steps:["Σύνδεση με taxisnet","Συμπλήρωση στοιχείων παιδιού","Λήψη πιστοποιητικού γέννησης"]},
+{name:"Γάμος",icon:"💒",desc:"Προετοιμασία γάμου",steps:["Συμπλήρωση αίτησης","Προσκόμιση εγγράφων","Κράτηση ημερομηνίας"]}
+]},
+"Μετακίνηση":{icon:"🚗",services:[
+{name:"Άδεια Οδήγησης",icon:"🪪",desc:"Αίτηση για άδεια οδήγησης",steps:["Σύνδεση με taxisnet","Κράτηση ραντεβού","Εξέταση και λήψη άδειας"]},
+{name:"Παραβόλια",icon:"💸",desc:"Εξόφληση παραβάσεων",steps:["Εισαγωγή αριθμού παραβόλου","Έλεγχος στοιχείων","Πληρωμή ηλεκτρονικά"]},
+{name:"Μετεγγραφή οχήματος",icon:"🚙",desc:"Αλλαγή στοιχείων οχήματος",steps:["Σύνδεση με taxisnet","Εισαγωγή στοιχείων οχήματος","Ολοκλήρωση μεταβίβασης"]}
+]},
+"Ταχυδρομείο":{icon:"📮",services:[
+{name:"Ανίχνευση Δέματος",icon:"📦",desc:"Παρακολούθηση αποστολής",steps:["Εισαγωγή αριθμού αποστολής","Έλεγχος κατάστασης","Πληροφορίες παράδοσης"]},
+{name:"Αποστολή Επιστολής",icon:"✉️",desc:"Ηλεκτρονική αποστολή",steps:["Συμπλήρωση στοιχείων παραλήπτη","Σύνταξη επιστολής","Αποστολή και εκτύπωση"]}
+]}};
+let nav=[];
+function renderBreadcrumb(){
+const bc=document.getElementById('breadcrumb');
+bc.innerHTML='';
+const home=document.createElement('span');
+home.textContent='🏠 Αρχική';
+home.onclick=()=>navigateTo([]);
+bc.appendChild(home);
+nav.forEach((item,i)=>{
+bc.innerHTML+=' <span class="separator">›</span> ';
+const s=document.createElement('span');
+if(i===nav.length-1){s.className='current';s.textContent=item;}
+else{s.textContent=item;s.onclick=()=>navigateTo(nav.slice(0,i));}
+bc.appendChild(s);
+});
+}
+function navigateTo(path){
+nav=[...path];
+renderBreadcrumb();
+document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+if(nav.length===0){renderCategories();document.getElementById('categoriesView').classList.add('active');}
+else if(nav.length===1){renderServices(nav[0]);document.getElementById('servicesView').classList.add('active');}
+else if(nav.length===2){renderSteps(nav[0],nav[1]);document.getElementById('stepsView').classList.add('active');}
+}
+function renderCategories(){
+const view=document.getElementById('categoriesView');
+view.innerHTML='<div class="categories-grid"></div>';
+const grid=view.querySelector('.categories-grid');
+Object.keys(data).forEach(cat=>{
+const card=document.createElement('div');
+card.className='category-card';
+card.innerHTML=`<span class="icon">${data[cat].icon}</span><div class="label">${cat}</div>`;
+card.onclick=()=>navigateTo([cat]);
+grid.appendChild(card);
+});
+}
+function renderServices(cat){
+const view=document.getElementById('servicesView');
+view.innerHTML='';
+const svcs=data[cat].services;
+svcs.forEach(svc=>{
+const card=document.createElement('div');
+card.className='service-card';
+card.innerHTML=`<span class="svc-icon">${svc.icon}</span><div class="svc-info"><h4>${svc.name}</h4><p>${svc.desc}</p></div>`;
+card.onclick=()=>navigateTo([cat,svc.name]);
+view.appendChild(card);
+});
+}
+function renderSteps(cat,svcName){
+const view=document.getElementById('stepsView');
+const svc=data[cat].services.find(s=>s.name===svcName);
+view.innerHTML=`<div class="steps-view"><h3>${svc.icon} ${svc.name}</h3><p style="color:#888;font-size:.9em;margin-bottom:16px">${svc.desc}</p></div>`;
+const stepsContainer=view.querySelector('.steps-view');
+let currentStep=0;
+function renderStepView(){
+const existing=stepsContainer.querySelector('.step-progress');
+if(existing)existing.remove();
+const div=document.createElement('div');
+div.className='step-progress';
+div.style.marginTop='20px';
+svc.steps.forEach((step,i)=>{
+const s=document.createElement('div');
+s.className='step'+(i<currentStep?' completed':'')+(i===currentStep?' active':'');
+s.innerHTML=`<div class="step-number">${i<currentStep?'✓':i+1}</div><div class="step-content"><h4>${step}</h4></div>`;
+div.appendChild(s);
+});
+if(currentStep>=svc.steps.length){
+div.innerHTML+=`<div class="result-box show" style="display:block;margin-top:16px"><div class="result-icon">✅</div><br>Η διαδικασία ολοκληρώθηκε με επιτυχία!<br><span style="font-size:.85em;font-weight:400;color:#666">Στην πραγματική υπηρεσία, θα λάβεις επιβεβαίωση και το έγγραφό σου.</span></div>`;
+div.innerHTML+=`<button class="simulate-btn" onclick="navigateTo([])" style="margin-top:12px">🏠 Επιστροφή στην Αρχική</button>`;
+}else{
+div.innerHTML+=`<button class="simulate-btn" onclick="advanceStep()">Επόμενο Βήμα ➡️</button>`;
+}
+stepsContainer.appendChild(div);
+}
+window.advanceStep=()=>{currentStep++;renderStepView();};
+renderStepView();
+}
+renderCategories();
+renderBreadcrumb();
+</script>
+</body>
+</html>

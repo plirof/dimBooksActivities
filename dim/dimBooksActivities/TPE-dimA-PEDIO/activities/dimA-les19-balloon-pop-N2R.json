@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Το Ποντίκι",
+  "subtitle": "Μόνο μέρη του ποντικιού!",
+  "instruction": "Σπάσε μόνο ΜΕΡΗ ΤΟΥ ΠΟΝΤΙΚΙΟΥ ΥΠΟΛΟΓΙΣΤΗ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Αριστερό πλήκτρο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τυμπάνο", "correct": false, "color": "#f44336" },
+    { "text": "Ροδέλα κύλισης", "correct": true, "color": "#2196F3" },
+    { "text": "Καρέκλα", "correct": false, "color": "#FF9800" },
+    { "text": "Δεξί πλήκτρο", "correct": true, "color": "#f44336" },
+    { "text": "Μολύβι", "correct": false, "color": "#E91E63" },
+    { "text": "Καλώδιο", "correct": true, "color": "#FFC107" },
+    { "text": "Ψυγείο", "correct": false, "color": "#00BCD4" },
+    { "text": "Μαουσπάτ", "correct": true, "color": "#9C27B0" },
+    { "text": "Κουβάς", "correct": false, "color": "#795548" },
+    { "text": "Δείκτης", "correct": true, "color": "#3F51B5" },
+    { "text": "Κουρτίνα", "correct": false, "color": "#607D8B" }
+  ]
+}

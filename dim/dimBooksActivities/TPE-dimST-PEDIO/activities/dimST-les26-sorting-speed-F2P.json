@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τηλεκπαίδευση",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "share", "name": "Διαμοιρασμός", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "whiteboard", "name": "Ασπροπίνακας", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κουμπί share", "category": "share"},
+    {"text": "Whiteboard", "category": "whiteboard"},
+    {"text": "Screen", "category": "share"},
+    {"text": "Σχεδίαση σε πίνακα", "category": "whiteboard"},
+    {"text": "Stop sharing", "category": "share"},
+    {"text": "Προσθήκη κειμένου", "category": "whiteboard"},
+    {"text": "Application", "category": "share"},
+    {"text": "Start a new whiteboard", "category": "whiteboard"},
+    {"text": "Presenter", "category": "share"},
+    {"text": "Εργαλειοθήκη", "category": "whiteboard"}
+  ],
+  "duration": 30
+}

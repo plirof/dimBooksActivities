@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Έννοιες ή Συνδέσεις;",
+  "subtitle": "Πιάσε μόνο τις λέξεις που μπαίνουν σε σχήματα (έννοιες)",
+  "instructions": "Πιάσε τα ουσιαστικά. Απόφυγε τα ρήματα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Ζώα", "correct": true, "color": "#4CAF50" },
+    { "text": "Χωρίζονται", "correct": false, "color": "#f44336" },
+    { "text": "Φάρμα", "correct": true, "color": "#4CAF50" },
+    { "text": "Είναι", "correct": false, "color": "#f44336" },
+    { "text": "Κατοικίδια", "correct": true, "color": "#4CAF50" },
+    { "text": "Ανήκουν", "correct": false, "color": "#f44336" },
+    { "text": "Δάσος", "correct": true, "color": "#4CAF50" },
+    { "text": "Έχουν", "correct": false, "color": "#f44336" },
+    { "text": "Γάτα", "correct": true, "color": "#4CAF50" },
+    { "text": "Περιέχουν", "correct": false, "color": "#f44336" }
+  ]
+}

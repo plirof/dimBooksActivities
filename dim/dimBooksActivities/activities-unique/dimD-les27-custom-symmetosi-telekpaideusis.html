@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συμμετοχή σε Τηλεδιάσκεψη</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 600px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.checklist {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+}
+.checklist-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.1rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.checklist-item {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px;
+background: white;
+border-radius: 10px;
+margin-bottom: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid #ddd;
+}
+.checklist-item:hover {
+transform: translateX(5px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.checklist-item.checked {
+border-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.checkbox {
+width: 24px;
+height: 24px;
+border: 2px solid #ddd;
+border-radius: 5px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;
+}
+.checklist-item.checked .checkbox {
+background: #27ae60;
+border-color: #27ae60;
+color: white;
+}
+.item-text {
+flex: 1;
+color: #333;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.success {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .checklist-title > * + * { margin-left: 10px; }
+  .checklist-item > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎓 Συμμετοχή σε Τηλεδιάσκεψη</h1>
+<p class="subtitle">Ελέγξτε αν είστε έτοιμοι για τηλεκπαίδευση</p>
+
+<div class="container">
+<div class="checklist">
+<div class="checklist-title">📋 Προετοιμασία Τηλεδιάσκεψης</div>
+
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checkbox">✓</div>
+<div class="item-text">Έχω ελέγξει το μικρόφωνό και την κάμερα</div>
+</div>
+
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checkbox">✓</div>
+<div class="item-text">Έχω συνδεθεί στη διεύθυνση της τηλεδιάσκεψης</div>
+</div>
+
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checkbox">✓</div>
+<div class="item-text">Είμαι σε ήσυχο περιβάλλον για συμμετοχή</div>
+</div>
+
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checkbox">✓</div>
+<div class="item-text">Γνωρίζω πώς να σήκω το χέρι μου για να μιλήσω</div>
+</div>
+
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checkbox">✓</div>
+<div class="item-text">Γνωρίζω πώς να ανοίγω και να κλείνω το μικρόφωνό</div>
+</div>
+</div>
+
+<button class="btn" onclick="checkReadiness()">✓ Ελέγξτε Ετοιμότητα</button>
+
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<div class="mascot">💻</div>
+
+<script>
+function toggleCheck(item) {
+item.classList.toggle('checked');
+}
+
+function checkReadiness() {
+const items = document.querySelectorAll('.checklist-item');
+const checked = document.querySelectorAll('.checklist-item.checked');
+
+const resultBox = document.getElementById('resultBox');
+
+if (checked.length === items.length) {
+resultBox.className = 'result-box show success';
+resultBox.innerHTML = '🎉 Εξαιρετικό! Είστε πλήρως προετοιμασμένοι για τηλεκπαίδευση!';
+} else if (checked.length >= 3) {
+resultBox.className = 'result-box show';
+resultBox.style.background = '#fff3cd';
+resultBox.style.color = '#856404';
+resultBox.style.border = '2px solid #ffc107';
+resultBox.innerHTML = '📝 Είστε σχεδόν έτοιμοι! Ελέγξτε τα υπόλοιπα στοιχεία.';
+} else {
+resultBox.className = 'result-box show';
+resultBox.style.background = '#f8d7da';
+resultBox.style.color = '#721c24';
+resultBox.style.border = '2px solid #dc3545';
+resultBox.innerHTML = '❌ Χρειάζεστε περισσότερη προετοιμασία!';
+}
+}
+</script>
+</body>
+</html>

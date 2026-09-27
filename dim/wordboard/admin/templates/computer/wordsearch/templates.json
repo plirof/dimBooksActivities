@@ -1,0 +1,58 @@
+{
+  "templates": [
+    {
+      "id": "computer_wordsearch_parts_001",
+      "name": "Μέρη του υπολογιστή",
+      "description": "Βρες τα μέρη του υπολογιστή",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "words": ["ΟΘΟΝΗ", "ΠΛΗΚΤΡΟΛΟΓΙΟ", "ΠΟΝΤΙΚΙ", "ΣΚΛΗΡΟΣ ΔΙΣΚΟΣ", "ΕΚΤΥΠΩΤΗΣ", "ΗΧΕΙΑ", "ΜΙΚΡΟΦΩΝΟ", "ΚΑΜΕΡΑ"]
+    },
+    {
+      "id": "computer_wordsearch_programs_001",
+      "name": "Προγράμματα",
+      "description": "Βρες τα ονόματα των προγραμμάτων",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "words": ["WORD", "EXCEL", "PAINT", "CALCULATOR", "BROWSER", "NOTEPAD", "MEDIA PLAYER", "EMAIL"]
+    },
+    {
+      "id": "computer_wordsearch_keyboard_001",
+      "name": "Πλήκτρα",
+      "description": "Βρες τα ονόματα των πλήκτρων",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "words": ["ENTER", "ESCAPE", "SPACE", "SHIFT", "CONTROL", "DELETE", "BACKSPACE", "CAPS LOCK"]
+    },
+    {
+      "id": "computer_wordsearch_internet_001",
+      "name": "Ίντερνετ λέξεις",
+      "description": "Βρες τις λέξεις του ίντερνετ",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "words": ["BROWSER", "WEBSITE", "EMAIL", "PASSWORD", "USERNAME", "SEARCH", "LINK", "DOWNLOAD"]
+    },
+    {
+      "id": "computer_wordsearch_devices_001",
+      "name": "Συσκευές",
+      "description": "Βρες τις υπολογιστικές συσκευές",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "devices", "greek", "elementary"],
+      "words": ["TABLET", "LAPTOP", "SMARTPHONE", "USB", "WEBCAM", "ROUTER", "SCANNER", "PRINTER"]
+    },
+    {
+      "id": "computer_wordsearch_safety_001",
+      "name": "Ασφάλεια",
+      "description": "Βρες τις λέξεις ασφαλείας",
+      "category": "computer_wordsearch",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "greek", "elementary"],
+      "words": ["ΚΩΔΙΚΟΣ", "ΑΣΦΑΛΕΙΑ", "ΠΡΟΣΩΠΙΚΑ", "ΓΟΝΕΙΣ", "ΔΙΑΛΕΙΜΜΑ", "ΜΥΣΤΙΚΟ", "ΠΡΟΣΟΧΗ", "ΣΩΣΤΑ"]
+    }
+  ]
+}

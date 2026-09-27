@@ -1,0 +1,58 @@
+{
+  "title": "Εντολές του ρομπότ Έντισον",
+  "subtitle": "Ταξινόμησε τις εντολές σε Κίνηση ή Στοπ",
+  "categories": [
+    {
+      "id": "move",
+      "name": "ΚΙΝΗΣΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "stop",
+      "name": "ΣΤΟΠ/ΕΛΕΓΧΟΣ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Πήγαινε μπροστά",
+      "category": "move"
+    },
+    {
+      "id": "item2",
+      "text": "Στρίψε αριστερά",
+      "category": "move"
+    },
+    {
+      "id": "item3",
+      "text": "Σταμάτα",
+      "category": "stop"
+    },
+    {
+      "id": "item4",
+      "text": "Πήγαινε πίσω",
+      "category": "move"
+    },
+    {
+      "id": "item5",
+      "text": "Στρίψε δεξιά",
+      "category": "move"
+    },
+    {
+      "id": "item6",
+      "text": "Φόρτωσε πρόγραμμα",
+      "category": "stop"
+    },
+    {
+      "id": "item7",
+      "text": "Τετράγωνο κουμπί (σταμάτα)",
+      "category": "stop"
+    },
+    {
+      "id": "item8",
+      "text": "Τρίγωνο κουμπί (εκτέλεσε)",
+      "category": "stop"
+    }
+  ]
+}

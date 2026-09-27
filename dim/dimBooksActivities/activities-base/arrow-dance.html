@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χορός με Βελάκια</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#333;margin-bottom:5px;font-size:1.8em}
+h2{text-align:center;color:#666;margin-bottom:15px;font-size:1.1em;font-weight:400}
+.instructions{text-align:center;color:#888;margin-bottom:20px;font-size:0.95em;line-height:1.5}
+.game-area{position:relative;width:100%;height:400px;background:#1a1a2e;border-radius:12px;overflow:hidden;margin:0 auto 15px}
+.lane{position:absolute;top:0;bottom:0;width:25%}
+.lane:nth-child(1){left:0;border-right:2px solid rgba(255,255,255,0.1)}
+.lane:nth-child(2){left:25%;border-right:2px solid rgba(255,255,255,0.1)}
+.lane:nth-child(3){left:50%;border-right:2px solid rgba(255,255,255,0.1)}
+.lane:nth-child(4){left:75%}
+.target-zone{position:absolute;top:50px;left:0;right:0;height:60px;background:rgba(255,255,255,0.15);border-top:3px solid rgba(255,255,255,0.5);border-bottom:3px solid rgba(255,255,255,0.5)}
+.target-arrow{position:absolute;top:55px;font-size:2.5em;opacity:0.3;z-index:1;text-align:center;width:25%}
+.target-arrow:nth-child(6){left:0}
+.target-arrow:nth-child(7){left:25%}
+.target-arrow:nth-child(8){left:50%}
+.target-arrow:nth-child(9){left:75%}
+.arrow{position:absolute;font-size:2.5em;z-index:2;text-align:center;width:25%;transition:none;pointer-events:none;text-shadow:0 0 10px rgba(255,255,255,0.5)}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px}
+.score{font-size:1.2em;font-weight:bold;color:#333}
+.round{font-size:1em;color:#666}
+.feedback{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2em;font-weight:bold;z-index:10;pointer-events:none;opacity:0;transition:opacity 0.2s}
+.feedback.show{opacity:1}
+.feedback.perfect{color:#FFD700}
+.feedback.good{color:#4CAF50}
+.feedback.miss{color:#f44336}
+.btn{display:block;margin:10px auto;padding:12px 40px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:bold;transition:transform 0.1s}
+.btn:hover{transform:scale(1.05)}
+.end-screen{text-align:center}
+.end-screen h1{font-size:2em;margin-bottom:10px}
+.final-score{font-size:3em;color:#764ba2;margin:15px 0}
+.breakdown{margin:15px auto;max-width:300px;text-align:left}
+.breakdown div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #eee;font-size:1em}
+.breakdown .label{color:#666}
+.breakdown .value{font-weight:bold;color:#333}
+.start-screen{text-align:center}
+.end-screen{display:none}
+.game-screen{display:none}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="start-screen" id="startScreen">
+<h1 id="gameTitle"></h1>
+<h2 id="gameSubtitle"></h2>
+<p class="instructions" id="gameInstructions"></p>
+<button class="btn" id="startBtn">Έναρξη!</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="hud">
+<span class="score">Σκορ: <span id="scoreVal">0</span></span>
+<span class="round">Γύρος: <span id="roundVal">0</span>/<span id="totalRounds">0</span></span>
+</div>
+<div class="game-area" id="gameArea">
+<div class="lane"></div>
+<div class="lane"></div>
+<div class="lane"></div>
+<div class="lane"></div>
+<div class="target-zone"></div>
+<div class="target-arrow" id="ta0">↑</div>
+<div class="target-arrow" id="ta1">↓</div>
+<div class="target-arrow" id="ta2">←</div>
+<div class="target-arrow" id="ta3">→</div>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<div class="end-screen" id="endScreen">
+<h1>Τέλος Παιχνιδιού!</h1>
+<div class="final-score" id="finalScore"></div>
+<div class="breakdown" id="breakdown"></div>
+<button class="btn" id="restartBtn">Ξαναπάιξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);const dataFile=params.get('data');
+let G=null,score=0,round=0,perfects=0,goods=0,misses=0,activeArrows=[],gameRunning=false,spawnTimer=null,animFrame=null;
+const arrowKeys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+const arrowMap={'ArrowUp':'↑','ArrowDown':'↓','ArrowLeft':'←','ArrowRight':'→'};
+const laneIndex={'↑':0,'↓':1,'←':2,'→':3};
+function loadJSON(file){
+fetch(file).then(r=>r.json()).then(data=>{
+G=data;
+document.getElementById('gameTitle').textContent=G.title;
+document.getElementById('gameSubtitle').textContent=G.subtitle;
+document.getElementById('gameInstructions').textContent=G.instructions;
+document.getElementById('totalRounds').textContent=G.rounds;
+const arrows=G.arrows||['↑','↓','←','→'];
+document.getElementById('ta0').textContent=arrows[0]||'↑';
+document.getElementById('ta1').textContent=arrows[1]||'↓';
+document.getElementById('ta2').textContent=arrows[2]||'←';
+document.getElementById('ta3').textContent=arrows[3]||'→';
+}).catch(()=>{document.getElementById('gameTitle').textContent='Χορός με Βελάκια!';document.getElementById('gameSubtitle').textContent='Πάτα τα βελάκια!';document.getElementById('gameInstructions').textContent='Σφάλμα φόρτωσης δεδομένων.'})
+}
+if(dataFile)loadJSON(dataFile);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{
+document.getElementById('endScreen').style.display='none';
+startGame();
+});
+function startGame(){
+score=0;round=0;perfects=0;goods=0;misses=0;activeArrows=[];gameRunning=true;
+document.getElementById('startScreen').style.display='none';
+document.getElementById('gameScreen').style.display='block';
+document.getElementById('endScreen').style.display='none';
+document.getElementById('scoreVal').textContent='0';
+document.getElementById('roundVal').textContent='0';
+activeArrows.forEach(a=>a.el&&a.el.remove());
+activeArrows=[];
+var existingDpad=document.getElementById('arrowDpad');
+if(existingDpad)existingDpad.remove();
+if(typeof TouchControls!=='undefined'){
+var dpadWrap=document.createElement('div');
+dpadWrap.id='arrowDpad';
+document.getElementById('gameScreen').appendChild(dpadWrap);
+TouchControls.create({
+container:dpadWrap,
+directions:['up','down','left','right'],
+theme:{bg:'#ede7f6',border:'#b39ddb',active:'#d1c4e9',text:'#512da8'},
+onPress:function(dName){
+var keyMap={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};
+if(keyMap[dName])onKeyDown({key:keyMap[dName],preventDefault:function(){}});
+}
+});
+}
+scheduleNext();
+document.addEventListener('keydown',onKeyDown);
+animFrame=requestAnimationFrame(gameLoop);
+}
+function scheduleNext(){
+if(!gameRunning)return;
+const delay=G?G.speed:2000;
+const arrows=G?G.arrows:['↑','↓','←','→'];
+const colors=G?G.arrowColors:{'↑':'#f44336','↓':'#2196F3','←':'#4CAF50','→':'#FFC107'};
+spawnTimer=setTimeout(()=>{
+if(!gameRunning)return;
+if(round>=(G?G.rounds:15)){endGame();return}
+const arr=arrows[Math.floor(Math.random()*arrows.length)];
+spawnArrow(arr,colors[arr]||'#fff');
+round++;
+document.getElementById('roundVal').textContent=round;
+scheduleNext();
+},delay);
+}
+function spawnArrow(arr,color){
+const area=document.getElementById('gameArea');
+const areaH=area.offsetHeight;
+const el=document.createElement('div');
+el.className='arrow';
+el.textContent=arr;
+el.style.color=color;
+el.style.left=(laneIndex[arr]*25)+'%';
+el.style.top=areaH+'px';
+area.appendChild(el);
+activeArrows.push({el,arr,y:areaH,hit:false});
+}
+const TARGET_TOP=50;
+const TARGET_BOT=110;
+function gameLoop(){
+if(!gameRunning)return;
+const area=document.getElementById('gameArea');
+const areaH=area.offsetHeight;
+const speed=(areaH-120)/((G?G.speed:2000)/16.67);
+for(let i=activeArrows.length-1;i>=0;i--){
+const a=activeArrows[i];
+if(a.hit)continue;
+a.y-=speed;
+a.el.style.top=a.y+'px';
+if(a.y+40<TARGET_TOP&&!a.hit){
+a.hit=true;
+misses++;
+showFeedback('Άστοχη!','miss');
+a.el.style.opacity='0.3';
+}
+if(a.y<-60){
+a.el.remove();
+activeArrows.splice(i,1);
+}
+}
+animFrame=requestAnimationFrame(gameLoop);
+}
+function onKeyDown(e){
+if(!gameRunning)return;
+if(arrowKeys.indexOf(e.key)===-1)return;
+e.preventDefault();
+const arr=arrowMap[e.key];
+let best=null,bestDist=Infinity;
+for(const a of activeArrows){
+if(a.hit||a.arr!==arr)continue;
+const mid=a.y+20;
+const targetMid=(TARGET_TOP+TARGET_BOT)/2;
+const dist=Math.abs(mid-targetMid);
+if(dist<bestDist){bestDist=dist;best=a}
+}
+if(best){
+best.hit=true;
+const mid=best.y+20;
+const targetMid=(TARGET_TOP+TARGET_BOT)/2;
+const dist=Math.abs(mid-targetMid);
+if(dist<=40){
+score+=100;perfects++;showFeedback('Τέλειο!','perfect');
+best.el.style.transform='scale(1.5)';best.el.style.opacity='0';
+}else if(dist<=80){
+score+=50;goods++;showFeedback('Καλό!','good');
+best.el.style.transform='scale(1.3)';best.el.style.opacity='0';
+}else{
+misses++;showFeedback('Άστοχη!','miss');
+best.el.style.opacity='0.3';
+}
+document.getElementById('scoreVal').textContent=score;
+setTimeout(()=>{if(best.el.parentNode)best.el.remove()},300);
+}
+}
+function showFeedback(text,type){
+const fb=document.getElementById('feedback');
+fb.textContent=text;
+fb.className='feedback show '+type;
+setTimeout(()=>{fb.className='feedback'},500);
+}
+function endGame(){
+gameRunning=false;
+clearTimeout(spawnTimer);
+cancelAnimationFrame(animFrame);
+document.removeEventListener('keydown',onKeyDown);
+activeArrows.forEach(a=>a.el&&a.el.remove());
+activeArrows=[];
+document.getElementById('gameScreen').style.display='none';
+document.getElementById('endScreen').style.display='block';
+document.getElementById('finalScore').textContent=score+' πόντοι';
+document.getElementById('breakdown').innerHTML=
+'<div><span class="label">Τέλεια (×100)</span><span class="value">'+perfects+'</span></div>'+
+'<div><span class="label">Καλά (×50)</span><span class="value">'+goods+'</span></div>'+
+'<div><span class="label">Αστοχίες</span><span class="value">'+misses+'</span></div>';
+}
+</script>
+</body>
+</html>

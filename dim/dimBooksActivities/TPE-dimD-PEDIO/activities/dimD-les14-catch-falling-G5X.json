@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Λόγοι για Αντίγραφα Ασφαλείας",
+  "subtitle": "Πιάσε τους σωστούς λόγους!",
+  "instructions": "Πιάσε τις περιπτώσεις που χρειάζονται αντίγραφα ασφαλείας. Απόφυγε τα λάθος!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Χαλάσματος δίσκος", "correct": true, "color": "#4caf50" },
+    { "text": "Ιός στο PC", "correct": true, "color": "#2196f3" },
+    { "text": "Ωραία μέρα", "correct": false, "color": "#f44336" },
+    { "text": "Βλάβη συσκευής", "correct": true, "color": "#ff9800" },
+    { "text": "Απώλεια κινητού", "correct": true, "color": "#00bcd4" },
+    { "text": "Γαλάζιος ουρανός", "correct": false, "color": "#9c27b0" },
+    { "text": "Κακόβουλο λογισμικό", "correct": true, "color": "#8bc34a" },
+    { "text": "Βροχή", "correct": false, "color": "#ff5722" },
+    { "text": "Κλοπή δεδομένων", "correct": true, "color": "#607d8b" },
+    { "text": "Παιχνίδι", "correct": false, "color": "#e91e63" }
+  ]
+}

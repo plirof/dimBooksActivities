@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Εντολή ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Εντολή ή Όχι;",
+  "categories": [
+    {"id": "entoli", "name": "Εντολή", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μπροστά", "category": "entoli"},
+    {"text": "Λουλούδι", "category": "oxi"},
+    {"text": "Πίσω", "category": "entoli"},
+    {"text": "Κορίτσι", "category": "oxi"},
+    {"text": "Δεξιά", "category": "entoli"},
+    {"text": "Κάστρο", "category": "oxi"},
+    {"text": "Αριστερά", "category": "entoli"},
+    {"text": "Σκύλος", "category": "oxi"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Υλικό Υπολογιστή",
+  "subtitle": "Πιάσε μόνο τα εξαρτήματα",
+  "instructions": "Πιάσε τα εξαρτήματα υπολογιστή, όχι τα άλλα αντικείμενα",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Επεξεργαστής", "correct": true, "color": "#4CAF50" },
+    { "text": "Μνήμη", "correct": true, "color": "#2196F3" },
+    { "text": "Δίσκος", "correct": true, "color": "#FF9800" },
+    { "text": "Οθόνη", "correct": true, "color": "#9C27B0" },
+    { "text": "Πληκτρολόγιο", "correct": true, "color": "#00BCD4" },
+    { "text": "Κάμερα", "correct": true, "color": "#8BC34A" },
+    { "text": "Ποντίκι", "correct": true, "color": "#FF5722" },
+    { "text": "Ηχεία", "correct": true, "color": "#3F51B5" },
+    { "text": "Ψυγείο", "correct": false, "color": "#f44336" },
+    { "text": "Καρέκλα", "correct": false, "color": "#795548" },
+    { "text": "Τραπέζι", "correct": false, "color": "#607D8B" },
+    { "text": "Κλιματιστικό", "correct": false, "color": "#E91E63" }
+  ]
+}

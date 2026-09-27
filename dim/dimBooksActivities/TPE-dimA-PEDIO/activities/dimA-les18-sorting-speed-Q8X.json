@@ -1,0 +1,24 @@
+{
+  "title": "Ταξινόμηση: Πού ανήκει;",
+  "subtitle": "Μέσα σε σχήμα ή πάνω σε γραμμή;",
+  "instructions": "Πάτα: ΣΧΗΜΑ ή ΓΡΑΜΜΗ",
+  "categories": [
+    {"id": "schima", "name": "Μέσα σε Σχήμα", "color": "#FF9800", "key": "ArrowLeft"},
+    {"id": "grammi", "name": "Πάνω σε Γραμμή", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ζώα", "category": "schima"},
+    {"text": "Χωρίζονται σε", "category": "grammi"},
+    {"text": "Κατοικίδια", "category": "schima"},
+    {"text": "Όπως", "category": "grammi"},
+    {"text": "Η Γάτα", "category": "schima"},
+    {"text": "Είναι", "category": "grammi"},
+    {"text": "Ζώα φάρμας", "category": "schima"},
+    {"text": "Πηγαίνει", "category": "grammi"},
+    {"text": "Η Αγελάδα", "category": "schima"},
+    {"text": "Όπως", "category": "grammi"},
+    {"text": "Ο Σκύλος", "category": "schima"},
+    {"text": "Χωρίζονται σε", "category": "grammi"}
+  ],
+  "duration": 30
+}

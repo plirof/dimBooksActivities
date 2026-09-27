@@ -1,0 +1,49 @@
+{
+  "title": "Βρες τα Λάθη: Ο Δείκτης",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "δείκτης", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πάντα", "error": true, "correct": "δεν είναι πάντα", "feedback": "Ο δείκτης ΔΕΝ είναι πάντα βέλος, μπορεί να αλλάξει σχήμα!"},
+        {"text": "ένα", "error": false},
+        {"text": "βέλος.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όταν", "error": false},
+        {"text": "κουνάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": false},
+        {"text": "δεξιά,", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "δείκτης", "error": false},
+        {"text": "πηγαίνει", "error": true, "correct": "κινείται", "feedback": "Ο δείκτης ΚΙΝΕΙΤΑΙ προς τα δεξιά!"},
+        {"text": "αριστερά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ταμπλέτα", "error": false},
+        {"text": "έχει", "error": true, "correct": "δεν έχει", "feedback": "Η ταμπλέτα ΔΕΝ έχει ποντίκι!"},
+        {"text": "ποντίκι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "δείκτης", "error": false},
+        {"text": "ονομάστηκε", "error": false},
+        {"text": "έτσι", "error": false},
+        {"text": "γιατί", "error": false},
+        {"text": "τρώμε", "error": true, "correct": "δείχνουμε", "feedback": "Ονομάστηκε έτσι γιατί ΔΕΙΧΝΟΥΜΕ όπως με το δάχτυλο!"},
+        {"text": "με", "error": false},
+        {"text": "αυτόν.", "error": false}
+      ]
+    }
+  ]
+}

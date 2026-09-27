@@ -1,0 +1,11 @@
+{
+  "title": "QR Scanner",
+  "subtitle": "Σκάναρε QR κωδικούς και βρες τι κρύβουν!",
+  "cardsPerRound": 4,
+  "qrItems": [
+    {"type":"url","icon":"🌐","label":"URL","content":"https://ebooks.edu.gr","hint":"Διεύθυνση ιστοσελίδας...","options":["URL (Ιστοσελίδα)","Email","Τηλέφωνο"],"correctIndex":0},
+    {"type":"phone","icon":"📞","label":"Τηλέφωνο","content":"+30 2310 999888","hint":"Αριθμός...","options":["Κείμενο","Τηλέφωνο","Wi-Fi"],"correctIndex":1},
+    {"type":"text","icon":"📝","label":"Κείμενο","content":"Ημέρα Σχολείου: 21 Μαρτίου","hint":"Μήνυμα...","options":["URL","Κείμενο","Τοποθεσία"],"correctIndex":1},
+    {"type":"wifi","icon":"📶","label":"Wi-Fi","content":"Δίκτυο: ClassWiFi | Pass: 12345","hint":"Σύνδεση δικτύου...","options":["Wi-Fi","Email","URL"],"correctIndex":0}
+  ]
+}

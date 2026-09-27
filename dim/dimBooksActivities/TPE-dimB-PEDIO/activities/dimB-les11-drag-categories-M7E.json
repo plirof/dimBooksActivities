@@ -1,0 +1,53 @@
+{
+  "title": "Δεδομένα γύρω μας",
+  "subtitle": "Διάκρινε τι είναι δεδομένα και τι όχι",
+  "categories": [
+    {
+      "id": "data",
+      "name": "ΔΕΔΟΜΕΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "nodata",
+      "name": "ΟΧΙ ΔΕΔΟΜΕΝΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📷 Φωτογραφίες",
+      "category": "data"
+    },
+    {
+      "id": "item2",
+      "text": "🎥 Βίντεο",
+      "category": "data"
+    },
+    {
+      "id": "item3",
+      "text": "🎵 Μουσική",
+      "category": "data"
+    },
+    {
+      "id": "item4",
+      "text": "📝 Κείμενα",
+      "category": "data"
+    },
+    {
+      "id": "item5",
+      "text": "🪑 Καρέκλα",
+      "category": "nodata"
+    },
+    {
+      "id": "item6",
+      "text": "🌳 Δέντρο",
+      "category": "nodata"
+    },
+    {
+      "id": "item7",
+      "text": "📚 Βιβλίο σε χαρτί",
+      "category": "nodata"
+    }
+  ]
+}

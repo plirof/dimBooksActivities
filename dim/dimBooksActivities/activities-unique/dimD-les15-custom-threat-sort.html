@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εντοπισμός Απειλών - Προστασία από Ιούς</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fee2e2,#fecaca);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:920px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#991b1b,#dc2626);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fef2f2;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#991b1b;text-align:center;line-height:1.5}
+.columns{display:flex;gap:14px;min-height:300px}
+.col{flex:1;background:#fafafa;border-radius:16px;border:2px dashed #d4d4d4;padding:12px;display:flex;flex-direction:column}
+.col-header{text-align:center;padding:10px;border-radius:12px;font-weight:700;font-size:.95em;margin-bottom:10px;color:#fff}
+.col-threat .col-header{background:linear-gradient(135deg,#dc2626,#f87171)}
+.col-safe .col-header{background:linear-gradient(135deg,#16a34a,#4ade80)}
+.drop-zone{flex:1;min-height:200px;border-radius:12px;padding:6px;display:flex;flex-direction:column;gap:8px}
+.drop-zone.drag-over{background:#fef2f2}
+.pool-area{background:#fafafa;border-radius:16px;border:2px solid #e5e5e5;padding:15px;margin-top:14px}
+.pool-area h3{text-align:center;color:#991b1b;margin-bottom:10px;font-size:1em}
+.item-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px}
+.item-card{padding:10px 16px;background:#fff;border:2px solid #e5e5e5;border-radius:14px;cursor:grab;font-size:.9em;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);user-select:none;touch-action:none}
+.item-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.item-card:active{cursor:grabbing}
+.item-card.dragging{opacity:.35}
+.item-card.placed{display:none}
+.placed-item{padding:8px 12px;border-radius:10px;font-size:.88em;margin-bottom:2px;line-height:1.4}
+.placed-item.in-threat{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.placed-item.in-safe{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#991b1b,#dc2626);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(153,27,27,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+@media(max-width:650px){.columns{flex-direction:column}.col{min-height:150px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .columns > * + * { margin-left: 14px; }
+  .drop-zone > * + * { margin-top: 8px; }
+  .item-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🛡️ Εντοπισμός Απειλών: Σημάδια Ιού vs Φυσιολογική Λειτουργία</h1>
+<p>Σύρε κάθε περιγραφή στη σωστή στήλη: «Σημάδι Ιού» ή «Φυσιολογικό»</p>
+</div>
+<div class="area">
+<div class="info-box">💡 <b>Προσοχή!</b> Ο υπολογιστής σου μπορεί να έχει ιό αν δείχνει ύποπτες συμπεριφορές. Μπορείς να ξεχωρίσεις τα σημάδια προσβολής από τη φυσιολογική λειτουργία;</div>
+<div class="score-bar" id="scoreBar">Τοποθετημένα: 0 / 10</div>
+<div class="columns">
+<div class="col col-threat">
+<div class="col-header">🦠 Σημάδι Ιού</div>
+<div class="drop-zone" id="dropThreat" data-category="threat"></div>
+</div>
+<div class="col col-safe">
+<div class="col-header">✅ Φυσιολογικό</div>
+<div class="drop-zone" id="dropSafe" data-category="safe"></div>
+</div>
+</div>
+<div class="pool-area">
+<h3>📋 Περιγραφές — σύρε την κάθε μία στη σωστή στήλη</h3>
+<div class="item-pool" id="itemPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var items=[
+{id:0,text:'Ο υπολογιστής γίνεται πολύ αργός',category:'threat',emoji:'🐌'},
+{id:1,text:'Εμφανίζονται παράθυρα pop-up συνέχεια',category:'threat',emoji:'💥'},
+{id:2,text:'Νέες μπάρες εργαλείων στον browser',category:'threat',emoji:'📊'},
+{id:3,text:'Στέλνονται email χωρίς να τα στείλεις εσύ',category:'threat',emoji:'📧'},
+{id:4,text:'Αρχεία διαγράφονται μόνα τους',category:'threat',emoji:'🗑️'},
+{id:5,text:'Ανοίγεις πρόγραμμα από το μενού Εκκίνησης',category:'safe',emoji:'📂'},
+{id:6,text:'Αποθηκεύεις μια φωτογραφία στη συλλογή',category:'safe',emoji:'💾'},
+{id:7,text:'Αλλάζεις ταπετσαρία επιφάνειας εργασίας',category:'safe',emoji:'🎨'},
+{id:8,text:'Παίζεις ένα παιχνίδι που εγκατέστησες εσύ',category:'safe',emoji:'🎮'},
+{id:9,text:'Κλείνεις τον υπολογιστή με την εντολή Τερματισμός',category:'safe',emoji:'⏻'}
+];
+
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initPool(){
+var pool=document.getElementById('itemPool');
+pool.innerHTML='';
+var order=shuffle(items.slice());
+for(var i=0;i<order.length;i++){
+var it=order[i];
+var card=document.createElement('div');
+card.className='item-card';
+card.setAttribute('draggable','true');
+card.dataset.itemId=it.id;
+card.innerHTML=it.emoji+' '+it.text;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function updateScoreBar(){
+var count=Object.keys(placements).length;
+document.getElementById('scoreBar').textContent='Τοποθετημένα: '+count+' / '+items.length;
+document.getElementById('checkBtn').disabled=count<items.length;
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',el.dataset.itemId);
+}
+
+function dragEnd(e,el){
+el.classList.remove('dragging');
+dragItem=null;
+clearDragOver();
+}
+
+function touchStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){
+var zone=elUnder.classList.contains('drop-zone')?elUnder:elUnder.closest('.drop-zone');
+if(zone){zone.classList.add('drag-over');dragItem.dataset.targetZone=zone.id;}
+else{dragItem.dataset.targetZone='';}
+}else{dragItem.dataset.targetZone='';}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');
+clearDragOver();
+if(el.dataset.targetZone){tryPlace(el,el.dataset.targetZone);}
+el.dataset.targetZone='';
+}
+
+function clearDragOver(){
+var zones=document.querySelectorAll('.drop-zone');
+for(var i=0;i<zones.length;i++)zones[i].classList.remove('drag-over');
+}
+
+document.addEventListener('dragover',function(e){
+if(dragItem){var zone=e.target.classList.contains('drop-zone')?e.target:e.target.closest('.drop-zone');if(zone)e.preventDefault();}
+});
+
+document.addEventListener('drop',function(e){
+e.preventDefault();
+if(!dragItem)return;
+var zone=e.target.classList.contains('drop-zone')?e.target:e.target.closest('.drop-zone');
+if(zone){tryPlace(dragItem,zone.id);}
+});
+
+function tryPlace(card,zoneId){
+var itemId=parseInt(card.dataset.itemId);
+var category=zoneId==='dropThreat'?'threat':'safe';
+placements[itemId]=category;
+card.classList.add('placed');
+var zone=document.getElementById(zoneId);
+var item=items[itemId];
+var div=document.createElement('div');
+div.className='placed-item '+(category==='threat'?'in-threat':'in-safe');
+div.innerHTML=item.emoji+' '+item.text;
+div.dataset.itemId=itemId;
+zone.appendChild(div);
+updateScoreBar();
+}
+
+function checkAnswers(){
+var correct=0;
+var total=items.length;
+for(var i=0;i<items.length;i++){
+var item=items[i];
+if(placements[item.id]===item.category)correct++;
+}
+if(correct===total){
+showFeedback('🎉 Υπέροχα! Αναγνώρισες σωστά όλα τα σημάδια ιού! Είσαι προστατευμένος! 🛡️✅',true);
+}else{
+showFeedback('🔍 '+correct+'/'+total+' σωστά. Κάποια σημάδια μπερδεύτηκαν — δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},4000);
+}
+
+function resetGame(){
+placements={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+var zones=document.querySelectorAll('.drop-zone');
+for(var i=0;i<zones.length;i++)zones[i].innerHTML='';
+initPool();
+updateScoreBar();
+}
+
+initPool();
+updateScoreBar();
+</script>
+</body>
+</html>

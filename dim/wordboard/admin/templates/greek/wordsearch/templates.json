@@ -1,0 +1,58 @@
+{
+  "templates": [
+    {
+      "id": "greek_wordsearch_animals_001",
+      "name": "Ζώα (Animals)",
+      "description": "Βρες τα ονόματα των ζώων",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "elementary"],
+      "words": ["ΣΚΥΛΟΣ", "ΓΑΤΑ", "ΠΟΥΛΙ", "ΨΑΡΙ", "ΚΟΥΝΕΛΙ", "ΑΡΚΟΥΔΑ", "ΛΥΚΟΣ", "ΑΛΟΓΟ"]
+    },
+    {
+      "id": "greek_wordsearch_colors_001",
+      "name": "Χρώματα (Colors)",
+      "description": "Βρες τα ονόματα των χρωμάτων",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "words": ["ΚΟΚΚΙΝΟ", "ΜΠΛΕ", "ΠΡΑΣΙΝΟ", "ΚΙΤΡΙΝΟ", "ΠΟΡΤΟΚΑΛΙ", "ΜΩΒ", "ΡΟΖ", "ΚΑΦΕ"]
+    },
+    {
+      "id": "greek_wordsearch_numbers_001",
+      "name": "Αριθμοί (Numbers)",
+      "description": "Βρες τους αριθμούς στα ελληνικά",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "numbers", "math", "elementary"],
+      "words": ["ΕΝΑ", "ΔΥΟ", "ΤΡΙΑ", "ΤΕΣΣΕΡΑ", "ΠΕΝΤΕ", "ΕΞΙ", "ΕΠΤΑ", "ΟΚΤΩ"]
+    },
+    {
+      "id": "greek_wordsearch_body_001",
+      "name": "Σώμα (Body)",
+      "description": "Βρες τα μέρη του σώματος",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "body", "elementary"],
+      "words": ["ΜΑΤΙ", "ΑΥΤΙ", "ΜΥΤΗ", "ΣΤΟΜΑ", "ΧΕΡΙ", "ΠΟΔΙ", "ΚΕΦΑΛΙ", "ΔΑΧΤΥΛΟ"]
+    },
+    {
+      "id": "greek_wordsearch_fruits_001",
+      "name": "Φρούτα (Fruits)",
+      "description": "Βρες τα ονόματα των φρούτων",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "fruits", "food", "elementary"],
+      "words": ["ΜΗΛΟ", "ΜΠΑΝΑΝΑ", "ΠΟΡΤΟΚΑΛΙ", "ΣΤΑΦΥΛΙ", "ΦΡΑΟΥΛΑ", "ΚΕΡΑΣΙ", "ΡΟΔΑΚΙΝΟ", "ΑΧΛΑΔΙ"]
+    },
+    {
+      "id": "greek_wordsearch_school_001",
+      "name": "Σχολείο (School)",
+      "description": "Βρες τα αντικείμενα του σχολείου",
+      "category": "wordsearch",
+      "difficulty": "easy",
+      "tags": ["greek", "school", "elementary"],
+      "words": ["ΒΙΒΛΙΟ", "ΤΕΤΡΑΔΙΟ", "ΜΟΛΥΒΙ", "ΣΤΥΛΟ", "ΓΟΜΑ", "ΧΑΡΑΚΑΣ", "ΤΣΑΝΤΑ", "ΚΙΜΩΛΙΑ"]
+    }
+  ]
+}

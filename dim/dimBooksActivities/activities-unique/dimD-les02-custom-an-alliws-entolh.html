@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+v260924 - διορθώθηκαν σενάρια με ασαφείς απαντήσεις (π.χ. βροχή: ομπρέλα/αδιάβροχο και τα δύο σωστά) και το αδύνατο σενάριο με λάθος σωστή απάντηση («Φοράω ηλιοτρόπιο» δεν υπήρχε στις επιλογές)
+v260821 - fixed some typos
+
+	-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αν... Αλλιώς — Εντολή Επιλογής</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ecfccb,#bef264);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#3f6212,#65a30d);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f7fee7;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#3f6212;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.round-title{text-align:center;font-weight:700;color:#3f6212;font-size:1.05em;margin-bottom:14px}
+.scenario-card{background:#fafafa;border-radius:16px;border:2px solid #e5e7eb;padding:18px;margin-bottom:14px;position:relative}
+.scenario-text{font-size:.95em;color:#334155;text-align:center;margin-bottom:14px;line-height:1.5}
+.code-block{background:#1e293b;border-radius:12px;padding:14px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.85em;line-height:1.8;position:relative}
+.code-line{display:flex;align-items:center;gap:8px;padding:4px 0}
+.code-keyword{color:#a78bfa;font-weight:700}
+.code-val{color:#34d399}
+.code-op{color:#fbbf24}
+.code-slot{display:inline-block;min-width:120px;padding:4px 12px;border-radius:8px;background:#334155;text-align:center;cursor:pointer;transition:all .2s;border:2px dashed #64748b;font-size:.9em;color:#94a3b8}
+.code-slot:hover{border-color:#65a30d;background:#2d3a1e}
+.code-slot.filled{border-style:solid;border-color:#65a30d;color:#fff;background:#3f6212}
+.option-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.opt-card{padding:10px 18px;background:#f7fee7;border:2px solid #a3e635;border-radius:14px;cursor:pointer;font-size:.88em;transition:all .2s;font-weight:600;color:#3f6212;user-select:none}
+.opt-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(63,98,18,.15)}
+.opt-card.selected{background:#65a30d;color:#fff;border-color:#3f6212}
+.opt-card.used{opacity:.3;pointer-events:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#3f6212,#65a30d);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(63,98,18,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.code-block{font-size:.78em;padding:10px}.code-slot{min-width:80px;font-size:.8em}.opt-card{font-size:.8em;padding:8px 12px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .code-line > * + * { margin-left: 8px; }
+  .option-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔀 Αν... Αλλιώς — Συμπλήρωσε τον Κώδικα</h1>
+<p>Διάλεξε τη σωστή ενέργεια για κάθε περίπτωση!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Η εντολή <b>Αν... Αλλιώς</b> εκτελεί μία ενέργεια αν η συνθήκη ισχύει, και άλλη αν δεν ισχύει. Συμπλήρωσε τα κενά!</div>
+<div class="score-bar">Σενάριο <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Ξαναπροσπάθησε</button>
+</div>
+</div>
+</div>
+<script>
+var scenarios=[
+{
+text:'🚦 Διασχίζω τον δρόμο',
+condition:'Φανάρι πράσινο για πεζούς;',
+ifAction:'Διασχίζω τον δρόμο',
+elseAction:'Περιμένω στο πεζοδρόμιο',
+options:['Διασχίζω τον δρόμο','Περιμένω στο πεζοδρόμιο','Πίνω τον χυμό μου','Κοιτάζω το κινητό'],
+slots:['slot1','slot2'],
+correct:{slot1:'Διασχίζω τον δρόμο',slot2:'Περιμένω στο πεζοδρόμιο'}
+},
+{
+text:'🌦️ Προετοιμάζομαι να βγω',
+condition:'Βρέχει έξω;',
+ifAction:'Παίρνω ομπρέλα',
+elseAction:'Φοράω καπέλο ηλίου',
+options:['Παίρνω ομπρέλα','Φοράω καπέλο ηλίου','Παίρνω το σακίδιό μου','Βουρτσίζω τα δόντια μου'],
+slots:['slot1','slot2'],
+correct:{slot1:'Παίρνω ομπρέλα',slot2:'Φοράω καπέλο ηλίου'}
+},
+{
+text:'📚 Ελέγχω βιβλιοθήκη',
+condition:'Βρίσκω το βιβλίο;',
+ifAction:'Το δανείζομαι',
+elseAction:'Ζητάω να το παραγγείλουν',
+options:['Το δανείζομαι','Το αφήνω στη θέση του','Ζητάω να το παραγγείλουν','Διαβάζω τους τίτλους των βιβλίων'],
+slots:['slot1','slot2'],
+correct:{slot1:'Το δανείζομαι',slot2:'Ζητάω να το παραγγείλουν'}
+},
+{
+text:'🎮 Παίζω βιντεοπαιχνίδι',
+condition:'Έχω τελειώσει τις εργασίες;',
+ifAction:'Παίζω 30 λεπτά',
+elseAction:'Κάνω πρώτα τις εργασίες',
+options:['Παίζω 30 λεπτά','Κάνω πρώτα τις εργασίες','Πλένω τα πιάτα','Κοιμάμαι'],
+slots:['slot1','slot2'],
+correct:{slot1:'Παίζω 30 λεπτά',slot2:'Κάνω πρώτα τις εργασίες'}
+},
+{
+text:'🍞 Φτιάχνω τοστ',
+condition:'Έχω ψωμί;',
+ifAction:'Φτιάχνω τοστ',
+elseAction:'Πάω στο μαγαζί να αγοράσω',
+options:['Φτιάχνω τοστ','Πάω στο μαγαζί να αγοράσω','Ακούω μουσική','Σκουπίζω το τραπέζι'],
+slots:['slot1','slot2'],
+correct:{slot1:'Φτιάχνω τοστ',slot2:'Πάω στο μαγαζί να αγοράσω'}
+},
+{
+text:'📱 Κλήση σε φίλο',
+condition:'Απαντάει στο τηλέφωνο;',
+ifAction:'Μιλάμε',
+elseAction:'Αφήνω μήνυμα',
+options:['Μιλάμε','Αφήνω μήνυμα','Παίζω ένα παιχνίδι στο κινητό','Φορτίζω το κινητό'],
+slots:['slot1','slot2'],
+correct:{slot1:'Μιλάμε',slot2:'Αφήνω μήνυμα'}
+}
+];
+
+var currentRound=0;
+var score=0;
+var filledSlots={};
+var selectedOption=null;
+
+function renderRound(){
+var s=scenarios[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=scenarios.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('checkBtn').disabled=true;
+filledSlots={};
+selectedOption=null;
+var area=document.getElementById('gameArea');
+var html='<div class="round-title">'+s.text+'</div>';
+html+='<div class="scenario-card">';
+html+='<div class="scenario-text">Τι γίνεται σε κάθε περίσταση;</div>';
+html+='<div class="code-block">';
+html+='<div class="code-line"><span class="code-keyword">Αν</span> (<span class="code-val">'+s.condition+'</span>) <span class="code-keyword">Τότε</span></div>';
+html+='<div class="code-line" style="padding-left:20px">→ <span class="code-slot" id="slot1" onclick="clickSlot(\'slot1\')">??? Ενέργεια ???</span></div>';
+html+='<div class="code-line"><span class="code-keyword">Αλλιώς</span></div>';
+html+='<div class="code-line" style="padding-left:20px">→ <span class="code-slot" id="slot2" onclick="clickSlot(\'slot2\')">??? Ενέργεια ???</span></div>';
+html+='</div>';
+html+='</div>';
+html+='<div class="option-pool" id="optionPool">';
+for(var i=0;i<s.options.length;i++){
+html+='<div class="opt-card" data-val="'+s.options[i]+'" onclick="clickOption(this)">'+s.options[i]+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function clickSlot(slotId){
+var slot=document.getElementById(slotId);
+if(selectedOption){
+filledSlots[slotId]=selectedOption.dataset.val;
+slot.textContent=selectedOption.dataset.val;
+slot.classList.add('filled');
+selectedOption.classList.add('used');
+selectedOption=null;
+var allFilled=Object.keys(filledSlots).length>=2;
+document.getElementById('checkBtn').disabled=!allFilled;
+}else{
+if(filledSlots[slotId]){
+delete filledSlots[slotId];
+slot.textContent='??? Ενέργεια ???';
+slot.classList.remove('filled');
+document.getElementById('checkBtn').disabled=true;
+}
+}
+}
+
+function clickOption(el){
+if(el.classList.contains('used'))return;
+document.querySelectorAll('.opt-card').forEach(function(c){c.classList.remove('selected');});
+el.classList.add('selected');
+selectedOption=el;
+}
+
+function checkAnswer(){
+var s=scenarios[currentRound];
+var allCorrect=true;
+for(var key in s.correct){
+if(filledSlots[key]!==s.correct[key])allCorrect=false;
+}
+if(allCorrect){
+score++;
+showFeedback('🎉 Σωστά! Η εντολή Αν-Αλλιώς συμπληρώθηκε σωστά!',true);
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+setTimeout(function(){
+if(currentRound<scenarios.length-1){currentRound++;renderRound();}
+else showFinal();
+},1800);
+}else{
+showFeedback('❌ Κάποια ενέργεια δεν είναι στη σωστή θέση. Δοκίμασε ξανά!',false);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/scenarios.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Κατανοείς πλήρως την εντολή Αν-Αλλιώς!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+scenarios.length+' σωστά!';
+else msg='💪 '+score+'/'+scenarios.length+' σωστά. Δοκίμασε ξανά!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#3f6212">'+msg+'</div>';
+document.getElementById('checkBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

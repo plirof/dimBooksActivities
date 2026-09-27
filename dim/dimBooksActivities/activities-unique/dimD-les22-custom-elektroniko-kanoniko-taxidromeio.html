@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ηλεκτρονικό ή Συμβατικό Ταχυδρομείο</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+width: 100%;
+max-width: 1400px;
+margin-bottom: 30px;
+}
+.category {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 300px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.category-header {
+text-align: center;
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: white;
+font-weight: bold;
+font-size: 1.3rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+.email-header {
+background: linear-gradient(135deg, #3498db, #2980b9);
+}
+.conventional-header {
+background: linear-gradient(135deg, #e67e22, #d35400);
+}
+.category-info {
+background: #f8f9fa;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 15px;
+font-size: 0.95rem;
+line-height: 1.6;
+}
+.category-info strong {
+color: #333;
+}
+.drop-zone {
+min-height: 300px;
+border: 3px dashed #ddd;
+border-radius: 10px;
+padding: 15px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+transition: all 0.3s ease;
+}
+.drop-zone.drag-over {
+border-color: #667eea;
+background: rgba(102, 126, 234, 0.1);
+}
+.items-pool {
+background: rgba(255,255,255,0.2);
+border-radius: 20px;
+padding: 25px;
+width: 100%;
+max-width: 1000px;
+margin-bottom: 20px;
+}
+.pool-title {
+color: white;
+text-align: center;
+margin-bottom: 20px;
+font-size: 1.3rem;
+}
+.pool-items {
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+justify-content: center;
+}
+.item {
+background: white;
+padding: 20px;
+border-radius: 15px;
+cursor: grab;
+user-select: none;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+transition: all 0.3s ease;
+min-width: 160px;
+max-width: 200px;
+text-align: center;
+}
+.item:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.item.dragging {
+opacity: 0.5;
+cursor: grabbing;
+}
+.item-icon {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+.item-text {
+font-size: 0.9rem;
+color: #333;
+font-weight: 500;
+}
+.item.correct {
+border: 3px solid #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.item.wrong {
+border: 3px solid #e74c3c;
+background: rgba(231, 76, 60, 0.1);
+}
+.btn {
+background: white;
+color: #667eea;
+border: none;
+padding: 15px 40px;
+border-radius: 25px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+margin-top: 20px;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+.feedback {
+position: fixed;
+bottom: 80px;
+left: 50%;
+transform: translateX(-50%);
+background: white;
+padding: 20px 40px;
+border-radius: 15px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+font-weight: bold;
+font-size: 1.2rem;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+max-width: 90%;
+text-align: center;
+}
+.feedback.show {
+opacity: 1;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .container > * { margin: 15px; }
+  .category-header > * + * { margin-left: 10px; }
+  .drop-zone > * + * { margin-top: 10px; }
+  .pool-items > * { margin: 7.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📬 Ηλεκτρονικό ή Συμβατικό Ταχυδρομείο;</h1>
+<p class="subtitle">Ταξινόμησε τα χαρακτηριστικά στο κατάλληλο ταχυδρομείο</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/12</div>
+
+<div class="container">
+<div class="category">
+<div class="category-header email-header">📧 Ηλεκτρονικό Ταχυδρομείο</div>
+<div class="category-info">
+<strong>Χαρακτηριστικά:</strong><br>
+• Γρήγορη αποστολή<br>
+• Φθηνή ή δωρεάν<br>
+• Μέσω διαδικτύου<br>
+• Συνημμένα αρχεία
+</div>
+<div class="drop-zone" id="email" data-type="email"></div>
+</div>
+
+<div class="category">
+<div class="category-header conventional-header">📮 Συμβατικό Ταχυδρομείο</div>
+<div class="category-info">
+<strong>Χαρακτηριστικά:</strong><br>
+• Πιο αργή αποστολή<br>
+• Κόστος (ταχυδρομικά τέλη)<br>
+• Φυσική παράδοση<br>
+• Χαρτόφασιγγες
+</div>
+<div class="drop-zone" id="conventional" data-type="conventional"></div>
+</div>
+</div>
+
+<div class="items-pool">
+<div class="pool-title">📦 Χαρακτηριστικά - Τραβήξτε τα στο κατάλληλο ταχυδρομείο</div>
+<div class="pool-items" id="pool"></div>
+</div>
+
+<button class="btn" onclick="checkAnswers()">✓ Ελέγξτε τις απαντήσεις</button>
+
+<div class="mascot">📯</div>
+<div class="feedback" id="feedback"></div>
+
+<script>
+const items = [
+{
+id: 1,
+icon: '📧',
+text: 'Ηλεκτρονικά μηνύματα',
+type: 'email'
+},
+{
+id: 2,
+icon: '📮',
+text: 'Φυσικά γράμματα',
+type: 'conventional'
+},
+{
+id: 3,
+icon: '📎',
+text: 'Συνημμένα αρχεία',
+type: 'email'
+},
+{
+id: 4,
+icon: '💵',
+text: 'Ταχυδρομικά τέλη',
+type: 'conventional'
+},
+{
+id: 5,
+icon: '⚡',
+text: 'Άμεση παράδοση',
+type: 'email'
+},
+{
+id: 6,
+icon: '🚚',
+text: 'Παράδοση στο σπίτι',
+type: 'conventional'
+},
+{
+id: 7,
+icon: '📱',
+text: 'Προσβασιμότητα από οπουδήποτε',
+type: 'email'
+},
+{
+id: 8,
+icon: '📦',
+text: 'Χαρτόφασιγγες/Πακέτα',
+type: 'conventional'
+},
+{
+id: 9,
+icon: '💰',
+text: 'Δωρεάν ή φθηνό',
+type: 'email'
+},
+{
+id: 10,
+icon: '⏰',
+text: 'Μέρες για παράδοση',
+type: 'conventional'
+},
+{
+id: 11,
+icon: '📝',
+text: 'Παραλήπτης email',
+type: 'email'
+},
+{
+id: 12,
+icon: '📬',
+text: 'Διεύθυνση φακέλου',
+type: 'conventional'
+}
+];
+
+let score = 0;
+let checked = false;
+
+function init() {
+const pool = document.getElementById('pool');
+items.forEach(item => {
+const itemEl = createItem(item);
+pool.appendChild(itemEl);
+});
+setupDragAndDrop();
+}
+
+function createItem(item) {
+const el = document.createElement('div');
+el.className = 'item';
+el.draggable = true;
+el.dataset.id = item.id;
+el.dataset.type = item.type;
+
+el.innerHTML = `
+<div class="item-icon">${item.icon}</div>
+<div class="item-text">${item.text}</div>
+`;
+
+return el;
+}
+
+function setupDragAndDrop() {
+const dropZones = document.querySelectorAll('.drop-zone');
+const pool = document.getElementById('pool');
+
+pool.addEventListener('dragover', (e) => {
+e.preventDefault();
+});
+
+pool.addEventListener('drop', (e) => {
+e.preventDefault();
+if (checked) return;
+const item = document.querySelector('.dragging');
+if (item) {
+pool.appendChild(item);
+item.classList.remove('correct', 'wrong');
+}
+});
+
+dropZones.forEach(zone => {
+zone.addEventListener('dragover', (e) => {
+e.preventDefault();
+zone.classList.add('drag-over');
+});
+
+zone.addEventListener('dragleave', () => {
+zone.classList.remove('drag-over');
+});
+
+zone.addEventListener('drop', (e) => {
+e.preventDefault();
+zone.classList.remove('drag-over');
+if (checked) return;
+const item = document.querySelector('.dragging');
+if (item) {
+zone.appendChild(item);
+}
+});
+});
+
+document.addEventListener('dragstart', (e) => {
+if (e.target.classList.contains('item')) {
+e.target.classList.add('dragging');
+}
+});
+
+document.addEventListener('dragend', (e) => {
+if (e.target.classList.contains('item')) {
+e.target.classList.remove('dragging');
+}
+});
+
+setupTouchEvents();
+}
+
+function setupTouchEvents() {
+let draggedItem = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+document.addEventListener('touchstart', (e) => {
+if (e.target.closest('.item')) {
+draggedItem = e.target.closest('.item');
+if (checked) return;
+const rect = draggedItem.getBoundingClientRect();
+touchOffsetX = e.touches[0].clientX - rect.left;
+touchOffsetY = e.touches[0].clientY - rect.top;
+draggedItem.style.position = 'fixed';
+draggedItem.style.zIndex = '1000';
+draggedItem.style.width = rect.width + 'px';
+}
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+if (draggedItem) {
+e.preventDefault();
+draggedItem.style.left = (e.touches[0].clientX - touchOffsetX) + 'px';
+draggedItem.style.top = (e.touches[0].clientY - touchOffsetY) + 'px';
+}
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+if (draggedItem) {
+const dropZones = document.querySelectorAll('.drop-zone');
+const pool = document.getElementById('pool');
+let dropped = false;
+
+dropZones.forEach(zone => {
+const rect = zone.getBoundingClientRect();
+const touch = e.changedTouches[0];
+if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+zone.appendChild(draggedItem);
+dropped = true;
+}
+});
+
+if (!dropped) {
+const poolRect = pool.getBoundingClientRect();
+const touch = e.changedTouches[0];
+if (touch.clientX >= poolRect.left && touch.clientX <= poolRect.right &&
+touch.clientY >= poolRect.top && touch.clientY <= poolRect.bottom) {
+pool.appendChild(draggedItem);
+dropped = true;
+}
+}
+
+draggedItem.style.position = '';
+draggedItem.style.zIndex = '';
+draggedItem.style.width = '';
+draggedItem.style.left = '';
+draggedItem.style.top = '';
+draggedItem = null;
+}
+}, { passive: true });
+}
+
+function checkAnswers() {
+const emailZone = document.getElementById('email');
+const conventionalZone = document.getElementById('conventional');
+const allItems = [...emailZone.querySelectorAll('.item'), ...conventionalZone.querySelectorAll('.item')];
+
+score = 0;
+allItems.forEach(item => {
+const id = parseInt(item.dataset.id);
+const itemData = items.find(i => i.id === id);
+const zoneType = item.parentElement.dataset.type;
+
+item.classList.remove('correct', 'wrong');
+
+if (itemData.type === zoneType) {
+item.classList.add('correct');
+score++;
+} else {
+item.classList.add('wrong');
+}
+});
+
+document.getElementById('score').textContent = score;
+checked = true;
+
+const feedback = document.getElementById('feedback');
+if (score === 12) {
+feedback.textContent = '🎉 Εξαιρετικό! Τα ξέρετε όλα για τα ταχυδρομεία!';
+feedback.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+} else if (score >= 10) {
+feedback.textContent = '👍 Πολύ καλά! Κάντε λίγη εξάσκηση ακόμα!';
+feedback.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+} else {
+feedback.textContent = '📚 Προσπαθήστε ξανά! Σκέφτετε τη ταχύτητα και τον τρόπο αποστολής.';
+feedback.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+}
+feedback.classList.add('show');
+
+setTimeout(() => {
+feedback.classList.remove('show');
+checked = false;
+}, 3000);
+}
+
+init();
+</script>
+</body>
+</html>

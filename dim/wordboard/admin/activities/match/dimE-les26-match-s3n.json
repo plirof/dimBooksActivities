@@ -1,0 +1,40 @@
+{
+    "id": "dimE-les26-match-s3n",
+    "title": "e-me assignments, SchoolPress, SchoolRadio - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "e-me",
+                "right": "Πλατφόρμα εκπαίδευσης"
+            },
+            {
+                "left": "SchoolPress",
+                "right": "Σχολικά ιστολόγια"
+            },
+            {
+                "left": "School Radio",
+                "right": "Σχολικές εκπομπές"
+            },
+            {
+                "left": "Assignments",
+                "right": "Ανάθεση εργασιών"
+            },
+            {
+                "left": "Netiquette",
+                "right": "Κανόνες διαδικτύου"
+            },
+            {
+                "left": "Ελληνικό σύστημα",
+                "right": "Παρέχει αυτά τα εργαλεία"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les26",
+        "e-me"
+    ]
+}

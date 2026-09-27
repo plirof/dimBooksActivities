@@ -1,0 +1,48 @@
+{
+  "title": "Λέξεις-κλειδιά",
+  "subtitle": "Διάκρινε καλές από κακές λέξεις-κλειδιά",
+  "categories": [
+    {
+      "id": "good",
+      "name": "ΚΑΛΗ ΛΕΞΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "bad",
+      "name": "ΚΑΚΗ ΛΕΞΗ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ακρόπολη",
+      "category": "good"
+    },
+    {
+      "id": "item2",
+      "text": "Πράγμα",
+      "category": "bad"
+    },
+    {
+      "id": "item3",
+      "text": "Ιστορία",
+      "category": "good"
+    },
+    {
+      "id": "item4",
+      "text": "Κάτι",
+      "category": "bad"
+    },
+    {
+      "id": "item5",
+      "text": "Αρχαία Ελλάδα",
+      "category": "good"
+    },
+    {
+      "id": "item6",
+      "text": "Εκεί",
+      "category": "bad"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Φυλλομετρητές",
+  "subtitle": "Βρες το όνομα κάθε φυλλομετρητή",
+  "columns": 4,
+  "pairs": [
+    { "cardA": "🟢 🔵 🟡 🔴 (Chrome)", "cardB": "Google Chrome" },
+    { "cardA": "🦊 Πορτοκαλί αλεπού", "cardB": "Mozilla Firefox" },
+    { "cardA": "🔵 Γαλάζιο e ↩️ (Edge)", "cardB": "Microsoft Edge" },
+    { "cardA": "🧭 Μπλε πυξίδα", "cardB": "Safari" },
+    { "cardA": "🟣 Μοβ στρογγυλό (Opera)", "cardB": "Opera" }
+  ]
+}

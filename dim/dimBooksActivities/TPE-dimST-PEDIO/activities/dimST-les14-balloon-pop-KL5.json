@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δίκτυα και Πρωτόκολλα",
+  "subtitle": "Σπάσε μόνο τα στοιχεία δικτύωσης",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με δίκτυα και πρωτόκολλα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Πάροχος",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πρωτόκολλο TCP/IP",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Κηπουρική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Διεύθυνση IP",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "MAC address",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μαγειρική",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Οπτική ίνα",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Ψήσιμο",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "HTTP/HTTPS",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

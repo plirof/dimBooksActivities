@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αποθήκευση vs Ανάκτηση",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "save", "name": "Αποθήκευση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "open", "name": "Ανάκτηση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αποθήκευση", "category": "save"},
+    {"text": "Άνοιγμα", "category": "open"},
+    {"text": "Αποθήκευση ως", "category": "save"},
+    {"text": "Διπλό κλικ", "category": "open"},
+    {"text": "Δίνουμε όνομα", "category": "save"},
+    {"text": "Αρχείο → Open", "category": "open"},
+    {"text": "Εικονίδιο δισκέτας", "category": "save"},
+    {"text": "Αναζήτηση αρχείου", "category": "open"},
+    {"text": "Επιλογή φακέλου", "category": "save"},
+    {"text": "Φόρτωση εγγράφου", "category": "open"}
+  ],
+  "duration": 30
+}

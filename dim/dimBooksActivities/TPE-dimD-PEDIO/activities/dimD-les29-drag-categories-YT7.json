@@ -1,0 +1,48 @@
+{
+  "title": "Θετικό ή Αρνητικό αποτύπωμα",
+  "subtitle": "Διάκρινε τα θετικά από τα αρνητικά ψηφιακά αποτυπώματα",
+  "categories": [
+    {
+      "id": "pos",
+      "name": "ΘΕΤΙΚΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "neg",
+      "name": "ΑΡΝΗΤΙΚΟ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📝 Δημιουργικό blog",
+      "category": "pos"
+    },
+    {
+      "id": "item2",
+      "text": "😡 Υβριστικό σχόλιο",
+      "category": "neg"
+    },
+    {
+      "id": "item3",
+      "text": "🎨 Ψηφιακή ζωγραφική",
+      "category": "pos"
+    },
+    {
+      "id": "item4",
+      "text": "🔞 Ακατάλληλο βίντεο",
+      "category": "neg"
+    },
+    {
+      "id": "item5",
+      "text": "📚 Διαμοιρασμός σημειώσεων",
+      "category": "pos"
+    },
+    {
+      "id": "item6",
+      "text": "🤥 Fake news",
+      "category": "neg"
+    }
+  ]
+}

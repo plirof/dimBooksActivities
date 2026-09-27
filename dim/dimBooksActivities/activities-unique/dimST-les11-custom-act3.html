@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πείραμα 3 Δωματίων: Φως + Ήχος + Θερμοκρασία</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{color:#fff;text-align:center;margin-bottom:6px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.92em}
+.container{background:#fff;border-radius:18px;padding:24px;max-width:860px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.2);margin-bottom:16px}
+.rooms{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.room-btn{padding:12px 20px;border:3px solid #ddd;border-radius:14px;background:#fff;cursor:pointer;font-family:inherit;font-size:.9em;transition:all .2s;text-align:center;min-width:140px}
+.room-btn:hover{border-color:#764ba2;transform:translateY(-2px)}
+.room-btn.done{border-color:#667eea;background:#f0f0ff}
+.room-btn.active{border-color:#764ba2;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.room-icon{font-size:1.8em;display:block;margin-bottom:4px}
+.controls{text-align:center;margin-bottom:20px}
+.btn{padding:10px 24px;border:none;border-radius:10px;font-size:.95em;cursor:pointer;font-family:inherit;transition:all .2s;font-weight:600;margin:4px}
+.btn-go{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.btn-go:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,.4)}
+.btn-go:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-rand{background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff}
+.btn-rand:hover{transform:translateY(-2px)}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:14px;margin-bottom:20px}
+.sensor-card{background:#f8f8ff;border-radius:14px;padding:16px;text-align:center;border:2px solid #e8e8ff}
+.sensor-icon{font-size:2em;margin-bottom:6px}
+.sensor-title{font-weight:700;color:#764ba2;margin-bottom:8px;font-size:.95em}
+.room-reading{background:#fff;border-radius:10px;padding:10px;margin:6px 0;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.room-reading .room-name{font-weight:600;color:#555;font-size:.85em}
+.room-reading .value{font-size:1.4em;font-weight:700;display:block}
+.sensor-bar{height:8px;background:#eee;border-radius:4px;margin-top:4px;overflow:hidden}
+.sensor-bar-fill{height:100%;border-radius:4px;transition:width .8s}
+table{width:100%;border-collapse:collapse;font-size:.9em;margin-bottom:16px;border-radius:10px;overflow:hidden}
+th{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px;text-align:center}
+td{padding:8px 12px;text-align:center;border-bottom:1px solid #eee}
+tr:hover{background:#f0f0ff}
+.highlight{background:#fff3cd;font-weight:700}
+.questions{background:#f0f0ff;border-radius:14px;padding:18px;margin-top:16px}
+.questions h3{color:#764ba2;margin-bottom:12px;font-size:1em}
+.q-item{margin-bottom:10px;padding:10px;background:#fff;border-radius:10px;display:flex;align-items:center;gap:10px}
+.q-label{font-weight:600;color:#555;min-width:180px;font-size:.9em}
+.q-answer{font-weight:700;color:#764ba2;font-size:.95em}
+.hidden{display:none}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .rooms > * { margin: 7px; }
+  .q-item > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<h1>🏠 Πείραμα 3 Δωματίων</h1>
+<p class="subtitle">Μέτρηση φωτός, ήχου και θερμοκρασίας σε 3 δωμάτια</p>
+
+<div class="container">
+  <div class="rooms" id="roomButtons">
+    <button class="room-btn active" onclick="selectRoom(0)"><span class="room-icon">🛋️</span>Σαλόνι</button>
+    <button class="room-btn" onclick="selectRoom(1)"><span class="room-icon">🍳</span>Κουζίνα</button>
+    <button class="room-btn" onclick="selectRoom(2)"><span class="room-icon">🛏️</span>Υπνοδωμάτιο</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-go" id="measureBtn" onclick="measureRoom()">📏 Μέτρηση Δωματίου</button>
+    <button class="btn btn-rand" onclick="measureAll()">🎲 Μέτρηση Όλων</button>
+  </div>
+
+  <div id="currentReading" class="hidden" style="text-align:center;margin-bottom:16px">
+    <div style="background:#f0fff0;border-radius:12px;padding:14px;display:inline-block">
+      <strong id="currentRoomLabel"></strong><br>
+      <span style="font-size:.85em;color:#555">
+        Φως: <strong id="curLight">-</strong> |
+        Ήχος: <strong id="curSound">-</strong> |
+        Θερμοκρασία: <strong id="curTemp">-</strong>
+      </span>
+    </div>
+  </div>
+
+  <div id="resultsSection" class="hidden">
+    <div class="results-grid" id="resultsGrid"></div>
+
+    <table id="comparisonTable">
+      <thead>
+        <tr><th>Αισθητήρας</th><th>🛋️ Σαλόνι</th><th>🍳 Κουζίνα</th><th>🛏️ Υπνοδωμάτιο</th></tr>
+      </thead>
+      <tbody id="compBody"></tbody>
+    </table>
+
+    <div class="questions" id="questionsSection">
+      <h3>❓ Απάντησε τις ερωτήσεις:</h3>
+      <div class="q-item"><span class="q-label">Ποιο δωμάτιο είναι το πιο φωτεινό;</span><span class="q-answer" id="qBrightest">-</span></div>
+      <div class="q-item"><span class="q-label">Ποιο δωμάτιο είναι το πιο ζεστό;</span><span class="q-answer" id="qWarmest">-</span></div>
+      <div class="q-item"><span class="q-label">Ποιο δωμάτιο είναι το πιο ήσυχο;</span><span class="q-answer" id="qQuietest">-</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var rooms=['Σαλόνι','Κουζίνα','Υπνοδωμάτιο'];
+var roomIcons=['🛋️','🍳','🛏️'];
+var currentRoom=0;
+var measurements=[null,null,null];
+
+function selectRoom(idx){
+  currentRoom=idx;
+  var btns=document.querySelectorAll('.room-btn');
+  btns.forEach(function(b,i){
+    b.classList.remove('active');
+    if(measurements[i]) b.classList.add('done');
+  });
+  btns[idx].classList.add('active');
+}
+
+function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+function generateReadings(){
+  return {
+    light: randInt(20,240),
+    sound: randInt(5,220),
+    temperature: randInt(-5,50)
+  };
+}
+
+function measureRoom(){
+  var r=generateReadings();
+  measurements[currentRoom]=r;
+
+  document.getElementById('currentReading').classList.remove('hidden');
+  document.getElementById('currentRoomLabel').textContent=roomIcons[currentRoom]+' '+rooms[currentRoom];
+  document.getElementById('curLight').textContent=r.light;
+  document.getElementById('curSound').textContent=r.sound;
+  document.getElementById('curTemp').textContent=r.temperature+'°C';
+
+  var btns=document.querySelectorAll('.room-btn');
+  btns[currentRoom].classList.add('done');
+
+  checkAllDone();
+}
+
+function measureAll(){
+  for(var i=0;i<3;i++){
+    measurements[i]=generateReadings();
+  }
+  document.querySelectorAll('.room-btn').forEach(function(b){b.classList.add('done')});
+  document.getElementById('currentReading').classList.add('hidden');
+  checkAllDone();
+}
+
+function checkAllDone(){
+  if(measurements[0]&&measurements[1]&&measurements[2]){
+    showResults();
+  }
+}
+
+function showResults(){
+  document.getElementById('resultsSection').classList.remove('hidden');
+  var sensors=[
+    {icon:'☀️',name:'Φως',unit:'',key:'light',color:'#f39c12',max:255},
+    {icon:'🔊',name:'Ήχος',unit:'',key:'sound',color:'#e74c3c',max:255},
+    {icon:'🌡️',name:'Θερμοκρασία',unit:'°C',key:'temperature',color:'#3498db',max:55}
+  ];
+
+  var grid=document.getElementById('resultsGrid');
+  grid.innerHTML='';
+
+  sensors.forEach(function(s){
+    var card=document.createElement('div');
+    card.className='sensor-card';
+    var html='<div class="sensor-icon">'+s.icon+'</div><div class="sensor-title">'+s.name+'</div>';
+    rooms.forEach(function(rn,i){
+      var v=measurements[i][s.key];
+      var pct=Math.max(0,Math.min(100,(v/s.max)*100));
+      html+='<div class="room-reading"><span class="room-name">'+roomIcons[i]+' '+rn+'</span><span class="value" style="color:'+s.color+'">'+v+s.unit+'</span><div class="sensor-bar"><div class="sensor-bar-fill" style="width:'+pct+'%;background:'+s.color+'"></div></div></div>';
+    });
+    card.innerHTML=html;
+    grid.appendChild(card);
+  });
+
+  var tbody=document.getElementById('compBody');
+  tbody.innerHTML='';
+  sensors.forEach(function(s){
+    var tr=document.createElement('tr');
+    var vals=measurements.map(function(m){return m[s.key]});
+    var html='<td><strong>'+s.icon+' '+s.name+'</strong></td>';
+    vals.forEach(function(v){
+      html+='<td>'+v+s.unit+'</td>';
+    });
+    tr.innerHTML=html;
+    tbody.appendChild(tr);
+  });
+
+  var lights=measurements.map(function(m){return m.light});
+  var sounds=measurements.map(function(m){return m.sound});
+  var temps=measurements.map(function(m){return m.temperature});
+
+  var brightIdx=lights.indexOf(Math.max.apply(null,lights));
+  var warmIdx=temps.indexOf(Math.max.apply(null,temps));
+  var quietIdx=sounds.indexOf(Math.min.apply(null,sounds));
+
+  document.getElementById('qBrightest').textContent=roomIcons[brightIdx]+' '+rooms[brightIdx]+' ('+lights[brightIdx]+')';
+  document.getElementById('qWarmest').textContent=roomIcons[warmIdx]+' '+rooms[warmIdx]+' ('+temps[warmIdx]+'°C)';
+  document.getElementById('qQuietest').textContent=roomIcons[quietIdx]+' '+rooms[quietIdx]+' ('+sounds[quietIdx]+')';
+}
+</script>
+</body>
+</html>

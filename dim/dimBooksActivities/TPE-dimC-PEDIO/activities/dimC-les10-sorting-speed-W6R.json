@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είσοδος ή Έξοδος",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε συσκευή!",
+  "categories": [
+    {"id": "eisodos", "name": "Συσκευή Εισόδου", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "exodos", "name": "Συσκευή Εξόδου", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πληκτρολόγιο", "category": "eisodos"},
+    {"text": "Οθόνη", "category": "exodos"},
+    {"text": "Ποντίκι", "category": "eisodos"},
+    {"text": "Εκτυπωτής", "category": "exodos"},
+    {"text": "Μικρόφωνο", "category": "eisodos"},
+    {"text": "Ηχεία", "category": "exodos"},
+    {"text": "Σαρωτής", "category": "eisodos"},
+    {"text": "Προβολέας", "category": "exodos"},
+    {"text": "Φωτογραφική μηχανή", "category": "eisodos"},
+    {"text": "Ακουστικά", "category": "exodos"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογιστής ή όχι; 🔍</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    padding: 20px 16px 14px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    padding: 10px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f5576c;
+  }
+  .round {
+    font-size: 1rem;
+    color: #888;
+  }
+  .instructions {
+    background: #fff9db;
+    border: 2px dashed #f0c040;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    text-align: center;
+    line-height: 1.5;
+    color: #6b5900;
+  }
+  .item-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform .3s ease;
+  }
+  .item-emoji {
+    font-size: 5rem;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .item-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2d3436;
+  }
+  .item-name .article {
+    font-size: 1rem;
+    color: #888;
+    font-weight: 400;
+  }
+  .btn-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-choice {
+    border: none;
+    border-radius: 20px;
+    padding: 16px 32px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    flex: 1;
+    justify-content: center;
+    max-width: 200px;
+  }
+  .btn-yes {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff;
+  }
+  .btn-yes:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(67,233,123,.4); }
+  .btn-no {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: #fff;
+  }
+  .btn-no:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(245,87,108,.4); }
+  .btn-choice:active { transform: scale(.95); }
+  .btn-choice:disabled { opacity: .5; cursor: default; transform: none !important; }
+  .feedback {
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .feedback.correct {
+    display: block;
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+  }
+  .feedback.wrong {
+    display: block;
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+  }
+  .result-screen {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px;
+    text-align: center;
+    display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.8rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  .toast-overlay {
+    position: fixed; top:0;right:0;bottom:0;left:0;
+    background: rgba(0,0,0,.35);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .toast-overlay.show { opacity: 1; pointer-events: auto; }
+  .toast-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px 28px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: 0 16px 48px rgba(0,0,0,.2);
+    transform: scale(.8);
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .toast-overlay.show .toast-box { transform: scale(1); }
+  .toast-box .toast-emoji { font-size: 3.5rem; margin-bottom: 10px; }
+  .toast-box h3 { font-size: 1.4rem; color: #2d3436; margin-bottom: 6px; }
+  .toast-box p { font-size: 1rem; color: #666; margin-bottom: 16px; }
+  .toast-close {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    border: none;
+    border-radius: 14px;
+    padding: 10px 28px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    font-family: inherit;
+  }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.3rem; }
+    .item-emoji { font-size: 4rem; }
+    .item-name { font-size: 1.2rem; }
+    .btn-choice { padding: 14px 20px; font-size: 1.1rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .btn-group > * { margin: 8px; }
+  .btn-choice > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>🔍 Υπολογιστής ή όχι;</h1>
+    <p>Μάντεψε αν είναι υπολογιστής!</p>
+  </div>
+
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ερώτηση 1/8</span>
+  </div>
+
+  <div class="instructions" id="instructions">
+    👀 Κοίτα την εικόνα. Είναι <strong>υπολογιστής</strong> ή <strong>όχι</strong>;
+  </div>
+
+  <div id="gameArea">
+    <div class="item-card" id="itemCard">
+      <div class="item-emoji" id="itemEmoji">🖥️</div>
+      <div class="item-name" id="itemName">Υπολογιστής γραφείου</div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="btn-group">
+      <button class="btn-choice btn-yes" id="btnYes" onclick="answer(true)">✅ Ναι</button>
+      <button class="btn-choice btn-no" id="btnNo" onclick="answer(false)">❌ Όχι</button>
+    </div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+
+<div class="toast-overlay" id="toastOverlay" onclick="closeToast(event)">
+  <div class="toast-box">
+    <div class="toast-emoji" id="toastEmoji">🎉</div>
+    <h3 id="toastTitle">Μπράβο!</h3>
+    <p id="toastMsg">Σωστά!</p>
+    <button class="toast-close" onclick="closeToast(event)">Συνέχεια ⭐</button>
+  </div>
+</div>
+
+<script>
+  var items = [
+    { emoji: '🖥️', name: 'Υπολογιστής Γραφείου', isComputer: true, article: 'ο' },
+    { emoji: '💻', name: 'Φορητός Υπολογιστής', isComputer: true, article: 'ο' },
+    { emoji: '📱', name: 'Ταμπλέτα', isComputer: true, article: 'η' },
+    { emoji: '📟', name: 'Έξυπνο Κινητό', isComputer: true, article: 'το' },
+    { emoji: '📚', name: 'Βιβλίο', isComputer: false, article: 'το' },
+    { emoji: '🏀', name: 'Μπάλα', isComputer: false, article: 'η' },
+    { emoji: '✏️', name: 'Μολύβι', isComputer: false, article: 'το' },
+    { emoji: '🧸', name: 'Αρκουδάκι', isComputer: false, article: 'το' }
+  ];
+  var shuffled = [];
+  var currentIndex = 0;
+  var score = 0;
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function startGame() {
+    shuffled = shuffle(items.slice());
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    showItem();
+  }
+
+  function showItem() {
+    if (currentIndex >= shuffled.length) {
+      showResult();
+      return;
+    }
+    var item = shuffled[currentIndex];
+    document.getElementById('itemEmoji').textContent = item.emoji;
+    document.getElementById('itemName').innerHTML = '<span class="article">(' + item.article + ')</span> ' + item.name;
+    document.getElementById('roundDisplay').textContent = 'Ερώτηση ' + (currentIndex + 1) + '/' + shuffled.length;
+    document.getElementById('btnYes').disabled = false;
+    document.getElementById('btnNo').disabled = false;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+  }
+
+  function answer(isYes) {
+    var item = shuffled[currentIndex];
+    var correct = (isYes === item.isComputer);
+
+    document.getElementById('btnYes').disabled = true;
+    document.getElementById('btnNo').disabled = true;
+
+    var fb = document.getElementById('feedback');
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      fb.className = 'feedback correct';
+      fb.textContent = '✅ Μπράβο! Το ' + item.name + (item.isComputer ? ' ΕΙΝΑΙ' : ' ΔΕΝ ΕΙΝΑΙ') + ' υπολογιστής!';
+      setTimeout(function() {
+        currentIndex++;
+        showItem();
+      }, 1000);
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Ωχ! Το ' + item.name + (item.isComputer ? ' ΕΙΝΑΙ' : ' ΔΕΝ ΕΙΝΑΙ') + ' υπολογιστής!';
+      setTimeout(function() {
+        currentIndex++;
+        showItem();
+      }, 1500);
+    }
+    fb.style.display = 'block';
+    var card = document.getElementById('itemCard');
+    card.style.transform = correct ? 'scale(1.02)' : 'scale(0.98)';
+    setTimeout(function() { card.style.transform = 'scale(1)'; }, 300);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = shuffled.length;
+    var pct = score / total;
+    var emoji, title, msg;
+    if (pct === 1) {
+      emoji = '🏆'; title = 'Τέλεια!'; msg = 'Τα βρήκες όλα σωστά! Είσαι εξπέρ στους υπολογιστές!';
+    } else if (pct >= 0.75) {
+      emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά! Συνέχισε έτσι!';
+    } else if (pct >= 0.5) {
+      emoji = '👍'; title = 'Ωραία!'; msg = 'Τα πήγες καλά! Δοκίμασε ξανά για περισσότερα!';
+    } else {
+      emoji = '💪'; title = 'Καλή προσπάθεια!'; msg = 'Προσπάθησε ξανά και θα τα πας ακόμα καλύτερα!';
+    }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  function closeToast(e) {
+    if (e.target.classList.contains('toast-close') || e.target.id === 'toastOverlay') {
+      document.getElementById('toastOverlay').classList.remove('show');
+    }
+  }
+
+  startGame();
+</script>
+</body>
+</html>

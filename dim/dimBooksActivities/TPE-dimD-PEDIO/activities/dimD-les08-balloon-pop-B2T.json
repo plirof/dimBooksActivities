@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ρομπότ σε Πίστα",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για το ρομπότ",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Ορθή γωνία = 90 μοίρες", "correct": true, "color": "#4caf50" },
+    { "text": "Ορθή γωνία = 180 μοίρες", "correct": false, "color": "#f44336" },
+    { "text": "Χρόνος < 1 δευτερόλεπτο", "correct": true, "color": "#2196f3" },
+    { "text": "Χρόνος > 10 δευτερόλεπτα", "correct": false, "color": "#ff9800" },
+    { "text": "Πίστα A4 με μαύρο μαρκαδόρο", "correct": true, "color": "#8bc34a" },
+    { "text": "Πίστα σε οθόνη υπολογιστή", "correct": false, "color": "#9c27b0" },
+    { "text": "Άνοιγμα γραμμών > 10 εκατοστά", "correct": true, "color": "#00bcd4" },
+    { "text": "Άνοιγμα γραμμών > 1 μέτρο", "correct": false, "color": "#ff5722" },
+    { "text": "Χρειάζεται δοκιμή και πείραμα", "correct": true, "color": "#607d8b" },
+    { "text": "Δεν χρειάζεται δοκιμή", "correct": false, "color": "#e91e63" }
+  ]
+}

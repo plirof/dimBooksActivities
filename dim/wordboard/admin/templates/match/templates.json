@@ -1,0 +1,112 @@
+{
+  "templates": [
+    {
+      "id": "match_math_operations_001",
+      "name": "Math Operations",
+      "description": "Match math problems with their answers",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["math", "operations", "elementary"],
+      "pairs": [
+        {"left": "2 + 2", "right": "4"},
+        {"left": "5 × 3", "right": "15"},
+        {"left": "10 - 4", "right": "6"},
+        {"left": "12 ÷ 4", "right": "3"},
+        {"left": "7 + 8", "right": "15"},
+        {"left": "6 × 6", "right": "36"},
+        {"left": "20 - 7", "right": "13"},
+        {"left": "9 × 2", "right": "18"}
+      ]
+    },
+    {
+      "id": "match_vocabulary_001",
+      "name": "Word Definitions",
+      "description": "Match words with their meanings",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["english", "vocabulary", "definitions"],
+      "pairs": [
+        {"left": "Happy", "right": "Feeling joy"},
+        {"left": "Big", "right": "Large in size"},
+        {"left": "Fast", "right": "Quick speed"},
+        {"left": "Cold", "right": "Low temperature"},
+        {"left": "Bright", "right": "Full of light"},
+        {"left": "Hard", "right": "Difficult"},
+        {"left": "Clean", "right": "Free from dirt"},
+        {"left": "Quiet", "right": "No noise"}
+      ]
+    },
+    {
+      "id": "match_synonyms_001",
+      "name": "Synonyms",
+      "description": "Match words with similar meanings",
+      "category": "match",
+      "difficulty": "medium",
+      "tags": ["english", "vocabulary", "synonyms"],
+      "pairs": [
+        {"left": "Big", "right": "Large"},
+        {"left": "Fast", "right": "Quick"},
+        {"left": "Smart", "right": "Intelligent"},
+        {"left": "Happy", "right": "Joyful"},
+        {"left": "Hard", "right": "Difficult"},
+        {"left": "Begin", "right": "Start"},
+        {"left": "Stop", "right": "Cease"},
+        {"left": "Build", "right": "Construct"}
+      ]
+    },
+    {
+      "id": "match_antonyms_001",
+      "name": "Antonyms",
+      "description": "Match words with opposite meanings",
+      "category": "match",
+      "difficulty": "medium",
+      "tags": ["english", "vocabulary", "antonyms"],
+      "pairs": [
+        {"left": "Hot", "right": "Cold"},
+        {"left": "Day", "right": "Night"},
+        {"left": "Up", "right": "Down"},
+        {"left": "Good", "right": "Bad"},
+        {"left": "Fast", "right": "Slow"},
+        {"left": "Big", "right": "Small"},
+        {"left": "Happy", "right": "Sad"},
+        {"left": "In", "right": "Out"}
+      ]
+    },
+    {
+      "id": "match_shapes_001",
+      "name": "Shapes and Sides",
+      "description": "Match shapes with their number of sides",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["math", "geometry", "shapes"],
+      "pairs": [
+        {"left": "Triangle", "right": "3 sides"},
+        {"left": "Square", "right": "4 sides"},
+        {"left": "Pentagon", "right": "5 sides"},
+        {"left": "Hexagon", "right": "6 sides"},
+        {"left": "Heptagon", "right": "7 sides"},
+        {"left": "Octagon", "right": "8 sides"},
+        {"left": "Circle", "right": "0 sides"},
+        {"left": "Rectangle", "right": "4 sides"}
+      ]
+    },
+    {
+      "id": "match_colors_001",
+      "name": "Colors and Objects",
+      "description": "Match colors with common objects",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["colors", "vocabulary", "elementary"],
+      "pairs": [
+        {"left": "Red", "right": "Apple"},
+        {"left": "Yellow", "right": "Banana"},
+        {"left": "Green", "right": "Grass"},
+        {"left": "Blue", "right": "Sky"},
+        {"left": "Orange", "right": "Orange"},
+        {"left": "Purple", "right": "Grape"},
+        {"left": "Brown", "right": "Chocolate"},
+        {"left": "Black", "right": "Night"}
+      ]
+    }
+  ]
+}

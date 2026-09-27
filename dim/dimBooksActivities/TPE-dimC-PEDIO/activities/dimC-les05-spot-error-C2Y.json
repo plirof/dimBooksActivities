@@ -1,0 +1,192 @@
+{
+  "title": "Βρες τα Λάθη: Εντολή Επιλογής",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false
+        },
+        {
+          "text": "εντολή",
+          "error": false
+        },
+        {
+          "text": "επιλογής",
+          "error": false
+        },
+        {
+          "text": "βρίσκεται",
+          "error": false
+        },
+        {
+          "text": "στην",
+          "error": false
+        },
+        {
+          "text": "μπλε",
+          "error": true,
+          "correct": "πορτοκαλί",
+          "feedback": "Η εντολή επιλογής είναι στην ΠΟΡΤΟΚΑΛΙ κατηγορία!"
+        },
+        {
+          "text": "κατηγορία.",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false
+        },
+        {
+          "text": "συνθήκη",
+          "error": false
+        },
+        {
+          "text": "μπαίνει",
+          "error": false
+        },
+        {
+          "text": "στο",
+          "error": false
+        },
+        {
+          "text": "κύκλο",
+          "error": true,
+          "correct": "εξάγωνο",
+          "feedback": "Η συνθήκη μπαίνει στο ΕΞΑΓΩΝΟ, όχι σε κύκλο!"
+        },
+        {
+          "text": "της",
+          "error": false
+        },
+        {
+          "text": "εντολής.",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Αν",
+          "error": false
+        },
+        {
+          "text": "η",
+          "error": false
+        },
+        {
+          "text": "γατούλα",
+          "error": false
+        },
+        {
+          "text": "ακουμπάει",
+          "error": false
+        },
+        {
+          "text": "το",
+          "error": false
+        },
+        {
+          "text": "φρούτο,",
+          "error": true,
+          "correct": "σκυλάκι",
+          "feedback": "Στο έργο μας η γατούλα συναντά το ΣΚΥΛΑΚΙ!"
+        },
+        {
+          "text": "τότε",
+          "error": false
+        },
+        {
+          "text": "λέει",
+          "error": false
+        },
+        {
+          "text": "Γεια!",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Οι",
+          "error": false
+        },
+        {
+          "text": "εντολές",
+          "error": false
+        },
+        {
+          "text": "που",
+          "error": false
+        },
+        {
+          "text": "εκτελούνται",
+          "error": false
+        },
+        {
+          "text": "μπαίνουν",
+          "error": false
+        },
+        {
+          "text": "μέσα",
+          "error": false
+        },
+        {
+          "text": "στο",
+          "error": false
+        },
+        {
+          "text": "εξάγωνο.",
+          "error": true,
+          "correct": "κενό διάστημα",
+          "feedback": "Οι εντολές μπαίνουν στο ΚΕΝΟ ΔΙΑΣΤΗΜΑ της εντολής, όχι στο εξάγωνο!"
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Πρέπει",
+          "error": false
+        },
+        {
+          "text": "να",
+          "error": false
+        },
+        {
+          "text": "αλλάξουμε",
+          "error": false
+        },
+        {
+          "text": "τον",
+          "error": false
+        },
+        {
+          "text": "«δείκτη",
+          "error": false
+        },
+        {
+          "text": "ποντικιού»",
+          "error": false
+        },
+        {
+          "text": "σε",
+          "error": false
+        },
+        {
+          "text": "«Γατούλα».",
+          "error": true,
+          "correct": "«Σκυλάκι»",
+          "feedback": "Αλλάζουμε σε «Σκυλάκι», ώστε η γατούλα να ελέγχει αν ακουμπά το σκυλάκι!"
+        }
+      ]
+    }
+  ]
+}

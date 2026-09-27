@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Μονομαχία Τριπόντων</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{width:100%;height:100%;position:relative;background:#333}
+
+.scene{width:100%;height:100%;position:relative;overflow:hidden}
+.sky{position:absolute;top:0;left:0;width:100%;height:58%;
+  background:linear-gradient(180deg,#1a237e 0%,#283593 30%,#5c6bc0 60%,#9fa8da 100%)}
+.stars{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0.7;animation:twinkle 2s ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:0.3}100%{opacity:1}}
+
+.court-wrap{position:absolute;bottom:0;left:0;width:100%;height:44%;z-index:2}
+.court-floor{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(90deg,#d4a373 0px,#d4a373 30px,#c8956c 30px,#c8956c 60px)}
+.court-top-line{position:absolute;top:0;left:0;width:100%;height:3px;background:#fff;opacity:0.25}
+.court-center{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:70px;height:70px;border:2px solid rgba(255,255,255,0.15);border-radius:50%;pointer-events:none}
+.court-center-line{position:absolute;top:-40px;left:50%;width:2px;height:40px;background:rgba(255,255,255,0.15);pointer-events:none}
+
+.hoop-wrap{position:absolute;right:3%;top:0;width:130px;height:60%;z-index:8;pointer-events:none}
+.hoop-pole{position:absolute;bottom:0;left:90px;width:6px;height:76%;
+  background:linear-gradient(180deg,#888,#555);border-radius:2px}
+.backboard{position:absolute;top:20%;left:8px;width:100px;height:80px;
+  border:3px solid rgba(255,255,255,0.5);border-radius:3px;
+  background:rgba(255,255,255,0.08);box-shadow:0 0 10px rgba(0,0,0,0.2)}
+.backboard-square{position:absolute;top:24px;left:50%;transform:translateX(-50%);
+  width:50%;height:40%;border:2px solid rgba(255,255,255,0.25)}
+.rim{position:absolute;top:calc(20% + 66px);left:0;width:96px;height:6px;
+  background:linear-gradient(180deg,#ff7722,#cc5500);border-radius:0 4px 4px 0;
+  box-shadow:0 2px 4px rgba(0,0,0,0.3);z-index:6}
+.rim.celebrate{box-shadow:0 0 15px rgba(255,215,0,0.6),0 0 30px rgba(255,215,0,0.3);transition:box-shadow .3s}
+.net{position:absolute;top:calc(20% + 72px);left:3px;width:88px;height:30px;
+  background:repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,0.2) 9px,rgba(255,255,255,0.2) 10px),
+    repeating-linear-gradient(0deg,transparent,transparent 7px,rgba(255,255,255,0.2) 7px,rgba(255,255,255,0.2) 8px);
+  clip-path:polygon(5% 0%,95% 0%,80% 100%,20% 100%);pointer-events:none;z-index:5}
+.net.ripple{animation:netPulse .5s ease-out}
+@keyframes netPulse{0%{transform:scaleY(1)}25%{transform:scaleY(1.3)}50%{transform:scaleY(0.9)}75%{transform:scaleY(1.1)}100%{transform:scaleY(1)}}
+
+.scoreboard{position:absolute;top:0;left:0;right:0;
+  background:rgba(0,0,0,0.7);color:#fff;padding:8px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;z-index:20}
+.scoreboard .team{display:flex;align-items:center;gap:6px}
+.scoreboard .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.scoreboard .dot.a{background:#2196F3;box-shadow:0 0 6px rgba(33,150,243,0.6)}
+.scoreboard .dot.b{background:#f44336;box-shadow:0 0 6px rgba(244,67,54,0.6)}
+.scoreboard .sc{font-weight:700;font-size:18px;min-width:22px;text-align:center}
+.scoreboard .sc.a{color:#64B5F6}
+.scoreboard .sc.b{color:#ef9a9a}
+.scoreboard .vs{color:rgba(255,255,255,0.3);font-size:11px}
+.scoreboard .qnum{color:rgba(255,255,255,0.5);font-size:12px}
+
+.player{position:absolute;z-index:10;width:44px;height:84px;transition:left .5s ease-out}
+.p-body{position:relative;width:100%;height:100%;transition:transform .4s ease-out;transform-origin:bottom center}
+.p-head{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(180deg,#ffcc80,#ffb74d);border:1px solid #f57c00;z-index:2}
+.p-cap{position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:26px;height:7px;background:#1565c0;border-radius:4px 4px 0 0}
+.p-cap::after{content:'';position:absolute;bottom:-2px;left:-3px;width:32px;height:3px;background:#0d47a1;border-radius:2px}
+.p-cap.rc{background:#c62828}.p-cap.rc::after{background:#b71c1c}
+.p-torso{position:absolute;top:22px;left:50%;transform:translateX(-50%);
+  width:26px;height:24px;background:linear-gradient(180deg,#1e88e5,#1565c0);
+  border-radius:3px;z-index:1}
+.p-torso.ot{background:linear-gradient(180deg,#e53935,#c62828)}
+.p-arm{position:absolute;top:23px;width:8px;height:22px;
+  border-radius:3px;transition:transform .3s ease-out;transform-origin:top center;z-index:3}
+.p-arm.left{left:5px;transform:rotate(-10deg)}
+.p-arm.right{right:5px;transform:rotate(10deg)}
+.p-hand{position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);
+  width:10px;height:10px;border-radius:50%;background:linear-gradient(180deg,#ffcc80,#ffb74d);border:1px solid #f57c00}
+.p-legs{position:absolute;top:46px;left:50%;transform:translateX(-50%);width:24px;height:24px}
+.p-leg{position:absolute;top:0;width:9px;height:24px;
+  background:linear-gradient(180deg,#5d4037,#4e342e);border-radius:2px;
+  transform-origin:top center;transition:transform .3s}
+.p-leg.l{left:1px}
+.p-leg.r{right:1px}
+.p-shoe{position:absolute;bottom:-1px;left:-1px;width:11px;height:5px;
+  background:#e0e0e0;border-radius:1px 4px 3px 1px}
+
+#userP{left:5%;bottom:44%}
+#oppP{left:38%;bottom:44%}
+
+#userP .p-body.shoot .arm-r{transform:rotate(-175deg)}
+#oppP .p-body.shoot .arm-l{transform:rotate(175deg)}
+#userP .p-body.shoot{transform:translateY(-10px) rotate(-6deg)}
+#oppP .p-body.shoot{transform:translateY(-10px) rotate(6deg)}
+#userP .p-body.celebrate{animation:celebrateP .5s ease-out}
+#oppP .p-body.celebrate{animation:celebrateP .5s ease-out}
+@keyframes celebrateP{0%{transform:translateY(0)}40%{transform:translateY(-35px)}70%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+#userP .p-body.stumble{animation:stumbleP .5s ease-out}
+@keyframes stumbleP{0%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-8px) rotate(18deg);opacity:0.7}100%{transform:translateY(0) rotate(0deg);opacity:1}}
+#oppP .p-body.steal{animation:stealReach .3s ease-out}
+@keyframes stealReach{0%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(8px) rotate(-12deg)}100%{transform:translateX(0) rotate(0deg)}}
+
+#userP .p-body.run{animation:runLegs .25s ease-in-out infinite}
+#oppP .p-body.run{animation:runLegs .25s ease-in-out infinite}
+@keyframes runLegs{0%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}100%{transform:rotate(-3deg)}}
+
+.ball{position:absolute;width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#ff8c00,#cc6600);
+  border:2px solid #993300;box-shadow:2px 2px 5px rgba(0,0,0,0.4);
+  z-index:12;display:none}
+.ball.show{display:block}
+.ball-lines{position:absolute;top:50%;left:0;width:100%;height:2px;background:rgba(0,0,0,0.2);transform:translateY(-50%)}
+.ball-vline{position:absolute;left:50%;top:0;width:2px;height:100%;background:rgba(0,0,0,0.2);transform:translateX(-50%)}
+
+.ball.dribble{animation:dribble3x .95s ease-in-out}
+@keyframes dribble3x{
+  0%{transform:translateY(0) scale(1)}
+  15%{transform:translateY(52px) scale(0.85)}
+  30%{transform:translateY(-8px) scale(1.03)}
+  40%{transform:translateY(52px) scale(0.85)}
+  55%{transform:translateY(-8px) scale(1.03)}
+  65%{transform:translateY(52px) scale(0.87)}
+  80%{transform:translateY(-4px) scale(1.01)}
+  100%{transform:translateY(0) scale(1)}
+}
+
+.result{position:absolute;top:28%;left:50%;
+  transform:translate(-50%,-50%) scale(0);font-size:44px;font-weight:900;
+  z-index:25;pointer-events:none;opacity:0;
+  text-shadow:2px 2px 10px rgba(0,0,0,0.7);transition:transform .25s ease-out,opacity .25s}
+.result.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.result.ok{color:#4CAF50}.result.fail{color:#FF5252}
+.result.opp{color:#FF9800}
+
+.qarea{position:absolute;top:64%;left:50%;transform:translateX(-50%);
+  width:94%;max-width:520px;z-index:20;text-align:center;
+  background:rgba(0,0,0,0.7);color:#fff;padding:10px 14px;border-radius:12px;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.qarea .qt{font-size:14px;line-height:1.3;margin-bottom:8px;font-weight:600}
+.qarea .opts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px}
+.opt-btn{flex:1 1 45%;min-width:45%;max-width:48%;padding:8px 6px;
+  background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.3);
+  border-radius:8px;color:#fff;font-size:12px;font-weight:600;
+  cursor:pointer;touch-action:manipulation;text-align:center;
+  transition:background .12s,border-color .12s;line-height:1.2}
+.opt-btn:active{background:rgba(255,255,255,0.3)}
+.opt-btn.off{pointer-events:none;opacity:.35}
+.opt-btn.ok{border-color:#4CAF50;background:rgba(76,175,80,0.45);pointer-events:none}
+.opt-btn.no{border-color:#f44336;background:rgba(244,67,54,0.35);pointer-events:none}
+.qarea .ctrls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.qarea .fb{font-size:12px;flex:1;display:none;text-align:left}
+.qarea .fb.ok{color:#8BC34A;display:block}
+.qarea .fb.no{color:#FF5252;display:block}
+.nbtn{display:none;padding:7px 18px;background:linear-gradient(135deg,#1e88e5,#42a5f5);
+  color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;
+  touch-action:manipulation;white-space:nowrap;font-weight:600}
+.nbtn:active{opacity:.85}
+
+.loading,.error-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#fff;font-size:1.1em;text-align:center;text-shadow:1px 1px 4px rgba(0,0,0,0.5)}
+
+.final{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.88);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;z-index:50;text-align:center;padding:20px}
+.final h2{font-size:1.5em;margin-bottom:6px}
+.final .final-score{font-size:2.5em;font-weight:900;margin:8px 0;line-height:1.2}
+.final .final-score .a{color:#64B5F6}
+.final .final-score .vs{color:rgba(255,255,255,0.2);font-size:0.6em;margin:0 12px}
+.final .final-score .b{color:#ef9a9a}
+.final .fm{font-size:1em;margin-bottom:14px;color:#ccc}
+.rbtn{padding:11px 32px;background:linear-gradient(135deg,#1e88e5,#42a5f5);
+  color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;touch-action:manipulation;font-weight:600}
+.trophy{font-size:64px;margin-bottom:10px;display:block}
+
+.swoosh{position:absolute;top:30%;left:5%;width:30px;height:8px;
+  background:rgba(255,255,255,0.6);border-radius:50%;z-index:11;opacity:0;
+  transform:rotate(-20deg)}
+.swoosh.fly{animation:swooshFly .6s ease-out forwards}
+@keyframes swooshFly{0%{opacity:1;left:5%}100%{opacity:0;left:80%}}
+
+@media(min-width:500px){
+  .opt-btn{font-size:13px;padding:10px 8px}
+  .qarea .qt{font-size:16px}
+  .scoreboard{font-size:15px}.scoreboard .sc{font-size:22px}
+  .result{font-size:56px}
+  .player{width:52px;height:96px}
+  .p-head{width:26px;height:26px}
+  .p-cap{width:30px;height:8px}
+  .p-torso{width:30px;height:28px;top:26px}
+  .p-arm{width:10px;height:24px;top:27px}
+  .p-arm.left{left:4px}.p-arm.right{right:4px}
+  .p-legs{top:54px;width:28px;height:28px}
+  .p-leg{width:10px;height:28px}
+  .p-shoe{width:13px;height:6px}
+  .ball{width:34px;height:34px}
+  .hoop-wrap{width:150px}
+  .backboard{width:110px;height:90px}
+  .rim{width:106px}
+  .net{width:96px}
+  .trophy{font-size:80px}
+}
+@media(max-height:480px){
+  .scoreboard{padding:4px 8px;font-size:11px}.scoreboard .sc{font-size:15px}
+  .qarea{top:59%;padding:6px 10px}.qarea .qt{font-size:11px}
+  .opt-btn{padding:5px 4px;font-size:10px}
+  .result{font-size:30px;top:20%}
+  .player{width:36px;height:70px}
+  .p-head{width:18px;height:18px}
+  .p-cap{width:22px;height:5px}
+  .p-torso{width:22px;height:20px;top:18px}
+  .p-arm{width:7px;height:18px;top:19px}
+  .p-legs{top:38px;width:20px;height:20px}
+  .p-leg{width:7px;height:20px}
+  .p-shoe{width:9px;height:4px}
+  .ball{width:24px;height:24px}
+  .hoop-wrap{width:100px}
+  .backboard{width:78px;height:68px}
+  .rim{width:74px}
+  .net{width:68px;height:24px}
+  .sky{height:52%}.court-wrap{height:48%}
+  #userP{bottom:48%}#oppP{bottom:48%}
+}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">Φόρτωση...</div></div>
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+var params=new URLSearchParams(window.location.search);
+var dataFile=params.get('data');
+var app=document.getElementById('app');
+
+if(!dataFile){
+  app.innerHTML='<div class="error-msg">Δεν βρέθηκε αρχείο δεδομένων.<br>?data=αρχείο.json</div>';
+  throw new Error('No data');
+}
+
+fetch(dataFile).then(function(r){if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(function(data){
+
+var questions=data.questions.slice();
+for(var i=questions.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=questions[i];questions[i]=questions[j];questions[j]=t}
+
+var cur=0,score=0,oppScore=0,answered=false;
+var animFrame=null;
+
+function render(){
+  answered=false;
+  var q=questions[cur];
+  var isTF=q.type==='tf';
+
+  var optsHTML='';
+  if(isTF){
+    var cv=(q.answer!==undefined?q.answer:q.correct).toString();
+    var items=[{label:'✓ ΑΛΗΘΕΙΑ',val:'true'},{label:'✗ ΨΕΜΑΤΑ',val:'false'}];
+    items.sort(function(){return Math.random()-.5});
+    for(var i=0;i<2;i++){
+      var ok=items[i].val===cv;
+      optsHTML+='<div class="opt-btn" data-ok="'+ok+'" onclick="pick(this)">'+items[i].label+'</div>';
+    }
+  }else{
+    var opts=q.options.map(function(o,idx){return{text:o,i:idx}});
+    opts.sort(function(){return Math.random()-.5});
+    var n=Math.min(opts.length,6);
+    for(var i=0;i<n;i++){
+      var ok=opts[i].i===q.correctIndex;
+      optsHTML+='<div class="opt-btn" data-ok="'+ok+'" onclick="pick(this)">'+esc(opts[i].text)+'</div>';
+    }
+  }
+
+  var starsHTML='';
+  for(var i=0;i<30;i++){
+    var sz=1+Math.random()*2.5;
+    starsHTML+='<div class="star" style="left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+sz+'px;height:'+sz+'px;animation-delay:'+(Math.random()*4)+'s;animation-duration:'+(1.5+Math.random()*2)+'s"></div>';
+  }
+
+  app.innerHTML=
+    '<div class="scene" id="scene">'+
+      '<div class="sky"><div class="stars">'+starsHTML+'</div></div>'+
+      '<div class="court-wrap"><div class="court-floor"><div class="court-top-line"></div></div><div class="court-center"></div><div class="court-center-line"></div></div>'+
+      '<div class="scoreboard">'+
+        '<div class="team"><span class="dot a"></span><span>Εγώ</span><span class="sc a" id="scA">'+score+'</span></div>'+
+        '<span class="qnum">'+(cur+1)+'/'+questions.length+'</span>'+
+        '<div class="team"><span class="sc b" id="scB">'+oppScore+'</span><span>Αντίπαλος</span><span class="dot b"></span></div>'+
+      '</div>'+
+      '<div class="hoop-wrap">'+
+        '<div class="backboard"><div class="backboard-square"></div></div>'+
+        '<div class="rim" id="rim"></div>'+
+        '<div class="net" id="net"></div>'+
+        '<div class="hoop-pole"></div>'+
+      '</div>'+
+      '<div class="player" id="userP">'+
+        '<div class="p-body" id="userBody">'+
+          '<div class="p-head"><div class="p-cap"></div></div>'+
+          '<div class="p-torso"></div>'+
+          '<div class="p-arm left"><div class="p-hand"></div></div>'+
+          '<div class="p-arm right"><div class="p-hand"></div></div>'+
+          '<div class="p-legs"><div class="p-leg l"><div class="p-shoe"></div></div><div class="p-leg r"><div class="p-shoe"></div></div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="player" id="oppP">'+
+        '<div class="p-body" id="oppBody">'+
+          '<div class="p-head"><div class="p-cap rc"></div></div>'+
+          '<div class="p-torso ot"></div>'+
+          '<div class="p-arm left"><div class="p-hand"></div></div>'+
+          '<div class="p-arm right"><div class="p-hand"></div></div>'+
+          '<div class="p-legs"><div class="p-leg l"><div class="p-shoe"></div></div><div class="p-leg r"><div class="p-shoe"></div></div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ball" id="ball"><div class="ball-lines"></div><div class="ball-vline"></div></div>'+
+      '<div class="result" id="res"></div>'+
+    '</div>'+
+    '<div class="qarea" id="qarea">'+
+      '<div class="qt">'+esc(q.text)+'</div>'+
+      '<div class="opts" id="optsWrap">'+optsHTML+'</div>'+
+      '<div class="ctrls"><div class="fb" id="fb"></div>'+
+      '<button class="nbtn" id="nbtn">'+(cur<questions.length-1?'Επόμενη Βολή →':'Αποτέλεσμα')+'</button></div>'+
+    '</div>';
+
+  document.getElementById('nbtn').onclick=function(){cur++;cur<questions.length?render():showFinal()};
+}
+
+function posInScene(el,sceneRect,ox,oy){
+  var r=el.getBoundingClientRect();
+  return{
+    x:r.left+r.width/2-sceneRect.left+(ox||0),
+    y:r.top-sceneRect.top+(oy||0)
+  };
+}
+
+function arcBall(ball,sx,sy,ex,ey,cb){
+  var dur=870,startT=null;
+  var dist=Math.abs(ex-sx);
+  var peak=Math.min(sy,ey)-Math.max(dist*0.25,50);
+  ball.style.left=sx+'px';
+  ball.style.top=sy+'px';
+  ball.style.transform='rotate(0deg)';
+  ball.style.transition='none';
+  function f(ts){
+    if(!startT)startT=ts;
+    var t=Math.min((ts-startT)/dur,1);
+    var tt=t;
+    var x=(1-tt)*(1-tt)*sx+2*(1-tt)*tt*((sx+ex)/2)+tt*tt*ex;
+    var y=(1-tt)*(1-tt)*sy+2*(1-tt)*tt*peak+tt*tt*ey;
+    ball.style.left=x+'px';
+    ball.style.top=y+'px';
+    ball.style.transform='rotate('+(tt*900)+'deg)';
+    if(tt<1)animFrame=requestAnimationFrame(f);
+    else{ball.style.transition='';cb()}
+  }
+  animFrame=requestAnimationFrame(f);
+}
+
+function shootSequence(ball,shooterEl,shooterBody,rimEl,netEl,sceneRect,target,q,isOk,el,res,fb,onScore){
+  var shootStart=posInScene(shooterEl,sceneRect,0,-20);
+
+  ball.className='ball show';
+  ball.style.transition='';
+  ball.style.left=shootStart.x+'px';
+  ball.style.top=shootStart.y+'px';
+  ball.style.transform='';
+
+  void ball.offsetWidth;
+  ball.style.animation='none';
+  void ball.offsetWidth;
+  ball.style.animation='dribble3x .95s ease-in-out';
+
+  setTimeout(function(){
+    ball.style.animation='';
+
+    var preShoot=posInScene(shooterEl,sceneRect,0,-20);
+    ball.style.left=preShoot.x+'px';
+    ball.style.top=preShoot.y+'px';
+
+    shooterBody.className='p-body shoot';
+
+    var raiseStart=performance.now();
+    function raise(ts){
+      var dt=ts-raiseStart;
+      var prog=Math.min(dt/160,1);
+      var raisedY=preShoot.y-(35*prog);
+      ball.style.top=raisedY+'px';
+      if(prog<1)requestAnimationFrame(raise);
+      else{
+        var shootPos=posInScene(shooterEl,sceneRect,0,-20);
+        ball.style.top=(shootPos.y-8)+'px';
+        ball.style.left=shootPos.x+'px';
+        setTimeout(function(){
+          arcBall(ball,shootPos.x,shootPos.y-8,target.x,target.y,function(){
+            ball.className='ball show';
+            ball.style.opacity='0';
+            ball.style.transition='';
+            onScore();
+          });
+        },20);
+      }
+    }
+    requestAnimationFrame(raise);
+  },980);
+}
+
+window.pick=function(el){
+  if(answered)return;
+  answered=true;
+  var q=questions[cur];
+  var isOk=el.dataset.ok==='true';
+
+  var ball=document.getElementById('ball');
+  var userBody=document.getElementById('userBody');
+  var oppBody=document.getElementById('oppBody');
+  var userP=document.getElementById('userP');
+  var oppP=document.getElementById('oppP');
+  var rim=document.getElementById('rim');
+  var net=document.getElementById('net');
+  var res=document.getElementById('res');
+  var fb=document.getElementById('fb');
+
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++)btns[i].classList.add('off');
+  el.classList.remove('off');
+  if(animFrame)cancelAnimationFrame(animFrame);
+
+  var scene=document.getElementById('scene');
+  var sr=scene.getBoundingClientRect();
+  var target=posInScene(rim,sr,0,3);
+
+  ball.style.opacity='1';
+  ball.style.transition='';
+  ball.style.animation='';
+
+  function finish(userScored){
+    if(userScored){score++;document.getElementById('scA').textContent=score}
+    else{oppScore++;document.getElementById('scB').textContent=oppScore}
+
+    net.classList.remove('ripple');
+    void net.offsetWidth;
+    net.classList.add('ripple');
+    rim.classList.add('celebrate');
+
+    if(isOk){
+      res.textContent='ΤΡΙΠΟΝΤΟ!';
+      res.className='result ok show';
+      fb.textContent=q.explanation||'Σωστό! Μπράβο!';
+      fb.className='fb ok';
+      el.classList.remove('off');
+      el.classList.add('ok');
+    }else{
+      res.textContent='ΑΝΤΙΠΑΛΟΣ ΣΚΟΡΑΡΕ!';
+      res.className='result fail show';
+      fb.textContent=q.explanation||'Δεν είναι σωστό.';
+      fb.className='fb no';
+      el.classList.remove('off');
+      el.classList.add('no');
+      var cz=document.querySelector('.opt-btn[data-ok="true"]');
+      if(cz){cz.classList.remove('off');cz.classList.add('ok')}
+    }
+    document.getElementById('nbtn').style.display='inline-block';
+  }
+
+  if(isOk){
+    userBody.className='p-body run';
+    userP.style.left='15%';
+    setTimeout(function(){
+      userBody.className='p-body';
+      shootSequence(ball,userP,userBody,rim,net,sr,target,q,isOk,el,res,fb,function(){
+        finish(true);
+        userBody.className='p-body celebrate';
+        setTimeout(function(){userBody.className='p-body';userP.style.left='5%'},600);
+      });
+    },500);
+  }else{
+    userBody.className='p-body stumble';
+
+    var srcPos=posInScene(userP,sr,0,-20);
+    var dstPos=posInScene(oppP,sr,0,-20);
+
+    ball.className='ball show';
+    ball.style.transition='';
+    ball.style.left=srcPos.x+'px';
+    ball.style.top=srcPos.y+'px';
+    ball.style.opacity='1';
+    ball.style.animation='';
+    ball.style.transform='';
+
+    setTimeout(function(){
+      userP.style.left='5%';
+      oppBody.className='p-body steal';
+
+      ball.style.transition='left .35s ease-in, top .35s ease-in';
+      ball.style.left=dstPos.x+'px';
+      ball.style.top=dstPos.y+'px';
+
+      setTimeout(function(){
+        ball.style.transition='';
+        oppBody.className='p-body';
+        oppP.style.left='30%';
+        oppBody.className='p-body run';
+
+        setTimeout(function(){
+          oppBody.className='p-body';
+          shootSequence(ball,oppP,oppBody,rim,net,sr,target,q,isOk,el,res,fb,function(){
+            finish(false);
+            oppBody.className='p-body celebrate';
+            setTimeout(function(){oppBody.className='p-body';oppP.style.left='38%'},600);
+          });
+        },400);
+      },400);
+    },200);
+  }
+};
+
+function showFinal(){
+  if(animFrame)cancelAnimationFrame(animFrame);
+  var msg;
+  if(score>oppScore)msg='Νίκησες! Είσαι πρωταθλητής!';
+  else if(score===oppScore)msg='Ισοπαλία! Παίξτε ξανά!';
+  else msg='Έχασες! Δοκίμασε ξανά!';
+  app.innerHTML=
+    '<div class="final">'+
+      '<span class="trophy">'+(score>oppScore?'🏆':'🏀')+'</span>'+
+      '<h2>Τέλος Αγώνα!</h2>'+
+      '<div class="final-score"><span class="a">'+score+'</span><span class="vs">vs</span><span class="b">'+oppScore+'</span></div>'+
+      '<div class="fm">'+msg+'</div>'+
+      '<button class="rbtn" onclick="location.reload()">Ξαναπαίξε!</button>'+
+    '</div>';
+}
+
+render();
+
+}).catch(function(err){
+  app.innerHTML='<div class="error-msg">Σφάλμα: '+esc(err.message)+'</div>';
+});
+</script>
+</body>
+</html>

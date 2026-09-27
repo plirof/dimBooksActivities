@@ -1,0 +1,68 @@
+{
+  "title": "Φρούτα εποχών",
+  "subtitle": "Ταίριαξε κάθε φρούτο στη σωστή εποχή",
+  "categories": [
+    {
+      "id": "summer",
+      "name": "ΚΑΛΟΚΑΙΡΙ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "winter",
+      "name": "ΧΕΙΜΩΝΑΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "spring",
+      "name": "ΑΝΟΙΞΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "autumn",
+      "name": "ΦΘΙΝΟΠΩΡΟ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🍉 Καρπούζι",
+      "category": "summer"
+    },
+    {
+      "id": "item2",
+      "text": "🍊 Μανταρίνι",
+      "category": "winter"
+    },
+    {
+      "id": "item3",
+      "text": "🍓 Φράουλα",
+      "category": "spring"
+    },
+    {
+      "id": "item4",
+      "text": "🍇 Σταφύλι",
+      "category": "autumn"
+    },
+    {
+      "id": "item5",
+      "text": "🍑 Ροδάκινο",
+      "category": "summer"
+    },
+    {
+      "id": "item6",
+      "text": "🍋 Λεμόνι",
+      "category": "winter"
+    },
+    {
+      "id": "item7",
+      "text": "🌸 Κεράσι",
+      "category": "spring"
+    },
+    {
+      "id": "item8",
+      "text": "🍎 Μήλο",
+      "category": "autumn"
+    }
+  ]
+}

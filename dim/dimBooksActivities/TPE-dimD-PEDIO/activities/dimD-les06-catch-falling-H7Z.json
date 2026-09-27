@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Animation Στοιχεία",
+  "subtitle": "Πιάσε τα σωστά!",
+  "instructions": "Πιάσε μόνο τα στοιχεία που χρειάζονται για animation",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Επόμενη ενδυμασία", "correct": true, "color": "#4caf50" },
+    { "text": "Διαγραφή ενδυμασίας", "correct": false, "color": "#f44336" },
+    { "text": "Περίμενε δευτερόλεπτο", "correct": true, "color": "#2196f3" },
+    { "text": "Περίμενε λεπτό", "correct": false, "color": "#ff9800" },
+    { "text": "1÷10 δευτερόλεπτο", "correct": true, "color": "#8bc34a" },
+    { "text": "10÷1 δευτερόλεπτο", "correct": false, "color": "#9c27b0" },
+    { "text": "Κίνηση βημάτων", "correct": true, "color": "#00bcd4" },
+    { "text": "Μόνο ενδυμασία χωρίς κίνηση", "correct": false, "color": "#ff5722" }
+  ]
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάντεψε τον Αριθμό</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.6em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:20px;font-weight:400}
+.progress-dots{display:flex;justify-content:center;gap:10px;margin-bottom:25px}
+.dot{width:18px;height:18px;border-radius:50%;background:#e0e0e0;transition:all .3s}
+.dot.active{background:linear-gradient(135deg,#667eea,#764ba2);transform:scale(1.2)}
+.dot.done{background:#4CAF50}
+.game-area{text-align:center;margin-bottom:20px}
+.hint-box{font-size:1.3em;padding:15px;border-radius:12px;margin:15px 0;font-weight:700;min-height:50px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.hint-box.higher{background:#fff3e0;color:#e65100}
+.hint-box.lower{background:#e3f2fd;color:#0d47a1}
+.hint-box.correct{background:#e8f5e9;color:#2e7d32}
+.hint-box.neutral{background:#f5f5f5;color:#666}
+.input-row{display:flex;gap:10px;justify-content:center;margin:15px 0}
+.input-row input{padding:12px 16px;font-size:1.2em;border:2px solid #e0e0e0;border-radius:12px;width:120px;text-align:center;outline:none;transition:border .2s}
+.input-row input:focus{border-color:#667eea}
+.input-row button{padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:transform .2s}
+.input-row button:hover{transform:scale(1.05)}
+.input-row button:disabled{opacity:.5;cursor:default;transform:none}
+.attempts-info{color:#888;font-size:.95em;margin:10px 0}
+.results-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.95em}
+.results-table th{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:10px 14px;text-align:center;border-radius:8px 8px 0 0}
+.results-table td{padding:8px 14px;text-align:center;border-bottom:1px solid #eee}
+.results-table tr:hover td{background:#f8f9ff}
+.avg-box{background:#f0f4ff;border-radius:12px;padding:15px;text-align:center;margin:15px 0;font-size:1.1em;color:#333}
+.avg-box strong{color:#667eea;font-size:1.3em}
+.stars{font-size:2em;text-align:center;margin:10px 0}
+.final-area{text-align:center;padding:15px}
+.final-area h2{color:#333;font-size:1.4em;margin-bottom:10px}
+.restart-btn{margin-top:15px;padding:12px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+.loading{text-align:center;padding:40px;color:#fff;font-size:1.2em}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+<div class="loading">Φόρτωση...</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+function showError(msg){app.innerHTML='<div class="error">'+msg+'</div>'}
+
+if(!dataFile){showError('Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json στο URL.');throw new Error('No data file')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const range=data.range||10;
+const totalRounds=data.rounds||5;
+let currentRound=0;
+let secretNumber=0;
+let attempts=0;
+let roundResults=[];
+let gameOver=false;
+
+function startRound(){
+  currentRound++;
+  secretNumber=Math.floor(Math.random()*range)+1;
+  attempts=0;
+  render();
+}
+
+function render(){
+  const dots=Array.from({length:totalRounds},(_, i)=>{
+    if(i<roundResults.length)return'<div class="dot done" title="Γύρος '+(i+1)+': '+roundResults[i]+' προσπάθειες"></div>';
+    if(i===currentRound-1)return'<div class="dot active" title="Γύρος '+(i+1)+'"></div>';
+    return'<div class="dot" title="Γύρος '+(i+1)+'"></div>';
+  }).join('');
+
+  let tableHtml='';
+  if(data.showTable&&roundResults.length>0){
+    tableHtml='<table class="results-table"><tr><th>Γύρος</th><th>Προσπάθειες</th></tr>'+
+      roundResults.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r+'</td></tr>').join('')+'</table>';
+  }
+
+  app.innerHTML=`
+    <h1>${esc(data.title)}</h1>
+    <h2>${esc(data.subtitle||'')}</h2>
+    <div class="progress-dots">${dots}</div>
+    ${gameOver?renderFinal():`
+    <div class="game-area">
+      <div class="hint-box neutral" id="hint">Γύρος ${currentRound} από ${totalRounds} — Μάντεψε έναν αριθμό 1-${range}!</div>
+      <div class="input-row">
+        <input type="number" id="guessInput" min="1" max="${range}" placeholder="?" autofocus>
+        <button id="guessBtn" onclick="makeGuess()">Μάντεψε!</button>
+      </div>
+      <div class="attempts-info" id="attemptsInfo">Προσπάθειες αυτόν τον γύρο: 0</div>
+    </div>
+    ${tableHtml}`}
+  `;
+
+  if(!gameOver){
+    const inp=document.getElementById('guessInput');
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')makeGuess()});
+    inp.focus();
+  }
+}
+
+window.makeGuess=function(){
+  if(gameOver)return;
+  const inp=document.getElementById('guessInput');
+  const val=parseInt(inp.value);
+  if(isNaN(val)||val<1||val>range){inp.style.borderColor='#f44336';return}
+  inp.style.borderColor='#e0e0e0';
+  attempts++;
+  document.getElementById('attemptsInfo').textContent='Προσπάθειες αυτόν τον γύρο: '+attempts;
+  const hint=document.getElementById('hint');
+
+  if(val===secretNumber){
+    hint.textContent='Σωστό! Βρήκες τον αριθμό '+secretNumber+' σε '+attempts+' προσπάθειες!';
+    hint.className='hint-box correct';
+    roundResults.push(attempts);
+    document.getElementById('guessBtn').disabled=true;
+    setTimeout(()=>{
+      if(currentRound>=totalRounds){gameOver=true;render()}
+      else{startRound()}
+    },1500);
+  }else if(val<secretNumber){
+    hint.textContent='Μεγαλύτερο! ↑';
+    hint.className='hint-box higher';
+  }else{
+    hint.textContent='Μικρότερο! ↓';
+    hint.className='hint-box lower';
+  }
+};
+
+function renderFinal(){
+  const avg=(roundResults.reduce((a,b)=>a+b,0)/roundResults.length).toFixed(1);
+  let html='<div class="final-area"><h2>Μπράβο! Ολοκλήρωσες όλους τους γύρους!</h2>';
+
+  if(data.showTable){
+    html+='<table class="results-table"><tr><th>Γύρος</th><th>Προσπάθειες</th></tr>'+
+      roundResults.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r+'</td></tr>').join('')+'</table>';
+  }
+
+  if(data.showAverage){
+    html+='<div class="avg-box">Μέσος όρος προσπαθειών: <strong>'+avg+'</strong></div>';
+  }
+
+  if(data.showStars){
+    let starCount;
+    if(avg<=2)starCount=5;else if(avg<=3)starCount=4;else if(avg<=4)starCount=3;else if(avg<=5)starCount=2;else starCount=1;
+    html+='<div class="stars">'+Array(starCount).fill('⭐').join('')+'</div>';
+  }
+
+  html+='<button class="restart-btn" onclick="location.reload()">Ξαναπαίξε!</button></div>';
+  return html;
+}
+
+startRound()
+}).catch(err=>showError('Σφάλμα φόρτωσης: '+esc(err.message)));
+</script>
+</body>
+</html>

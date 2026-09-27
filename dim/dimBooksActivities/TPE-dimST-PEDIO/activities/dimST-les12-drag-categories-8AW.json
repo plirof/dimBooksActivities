@@ -1,0 +1,63 @@
+{
+  "title": "Χαρακτηριστικά σε εξαρτήματα",
+  "subtitle": "Ταίριαξε κάθε χαρακτηριστικό στο σωστό εξάρτημα",
+  "categories": [
+    {
+      "id": "cpu",
+      "name": "CPU",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "ram",
+      "name": "RAM",
+      "color": "#2196F3"
+    },
+    {
+      "id": "ssd",
+      "name": "SSD",
+      "color": "#FF9800"
+    },
+    {
+      "id": "screen",
+      "name": "ΟΘΟΝΗ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "GHz",
+      "category": "cpu"
+    },
+    {
+      "id": "item2",
+      "text": "GB",
+      "category": "ram"
+    },
+    {
+      "id": "item3",
+      "text": "TB",
+      "category": "ssd"
+    },
+    {
+      "id": "item4",
+      "text": "Inches",
+      "category": "screen"
+    },
+    {
+      "id": "item5",
+      "text": "Hz",
+      "category": "screen"
+    },
+    {
+      "id": "item6",
+      "text": "Cores",
+      "category": "cpu"
+    },
+    {
+      "id": "item7",
+      "text": "MHz",
+      "category": "ram"
+    }
+  ]
+}

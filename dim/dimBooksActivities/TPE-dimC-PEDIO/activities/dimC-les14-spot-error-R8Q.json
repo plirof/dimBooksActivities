@@ -1,0 +1,61 @@
+{
+  "title": "Βρες τα Λάθη: Αρχεία και Φάκελοι",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "εικονίδιο", "error": false},
+        {"text": "δείχνει", "error": false},
+        {"text": "το", "error": false},
+        {"text": "μέγεθος", "error": true, "correct": "τύπο", "feedback": "Το εικονίδιο δείχνει τον ΤΥΠΟ (εικόνα, ήχο, κείμενο), όχι το μέγεθος!"},
+        {"text": "του", "error": false},
+        {"text": "αρχείου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "φάκελοι", "error": false},
+        {"text": "περιέχουν", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Οι φάκελοι περιέχουν αρχεία ΚΑΙ άλλους φακέλους (υποφακέλους)!"},
+        {"text": "αρχεία.", "error": true, "correct": "αρχεία και άλλους φακέλους.", "feedback": "Οι φάκελοι περιέχουν αρχεία ΚΑΙ άλλους φακέλους!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ανοίγω", "error": false},
+        {"text": "αρχείο", "error": false},
+        {"text": "με", "error": false},
+        {"text": "μονό", "error": true, "correct": "διπλό", "feedback": "Ανοίγουμε αρχείο ή φάκελο με ΔΙΠΛΟ κλικ, όχι μονό!"},
+        {"text": "κλικ.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "όνομα", "error": false},
+        {"text": "του", "error": false},
+        {"text": "αρχείου", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Πρέπει να διαλέγουμε όνομα που να ΘΥΜΙΖΕΙ το περιεχόμενο!"},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "θυμίζει", "error": false},
+        {"text": "το", "error": false},
+        {"text": "περιεχόμενο.", "error": true, "correct": "περιεχόμενό του.", "feedback": "Πρέπει να διαλέγουμε όνομα που να θυμίζει τι περιέχει το αρχείο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στην", "error": false},
+        {"text": "αριστερή", "error": false},
+        {"text": "στήλη", "error": false},
+        {"text": "φαίνονται", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "περιεχόμενα", "error": true, "correct": "οι τοποθεσίες", "feedback": "Στην αριστερή στήλη φαίνονται οι ΤΟΠΟΘΕΣΙΕΣ, τα περιεχόμενα στη ΔΕΞΙΑ!"},
+        {"text": "του", "error": false},
+        {"text": "φακέλου.", "error": false}
+      ]
+    }
+  ]
+}

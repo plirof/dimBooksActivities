@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ιεραρχικός Χάρτης - Φρούτα των Εποχών</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ffecd2,#fcb69f);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:900px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#2d6a4f,#40916c);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:20px}
+.tree-area{min-height:340px;background:#f8faf8;border-radius:16px;border:2px dashed #cfe9d7;padding:15px;position:relative}
+.tree-root{text-align:center;margin-bottom:8px}
+.tree-root .node{display:inline-block;background:linear-gradient(135deg,#2d6a4f,#40916c);color:#fff;padding:12px 28px;border-radius:50px;font-size:1.1em;font-weight:700;box-shadow:0 4px 12px rgba(45,106,79,.3)}
+.season-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.season-col{flex:1;min-width:130px;max-width:180px;background:#fff;border-radius:14px;border:2px solid #d8e9e0;padding:8px;text-align:center}
+.season-col .s-label{font-size:.85em;font-weight:700;padding:6px 0;border-radius:10px;margin-bottom:6px;color:#fff}
+.spr .s-label{background:#a7c957}
+.sum .s-label{background:#f4a261}
+.aut .s-label{background:#e76f51}
+.win .s-label{background:#457b9d}
+.fruit-slots{min-height:80px;display:flex;flex-direction:column;gap:6px}
+.fruit-slot{min-height:40px;border:2px dashed #ddd;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85em;transition:all .3s;background:#fafcfa;padding:4px 8px}
+.fruit-slot.filled{background:#e8f5e9;border-color:#66bb6a;border-style:solid}
+.fruit-slot.drag-over{border-color:#40916c;background:#e8f5e9;transform:scale(1.02)}
+.pool-area{background:#fafcfa;border-radius:16px;border:2px solid #d8e9e0;padding:15px;margin-top:15px}
+.pool-area h3{text-align:center;color:#2d6a4f;margin-bottom:10px;font-size:1em}
+.fruit-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:60px}
+.fruit-card{padding:10px 18px;background:linear-gradient(135deg,#fff,#f0faf3);border:2px solid #c8e6c9;border-radius:50px;cursor:grab;font-size:.95em;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);user-select:none;touch-action:none}
+.fruit-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:#66bb6a}
+.fruit-card:active{cursor:grabbing}
+.fruit-card.dragging{opacity:.4}
+.fruit-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#2d6a4f,#40916c);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(45,106,79,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.2em;font-weight:700;margin-top:12px;min-height:40px}
+.feedback.ok{color:#2d6a4f}
+.feedback.fail{color:#e63946}
+.connector-lines{position:relative;height:30px;display:flex;justify-content:center;margin:-5px 0 -15px 0}
+.connector-lines .line-v{width:2px;height:25px;background:#aaa}
+@media(max-width:700px){.season-row{flex-wrap:wrap}.season-col{min-width:45%}.fruit-card{font-size:.85em;padding:8px 14px}}
+@media(max-width:450px){.season-col{min-width:100%}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .season-row > * { margin: 5px; }
+  .fruit-slots > * + * { margin-top: 6px; }
+  .fruit-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌳 Ιεραρχικός Χάρτης: Φρούτα των Εποχών</h1>
+<p>Σύρε κάθε φρούτο στη σωστή εποχή του!</p>
+</div>
+<div class="area">
+<div class="tree-area" id="treeArea">
+<div class="tree-root">
+<div class="node">🍎 Φρούτα</div>
+</div>
+<div class="connector-lines"><div class="line-v"></div></div>
+<div class="season-row">
+<div class="season-col spr" data-season="spring">
+<div class="s-label">🌼 Άνοιξη</div>
+<div class="fruit-slots" data-season="spring">
+<div class="fruit-slot" data-index="0"></div>
+<div class="fruit-slot" data-index="1"></div>
+</div>
+</div>
+<div class="season-col sum" data-season="summer">
+<div class="s-label">☀️ Καλοκαίρι</div>
+<div class="fruit-slots" data-season="summer">
+<div class="fruit-slot" data-index="0"></div>
+<div class="fruit-slot" data-index="1"></div>
+</div>
+</div>
+<div class="season-col aut" data-season="autumn">
+<div class="s-label">🍂 Φθινόπωρο</div>
+<div class="fruit-slots" data-season="autumn">
+<div class="fruit-slot" data-index="0"></div>
+<div class="fruit-slot" data-index="1"></div>
+</div>
+</div>
+<div class="season-col win" data-season="winter">
+<div class="s-label">❄️ Χειμώνας</div>
+<div class="fruit-slots" data-season="winter">
+<div class="fruit-slot" data-index="0"></div>
+<div class="fruit-slot" data-index="1"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pool-area">
+<h3>🧺 Τα φρούτα — σύρε το καθένα στη σωστή εποχή</h3>
+<div class="fruit-pool" id="fruitPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var fruits=[
+{name:'Φράουλες',emoji:'🍓',season:'spring'},
+{name:'Κεράσια',emoji:'🍒',season:'spring'},
+{name:'Καρπούζι',emoji:'🍉',season:'summer'},
+{name:'Ροδάκινο',emoji:'🍑',season:'summer'},
+{name:'Σταφύλια',emoji:'🍇',season:'autumn'},
+{name:'Αχλάδια',emoji:'🍐',season:'autumn'},
+{name:'Πορτοκάλια',emoji:'🍊',season:'winter'},
+{name:'Λεμόνια',emoji:'🍋',season:'winter'}
+];
+
+var placements={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function initPool(){
+var pool=document.getElementById('fruitPool');
+pool.innerHTML='';
+var shuffled=shuffle(fruits.slice());
+for(var i=0;i<shuffled.length;i++){
+var f=shuffled[i];
+var card=document.createElement('div');
+card.className='fruit-card';
+card.setAttribute('draggable','true');
+card.dataset.fruitIdx=fruits.indexOf(f);
+card.innerHTML=f.emoji+' '+f.name;
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function dragStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';
+e.dataTransfer.setData('text/plain',el.dataset.fruitIdx);
+}
+
+function dragEnd(e,el){
+el.classList.remove('dragging');
+dragItem=null;
+clearDragOver();
+}
+
+function touchStart(e,el){
+dragItem=el;
+el.classList.add('dragging');
+}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder&&(elUnder.classList.contains('fruit-slot')||elUnder.parentElement.classList.contains('fruit-slot'))){
+var slot=elUnder.classList.contains('fruit-slot')?elUnder:elUnder.parentElement;
+if(!slot.classList.contains('filled')){
+slot.classList.add('drag-over');
+dragItem.dataset.targetSlot=slot.dataset.season+'-'+slot.parentElement.dataset.season+'-'+slot.dataset.index;
+}else{
+dragItem.dataset.targetSlot='';
+}
+}else{
+dragItem.dataset.targetSlot='';
+}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');
+clearDragOver();
+if(el.dataset.targetSlot){
+var parts=el.dataset.targetSlot.split('-');
+var season=parts[1];
+var index=parseInt(parts[2]);
+tryPlaceFruit(el,season,index);
+}
+el.dataset.targetSlot='';
+}
+function clearDragOver(){
+var slots=document.querySelectorAll('.fruit-slot');
+for(var i=0;i<slots.length;i++)slots[i].classList.remove('drag-over');
+}
+document.addEventListener('dragstart',function(e){
+if(!e.target.classList.contains('fruit-card'))e.preventDefault();
+});
+document.addEventListener('dragover',function(e){
+if(dragItem&&e.target.classList.contains('fruit-slot'))e.preventDefault();
+});
+document.addEventListener('drop',function(e){
+e.preventDefault();
+if(!dragItem)return;
+var slot=e.target.classList.contains('fruit-slot')?e.target:e.target.closest('.fruit-slot');
+if(!slot||slot.classList.contains('filled'))return;
+var season=slot.parentElement.dataset.season;
+var index=parseInt(slot.dataset.index);
+tryPlaceFruit(dragItem,season,index);
+});
+
+function tryPlaceFruit(card,season,index){
+var idx=parseInt(card.dataset.fruitIdx);
+var fruit=fruits[idx];
+if(fruit.season!==season){
+showFeedback('❌ Λάθος εποχή! Το '+fruit.emoji+' '+fruit.name+' δεν ανήκει εδώ.',false);
+return;
+}
+var slotKey=season+'-'+index;
+placements[slotKey]={idx:idx,season:season};
+card.classList.add('placed');
+var slotEl=document.querySelector('.fruit-slots[data-season="'+season+'"] .fruit-slot[data-index="'+index+'"]');
+slotEl.classList.add('filled');
+slotEl.innerHTML=fruit.emoji+' '+fruit.name;
+slotEl.dataset.placedIdx=idx;
+showFeedback('✅ Μπράβο! Το '+fruit.emoji+' '+fruit.name+' μπήκε σωστά!',true);
+document.getElementById('checkBtn').disabled=Object.keys(placements).length<fruits.length;
+}
+
+function checkAnswers(){
+var allSlots=document.querySelectorAll('.fruit-slots');
+var correct=0;
+var total=0;
+for(var i=0;i<allSlots.length;i++){
+var slots=allSlots[i].querySelectorAll('.fruit-slot');
+var season=allSlots[i].dataset.season;
+for(var j=0;j<slots.length;j++){
+var slot=slots[j];
+if(slot.classList.contains('filled')){
+total++;
+var idx=parseInt(slot.dataset.placedIdx);
+if(fruits[idx].season===season)correct++;
+}
+}
+}
+if(correct===total&&total===fruits.length){
+showFeedback('🎉 Τέλεια! Όλα τα φρούτα μπήκαν στη σωστή εποχή! Ιεραρχικός χάρτης ολοκληρωμένος! ✅',true);
+}else{
+showFeedback('🔍 '+correct+'/'+total+' σωστά. Δοκίμασε ξανά!',correct===total);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},3000);
+}
+
+function resetGame(){
+placements={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+document.getElementById('checkBtn').disabled=true;
+var slots=document.querySelectorAll('.fruit-slot');
+for(var i=0;i<slots.length;i++){
+slots[i].classList.remove('filled');
+slots[i].innerHTML='';
+delete slots[i].dataset.placedIdx;
+}
+initPool();
+}
+
+initPool();
+document.getElementById('checkBtn').disabled=true;
+</script>
+</body>
+</html>

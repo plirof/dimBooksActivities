@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "δίκτυο", "error": false},
+        {"text": "χωρίζει", "error": true, "correct": "συνδέει", "feedback": "Το δίκτυο συνδέει, δεν χωρίζει!"},
+        {"text": "τους", "error": false},
+        {"text": "υπολογιστές.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "συνδέσω", "error": false},
+        {"text": "χρειάζομαι", "error": false},
+        {"text": "μολύβι.", "error": true, "correct": "καλώδιο", "feedback": "Χρειαζόμαστε καλώδιο, όχι μολύβι!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "υπολογιστές", "error": false},
+        {"text": "επικοινωνούν", "error": false},
+        {"text": "με", "error": false},
+        {"text": "κουτάλια.", "error": true, "correct": "καλώδια", "feedback": "Οι υπολογιστές επικοινωνούν με καλώδια!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "καλώδιο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "σαν", "error": false},
+        {"text": "βιβλίο.", "error": true, "correct": "δρόμος", "feedback": "Το καλώδιο είναι σαν δρόμος!"}
+      ]
+    }
+  ]
+}

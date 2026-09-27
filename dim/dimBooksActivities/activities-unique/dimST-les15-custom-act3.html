@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT Space Station</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:#0a0a2e;font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;overflow:hidden}
+
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.star{position:absolute;background:#fff;border-radius:50%;animation:tw var(--d,3s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+
+.screen{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;padding:20px;transition:opacity .5s}
+.screen.off{opacity:0;pointer-events:none}
+
+#startScreen{background:radial-gradient(ellipse at center,#1a1a5e 0%,#0a0a2e 70%)}
+.s-icon{font-size:4em;margin-bottom:14px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.s-title{font-size:2.2em;color:#fff;text-align:center;text-shadow:0 0 30px rgba(102,126,234,.6);margin-bottom:8px}
+.s-sub{color:#8888cc;text-align:center;margin-bottom:24px;max-width:500px;line-height:1.5}
+.s-info{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 24px;max-width:500px;margin-bottom:28px;color:#aaa8dd;font-size:.92em;line-height:1.7}
+.s-info b{color:#667eea}
+.s-btn{padding:16px 48px;border:none;border-radius:14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:1.2em;cursor:pointer;font-family:inherit;font-weight:700;transition:all .25s;box-shadow:0 4px 20px rgba(102,126,234,.4)}
+.s-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 30px rgba(102,126,234,.6)}
+
+#gameScreen{background:radial-gradient(ellipse at center bottom,#0f0f3e 0%,#0a0a2e 60%);justify-content:space-between;padding:0}
+.hud{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;z-index:20;flex-shrink:0}
+.hud-sc{color:#38ef7d;font-size:1.2em;font-weight:700}
+.hud-lv{display:flex;gap:4px;font-size:1.3em}
+.hud-lv .x{opacity:.2;filter:grayscale(1)}
+.hud-cb{color:#ff9f43;font-size:1.1em;font-weight:700;min-width:60px;text-align:right}
+
+.play{flex:1;width:100%;position:relative;overflow:hidden}
+.dc{position:absolute;background:linear-gradient(145deg,#1e1e4e,#2a2a6a);border:2px solid rgba(102,126,234,.4);border-radius:20px;padding:20px 28px;text-align:center;width:220px;z-index:15;box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 25px rgba(102,126,234,.15);transition:transform .4s ease,opacity .4s ease}
+.dc.in{animation:cardIn .4s ease-out}
+@keyframes cardIn{from{opacity:0;transform:translateY(-40px) scale(.8)}to{opacity:1;transform:translateY(0) scale(1)}}
+.dc.ok{transform:scale(.15) rotate(10deg);opacity:0}
+.dc.fail{animation:shake .5s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}15%,45%,75%{transform:translateX(-12px)}30%,60%,90%{transform:translateX(12px)}}
+.dc.fail.out{opacity:0;transform:scale(.4) rotate(15deg);transition:all .4s}
+.dc-em{font-size:3em;margin-bottom:8px}
+.dc-nm{color:#fff;font-size:1.1em;font-weight:600}
+.dc-bar{width:100%;height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:12px;overflow:hidden}
+.dc-fill{height:100%;background:linear-gradient(90deg,#667eea,#38ef7d);border-radius:2px;transition:width 80ms linear}
+
+.fb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(10,10,46,.94);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px 28px;text-align:center;z-index:30;opacity:0;pointer-events:none;transition:opacity .3s;max-width:400px;width:90%}
+.fb.on{opacity:1}
+.fb-ic{font-size:2.2em;margin-bottom:6px}
+.fb-rs{color:#fff;font-size:1em;font-weight:600;margin-bottom:4px}
+.fb-wh{color:#99a;font-size:.88em;font-style:italic;line-height:1.4}
+
+.dock{width:100%;display:flex;gap:16px;padding:16px 24px 28px;z-index:20;flex-shrink:0}
+.dk{flex:1;padding:18px 10px;border:3px solid;border-radius:18px;font-size:1em;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent}
+.dk:active{transform:scale(.94)}
+.dk:disabled{opacity:.35;pointer-events:none}
+.dk-i{border-color:rgba(102,126,234,.5);color:#667eea}
+.dk-i:hover{background:rgba(102,126,234,.15);box-shadow:0 0 30px rgba(102,126,234,.25)}
+.dk-n{border-color:rgba(255,159,67,.5);color:#ff9f43}
+.dk-n:hover{background:rgba(255,159,67,.15);box-shadow:0 0 30px rgba(255,159,67,.25)}
+.dk-em{font-size:1.6em}
+.dk-lb{font-size:.9em}
+
+.fl{position:fixed;top:0;left:0;right:0;bottom:0;z-index:25;pointer-events:none;opacity:0;transition:opacity .15s}
+.fl.g{background:rgba(56,239,125,.12)}
+.fl.r{background:rgba(244,67,54,.18)}
+.fl.on{opacity:1}
+
+.pts{position:absolute;z-index:35;color:#38ef7d;font-size:1.4em;font-weight:800;pointer-events:none;animation:ptsUp 1s ease-out forwards;text-shadow:0 0 10px rgba(56,239,125,.4)}
+@keyframes ptsUp{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-50px)}}
+
+#endScreen{background:radial-gradient(ellipse at center,#1a1a5e 0%,#0a0a2e 70%);overflow-y:auto;justify-content:flex-start;padding:30px 20px}
+.eb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px;max-width:620px;width:100%}
+.eb-t{font-size:1.5em;color:#fff;text-align:center;margin-bottom:4px}
+.eb-s{color:#8888cc;text-align:center;margin-bottom:14px;font-size:.9em}
+.eb-st{text-align:center;font-size:2.2em;margin-bottom:10px;letter-spacing:8px}
+.eb-st .y{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.5)}
+.eb-st .n{color:#2a2a4a}
+.eb-sc{text-align:center;font-size:1.2em;color:#38ef7d;font-weight:700;margin-bottom:20px}
+.rp-t{color:#667eea;font-size:1.05em;font-weight:700;margin-bottom:10px;text-align:center}
+.rp-l{list-style:none}
+.rp-i{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;margin-bottom:5px;font-size:.88em}
+.rp-i.ok{background:rgba(56,239,125,.08);border:1px solid rgba(56,239,125,.15)}
+.rp-i.no{background:rgba(244,67,54,.08);border:1px solid rgba(244,67,54,.15)}
+.ri-e{font-size:1.3em;min-width:28px;text-align:center}
+.ri-n{color:#ddd;font-weight:600;min-width:130px}
+.ri-a{font-size:.82em;min-width:55px}
+.rp-i.ok .ri-a{color:#38ef7d}
+.rp-i.no .ri-a{color:#f44336}
+.ri-w{color:#888;font-size:.82em;flex:1}
+.bn{margin-top:18px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
+.bn-t{color:#ff9f43;font-size:.95em;font-weight:700;margin-bottom:10px;text-align:center}
+.bn input,.bn textarea{width:100%;padding:10px 14px;border:2px solid rgba(255,159,67,.25);border-radius:10px;background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:.9em;margin-bottom:8px;outline:none}
+.bn input:focus,.bn textarea:focus{border-color:#ff9f43}
+.bn textarea{min-height:50px;resize:vertical}
+.bn button{display:block;margin:8px auto 0;padding:10px 28px;border:none;border-radius:10px;background:linear-gradient(135deg,#ff9f43,#ff6b6b);color:#fff;font-size:.92em;cursor:pointer;font-family:inherit;font-weight:600}
+.bn-m{text-align:center;color:#38ef7d;font-size:.88em;margin-top:6px;display:none}
+.e-btns{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.e-b{padding:14px 32px;border:none;border-radius:12px;font-size:1em;cursor:pointer;font-family:inherit;font-weight:700;transition:all .2s}
+.e-b:hover{transform:translateY(-2px)}
+.e-b.p{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+
+@media(max-width:520px){
+  .s-title{font-size:1.6em}
+  .s-info{padding:14px 16px;font-size:.85em}
+  .dc{width:180px;padding:16px 20px}
+  .dc-em{font-size:2.5em}
+  .dk{padding:14px 6px}
+  .dk-lb{font-size:.8em}
+  .ri-n{min-width:100px}
+  .ri-w{display:none}
+}
+@media(max-height:500px){
+  .hud{padding:6px 16px}
+  .dc{width:160px;padding:12px 16px}
+  .dc-em{font-size:2em}
+  .dk{padding:10px 6px}
+  .dock{padding:10px 16px 16px}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .hud-lv > * + * { margin-left: 4px; }
+  .dock > * + * { margin-left: 16px; }
+  .dk > * + * { margin-top: 4px; }
+  .rp-i > * + * { margin-left: 8px; }
+  .e-btns > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<div class="fl g" id="flG"></div>
+<div class="fl r" id="flR"></div>
+
+<div class="screen" id="startScreen">
+  <div class="s-icon">🛸</div>
+  <h1 class="s-title">IoT Space Station</h1>
+  <p class="s-sub">Αναγνώρισε ποιες συσκευές είναι IoT και ποιες όχι!</p>
+  <div class="s-info">
+    Συσκευές πετούν προς τον διαστημικό σταθμό!<br>
+    Σκάναρε καθεμία και κατεύθυνέ τη στο σωστό κόμβο:<br>
+    <b>📡 IoT Hub</b> → συσκευές με σύνδεση στο διαδίκτυο<br>
+    <b>🚫 Non-IoT</b> → συσκευές χωρίς σύνδεση<br><br>
+    Μην αφήσεις τη συσκευή να φτάσει στον σταθμό!
+  </div>
+  <button class="s-btn" onclick="startGame()">🚀 Ξεκίνα!</button>
+</div>
+
+<div class="screen off" id="gameScreen">
+  <div class="hud">
+    <div class="hud-sc" id="hScore">⭐ 0</div>
+    <div class="hud-lv" id="hLives"></div>
+    <div class="hud-cb" id="hCombo"></div>
+  </div>
+  <div class="play" id="playArea"></div>
+  <div class="fb" id="fb">
+    <div class="fb-ic" id="fbIc"></div>
+    <div class="fb-rs" id="fbRs"></div>
+    <div class="fb-wh" id="fbWh"></div>
+  </div>
+  <div class="dock">
+    <button class="dk dk-i" id="bIot" onclick="answer(true)">
+      <span class="dk-em">📡</span>
+      <span class="dk-lb">IoT Hub</span>
+    </button>
+    <button class="dk dk-n" id="bNon" onclick="answer(false)">
+      <span class="dk-em">🚫</span>
+      <span class="dk-lb">Non-IoT</span>
+    </button>
+  </div>
+</div>
+
+<div class="screen off" id="endScreen">
+  <div class="eb">
+    <div class="eb-t" id="eTitle"></div>
+    <div class="eb-s" id="eSub"></div>
+    <div class="eb-st" id="eStars"></div>
+    <div class="eb-sc" id="eScore"></div>
+    <div class="rp-t">📋 Αναφορά Σαρωτή IoT</div>
+    <ul class="rp-l" id="rList"></ul>
+    <div class="bn" id="bonusArea">
+      <div class="bn-t">💡 Σκέψου μια μελλοντική IoT συσκευή!</div>
+      <input type="text" id="bNm" placeholder="Όνομα συσκευής (π.χ. SmartPlant)">
+      <textarea id="bDs" placeholder="Τι θα κάνει; (π.χ. Νιώθει όταν το φυτό διψάει...)"></textarea>
+      <button onclick="submitBonus()">🚀 Υποβολή Σχεδίου</button>
+      <div class="bn-m" id="bMsg">✅ Σχεδιάστηκε! Εξαιρετική φαντασία!</div>
+    </div>
+  </div>
+  <div class="e-btns">
+    <button class="e-b p" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+  </div>
+</div>
+
+<script>
+var DEV=[
+  {e:'🌡️',n:'Έξυπνος θερμοστάτης',iot:1,w:'Συνδέεται Wi-Fi για απομακρυσμένο έλεγχο'},
+  {e:'⌚',n:'Έξυπνο ρολόι',iot:1,w:'Συνδέεται στο κινητό και στο διαδίκτυο'},
+  {e:'🧊',n:'Έξυπνο ψυγείο',iot:1,w:'Παρακολουθεί τρόφιμα μέσω ίντερνετ'},
+  {e:'📷',n:'Κάμερα ασφαλείας',iot:1,w:'Βλέπεις βίντεο στο κινητό σου'},
+  {e:'🔊',n:'Έξυπνο ηχείο',iot:1,w:'Φωνητικός βοηθός με ίντερνετ'},
+  {e:'💡',n:'Έξυπνη λάμπα',iot:1,w:'Ανάβει με εφαρμογή ή φωνή'},
+  {e:'🗺️',n:'Πλοηγός αυτοκινήτου',iot:1,w:'Λαμβάνει δεδομένα δρόμων online'},
+  {e:'⏰',n:'Κλασικό ξυπνητήρι',iot:0,w:'Δεν έχει καμία σύνδεση'},
+  {e:'📓',n:'Τετράδιο',iot:0,w:'Είναι χαρτί, όχι ψηφιακό'},
+  {e:'🔑',n:'Απλή κλειδαριή',iot:0,w:'Ανοίγει μόνο με κλειδί'},
+  {e:'🍞',n:'Απλός τοστέρ',iot:0,w:'Δεν έχει Wi-Fi ή ίντερνετ'},
+  {e:'📺',n:'Απλή τηλεόραση',iot:0,w:'Δεν συνδέεται στο διαδίκτυο'},
+  {e:'📻',n:'Ραδιόφωνο',iot:0,w:'Λαμβάνει μόνο ραδιοφωνικό σήμα'},
+  {e:'🧮',n:'Αριθμομηχανή',iot:0,w:'Κάνει πράξεις, δεν έχει σύνδεση'}
+];
+
+var deck,idx,sc,lv,cb,res,act,tmr,fbTmr,bar;
+
+function mkStars(){
+  var c=document.getElementById('stars');c.innerHTML='';
+  for(var i=0;i<90;i++){
+    var s=document.createElement('div');s.className='star';
+    s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+    var z=Math.random()*2.5+.5;s.style.width=z+'px';s.style.height=z+'px';
+    s.style.setProperty('--d',(Math.random()*3+2)+'s');
+    s.style.setProperty('--dl',(Math.random()*4)+'s');
+    c.appendChild(s);
+  }
+}
+
+function shuf(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t}return b}
+
+function showS(id){['startScreen','gameScreen','endScreen'].forEach(function(s){document.getElementById(s).classList.toggle('off',s!==id)})}
+
+function startGame(){
+  clearInterval(tmr);clearTimeout(fbTmr);
+  deck=shuf(DEV);idx=0;sc=0;lv=3;cb=0;res=[];act=1;
+  updHUD();showS('gameScreen');
+  setTimeout(next,500);
+}
+
+function updHUD(){
+  document.getElementById('hScore').textContent='⭐ '+sc;
+  var h='';for(var i=0;i<3;i++)h+='<span'+(i>=lv?' class="x"':'')+'>❤️</span>';
+  document.getElementById('hLives').innerHTML=h;
+  document.getElementById('hCombo').textContent=cb>=2?'🔥 x'+cb:'';
+}
+
+function next(){
+  if(idx>=deck.length||lv<=0){finish();return}
+  var d=deck[idx],pa=document.getElementById('playArea');
+  var pw=pa.offsetWidth,ph=pa.offsetHeight;
+  var cx=Math.max((pw-220)/2,0);
+
+  pa.innerHTML='<div class="dc in" id="card" style="left:'+cx+'px;top:0">'+
+    '<div class="dc-em">'+d.e+'</div>'+
+    '<div class="dc-nm">'+d.n+'</div>'+
+    '<div class="dc-bar"><div class="dc-fill" id="barF" style="width:100%"></div></div>'+
+    '</div>';
+
+  setBtns(0);
+  var maxT=Math.max(ph-160,80);
+  var ms=Math.max(5000-Math.min(idx*100,1500),2500);
+  var step=50,steps=ms/step,dy=maxT/steps,dp=100/steps;
+  var cur=0;bar=100;
+
+  tmr=setInterval(function(){
+    if(!act){clearInterval(tmr);return}
+    cur+=dy;bar-=dp;
+    var c=document.getElementById('card');
+    if(!c){clearInterval(tmr);return}
+    c.style.top=Math.min(cur,maxT)+'px';
+    var f=document.getElementById('barF');
+    if(f)f.style.width=Math.max(0,bar)+'%';
+    if(cur>=maxT){clearInterval(tmr);timeout()}
+  },step);
+}
+
+function answer(isIot){
+  if(!act)return;
+  clearInterval(tmr);
+  setBtns(1);
+  var d=deck[idx],ok=(isIot===!!d.iot);
+  res.push({d:d,ok:ok});
+  var c=document.getElementById('card');
+
+  if(ok){
+    cb++;
+    var pts=10+(cb>=2?cb*5:0)+(bar>50?5:0);
+    sc+=pts;
+    if(c)c.classList.add('ok');
+    flash('g');showPts(pts);
+    showFB(1,d,pts);
+  }else{
+    cb=0;lv--;
+    if(c)c.classList.add('fail');
+    setTimeout(function(){if(c)c.classList.add('out')},500);
+    flash('r');
+    showFB(0,d,0);
+  }
+  updHUD();
+  fbTmr=setTimeout(function(){hideFB();idx++;next()},2200);
+}
+
+function timeout(){
+  setBtns(1);
+  var d=deck[idx];cb=0;lv--;
+  res.push({d:d,ok:false});
+  var c=document.getElementById('card');
+  if(c)c.classList.add('fail','out');
+  flash('r');showFB(0,d,0);updHUD();
+  fbTmr=setTimeout(function(){hideFB();idx++;next()},2200);
+}
+
+function setBtns(off){
+  document.getElementById('bIot').disabled=off;
+  document.getElementById('bNon').disabled=off;
+}
+
+function flash(c){
+  var el=document.getElementById(c==='g'?'flG':'flR');
+  el.classList.add('on');setTimeout(function(){el.classList.remove('on')},350);
+}
+
+function showPts(p){
+  var pa=document.getElementById('playArea');
+  var el=document.createElement('div');el.className='pts';el.textContent='+'+p;
+  el.style.left='50%';el.style.top='40%';pa.appendChild(el);
+  setTimeout(function(){el.remove()},1000);
+}
+
+function showFB(ok,d,pts){
+  var f=document.getElementById('fb');
+  document.getElementById('fbIc').textContent=ok?'✅':'❌';
+  var r;
+  if(ok){r=(d.iot?'Σωστά! Είναι IoT!':'Σωστά! Δεν είναι IoT!');if(pts)r+=' (+'+pts+')'}
+  else{r=(d.iot?'Λάθος! Είναι IoT!':'Λάθος! Δεν είναι IoT!')}
+  document.getElementById('fbRs').textContent=r;
+  document.getElementById('fbWh').textContent=d.w;
+  f.classList.add('on');
+}
+
+function hideFB(){document.getElementById('fb').classList.remove('on')}
+
+function finish(){
+  act=0;clearInterval(tmr);clearTimeout(fbTmr);
+  var tot=res.length,cor=res.filter(function(r){return r.ok}).length;
+  var pct=tot?Math.round(cor/tot*100):0;
+  var st=pct>=90?3:pct>=70?2:pct>=50?1:0;
+  var msg=['Χρειάζεται περισσότερη εξάσκηση...','Καλή προσπάθεια!','Μπράβο! Πολύ καλά!','Άριστη Προσγείωση! 🎉'];
+
+  document.getElementById('eTitle').textContent=msg[st];
+  document.getElementById('eSub').textContent='Αποστολή Ολοκληρώθηκε!';
+
+  var sh='';for(var i=0;i<3;i++)sh+='<span class="'+(i<st?'y':'n')+'">'+(i<st?'⭐':'☆')+'</span>';
+  document.getElementById('eStars').innerHTML=sh;
+  document.getElementById('eScore').textContent=sc+' πόντοι | '+cor+'/'+tot+' σωστά';
+
+  var rl='';
+  res.forEach(function(r){
+    var cls=r.ok?'ok':'no',ic=r.ok?'✅':'❌',ans=r.d.iot?'IoT':'Non-IoT';
+    rl+='<li class="rp-i '+cls+'"><span class="ri-e">'+r.d.e+'</span>'+
+      '<span class="ri-n">'+r.d.n+'</span>'+
+      '<span class="ri-a">'+ic+' '+ans+'</span>'+
+      '<span class="ri-w">'+r.d.w+'</span></li>';
+  });
+  document.getElementById('rList').innerHTML=rl;
+
+  document.getElementById('bNm').value='';
+  document.getElementById('bDs').value='';
+  document.getElementById('bMsg').style.display='none';
+  showS('endScreen');
+}
+
+function submitBonus(){
+  var n=document.getElementById('bNm').value.trim();
+  var d=document.getElementById('bDs').value.trim();
+  if(!n&&!d)return;
+  document.getElementById('bMsg').style.display='block';
+}
+
+document.addEventListener('keydown',function(e){
+  if(!act)return;
+  if(e.key==='ArrowLeft'||e.key==='a')answer(true);
+  if(e.key==='ArrowRight'||e.key==='d')answer(false);
+});
+
+mkStars();
+</script>
+</body>
+</html>

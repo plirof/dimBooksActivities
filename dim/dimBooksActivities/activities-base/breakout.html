@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σπάσε τα Τούβλα</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#333;margin-bottom:5px;font-size:1.8em}
+h2{text-align:center;color:#666;margin-bottom:15px;font-size:1.1em;font-weight:400}
+.instructions{text-align:center;color:#888;margin-bottom:20px;font-size:0.95em;line-height:1.5}
+canvas{display:block;margin:0 auto;border-radius:12px;background:#1a1a2e;border:2px solid #333;max-width:100%}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px;max-width:560px;margin-left:auto;margin-right:auto}
+.score{font-size:1.2em;font-weight:bold;color:#333}
+.lives{font-size:1.2em;color:#f44336}
+.btn{display:block;margin:10px auto;padding:12px 40px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-weight:bold;transition:transform 0.1s}
+.btn:hover{transform:scale(1.05)}
+.start-screen{text-align:center}
+.end-screen{text-align:center;display:none}
+.game-screen{display:none}
+.final-score{font-size:3em;color:#f5576c;margin:15px 0}
+.end-msg{font-size:1.3em;color:#333;margin-bottom:10px}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="start-screen" id="startScreen">
+<h1 id="gameTitle"></h1>
+<h2 id="gameSubtitle"></h2>
+<p class="instructions" id="gameInstructions"></p>
+<button class="btn" id="startBtn">Έναρξη!</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="hud">
+<span class="score">Σκορ: <span id="scoreVal">0</span></span>
+<span class="lives" id="livesVal"></span>
+</div>
+<canvas id="canvas"></canvas>
+</div>
+<div class="end-screen" id="endScreen">
+<h1 id="endTitle">Τέλος Παιχνιδιού!</h1>
+<div class="end-msg" id="endMsg"></div>
+<div class="final-score" id="finalScore"></div>
+<button class="btn" id="restartBtn">Ξαναπάιξε!</button>
+</div>
+</div>
+<script>
+if(!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,radii){var r=typeof radii==='number'?radii:(Array.isArray(radii)?radii[0]:0);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+r,r);this.arcTo(x+w,y+h,x+w-r,y+h,r);this.arcTo(x,y+h,x,y+h-r,r);this.arcTo(x,y,x+r,y,r);this.closePath();return this;};}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);const dataFile=params.get('data');
+let G=null,canvas,ctx,score,lives,ball,paddle,bricks,gameRunning,animFrame,keysDown={};
+const defaults={canvasWidth:560,canvasHeight:400,rows:4,cols:7,ballSpeed:3,paddleWidth:80,lives:3,brickColors:['#f44336','#FF9800','#FFC107','#4CAF50'],brickLabels:['Α','Β','Γ','Δ','Ε','Ζ','Η']};
+function loadJSON(file){
+fetch(file).then(r=>r.json()).then(data=>{
+G=Object.assign({},defaults,data);
+document.getElementById('gameTitle').textContent=G.title;
+document.getElementById('gameSubtitle').textContent=G.subtitle;
+document.getElementById('gameInstructions').textContent=G.instructions;
+}).catch(()=>{G=Object.assign({},defaults);document.getElementById('gameTitle').textContent='Σπάσε τα Τούβλα!';document.getElementById('gameSubtitle').textContent='Μετακίνησε τη ρακέτα!';document.getElementById('gameInstructions').textContent='Σφάλμα φόρτωσης.'})
+}
+if(dataFile)loadJSON(dataFile);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{
+document.getElementById('endScreen').style.display='none';startGame();
+});
+document.addEventListener('keydown',e=>{
+keysDown[e.key]=true;
+if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].indexOf(e.key)!==-1)e.preventDefault();
+});
+document.addEventListener('keyup',e=>{keysDown[e.key]=false});
+function startGame(){
+if(!G)G=Object.assign({},defaults);
+const cw=G.canvasWidth,ch=G.canvasHeight;
+canvas=document.getElementById('canvas');
+canvas.width=cw;canvas.height=ch;
+ctx=canvas.getContext('2d');
+score=0;lives=G.lives;gameRunning=true;
+document.getElementById('startScreen').style.display='none';
+document.getElementById('gameScreen').style.display='block';
+document.getElementById('endScreen').style.display='none';
+document.getElementById('scoreVal').textContent='0';
+updateLivesDisplay();
+var existingDpad=document.getElementById('breakoutDpad');
+if(existingDpad)existingDpad.remove();
+if(typeof TouchControls!=='undefined'){
+var dpadWrap=document.createElement('div');
+dpadWrap.id='breakoutDpad';
+document.getElementById('gameScreen').appendChild(dpadWrap);
+TouchControls.create({
+container:dpadWrap,
+directions:['left','right'],
+theme:{bg:'#fce4ec',border:'#f48fb1',active:'#f8bbd0',text:'#c2185b'},
+onPress:function(dName){
+if(dName==='left'){keysDown['ArrowLeft']=true;keysDown['a']=true}
+if(dName==='right'){keysDown['ArrowRight']=true;keysDown['d']=true}
+},
+onRelease:function(dName){
+if(dName==='left'){keysDown['ArrowLeft']=false;keysDown['a']=false}
+if(dName==='right'){keysDown['ArrowRight']=false;keysDown['d']=false}
+}
+});
+}
+ball={x:cw/2,y:ch-50,dx:G.ballSpeed*(Math.random()>0.5?1:-1),dy:-G.ballSpeed,r:6};
+paddle={x:(cw-G.paddleWidth)/2,y:ch-20,w:G.paddleWidth,h:10};
+bricks=[];
+const bw=(cw-40-(G.cols-1)*4)/G.cols;
+const bh=22;
+for(let r=0;r<G.rows;r++){
+for(let c=0;c<G.cols;c++){
+bricks.push({
+x:20+c*(bw+4),y:40+r*(bh+4),w:bw,h:bh,
+color:G.brickColors[r%G.brickColors.length],
+label:G.brickLabels?G.brickLabels[c%G.brickLabels.length]:'',
+alive:true
+})
+}
+}
+if(animFrame)cancelAnimationFrame(animFrame);
+animFrame=requestAnimationFrame(gameLoop);
+}
+function updateLivesDisplay(){
+let h='';for(let i=0;i<lives;i++)h+='❤️';
+document.getElementById('livesVal').textContent=h;
+}
+function gameLoop(){
+if(!gameRunning)return;
+const cw=canvas.width,ch=canvas.height;
+if(keysDown['ArrowLeft']||keysDown['a'])paddle.x-=6;
+if(keysDown['ArrowRight']||keysDown['d'])paddle.x+=6;
+if(paddle.x<0)paddle.x=0;
+if(paddle.x+paddle.w>cw)paddle.x=cw-paddle.w;
+ball.x+=ball.dx;ball.y+=ball.dy;
+if(ball.x-ball.r<=0||ball.x+ball.r>=cw){ball.dx=-ball.dx}
+if(ball.y-ball.r<=0){ball.dy=-ball.dy}
+if(ball.dy>0&&ball.y+ball.r>=paddle.y&&ball.x>=paddle.x&&ball.x<=paddle.x+paddle.w&&ball.y+ball.r<=paddle.y+paddle.h+4){
+ball.dy=-Math.abs(ball.dy);
+let hitPos=(ball.x-paddle.x)/paddle.w;
+ball.dx=G.ballSpeed*(hitPos-0.5)*2;
+}
+for(const b of bricks){
+if(!b.alive)continue;
+if(ball.x+ball.r>b.x&&ball.x-ball.r<b.x+b.w&&ball.y+ball.r>b.y&&ball.y-ball.r<b.y+b.h){
+b.alive=false;ball.dy=-ball.dy;score+=10;
+document.getElementById('scoreVal').textContent=score;break;
+}
+}
+if(ball.y+ball.r>ch){
+lives--;updateLivesDisplay();
+if(lives<=0){endGame(false);return}
+ball.x=cw/2;ball.y=ch-50;ball.dx=G.ballSpeed*(Math.random()>0.5?1:-1);ball.dy=-G.ballSpeed;
+}
+if(bricks.every(b=>!b.alive)){endGame(true);return}
+ctx.clearRect(0,0,cw,ch);
+ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,cw,ch);
+for(const b of bricks){
+if(!b.alive)continue;
+ctx.fillStyle=b.color;
+ctx.beginPath();
+ctx.roundRect(b.x,b.y,b.w,b.h,4);
+ctx.fill();
+if(b.label){
+ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(b.label,b.x+b.w/2,b.y+b.h/2);
+}
+}
+ctx.fillStyle='#fff';
+ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#e0e0e0';
+ctx.beginPath();ctx.roundRect(paddle.x,paddle.y,paddle.w,paddle.h,5);ctx.fill();
+animFrame=requestAnimationFrame(gameLoop);
+}
+function endGame(won){
+gameRunning=false;cancelAnimationFrame(animFrame);
+document.getElementById('gameScreen').style.display='none';
+document.getElementById('endScreen').style.display='block';
+document.getElementById('endTitle').textContent=won?'Μπράβο!':'Τέλος Παιχνιδιού!';
+document.getElementById('endMsg').textContent=won?'Έσπασες όλα τα τουβλάκια!':'Έχασες όλες τις ζωές σου!';
+document.getElementById('finalScore').textContent=score+' πόντοι';
+}
+</script>
+</body>
+</html>

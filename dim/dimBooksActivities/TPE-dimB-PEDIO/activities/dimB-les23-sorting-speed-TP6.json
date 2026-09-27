@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τι κάνουν οι κουκκίδες;",
+  "subtitle": "Ταξινόμησε τις λειτουργίες των κουκκίδων",
+  "instructions": "Βάλε κάθε λειτουργία στη σωστή κατηγορία",
+  "categories": [
+    { "id": "metakinhsh", "name": "Μετακίνηση", "color": "#2196F3", "key": "A" },
+    { "id": "megethos", "name": "Αλλαγή Μεγέθους", "color": "#f44336", "key": "L" },
+    { "id": "peristrofh", "name": "Περιστροφή", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Σύρσιμο στο κέντρο", "category": "metakinhsh" },
+    { "text": "Πλάγια πάνω δεξιά κουκκίδα", "category": "megethos" },
+    { "text": "Κουκκίδα πάνω από το αντικείμενο", "category": "peristrofh" },
+    { "text": "Κάτω μεσαία κουκκίδα (ύψος)", "category": "megethos" },
+    { "text": "Γυρισμός σχήματος", "category": "peristrofh" },
+    { "text": "Δεξιά μεσαία κουκκίδα (μήκος)", "category": "megethos" },
+    { "text": "Τοποθέτηση σε νέα θέση", "category": "metakinhsh" },
+    { "text": "Πλάγια κάτω αριστερά κουκκίδα", "category": "megethos" },
+    { "text": "Περιστροφή δεξιόστροφα", "category": "peristrofh" },
+    { "text": "Μεταφορά σε άλλο σημείο", "category": "metakinhsh" }
+  ],
+  "duration": 30
+}

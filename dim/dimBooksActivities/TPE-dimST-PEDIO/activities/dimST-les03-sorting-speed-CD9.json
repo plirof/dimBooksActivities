@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είσοδος ή Έξοδος στο Scratch;",
+  "subtitle": "Ταξινόμησε κάθε εντολή Scratch",
+  "instructions": "Πάτα αριστερό βέλος για Είσοδο, δεξιό βέλος για Έξοδο",
+  "categories": [
+    { "id": "input", "name": "Είσοδος", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "output", "name": "Έξοδος", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Εντολή ρώτησε...", "category": "input" },
+    { "text": "Εντολή πες...", "category": "output" },
+    { "text": "Μεταβλητή απάντηση", "category": "input" },
+    { "text": "Συννεφάκι ομιλίας", "category": "output" },
+    { "text": "Γράψιμο στο πλαίσιο", "category": "input" },
+    { "text": "Εμφάνιση στη σκηνή", "category": "output" },
+    { "text": "Ανάγνωση ακτίνας", "category": "input" },
+    { "text": "Εμφάνιση μήκους κύκλου", "category": "output" },
+    { "text": "Ερώτηση για όνομα", "category": "input" },
+    { "text": "Χαιρετισμός με όνομα", "category": "output" }
+  ],
+  "duration": 30
+}

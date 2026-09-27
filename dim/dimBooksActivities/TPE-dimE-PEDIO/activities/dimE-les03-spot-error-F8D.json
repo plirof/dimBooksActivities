@@ -1,0 +1,57 @@
+{
+  "title": "Βρες τα Λάθη: Λογικές Εκφράσεις",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "τελεστής", "error": false},
+        {"text": "ΚΑΙ", "error": false},
+        {"text": "δίνει", "error": false},
+        {"text": "αλήθεια", "error": false},
+        {"text": "όταν", "error": false},
+        {"text": "μία", "error": true, "correct": "και οι δύο", "feedback": "Ο ΚΑΙ χρειάζεται ΚΑΙ ΤΙΣ ΔΥΟ εκφράσεις αλήθεια!"},
+        {"text": "τουλάχιστον", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "αλήθεια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "τελεστής", "error": false},
+        {"text": "ΔΕΝ", "error": false},
+        {"text": "αφήνει", "error": true, "correct": "αντιστρέφει", "feedback": "Ο ΔΕΝ ΑΝΤΙΣΤΡΕΦΕΙ το αποτέλεσμα!"},
+        {"text": "το", "error": false},
+        {"text": "αποτέλεσμα", "error": false},
+        {"text": "ίδιο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΨΕΜΑ", "error": false},
+        {"text": "ΚΑΙ", "error": false},
+        {"text": "ΑΛΗΘΕΙΑ", "error": false},
+        {"text": "=", "error": false},
+        {"text": "ΑΛΗΘΕΙΑ", "error": true, "correct": "ΨΕΜΑ", "feedback": "ΨΕΜΑ ΚΑΙ ΑΛΗΘΕΙΑ = ΨΕΜΑ! Και οι δύο πρέπει να είναι ΑΛΗΘΕΙΑ."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΨΕΜΑ", "error": false},
+        {"text": "Ή", "error": false},
+        {"text": "ΑΛΗΘΕΙΑ", "error": false},
+        {"text": "=", "error": false},
+        {"text": "ΨΕΜΑ", "error": true, "correct": "ΑΛΗΘΕΙΑ", "feedback": "ΨΕΜΑ Ή ΑΛΗΘΕΙΑ = ΑΛΗΘΕΙΑ! Αρκεί μία να είναι ΑΛΗΘΕΙΑ."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΔΕΝ", "error": false},
+        {"text": "ΑΛΗΘΕΙΑ", "error": false},
+        {"text": "=", "error": false},
+        {"text": "ΑΛΗΘΕΙΑ", "error": true, "correct": "ΨΕΜΑ", "feedback": "ΔΕΝ ΑΛΗΘΕΙΑ = ΨΕΜΑ! Ο ΔΕΝ αντιστρέφει."}
+      ]
+    }
+  ]
+}

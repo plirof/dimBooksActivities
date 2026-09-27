@@ -1,0 +1,61 @@
+{
+  "title": "Βρες τα Λάθη: Προσωπικά Δεδομένα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "παιδιά", "error": false},
+        {"text": "μπορούν", "error": false},
+        {"text": "ελεύθερα", "error": true, "correct": "μόνο με συγκατάθεση γονέων", "feedback": "Τα παιδιά ΔΕΝ μπορούν ελεύθερα στα social media! Χρειάζονται συγκατάθεση γονέων."},
+        {"text": "να", "error": false},
+        {"text": "χρησιμοποιήσουν", "error": false},
+        {"text": "social", "error": false},
+        {"text": "media", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ΓΚΠΔ", "error": false},
+        {"text": "ισχύει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "σε όλη την", "feedback": "Ο ΓΚΠΔ ισχύει σε ΟΛΗ την Ευρωπαϊκή Ένωση, όχι μόνο στην Ελλάδα!"},
+        {"text": "στην", "error": false},
+        {"text": "Ελλάδα", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δεν", "error": false},
+        {"text": "έχουμε", "error": false},
+        {"text": "δικαίωμα", "error": true, "correct": "έχουμε", "feedback": "ΕΧΟΥΜΕ δικαίωμα να ζητήσουμε διαγραφή των δεδομένων μας (δικαίωμα στη λήθη)!"},
+        {"text": "να", "error": false},
+        {"text": "ζητήσουμε", "error": false},
+        {"text": "διαγραφή", "error": false},
+        {"text": "δεδομένων", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "επεξεργασία", "error": false},
+        {"text": "δεδομένων", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γίνεται", "error": false},
+        {"text": "κρυφά", "error": true, "correct": "με διαφανή τρόπο", "feedback": "Η επεξεργασία πρέπει να γίνεται με ΔΙΑΦΑΝΗ τρόπο, όχι κρυφά!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "διαδικτυακός", "error": false},
+        {"text": "εκφοβισμός", "error": false},
+        {"text": "δεν", "error": true, "correct": "είναι", "feedback": "Ο διαδικτυακός εκφοβισμός ΕΙΝΑΙ σοβαρό πρόβλημα και πρέπει να αναφέρεται!"},
+        {"text": "είναι", "error": false},
+        {"text": "σοβαρό", "error": false},
+        {"text": "πρόβλημα", "error": false}
+      ]
+    }
+  ]
+}

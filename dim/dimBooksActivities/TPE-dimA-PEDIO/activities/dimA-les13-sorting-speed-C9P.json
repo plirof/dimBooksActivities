@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Δίκτυο ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Δίκτυο ή Όχι;",
+  "categories": [
+    {"id": "diktyo", "name": "Δίκτυο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Υπολογιστής", "category": "diktyo"},
+    {"text": "Μολύβι", "category": "oxi"},
+    {"text": "Καλώδιο", "category": "diktyo"},
+    {"text": "Μπάλα", "category": "oxi"},
+    {"text": "Οθόνη", "category": "diktyo"},
+    {"text": "Γάτα", "category": "oxi"},
+    {"text": "Πληκτρολόγιο", "category": "diktyo"},
+    {"text": "Κουβέρτα", "category": "oxi"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι κάνω με το ποντίκι;",
+  "subtitle": "Σπάσε μόνο τις ενέργειες με το ποντίκι",
+  "instruction": "Σπάσε μόνο τι μπορώ να κάνω με το ποντίκι σε αντικείμενα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Μετακίνηση", "correct": true, "color": "#4CAF50" },
+    { "text": "Τραγούδι", "correct": false, "color": "#f44336" },
+    { "text": "Περιστροφή", "correct": true, "color": "#4CAF50" },
+    { "text": "Μαγείρεμα", "correct": false, "color": "#f44336" },
+    { "text": "Αλλαγή μεγέθους", "correct": true, "color": "#4CAF50" },
+    { "text": "Ύπνος", "correct": false, "color": "#f44336" },
+    { "text": "Επιλογή με κλικ", "correct": true, "color": "#4CAF50" },
+    { "text": "Γυμναστική", "correct": false, "color": "#f44336" },
+    { "text": "Σύρσιμο", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#f44336" }
+  ]
+}

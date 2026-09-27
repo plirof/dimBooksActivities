@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Εφαρμογές Υπολογιστή",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "εφαρμογή", "error": false},
+        {"text": "την", "error": false},
+        {"text": "φτιάχνει", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "δάσκαλος.", "error": true, "correct": "προγραμματιστής", "feedback": "Τις εφαρμογές τις φτιάχνει ο προγραμματιστής, όχι ο δάσκαλος!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ανοίγω", "error": false},
+        {"text": "εφαρμογή", "error": false},
+        {"text": "με", "error": false},
+        {"text": "τριπλό", "error": true, "correct": "διπλό", "feedback": "Κάνουμε ΔΙΠΛΟ κλικ, όχι τριπλό!"},
+        {"text": "κλικ", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "εικονίδιο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "επιφάνεια", "error": false},
+        {"text": "εργασίας", "error": false},
+        {"text": "δείχνει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Η επιφάνεια εργασίας δείχνει εφαρμογές, φακέλους ΚΑΙ αρχεία!"},
+        {"text": "εικονίδια", "error": false},
+        {"text": "εφαρμογών.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": false},
+        {"text": "μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κλείσω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πληκτρολόγιο.", "error": true, "correct": "παράθυρο", "feedback": "Με το ποντίκι κλείνουμε το ΠΑΡΑΘΥΡΟ, όχι το πληκτρολόγιο!"}
+      ]
+    }
+  ]
+}

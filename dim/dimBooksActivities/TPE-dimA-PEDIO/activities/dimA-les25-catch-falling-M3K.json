@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Πρώτες Λέξεις",
+  "subtitle": "Πιάστε λέξεις!",
+  "instructions": "Πιάσε μόνο ΛΕΞΕΙΣ ΠΟΥ ΜΠΟΡΩ ΝΑ ΓΡΑΨΩ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Σχολείο", "correct": true, "color": "#4CAF50"},
+    {"text": "Σύρω", "correct": false, "color": "#f44336"},
+    {"text": "Τάξη", "correct": true, "color": "#2196F3"},
+    {"text": "Κλικ", "correct": false, "color": "#FF9800"},
+    {"text": "Μαθαίνω", "correct": true, "color": "#9C27B0"},
+    {"text": "Δείκτης", "correct": false, "color": "#E91E63"},
+    {"text": "Παιχνίδι", "correct": true, "color": "#009688"},
+    {"text": "Κύλιση", "correct": false, "color": "#FFC107"},
+    {"text": "Υπολογιστής", "correct": true, "color": "#795548"},
+    {"text": "Ροδέλα", "correct": false, "color": "#607D8B"},
+    {"text": "Μάθημα", "correct": true, "color": "#3F51B5"},
+    {"text": "Βέλος", "correct": false, "color": "#8BC34A"}
+  ]
+}

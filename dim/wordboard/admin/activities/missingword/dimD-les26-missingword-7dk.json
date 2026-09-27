@@ -1,0 +1,66 @@
+{
+    "id": "dimD-les26-missingword-7dk",
+    "title": "Επαφές και επικοινωνία e-me - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Η εκπαιδευτική πλατφόρμα ονομάζεται ___.",
+                "options": [
+                    "e-me",
+                    "Facebook",
+                    "Google",
+                    "YouTube"
+                ],
+                "correct": "e-me"
+            },
+            {
+                "sentence": "Για να προσθέσεις επαφή στέλνεις ___ σύνδεσης.",
+                "options": [
+                    "αίτημα",
+                    "μήνυμα",
+                    "κώδικα",
+                    "εικόνα"
+                ],
+                "correct": "αίτημα"
+            },
+            {
+                "sentence": "Δεν δέχεται ___ από αγνώστους!",
+                "options": [
+                    "συγγνώμη",
+                    "αιτήματα",
+                    "δώρα",
+                    "αστεία"
+                ],
+                "correct": "αιτήματα"
+            },
+            {
+                "sentence": "Συνδέεσαι στην e-me με username και ___.",
+                "options": [
+                    "password",
+                    "email",
+                    "τηλέφωνο",
+                    "όνομα"
+                ],
+                "correct": "password"
+            },
+            {
+                "sentence": "Πρέπει να έχεις συνδεθεί έστω ___ φορά στην e-me.",
+                "options": [
+                    "καμία",
+                    "μία",
+                    "δύο",
+                    "δέκα"
+                ],
+                "correct": "μία"
+            }
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les26",
+        "επαφές"
+    ]
+}

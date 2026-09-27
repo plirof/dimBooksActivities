@@ -1,0 +1,13 @@
+{
+  "title": "QR Scanner",
+  "subtitle": "Μάντεψε τι κρύβει κάθε QR κωδικός!",
+  "cardsPerRound": 4,
+  "qrItems": [
+    {"type":"url","icon":"🌐","label":"Ιστοσελίδα","content":"https://gov.gr","hint":"Επίσημη πύλη...","options":["gov.gr","Σχολείο","Παιχνίδι"],"correctIndex":0},
+    {"type":"text","icon":"📝","label":"Κείμενο","content":"Μπράβο! Βρήκες το μυστικό μήνυμα!","hint":"Μυστικό...","options":["Μυστικό μήνυμα","Τηλέφωνο","Συνταγή"],"correctIndex":0},
+    {"type":"wifi","icon":"📶","label":"Wi-Fi","content":"Δίκτυο: SchoolNet | Κωδικός: abc123","hint":"Σύνδεση...","options":["Wi-Fi info","Email","Βίντεο"],"correctIndex":0},
+    {"type":"email","icon":"📧","label":"Email","content":"school@edu.gr","hint":"Ηλεκτρονικό...","options":["Email","Ιστοσελίδα","Κείμενο"],"correctIndex":0},
+    {"type":"phone","icon":"📞","label":"Τηλέφωνο","content":"+30 210 1234567","hint":"Αριθμός...","options":["Τηλέφωνο","URL","Wi-Fi"],"correctIndex":0},
+    {"type":"location","icon":"📍","label":"Τοποθεσία","content":"Ακρόπολη, Αθήνα","hint":"Χάρτης...","options":["Τοποθεσία","Email","Κείμενο"],"correctIndex":0}
+  ]
+}

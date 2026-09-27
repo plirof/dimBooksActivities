@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Σειρά",
+  "subtitle": "Πιάσε λέξεις σειράς!",
+  "instructions": "Πιάσε μόνο λέξεις ΣΕΙΡΑΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Πρώτα", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπάντα", "correct": false, "color": "#f44336"},
+    {"text": "Μετά", "correct": true, "color": "#2196F3"},
+    {"text": "Πίτσα", "correct": false, "color": "#FF9800"},
+    {"text": "Τέλος", "correct": true, "color": "#9C27B0"},
+    {"text": "Γάλα", "correct": false, "color": "#E91E63"},
+    {"text": "Βήμα", "correct": true, "color": "#009688"},
+    {"text": "Σκύλος", "correct": false, "color": "#FFC107"},
+    {"text": "Αρχή", "correct": true, "color": "#795548"},
+    {"text": "Κούπα", "correct": false, "color": "#607D8B"}
+  ]
+}

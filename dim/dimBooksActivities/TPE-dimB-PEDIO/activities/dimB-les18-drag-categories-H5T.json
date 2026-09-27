@@ -1,0 +1,31 @@
+{
+  "title": "Τροφές του Ανθρώπου",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "veg",
+      "name": "Λαχανικά",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "meat",
+      "name": "Κρέας",
+      "color": "#F44336"
+    },
+    {
+      "id": "cereal",
+      "name": "Δημητριακά",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Ντομάτες", "category": "veg" },
+    { "id": "item2", "text": "Μπρόκολο", "category": "veg" },
+    { "id": "item3", "text": "Μοσχάρι", "category": "meat" },
+    { "id": "item4", "text": "Χοιρινό", "category": "meat" },
+    { "id": "item5", "text": "Κοτόπουλο", "category": "meat" },
+    { "id": "item6", "text": "Ψωμί", "category": "cereal" },
+    { "id": "item7", "text": "Ρύζι", "category": "cereal" },
+    { "id": "item8", "text": "Πατάτες", "category": "veg" }
+  ]
+}

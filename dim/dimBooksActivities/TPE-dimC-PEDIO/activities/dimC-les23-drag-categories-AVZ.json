@@ -1,0 +1,58 @@
+{
+  "title": "Ασφαλές ή Δεν μοιράζομαι",
+  "subtitle": "Τι είναι ασφαλές να μοιράζεσαι;",
+  "categories": [
+    {
+      "id": "safe",
+      "name": "ΑΣΦΑΛΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΔΕΝ ΜΟΙΡΑΖΟΜΑΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αγαπημένο χρώμα",
+      "category": "safe"
+    },
+    {
+      "id": "item2",
+      "text": "Τηλέφωνο",
+      "category": "no"
+    },
+    {
+      "id": "item3",
+      "text": "Όνομα",
+      "category": "safe"
+    },
+    {
+      "id": "item4",
+      "text": "Διεύθυνση",
+      "category": "no"
+    },
+    {
+      "id": "item5",
+      "text": "Χόμπι",
+      "category": "safe"
+    },
+    {
+      "id": "item6",
+      "text": "Κωδικός",
+      "category": "no"
+    },
+    {
+      "id": "item7",
+      "text": "Ηλικία",
+      "category": "safe"
+    },
+    {
+      "id": "item8",
+      "text": "Τοποθεσία σπιτιού",
+      "category": "no"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ρομπότ", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ζώο", "error": true, "correct": "μηχανή", "feedback": "Το ρομπότ είναι μηχανή, όχι ζώο!"},
+        {"text": "που", "error": false},
+        {"text": "βοηθάει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ρομπότ", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "διακοπές", "error": true, "correct": "δουλειά", "feedback": "Το ρομπότ κάνει δουλειά, όχι διακοπές!"},
+        {"text": "για", "error": false},
+        {"text": "εμάς.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Δίνουμε", "error": false},
+        {"text": "εντολές", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "σκύλο", "error": true, "correct": "ρομπότ", "feedback": "Δίνουμε εντολές στο ρομπότ!"},
+        {"text": "μας.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ασφάλεια", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "βαρετή", "error": true, "correct": "σημαντική", "feedback": "Η ασφάλεια είναι σημαντική!"},
+        {"text": "για", "error": false},
+        {"text": "όλους.", "error": false}
+      ]
+    }
+  ]
+}

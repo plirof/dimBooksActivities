@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πίνακας Αισθητήρων</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e0e7ff,#a5b4fc);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#3730a3,#6366f1);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{padding:16px;display:flex;flex-direction:column;gap:12px}
+.info{background:#eef2ff;border-radius:12px;border-left:4px solid #6366f1;padding:10px 14px;font-size:.85em;color:#312e81;line-height:1.5}
+.info b{color:#3730a3}
+.scene-box{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:16px;position:relative;min-height:200px}
+.scene-visual{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding:10px 0}
+.sensor-icon{width:80px;height:80px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.8em;background:#fff;border:2px solid #e2e8f0;transition:all .4s;cursor:pointer;position:relative}
+.sensor-icon .s-label{font-size:.35em;font-weight:700;margin-top:2px}
+.sensor-icon .s-value{font-size:.45em;font-weight:700;color:#6366f1;margin-top:1px}
+.sensor-icon.active-sensor{border-color:#6366f1;box-shadow:0 0 20px rgba(99,102,241,.25);transform:scale(1.05)}
+.sensor-icon.hot{border-color:#ef4444;background:#fef2f2}
+.sensor-icon.cold{border-color:#3b82f6;background:#eff6ff}
+.sensor-icon.bright{background:#fefce8;border-color:#f59e0b}
+.sensor-icon.dark{background:#1e293b;border-color:#0f172a;color:#94a3b8}
+.sensor-icon.motion{border-color:#10b981;background:#ecfdf5}
+.sensor-icon.proximity{border-color:#8b5cf6;background:#f5f3ff}
+.env-controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.env-card{padding:12px 16px;border-radius:14px;background:#f8fafc;border:2px solid #e2e8f0;text-align:center;cursor:pointer;transition:all .2s;flex:1;min-width:110px;user-select:none;touch-action:none}
+.env-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.env-card .e-icon{font-size:1.5em;margin-bottom:4px}
+.env-card .e-label{font-size:.82em;font-weight:600;color:#334155}
+.env-card .e-desc{font-size:.72em;color:#94a3b8;margin-top:2px}
+.env-card.pressed{transform:scale(.95);border-color:#6366f1;background:#eef2ff}
+.env-card.disabled{opacity:.4;pointer-events:none}
+.sensor-detail{background:#f8fafc;border-radius:14px;border:2px solid #e2e8f0;padding:14px;text-align:center}
+.sensor-detail .sd-title{font-weight:700;color:#3730a3;font-size:.95em}
+.sensor-detail .sd-text{font-size:.85em;color:#64748b;margin-top:4px;line-height:1.5}
+.sensor-detail .sd-example{font-size:.8em;color:#8b5cf6;margin-top:6px;font-weight:600}
+.round-info{display:flex;justify-content:space-between;font-size:.85em;font-weight:600;color:#3730a3}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#3730a3,#6366f1);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(55,48,163,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:500px){.scene-visual{gap:10px}.sensor-icon{width:65px;height:65px;font-size:1.4em}.env-card{min-width:80px;padding:10px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .scene-visual > * { margin: 10px; }
+  .env-controls > * { margin: 5px; }
+  .controls > * + * { margin-left: 12px; }
+  @media(max-width:500px){
+    .scene-visual > * { margin: 5px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📊 Πίνακας Αισθητήρων</h1>
+<p>Εξερεύνησε πώς αντιδρούν οι αισθητήρες στο περιβάλλον!</p>
+</div>
+<div class="area">
+<div class="info">💡 <b>Αισθητήρες</b> είναι εξαρτήματα που μετρούν συνθήκες του περιβάλλοντος (θερμοκρασία, φως, ήχο, κίνηση) και στέλνουν δεδομένα σε μια συσκευή. Τα δεδομένα αυτά χρησιμοποιούνται για αυτόματες ενέργειες!</div>
+<div class="round-info"><span>🔍 Εξερεύνησε τους αισθητήρες</span><span id="stepLabel">1/4</span></div>
+<div class="scene-box">
+<div class="scene-visual" id="sensorDisplay"></div>
+</div>
+<div class="env-controls" id="envControls"></div>
+<div class="sensor-detail" id="sensorDetail">
+<div class="sd-title">👆 Πάτα έναν αισθητήρα για πληροφορίες</div>
+<div class="sd-text">ή άλλαξε τις συνθήκες με τα κουμπιά παραπάνω για να δεις πώς αντιδρά!</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextStep()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var envState={temp:'normal',light:'normal',motion:false,proximity:'far'};
+
+var steps=[
+{
+sensors:[{id:'temp',icon:'🌡️',label:'Θερμοκρασίας',detail:'Μετράει πόσο ζεστό ή κρύο είναι το περιβάλλον. Χρησιμοποιείται σε θερμοστάτες, κλιματιστικά, ψυγεία.',ex:'Π.χ. αν η θερμοκρασία ανέβει, το κλιματιστικό ανάβει αυτόματα.'}],
+envs:[
+{e:'temp',icon:'☀️',label:'Ζέστη',val:'hot',desc:'Ανέβασε τη θερμοκρασία'},
+{e:'temp',icon:'❄️',label:'Κρύο',val:'cold',desc:'Κατέβασε τη θερμοκρασία'},
+{e:'temp',icon:'🌤️',label:'Κανονικά',val:'normal',desc:'Επίστρεψε σε κανονική θερμοκρασία'}
+],
+q:'Για κάθε συνθήκη, δες πώς αλλάζει η ένδειξη του αισθητήρα θερμοκρασίας!',
+a:['Ζέστη: η ένδειξη ανεβαίνει 🔴','Κρύο: η ένδειξη κατεβαίνει 🔵']
+},
+{
+sensors:[{id:'light',icon:'💡',label:'Φωτός',detail:'Μετράει τη φωτεινότητα του περιβάλλοντος. Χρησιμοποιείται σε έξυπνα φώτα, αισθητήρες ημέρας/νύχτας.',ex:'Π.χ. αν νυχτώσει, τα φώτα του δρόμου ανάβουν αυτόματα.'}],
+envs:[
+{e:'light',icon:'💡',label:'Φως',val:'bright',desc:'Άναψε τα φώτα'},
+{e:'light',icon:'🌙',label:'Σκοτάδι',val:'dark',desc:'Σβήσε τα φώτα'},
+{e:'light',icon:'🌤️',label:'Κανονικά',val:'normal',desc:'Επίστρεψε σε κανονικό φωτισμό'}
+],
+q:'Παρατήρησε πώς αντιδρά ο αισθητήρας φωτός!',
+a:['Φως: η ένδειξη ανεβαίνει ⚡','Σκοτάδι: η ένδειξη πέφτει 🌑']
+},
+{
+sensors:[{id:'motion',icon:'🏃',label:'Κίνησης',detail:'Ανιχνεύει κίνηση στον χώρο. Χρησιμοποιείται σε συναγερμούς, αυτόματα φώτα, αισθητήρες πόρτας.',ex:'Π.χ. αν κάποιος μπει στο δωμάτιο, το φως ανάβει αυτόματα.'}],
+envs:[
+{e:'motion',icon:'🏃',label:'Κίνηση',val:true,desc:'Κάνε κίνηση μπροστά στον αισθητήρα'},
+{e:'motion',icon:'🧘',label:'Ακινησία',val:false,desc:'Σταμάτησε την κίνηση'}
+],
+q:'Δες πότε ανιχνεύεται κίνηση!',
+a:['Κίνηση: ο αισθητήρας την ανιχνεύει! ⚡','Ακινησία: δεν υπάρχει κίνηση ...']
+},
+{
+sensors:[{id:'prox',icon:'📏',label:'Απόστασης',detail:'Μετράει πόσο κοντά ή μακριά είναι ένα αντικείμενο. Χρησιμοποιείται σε αυτοκίνητα (παρκάρισμα), ρομπότ, αυτόματες πόρτες.',ex:'Π.χ. όταν πλησιάζεις το αυτοκίνητο σε εμπόδιο, ακούγεται ηχητικό σήμα.'}],
+envs:[
+{e:'prox',icon:'👋',label:'Κοντά',val:'near',desc:'Φέρε ένα αντικείμενο κοντά'},
+{e:'prox',icon:'🚶',label:'Μακριά',val:'far',desc:'Απομάκρυνε το αντικείμενο'}
+],
+q:'Παρατήρησε πώς μετράται η απόσταση!',
+a:['Κοντά: μικρή απόσταση ⚠️','Μακριά: μεγάλη απόσταση ✅']
+}
+];
+
+var currentStep=0;
+var clickedEnvs={};
+
+function renderStep(){
+	var step=steps[currentStep];
+	document.getElementById('stepLabel').textContent=(currentStep+1)+'/'+steps.length;
+	document.getElementById('feedback').textContent='';
+	document.getElementById('feedback').className='feedback';
+	document.getElementById('nextBtn').disabled=true;
+	envState={temp:'normal',light:'normal',motion:false,proximity:'far'};
+	clickedEnvs={};
+	renderSensors(step);
+	renderEnvButtons(step);
+	showDetail(step.sensors[0],step.q,step.a);
+}
+
+function renderSensors(step){
+var display=document.getElementById('sensorDisplay');
+display.innerHTML='';
+for(var i=0;i<step.sensors.length;i++){
+var s=step.sensors[i];
+var div=document.createElement('div');
+div.className='sensor-icon';
+div.id='sensor-'+s.id;
+div.innerHTML='<div>'+s.icon+'</div><div class="s-label">'+s.label+'</div><div class="s-value" id="val-'+s.id+'">--</div>';
+div.onclick=function(idx){return function(){showDetail(step.sensors[idx],step.q,step.a);};}(i);
+display.appendChild(div);
+}
+updateSensorValues();
+}
+
+function renderEnvButtons(step){
+var container=document.getElementById('envControls');
+container.innerHTML='';
+for(var i=0;i<step.envs.length;i++){
+var e=step.envs[i];
+var card=document.createElement('div');
+card.className='env-card';
+card.innerHTML='<div class="e-icon">'+e.icon+'</div><div class="e-label">'+e.label+'</div><div class="e-desc">'+e.desc+'</div>';
+card.onclick=function(env){return function(){applyEnv(env);};}(e);
+container.appendChild(card);
+}
+}
+
+function applyEnv(env){
+	var val=env.val;
+	var key=env.e;
+	envState[key]=val;
+	updateSensorValues();
+	showFeedback('✅ '+env.label+': '+env.desc,true);
+	var step=steps[currentStep];
+	var idx=step.envs.indexOf(env);
+	clickedEnvs[idx]=true;
+	var allDone=checkAllExplored(step);
+	if(allDone)document.getElementById('nextBtn').disabled=false;
+}
+
+function updateSensorValues(){
+var tempVal=document.getElementById('val-temp');
+if(tempVal){
+var t=envState.temp;
+if(t==='hot'){tempVal.textContent='38°C';tempVal.style.color='#ef4444';document.getElementById('sensor-temp').className='sensor-icon hot';}
+else if(t==='cold'){tempVal.textContent='-2°C';tempVal.style.color='#3b82f6';document.getElementById('sensor-temp').className='sensor-icon cold';}
+else{tempVal.textContent='22°C';tempVal.style.color='#6366f1';document.getElementById('sensor-temp').className='sensor-icon';}
+}
+var lightVal=document.getElementById('val-light');
+if(lightVal){
+var l=envState.light;
+if(l==='bright'){lightVal.textContent='950 lux';lightVal.style.color='#f59e0b';document.getElementById('sensor-light').className='sensor-icon bright';}
+else if(l==='dark'){lightVal.textContent='5 lux';lightVal.style.color='#94a3b8';document.getElementById('sensor-light').className='sensor-icon dark';}
+else{lightVal.textContent='350 lux';lightVal.style.color='#6366f1';document.getElementById('sensor-light').className='sensor-icon';}
+}
+var motionVal=document.getElementById('val-motion');
+if(motionVal){
+var m=envState.motion;
+if(m){motionVal.textContent='ΝΑΙ';motionVal.style.color='#10b981';document.getElementById('sensor-motion').className='sensor-icon motion';}
+else{motionVal.textContent='ΟΧΙ';motionVal.style.color='#94a3b8';document.getElementById('sensor-motion').className='sensor-icon';}
+}
+var proxVal=document.getElementById('val-prox');
+if(proxVal){
+var p=envState.proximity;
+if(p==='near'){proxVal.textContent='5 cm';proxVal.style.color='#ef4444';document.getElementById('sensor-prox').className='sensor-icon proximity';}
+else{proxVal.textContent='200 cm';proxVal.style.color='#6366f1';document.getElementById('sensor-prox').className='sensor-icon';}
+}
+}
+
+function checkAllExplored(step){
+	var explored=0;
+	for(var i=0;i<step.envs.length;i++){
+		if(clickedEnvs[i])explored++;
+	}
+	return explored>=step.envs.length;
+}
+
+function showDetail(sensor,q,answers){
+var detail=document.getElementById('sensorDetail');
+detail.innerHTML='<div class="sd-title">'+sensor.icon+' '+sensor.label+'</div>';
+detail.innerHTML+='<div class="sd-text">'+sensor.detail+'</div>';
+detail.innerHTML+='<div class="sd-example">'+sensor.ex+'</div>';
+detail.innerHTML+='<div style="margin-top:8px;font-size:.85em;color:#475569;font-weight:600">'+q+'</div>';
+for(var i=0;i<answers.length;i++){
+detail.innerHTML+='<div style="font-size:.8em;color:#6366f1;margin-top:4px">• '+answers[i]+'</div>';
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextStep(){
+if(currentStep>=steps.length-1){
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.15em;font-weight:700;color:#3730a3">🎉 Ολοκλήρωσες την εξερεύνηση των αισθητήρων! Τώρα ξέρεις πώς μετρούν το περιβάλλον! 📊✅</div>';
+document.getElementById('nextBtn').style.display='none';
+return;
+}
+currentStep++;
+renderStep();
+}
+
+function resetGame(){
+currentStep=0;
+renderStep();
+document.getElementById('nextBtn').style.display='inline-block';
+}
+
+renderStep();
+</script>
+</body>
+</html>

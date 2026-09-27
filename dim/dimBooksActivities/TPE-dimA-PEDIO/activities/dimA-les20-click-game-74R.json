@@ -1,0 +1,14 @@
+{
+  "title": "Πρόλαβε τα!",
+  "subtitle": "Κάνε κλικ γρήγορα πριν εξαφανιστούν",
+  "instructions": "Τα αντικείμενα εμφανίζονται και εξαφανίζονται — πιάσε όλα!",
+  "duration": 30,
+  "maxTargets": 4,
+  "targetLife": 1800,
+  "targets": [
+    { "label": "⭐", "color": "#FFF9C4" },
+    { "label": "💎", "color": "#B3E5FC" },
+    { "label": "🎯", "color": "#FFCDD2" },
+    { "label": "🔔", "color": "#FFE0B2" }
+  ]
+}

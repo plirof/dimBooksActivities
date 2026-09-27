@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Κλικ",
+  "subtitle": "Μόνο λέξεις για κλικ!",
+  "instruction": "Σπάσε μόνο λέξεις σχετικές με ΚΛΙΚ και ΔΙΠΛΟ ΚΛΙΚ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κλικ", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπάνιο", "correct": false, "color": "#f44336" },
+    { "text": "Διπλό κλικ", "correct": true, "color": "#2196F3" },
+    { "text": "Σκούπα", "correct": false, "color": "#FF9800" },
+    { "text": "Επιλογή", "correct": true, "color": "#9C27B0" },
+    { "text": "Κουρτίνα", "correct": false, "color": "#E91E63" },
+    { "text": "Άνοιγμα", "correct": true, "color": "#FFC107" },
+    { "text": "Ψυγείο", "correct": false, "color": "#00BCD4" },
+    { "text": "Αριστερό πλήκτρο", "correct": true, "color": "#3F51B5" },
+    { "text": "Φουρνός", "correct": false, "color": "#795548" },
+    { "text": "Εφαρμογή", "correct": true, "color": "#FF9800" },
+    { "text": "Κρεβάτι", "correct": false, "color": "#607D8B" }
+  ]
+}

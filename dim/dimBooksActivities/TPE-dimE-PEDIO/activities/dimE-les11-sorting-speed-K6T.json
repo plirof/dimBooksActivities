@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: micro:bit",
+  "subtitle": "Ταξινόμησε γρήγορα τις εντολές!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "hw", "name": "Υλικό micro:bit", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "cmd", "name": "Εντολές / Συμβάντα", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κουμπί Α", "category": "hw"},
+    {"text": "Κουμπί Β", "category": "hw"},
+    {"text": "Οθόνη LED", "category": "hw"},
+    {"text": "Μικροελεγκτής", "category": "hw"},
+    {"text": "Έναρξη μελωδίας", "category": "cmd"},
+    {"text": "Διακοπή μελωδίας", "category": "cmd"},
+    {"text": "Αλλαγή ρυθμού", "category": "cmd"},
+    {"text": "Συμβάν κούνημα", "category": "cmd"},
+    {"text": "Καθαρισμός οθόνης", "category": "cmd"},
+    {"text": "Παύση 1000ms", "category": "cmd"}
+  ],
+  "duration": 30
+}

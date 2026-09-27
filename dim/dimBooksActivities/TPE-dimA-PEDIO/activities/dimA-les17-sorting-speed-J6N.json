@@ -1,0 +1,25 @@
+{
+  "title": "Ταξινόμηση: Πού ανήκει κάθε ζώο;",
+  "subtitle": "Κατοικίδια, Φάρμα ή Δάσος;",
+  "instructions": "Πάτα: ΚΑΤΟΙΚΙΔΙΑ, ΦΑΡΜΑ ή ΔΑΣΟΣ",
+  "categories": [
+    {"id": "katoikidia", "name": "Κατοικίδια", "color": "#FF9800", "key": "ArrowLeft"},
+    {"id": "farma", "name": "Φάρμα", "color": "#4CAF50", "key": "ArrowUp"},
+    {"id": "dasos", "name": "Δάσος", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Γάτα", "category": "katoikidia"},
+    {"text": "Αγελάδα", "category": "farma"},
+    {"text": "Αλεπού", "category": "dasos"},
+    {"text": "Σκύλος", "category": "katoikidia"},
+    {"text": "Κοτόπουλο", "category": "farma"},
+    {"text": "Λύκος", "category": "dasos"},
+    {"text": "Κανάρινος", "category": "katoikidia"},
+    {"text": "Άλογο", "category": "farma"},
+    {"text": "Αρκούδα", "category": "dasos"},
+    {"text": "Χρυσόψαρο", "category": "katoikidia"},
+    {"text": "Γουρούνι", "category": "farma"},
+    {"text": "Ελάφι", "category": "dasos"}
+  ],
+  "duration": 30
+}

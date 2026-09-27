@@ -1,0 +1,53 @@
+{
+  "title": "Αρχεία στη σωστή εφαρμογή",
+  "subtitle": "Ποια εφαρμογή ανοίγει κάθε αρχείο;",
+  "categories": [
+    {
+      "id": "writer",
+      "name": "ΚΕΙΜΕΝΟΓΡΑΦΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "paint",
+      "name": "ΖΩΓΡΑΦΙΚΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "recorder",
+      "name": "ΗΧΟΓΡΑΦΗΣΗ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📝 Κείμενο",
+      "category": "writer"
+    },
+    {
+      "id": "item2",
+      "text": "🖼️ Εικόνα",
+      "category": "paint"
+    },
+    {
+      "id": "item3",
+      "text": "🎵 Ήχος",
+      "category": "recorder"
+    },
+    {
+      "id": "item4",
+      "text": "📄 Έγγραφο",
+      "category": "writer"
+    },
+    {
+      "id": "item5",
+      "text": "🎨 Ζωγραφιά",
+      "category": "paint"
+    },
+    {
+      "id": "item6",
+      "text": "🎤 Ηχογράφημα",
+      "category": "recorder"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Βρες τα Λάθη: Πληκτρολόγιο",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Πατάω", "error": false, "correct": "", "feedback": "" },
+        { "text": "Enter", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "σβήσω", "error": true, "correct": "αλλάξω παράγραφο", "feedback": "Το Enter αλλάζει παράγραφο, δεν σβήνει" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "βάλω", "error": false, "correct": "", "feedback": "" },
+        { "text": "τονο", "error": true, "correct": "τόνο", "feedback": "Λείπει ο τόνος" },
+        { "text": "πρώτα", "error": false, "correct": "", "feedback": "" },
+        { "text": "γράφω", "error": true, "correct": "πατάω", "feedback": "Πρώτα πατάω τον τόνο, δεν γράφω γράμμα" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "γράμμα", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "τελικο", "error": true, "correct": "τελικό", "feedback": "Λείπει ο τόνος" },
+        { "text": "ς", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρίσκεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεξιά", "error": true, "correct": "αριστερά", "feedback": "Το ς βρίσκεται αριστερά από το Ε" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ε", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

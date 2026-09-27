@@ -1,0 +1,48 @@
+{
+  "title": "Τύποι αρχείων",
+  "subtitle": "Διάκρινε τα υπολογιστικά φύλλα από άλλα αρχεία",
+  "categories": [
+    {
+      "id": "sheet",
+      "name": "ΥΠΟΛΟΓΙΣΤΙΚΟ ΦΥΛΛΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "other",
+      "name": "ΑΛΛΟ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": ".ods",
+      "category": "sheet"
+    },
+    {
+      "id": "item2",
+      "text": ".xls",
+      "category": "sheet"
+    },
+    {
+      "id": "item3",
+      "text": ".csv",
+      "category": "sheet"
+    },
+    {
+      "id": "item4",
+      "text": ".jpg",
+      "category": "other"
+    },
+    {
+      "id": "item5",
+      "text": ".mp4",
+      "category": "other"
+    },
+    {
+      "id": "item6",
+      "text": ".pdf",
+      "category": "other"
+    }
+  ]
+}

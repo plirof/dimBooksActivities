@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα!: Στοιχεία Εννοιολογικού Χάρτη",
+  "subtitle": "Πιάσε τα σωστά στοιχεία εννοιολογικού χάρτη!",
+  "instructions": "Πιάσε τα στοιχεία που μπορούμε να προσθέσουμε σε έναν εννοιολογικό χάρτη.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Εικόνα", "correct": true, "color": "#4caf50" },
+    { "text": "Υπερσύνδεσμος", "correct": true, "color": "#2196f3" },
+    { "text": "Βίντεο", "correct": true, "color": "#ff9800" },
+    { "text": "Κείμενο", "correct": true, "color": "#9c27b0" },
+    { "text": "Τρισδιάστατο", "correct": false, "color": "#f44336" },
+    { "text": "Έννοια", "correct": true, "color": "#00bcd4" },
+    { "text": "Σύνδεση", "correct": true, "color": "#8bc34a" },
+    { "text": "Ρομποτικός βραχίονας", "correct": false, "color": "#f44336" },
+    { "text": "Ιστοσελίδα", "correct": true, "color": "#e91e63" },
+    { "text": "Δορυφόρος", "correct": false, "color": "#f44336" }
+  ]
+}

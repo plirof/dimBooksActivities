@@ -1,0 +1,24 @@
+{
+    "id": "dimB-les22-wheel-pc4",
+    "title": "Γράφω περισσότερα στον υπολογιστή - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Κείμενο",
+            "Space",
+            "Backspace",
+            "Shift",
+            "ENTER",
+            "Τόνος",
+            "Κόμμα",
+            "Τελεία"
+        ]
+    },
+    "tags": [
+        "dimB",
+        "les22",
+        "κείμενο"
+    ]
+}

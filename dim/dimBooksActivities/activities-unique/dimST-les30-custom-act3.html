@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάξε Ψηφιακό Έργο</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:900px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.steps-indicator{display:flex;justify-content:center;gap:0;margin-bottom:24px}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+.step-dot .dot{width:36px;height:36px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;color:#999;transition:all .3s;position:relative;z-index:1}
+.step-dot .dot.active{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;box-shadow:0 0 0 4px rgba(102,126,234,.2)}
+.step-dot .dot.completed{background:#34a853;color:#fff}
+.step-dot .step-label{font-size:.7em;color:#999;text-align:center;font-weight:600}
+.step-dot .step-label.active{color:#667eea}
+.step-connector{position:absolute;top:18px;left:50%;width:100%;height:3px;background:#eee;z-index:0}
+.step-connector.done{background:#34a853}
+.wizard-step{display:none;animation:fadeIn .4s ease}
+.wizard-step.active{display:block}
+.wizard-step h2{color:#333;font-size:1.15em;margin-bottom:6px}
+.wizard-step p{color:#888;font-size:.88em;margin-bottom:16px}
+.options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));grid-gap:12px}
+.option-card{padding:20px 16px;border:2px solid #eee;border-radius:14px;cursor:pointer;text-align:center;transition:all .2s;background:#fafafa}
+.option-card:hover{border-color:#667eea;transform:translateY(-3px);box-shadow:0 4px 15px rgba(102,126,234,.15)}
+.option-card.selected{border-color:#667eea;background:#f0f0ff;box-shadow:0 4px 15px rgba(102,126,234,.2)}
+.option-card .opt-icon{font-size:2.2em;margin-bottom:8px;display:block}
+.option-card .opt-title{font-weight:700;color:#333;font-size:.9em;margin-bottom:4px}
+.option-card .opt-desc{font-size:.75em;color:#999}
+.option-card.selected .opt-title{color:#667eea}
+.wizard-buttons{display:flex;justify-content:space-between;margin-top:24px;gap:12px}
+.wiz-btn{padding:12px 28px;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:700;font-size:.9em;transition:all .2s}
+.wiz-btn-next{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff}
+.wiz-btn-next:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,.4)}
+.wiz-btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.wiz-btn-back{background:#eee;color:#666}
+.wiz-btn-back:hover{background:#ddd}
+.project-name-input{width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:10px;font-family:inherit;font-size:.95em;margin-bottom:16px}
+.project-name-input:focus{outline:none;border-color:#667eea}
+.result-card{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:16px;padding:30px;text-align:center;animation:fadeIn .6s ease}
+.result-card h2{font-size:1.3em;margin-bottom:16px}
+.result-card .project-title{font-size:1.1em;opacity:.9;margin-bottom:20px;font-weight:600}
+.result-items{display:flex;flex-direction:column;gap:12px;text-align:left;max-width:500px;margin:0 auto 20px}
+.result-item{padding:12px 16px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;gap:12px}
+.result-item .ri-label{font-size:.75em;opacity:.7;min-width:70px}
+.result-item .ri-value{font-weight:700;font-size:.95em}
+.motivational{margin-top:20px;padding:16px;background:rgba(255,255,255,.1);border-radius:12px;font-size:.9em;line-height:1.5}
+.motivational strong{font-size:1em;display:block;margin-bottom:4px}
+.restart-btn{margin-top:16px;padding:12px 28px;background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:10px;cursor:pointer;font-family:inherit;font-weight:700;font-size:.9em;transition:all .2s}
+.restart-btn:hover{background:rgba(255,255,255,.3)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .steps-indicator > * + * { margin-left: 0; }
+  .step-dot > * + * { margin-top: 4px; }
+  .wizard-buttons > * + * { margin-left: 12px; }
+  .result-items > * + * { margin-top: 12px; }
+  .result-item > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎨 Φτιάξε Ψηφιακό Έργο</h1>
+<p class="subtitle">Δημιούργησε τη δική σου ψηφιακή δημιουργία!</p>
+<div class="container">
+<div class="steps-indicator" id="stepsIndicator"></div>
+<div id="wizardContent"></div>
+</div>
+<script>
+const steps=[
+{title:"Επέλεξε Τύπο Έργου",subtitle:"Τι θέλεις να δημιουργήσεις;",options:[
+{icon:"📋",title:"Αφίσα",desc:"Οπτική παρουσίαση"},
+{icon:"📊",title:"Παρουσίαση",desc:"Διαφάνειες με περιεχόμενο"},
+{icon:"🎮",title:"Παιχνίδι",desc:"Διαδραστικό παιχνίδι"},
+{icon:"📝",title:"Ιστολόγιο",desc:"Blog με άρθρα"}
+]},
+{title:"Επέλεξε Εργαλεία",subtitle:"Με τι εργαλεία θα το φτιάξεις;",options:[
+{icon:"🐱",title:"Scratch",desc:"Οπτικός προγραμματισμός"},
+{icon:"📖",title:"Τεκμηρίωση",desc:"Έρευνα και πηγές"},
+{icon:"📄",title:"Επεξεργαστής Κειμένου",desc:"Γραπτό κείμενο"},
+{icon:"🎨",title:"Καμβάς",desc:"Σχεδιαστική εργαλειοθήκη"}
+]},
+{title:"Επέλεξε Θέμα",subtitle:"Σχετικά με τι θα είναι;",options:[
+{icon:"🔒",title:"Ασφάλεια στο Διαδίκτυο",desc:"Προστασία και σωστή χρήση"},
+{icon:"🤖",title:"Τεχνητή Νοημοσύνη",desc:"AI και μέλλον"},
+{icon:"🌱",title:"Περιβάλλον",desc:"Οικολογία και φύση"},
+{icon:"💡",title:"Δημιουργικότητα",desc:"Καινοτομία και τέχνη"}
+]}
+];
+const motivations=[
+"🌟 Η δημιουργία στο διαδίκτυο είναι πιο δυνατή από την παθητική παρακολούθηση! Όταν φτιάχνεις κάτι δικό σου, μαθαίνεις 10 φορές περισσότερα!",
+"🚀 Μπράβο σου! Είσαι πλέον Δημιουργός, όχι απλός Καταναλωτής! Τα ψηφιακά εργαλεία σου δίνουν τη δύναμη να εκφραστείς!",
+"💪 Η δημιουργικότητα είναι ο υπερδύναμή σου στο διαδίκτυο! Κάθε έργο που φτιάχνεις σε κάνει καλύτερο δημιουργό!",
+"🎨 Το διαδίκτυο δεν είναι μόνο για παρακολούθηση - είναι το καμβάς σου! Συνέχισε να δημιουργείς και να μαθαίνεις!"
+];
+let currentStep=0;
+let selections=[null,null,null];
+let projectName='';
+function renderStepsIndicator(){
+const el=document.getElementById('stepsIndicator');
+el.innerHTML='';
+steps.forEach((s,i)=>{
+const dot=document.createElement('div');
+dot.className='step-dot';
+dot.style.position='relative';
+if(i<steps.length-1){
+const conn=document.createElement('div');
+conn.className='step-connector'+(i<currentStep?' done':'');
+dot.appendChild(conn);
+}
+const d=document.createElement('div');
+d.className='dot'+(i===currentStep?' active':'')+(i<currentStep?' completed':'');
+d.textContent=i<currentStep?'✓':(i+1);
+dot.appendChild(d);
+const label=document.createElement('div');
+label.className='step-label'+(i===currentStep?' active':'');
+label.textContent=s.title.split(' ')[0];
+dot.appendChild(label);
+el.appendChild(dot);
+});
+}
+function renderWizardStep(){
+const el=document.getElementById('wizardContent');
+el.innerHTML='';
+if(currentStep<steps.length){
+const step=steps[currentStep];
+const div=document.createElement('div');
+div.className='wizard-step active';
+div.innerHTML=`<h2>${step.title}</h2><p>${step.subtitle}</p>`;
+if(currentStep===0){
+div.innerHTML+=`<input type="text" class="project-name-input" id="projNameInput" placeholder="📝 Όνομα Έργου (προαιρετικό)..." value="${projectName}">`;
+}
+div.innerHTML+=`<div class="options-grid" id="optionsGrid"></div>`;
+div.innerHTML+=`<div class="wizard-buttons"><button class="wiz-btn wiz-btn-back" onclick="prevStep()" ${currentStep===0?'style="visibility:hidden"':''}>← Πίσω</button><button class="wiz-btn wiz-btn-next" id="nextBtn" onclick="nextStep()" ${selections[currentStep]===null?'disabled':''}>${currentStep===steps.length-1?'🎨 Δημιουργία!':'Επόμενο →'}</button></div>`;
+el.appendChild(div);
+const grid=div.querySelector('#optionsGrid');
+step.options.forEach((opt,i)=>{
+const card=document.createElement('div');
+card.className='option-card'+(selections[currentStep]===i?' selected':'');
+card.innerHTML=`<span class="opt-icon">${opt.icon}</span><div class="opt-title">${opt.title}</div><div class="opt-desc">${opt.desc}</div>`;
+card.onclick=()=>{
+selections[currentStep]=i;
+grid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+card.classList.add('selected');
+document.getElementById('nextBtn').disabled=false;
+};
+grid.appendChild(card);
+});
+if(currentStep===0){
+const input=div.querySelector('#projNameInput');
+if(input)input.addEventListener('input',e=>{projectName=e.target.value;});
+}
+}else{
+renderResult();
+}
+}
+function renderResult(){
+const el=document.getElementById('wizardContent');
+const type=steps[0].options[selections[0]];
+const tool=steps[1].options[selections[1]];
+const theme=steps[2].options[selections[2]];
+const name=projectName||'Το Έργο Μου';
+const mot=motivations[Math.floor(Math.random()*motivations.length)];
+el.innerHTML=`<div class="result-card">
+<div style="font-size:3em;margin-bottom:12px">${type.icon}</div>
+<h2>🎉 Το Ψηφιακό σου Έργο</h2>
+<div class="project-title">"${name}"</div>
+<div class="result-items">
+<div class="result-item"><span style="font-size:1.5em">${type.icon}</span><div><div class="ri-label">Τύπος</div><div class="ri-value">${type.title}</div></div></div>
+<div class="result-item"><span style="font-size:1.5em">${tool.icon}</span><div><div class="ri-label">Εργαλείο</div><div class="ri-value">${tool.title}</div></div></div>
+<div class="result-item"><span style="font-size:1.5em">${theme.icon}</span><div><div class="ri-label">Θέμα</div><div class="ri-value">${theme.title}</div></div></div>
+</div>
+<div class="motivational"><strong>${mot}</strong><br><br>💡 <em>Να θυμάσαι:</em> Το διαδίκτυο είναι εργαλείο δημιουργίας! Όταν φτιάχνεις κάτι δικό σου, αναπτύσσεις κριτική σκέψη, δημιουργικότητα και ψηφιακές δεξιότητες. Είσαι <strong>Δημιουργός</strong>, όχι απλώς <strong>Καταναλωτής</strong>!</div>
+<button class="restart-btn" onclick="restart()">🔄 Νέο Έργο</button>
+</div>`;
+}
+function nextStep(){
+if(selections[currentStep]===null)return;
+currentStep++;
+renderStepsIndicator();
+renderWizardStep();
+}
+function prevStep(){
+if(currentStep>0){currentStep--;renderStepsIndicator();renderWizardStep();}
+}
+function restart(){
+currentStep=0;selections=[null,null,null];projectName='';
+renderStepsIndicator();renderWizardStep();
+}
+renderStepsIndicator();
+renderWizardStep();
+</script>
+</body>
+</html>

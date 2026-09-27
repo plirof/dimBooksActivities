@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάξε την Παρουσίασή σου!</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;display:flex;justify-content:center;padding:20px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;}
+h1{text-align:center;color:#c0392b;font-size:1.4rem;margin-bottom:15px;}
+.app{display:flex;gap:15px;min-height:450px;}
+.sidebar{width:130px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;max-height:500px;padding-right:5px;}
+.thumb{border:3px solid #e0e0e0;border-radius:10px;padding:8px;cursor:pointer;transition:all .2s;text-align:center;background:#fafafa;min-height:70px;position:relative;}
+.thumb:hover{border-color:#f5576c;}
+.thumb.active{border-color:#c0392b;background:#fff0f0;box-shadow:0 2px 8px rgba(192,57,43,.2);}
+.thumb-num{font-size:.65rem;color:#999;position:absolute;top:3px;left:6px;}
+.thumb-title{font-size:.7rem;font-weight:bold;color:#333;word-break:break-word;margin-top:8px;}
+.thumb-emoji{font-size:1.2rem;margin-top:4px;}
+.editor{flex:1;display:flex;flex-direction:column;}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:8px 14px;border:none;border-radius:10px;cursor:pointer;font-size:.8rem;font-weight:bold;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.15);}
+.btn-add{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.btn-del{background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;}
+.btn-dup{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-present{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;margin-left:auto;}
+.slide-editor{flex:1;border:2px solid #e0e0e0;border-radius:15px;padding:20px;display:flex;flex-direction:column;background:#fff;min-height:350px;}
+.slide-title{font-size:1.3rem;font-weight:bold;border:none;border-bottom:2px dashed #e0e0e0;padding:8px 0;margin-bottom:10px;outline:none;color:#2c3e50;text-align:center;}
+.slide-title:empty::before{content:attr(data-placeholder);color:#ccc;}
+.slide-content{flex:1;border:none;outline:none;font-size:.95rem;line-height:1.6;color:#555;resize:none;}
+.slide-content:empty::before{content:attr(data-placeholder);color:#ccc;}
+.slide-image-area{text-align:center;margin:10px 0;min-height:60px;}
+.slide-image-display{font-size:3rem;cursor:pointer;display:inline-block;transition:transform .2s;}
+.slide-image-display:hover{transform:scale(1.2);}
+.emoji-picker{display:none;background:#f8f9fa;border-radius:10px;padding:10px;text-align:center;margin-top:5px;flex-wrap:wrap;gap:8px;}
+.emoji-picker.active{display:flex;justify-content:center;}
+.emoji-pick{font-size:1.8rem;cursor:pointer;padding:4px;border-radius:8px;transition:all .2s;}
+.emoji-pick:hover{background:#e0e0e0;transform:scale(1.2);}
+.nav-btns{display:flex;gap:4px;margin-top:6px;}
+.nav-btn{padding:4px 10px;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;background:#e0e0e0;color:#333;transition:all .2s;}
+.nav-btn:hover{background:#ccc;}
+.slide-order{display:flex;align-items:center;gap:4px;margin-top:auto;padding-top:6px;}
+.presentation-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:200;justify-content:center;align-items:center;flex-direction:column;}
+.presentation-overlay.active{display:flex;}
+.pres-slide{background:#fff;width:85%;max-width:900px;aspect-ratio:16/9;border-radius:15px;padding:40px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;animation:fadeSlide .5s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
+.pres-title{font-size:2rem;font-weight:bold;color:#2c3e50;margin-bottom:15px;}
+.pres-body{font-size:1.1rem;color:#555;line-height:1.8;white-space:pre-wrap;}
+.pres-emoji{font-size:4rem;margin:15px 0;}
+.pres-controls{position:fixed;bottom:20px;display:flex;gap:15px;z-index:201;}
+.pres-controls button{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:1rem;font-weight:bold;transition:all .2s;}
+.pres-controls button:hover{transform:scale(1.05);}
+.pres-prev{background:rgba(255,255,255,.8);color:#333;}
+.pres-next{background:rgba(255,255,255,.8);color:#333;}
+.pres-exit{background:#e74c3c;color:#fff;}
+.pres-counter{position:fixed;top:15px;right:20px;color:#fff;font-size:1rem;z-index:201;}
+.empty-state{text-align:center;color:#999;padding:40px;}
+@media(max-width:600px){
+.app{flex-direction:column;}
+.sidebar{width:100%;flex-direction:row;overflow-x:auto;max-height:none;}
+.thumb{min-width:80px;min-height:50px;}
+.toolbar{justify-content:center;}
+.btn-present{margin-left:0;}
+.slide-editor{min-height:280px;}
+.pres-slide{width:95%;padding:20px;}
+.pres-title{font-size:1.3rem;}
+.pres-body{font-size:.85rem;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .app > * + * { margin-left: 15px; }
+  .sidebar > * + * { margin-top: 6px; }
+  .toolbar > * { margin: 3px; }
+  .btn > * + * { margin-left: 4px; }
+  .emoji-picker > * { margin: 4px; }
+  .nav-btns > * + * { margin-left: 4px; }
+  .slide-order > * + * { margin-left: 4px; }
+  .pres-controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎨 Φτιάξε την παρουσίασή σου!</h1>
+<div class="app">
+<div class="sidebar" id="sidebar"></div>
+<div class="editor">
+<div class="toolbar">
+<button class="btn btn-add" onclick="addSlide()">➕ Νέα διαφάνεια</button>
+<button class="btn btn-del" onclick="deleteSlide()">🗑️ Διαγραφή</button>
+<button class="btn btn-dup" onclick="duplicateSlide()">📋 Διπλότυπο</button>
+<button class="btn btn-present" onclick="startPresentation()">▶ Παρουσίαση</button>
+</div>
+<div class="slide-editor" id="slideEditor">
+<div class="empty-state" id="emptyState">Επίλεξε ή φτιάξε μια διαφάνεια!</div>
+</div>
+<div class="slide-order" id="slideOrder"></div>
+</div>
+</div>
+</div>
+
+<div class="presentation-overlay" id="presOverlay">
+<div class="pres-counter" id="presCounter"></div>
+<div class="pres-slide" id="presSlide"></div>
+<div class="pres-controls">
+<button class="pres-prev" onclick="presNav(-1)">◀ Προηγούμενη</button>
+<button class="pres-exit" onclick="exitPresentation()">✕ Έξοδος</button>
+<button class="pres-next" onclick="presNav(1)">Επόμενη ▶</button>
+</div>
+</div>
+
+<script>
+(function(){
+var emojis=['🌍','🐱','🏫','📚','🌸','⚽'];
+var slides=[
+{id:1,title:'Τα Ζώα',content:'Τα ζώα είναι θαυμάσια πλάσματα.\nΜαθαίνουμε για τα ζώα του κόσμου!',emoji:'🐱'},
+{id:2,title:'Αγαπημένα Ζώα',content:'Οικογένεια: Αίγυπτος\nΦαγητό: ψάρια\nΧαρακτηριστικό: ανεξάρτητο',emoji:'🌍'}
+];
+var currentSlide=0;
+var nextId=3;
+var presIndex=0;
+
+function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+function renderSidebar(){
+var sb=document.getElementById('sidebar');
+sb.innerHTML='';
+slides.forEach(function(s,i){
+var th=document.createElement('div');
+th.className='thumb'+(i===currentSlide?' active':'');
+th.innerHTML='<span class="thumb-num">'+(i+1)+'</span>'+(s.emoji?'<div class="thumb-emoji">'+s.emoji+'</div>':'')+'<div class="thumb-title">'+esc(s.title||'(χωρίς τίτλο)')+'</div>';
+th.onclick=function(){currentSlide=i;render();};
+sb.appendChild(th);
+});
+}
+
+function renderEditor(){
+var ed=document.getElementById('slideEditor');
+if(slides.length===0){
+ed.innerHTML='<div class="empty-state">Πάτα "➕ Νέα διαφάνεια" για να ξεκινήσεις!</div>';
+return;
+}
+var s=slides[currentSlide];
+ed.innerHTML='';
+
+var titleEl=document.createElement('div');
+titleEl.className='slide-title';
+titleEl.contentEditable='true';
+titleEl.setAttribute('data-placeholder','Γράψε τίτλο...');
+titleEl.textContent=s.title;
+titleEl.oninput=function(){s.title=this.textContent;renderSidebar();};
+ed.appendChild(titleEl);
+
+var imgArea=document.createElement('div');
+imgArea.className='slide-image-area';
+if(s.emoji){
+var imgDisp=document.createElement('span');
+imgDisp.className='slide-image-display';
+imgDisp.textContent=s.emoji;
+imgDisp.onclick=function(){toggleEmojiPicker();};
+imgArea.appendChild(imgDisp);
+}else{
+var addBtn=document.createElement('span');
+addBtn.className='slide-image-display';
+addBtn.textContent='➕';
+addBtn.title='Πρόσθεσε εικόνα';
+addBtn.onclick=function(){toggleEmojiPicker();};
+imgArea.appendChild(addBtn);
+}
+ed.appendChild(imgArea);
+
+var picker=document.createElement('div');
+picker.className='emoji-picker';
+picker.id='emojiPicker';
+emojis.forEach(function(em){
+var pick=document.createElement('span');
+pick.className='emoji-pick';
+pick.textContent=em;
+pick.onclick=function(){s.emoji=em;render();};
+picker.appendChild(pick);
+});
+ed.appendChild(picker);
+
+var contentEl=document.createElement('div');
+contentEl.className='slide-content';
+contentEl.contentEditable='true';
+contentEl.setAttribute('data-placeholder','Γράψε το περιεχόμενο...');
+contentEl.textContent=s.content;
+contentEl.oninput=function(){s.content=this.textContent;};
+ed.appendChild(contentEl);
+
+var orderDiv=document.getElementById('slideOrder');
+orderDiv.innerHTML='';
+if(slides.length>1){
+var upBtn=document.createElement('button');
+upBtn.className='nav-btn';
+upBtn.textContent='⬆️ Πάνω';
+upBtn.onclick=function(){moveSlide(-1);};
+orderDiv.appendChild(upBtn);
+var downBtn=document.createElement('button');
+downBtn.className='nav-btn';
+downBtn.textContent='⬇️ Κάτω';
+downBtn.onclick=function(){moveSlide(1);};
+orderDiv.appendChild(downBtn);
+}
+}
+
+function toggleEmojiPicker(){
+var p=document.getElementById('emojiPicker');
+if(p)p.classList.toggle('active');
+}
+
+function moveSlide(dir){
+var ni=currentSlide+dir;
+if(ni<0||ni>=slides.length)return;
+var tmp=slides[currentSlide];
+slides[currentSlide]=slides[ni];
+slides[ni]=tmp;
+currentSlide=ni;
+render();
+}
+
+window.addSlide=function(){
+slides.push({id:nextId++,title:'',content:'',emoji:''});
+currentSlide=slides.length-1;
+render();
+};
+
+window.deleteSlide=function(){
+if(slides.length===0)return;
+if(!confirm('Θέλεις να διαγράψεις αυτή τη διαφάνεια;'))return;
+slides.splice(currentSlide,1);
+if(currentSlide>=slides.length)currentSlide=Math.max(0,slides.length-1);
+render();
+};
+
+window.duplicateSlide=function(){
+if(slides.length===0)return;
+var s=slides[currentSlide];
+var dup={id:nextId++,title:s.title,content:s.content,emoji:s.emoji};
+slides.splice(currentSlide+1,0,dup);
+currentSlide=currentSlide+1;
+render();
+};
+
+window.startPresentation=function(){
+if(slides.length===0){alert('Δεν υπάρχουν διαφάνειες!');return;}
+presIndex=0;
+renderPresSlide();
+document.getElementById('presOverlay').classList.add('active');
+};
+
+window.exitPresentation=function(){
+document.getElementById('presOverlay').classList.remove('active');
+};
+
+window.presNav=function(dir){
+presIndex+=dir;
+if(presIndex<0)presIndex=0;
+if(presIndex>=slides.length)presIndex=slides.length-1;
+renderPresSlide();
+};
+
+function renderPresSlide(){
+var s=slides[presIndex];
+var sl=document.getElementById('presSlide');
+sl.style.animation='none';
+sl.offsetHeight;
+sl.style.animation='fadeSlide .5s ease';
+var html='';
+html+='<div class="pres-title">'+esc(s.title||'(χωρίς τίτλο)')+'</div>';
+if(s.emoji)html+='<div class="pres-emoji">'+s.emoji+'</div>';
+html+='<div class="pres-body">'+esc(s.content||'')+'</div>';
+sl.innerHTML=html;
+document.getElementById('presCounter').textContent=(presIndex+1)+' / '+slides.length;
+}
+
+document.addEventListener('keydown',function(e){
+if(!document.getElementById('presOverlay').classList.contains('active'))return;
+if(e.key==='ArrowRight'||e.key===' ')presNav(1);
+if(e.key==='ArrowLeft')presNav(-1);
+if(e.key==='Escape')exitPresentation();
+});
+
+function render(){renderSidebar();renderEditor();}
+render();
+})();
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '16/9')) return;
+  var F = [['.pres-slide', 16/9]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+</body>
+</html>

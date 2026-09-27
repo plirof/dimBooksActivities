@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: Ιστοσελίδες",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Μια", "error": false},
+        {"text": "ιστοσελίδα", "error": false},
+        {"text": "μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Η ιστοσελίδα ΔΕΝ έχει μόνο κείμενο! Έχει και εικόνες, βίντεο, ήχο!"},
+        {"text": "κείμενο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "υπερσύνδεσμος", "error": false},
+        {"text": "φαίνεται", "error": false},
+        {"text": "όταν", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "δείκτης", "error": false},
+        {"text": "γίνεται", "error": false},
+        {"text": "σταυρός", "error": true, "correct": "χεράκι", "feedback": "Ο δείκτης γίνεται ΧΕΡΑΚΙ πάνω στον υπερσύνδεσμο, όχι σταυρός!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ιστότοπος", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ίδιο", "error": false},
+        {"text": "με", "error": false},
+        {"text": "ιστοσελίδα", "error": true, "correct": "περιέχει πολλές ιστοσελίδες", "feedback": "Ιστότοπος = πολλές ιστοσελίδες μαζί!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "επιστρέψω", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πλήκτρο", "error": false},
+        {"text": "μπρος", "error": true, "correct": "πίσω", "feedback": "Πατάω το κουμπί ΠΙΣΩ για επιστροφή!"}
+      ]
+    }
+  ]
+}

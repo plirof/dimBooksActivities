@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αναφορά Πηγής | Μάθημα 25</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fff7ed,#fb923c);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#7c2d12;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#ea580c;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#7c2d12;font-size:.75rem;font-weight:700;border:1px solid #fb923c;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.sit-card{background:#fff7ed;border:2px solid #fed7aa;border-radius:12px;padding:10px;margin:8px 0}
+.sit-title{font-size:.78rem;font-weight:700;color:#7c2d12;text-align:center;margin-bottom:4px}
+.sit-desc{font-size:.7rem;color:#9a3412;text-align:center}
+.judge-row{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.judge-btn{padding:10px 18px;border:2px solid #e2e8f0;border-radius:10px;font-size:.72rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;font-weight:700;min-width:100px;text-align:center}
+.judge-btn:hover{transform:scale(1.03)}
+.judge-btn.jyes{border-color:#22c55e}
+.judge-btn.jyes:hover{background:#dcfce7}
+.judge-btn.jno{border-color:#ef4444}
+.judge-btn.jno:hover{background:#fef2f2}
+.judge-btn.selected{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.judge-btn.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.judge-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.judge-btn.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#ea580c;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#c2410c}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #ea580c;border-radius:10px;background:transparent;color:#ea580c;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fff7ed}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .judge-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📝 Αναφορά Πηγής</h1>
+<p class="subtitle">Χρειάζεται αναφορά πηγής; Κρίνε κάθε περίπτωση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Περίπτωση:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var cases=[
+{
+title:'📷 Φωτογραφία από το Getty Images',
+desc:'Βρήκες μια ωραία φωτογραφία από το Getty Images και την έβαλες στην παρουσίασή σου χωρίς να γράψεις από πού την πήρες.',
+q:'Πρέπει να αναφέρεις την πηγή;',
+correct:'yes',
+explain:'ΝΑΙ! Κάθε εικόνα από άλλο site πρέπει να έχει αναφορά πηγής (URL ή όνομα site).'
+},
+{
+title:'🎵 Δικό σου ηχογραφημένο τραγούδι',
+desc:'Ηχογράφησες εσύ και οι φίλοι σου ένα τραγούδι στο μαγνητόφωνο και το έβαλες στην παρουσίαση.',
+q:'Πρέπει να αναφέρεις πηγή;',
+correct:'no',
+explain:'ΟΧΙ! Είναι δική σας δημιουργία — δεν χρειάζεται αναφορά πηγής.'
+},
+{
+title:'🎥 Βίντεο από το YouTube',
+desc:'Αντέγραψες το URL ενός βίντεο από το YouTube και το έβαλες στη διαφάνειά σου.',
+q:'Πρέπει να αναφέρεις την πηγή;',
+correct:'yes',
+explain:'ΝΑΙ! Πρέπει να γράψεις από ποιο κανάλι / URL πήρες το βίντεο.'
+},
+{
+title:'📊 Γράφημα που έφτιαξες εσύ',
+desc:'Δημιούργησες ένα γράφημα μόνος σου στο Calc με δικά σου δεδομένα.',
+q:'Πρέπει να αναφέρεις πηγή;',
+correct:'no',
+explain:'ΟΧΙ! Είναι δική σου εργασία — δεν χρειάζεται αναφορά.'
+},
+{
+title:'📰 Κείμενο από τη Βικιπαίδεια',
+desc:'Αντέγραψες μια παράγραφο από τη Βικιπαίδεια για την ιστορία της Αθήνας.',
+q:'Πρέπει να αναφέρεις την πηγή;',
+correct:'yes',
+explain:'ΝΑΙ! Ακόμη και η Βικιπαίδεια πρέπει να αναφέρεται ως πηγή.'
+},
+{
+title:'🖼️ Σχέδιο που έκανες στο TuxPaint',
+desc:'Ζωγράφισες μια εικόνα στο TuxPaint και την έβαλες στην παρουσίασή σου.',
+q:'Πρέπει να αναφέρεις πηγή;',
+correct:'no',
+explain:'ΟΧΙ! Είναι δική σου ζωγραφιά — δεν υπάρχει εξωτερική πηγή.'
+}
+];
+var curQ=0,pts=0,selected='',checked=false;
+function initQ(){selected='';checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var c=cases[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="sit-card">';
+h+='<div class="sit-title">'+c.title+'</div>';
+h+='<div class="sit-desc">'+c.desc+'</div>';
+h+='</div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#7c2d12;text-align:center;margin:6px 0">'+c.q+'</p>';
+h+='<div class="judge-row">';
+var opts=[{val:'yes',label:'✅ Ναι, χρειάζεται',cls:'jyes'},{val:'no',label:'❌ Όχι, δεν χρειάζεται',cls:'jno'}];
+for(var i=0;i<opts.length;i++){
+var o=opts[i];
+var cls='judge-btn '+o.cls;
+if(!checked&&selected===o.val)cls+=' selected';
+if(checked){
+if(o.val===c.correct)cls+=' correct';
+else if(selected===o.val)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectAns(\''+o.val+'\')">'+o.label+'</div>';
+}
+h+='</div>';
+if(!checked&&selected!==''){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===c.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+c.explain:'❌ '+c.explain)+'</div>';
+if(curQ<cases.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Περίπτωση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectAns(val){if(!checked){selected=val;render();}}
+function checkAnswer(){if(selected!==''){checked=true;render();}}
+function nextQ(){if(curQ<cases.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

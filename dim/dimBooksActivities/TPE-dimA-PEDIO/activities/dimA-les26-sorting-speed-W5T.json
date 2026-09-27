@@ -1,0 +1,22 @@
+{
+  "title": "Ταξινόμηση: Περιεχόμενο ή Πλοήγηση;",
+  "subtitle": "Τι είναι το καθένα;",
+  "instructions": "Πάτα: ΠΕΡΙΕΧΟΜΕΝΟ ή ΠΛΟΗΓΗΣΗ",
+  "categories": [
+    {"id": "periex", "name": "Περιεχόμενο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "ploi", "name": "Πλοήγηση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κείμενο", "category": "periex"},
+    {"text": "Κουμπί πίσω", "category": "ploi"},
+    {"text": "Εικόνα", "category": "periex"},
+    {"text": "Υπερσύνδεσμος", "category": "ploi"},
+    {"text": "Βίντεο", "category": "periex"},
+    {"text": "Κύλιση με ροδέλα", "category": "ploi"},
+    {"text": "Ήχος", "category": "periex"},
+    {"text": "Αστεράκι σελιδοδείκτη", "category": "ploi"},
+    {"text": "Πληροφορίες", "category": "periex"},
+    {"text": "Κλικ σε σύνδεσμο", "category": "ploi"}
+  ],
+  "duration": 30
+}

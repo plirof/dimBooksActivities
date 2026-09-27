@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τρόποι Επικοινωνίας",
+  "subtitle": "Ταξινόμησε τους τρόπους",
+  "instructions": "Βάλε κάθε τρόπο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "mhnuma", "name": "Μήνυμα κειμένου", "color": "#2196F3", "key": "A" },
+    { "id": "video", "name": "Βιντεοκλήση", "color": "#f44336", "key": "L" },
+    { "id": "email", "name": "Ηλεκτρονικό ταχυδρομείο", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Chat σε e-me", "category": "mhnuma" },
+    { "text": "Βλέπω τον άλλον στην οθόνη", "category": "video" },
+    { "text": "Στέλνω email με συνημμένα", "category": "email" },
+    { "text": "Emoticons σε μήνυμα", "category": "mhnuma" },
+    { "text": "Μιλάω και βλέπω ταυτόχρονα", "category": "video" },
+    { "text": "Γράφω mail@example.com", "category": "email" },
+    { "text": "Γρήγορο κείμενο σε φίλο", "category": "mhnuma" },
+    { "text": "Κάμερα και μικρόφωνο", "category": "video" },
+    { "text": "Θέμα και κυρίως κείμενο", "category": "email" },
+    { "text": "Αποστολή φωτογραφίας", "category": "mhnuma" }
+  ],
+  "duration": 30
+}

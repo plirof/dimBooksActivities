@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Word Search - Wordboard</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .wordsearch-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 20px auto;
+        }
+        
+        .wordsearch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .wordsearch-content {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .wordsearch-grid {
+            display: inline-block;
+            border: 2px solid #333;
+            user-select: none;
+        }
+        
+        .ws-row {
+            display: flex;
+        }
+        
+        .ws-cell {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .ws-cell:hover {
+            background: #e8eaff;
+        }
+        
+        .ws-cell.selected {
+            background: #667eea;
+            color: white;
+        }
+        
+        .ws-cell.found {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .word-list {
+            flex: 1;
+        }
+        
+        .word-list h3 {
+            color: #667eea;
+        }
+        
+        .word-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .word-list li {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .word-list li:hover {
+            background: #f8f9ff;
+        }
+        
+        .word-list li.found {
+            text-decoration: line-through;
+            color: #999;
+            background: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wordsearch-container">
+            <div class="wordsearch-header">
+                <a href="../../index.php" class="button" style="font-size: 12px; padding: 5px 10px;">← Back</a>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <h2 id="wordsearchTitle">Word Search</h2>
+                    <a href="../../student/dashboard.php" class="button">Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="wordsearch-content">
+                <div class="wordsearch-grid" id="wordsearchGrid"></div>
+                
+                <div class="word-list">
+                    <h3>Find these words:</h3>
+                    <ul id="wordList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="wordsearch.js"></script>
+</body>
+</html>

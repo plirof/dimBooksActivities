@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υποπρογράμματα Scratch",
+  "subtitle": "Σπάσε τα μπαλόνια με έννοιες υποπρογραμμάτων",
+  "instruction": "Σπάσε τα μπαλόνια με ΣΩΣΤΕΣ έννοιες!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 45,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Νέα εντολή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μεταβλητή εισόδου",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Επεξεργασία φωτογραφίας",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ορισμός υποπρογράμματος",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Κλήση υποπρογράμματος",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Λήψη οθόνης",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Περίμετρος = 4 * πλευρά",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Εγκατάσταση παιχνιδιού",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Μήκος κύκλου = 2 * 3.14 * ρ",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "Ευανάγνωστος κώδικας",
+      "correct": true,
+      "color": "#FF5722"
+    }
+  ]
+}

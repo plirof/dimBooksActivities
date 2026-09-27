@@ -1,0 +1,25 @@
+{
+  "title": "Νοητικός Χάρτης: Το Πληκτρολόγιο",
+  "subtitle": "Βάλε τις λέξεις στους σωστούς κλάδους",
+  "centralTopic": "Το Πληκτρολόγιο",
+  "branches": [
+    {
+      "id": "pliktRA",
+      "label": "Πλήκτρα Γραψίματος",
+      "color": "#2196F3",
+      "keywords": ["Γράμματα", "Αριθμοί", "Τόνος", "Κόμμα", "Τελεία", "Space"]
+    },
+    {
+      "id": "pliktRB",
+      "label": "Πλήκτρα Διαχείρισης",
+      "color": "#f44336",
+      "keywords": ["Enter", "Delete", "Caps Lock", "Shift", "Backspace"]
+    },
+    {
+      "id": "kanones",
+      "label": "Κανόνες",
+      "color": "#FF9800",
+      "keywords": ["Τόνος πριν το γράμμα", "Enter για παράγραφο", "Final ς αριστερά από Ε"]
+    }
+  ]
+}

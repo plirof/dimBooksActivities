@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Υπολογιστής ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Υπολογιστής ή Όχι;",
+  "categories": [
+    {"id": "ypologistis", "name": "Υπολογιστής", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Οθόνη", "category": "ypologistis"},
+    {"text": "Μπαλάκι", "category": "oxi"},
+    {"text": "Πληκτρολόγιο", "category": "ypologistis"},
+    {"text": "Κουτάλι", "category": "oxi"},
+    {"text": "Ταμπλέτα", "category": "ypologistis"},
+    {"text": "Κούνια", "category": "oxi"},
+    {"text": "Κινητό", "category": "ypologistis"},
+    {"text": "Κουβέρτα", "category": "oxi"}
+  ],
+  "duration": 30
+}

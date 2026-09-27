@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Βίντεο: Λέξεις-κλειδιά + Φίλτρα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:900px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.search-bar{display:flex;gap:10px;margin-bottom:16px}
+.search-bar input{flex:1;padding:12px 16px;border:2px solid #ddd;border-radius:10px;font-family:inherit;font-size:.95em}
+.search-bar input:focus{outline:none;border-color:#667eea}
+.search-bar button{padding:12px 20px;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:700;font-size:.9em}
+.filter-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.filter-btn{padding:8px 16px;border:2px solid #ddd;background:#fff;border-radius:20px;cursor:pointer;font-family:inherit;font-size:.85em;font-weight:600;transition:all .2s}
+.filter-btn:hover{border-color:#667eea}
+.filter-btn.active{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border-color:#764ba2}
+.results-count{font-size:.85em;color:#888;margin-bottom:14px;padding:6px 12px;background:#f5f5f5;border-radius:8px}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));grid-gap:16px}
+.video-card{background:#fafafa;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid #eee;transition:all .2s}
+.video-card.hidden{display:none}
+.video-card:hover{border-color:#667eea;transform:translateY(-3px);box-shadow:0 6px 20px rgba(102,126,234,.15)}
+.video-thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:3em;position:relative;background:linear-gradient(135deg,#f0f0ff,#e0e0ff)}
+.video-duration{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.75);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75em;font-weight:600}
+.video-info{padding:12px 14px}
+.video-info h3{font-size:.9em;color:#333;margin-bottom:4px;line-height:1.3}
+.video-info .meta{font-size:.75em;color:#999}
+.video-player{display:none;padding:20px;background:#111;border-radius:14px;margin-bottom:20px;text-align:center;color:#fff}
+.video-player.active{display:block;animation:fadeIn .4s ease}
+.video-player .player-screen{height:280px;background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:4em;margin-bottom:12px;position:relative}
+.video-player .player-screen .play-icon{font-size:60px;opacity:.8}
+.video-player .player-title{font-size:1.1em;font-weight:700;margin-bottom:4px}
+.video-player .player-desc{font-size:.85em;color:#ccc;line-height:1.5;margin-top:8px;padding:10px;background:rgba(255,255,255,.05);border-radius:8px;text-align:left}
+.back-list-btn{padding:8px 16px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.3);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:.85em;margin-bottom:12px}
+.back-list-btn:hover{background:rgba(255,255,255,.25)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .search-bar > * + * { margin-left: 10px; }
+  .filter-buttons > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>▶️ Πλατφόρμα Βίντεο</h1>
+<p class="subtitle">Αναζήτησε και φιλτράρισε βίντεο με λέξεις-κλειδιά</p>
+<div class="container">
+<div id="mainView">
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="🔍 Αναζήτηση με λέξεις-κλειδιά..." oninput="applyFilters()">
+<button onclick="clearSearch()">✕ Καθαρισμός</button>
+</div>
+<div class="filter-buttons">
+<button class="filter-btn active" data-cat="all" onclick="setCategory('all')">📋 Όλα</button>
+<button class="filter-btn" data-cat="Εκπαίδευση" onclick="setCategory('Εκπαίδευση')">🎓 Εκπαίδευση</button>
+<button class="filter-btn" data-cat="Μουσική" onclick="setCategory('Μουσική')">🎵 Μουσική</button>
+<button class="filter-btn" data-cat="Αθλητισμός" onclick="setCategory('Αθλητισμός')">⚽ Αθλητισμός</button>
+</div>
+<div class="results-count" id="resultsCount"></div>
+<div class="video-grid" id="videoGrid"></div>
+</div>
+<div class="video-player" id="videoPlayer">
+<button class="back-list-btn" onclick="closePlayer()">← Πίσω στη λίστα</button>
+<div class="player-screen" id="playerScreen"><span class="play-icon">▶️</span></div>
+<div class="player-title" id="playerTitle"></div>
+<div class="player-desc" id="playerDesc"></div>
+</div>
+</div>
+<script>
+const videos=[
+{id:1,title:"Μαθαίνω Προγραμματισμό με το Scratch",emoji:"💻",duration:"12:34",category:"Εκπαίδευση",views:"15.2K",desc:"Σε αυτό το βίντεο θα μάθεις τα βασικά του Scratch και πώς να φτιάξεις το πρώτο σου πρόγραμμα! Ιδανικό για αρχάριους."},
+{id:2,title:"Η Ιστορία του Internet",emoji:"🌐",duration:"8:21",category:"Εκπαίδευση",views:"8.7K",desc:"Ένα ταξίδι στην ιστορία του διαδικτύου, από το ARPANET μέχρι σήμερα. Πώς άλλαξε ο κόσμος μας!"},
+{id:3,title:"Παίζουμε Κιθάρα: Τα Πρώτα Ακόρδα",emoji:"🎸",duration:"15:02",category:"Μουσική",views:"22.1K",desc:"Μάθε τα 5 πρώτα ακόρδα στην κιθάρα! Εύκολα βήματα για αρχάριους μουσικούς."},
+{id:4,title:"Ποδόσφαιρο: Βασικές Τεχνικές",emoji:"⚽",duration:"10:45",category:"Αθλητισμός",views:"31.5K",desc:"Απόλυτος οδηγός για τις βασικές τεχνικές ποδοσφαίρου: ντρίμπλα, πάσα, σουτ."},
+{id:5,title:"Τι είναι η Τεχνητή Νοημοσύνη;",emoji:"🤖",duration:"7:55",category:"Εκπαίδευση",views:"19.3K",desc:"Ας κατανοήσουμε τι είναι η Τεχνητή Νοημοσύνη με απλά λόγια και παραδείγματα."},
+{id:6,title:"Μουσική και Υπολογιστές",emoji:"🎹",duration:"11:18",category:"Μουσική",views:"6.4K",desc:"Πώς μπορούμε να συνθέσουμε μουσική χρησιμοποιώντας τον υπολογιστή; Εργαλεία και συμβουλές."},
+{id:7,title:"Κολύμβηση: Σωστή Τεχνική",emoji:"🏊",duration:"9:30",category:"Αθλητισμός",views:"12.8K",desc:"Μάθε τη σωστή τεχνική στα βασικά στυλ κολύμβησης. Συμβουλές από προπονητή."},
+{id:8,title:"Ασφάλεια στο Διαδίκτυο για Παιδιά",emoji:"🔒",duration:"6:12",category:"Εκπαίδευση",views:"25.0K",desc:"Σημαντικές συμβουλές για να πλοηγείσαι με ασφάλεια στο διαδίκτυο."},
+{id:9,title:"Beatbox για Αρχάριους",emoji:"🎤",duration:"8:44",category:"Μουσική",views:"18.9K",desc:"Μάθε τα βασικά του beatbox! Τρεις ήχοι που θα σε ξεκινήσουν."},
+{id:10,title:"Μπάσκετ: Τρίποντα και Λάι-απ",emoji:"🏀",duration:"13:20",category:"Αθλητισμός",views:"9.1K",desc:"Βελτίωσε τις ικανότητές σου στο μπάσκετ μαθαίνοντας τρίποντα και λάι-απ."}
+];
+let currentCat='all';
+function renderVideos(){
+const grid=document.getElementById('videoGrid');
+grid.innerHTML='';
+videos.forEach(v=>{
+const card=document.createElement('div');
+card.className='video-card';
+card.dataset.category=v.category;
+card.dataset.title=v.title.toLowerCase();
+card.innerHTML=`<div class="video-thumb" style="background:linear-gradient(135deg,${getGradient(v.category)})">${v.emoji}<span class="video-duration">${v.duration}</span></div><div class="video-info"><h3>${v.title}</h3><div class="meta">${v.category} · 👁 ${v.views} προβολές</div></div>`;
+card.onclick=()=>openPlayer(v);
+grid.appendChild(card);
+});
+}
+function getGradient(cat){
+switch(cat){case"Εκπαίδευση":return"#e8eaf6,#c5cae9";case"Μουσική":return"#fce4ec,#f8bbd0";case"Αθλητισμός":return"#e8f5e9,#c8e6c9";default:return"#f0f0ff,#e0e0ff"}
+}
+function setCategory(cat){
+currentCat=cat;
+document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.cat===cat));
+applyFilters();
+}
+function applyFilters(){
+const search=document.getElementById('searchInput').value.toLowerCase().trim();
+let visible=0;
+document.querySelectorAll('.video-card').forEach(card=>{
+const matchCat=currentCat==='all'||card.dataset.category===currentCat;
+const matchSearch=!search||card.dataset.title.includes(search);
+const show=matchCat&&matchSearch;
+card.classList.toggle('hidden',!show);
+if(show)visible++;
+});
+document.getElementById('resultsCount').textContent=`📊 ${visible} αποτελέσματα${currentCat!=='all'?' στην κατηγορία '+currentCat:''}${search?' για "'+search+'"':''}`;
+}
+function clearSearch(){document.getElementById('searchInput').value='';applyFilters()}
+function openPlayer(v){
+document.getElementById('mainView').style.display='none';
+const player=document.getElementById('videoPlayer');
+player.classList.add('active');
+document.getElementById('playerScreen').innerHTML=`<span style="font-size:4em">${v.emoji}</span><span class="play-icon">▶️</span>`;
+document.getElementById('playerTitle').textContent=v.title+' · '+v.duration;
+document.getElementById('playerDesc').innerHTML=`<strong>📖 Περιγραφή:</strong><br>${v.desc}<br><br>🏷️ Κατηγορία: ${v.category}<br>👁️ ${v.views} προβολές`;
+}
+function closePlayer(){
+document.getElementById('videoPlayer').classList.remove('active');
+document.getElementById('mainView').style.display='block';
+}
+renderVideos();
+applyFilters();
+</script>
+</body>
+</html>

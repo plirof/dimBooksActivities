@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι βάζω στον Τοίχο;",
+  "subtitle": "Πιάσε μόνο τι μπορώ να προσθέσω στον τοίχο",
+  "instructions": "Πιάσε περιεχόμενο τοίχου. Απόφυγε τα άλλα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Κείμενο", "correct": true, "color": "#4CAF50" },
+    { "text": "Μήλο", "correct": false, "color": "#f44336" },
+    { "text": "Εικόνα", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρέκλα", "correct": false, "color": "#f44336" },
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τραπέζι", "correct": false, "color": "#f44336" },
+    { "text": "Σχόλιο", "correct": true, "color": "#4CAF50" },
+    { "text": "Παπούτσι", "correct": false, "color": "#f44336" },
+    { "text": "Καρδούλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Καπέλο", "correct": false, "color": "#f44336" }
+  ]
+}

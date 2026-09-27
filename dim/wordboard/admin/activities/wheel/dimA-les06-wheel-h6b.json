@@ -1,0 +1,24 @@
+{
+    "id": "dimA-les06-wheel-h6b",
+    "title": "Προγραμματίζω στον υπολογιστή! - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "ScratchJr",
+            "Ήρωας",
+            "Σκηνικό",
+            "Έργο",
+            "Εντολή",
+            "Βήματα",
+            "Πρόγραμμα",
+            "Τετραγωνάκια"
+        ]
+    },
+    "tags": [
+        "dimA",
+        "les06",
+        "ScratchJr"
+    ]
+}

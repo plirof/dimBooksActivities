@@ -1,0 +1,45 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "πασχαλίτσα", "error": false},
+        {"text": "πάει", "error": false},
+        {"text": "κοιμάται", "error": true, "correct": "μπροστά", "feedback": "Η πασχαλίτσα πάει μπροστά, όχι κοιμάται!"},
+        {"text": "ένα", "error": false},
+        {"text": "βήμα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στρίψε", "error": false},
+        {"text": "χορεύει", "error": true, "correct": "δεξιά", "feedback": "Στρίψε δεξιά, όχι χορεύει!"},
+        {"text": "και", "error": false},
+        {"text": "πήγαινε", "error": false},
+        {"text": "μπροστά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ένα", "error": false},
+        {"text": "βήμα", "error": false},
+        {"text": "τρώει", "error": true, "correct": "πίσω", "feedback": "Ένα βήμα πίσω, όχι τρώει!"},
+        {"text": "και", "error": false},
+        {"text": "στρίψε", "error": false},
+        {"text": "αριστερά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπροστά", "error": false},
+        {"text": "μπαμ", "error": true, "correct": "μπροστά", "feedback": "Λέμε μπροστά μπροστά, όχι μπαμ!"},
+        {"text": "και", "error": false},
+        {"text": "βρες", "error": false},
+        {"text": "το", "error": false},
+        {"text": "λουλούδι.", "error": false}
+      ]
+    }
+  ]
+}

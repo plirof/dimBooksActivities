@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Επαναλήψεις",
+  "subtitle": "Πιάσε μόνο ό,τι επαναλαμβάνεται!",
+  "instructions": "Πιάσε μόνο πράγματα που ΕΠΑΝΑΛΑΜΒΑΝΟΝΤΑΙ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Ημέρα - Νύχτα", "correct": true, "color": "#4CAF50"},
+    {"text": "Χτίσιμο", "correct": false, "color": "#f44336"},
+    {"text": "Εποχές", "correct": true, "color": "#2196F3"},
+    {"text": "Γράψιμο", "correct": false, "color": "#FF9800"},
+    {"text": "Φεγγάρι", "correct": true, "color": "#9C27B0"},
+    {"text": "Μαγείρεμα", "correct": false, "color": "#E91E63"},
+    {"text": "Αναπνοή", "correct": true, "color": "#009688"},
+    {"text": "Κοίταγμα", "correct": false, "color": "#FFC107"},
+    {"text": "Σφυγμός", "correct": true, "color": "#795548"},
+    {"text": "Διάβασμα", "correct": false, "color": "#607D8B"}
+  ]
+}

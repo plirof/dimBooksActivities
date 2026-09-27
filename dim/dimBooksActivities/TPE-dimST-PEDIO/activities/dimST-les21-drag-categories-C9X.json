@@ -1,0 +1,53 @@
+{
+  "title": "3 τρόποι αναζήτησης",
+  "subtitle": "Ταίριαξε κάθε τρόπο αναζήτησης εικόνας",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΑΝΤΙΣΤΡΟΦΗ ΕΙΚΟΝΑΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "url",
+      "name": "URL",
+      "color": "#2196F3"
+    },
+    {
+      "id": "drag",
+      "name": "DRAG & DROP",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📷 Upload εικόνας",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": "🔗 Επικόλληση URL",
+      "category": "url"
+    },
+    {
+      "id": "item3",
+      "text": "🖱️ Σύρσιμο αρχείου",
+      "category": "drag"
+    },
+    {
+      "id": "item4",
+      "text": "🔍 Google Images",
+      "category": "img"
+    },
+    {
+      "id": "item5",
+      "text": "🌐 Copy-paste link",
+      "category": "url"
+    },
+    {
+      "id": "item6",
+      "text": "📁 Drop file",
+      "category": "drag"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "templates": [
+    {
+      "id": "computer_missingword_basics_001",
+      "name": "Βασικά του υπολογιστή",
+      "description": "Συμπλήρωσε τη λέξη για τον υπολογιστή",
+      "category": "computer_missingword",
+      "difficulty": "easy",
+      "tags": ["computer", "basics", "greek", "elementary"],
+      "items": [
+        {"text": "Η _____ είναι η οθόνη του υπολογιστή.", "answer": "ΟΘΟΝΗ"},
+        {"text": "Γράφουμε με το _____.", "answer": "ΠΛΗΚΤΡΟΛΟΓΙΟ"},
+        {"text": "Κάνουμε κλικ με το _____.", "answer": "ΠΟΝΤΙΚΙ"},
+        {"text": "Αποθηκεύουμε στον _____ δίσκο.", "answer": "ΣΚΛΗΡΟ"},
+        {"text": "Ακούμε μουσική με τα _____.", "answer": "ΗΧΕΙΑ"},
+        {"text": "Εκτυπώνουμε με τον _____.", "answer": "ΕΚΤΥΠΩΤΗ"},
+        {"text": "Μιλάμε με το _____.", "answer": "ΜΙΚΡΟΦΩΝΟ"},
+        {"text": "Ο _____ είναι ο εγκέφαλος του υπολογιστή.", "answer": "ΕΠΕΞΕΡΓΑΣΤΗΣ"}
+      ]
+    },
+    {
+      "id": "computer_missingword_programs_001",
+      "name": "Προγράμματα",
+      "description": "Συμπλήρωσε για τα προγράμματα",
+      "category": "computer_missingword",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "items": [
+        {"text": "Το _____ είναι για γράψιμο κειμένων.", "answer": "WORD"},
+        {"text": "Το _____ είναι για λογαριασμούς.", "answer": "EXCEL"},
+        {"text": "Το _____ είναι για ζωγραφική.", "answer": "PAINT"},
+        {"text": "Ο _____ είναι για να μπαίνουμε στο ίντερνετ.", "answer": "BROWSER"},
+        {"text": "Το _____ είναι για απλό κείμενο.", "answer": "NOTEPAD"},
+        {"text": "Ο _____ είναι για να στέλνουμε μηνύματα.", "answer": "EMAIL"},
+        {"text": "Το _____ είναι για μαθηματικά.", "answer": "CALCULATOR"},
+        {"text": "Ο _____ είναι για να βλέπουμε βίντεο.", "answer": "MEDIA PLAYER"}
+      ]
+    },
+    {
+      "id": "computer_missingword_safety_001",
+      "name": "Ασφάλεια",
+      "description": "Συμπλήρωσε για την ασφάλεια",
+      "category": "computer_missingword",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "greek", "elementary"],
+      "items": [
+        {"text": "Ποτέ μην δίνεις τον _____ σου σε άλλους.", "answer": "ΚΩΔΙΚΟ"},
+        {"text": "Αν δεις κάτι περίεργο, πες το στους _____.", "answer": "ΓΟΝΕΙΣ"},
+        {"text": "Πάντα βάζε _____ για να μπαίνεις.", "answer": "ΚΩΔΙΚΟ"},
+        {"text": "Κάνε _____ κάθε 30 λεπτά.", "answer": "ΔΙΑΛΕΙΜΜΑ"},
+        {"text": "Ο _____ είναι μυστικός, μην τον λες.", "answer": "ΚΩΔΙΚΟΣ"},
+        {"text": "Ποτέ μην μιλάς σε _____ στο ίντερνετ.", "answer": "ΞΕΝΟΥΣ"},
+        {"text": "Ο κωδικός πρέπει να είναι _____ και δύσκολος.", "answer": "ΜΑΚΡΥΣ"},
+        {"text": "Πριν χρησιμοποιήσεις τον υπολογιστή, πλύνε τα _____.", "answer": "ΧΕΡΙΑ"}
+      ]
+    },
+    {
+      "id": "computer_missingword_keyboard_001",
+      "name": "Πληκτρολόγιο",
+      "description": "Συμπλήρωσε για τα πλήκτρα",
+      "category": "computer_missingword",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "items": [
+        {"text": "Το πλήκτρο _____ σβήνει το τελευταίο γράμμα.", "answer": "BACKSPACE"},
+        {"text": "Το πλήκτρο _____ επιβεβαιώνει μια ενέργεια.", "answer": "ENTER"},
+        {"text": "Το πλήκτρο _____ ακυρώνει μια ενέργεια.", "answer": "ESCAPE"},
+        {"text": "Το πλήκτρο _____ βάζει κενό.", "answer": "SPACE"},
+        {"text": "Το πλήκτρο _____ κάνει κεφαλαία.", "answer": "SHIFT"},
+        {"text": "Το πλήκτρο _____ σβήνει.", "answer": "DELETE"},
+        {"text": "Το πλήκτρο _____ κλειδώνει τα κεφαλαία.", "answer": "CAPS LOCK"},
+        {"text": "Τα πλήκτρα _____ κάνουν συντομεύσεις.", "answer": "CONTROL"}
+      ]
+    },
+    {
+      "id": "computer_missingword_internet_001",
+      "name": "Διαδίκτυο",
+      "description": "Συμπλήρωσε για το ίντερνετ",
+      "category": "computer_missingword",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "items": [
+        {"text": "Το _____ σημαίνει παγκόσμιος ιστός.", "answer": "WWW"},
+        {"text": "Ο _____ είναι για να ψάχνουμε.", "answer": "BROWSER"},
+        {"text": "Το _____ είναι ηλεκτρονικό ταχυδρομείο.", "answer": "EMAIL"},
+        {"text": "Μια _____ είναι μια σελίδα στο ίντερνετ.", "answer": "ΙΣΤΟΣΕΛΙΔΑ"},
+        {"text": "Το _____ είναι ο κωδικός σου.", "answer": "PASSWORD"},
+        {"text": "Το _____ είναι το όνομα χρήστη.", "answer": "USERNAME"},
+        {"text": "Ένα _____ σε πηγαίνει σε άλλη σελίδα.", "answer": "LINK"},
+        {"text": "Κάνε _____ για να κατεβάσεις αρχείο.", "answer": "DOWNLOAD"}
+      ]
+    }
+  ]
+}

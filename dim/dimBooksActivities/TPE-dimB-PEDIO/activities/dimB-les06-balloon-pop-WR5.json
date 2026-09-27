@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εντολές ScratchJr",
+  "subtitle": "Μόνο τις εντολές του ScratchJr!",
+  "instruction": "Σπάσε μόνο τις ΕΝΤΟΛΕΣ του ScratchJr!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "ΚΙΝΗΣΟΥ ΔΕΞΙΑ", "correct": true, "color": "#FF6B6B" },
+    { "text": "Τρέξε γρήγορα", "correct": false, "color": "#4ECDC4" },
+    { "text": "ΕΠΑΝΑΛΑΒΕ", "correct": true, "color": "#45B7D1" },
+    { "text": "Κοιμήσου", "correct": false, "color": "#96CEB4" },
+    { "text": "ΠΗΔΑ", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κάνε γυμναστική", "correct": false, "color": "#DDA0DD" },
+    { "text": "ΟΡΙΣΕ ΤΑΧΥΤΗΤΑ", "correct": true, "color": "#98D8C8" },
+    { "text": "Φάε μήλο", "correct": false, "color": "#F7DC6F" },
+    { "text": "ΠΗΓΑΙΝΕ ΣΤΗΝ ΑΡΧΗ", "correct": true, "color": "#BB8FCE" },
+    { "text": "Παίξε μουσική", "correct": false, "color": "#85C1E9" }
+  ]
+}

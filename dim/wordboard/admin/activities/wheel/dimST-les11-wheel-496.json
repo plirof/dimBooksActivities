@@ -1,0 +1,24 @@
+{
+    "id": "dimST-les11-wheel-496",
+    "title": "Καταγραφή δεδομένων - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Data logging",
+            "Datalogger",
+            "Στήλη",
+            "Πίνακας",
+            "MY_DATA",
+            "MICROBIT",
+            "Μέτρηση",
+            "Πείραμα"
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les11",
+        "δεδομένα"
+    ]
+}

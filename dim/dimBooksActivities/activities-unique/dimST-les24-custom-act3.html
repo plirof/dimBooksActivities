@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φιλτράρισμα ανά Tag</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;display:flex;flex-direction:column;align-items:center}
+h1{color:#fff;text-align:center;margin-bottom:5px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.9em}
+.container{background:#fff;border-radius:16px;padding:25px;width:100%;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:#f0f0ff;border-radius:12px;align-items:center}
+.tag-pill{padding:7px 16px;border-radius:20px;border:2px solid #667eea;background:#fff;color:#667eea;cursor:pointer;font-family:inherit;font-size:.85em;font-weight:600;transition:all .2s}
+.tag-pill:hover{background:#667eea;color:#fff}
+.tag-pill.active{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border-color:#764ba2}
+.count-info{margin-left:auto;font-size:.85em;color:#888;font-weight:600}
+.posts-grid{display:flex;flex-direction:column;gap:14px}
+.post-card{padding:18px;background:#fafafa;border-radius:14px;border:2px solid #eee;transition:all .3s}
+.post-card.hidden{display:none}
+.post-card:hover{border-color:#667eea;transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,.15)}
+.post-card h3{color:#333;font-size:1.05em;margin-bottom:6px}
+.post-excerpt{color:#666;font-size:.88em;line-height:1.5;margin-bottom:10px}
+.post-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.post-date{color:#999;font-size:.78em}
+.post-tags{display:flex;flex-wrap:wrap;gap:5px}
+.post-tag{padding:3px 10px;border-radius:12px;font-size:.72em;font-weight:600;color:#fff}
+.tag-informatiki{background:#4285f4}
+.tag-scratch{background:#fbbc04;color:#333}
+.tag-diadiktyo{background:#34a853}
+.tag-asfaleia{background:#ea4335}
+.tag-texnologia{background:#9c27b0}
+.tag-programmatismos{background:#ff6d00}
+.no-results{text-align:center;padding:40px;color:#999;font-size:1.05em;display:none}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .tag-bar > * { margin: 4px; }
+  .posts-grid > * + * { margin-top: 14px; }
+  .post-meta > * { margin: 4px; }
+  .post-tags > * { margin: 2.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏷️ Φιλτράρισμα ανά Tag</h1>
+<p class="subtitle">Βρες αναρτήσεις ανάλογα με την κατηγορία τους</p>
+<div class="container">
+<div class="tag-bar" id="tagBar">
+<span style="color:#667eea;font-weight:700;margin-right:6px">🏷️ Φίλτρα:</span>
+</div>
+<div class="posts-grid" id="postsGrid"></div>
+<div class="no-results" id="noResults">😕 Δεν βρέθηκαν αναρτήσεις για αυτό το tag.</div>
+</div>
+<script>
+const allTags=["Πληροφορική","Scratch","Διαδίκτυο","Ασφάλεια","Τεχνολογία","Προγραμματισμός"];
+const tagClass={"Πληροφορική":"tag-informatiki","Scratch":"tag-scratch","Διαδίκτυο":"tag-diadiktyo","Ασφάλεια":"tag-asfaleia","Τεχνολογία":"tag-texnologia","Προγραμματισμός":"tag-programmatismos"};
+const posts=[
+{title:"Πώς να φτιάξεις ένα παιχνίδι στο Scratch",excerpt:"Μάθε βήμα-βήμα πώς να δημιουργήσεις ένα απλό παιχνίδι με κινούμενους χαρακτήρες και ερωτήσεις στο Scratch.",tags:["Scratch","Προγραμματισμός"],date:"28 Απριλίου 2026"},
+{title:"Τι είναι το HTML;",excerpt:"Το HTML είναι η γλώσσα σήμανσης με την οποία δημιουργούμε ιστοσελίδες. Ας δούμε τα βασικά!",tags:["Πληροφορική","Διαδίκτυο"],date:"26 Απριλίου 2026"},
+{title:"Ασφαλείς κωδικοί πρόσβασης",excerpt:"Μάθε πώς να δημιουργείς ισχυρούς κωδικούς και να προστατεύεις τους λογαριασμούς σου.",tags:["Ασφάλεια","Διαδίκτυο"],date:"25 Απριλίου 2026"},
+{title:"Η ιστορία των υπολογιστών",excerpt:"Από το πρώτο μηχανικό υπολογιστή μέχρι σήμερα: μια σύντομη περιήγηση στην ιστορία της τεχνολογίας.",tags:["Τεχνολογία","Πληροφορική"],date:"23 Απριλίου 2026"},
+{title:"Scratch: Κίνηση χαρακτήρα",excerpt:"Πώς να προσθέσεις κίνηση σε έναν χαρακτήρα (sprite) στο Scratch χρησιμοποιώντας μπλοκ εντολών.",tags:["Scratch","Προγραμματισμός"],date:"22 Απριλίου 2026"},
+{title:"Cyberbullying: Τι να κάνεις",excerpt:"Η διαδικτυακή εκφοβηση είναι σοβαρό θέμα. Μάθε πώς να την αναγνωρίζεις και πώς να αντιδράς.",tags:["Ασφάλεια","Διαδίκτυο"],date:"20 Απριλίου 2026"},
+{title:"Βinary: Η γλώσσα των υπολογιστών",excerpt:"Οι υπολογιστές κατανοούν μόνο 0 και 1! Ας μάθουμε το δυαδικό σύστημα αρίθμησης.",tags:["Πληροφορική","Τεχνολογία"],date:"18 Απριλίου 2026"},
+{title:"Δημιουργία animation στο Scratch",excerpt:"Φτιάξε ένα όμορφο animation με αλλαγή ενδυμασιών (costumes) και ήχους στο Scratch!",tags:["Scratch","Πληροφορική"],date:"15 Απριλίου 2026"}
+];
+let activeTag=null;
+function renderTagBar(){
+const bar=document.getElementById('tagBar');
+const allBtn=document.createElement('button');
+allBtn.className='tag-pill active';
+allBtn.textContent='📋 Όλα';
+allBtn.onclick=()=>filterByTag(null);
+bar.appendChild(allBtn);
+allTags.forEach(tag=>{
+const btn=document.createElement('button');
+btn.className='tag-pill';
+btn.textContent='🏷️ '+tag;
+btn.dataset.tag=tag;
+btn.onclick=()=>filterByTag(tag);
+bar.appendChild(btn);
+});
+const count=document.createElement('span');
+count.className='count-info';
+count.id='countInfo';
+bar.appendChild(count);
+}
+function filterByTag(tag){
+activeTag=tag;
+document.querySelectorAll('.tag-pill').forEach(btn=>{
+btn.classList.toggle('active',tag===null?btn.textContent==='📋 Όλα':btn.dataset.tag===tag);
+});
+let visible=0;
+document.querySelectorAll('.post-card').forEach(card=>{
+const tags=JSON.parse(card.dataset.tags);
+const show=tag===null||tags.includes(tag);
+card.classList.toggle('hidden',!show);
+if(show)visible++;
+});
+document.getElementById('noResults').style.display=visible===0?'block':'none';
+document.getElementById('countInfo').textContent=`Εμφανίζονται ${visible} / ${posts.length}`;
+}
+function renderPosts(){
+const grid=document.getElementById('postsGrid');
+posts.forEach(p=>{
+const div=document.createElement('div');
+div.className='post-card';
+div.dataset.tags=JSON.stringify(p.tags);
+let tagsHtml=p.tags.map(t=>`<span class="post-tag ${tagClass[t]||''}">${t}</span>`).join('');
+div.innerHTML=`<h3>📌 ${p.title}</h3><p class="post-excerpt">${p.excerpt}</p><div class="post-meta"><span class="post-date">📅 ${p.date}</span><div class="post-tags">${tagsHtml}</div></div>`;
+grid.appendChild(div);
+});
+}
+renderTagBar();
+renderPosts();
+filterByTag(null);
+</script>
+</body>
+</html>

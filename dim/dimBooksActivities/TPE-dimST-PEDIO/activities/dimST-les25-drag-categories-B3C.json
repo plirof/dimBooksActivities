@@ -1,0 +1,53 @@
+{
+  "title": "Εργαλεία κειμενογράφου",
+  "subtitle": "Ταίριαξε κάθε εργαλείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "table",
+      "name": "ΠΙΝΑΚΑΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "textbox",
+      "name": "ΠΛΑΙΣΙΟ ΚΕΙΜΕΝΟΥ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📊 Γραμμές+Στήλες",
+      "category": "table"
+    },
+    {
+      "id": "item2",
+      "text": "📝 Κείμενο σε κουτί",
+      "category": "textbox"
+    },
+    {
+      "id": "item3",
+      "text": "🖼️ Εισαγωγή",
+      "category": "img"
+    },
+    {
+      "id": "item4",
+      "text": "📐 Διάταξη",
+      "category": "table"
+    },
+    {
+      "id": "item5",
+      "text": "✏️ Μορφοποίηση",
+      "category": "textbox"
+    },
+    {
+      "id": "item6",
+      "text": "📷 Αναδίπλωση",
+      "category": "img"
+    }
+  ]
+}

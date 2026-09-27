@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογισμός Επαναλήψεων</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);min-height:100vh;display:flex;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;padding:30px}
+h1{text-align:center;color:#6c3483;font-size:1.5em;margin-bottom:6px}
+h2{text-align:center;color:#888;font-size:1em;margin-bottom:20px}
+.score-bar{text-align:center;font-size:1.1em;color:#6c3483;font-weight:700;margin-bottom:18px}
+.problem-box{background:linear-gradient(135deg,#ffeaa7,#fdcb6e);border-radius:16px;padding:20px;text-align:center;margin:15px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.problem-box .big{font-size:1.5em;font-weight:800;color:#d35400}
+.input-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0}
+.input-row label{font-size:1em;font-weight:600;color:#333}
+.input-row input{width:80px;padding:10px;border:3px solid #e17055;border-radius:12px;font-size:1.1em;text-align:center;font-weight:700;color:#d35400}
+.input-row input:focus{outline:none;border-color:#d63031;box-shadow:0 0 10px rgba(214,48,49,.3)}
+button{padding:12px 30px;border:none;border-radius:14px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s}
+button:active{transform:scale(.96)}
+.btn-calc{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff}
+.btn-next{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff;display:none}
+.result-box{background:#dfe6e9;border-radius:14px;padding:18px;text-align:center;margin:15px 0;display:none}
+.result-box .calc-line{font-size:1.2em;font-weight:700;color:#2d3436;margin:6px 0}
+.result-box .success{color:#00b894;font-size:1.3em}
+.result-box .warn{color:#e17055;font-size:1em}
+.blocks-visual{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.mini-block{background:linear-gradient(135deg,#74b9ff,#0984e3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85em;font-weight:600}
+.canvas-area{background:linear-gradient(180deg,#dfe6e9,#b2bec3);border-radius:16px;margin:15px 0;overflow:hidden}
+canvas{display:block;width:100%;height:auto}
+.feedback{text-align:center;font-size:1.3em;margin:10px 0;min-height:40px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .input-row > * { margin: 5px; }
+  .blocks-visual > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🧮 Υπολογισμός Επαναλήψεων</h1>
+<h2>Πόσες επαναλήψεις χρειάζονται;</h2>
+<div class="score-bar">🏆 Λυμένα προβλήματα: <span id="score">0</span>/5</div>
+
+<div class="problem-box" id="problemBox">
+<div>Πρόβλημα <span id="pNum">1</span></div>
+<div class="big" id="pText">Πρέπει να διανύσεις 200 βήματα συνολικά</div>
+</div>
+
+<div class="input-row">
+<label>Βήματα ανά επανάληψη:</label>
+<input type="number" id="stepsInput" min="1" max="200" placeholder="?">
+<button class="btn-calc" onclick="calculate()">Υπολόγισε!</button>
+</div>
+
+<div class="result-box" id="resultBox">
+<div class="calc-line" id="calcLine"></div>
+<div class="blocks-visual" id="blocksVis"></div>
+<div id="remainderMsg" class="warn"></div>
+<div class="feedback" id="feedbackEmoji"></div>
+</div>
+
+<div class="canvas-area">
+<canvas id="cvs" width="760" height="280"></canvas>
+</div>
+
+<div style="text-align:center">
+<button class="btn-next" id="nextBtn" onclick="nextProblem()">▶ Επόμενο πρόβλημα</button>
+</div>
+</div>
+
+<script>
+var cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+var GRID=35;
+
+var problems=[
+{total:200},
+{total:100},
+{total:48},
+{total:150},
+{total:72}
+];
+var curIdx=0,solved=0,animating=false;
+var solvedFlags=[false,false,false,false,false];
+var catX=60,catY=140;
+
+function drawGrid(){
+ctx.clearRect(0,0,cvs.width,cvs.height);
+ctx.fillStyle='#e8ecef';ctx.fillRect(0,0,cvs.width,cvs.height);
+ctx.strokeStyle='#ccd1d4';ctx.lineWidth=1;
+for(var x=0;x<cvs.width;x+=GRID){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,cvs.height);ctx.stroke()}
+for(var y=0;y<cvs.height;y+=GRID){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cvs.width,y);ctx.stroke()}
+}
+
+function drawCat(){
+ctx.font='32px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('🐱',catX,catY);
+}
+
+function drawTrail(arr){
+ctx.fillStyle='rgba(9,132,226,0.3)';
+for(var i=0;i<arr.length;i++){ctx.beginPath();ctx.arc(arr[i].x,arr[i].y,5,0,Math.PI*2);ctx.fill()}
+}
+
+function render(trail){drawGrid();if(trail&&trail.length)drawTrail(trail);drawCat()}
+
+function showProblem(){
+var p=problems[curIdx];
+document.getElementById('pNum').textContent=curIdx+1;
+document.getElementById('pText').textContent='Πρέπει να διανύσεις '+p.total+' βήματα συνολικά';
+document.getElementById('resultBox').style.display='none';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('stepsInput').value='';
+catX=60;catY=140;render([]);
+}
+
+function calculate(){
+if(animating) return;
+var stepsPerLoop=parseInt(document.getElementById('stepsInput').value);
+if(!stepsPerLoop||stepsPerLoop<1){alert('Γράψε έναν αριθμό μεγαλύτερο από 0!');return}
+var total=problems[curIdx].total;
+var loops=Math.floor(total/stepsPerLoop);
+var remainder=total%stepsPerLoop;
+
+var rBox=document.getElementById('resultBox');
+rBox.style.display='block';
+
+var calcText=total+' ÷ '+stepsPerLoop+' = '+loops+' επαναλήψεις';
+document.getElementById('calcLine').textContent=calcText;
+
+var vis=document.getElementById('blocksVis');vis.innerHTML='';
+var totalBlocks=loops+(remainder>0?1:0);
+for(var i=0;i<loops;i++){var b=document.createElement('div');b.className='mini-block';b.textContent='Επ. '+(i+1)+': '+stepsPerLoop+' β.';vis.appendChild(b)}
+if(remainder>0){var b=document.createElement('div');b.className='mini-block';b.style.background='linear-gradient(135deg,#e17055,#d63031)';b.textContent='Τελ.: '+remainder+' β.';vis.appendChild(b)}
+
+var remMsg=document.getElementById('remainderMsg');
+if(remainder>0){
+remMsg.textContent='Υπόλοιπο: '+remainder+' βήματα — χρειάζεσαι ακόμα 1 επανάληψη!';
+document.getElementById('feedbackEmoji').innerHTML='⚠️ Χρειάζεται '+totalBlocks+' επαναλήψεις!';
+}else{
+remMsg.textContent='';
+document.getElementById('feedbackEmoji').innerHTML='✅ Ακριβώς '+loops+' επαναλήψεις!';
+}
+
+animating=true;
+catX=60;catY=140;
+animateCat(stepsPerLoop,total);
+}
+
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+async function animateCat(stepsPer,total){
+var trail=[];
+var moved=0;
+var visualStep=GRID;
+while(moved<total){
+var s=Math.min(stepsPer,total-moved);
+var actualS=Math.min(s,visualStep);
+for(var i=0;i<actualS&&moved<total;i++){
+trail.push({x:catX,y:catY});
+catX+=visualStep/actualS;
+moved++;
+if(catX>cvs.width-30){catX=60;catY+=GRID*2}
+render(trail);
+await sleep(80);
+}
+if(moved<total){await sleep(150)}
+}
+animating=false;
+if(!solvedFlags[curIdx]){solvedFlags[curIdx]=true;solved++;}
+document.getElementById('score').textContent=solved;
+if(curIdx<problems.length-1){document.getElementById('nextBtn').style.display='inline-block'}
+else{document.getElementById('nextBtn').style.display='none';document.getElementById('feedbackEmoji').innerHTML+=' 🎉 Τέλεια! Τα έλυσες όλα!'}
+}
+
+function nextProblem(){
+curIdx++;
+if(curIdx<problems.length) showProblem();
+}
+
+showProblem();
+</script>
+</body>
+</html>

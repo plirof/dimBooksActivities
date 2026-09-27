@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Εντολές Εισόδου Scratch",
+  "subtitle": "Πιάσε μόνο εντολές και έννοιες του Scratch",
+  "instructions": "Χρησιμοποίησε τα βελάκια για να πιάσεις έννοιες Scratch!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "ρώτησε...",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "απάντηση",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Python",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "ένωσε",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Word",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "πες...",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "όρισε...",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Excel",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "σκηνή",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "ακτίνα",
+      "correct": true,
+      "color": "#FF5722"
+    }
+  ]
+}

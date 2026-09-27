@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι στέλνω σε μήνυμα;",
+  "subtitle": "Σπάσε μόνο ό,τι μπορώ να στείλω σε ηλεκτρονικό μήνυμα",
+  "instruction": "Σπάσε μόνο περιεχόμενο που μπορώ να στείλω σε μήνυμα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Κείμενο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τούβλο", "correct": false, "color": "#f44336" },
+    { "text": "Φωτογραφία", "correct": true, "color": "#4CAF50" },
+    { "text": "Σκυρόδεμα", "correct": false, "color": "#f44336" },
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τσιμέντο", "correct": false, "color": "#f44336" },
+    { "text": "Emoticons", "correct": true, "color": "#4CAF50" },
+    { "text": "Πέτρα", "correct": false, "color": "#f44336" },
+    { "text": "Ήχος", "correct": true, "color": "#4CAF50" },
+    { "text": "Σίδερο", "correct": false, "color": "#f44336" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Έννοιες του Χάρτη",
+  "subtitle": "Σπάσε μόνο τις έννοιες που είναι ουσιαστικά",
+  "instruction": "Σπάσε τις λέξεις που είναι ουσιαστικά, όχι ρήματα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Ζώα", "correct": true, "color": "#4CAF50" },
+    { "text": "Τρέχω", "correct": false, "color": "#f44336" },
+    { "text": "Κατοικίδια", "correct": true, "color": "#4CAF50" },
+    { "text": "Χωρίζονται", "correct": false, "color": "#f44336" },
+    { "text": "Δάσος", "correct": true, "color": "#4CAF50" },
+    { "text": "Γράφω", "correct": false, "color": "#f44336" },
+    { "text": "Φάρμα", "correct": true, "color": "#4CAF50" },
+    { "text": "Είναι", "correct": false, "color": "#f44336" },
+    { "text": "Μαθητής", "correct": true, "color": "#4CAF50" },
+    { "text": "Πατάω", "correct": false, "color": "#f44336" }
+  ]
+}

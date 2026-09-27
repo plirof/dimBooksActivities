@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Random Wheel - Wordboard</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .wheel-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .wheel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .wheel-canvas {
+            margin: 20px auto;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .wheel-pointer {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #667eea;
+            margin: 0 auto;
+            position: relative;
+            top: -10px;
+            z-index: 10;
+        }
+        
+        .spin-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .spin-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+        
+        .spin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            min-height: 60px;
+        }
+        
+        .result-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .history-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: left;
+        }
+        
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .history-list li {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .history-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wheel-container">
+            <div class="wheel-header">
+                <a href="../../index.php" class="button" style="font-size: 12px; padding: 5px 10px;">← Back</a>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <h2 id="wheelTitle">Random Wheel</h2>
+                </div>
+            </div>
+            
+            <div class="wheel-pointer"></div>
+            <canvas id="wheelCanvas" class="wheel-canvas" width="400" height="400"></canvas>
+            
+            <button id="spinBtn" class="spin-btn" onclick="wheel.spin()">SPIN!</button>
+            
+            <div class="result-container">
+                <p class="result-text" id="resultText">Click spin to start!</p>
+            </div>
+            
+            <div class="history-container">
+                <h3>Spin History</h3>
+                <ul class="history-list" id="historyList"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="wheel.js"></script>
+</body>
+</html>

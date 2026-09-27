@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πηγές Πληροφοριών",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "museum", "name": "Ψηφιακά Μουσεία", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "encyclopedia", "name": "Εγκυκλοπαίδειες & Λεξικά", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εικονική περιήγηση σε έκθεση", "category": "museum"},
+    {"text": "Αναζήτηση ορισμού λέξης", "category": "encyclopedia"},
+    {"text": "Αρχαιολογική συλλογή", "category": "museum"},
+    {"text": "Άρθρο εγκυκλοπαίδειας", "category": "encyclopedia"},
+    {"text": "Ψηφιακό βιβλίο στο Openbook", "category": "encyclopedia"},
+    {"text": "Μουσείο Ακρόπολης", "category": "museum"},
+    {"text": "Συνώνυμα και αντώνυμα", "category": "encyclopedia"},
+    {"text": "Εθνικό Αρχαιολογικό Μουσείο", "category": "museum"},
+    {"text": "Λήμμα Βικιπαίδειας", "category": "encyclopedia"},
+    {"text": "Μουσείο Θεσσαλονίκης", "category": "museum"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Βρες το Εικονίδιο!",
+  "subtitle": "Κάνε κλικ στο σωστό εικονίδιο",
+  "instructions": "Κάνε κλικ στο εικονίδιο που ζητείται!",
+  "duration": 30,
+  "maxTargets": 2,
+  "targetLife": 2500,
+  "targets": [
+    { "label": "🎨", "color": "#E3F2FD" },
+    { "label": "📝", "color": "#FFF3E0" },
+    { "label": "🌐", "color": "#E8F5E9" },
+    { "label": "📷", "color": "#FCE4EC" }
+  ]
+}

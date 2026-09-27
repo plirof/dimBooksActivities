@@ -1,0 +1,26 @@
+{
+    "id": "dimD-les17-wheel-2h5",
+    "title": "Μεγέθη και διαχείριση αρχείων - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "JPEG",
+            "PNG",
+            "GIF",
+            "MP4",
+            "MP3",
+            "WAV",
+            "ODT",
+            "Κάδος ανακύκλωσης",
+            "Αντιγραφή",
+            "Αποκοπή"
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les17",
+        "αρχεία"
+    ]
+}

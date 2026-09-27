@@ -1,0 +1,25 @@
+{
+  "title": "Μηνύματα στην e-me",
+  "subtitle": "Σύρε κάθε ενέργεια στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "send",
+      "name": "Αποστολή μηνύματος",
+      "color": "#2196F3"
+    },
+    {
+      "id": "receive",
+      "name": "Λήψη μηνύματος",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Δημιουργείς γρήγορο μήνυμα", "category": "send" },
+    { "id": "i2", "text": "Γράφεις όνομα παραλήπτη", "category": "send" },
+    { "id": "i3", "text": "Γράφεις το κείμενο", "category": "send" },
+    { "id": "i4", "text": "Πατάς κουμπί αποστολής", "category": "send" },
+    { "id": "i5", "text": "Βλέπεις ειδοποίηση νέου μηνύματος", "category": "receive" },
+    { "id": "i6", "text": "Επιλέγεις για να διαβάσεις", "category": "receive" },
+    { "id": "i7", "text": "Γράφεις απάντηση", "category": "receive" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Ασφαλείς Ενέργειες",
+  "subtitle": "Πιάσε τις σωστές ενέργειες!",
+  "instructions": "Πιάσε τις ασφαλείς ενέργειες. Απόφυγε τις επικίνδυνες!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 10,
+  "items": [
+    { "text": "Antivirus ενημερωμένο", "correct": true, "color": "#4caf50" },
+    { "text": "Άνοιγμα ύποπτου email", "correct": false, "color": "#f44336" },
+    { "text": "Αντίγραφα ασφαλείας", "correct": true, "color": "#2196f3" },
+    { "text": "Κλικ σε άγνωστο link", "correct": false, "color": "#ff9800" },
+    { "text": "Αυτόματοι έλεγχοι", "correct": true, "color": "#00bcd4" },
+    { "text": "Λήψη από άγνωστη σελίδα", "correct": false, "color": "#9c27b0" },
+    { "text": "Firewall ενεργοποιημένο", "correct": true, "color": "#8bc34a" },
+    { "text": "Κοινοποίηση κωδικού", "correct": false, "color": "#ff5722" },
+    { "text": "Τακτική ενημέρωση", "correct": true, "color": "#607d8b" },
+    { "text": "Αγνόηση pop-ups", "correct": false, "color": "#e91e63" }
+  ]
+}

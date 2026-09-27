@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρακολούθηση Γραμμής - Robot Line</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f0fdf4,#86efac);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f0fdf4;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#166534;text-align:center;line-height:1.5}
+
+.track-container{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;justify-content:center}
+.track-grid{display:grid;grid-gap:3px;position:relative;background:#cbd5e1;padding:3px;border-radius:8px;touch-action:manipulation}
+.track-cell{width:58px;height:58px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2em;transition:background .2s}
+.track-cell.outer{background:#f1f5f9;border:1px solid #cbd5e1}
+.track-cell.line{background:#334155;border:1px solid #1e293b}
+.track-cell.inner{background:#bbf7d0;border:1px solid #86efac}
+.track-cell.start{background:#475569;border:2px solid #fbbf24}
+.track-cell.line.visited{background:#1e293b;box-shadow:inset 0 0 0 3px #60a5fa}
+.track-cell.inner.visited{background:#86efac;box-shadow:inset 0 0 0 3px #3b82f6}
+.track-robot{position:absolute;font-size:2em;z-index:10;transition:all .3s ease;pointer-events:none;transform:translate(-50%,-50%);text-shadow:0 0 4px rgba(0,0,0,.3)}
+
+.program-area{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.program-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.program-tree{background:#fff;border:2px solid #fdba74;border-radius:12px;padding:12px;min-height:80px}
+.block-loop{border:2px solid #f59e0b;border-radius:10px;padding:10px;background:#fef3c7;font-weight:700;color:#92400e}
+.block-loop-label{font-size:.9em;margin-bottom:8px}
+.block-nested{margin-left:20px;border-left:3px solid #f59e0b;padding-left:12px}
+.block-ifelse{border:2px solid #38bdf8;border-radius:10px;padding:10px;background:#e0f2fe}
+.block-if{font-weight:700;color:#0369a1;font-size:.9em;margin-bottom:8px}
+.block-else{font-weight:700;color:#0369a1;font-size:.9em;margin-top:8px;padding-top:8px;border-top:2px dashed #93c5fd}
+.slot{display:inline-block;min-width:110px;min-height:36px;border:2px dashed #93c5fd;border-radius:8px;background:#f8fafc;cursor:pointer;text-align:center;line-height:32px;font-weight:400;color:#94a3b8;font-size:.85em;transition:all .2s;margin-top:4px;margin-bottom:4px;padding:0 8px;user-select:none}
+.slot:hover{background:#e0f2fe;border-color:#38bdf8}
+.slot.selected{background:#dbeafe;border-color:#2563eb;border-style:solid;box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.slot.filled{background:#fef3c7;border-color:#f59e0b;border-style:solid;color:#92400e;font-weight:700;font-size:.9em}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+.slot.executing{animation:pulse .5s ease-in-out}
+
+.block-pool{background:#e0f2fe;border-radius:12px;padding:14px;margin-bottom:14px}
+.pool-label{font-weight:700;color:#0369a1;margin-bottom:10px;font-size:.95em;text-align:center}
+.pool-items{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pool-block{background:#fff;border:2px solid #38bdf8;border-radius:10px;padding:10px 16px;font-weight:700;color:#0369a1;font-size:.9em;cursor:pointer;transition:all .2s;user-select:none}
+.pool-block:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.pool-block:active{transform:scale(.95)}
+
+.btn-play{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-play:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-reset{background:#f0f0f0;color:#555;border:none;border-radius:50px;padding:10px 24px;font-size:.9em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-reset:hover{background:#e0e0e0}
+
+.speed-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:14px}
+.speed-row label{font-weight:700;color:#475569;font-size:.85em}
+.speed-row input[type=range]{flex:1;max-width:150px}
+
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+
+@media(max-width:550px){.track-cell{width:44px;height:44px;font-size:1em}.track-robot{font-size:1.5em}.pool-block{padding:8px 12px;font-size:.8em}.slot{min-width:80px;font-size:.8em}.block-nested{margin-left:10px;padding-left:8px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .pool-items > * { margin: 5px; }
+  .speed-row > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔲 Παρακολούθηση Γραμμής</h1>
+<p>Προγραμμάτισε το ρομπότ να ακολουθεί τη μαύρη γραμμή!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Το ρομπότ κοιτάζει το <strong>επόμενο τετράγωνο</strong> μπροστά του. Αν είναι άσπρο ή πράσινο, εκτελεί την 1η εντολή. Αν είναι μαύρο (γραμμή), εκτελεί τη 2η. Φτιάξε ένα πρόγραμμα με <strong>επανάληψη</strong> και <strong>αν/αλλιώς</strong>!</div>
+
+<div class="track-container">
+<div class="track-grid" id="trackGrid"></div>
+</div>
+
+<div class="program-area">
+<div class="program-label">📋 Το πρόγραμμά σου:</div>
+<div class="program-tree">
+<div class="block-loop">
+<div class="block-loop-label">🔄 Επανάλαβε</div>
+<div class="block-nested">
+<div class="block-ifelse">
+<div class="block-if">🤔 Αν το εμπρός είναι άσπρο/πράσινο → <span class="slot" id="slot-ifAction">+ Πάτησε για να προσθέσεις</span></div>
+<div class="block-else">⚡ Αλλιώς (είναι μαύρο/γραμμή) → <span class="slot" id="slot-elseAction">+ Πάτησε για να προσθέσεις</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="block-pool">
+<div class="pool-label">🎯 Εντολές (πάτησε πρώτα σε μία θέση (+) και μετά σε μία εντολή):</div>
+<div class="pool-items">
+<div class="pool-block" data-action="forward">⬆️ Προχώρα μπροστά</div>
+<div class="pool-block" data-action="turnRight">➡️ Στρίψε δεξιά</div>
+<div class="pool-block" data-action="turnLeft">⬅️ Στρίψε αριστερά</div>
+</div>
+</div>
+
+<div class="speed-row">
+<label>🐢 Ταχύτητα:</label>
+<input type="range" id="speedSlider" min="200" max="1500" step="100" value="600">
+<span style="font-weight:700;color:#0369a1;min-width:70px;font-size:.85em" id="speedLabel">600ms</span>
+</div>
+
+<button class="btn-play" id="playBtn" onclick="runProgram()">▶️ Εκτέλεση Προγράμματος</button>
+<button class="btn-reset" onclick="resetAll()">🔄 Καθαρισμός</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+
+<script>
+var COLS=6,ROWS=6;
+var TRACK=[
+  ['outer','outer','outer','outer','outer','outer'],
+  ['outer','line', 'line', 'line', 'line', 'outer'],
+  ['outer','line', 'inner','inner','line', 'outer'],
+  ['outer','line', 'inner','inner','line', 'outer'],
+  ['outer','line', 'line', 'line', 'line', 'outer'],
+  ['outer','outer','outer','outer','outer','outer']
+];
+var LINE_CELLS=[];
+for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++)if(TRACK[y][x]==='line')LINE_CELLS.push(x+','+y);
+var DX=[1,0,-1,0],DY=[0,1,0,-1];
+
+var robotX=1,robotY=1,robotDir=0;
+var SX=1,SY=1,SD=0;
+var program={ifAction:null,elseAction:null};
+var selectedSlot=null,isRunning=false,visited={},stepCount=0;
+
+function init(){
+  buildTrack();renderProgram();placeRobot();
+}
+function buildTrack(){
+  var g=document.getElementById('trackGrid');
+  g.style.gridTemplateColumns='repeat('+COLS+',1fr)';
+  g.innerHTML='';
+  for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++){
+    var c=document.createElement('div');
+    c.className='track-cell '+TRACK[y][x];
+    if(x===SX&&y===SY)c.classList.add('start');
+    c.id='cell-'+x+'-'+y;
+    g.appendChild(c);
+  }
+}
+function cellPos(x,y){return{x:3+x*61+29,y:3+y*61+29};}
+function placeRobot(){
+  var g=document.getElementById('trackGrid');
+  var e=document.getElementById('trackRobot');
+  if(e)e.remove();
+  var r=document.createElement('div');
+  r.className='track-robot';r.id='trackRobot';r.textContent='🤖';
+  g.appendChild(r);
+  var p=cellPos(robotX,robotY);
+  r.style.left=p.x+'px';r.style.top=p.y+'px';
+  var rots={0:'0deg',1:'90deg',2:'180deg',3:'270deg'};
+  r.style.transform='translate(-50%,-50%) rotate('+rots[robotDir]+')';
+}
+function updateRobot(){
+  var r=document.getElementById('trackRobot');
+  if(!r)return;
+  var p=cellPos(robotX,robotY);
+  r.style.left=p.x+'px';r.style.top=p.y+'px';
+  var rots={0:'0deg',1:'90deg',2:'180deg',3:'270deg'};
+  r.style.transform='translate(-50%,-50%) rotate('+rots[robotDir]+')';
+  var c=document.getElementById('cell-'+robotX+'-'+robotY);
+  if(c)c.classList.add('visited');
+  visited[robotX+','+robotY]=true;
+}
+function clearVisited(){
+  var c=document.querySelectorAll('.track-cell.visited');
+  for(var i=0;i<c.length;i++)c[i].classList.remove('visited');
+}
+
+function renderProgram(){
+  var names={forward:'⬆️ Προχώρα',turnRight:'➡️ Στρίψε δεξιά',turnLeft:'⬅️ Στρίψε αριστερά'};
+  var ifSlot=document.getElementById('slot-ifAction');
+  var elseSlot=document.getElementById('slot-elseAction');
+  if(program.ifAction){ifSlot.textContent=names[program.ifAction];ifSlot.className='slot filled';}
+  else{ifSlot.textContent='+ Πάτησε για να προσθέσεις';ifSlot.className='slot';}
+  if(program.elseAction){elseSlot.textContent=names[program.elseAction];elseSlot.className='slot filled';}
+  else{elseSlot.textContent='+ Πάτησε για να προσθέσεις';elseSlot.className='slot';}
+  document.getElementById('slot-ifAction').classList.toggle('selected',selectedSlot==='ifAction');
+  document.getElementById('slot-elseAction').classList.toggle('selected',selectedSlot==='elseAction');
+}
+function clickSlot(id){
+  if(isRunning)return;
+  selectedSlot=(selectedSlot===id)?null:id;
+  renderProgram();
+}
+function clickAction(a){
+  if(isRunning)return;
+  if(!selectedSlot){showFeedback('⚠️ Πάτησε πρώτα σε μία θέση (+) στο πρόγραμμα!',false);return;}
+  program[selectedSlot]=a;
+  selectedSlot=null;
+  renderProgram();
+}
+
+function runProgram(){
+  if(program.ifAction===null||program.elseAction===null){
+    showFeedback('❌ Συμπλήρωσε και τις δύο θέσεις στο πρόγραμμα!',false);return;
+  }
+  isRunning=true;
+  document.getElementById('playBtn').disabled=true;
+  robotX=SX;robotY=SY;robotDir=SD;
+  visited={};stepCount=0;
+  clearVisited();
+  updateRobot();
+  showFeedback('',true);
+  document.getElementById('feedback').className='feedback';
+  var sp=parseInt(document.getElementById('speedSlider').value);
+  executeStep(sp);
+}
+function executeStep(sp){
+  var allVisited=true;
+  for(var i=0;i<LINE_CELLS.length;i++)if(!visited[LINE_CELLS[i]]){allVisited=false;break;}
+  if(allVisited){
+    isRunning=false;document.getElementById('playBtn').disabled=false;
+    showFeedback('🎉 Σωστά! Το ρομπότ ακολούθησε όλη τη μαύρη γραμμή!',true);return;
+  }
+  if(stepCount>60){
+    isRunning=false;document.getElementById('playBtn').disabled=false;
+    showFeedback('❌ Το ρομπότ δεν κατάφερε να ακολουθήσει τη γραμμή. Δοκίμασε άλλες εντολές!',false);return;
+  }
+  var nx=robotX+DX[robotDir],ny=robotY+DY[robotDir];
+  var whiteAhead=nx<0||nx>=COLS||ny<0||ny>=ROWS||TRACK[ny][nx]!=='line';
+  var sid=whiteAhead?'ifAction':'elseAction';
+  var slot=document.getElementById('slot-'+sid);
+  slot.classList.add('executing');
+  setTimeout(function(){slot.classList.remove('executing');},sp);
+  var act=whiteAhead?program.ifAction:program.elseAction;
+  if(act==='forward'){
+    var tx=robotX+DX[robotDir],ty=robotY+DY[robotDir];
+    if(tx>=0&&tx<COLS&&ty>=0&&ty<ROWS){robotX=tx;robotY=ty;}
+  }else if(act==='turnRight'){robotDir=(robotDir+1)%4;}
+  else if(act==='turnLeft'){robotDir=(robotDir+3)%4;}
+  updateRobot();
+  stepCount++;
+  setTimeout(function(){executeStep(sp);},sp);
+}
+
+function resetAll(){
+  if(isRunning)return;
+  program={ifAction:null,elseAction:null};selectedSlot=null;
+  robotX=SX;robotY=SY;robotDir=SD;visited={};stepCount=0;
+  clearVisited();
+  document.getElementById('playBtn').disabled=false;
+  renderProgram();placeRobot();
+  showFeedback('',true);document.getElementById('feedback').className='feedback';
+}
+
+function showFeedback(m,ok){
+  var e=document.getElementById('feedback');
+  e.textContent=m;e.className='feedback'+(m?(ok?' ok':' fail'):'');
+}
+
+document.getElementById('slot-ifAction').onclick=function(){clickSlot('ifAction');};
+document.getElementById('slot-elseAction').onclick=function(){clickSlot('elseAction');};
+var pbs=document.querySelectorAll('.pool-block');
+for(var i=0;i<pbs.length;i++)(function(b){b.onclick=function(){clickAction(b.dataset.action);};})(pbs[i]);
+document.getElementById('speedSlider').oninput=function(){document.getElementById('speedLabel').textContent=this.value+'ms';};
+init();
+</script>
+</body>
+</html>

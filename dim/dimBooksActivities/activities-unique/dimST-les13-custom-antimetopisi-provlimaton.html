@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αντιμετώπιση Προβλημάτων | Μάθημα 13</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:750px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.match-grid{display:flex;flex-direction:column;gap:12px}
+.problem-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#1e293b;border-radius:10px;border-left:4px solid #6366f1;flex-wrap:wrap}
+.problem-icon{font-size:1.3rem}
+.problem-text{color:#e2e8f0;font-size:.7rem;font-weight:600;flex:1;min-width:120px}
+.problem-options{display:flex;gap:4px;flex-wrap:wrap}
+.solution-btn{padding:5px 10px;border-radius:8px;font-size:.62rem;font-weight:600;cursor:pointer;transition:all .2s;background:#334155;color:#94a3b8;border:2px solid #475569}
+.solution-btn:hover{background:#475569;color:#e2e8f0}
+.solution-btn.selected{border-color:#a78bfa;background:#1e1b4b;color:#a78bfa}
+.solution-btn.correct{border-color:#22c55e;background:#22c55e11;color:#4ade80}
+.solution-btn.wrong{border-color:#ef4444;background:#ef444422;color:#f87171}
+.solution-btn:disabled{cursor:default;opacity:.7}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .match-grid > * + * { margin-top: 12px; }
+  .problem-row > * { margin: 4px; }
+  .problem-options > * { margin: 2px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔧 Αντιμετώπιση Προβλημάτων</h1>
+<p class="subtitle">Αντιστοίχισε κάθε πρόβλημα υπολογιστή με τη σωστή λύση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Επίπεδο:</span> <span id="lvlNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var levels=[
+{
+title:'🔌 Προβλήματα Τροφοδοσίας',
+problems:[
+{icon:'💡',text:'Ο υπολογιστής δεν ανάβει καθόλου',correct:0},
+{icon:'⚡',text:'Ακούγεται ανεμιστήρας αλλά δεν βλέπω εικόνα',correct:1},
+{icon:'🔇',text:'Δεν ακούγεται ήχος από τα ηχεία',correct:2}
+],
+solutions:['Έλεγξε καλώδια ρεύματος και διακόπτη','Έλεγξε καλώδια οθόνης','Έλεγξε ρυθμίσεις ήχου και καλώδια ηχείων'],
+hint:'Ξεκίνα πάντα από τα προφανή: καλώδια, ρεύμα, συνδέσεις. Αν δεν ανάβει, έλεγξε πρώτα την παροχή ρεύματος.'
+},
+{
+title:'🖥️ Προβλήματα Οθόνης & Λειτουργίας',
+problems:[
+{icon:'🖥️',text:'Η οθόνη είναι μαύρη αλλά ο υπολογιστής λειτουργεί',correct:0},
+{icon:'🐌',text:'Ο υπολογιστής είναι πολύ αργός',correct:1},
+{icon:'❌',text:'Εμφανίζεται μήνυμα σφάλματος στην οθόνη',correct:2}
+],
+solutions:['Έλεγξε καλώδιο οθόνης και κουμπί λειτουργίας','Κλείσε εφαρμογές που δεν χρειάζεσαι','Κατέγραψε το μήνυμα και επικοινώνησε με τεχνικό'],
+hint:'Αν η οθόνη είναι μαύρη αλλά ο υπολογιστής λειτουργεί, μάλλον φταίει το καλώδιο ή η ρύθμιση της οθόνης.'
+},
+{
+title:'🌐 Προβλήματα Διαδικτύου',
+problems:[
+{icon:'📶',text:'Δεν συνδέεται στο Wi-Fi',correct:0},
+{icon:'🔗',text:'Το internet είναι πολύ αργό',correct:1},
+{icon:'🚫',text:'Μερικές ιστοσελίδες δεν ανοίγουν',correct:2}
+],
+solutions:['Έλεγξε το router και το Wi-Fi, κάνε reset','Δοκίμασε επανεκκίνηση router','Δοκίμασε άλλο browser ή έλεγξε DNS'],
+hint:'Το router είναι η συσκευή που παρέχει internet. Μια επανεκκίνηση (reset) λύνει πολλά προβλήματα σύνδεσης.'
+},
+{
+title:'🛡️ Προβλήματα Ασφαλείας',
+problems:[
+{icon:'🦠',text:'Υποψία ιού στον υπολογιστή',correct:0},
+{icon:'🔑',text:'Ξέχασα τον κωδικό πρόσβασης',correct:1},
+{icon:'📧',text:'Λαμβάνω ύποπτα email',correct:2}
+],
+solutions:['Τρέξε antivirus και κάλεσε τεχνικό','Επικοινώνησε με τεχνικό για επαναφορά','Μην τα ανοίγεις, διαγραφή και αναφορά ως spam'],
+hint:'Ποτέ μην ανοίγεις ύποπτα email ή συνημμένα. Το antivirus προστατεύει από ιούς αλλά χρειάζεται τακτική ενημέρωση.'
+},
+{
+title:'⚙️ Προβλήματα Εφαρμογών',
+problems:[
+{icon:'💻',text:'Μια εφαρμογή δεν ανταποκρίνεται (κολλάει)',correct:0},
+{icon:'📄',text:'Ένα αρχείο δεν ανοίγει',correct:1},
+{icon:'🖨️',text:'Ο εκτυπωτής δεν τυπώνει',correct:2}
+],
+solutions:['Κλείσε με Alt+Ctrl+Delete / Διαχείριση Εργασιών','Έλεγξε αν το πρόγραμμα υποστηρίζει το αρχείο','Έλεγξε καλώδια, ρυθμίσεις και μελάνι'],
+hint:'Όταν μια εφαρμογή κολλάει, χρησιμοποίησε Alt+Ctrl+Delete για να ανοίξεις τη Διαχείριση Εργασιών.'
+},
+{
+title:'🧹 Γενική Συντήρηση',
+problems:[
+{icon:'🗑️',text:'Ο δίσκος είναι γεμάτος',correct:0},
+{icon:'🔄',text:'Θέλω να απεγκαταστήσω μια εφαρμογή',correct:1},
+{icon:'🔊',text:'Η ένταση ήχου είναι πολύ χαμηλή',correct:2}
+],
+solutions:['Διάγραψε αρχεία που δεν χρειάζεσαι','Πήγαινε στις Ρυθμίσεις > Εφαρμογές > Απεγκατάσταση','Αύξησε την ένταση από τις Ρυθμίσεις ήχου'],
+hint:'Η τακτική συντήρηση (διαγραφή περιττών αρχείων, απεγκατάσταση εφαρμογών) βοηθά τον υπολογιστή να τρέχει γρήγορα.'
+}
+];
+var current=0;
+var pts=0;
+var answers={};
+var checked=false;
+function render(){
+var lv=levels[current];
+checked=false;
+answers={};
+document.getElementById('lvlNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">🔧 '+lv.title+'</div>';
+h+='<div class="match-grid" id="matchGrid">';
+for(var p=0;p<lv.problems.length;p++){
+h+='<div class="problem-row">';
+h+='<span class="problem-icon">'+lv.problems[p].icon+'</span>';
+h+='<span class="problem-text">'+lv.problems[p].text+'</span>';
+h+='<div class="problem-options">';
+for(var s=0;s<lv.solutions.length;s++){
+var sel=(answers[p]===s?' selected':'');
+h+='<div class="solution-btn'+sel+'" id="sol_'+p+'_'+s+'" onclick="selectSolution('+p+','+s+')">'+(s+1)+'. '+lv.solutions[s]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkAnswers()">✅ Έλεγχος Λύσεων</button></div>';
+h+='<div class="hint-box">💡 '+lv.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevLvl()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextLvl()"'+(current===levels.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectSolution(pIdx,sIdx){
+if(checked)return;
+if(answers[pIdx]!==undefined){
+var old=document.getElementById('sol_'+pIdx+'_'+answers[pIdx]);
+if(old)old.classList.remove('selected');
+}
+answers[pIdx]=sIdx;
+var el=document.getElementById('sol_'+pIdx+'_'+sIdx);
+if(el)el.classList.add('selected');
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkAnswers(){
+var lv=levels[current];
+var allAnswered=true;
+for(var p=0;p<lv.problems.length;p++){
+if(answers[p]===undefined){allAnswered=false;break;}
+}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Επίλεξε μία λύση για κάθε πρόβλημα!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var p2=0;p2<lv.problems.length;p2++){
+var correct=lv.problems[p2].correct;
+var userAns=answers[p2];
+if(userAns===correct){
+var el=document.getElementById('sol_'+p2+'_'+correct);
+if(el)el.classList.add('correct');
+}else{
+allCorrect=false;
+var elW=document.getElementById('sol_'+p2+'_'+userAns);
+if(elW)elW.classList.add('wrong');
+var elC=document.getElementById('sol_'+p2+'_'+correct);
+if(elC)elC.classList.add('correct');
+}
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+disableAllBtns();
+var fb=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb.textContent='🎉 Μπράβο! Όλες οι λύσεις είναι σωστές!';
+fb.className='feedback ok';
+}else{
+fb.textContent='⚠️ Κάποιες λύσεις δεν είναι σωστές. Πάτα Επόμενο για να συνεχίσεις ή ξαναδοκίμασε πατώντας Προηγούμενο.';
+fb.className='feedback fail';
+}
+}
+function disableAllBtns(){
+var btns=document.querySelectorAll('.solution-btn');
+for(var i=0;i<btns.length;i++){btns[i].style.pointerEvents='none';}
+}
+function prevLvl(){if(current>0){current--;render();}}
+function nextLvl(){if(current<levels.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

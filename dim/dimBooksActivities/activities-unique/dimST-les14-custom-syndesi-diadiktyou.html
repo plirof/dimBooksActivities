@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σύνδεση Διαδικτύου | Μάθημα 14</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:550px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.scenario-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.scenario-box .s-icon{font-size:1.3rem;display:block;margin-bottom:2px}
+.scenario-box .s-text{color:#e2e8f0;font-size:.72rem;line-height:1.5}
+.option-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.opt-card{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#1e293b;border-radius:10px;border:2px solid #334155;cursor:pointer;transition:all .2s}
+.opt-card:hover{transform:translateY(-2px);border-color:#6366f1}
+.opt-card.selected{border-color:#a78bfa;background:#1e1b4b}
+.opt-card.correct{border-color:#22c55e;background:#22c55e11}
+.opt-card.wrong{border-color:#ef4444;background:#ef444422}
+.opt-card .o-icon{font-size:1.5rem;min-width:32px;text-align:center}
+.opt-card .o-info{flex:1}
+.opt-card .o-name{color:#e2e8f0;font-size:.72rem;font-weight:700}
+.opt-card .o-speed{color:#fbbf24;font-size:.65rem;font-weight:600}
+.opt-card .o-desc{color:#64748b;font-size:.6rem}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .option-grid > * + * { margin-top: 6px; }
+  .opt-card > * + * { margin-left: 10px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📶 Διάλεξε τη Σύνδεσή σου</h1>
+<p class="subtitle">Επίλεξε τον κατάλληλο τύπο σύνδεσης για κάθε περίπτωση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="scNum">1</span>/8</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var scenarios=[
+{
+icon:'🏠',text:'Μία οικογένεια θέλει σύνδεση για ίντερνετ, Netflix και video calls. Θέλει την ταχύτερη σταθερή σύνδεση.',
+options:[
+{icon:'📡',name:'DSL',speed:'Έως 24 Mbps',desc:'Μέσω τηλεφωνικής γραμμής',right:false},
+{icon:'💡',name:'Οπτική Ίνα',speed:'Έως 1 Gbps',desc:'Μέσω καλωδίου οπτικής ίνας',right:true},
+{icon:'📱',name:'4G',speed:'Έως 150 Mbps',desc:'Μέσω κινητής τηλεφωνίας',right:false}
+],
+hint:'Η οπτική ίνα είναι η ταχύτερη τεχνολογία σταθερής σύνδεσης, ιδανική για οικογενειακή χρήση.'
+},
+{
+icon:'🏢',text:'Μία επιχείρηση χρειάζεται σύνδεση με μεγάλη ταχύτητα upload/download για cloud υπηρεσίες.',
+options:[
+{icon:'💡',name:'Οπτική Ίνα',speed:'Έως 10 Gbps',desc:'Συμμετρική ταχύτητα',right:true},
+{icon:'📡',name:'DSL',speed:'Έως 24 Mbps',desc:'Ασύμμετρη ταχύτητα',right:false},
+{icon:'🛰️',name:'Δορυφορική',speed:'Έως 50 Mbps',desc:'Με μεγάλη καθυστέρηση',right:false}
+],
+hint:'Για επαγγελματική χρήση με cloud, η οπτική ίνα προσφέρει μεγάλες ταχύτητες και χαμηλή καθυστέρηση.'
+},
+{
+icon:'🏕️',text:'Κάποιος μένει σε απομακρυσμένο χωριό όπου δεν φτάνει DSL ή οπτική ίνα. Τι τον συμφέρει;',
+options:[
+{icon:'🛰️',name:'Δορυφορική',speed:'Έως 50 Mbps',desc:'Μέσω δορυφόρου',right:true},
+{icon:'📱',name:'5G',speed:'Έως 1 Gbps',desc:'Αν υπάρχει κάλυψη',right:false},
+{icon:'📡',name:'DSL',speed:'Έως 24 Mbps',desc:'Αν υπάρχει τηλεφωνική γραμμή',right:false}
+],
+hint:'Σε απομακρυσμένες περιοχές, η δορυφορική σύνδεση είναι συχνά η μόνη διαθέσιμη επιλογή.'
+},
+{
+icon:'🚌',text:'Θέλεις να δουλεύεις ενώ ταξιδεύεις με λεωφορείο. Ποια σύνδεση είναι κατάλληλη;',
+options:[
+{icon:'📱',name:'4G/5G',speed:'Έως 1 Gbps',desc:'μέσω κινητής τηλεφωνίας',right:true},
+{icon:'💡',name:'Οπτική Ίνα',speed:'Έως 1 Gbps',desc:'Χρειάζεται σταθερή εγκατάσταση',right:false},
+{icon:'📡',name:'DSL',speed:'Έως 24 Mbps',desc:'Χρειάζεται τηλεφωνική γραμμή',right:false}
+],
+hint:'Η κινητή σύνδεση (4G/5G) είναι η μόνη που λειτουργεί ενώ κινείσαι.'
+},
+{
+icon:'🎮',text:'Ένας gamer θέλει την ταχύτερη δυνατή απόκριση (ping) για online παιχνίδια.',
+options:[
+{icon:'💡',name:'Οπτική Ίνα',speed:'Χαμηλό ping',desc:'<5ms καθυστέρηση',right:true},
+{icon:'📡',name:'DSL',speed:'Μεσαίο ping',desc:'20-50ms καθυστέρηση',right:false},
+{icon:'🛰️',name:'Δορυφορική',speed:'Υψηλό ping',desc:'>500ms καθυστέρηση',right:false}
+],
+hint:'Για online gaming, η οπτική ίνα έχει τη μικρότερη καθυστέρηση (ping).'
+},
+{
+icon:'📚',text:'Ένα σχολείο θέλει οικονομική λύση για 50 υπολογιστές. Υπάρχει τηλεφωνική γραμμή.',
+options:[
+{icon:'📡',name:'DSL',speed:'Έως 24 Mbps',desc:'Οικονομική, υπάρχουσα γραμμή',right:true},
+{icon:'💡',name:'Οπτική Ίνα',speed:'Έως 1 Gbps',desc:'Ακριβότερη εγκατάσταση',right:false},
+{icon:'📱',name:'4G',speed:'Έως 150 Mbps',desc:'Περιορισμένο data',right:false}
+],
+hint:'Το DSL είναι οικονομικό και αξιοποιεί την υπάρχουσα τηλεφωνική γραμμή.'
+},
+{
+icon:'📹',text:'Θέλεις να κάνεις live streaming σε 4K ποιότητα. Ποια σύνδεση χρειάζεσαι;',
+options:[
+{icon:'💡',name:'Οπτική Ίνα',speed:'100+ Mbps upload',desc:'Συμμετρική σύνδεση',right:true},
+{icon:'📡',name:'DSL',speed:'Έως 1 Mbps upload',desc:'Αργό upload',right:false},
+{icon:'📱',name:'4G',speed:'Έως 50 Mbps upload',desc:'Ασταθές upload',right:false}
+],
+hint:'Το live streaming 4K απαιτεί μεγάλη ταχύτητα upload, που μόνο η οπτική ίνα προσφέρει άνετα.'
+},
+{
+icon:'🏥',text:'Ένα νοσοκομείο χρειάζεται σύνδεση με μηδενική διακοπή λειτουργίας (uptime 99.99%).',
+options:[
+{icon:'💡',name:'Οπτική Ίνα',speed:'Μέγιστη αξιοπιστία',desc:'Με εφεδρική γραμμή',right:true},
+{icon:'📱',name:'4G/5G',speed:'Καλή αξιοπιστία',desc:'Εξαρτάται από σήμα',right:false},
+{icon:'🛰️',name:'Δορυφορική',speed:'Επηρεάζεται από καιρό',desc:'Πιθανές διακοπές',right:false}
+],
+hint:'Για κρίσιμες υπηρεσίες όπως νοσοκομεία, η οπτική ίνα με εφεδρική γραμμή είναι η πιο αξιόπιστη.'
+}
+];
+var current=0;
+var pts=0;
+var selected=-1;
+var checked=false;
+function render(){
+var sc=scenarios[current];
+checked=false;
+selected=-1;
+document.getElementById('scNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">📋 Σενάριο '+(current+1)+'</div>';
+h+='<div class="scenario-box"><span class="s-icon">'+sc.icon+'</span><div class="s-text">'+sc.text+'</div></div>';
+h+='<div class="option-grid">';
+for(var i=0;i<sc.options.length;i++){
+var o=sc.options[i];
+h+='<div class="opt-card" id="opt'+i+'" onclick="selectOpt('+i+')">';
+h+='<span class="o-icon">'+o.icon+'</span>';
+h+='<div class="o-info">';
+h+='<div class="o-name">'+o.name+'</div>';
+h+='<div class="o-speed">⚡ '+o.speed+'</div>';
+h+='<div class="o-desc">'+o.desc+'</div>';
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkChoice()">✅ Έλεγχος Επιλογής</button></div>';
+h+='<div class="hint-box">💡 '+sc.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevSc()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextSc()"'+(current===scenarios.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectOpt(idx){
+if(checked)return;
+if(selected>=0){
+var old=document.getElementById('opt'+selected);
+if(old)old.classList.remove('selected');
+}
+selected=idx;
+var el=document.getElementById('opt'+idx);
+if(el)el.classList.add('selected');
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkChoice(){
+var sc=scenarios[current];
+if(selected<0){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Επίλεξε μία επιλογή πρώτα!';
+fb.className='feedback fail';
+return;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var chosen=document.getElementById('opt'+selected);
+if(sc.options[selected].right){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+if(chosen)chosen.classList.add('correct');
+var fb=document.getElementById('feedback');
+fb.textContent='🎉 Μπράβο! Σωστή επιλογή!';
+fb.className='feedback ok';
+}else{
+if(chosen)chosen.classList.add('wrong');
+for(var i=0;i<sc.options.length;i++){
+if(sc.options[i].right){
+var correctEl=document.getElementById('opt'+i);
+if(correctEl)correctEl.classList.add('correct');
+}
+}
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Η επιλογή δεν είναι η καταλληλότερη. Η σωστή απάντηση σημειώθηκε με πράσινο.';
+fb.className='feedback fail';
+}
+}
+function prevSc(){if(current>0){current--;render();}}
+function nextSc(){if(current<scenarios.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

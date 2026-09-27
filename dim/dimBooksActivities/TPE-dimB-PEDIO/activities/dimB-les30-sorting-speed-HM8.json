@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Δικαιώματα ή Υποχρεώσεις;",
+  "subtitle": "Ταξινόμησε γρήγορα κάθε έννοια στη σωστή κατηγορία",
+  "instructions": "Πάτα αριστερό βέλος για Δικαιώματα, δεξιό βέλος για Υποχρεώσεις",
+  "categories": [
+    { "id": "rights", "name": "Δικαιώματα", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "duties", "name": "Υποχρεώσεις", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Πρόσβαση στο διαδίκτυο", "category": "rights" },
+    { "text": "Σεβασμός σε άλλους", "category": "duties" },
+    { "text": "Προστασία δεδομένων μου", "category": "rights" },
+    { "text": "Έλεγχος χρόνου διαδικτύου", "category": "duties" },
+    { "text": "Συμμετοχή σε δραστηριότητες", "category": "rights" },
+    { "text": "Μην προσβάλλω άλλους", "category": "duties" },
+    { "text": "Ασφαλής πλοήγηση", "category": "rights" },
+    { "text": "Υπεύθυνη ανάρτηση", "category": "duties" },
+    { "text": "Επικοινωνία με άλλους", "category": "rights" },
+    { "text": "Τηρώ τους κανόνες", "category": "duties" }
+  ],
+  "duration": 30
+}

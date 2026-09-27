@@ -1,0 +1,73 @@
+{
+    "id": "sample_geography_001",
+    "title": "World Geography",
+    "description": "Explore the world with these fun geography questions!",
+    "questions": [
+        {
+            "id": "698233f58d6314.58115484",
+            "text": "What is the capital of France?",
+            "answers": [
+                "London",
+                "Berlin",
+                "Paris",
+                "Madrid"
+            ],
+            "correct": 2,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6320.48785800",
+            "text": "Which continent is Egypt in?",
+            "answers": [
+                "Asia",
+                "Europe",
+                "Africa",
+                "Australia"
+            ],
+            "correct": 2,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6337.12819586",
+            "text": "What is the largest ocean on Earth?",
+            "answers": [
+                "Atlantic",
+                "Indian",
+                "Arctic",
+                "Pacific"
+            ],
+            "correct": 3,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6347.12749783",
+            "text": "Which country has the most people?",
+            "answers": [
+                "USA",
+                "India",
+                "China",
+                "Indonesia"
+            ],
+            "correct": 2,
+            "time": 20,
+            "points": 1000
+        },
+        {
+            "id": "698233f58d6353.70681028",
+            "text": "What is the capital of Japan?",
+            "answers": [
+                "Seoul",
+                "Beijing",
+                "Tokyo",
+                "Bangkok"
+            ],
+            "correct": 2,
+            "time": 20,
+            "points": 1000
+        }
+    ],
+    "created_at": "2026-02-03 18:44:21"
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!--
+  word-scramble.html — 
+  v03-260523 -Green Letters in correct spot
+  v02-260512
+
+  USAGE:
+    word-scramble.html?data=<json-file>[&shuffle=false]
+
+  PARAMETERS:
+    data    — (required) path to JSON data file
+    shuffle — (optional) randomize question order
+              true  (default) — questions are shuffled
+              false           — questions follow JSON order
+
+  EXAMPLES:
+    word-scramble.html?data=words.json               → shuffled order
+    word-scramble.html?data=words.json&shuffle=false → original order
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βρες τη Λέξη!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.subtitle{color:#888;text-align:center;font-size:.9em;margin-bottom:15px}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:8px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:15px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#a18cd1;font-size:1.1em}
+.word-hint{background:#fff3e0;border-radius:12px;padding:12px;margin-bottom:15px;text-align:center;color:#e65100;font-style:italic;min-height:42px;display:none}
+.scramble-area{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px;min-height:60px}
+.letter-btn{width:48px;height:48px;font-size:1.3em;font-weight:700;border:2px solid #a18cd1;border-radius:12px;background:#fff;color:#333;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;user-select:none}
+.letter-btn:hover:not(.used){background:#f3e5f5;transform:scale(1.1)}
+.letter-btn.used{opacity:.3;cursor:default;background:#e0e0e0;border-color:#ccc}
+.answer-area{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:15px;min-height:56px;padding:10px;background:#f8f9fa;border-radius:12px;border:2px dashed #a18cd1}
+.answer-slot{width:44px;height:44px;font-size:1.2em;font-weight:700;border:2px solid #a18cd1;border-radius:10px;background:#fff;color:#333;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.answer-slot:hover{background:#f3e5f5}
+.answer-slot.correct{background:#c8e6c9;border-color:#4caf50;color:#2e7d32}
+.answer-slot.correct-pos{background:#c8e6c9;border-color:#4caf50;color:#2e7d32}
+.answer-slot.wrong{background:#ffcdd2;border-color:#f44336;color:#c62828}
+.controls{display:flex;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+.ctrl-btn{padding:10px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;color:#fff;transition:all .2s}
+.ctrl-btn:hover{transform:scale(1.05)}
+.hint-btn{background:linear-gradient(135deg,#ffb74d,#ff9800)}
+.check-btn{background:linear-gradient(135deg,#a18cd1,#7c4dff)}
+.undo-btn{background:linear-gradient(135deg,#ef9a9a,#e53935)}
+.feedback{text-align:center;font-size:1.2em;font-weight:700;margin-bottom:10px;min-height:30px}
+.feedback.correct{color:#2e7d32}
+.feedback.wrong{color:#c62828}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{display:none;text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#a18cd1;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const shuffleOn=params.get('shuffle')!=='false';
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+let words=data.words;
+let currentWord=0,score=0,selected=[],shuffledLetters=[],hintUsed=false;
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle)}</h2>
+<p>Τα γράμματα μπερδεύτηκαν! Πάτα τα με τη σωστή σειρά για να βρεις τη λέξη.</p>
+<p>Μπορείς να ζητήσεις και βοήθεια!</p>
+<p>Λέξεις: ${words.length}</p>
+<button class="start-btn" onclick="startGame()">Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+currentWord=0;score=0;
+if(shuffleOn)words=shuffle(words);
+showWord()
+};
+
+function showWord(){
+if(currentWord>=words.length){showEnd();return}
+const w=words[currentWord];
+shuffledLetters=shuffle(w.word.split(''));
+selected=[];hintUsed=false;
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">Λέξη: <span>${currentWord+1}/${words.length}</span></div>
+<div class="stat">Σκορ: <span id="score">${score}</span></div>
+</div>
+<div class="subtitle">${esc(w.hint?'Κατηγορία: '+(w.category||''):'')}</div>
+<div class="word-hint" id="hintBox"></div>
+<div class="answer-area" id="answerArea"></div>
+<div class="scramble-area" id="scrambleArea"></div>
+<div class="controls">
+<button class="ctrl-btn hint-btn" onclick="showHint()">Υπόδειξη</button>
+<button class="ctrl-btn undo-btn" onclick="undoLetter()">Αναίρεση</button>
+<button class="ctrl-btn check-btn" onclick="checkWord()">Έλεγχος</button>
+</div>
+<div class="feedback" id="feedback"></div>
+`;
+renderScramble();renderAnswer()
+}
+
+function renderScramble(){
+const area=document.getElementById('scrambleArea');
+if(!area)return;
+area.innerHTML='';
+shuffledLetters.forEach((letter,i)=>{
+const btn=document.createElement('button');
+btn.className='letter-btn'+(selected.some(s=>s.origIdx===i)?' used':'');
+btn.textContent=letter;
+btn.onclick=()=>selectLetter(i);
+area.appendChild(btn)
+})
+}
+
+function renderAnswer(){
+const area=document.getElementById('answerArea');
+if(!area)return;
+area.innerHTML='';
+const w=words[currentWord].word;
+for(let i=0;i<w.length;i++){
+const slot=document.createElement('div');
+slot.className='answer-slot';
+  if(i<selected.length){
+      slot.textContent=selected[i].letter;
+      const idx=i;
+      slot.onclick=()=>removeFromAnswer(idx)
+    }
+area.appendChild(slot)
+}
+}
+
+function selectLetter(idx){
+if(selected.some(s=>s.origIdx===idx))return;
+selected.push({letter:shuffledLetters[idx],origIdx:idx});
+renderScramble();renderAnswer()
+}
+
+window.undoLetter=function(){
+if(selected.length===0)return;
+selected.pop();renderScramble();renderAnswer()
+};
+
+function removeFromAnswer(ansIdx){
+selected.splice(ansIdx);renderScramble();renderAnswer()
+}
+
+window.showHint=function(){
+hintUsed=true;
+const hb=document.getElementById('hintBox');
+hb.style.display='block';
+hb.textContent=words[currentWord].hint||'Δεν υπάρχει υπόδειξη';
+const hintBtn=document.querySelector('.hint-btn');
+if(hintBtn){
+const skipBtn=document.createElement('button');
+skipBtn.className='ctrl-btn hint-btn';
+skipBtn.textContent='Επόμενο ▶';
+skipBtn.onclick=window.skipWord;
+hintBtn.parentNode.replaceChild(skipBtn,hintBtn)
+}
+};
+
+window.skipWord=function(){currentWord++;showWord()};
+
+window.checkWord=function(){
+const w=words[currentWord].word;
+const answer=selected.map(s=>s.letter).join('');
+const slots=document.querySelectorAll('.answer-slot');
+const fb=document.getElementById('feedback');
+if(answer.length<w.length){fb.className='feedback';fb.textContent='Βάλε όλα τα γράμματα!';return}
+  slots.forEach((s,i)=>{
+    if(selected[i]&&selected[i].letter===w[i])s.classList.add('correct-pos');
+    else s.classList.add('wrong')
+  });
+  if(answer===w){
+    fb.className='feedback correct';fb.textContent='Σωστό! Μπράβο!';
+    score++;
+    document.getElementById('score').textContent=score;
+    setTimeout(()=>{currentWord++;showWord()},1200)
+  }else{
+    fb.className='feedback wrong';fb.textContent='Λάθος! Δοκίμασε ξανά!';
+    setTimeout(()=>{slots.forEach(s=>{s.classList.remove('wrong');s.classList.remove('correct-pos')});fb.textContent=''},800)
+  }
+};
+
+function showEnd(){
+let msg=score===words.length?'Τέλεια! Όλες οι λέξεις!':score>=words.length*0.7?'Μπράβο! Πολύ καλά!':score>=words.length*0.4?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over">
+<h2>Τέλος Παιχνιδιού!</h2>
+<div class="final-score">${score}/${words.length}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

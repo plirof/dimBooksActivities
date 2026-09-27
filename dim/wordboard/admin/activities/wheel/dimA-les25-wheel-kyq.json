@@ -1,0 +1,24 @@
+{
+    "id": "dimA-les25-wheel-kyq",
+    "title": "Γράφω τις πρώτες μου λέξεις με το πληκτρολόγιο - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Space",
+            "Backspace",
+            "Caps Lock",
+            "Γράμματα",
+            "Αριθμοί",
+            "Λέξη",
+            "Κενό",
+            "Κεφαλαία"
+        ]
+    },
+    "tags": [
+        "dimA",
+        "les25",
+        "πληκτρολόγιο"
+    ]
+}

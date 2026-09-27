@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μεγαλώνω τον Χάρτη",
+  "subtitle": "Μόνο λέξεις πάνω στις γραμμές!",
+  "instruction": "Σπάσε μόνο ΛΕΞΕΙΣ ΠΟΥ ΜΠΟΡΟΥΝ ΝΑ ΜΠΟΥΝ πάνω στις ΓΡΑΜΜΕΣ του χάρτη!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Χωρίζονται σε", "correct": true, "color": "#FF6B6B" },
+    { "text": "Τρέχει", "correct": false, "color": "#4ECDC4" },
+    { "text": "Όπως", "correct": true, "color": "#45B7D1" },
+    { "text": "Κοιμάται", "correct": false, "color": "#96CEB4" },
+    { "text": "Πηγαίνει", "correct": true, "color": "#FFEAA7" },
+    { "text": "Φτερώνει", "correct": false, "color": "#DDA0DD" },
+    { "text": "Είναι", "correct": true, "color": "#98D8C8" },
+    { "text": "Πετάει", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ζώα", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μαγειρεύει", "correct": false, "color": "#85C1E9" }
+  ]
+}

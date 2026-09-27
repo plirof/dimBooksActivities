@@ -1,0 +1,66 @@
+{
+    "id": "dimA-les24-missingword-jdn",
+    "title": "Πληκτρολογώ κεφαλαία γράμματα και αριθμούς - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Για κεφαλαία γράμματα πατάω το πλήκτρο ___.",
+                "options": [
+                    "Caps Lock",
+                    "Backspace",
+                    "Enter",
+                    "Delete"
+                ],
+                "correct": "Caps Lock"
+            },
+            {
+                "sentence": "Το Caps Lock βρίσκεται δίπλα στο πλήκτρο ___.",
+                "options": [
+                    "Α",
+                    "Enter",
+                    "Space",
+                    "Backspace"
+                ],
+                "correct": "Α"
+            },
+            {
+                "sentence": "Με το Backspace ___ έναν χαρακτήρα.",
+                "options": [
+                    "σβήνω",
+                    "γράφω",
+                    "ανοίγω",
+                    "κλείνω"
+                ],
+                "correct": "σβήνω"
+            },
+            {
+                "sentence": "Όταν το Caps Lock είναι ενεργό ανάβει ένα ___.",
+                "options": [
+                    "λαμπάκι",
+                    "φως",
+                    "σήμα",
+                    "μήνυμα"
+                ],
+                "correct": "λαμπάκι"
+            },
+            {
+                "sentence": "Το Backspace σβήνει τον χαρακτήρα ___ τον κέρσορα.",
+                "options": [
+                    "πριν",
+                    "μετά",
+                    "κάτω από",
+                    "πάνω από"
+                ],
+                "correct": "πριν"
+            }
+        ]
+    },
+    "tags": [
+        "dimA",
+        "les24",
+        "πληκτρολόγιο"
+    ]
+}

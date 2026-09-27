@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εντολές Scratch",
+  "subtitle": "Σπάσε τα μπαλόνια με σωστές εντολές Scratch",
+  "instruction": "Σπάσε τα μπαλόνια με ΕΝΤΟΛΕΣ Scratch!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 45,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "ρώτησε...",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "ζήτα...",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "πες...",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "ένωσε",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "χτίσε",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "όρισε...",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "απάντηση",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "κρύψε",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "απάντηση",
+      "correct": true,
+      "color": "#3F51B5"
+    },
+    {
+      "text": "αφαίρεσε",
+      "correct": false,
+      "color": "#FF5722"
+    }
+  ]
+}

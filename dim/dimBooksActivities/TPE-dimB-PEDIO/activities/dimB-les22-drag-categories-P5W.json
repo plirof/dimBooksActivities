@@ -1,0 +1,25 @@
+{
+  "title": "Τι Μπορώ να Γράψω στον Υπολογιστή",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "punctuation",
+      "name": "Σημεία Στίξης",
+      "color": "#F44336"
+    },
+    {
+      "id": "keys",
+      "name": "Πλήκτρα",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Κόμμα (,)", "category": "punctuation" },
+    { "id": "i2", "text": "Τελεία (.)", "category": "punctuation" },
+    { "id": "i3", "text": "Τόνος (´)", "category": "punctuation" },
+    { "id": "i4", "text": "Enter", "category": "keys" },
+    { "id": "i5", "text": "Space", "category": "keys" },
+    { "id": "i6", "text": "Backspace", "category": "keys" },
+    { "id": "i7", "text": "Caps Lock", "category": "keys" }
+  ]
+}

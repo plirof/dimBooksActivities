@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ψηφιακή Γνώση",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τους ΟΡΟΥΣ ΨΗΦΙΑΚΩΝ ΜΟΥΣΕΙΩΝ ΚΑΙ ΛΕΞΙΚΩΝ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Εικονική περιήγηση", "correct": true, "color": "#4CAF50"},
+    {"text": "Μπανάνα", "correct": false, "color": "#f44336"},
+    {"text": "Βικιπαίδεια", "correct": true, "color": "#2196F3"},
+    {"text": "Ποδήλατο", "correct": false, "color": "#FF9800"},
+    {"text": "Ψηφιακό λεξικό", "correct": true, "color": "#9C27B0"},
+    {"text": "Γάτα", "correct": false, "color": "#E91E63"},
+    {"text": "Αρχαιολογικό Μουσείο", "correct": true, "color": "#009688"},
+    {"text": "Καρέκλα", "correct": false, "color": "#FFC107"},
+    {"text": "Openbook", "correct": true, "color": "#795548"},
+    {"text": "Μήλο", "correct": false, "color": "#607D8B"}
+  ]
+}

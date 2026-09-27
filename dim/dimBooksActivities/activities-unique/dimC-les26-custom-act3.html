@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 26 - Γράψε σχόλιο + έλεγχος ευγένειας</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;padding:30px;margin:20px auto}
+h1{text-align:center;color:#4a3f9f;font-size:1.6em;margin-bottom:5px}
+.subtitle{text-align:center;color:#888;font-size:.95em;margin-bottom:20px}
+.blog-post{background:linear-gradient(135deg,#f5f7fa,#c3cfe2);border-radius:15px;padding:20px;margin-bottom:20px;position:relative}
+.blog-post h2{color:#4a3f9f;font-size:1.3em;margin-bottom:10px}
+.blog-post .meta{color:#999;font-size:.85em;margin-bottom:10px}
+.blog-post p{color:#444;line-height:1.7;font-size:1em}
+.existing-comments{margin-bottom:20px}
+.existing-comments h3{color:#4a3f9f;font-size:1.1em;margin-bottom:10px}
+.comment{background:#f0f4ff;border-radius:12px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px}
+.comment .avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2em;flex-shrink:0}
+.comment .avatar.blue{background:#dbeafe}
+.comment .avatar.green{background:#d1fae5}
+.comment .avatar.pink{background:#fce7f3}
+.comment .body{flex:1}
+.comment .name{font-weight:700;color:#4a3f9f;font-size:.9em}
+.comment .text{color:#555;font-size:.95em;margin-top:2px}
+.new-comments{margin-bottom:20px}
+.new-comments h3{color:#4a3f9f;font-size:1.1em;margin-bottom:10px}
+.comment-form{background:#fafbff;border-radius:15px;padding:20px;margin-bottom:20px;border:2px dashed #c5b3f7}
+.comment-form label{display:block;font-weight:700;color:#4a3f9f;margin-bottom:8px;font-size:1.05em}
+.comment-form textarea{width:100%;height:80px;border:2px solid #ddd;border-radius:12px;padding:12px;font-size:1em;resize:vertical;font-family:inherit;transition:border-color .3s}
+.comment-form textarea:focus{outline:none;border-color:#667eea}
+.comment-form button{display:block;width:100%;margin-top:10px;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.comment-form button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,.4)}
+.feedback{text-align:center;padding:14px;border-radius:12px;margin-bottom:15px;font-size:1.1em;font-weight:700;display:none}
+.feedback.polite{display:block;background:#d1fae5;color:#065f46;border:2px solid #6ee7b7}
+.feedback.warn{display:block;background:#fef3c7;color:#92400e;border:2px solid #fcd34d}
+.feedback.rude{display:block;background:#fee2e2;color:#991b1b;border:2px solid #fca5a5}
+.score{text-align:center;font-size:1.2em;color:#4a3f9f;font-weight:700;padding:12px;background:linear-gradient(135deg,#ede9fe,#e0e7ff);border-radius:12px;margin-bottom:20px}
+.edu-box{background:linear-gradient(135deg,#dbeafe,#ede9fe);border-radius:15px;padding:20px;border-left:5px solid #667eea}
+.edu-box h3{color:#4a3f9f;margin-bottom:10px;font-size:1.1em}
+.edu-box ul{list-style:none;padding:0}
+.edu-box ul li{padding:5px 0;font-size:.95em;color:#444}
+.edu-box ul li::before{content:"💡 "}
+@media(max-width:600px){.container{padding:18px}h1{font-size:1.3em}.blog-post h2{font-size:1.1em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .comment > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📝 Γράψε ένα ευγενικό σχόλιο!</h1>
+<p class="subtitle">Μάθε πώς να γράφεις ωραία σχόλια στο διαδίκτυο</p>
+
+<div class="blog-post">
+<h2>🌳 Η βόλτα μας στο πάρκο</h2>
+<p class="meta">📍 Δημοτικό Σχολείο | 📅 15 Μαΐου 2026</p>
+<p>Σήμερα πήγαμε όλη η τάξη στο πάρκο! Είδαμε πολλά λουλούδια, δέντρα και παπίδια στη λίμνη. Παίξαμε κρυφτό και φάγαμε σάντουιτς στο γρασίδι. Ήταν μια υπέροχη μέρα! Πείτε μας τη γνώμη σας! 😊</p>
+</div>
+
+<div class="existing-comments">
+<h3>💬 Σχόλια συμμαθητών:</h3>
+<div class="comment">
+<div class="avatar blue">👧</div>
+<div class="body"><span class="name">Ελένη:</span><span class="text">Μπράβο παιδιά! Ωραία βόλτα! 🌸</span></div>
+</div>
+<div class="comment">
+<div class="avatar green">👦</div>
+<div class="body"><span class="name">Γιάννης:</span><span class="text">Τέλεια ιδέα! Ευχαριστώ που το μοιραστήκατε! 🎉</span></div>
+</div>
+<div class="comment">
+<div class="avatar pink">👧</div>
+<div class="body"><span class="name">Μαρία:</span><span class="text">Ωραία φωτογραφίες! Καλημέρα σε όλους! ☀️</span></div>
+</div>
+</div>
+
+<div id="newComments" class="new-comments" style="display:none">
+<h3>✨ Τα δικά σου σχόλια:</h3>
+</div>
+
+<div id="feedback" class="feedback"></div>
+
+<div class="comment-form">
+<label for="commentInput">✏️ Γράψε ένα σχόλιο:</label>
+<textarea id="commentInput" placeholder="Γράψε κάτι ωραίο για την ανάρτηση..."></textarea>
+<button onclick="submitComment()">📨 Αποστολή σχολίου</button>
+</div>
+
+<div class="score">⭐ Ευγενικά σχόλια: <span id="scoreValue">0</span></div>
+
+<div class="edu-box">
+<h3>📚 Συμβουλές για καλά σχόλια:</h3>
+<ul>
+<li>Γράφε πάντα με ευγένεια και σεβασμό</li>
+<li>Χρησιμοποίησε ωραίες λέξεις όπως "μπράβο", "ευχαριστώ", "ωραία"</li>
+<li>Μην γράφεις κάτι που θα στεναχωρήσει κάποιον</li>
+<li>Σκέψου πριν δημοσιεύσεις — θα ήθελες να σου πουν κάτι τέτοιο;</li>
+<li>Τα καλά σχόλια κάνουν το διαδίκτυο πιο ωραίο για όλους!</li>
+</ul>
+</div>
+</div>
+
+<script>
+var politeWords = ["μπράβο","ωραία","τέλεια","ευχαριστώ","μπούικο","γεια","καλημέρα","συγχαρητήρια","ωραίο","ώραιο","ωραια","ωραιο","ευχαριστω"];
+var rudeWords = ["χαζό","ανόητο","κακό","βαρετό","άσχημο","χαζο","ανοητο","κακο","βαρετο","ασχημο"];
+var politeCount = 0;
+var scoreEl = document.getElementById('scoreValue');
+var feedbackEl = document.getElementById('feedback');
+var newCommentsEl = document.getElementById('newComments');
+var commentInput = document.getElementById('commentInput');
+
+function normalize(s){return s.toLowerCase().replace(/ά/g,'α').replace(/έ/g,'ε').replace(/ή/g,'η').replace(/ί/g,'ι').replace(/ό/g,'ο').replace(/ύ/g,'υ').replace(/ώ/g,'ω')}
+
+function containsAny(text,words){var t=normalize(text);for(var i=0;i<words.length;i++){if(t.indexOf(normalize(words[i]))!==-1)return true}return false}
+
+function submitComment(){
+var text=commentInput.value.trim();
+if(!text){feedbackEl.className='feedback warn';feedbackEl.style.display='block';feedbackEl.textContent='⚠️ Γράψε κάτι πριν στείλεις!';return}
+var hasPolite=containsAny(text,politeWords);
+var hasRude=containsAny(text,rudeWords);
+if(hasRude){
+feedbackEl.className='feedback rude';feedbackEl.style.display='block';feedbackEl.textContent='❌ Αυτό δεν είναι ευγενικό. Σκέψου ξανά!';
+}else if(hasPolite){
+feedbackEl.className='feedback polite';feedbackEl.style.display='block';feedbackEl.textContent='✅ Τέλεια! Ευγενικό σχόλιο!';
+politeCount++;scoreEl.textContent=politeCount;
+addComment(text);commentInput.value='';
+}else{
+feedbackEl.className='feedback warn';feedbackEl.style.display='block';feedbackEl.textContent='⚠️ Προσπάθησε να γράψεις κάτι πιο ευγενικό!';
+}
+}
+
+function addComment(text){
+newCommentsEl.style.display='block';
+var div=document.createElement('div');div.className='comment';
+var avatar=document.createElement('div');avatar.className='avatar green';avatar.textContent='🧒';
+var body=document.createElement('div');body.className='body';
+var nameSpan=document.createElement('span');nameSpan.className='name';nameSpan.textContent='Εσύ: ';
+var textSpan=document.createElement('span');textSpan.className='text';textSpan.textContent=text;
+body.appendChild(nameSpan);body.appendChild(textSpan);
+div.appendChild(avatar);div.appendChild(body);
+newCommentsEl.appendChild(div);
+}
+</script>
+</body>
+</html>

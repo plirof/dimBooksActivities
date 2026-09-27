@@ -1,0 +1,73 @@
+{
+  "title": "Κατάληξη → τύπος",
+  "subtitle": "Ταίριαξε την κατάληξη αρχείου στον σωστό τύπο",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "audio",
+      "name": "ΗΧΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "pres",
+      "name": "ΠΑΡΟΥΣΙΑΣΗ",
+      "color": "#9E9E9E"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": ".jpg",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": ".mp3",
+      "category": "audio"
+    },
+    {
+      "id": "item3",
+      "text": ".mp4",
+      "category": "video"
+    },
+    {
+      "id": "item4",
+      "text": ".docx",
+      "category": "text"
+    },
+    {
+      "id": "item5",
+      "text": ".pptx",
+      "category": "pres"
+    },
+    {
+      "id": "item6",
+      "text": ".png",
+      "category": "img"
+    },
+    {
+      "id": "item7",
+      "text": ".wav",
+      "category": "audio"
+    },
+    {
+      "id": "item8",
+      "text": ".pdf",
+      "category": "text"
+    }
+  ]
+}

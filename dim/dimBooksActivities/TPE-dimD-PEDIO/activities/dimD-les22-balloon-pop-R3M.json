@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σωστοί Κωδικοί",
+  "subtitle": "Σπάσε τα μπαλόνια με σωστούς κωδικούς πρόσβασης!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν καλές πρακτικές για κωδικούς πρόσβασης.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Γράμματα + αριθμοί + σύμβολα",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "Δεν το μοιράζομαι με κανέναν",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "Είναι διαφορετικός σε κάθε λογαριασμό",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "123456",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "password",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Μακρύς συνδυασμός",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "Το όνομά μου",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Δεν γράφω το πραγματικό μου όνομα",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "Ισχυρός κωδικός",
+      "correct": true,
+      "color": "#8bc34a"
+    },
+    {
+      "text": "Ημερομηνία γέννησης",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

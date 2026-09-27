@@ -1,0 +1,58 @@
+{
+  "title": "Τύποι περιεχομένου σε εικονίδια",
+  "subtitle": "Ταίριαξε κάθε περιεχόμενο στον σωστό τύπο",
+  "categories": [
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "exercises",
+      "name": "ΑΣΚΗΣΕΙΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "presentations",
+      "name": "ΠΑΡΟΥΣΙΑΣΕΙΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "images",
+      "name": "ΕΙΚΟΝΕΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🎥 Εκπαιδευτικό κλιπ",
+      "category": "video"
+    },
+    {
+      "id": "item2",
+      "text": "🧩 Κουίζ",
+      "category": "exercises"
+    },
+    {
+      "id": "item3",
+      "text": "📊 Slides",
+      "category": "presentations"
+    },
+    {
+      "id": "item4",
+      "text": "🖼️ Εικόνες μαθήματος",
+      "category": "images"
+    },
+    {
+      "id": "item5",
+      "text": "📹 Πείραμα",
+      "category": "video"
+    },
+    {
+      "id": "item6",
+      "text": "✏️ Σελίδες εργασίας",
+      "category": "exercises"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πρωτόκολλα",
+  "subtitle": "Ταξινόμησε κάθε πρωτόκολλο",
+  "instructions": "Πάτα αριστερό βέλος για Web/Email, δεξιό για Αρχεία/Γενικά",
+  "categories": [
+    { "id": "web", "name": "Web / Email", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "file", "name": "Αρχεία / Γενικά", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "HTTP - Ιστοσελίδες", "category": "web" },
+    { "text": "FTP - Μεταφορά αρχείων", "category": "file" },
+    { "text": "SMTP - Αποστολή email", "category": "web" },
+    { "text": "TCP/IP - Βασικό πρωτόκολλο", "category": "file" },
+    { "text": "HTTPS - Ασφαλείς σελίδες", "category": "web" },
+    { "text": "POP3 - Λήψη email", "category": "web" },
+    { "text": "IMAP - Λήψη email", "category": "web" },
+    { "text": "FTP - Αρχεία μεταξύ υπολογιστών", "category": "file" },
+    { "text": "HTTP - Μεταφορά δεδομένων ιστοσελίδων", "category": "web" },
+    { "text": "TCP/IP - Επικοινωνία διαδικτύου", "category": "file" }
+  ],
+  "duration": 30
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συνθήκη Τερματισμού | Μάθημα 6</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ecfdf5,#6ee7b7);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#064e3b;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#059669;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#064e3b;font-size:.75rem;font-weight:700;border:1px solid #6ee7b7;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.scene-card{background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:10px;margin:8px 0}
+.scene-title{font-size:.78rem;font-weight:700;color:#064e3b;text-align:center}
+.scene-state{display:flex;gap:12px;justify-content:center;margin:6px 0}
+.state-box{padding:6px 14px;border-radius:10px;font-size:.72rem;font-weight:700;text-align:center}
+.state-box.pts{background:#dcfce7;border:2px solid #86efac;color:#14532d}
+.state-box.lives{background:#fef2f2;border:2px solid #fca5a5;color:#dc2626}
+.expr-builder{display:flex;gap:6px;justify-content:center;align-items:center;margin:8px 0;flex-wrap:wrap}
+.expr-slot{min-width:60px;min-height:34px;border:2px dashed #059669;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;background:#f0fdf4;padding:4px 8px}
+.expr-slot:hover{background:#dcfce7}
+.expr-slot.filled{border-style:solid;background:#d1fae5;color:#064e3b}
+.expr-slot.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.expr-slot.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.expr-label{font-size:.7rem;color:#059669;font-weight:700}
+.block-pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.block-chip{padding:6px 12px;border:2px solid #e2e8f0;border-radius:20px;font-size:.68rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.block-chip:hover{border-color:#059669;background:#ecfdf5}
+.block-chip.used{opacity:.3;cursor:default}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#059669;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#047857}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #059669;border-radius:10px;background:transparent;color:#059669;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#ecfdf5}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .scene-state > * + * { margin-left: 12px; }
+  .expr-builder > * { margin: 3px; }
+  .block-pool > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🏁 Συνθήκη Τερματισμού</h1>
+<p class="subtitle">Φτιάξε τη σωστή λογική έκφραση για να τελειώνει το παιχνίδι!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Παιχνίδι:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var games=[
+{
+title:'Παιχνίδι Έλλης — Συλλογή 10 αστερίων',
+pts:10,lives:3,
+slots:['συνθήκη_1','τελεστής','συνθήκη_2'],
+pool:['πόντοι = 10','ζωές = 0','ΚΑΙ','Ή','πόντοι > 10'],
+correct:['πόντοι = 10','Ή','ζωές = 0']
+},
+{
+title:'Παιχνίδι Αυτοκινήτων — Αποφυγή εμποδίων',
+pts:20,lives:5,
+slots:['συνθήκη_1','τελεστής','συνθήκη_2'],
+pool:['πόντοι = 20','ζωές = 0','ΚΑΙ','Ή','πόντοι < 20'],
+correct:['πόντοι = 20','Ή','ζωές = 0']
+},
+{
+title:'Παιχνίδι Λαβύρινθου — Βρες την έξοδο',
+pts:5,lives:2,
+slots:['συνθήκη_1','τελεστής','συνθήκη_2'],
+pool:['πόντοι = 5','ζωές = 0','ΚΑΙ','Ή','βήματα > 100'],
+correct:['πόντοι = 5','Ή','ζωές = 0']
+},
+{
+title:'Παιχνίδι Διάσωσης — Μην αφήσεις κανέναν',
+pts:0,lives:3,
+slots:['συνθήκη_1','τελεστής','συνθήκη_2'],
+pool:['σωσμένοι = 8','ζωές = 0','ΚΑΙ','Ή','σωσμένοι < 8'],
+correct:['σωσμένοι = 8','Ή','ζωές = 0']
+}
+];
+var curQ=0,pts=0,answers={},checked=false,selectedBlock=null;
+
+function initQ(){answers={};checked=false;selectedBlock=null;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var g=games[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="scene-card">';
+h+='<div class="scene-title">'+g.title+'</div>';
+h+='<div class="scene-state">';
+h+='<div class="state-box pts">🎯 Στόχος πόντων: '+g.pts+'</div>';
+h+='<div class="state-box lives">❤️ Αρχικές ζωές: '+g.lives+'</div>';
+h+='</div>';
+h+='</div>';
+h+='<div class="info-text">Φτιάξε τη σύνθετη λογική έκφραση τερματισμού:</div>';
+h+='<div class="expr-builder">';
+for(var i=0;i<g.slots.length;i++){
+var filled=answers[i]!==undefined;
+var cls='expr-slot'+(filled?' filled':'');
+if(checked){
+var isCorrect=answers[i]===g.correct[i];
+cls+=' '+(isCorrect?'correct':'wrong');
+}
+h+='<span class="'+cls+'" onclick="clearSlot('+i+')">'+(filled?answers[i]:'???')+'</span>';
+if(i<g.slots.length-1)h+='<span class="expr-label">•</span>';
+}
+h+='</div>';
+h+='<div class="block-pool">';
+for(var i=0;i<g.pool.length;i++){
+var used=false;
+for(var j in answers){if(answers[j]===g.pool[i])used=true;}
+var cls='block-chip'+(used?' used':'');
+if(!used)h+='<div class="'+cls+'" onclick="pickBlock('+i+')">'+g.pool[i]+'</div>';
+else h+='<div class="'+cls+'">'+g.pool[i]+'</div>';
+}
+h+='</div>';
+var allFilled=Object.keys(answers).length===g.slots.length;
+if(allFilled&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Έκφρασης</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<g.correct.length;i++){if(answers[i]===g.correct[i])correct++;}
+var allCorrect=correct===g.correct.length;
+if(allCorrect)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(allCorrect?'ok':'bad')+'">'+(allCorrect?'✅ Σωστά! Το παιχνίδι τερματίζει όταν:'+answers[0]+' '+answers[1]+' '+answers[2]:'❌ Λάθος. Σωστή έκφραση: '+g.correct.join(' '))+'</div>';
+if(curQ<games.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Παιχνίδι ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function pickBlock(idx){
+if(checked)return;
+var g=games[curQ];
+for(var j in answers){if(answers[j]===g.pool[idx])return;}
+selectedBlock=g.pool[idx];
+var slotToFill=-1;
+for(var i=0;i<g.slots.length;i++){if(answers[i]===undefined){slotToFill=i;break;}}
+if(slotToFill>=0)answers[slotToFill]=selectedBlock;
+selectedBlock=null;
+render();
+}
+
+function clearSlot(idx){
+if(checked)return;
+delete answers[idx];
+render();
+}
+
+function checkAnswer(){checked=true;render();}
+
+function nextQ(){
+if(curQ<games.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

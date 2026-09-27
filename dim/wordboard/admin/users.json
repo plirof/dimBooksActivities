@@ -1,0 +1,18 @@
+{
+    "admin": {
+        "password": "$2y$10$EawtTR8RtwyiPofTSVJL\/us9O9iKr5MMxfonFUS6ucH9c.x8zG0PK",
+        "role": "admin"
+    },
+    "user1": {
+        "password": "$2y$10$tY9Gdicr9LZDtIHJViDzo.JV84BAJF1FPOZs.\/yVOVv.AHc9pFNSi",
+        "role": "student"
+    },
+    "publ1": {
+        "password": "$2y$10$tiP10RHx9xwRd5eGZBhBo.QRfsuxPlqg4kgthoRkq2e3RdnxWgJPa",
+        "role": "publisher"
+    },
+    "publ2": {
+        "password": "$2y$10$S7cnlflXXzeJYXHZXUDl6e8h3W4Se5eUjMbdRrGIliYte4hCDn2gu",
+        "role": "publisher"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "dimST-les14-wheel-bzu",
+    "title": "Διασύνδεση συσκευών στο διαδίκτυο - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Πάροχος",
+            "TCP\/IP",
+            "HTTP",
+            "FTP",
+            "SMTP",
+            "IP address",
+            "MAC address",
+            "Mbps"
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les14",
+        "δίκτυο"
+    ]
+}

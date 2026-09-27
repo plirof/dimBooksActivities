@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Λαβύρινθος vs Πίστα",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "pista", "name": "Απλή Πίστα", "color": "#2196f3", "key": "1" },
+    { "id": "lavyr", "name": "Λαβύρινθος", "color": "#ff9800", "key": "2" },
+    { "id": "koina", "name": "Και τα δύο", "color": "#4caf50", "key": "3" }
+  ],
+  "items": [
+    { "text": "Μία πίστα A4", "category": "pista" },
+    { "text": "Πολλές πίστες μαζί", "category": "lavyr" },
+    { "text": "Μαύρες γραμμές ορίου", "category": "koina" },
+    { "text": "Μία στροφή", "category": "pista" },
+    { "text": "Πολλαπλές στροφές", "category": "lavyr" },
+    { "text": "Ρομπότ Έντισον", "category": "koina" },
+    { "text": "Μαύρη γραμμή στο τέλος", "category": "lavyr" },
+    { "text": "Ορθή γωνία 90°", "category": "koina" },
+    { "text": "Οποιοδήποτε σχήμα", "category": "lavyr" },
+    { "text": "Edblocks προγραμματισμός", "category": "koina" }
+  ],
+  "duration": 45
+}

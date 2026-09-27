@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ρομπότ",
+  "subtitle": "Μόνο ό,τι μπορεί να κάνει ένα ρομπότ!",
+  "instruction": "Σπάσε μόνο τα μπαλόνια με πράγματα που ΜΠΟΡΕΙ να κάνει ένα ΡΟΜΠΟΤ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κουδουνίζει", "correct": true, "color": "#FF6B6B" },
+    { "text": "Νιώθει λύπη", "correct": false, "color": "#4ECDC4" },
+    { "text": "Κάνει δουλειά", "correct": true, "color": "#45B7D1" },
+    { "text": "Χαίρεται", "correct": false, "color": "#96CEB4" },
+    { "text": "Σκουπίζει", "correct": true, "color": "#FFEAA7" },
+    { "text": "Ονειρεύεται", "correct": false, "color": "#DDA0DD" },
+    { "text": "Φτιάχνει αυτοκίνητα", "correct": true, "color": "#98D8C8" },
+    { "text": "Αγαπάει", "correct": false, "color": "#F7DC6F" },
+    { "text": "Παίζει μουσική", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κλαίει", "correct": false, "color": "#85C1E9" }
+  ]
+}

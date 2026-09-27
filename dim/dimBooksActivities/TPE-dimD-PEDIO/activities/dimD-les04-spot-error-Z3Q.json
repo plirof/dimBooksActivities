@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Αριθμητικά Στοιχεία",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Διαίρεση", "error": false, "correct": "Διαίρεση", "feedback": "" },
+        { "text": "Διαeresη", "error": true, "correct": "Διαίρεση", "feedback": "Γράφεται Διαίρεση" },
+        { "text": "Πρόσθεση", "error": false, "correct": "Πρόσθεση", "feedback": "" },
+        { "text": "Προσθεση", "error": true, "correct": "Πρόσθεση", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Αφαίρεση", "error": false, "correct": "Αφαίρεση", "feedback": "" },
+        { "text": "Αφαιρεση", "error": true, "correct": "Αφαίρεση", "feedback": "Χρειάζεται τόνος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Πολλαπλασιασμός", "error": false, "correct": "Πολλαπλασιασμός", "feedback": "" },
+        { "text": "Πολαπλασιασμος", "error": true, "correct": "Πολλαπλασιασμός", "feedback": "Γράφεται Πολλαπλασιασμός με δύο λ" },
+        { "text": "Αποτέλεσμα", "error": false, "correct": "Αποτέλεσμα", "feedback": "" },
+        { "text": "Αποτέλεσμα", "error": false, "correct": "Αποτέλεσμα", "feedback": "" },
+        { "text": "Υπολογισμός", "error": false, "correct": "Υπολογισμός", "feedback": "" },
+        { "text": "Ιπολογισμος", "error": true, "correct": "Υπολογισμός", "feedback": "Γράφεται Υπολογισμός" }
+      ]
+    }
+  ]
+}

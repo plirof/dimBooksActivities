@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αφήγηση Ιστοριών",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "3 αντικείμενα: μάγισσα, βάτραχος, βράχος", "correct": true, "color": "#4caf50" },
+    { "text": "1 αντικείμενο μόνο", "correct": false, "color": "#f44336" },
+    { "text": "Για πάντα = επανάληψη χωρίς τέλος", "correct": true, "color": "#2196f3" },
+    { "text": "Για πάντα = 10 φορές", "correct": false, "color": "#ff9800" },
+    { "text": "Αν…Αλλιώς μέσα στο για πάντα", "correct": true, "color": "#8bc34a" },
+    { "text": "Αν…Αλλιώς μόνο του", "correct": false, "color": "#9c27b0" },
+    { "text": "Μαγικός ήχος όταν αγγίζει", "correct": true, "color": "#00bcd4" },
+    { "text": "Ήχος μόνο στην αρχή", "correct": false, "color": "#ff5722" },
+    { "text": "Βάτραχος γίνεται πρίγκιπας", "correct": true, "color": "#607d8b" },
+    { "text": "Μάγισσα γίνεται πρίγκιπας", "correct": false, "color": "#e91e63" }
+  ]
+}

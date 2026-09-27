@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Βήματα Χάρτη",
+  "subtitle": "Μόνο λέξεις από τα ΒΗΜΑΤΑ!",
+  "instruction": "Σπάσε μόνο λέξεις που είναι ΒΗΜΑΤΑ δημιουργίας εννοιολογικού χάρτη!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Βρες έννοιες", "correct": true, "color": "#FF6B6B" },
+    { "text": "Ζωγράφισε", "correct": false, "color": "#4ECDC4" },
+    { "text": "Κύρια έννοια", "correct": true, "color": "#45B7D1" },
+    { "text": "Τραγούδησε", "correct": false, "color": "#96CEB4" },
+    { "text": "Βάλε σύνδεση", "correct": true, "color": "#FFEAA7" },
+    { "text": "Παίξε παιχνίδι", "correct": false, "color": "#DDA0DD" },
+    { "text": "Έλεγχος σύνδεσης", "correct": true, "color": "#98D8C8" },
+    { "text": "Κοιμήσου", "correct": false, "color": "#F7DC6F" },
+    { "text": "Επέκταση χάρτη", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μαγείρεψε", "correct": false, "color": "#85C1E9" }
+  ]
+}

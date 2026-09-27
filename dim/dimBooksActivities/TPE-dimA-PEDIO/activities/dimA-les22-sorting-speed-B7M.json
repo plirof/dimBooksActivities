@@ -1,0 +1,25 @@
+{
+  "title": "Ταξινόμηση: Τι κάνω;",
+  "subtitle": "Δεξί κλικ, Ροδέλα ή Σύρω;",
+  "instructions": "Πάτα: ΔΕΞΙ ΚΛΙΚ, ΡΟΔΕΛΑ ή ΣΥΡΩ",
+  "categories": [
+    {"id": "dexi", "name": "Δεξί Κλικ", "color": "#f44336", "key": "ArrowLeft"},
+    {"id": "rodela", "name": "Ροδέλα", "color": "#2196F3", "key": "ArrowUp"},
+    {"id": "syro", "name": "Σύρω", "color": "#4CAF50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εμφανίζεται λίστα", "category": "dexi"},
+    {"text": "Κυλίω σελίδα πάνω", "category": "rodela"},
+    {"text": "Μετακινώ εικόνα", "category": "syro"},
+    {"text": "Επιλογές μενού", "category": "dexi"},
+    {"text": "Κυλίω σελίδα κάτω", "category": "rodela"},
+    {"text": "Μετακινώ κομμάτι παζλ", "category": "syro"},
+    {"text": "Βλέπω εντολές", "category": "dexi"},
+    {"text": "Πάω σε μεγάλη σελίδα", "category": "rodela"},
+    {"text": "Μετακινώ φάκελο", "category": "syro"},
+    {"text": "Λίστα επιλογών", "category": "dexi"},
+    {"text": "Γυρίζω ροδέλα", "category": "rodela"},
+    {"text": "Τραβώ αντικείμενο", "category": "syro"}
+  ],
+  "duration": 30
+}

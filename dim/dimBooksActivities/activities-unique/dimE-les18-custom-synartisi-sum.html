@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συνάρτηση SUM | Μάθημα 18</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fefce8,#fef08a);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#713f12;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#ca8a04;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#713f12;font-size:.75rem;font-weight:700;border:1px solid #fde047;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.challenge{font-size:.78rem;color:#334155;line-height:1.5;margin-bottom:10px;background:#fefce8;padding:10px;border-radius:10px;border-left:3px solid #ca8a04}
+.table-wrap{overflow-x:auto;margin:8px 0}
+.ss-table{border-collapse:collapse;width:100%}
+.ss-table th{background:#ca8a04;color:#fff;font-size:.7rem;padding:6px 8px;border:1px solid #fde047}
+.ss-table td{border:1px solid #d1d5db;padding:6px 8px;text-align:center;font-size:.75rem;cursor:pointer;transition:all .15s;min-width:44px;user-select:none}
+.ss-table td:hover{background:#fef9c3}
+.ss-table td.sel{background:#fde047;font-weight:700}
+.ss-table td.hdr{background:#fefce8;font-weight:700;color:#713f12;font-size:.65rem;cursor:default}
+.ss-table td.result{background:#dcfce7;font-weight:700;color:#14532d}
+.formula-line{display:flex;align-items:center;gap:6px;background:#f8fafc;border:2px solid #fde047;border-radius:10px;padding:8px 12px;margin:8px 0}
+.formula-line .fx{color:#ca8a04;font-weight:700;font-size:.7rem}
+.formula-line .ft{flex:1;font-family:monospace;font-size:.85rem;color:#1e293b}
+.opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.opt-btn{padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;font-size:.78rem;font-weight:600;color:#334155;cursor:pointer;transition:all .2s;text-align:left}
+.opt-btn:hover{border-color:#ca8a04;background:#fefce8}
+.opt-btn.correct{border-color:#16a34a;background:#dcfce7;color:#14532d}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.opt-btn:disabled{cursor:default;opacity:.7}
+.explain{margin-top:6px;padding:8px 12px;border-radius:8px;font-size:.7rem;line-height:1.4}
+.explain.ok{background:#dcfce7;color:#14532d;border-left:3px solid #16a34a}
+.explain.bad{background:#fef2f2;color:#dc2626;border-left:3px solid #ef4444}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #ca8a04;border-radius:10px;background:transparent;color:#ca8a04;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s}
+.next-btn:hover{background:#fefce8}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 16px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer}
+.nav-prev{background:#713f1222;color:#713f12}
+.nav-next{background:#ca8a04;color:#fff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .formula-line > * + * { margin-left: 6px; }
+  .opts > * + * { margin-top: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>Σ函数 SUM — Συναρτήσεις στο Υπολογιστικό Φύλλο</h1>
+<p class="subtitle">Μάθε τη συνάρτηση SUM επιλέγοντας τη σωστή περιοχή κελιών!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<div class="nav-btns">
+<button class="nav-btn nav-prev" onclick="prevQ()">◀ Προηγ.</button>
+<button class="nav-btn nav-next" onclick="nextQ()">Επόμ. ▶</button>
+</div>
+<script>
+var challenges=[
+{
+title:'Άθροισμα Ψήφων',
+desc:'Τα παιδιά ψήφισαν για εκδρομή. Βρες πόσοι ψήφισαν συνολικά.',
+grid:[
+['','Α','Β'],
+['1','Προορισμός','Ψήφοι'],
+['2','Μουσείο','12'],
+['3','Παραλία','8']
+],
+question:'Ποια συνάρτηση SUM υπολογίζει το σύνολο των ψήφων;',
+options:['=SUM(B2:B3)','=SUM(A2:A3)','=SUM(B2+B3)','=B2+B3'],
+correct:0,
+explain:'=SUM(B2:B3) αθροίζει όλα τα κελιά από το B2 μέχρι το B3, δηλαδή 12+8=20.'
+},
+{
+title:'Κόστος Λεωφορείου',
+desc:'Υπολόγισε το συνολικό κόστος για 3 τάξεις.',
+grid:[
+['','Α','Β','Γ','Δ'],
+['1','Τάξη','Παιδιά','Κόστος','Ανά παιδί'],
+['2','Δ\'','22','110','5'],
+['3','Ε\'','20','100','5'],
+['4','ΣΤ\'','24','120','5']
+],
+question:'Ποια συνάρτηση υπολογίζει το σύνολο του κόστους (Γ2:Γ4);',
+options:['=SUM(Γ2:Γ4)','=SUM(Β2:Β4)','=SUM(Δ2:Δ4)','=Γ2+Γ3'],
+correct:0,
+explain:'=SUM(Γ2:Γ4) αθροίζει 110+100+120=330 ευρώ συνολικό κόστος.'
+},
+{
+title:'Συνολικά Παιδιά',
+desc:'Βρες πόσα παιδιά είναι συνολικά και στις 3 τάξεις.',
+grid:[
+['','Α','Β'],
+['1','Τάξη','Παιδιά'],
+['2','Δ\'','22'],
+['3','Ε\'','20'],
+['4','ΣΤ\'','24']
+],
+question:'Αν γράψεις =SUM(B2:B4), τι αποτέλεσμα θα πάρεις;',
+options:['66','330','46','20'],
+correct:0,
+explain:'22+20+24=66 παιδιά συνολικά.'
+},
+{
+title:'Ελεύθερος Χρόνος',
+desc:'50 παιδιά απάντησαν τι κάνουν στον ελεύθερο χρόνο τους.',
+grid:[
+['','Α','Β'],
+['1','Δραστηριότητα','Παιδιά'],
+['2','Μουσική','10'],
+['3','Τηλεόραση','6'],
+['4','Παιχνίδι','16'],
+['5','Βόλτα','14'],
+['6','Βιβλίο','4']
+],
+question:'Ποια συνάρτηση SUM θα δώσει αποτέλεσμα 50;',
+options:['=SUM(B2:B6)','=SUM(A2:A6)','=SUM(B1:B6)','=B2+B3+B4'],
+correct:0,
+explain:'=SUM(B2:B6) αθροίζει 10+6+16+14+4=50.'
+},
+{
+title:'Λάθος Τύπος;',
+desc:'Κάποιος έγραψε =SUM(A3:A5) στον παρακάτω πίνακα.',
+grid:[
+['','Α','Β'],
+['1','Όνομα','Βαθμός'],
+['2','Ηλίας','18'],
+['3','Μαρία','15'],
+['4','Γιώργος','20'],
+['5','Ελένη','17']
+],
+question:'Τι αποτέλεσμα θα δώσει ο τύπος =SUM(A3:A5);',
+options:['Θα βγάλει λάθος (σύμβολα, όχι αριθμοί)','15+20+17=52','18+15+20=53','Ηλίας+Μαρία+Γιώργος'],
+correct:0,
+explain:'Η περιοχή A3:A5 περιέχει κείμενο (ονόματα), όχι αριθμούς. Η συνάρτηση SUM δεν μπορεί να αθροίσει κείμενο.'
+},
+{
+title:'Σωστή Περιοχή',
+desc:'Θέλουμε το άθροισμα των βαθμών όλων των μαθητών.',
+grid:[
+['','Α','Β'],
+['1','Όνομα','Βαθμός'],
+['2','Ηλίας','18'],
+['3','Μαρία','15'],
+['4','Γιώργος','20'],
+['5','Ελένη','17']
+],
+question:'Ποιος τύπος υπολογίζει σωστά το άθροισμα των βαθμών;',
+options:['=SUM(B2:B5)','=SUM(B1:B5)','=SUM(A2:A5)','=B2+B5'],
+correct:0,
+explain:'=SUM(B2:B5) αθροίζει τους βαθμούς 18+15+20+17=70.'
+}
+];
+var curQ=0;
+var pts=0;
+var answered=false;
+var selectedIdx=-1;
+var selectedCells=[];
+
+function render(){
+var ch=challenges[curQ];
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="challenge">📋 '+ch.desc+'</div>';
+h+='<div class="table-wrap"><table class="ss-table">';
+for(var r=0;r<ch.grid.length;r++){
+h+='<tr>';
+for(var c=0;c<ch.grid[r].length;c++){
+var val=ch.grid[r][c];
+var cls='';
+if(r===0)cls='hdr';
+else if(c===0)cls='hdr';
+h+='<td class="'+cls+'">'+val+'</td>';
+}
+h+='</tr>';
+}
+h+='</table></div>';
+h+='<div style="font-size:.8rem;font-weight:700;color:#713f12;margin:8px 0">❓ '+ch.question+'</div>';
+h+='<div class="opts">';
+for(var i=0;i<ch.options.length;i++){
+var cls='opt-btn';
+	if(answered){
+		if(i===ch.correct)cls+=' correct';
+		else if(i===selectedIdx)cls+=' wrong';
+	}
+var dis=answered?' disabled':'';
+h+='<button class="'+cls+'" onclick="answer('+i+')"'+dis+'>'+(String.fromCharCode(945+i))+'. '+ch.options[i]+'</button>';
+}
+h+='</div>';
+	if(answered){
+		var isOk=selectedIdx===ch.correct;
+		if(isOk)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="explain '+(isOk?'ok':'bad')+'">'+(isOk?'✅ ':'❌ ')+ch.explain+'</div>';
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόκληση ▶</button>';
+}
+h+='</div>';
+main.innerHTML=h;
+}
+
+function answer(idx){
+	if(answered)return;
+	answered=true;
+	selectedIdx=idx;
+	render();
+}
+
+function nextQ(){
+	if(curQ<challenges.length-1){
+		curQ++;
+		answered=false;
+		selectedIdx=-1;
+		render();
+	}
+}
+
+function prevQ(){
+	if(curQ>0){
+		curQ--;
+		answered=false;
+		selectedIdx=-1;
+		render();
+	}
+}
+
+render();
+</script>
+</body>
+</html>

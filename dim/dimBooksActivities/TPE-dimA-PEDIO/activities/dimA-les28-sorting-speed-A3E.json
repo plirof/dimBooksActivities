@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Χαρτί ή Υπολογιστής;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Χαρτί ή Υπολογιστής;",
+  "categories": [
+    {"id": "charti", "name": "Χαρτί", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "ypologistis", "name": "Υπολογιστής", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μολύβι χαρτιού", "category": "charti"},
+    {"text": "Ποντίκι", "category": "ypologistis"},
+    {"text": "Μαρκαδόρος", "category": "charti"},
+    {"text": "Γραφίδα", "category": "ypologistis"},
+    {"text": "Ξύστρα", "category": "charti"},
+    {"text": "Ταμπλέτα", "category": "ypologistis"},
+    {"text": "Πινέλο", "category": "charti"},
+    {"text": "Πρόγραμμα ζωγραφικής", "category": "ypologistis"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Σελιδοδείκτες",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "σελιδοδείκτη", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "καρδούλα", "error": true, "correct": "αστεράκι", "feedback": "Για σελιδοδείκτη κάνω κλικ στο ΑΣΤΕΡΑΚΙ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σώσω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σχόλιο", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "Space", "error": true, "correct": "Enter", "feedback": "Για να σώσω σχόλιο πατάω ENTER!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "σελιδοδείκτες", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "σαν", "error": false},
+        {"text": "αχρηστο", "error": true, "correct": "μαγικά", "feedback": "Οι σελιδοδείκτες είναι ΜΑΓΙΚΑ σημάδια!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "αλλάξω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "όνομα", "error": false},
+        {"text": "του", "error": false},
+        {"text": "σελιδοδείκτη", "error": false},
+        {"text": "μένοντας", "error": true, "correct": "σβήνοντας", "feedback": "Αλλάζω όνομα ΣΒΗΝΟΝΤΑΣ και γράφοντας νέο!"}
+      ]
+    }
+  ]
+}

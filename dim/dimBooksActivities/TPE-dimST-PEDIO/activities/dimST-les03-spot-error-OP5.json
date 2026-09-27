@@ -1,0 +1,150 @@
+{
+  "title": "Βρες τα Λάθη: Scratch",
+  "subtitle": "Βρες τις λάθος λέξεις σε κάθε πρόταση",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "ρώτησε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εξόδου",
+          "error": true,
+          "correct": "εισόδου",
+          "feedback": "Η εντολή ρώτησε είναι εντολή ΕΙΣΟΔΟΥ, όχι εξόδου"
+        },
+        {
+          "text": "στο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Scratch",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Για",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "δεκαδικά",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "στο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Scratch",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "χρησιμοποιούμε",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "υποδιαστολή",
+          "error": true,
+          "correct": "τελεία",
+          "feedback": "Στο Scratch χρησιμοποιούμε ΤΕΛΕΙΑ (.) όχι υποδιαστολή (,)"
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πες",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "είναι",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εντολή",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "εισόδου",
+          "error": true,
+          "correct": "εξόδου",
+          "feedback": "Η εντολή πες είναι εντολή ΕΞΟΔΟΥ, όχι εισόδου"
+        }
+      ]
+    }
+  ]
+}

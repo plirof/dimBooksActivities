@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μηχανές Αναζήτησης",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μηχανή αναζήτησης = ιστοσελίδα", "category": "swsto"},
+    {"text": "Keywords = λέξεις-κλειδιά", "category": "swsto"},
+    {"text": "Αποτελέσματα = μόνο εικόνες", "category": "lathos"},
+    {"text": "Παγκόσμιος ιστός = όλες οι ιστοσελίδες", "category": "swsto"},
+    {"text": "Δεν χρειάζεται να ελέγχω αποτελέσματα", "category": "lathos"},
+    {"text": "Πλαίσιο αναζήτησης = πληκτρολογώ εδώ", "category": "swsto"},
+    {"text": "Μηχανή αναζήτησης = συσκευή", "category": "lathos"},
+    {"text": "Αποτελέσματα = ιστοσελίδες, βίντεο, εικόνες", "category": "swsto"},
+    {"text": "Μόνο μία μηχανή αναζήτησης υπάρχει", "category": "lathos"},
+    {"text": "Ελέγχω πάντα τα αποτελέσματα", "category": "swsto"}
+  ],
+  "duration": 30
+}

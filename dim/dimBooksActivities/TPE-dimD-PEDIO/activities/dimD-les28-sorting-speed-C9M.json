@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Έργα με/χωρίς Δικαιώματα",
+  "subtitle": "Ταξινόμησε αν χρειάζεται ή όχι άδεια!",
+  "instructions": "Πάτα ← για Χρειάζεται Άδεια, → για Δεν Χρειάζεται Άδεια!",
+  "categories": [
+    { "id": "need", "name": "Χρειάζεται Άδεια", "color": "#f44336", "key": "ArrowLeft" },
+    { "id": "no_need", "name": "Δεν Χρειάζεται", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Φωτογραφία από διαδίκτυο", "category": "need" },
+    { "text": "Δικό μου κείμενο", "category": "no_need" },
+    { "text": "Μουσική από άλλο δημιουργό", "category": "need" },
+    { "text": "Ζωγραφική που έφτιαξα εγώ", "category": "no_need" },
+    { "text": "Εικόνα από βιβλίο", "category": "need" },
+    { "text": "Φωτογραφία που τράβηξα εγώ", "category": "no_need" },
+    { "text": "Κείμενο από εφημερίδα", "category": "need" },
+    { "text": "Ιδέα για ένα παραμύθι", "category": "no_need" },
+    { "text": "Βίντεο από YouTube", "category": "need" },
+    { "text": "Παρατήρησή μου σε ένα θέμα", "category": "no_need" },
+    { "text": "Μετάφραση ξένου κειμένου", "category": "need" },
+    { "text": "Άρθρο από περιοδικό", "category": "need" }
+  ],
+  "duration": 45
+}

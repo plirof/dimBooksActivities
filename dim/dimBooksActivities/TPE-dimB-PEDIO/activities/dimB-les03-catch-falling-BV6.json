@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Κίνηση Βατραχάκιου",
+  "subtitle": "Πιάσε μόνο εντολές κίνησης!",
+  "instructions": "Πιάσε μόνο τις ΕΝΤΟΛΕΣ ΚΙΝΗΣΗΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Μπροστά", "correct": true, "color": "#4CAF50"},
+    {"text": "Κοιμάμαι", "correct": false, "color": "#f44336"},
+    {"text": "Δεξιά", "correct": true, "color": "#2196F3"},
+    {"text": "Τρώω", "correct": false, "color": "#FF9800"},
+    {"text": "Αριστερά", "correct": true, "color": "#9C27B0"},
+    {"text": "Πλένω", "correct": false, "color": "#E91E63"},
+    {"text": "Πίσω", "correct": true, "color": "#009688"},
+    {"text": "Χορεύω", "correct": false, "color": "#FFC107"},
+    {"text": "Πήδημα", "correct": true, "color": "#795548"},
+    {"text": "Τραγουδώ", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Φτιάξε το Διάγραμμα: Πρώτες Λέξεις",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Πώς γράφω μια φράση",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Ενεργοποιώ Caps Lock για κεφαλαία"},
+    {"id": 2, "type": "action", "text": "Πατάω τα γράμματα της πρώτης λέξης"},
+    {"id": 3, "type": "action", "text": "Πατάω Space για κενό"},
+    {"id": 4, "type": "action", "text": "Πατάω τα γράμματα της επόμενης λέξης"},
+    {"id": 5, "type": "decision", "text": "Έκανα λάθος;"},
+    {"id": 6, "type": "action", "text": "Πατάω Backspace για να σβήσω"},
+    {"id": 7, "type": "action", "text": "Η φράση μου είναι έτοιμη!"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5, 6, 7]
+}

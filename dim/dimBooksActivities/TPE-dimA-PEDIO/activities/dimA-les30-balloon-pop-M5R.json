@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Τι βρίσκεις στο Φωτόδεντρο;",
+  "subtitle": "Μόνο ό,τι έχει το Φωτόδεντρο!",
+  "instruction": "Σπάσε μόνο ό,τι ΜΠΟΡΕΙΣ να βρεις στο ΦΩΤΟΔΕΝΤΡΟ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Παιχνίδι", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουζίνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Βίντεο", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#96CEB4" },
+    { "text": "Κουίζ", "correct": true, "color": "#FFEAA7" },
+    { "text": "Μαγειρική", "correct": false, "color": "#DDA0DD" },
+    { "text": "Εφαρμογή", "correct": true, "color": "#98D8C8" },
+    { "text": "Ψώνια", "correct": false, "color": "#F7DC6F" },
+    { "text": "Παρουσίαση", "correct": true, "color": "#BB8FCE" },
+    { "text": "Καθαριότητα", "correct": false, "color": "#85C1E9" }
+  ]
+}

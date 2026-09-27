@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Επαγγέλματα και Δεδομένα",
+  "subtitle": "Ταξινόμησε τις χρήσεις δεδομένων στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε χρήση δεδομένων.",
+  "categories": [
+    { "id": "igia", "name": "Υγεία", "color": "#f44336", "key": "ArrowLeft" },
+    { "id": "kairos", "name": "Καιρός", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "metakini", "name": "Μετάκινηση", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "energeia", "name": "Ενέργεια", "color": "#4caf50", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Διάγνωση ασθενειών", "category": "igia" },
+    { "text": "Συμπτώματα κορονοϊού", "category": "igia" },
+    { "text": "Ηλιακή ακτινοβολία", "category": "kairos" },
+    { "text": "Ταχύτητα ανέμων", "category": "kairos" },
+    { "text": "Σύννεφα", "category": "kairos" },
+    { "text": "Δεδομένα χαρτών GPS", "category": "metakini" },
+    { "text": "Κίνηση στους δρόμους", "category": "metakini" },
+    { "text": "Έξυπνα φανάρια", "category": "metakini" },
+    { "text": "Έξυπνος φωτισμός", "category": "energeia" },
+    { "text": "Αισθητήρας θερμοκρασίας", "category": "energeia" },
+    { "text": "Μείωση κατανάλωσης", "category": "energeia" },
+    { "text": "Ιατρικά δεδομένα", "category": "igia" }
+  ],
+  "duration": 45
+}

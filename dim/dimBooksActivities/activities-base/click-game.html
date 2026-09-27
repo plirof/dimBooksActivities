@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κλικ Παιχνίδι</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f6d365 0%,#fda085 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
+h1{color:#333;text-align:center;font-size:1.3em;margin-bottom:2px}
+.game-header{display:flex;justify-content:space-between;padding:10px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#f6d365;font-size:1.1em}
+.game-area{position:relative;height:400px;background:linear-gradient(180deg,#fff9c4 0%,#fff3e0 100%);border-radius:12px;border:2px solid #f0e68c;overflow:hidden}
+.target{position:absolute;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8em;cursor:pointer;transition:transform .1s;user-select:none;animation:popIn .3s}
+.target:hover{transform:scale(1.1)}
+.target:active{transform:scale(.9)}
+@keyframes popIn{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes popOut{0%{transform:scale(1)}100%{transform:scale(0);opacity:0}}
+.target.clicked{animation:popOut .2s forwards}
+.start-screen{text-align:center;padding:40px 20px}
+.start-screen h2{color:#333;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:20px;line-height:1.5}
+.start-btn{padding:12px 40px;background:linear-gradient(135deg,#f6d365,#fda085);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.start-btn:hover{transform:scale(1.05)}
+.game-over{display:none;text-align:center;padding:30px}
+.game-over h2{font-size:1.5em;color:#333;margin-bottom:10px}
+.game-over .final-score{font-size:3em;color:#f6d365;font-weight:700}
+.game-over .message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#f6d365,#fda085);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.timer-bar{height:8px;background:#eee;border-radius:4px;margin-bottom:10px;overflow:hidden}
+.timer-fill{height:100%;background:linear-gradient(90deg,#4CAF50,#ff9800,#f44336);border-radius:4px;transition:width 1s linear}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const targets=data.targets;
+const duration=data.duration||30;
+const maxTargets=data.maxTargets||3;
+const targetLife=data.targetLife||2000;
+let score=0,timeLeft=duration,gameRunning=false,gameTimer=null;
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle||'Κάνε κλικ στα αντικείμενα!')}</h2>
+<p>${esc(data.instructions||'Κάνε κλικ στα αντικείμενα που εμφανίζονται πριν εξαφανιστούν!')}</p>
+<p>Χρόνος: ${duration} δευτερόλεπτα</p>
+<button class="start-btn" onclick="startGame()">▶ Ξεκίνα!</button>
+</div>
+`
+}
+
+window.startGame=function(){
+score=0;timeLeft=duration;gameRunning=true;
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+<div class="game-header">
+<div class="stat">Σκορ: <span id="score">0</span></div>
+<div class="stat">Χρόνος: <span id="timer">${timeLeft}</span>s</div>
+</div>
+<div class="game-area" id="gameArea"></div>
+`;
+gameTimer=setInterval(()=>{
+timeLeft--;
+document.getElementById('timer').textContent=timeLeft;
+document.getElementById('timerFill').style.width=((timeLeft/duration)*100)+'%';
+if(timeLeft<=0)endGame()
+},1000);
+spawnTarget()
+};
+
+function spawnTarget(){
+if(!gameRunning)return;
+const area=document.getElementById('gameArea');
+if(!area)return;
+const current=area.querySelectorAll('.target:not(.clicked)').length;
+if(current<maxTargets){
+const t=targets[Math.floor(Math.random()*targets.length)];
+const el=document.createElement('div');
+el.className='target';
+el.style.background=t.color||'#f6d365';
+el.innerHTML=t.icon||t.label;
+const maxX=area.offsetWidth-70;
+const maxY=area.offsetHeight-70;
+el.style.left=Math.floor(Math.random()*maxX)+'px';
+el.style.top=Math.floor(Math.random()*maxY)+'px';
+el.addEventListener('click',()=>clickTarget(el));
+area.appendChild(el);
+setTimeout(()=>{if(!el.classList.contains('clicked')&&el.parentNode){el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>{if(el.parentNode)el.remove()},300)}},targetLife)
+}
+if(gameRunning)setTimeout(spawnTarget,600+Math.random()*800)
+}
+
+function clickTarget(el){
+if(!gameRunning||el.classList.contains('clicked'))return;
+el.classList.add('clicked');
+score++;
+document.getElementById('score').textContent=score;
+setTimeout(()=>{if(el.parentNode)el.remove()},200)
+}
+
+function endGame(){
+gameRunning=false;
+clearInterval(gameTimer);
+let msg=score>=20?'Εξαιρετικά! Τα πήγες περίφημα!':score>=12?'Μπράβο! Πολύ καλά!':score>=6?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-over" style="display:block">
+<h2>Τέλος Χρόνου!</h2>
+<div class="final-score">${score}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>
+</div>
+`
+}
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

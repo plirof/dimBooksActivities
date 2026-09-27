@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Κλικ",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Κλικ", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "δεξί", "error": true, "correct": "αριστερό", "feedback": "Κλικ κάνουμε με το ΑΡΙΣΤΕΡΟ πλήκτρο!"},
+        {"text": "πλήκτρο", "error": false},
+        {"text": "μία", "error": false},
+        {"text": "φορά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Διπλό", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "πατάω", "error": false},
+        {"text": "τρεις", "error": true, "correct": "δύο", "feedback": "Διπλό κλικ = ΔΥΟ φορές γρήγορα, όχι τρεις!"},
+        {"text": "φορές", "error": false},
+        {"text": "γρήγορα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "μονό", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "ανοίγω", "error": true, "correct": "επιλέγω", "feedback": "Με μονό κλικ ΕΠΙΛΕΓΩ, με διπλό κλικ ανοίγω!"},
+        {"text": "αντικείμενο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "διπλό", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "το", "error": false},
+        {"text": "χέρι", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κουνιέται", "error": true, "correct": "είναι σταθερό", "feedback": "Το χέρι πρέπει να είναι ΣΤΑΘΕΡΟ στο διπλό κλικ!"},
+        {"text": "πολύ.", "error": false}
+      ]
+    }
+  ]
+}

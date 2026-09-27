@@ -1,0 +1,15 @@
+{
+  "title": "Διάγραμμα Venn: Caps Lock ή Backspace;",
+  "subtitle": "Τι κάνει το καθένα;",
+  "circleA": { "label": "Caps Lock", "color": "#FF9800" },
+  "circleB": { "label": "Backspace", "color": "#f44336" },
+  "items": [
+    { "text": "Γράφω κεφαλαία", "zone": "A" },
+    { "text": "Σβήνω γράμμα", "zone": "B" },
+    { "text": "Ανάβει λαμπάκι", "zone": "A" },
+    { "text": "Πηγαίνει κέρσορας πίσω", "zone": "B" },
+    { "text": "Είναι πλήκτρο", "zone": "AB" },
+    { "text": "Δίπλα στο Α", "zone": "A" },
+    { "text": "Σβήνει ένα γράμμα κάθε φορά", "zone": "B" }
+  ]
+}

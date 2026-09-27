@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Επανάλαβε ώσπου",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ώσπου", "error": false, "correct": "Ώσπου", "feedback": "" },
+        { "text": "Ωσπού", "error": true, "correct": "Ώσπου", "feedback": "Ο τόνος μπαίνει στο Ώ" },
+        { "text": "Αγγίζει", "error": false, "correct": "Αγγίζει", "feedback": "" },
+        { "text": "Αγγιζει", "error": true, "correct": "Αγγίζει", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Όριο", "error": false, "correct": "Όριο", "feedback": "" },
+        { "text": "Ορίο", "error": true, "correct": "Όριο", "feedback": "Γράφεται Όριο" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Αλήθεια", "error": false, "correct": "Αλήθεια", "feedback": "" },
+        { "text": "Αλιθεια", "error": true, "correct": "Αλήθεια", "feedback": "Γράφεται Αλήθεια" },
+        { "text": "Ψέματα", "error": false, "correct": "Ψέματα", "feedback": "" },
+        { "text": "Ψεματα", "error": true, "correct": "Ψέματα", "feedback": "Γράφεται Ψέματα με τόνο" },
+        { "text": "Συνθήκη", "error": false, "correct": "Συνθήκη", "feedback": "" },
+        { "text": "Αίσθηση", "error": false, "correct": "Αίσθηση", "feedback": "" }
+      ]
+    }
+  ]
+}

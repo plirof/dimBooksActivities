@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: TuxPaint Εργαλεία",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΟΝΟΜΑΤΑ ΕΡΓΑΛΕΙΩΝ ΚΑΙ ΟΡΩΝ TUXPAINT! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Πινέλο", "correct": true, "color": "#4CAF50"},
+    {"text": "Σφυρί", "correct": false, "color": "#f44336"},
+    {"text": "Γέμισμα", "correct": true, "color": "#2196F3"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FF9800"},
+    {"text": "Αποθήκευση", "correct": true, "color": "#9C27B0"},
+    {"text": "Πλυτήρια", "correct": false, "color": "#E91E63"},
+    {"text": "GIF", "correct": true, "color": "#00BCD4"},
+    {"text": "Κάβουρας", "correct": false, "color": "#FFC107"},
+    {"text": "Διαφάνειες", "correct": true, "color": "#795548"},
+    {"text": "Γλάστρα", "correct": false, "color": "#607D8B"}
+  ]
+}

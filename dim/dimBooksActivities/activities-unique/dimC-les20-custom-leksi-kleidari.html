@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λέξεις-Κλειδιά</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f0fdf4,#86efac);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#166534,#22c55e);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:16px;gap:12px}
+.info{background:#f0fdf4;border-radius:12px;border-left:4px solid #22c55e;padding:10px 14px;font-size:.85em;color:#14532d;line-height:1.5}
+.info b{color:#166534}
+.challenge-box{background:#f8fafc;border-radius:16px;border:2px solid #bbf7d0;padding:20px;text-align:center}
+.challenge-box h3{font-size:1.1em;color:#166534;margin-bottom:12px}
+.target-img{font-size:3em;margin-bottom:8px}
+.target-label{font-size:1.2em;font-weight:700;color:#1e293b;margin-bottom:16px}
+.keyword-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:16px}
+.kw-card{padding:10px 18px;background:#fff;border:2px solid #bbf7d0;border-radius:50px;cursor:pointer;font-size:.9em;font-weight:600;transition:all .2s;user-select:none;touch-action:none}
+.kw-card:hover{transform:translateY(-2px);border-color:#22c55e;background:#f0fdf4}
+.kw-card.selected{background:#22c55e;color:#fff;border-color:#166534;transform:scale(1.05)}
+.kw-card.correct{background:#16a34a;color:#fff;border-color:#166534}
+.kw-card.wrong{background:#ef4444;color:#fff;border-color:#b91c1c}
+.kw-card.disabled{pointer-events:none;opacity:.6}
+.search-preview{background:#fff;border-radius:12px;border:2px solid #e2e8f0;padding:12px;margin-top:8px;display:flex;align-items:center;gap:8px}
+.search-preview .sp-label{font-size:.8em;color:#64748b}
+.search-preview .sp-words{flex:1;font-size:.95em;font-weight:600;color:#1e40af}
+.result-msg{font-size:.9em;color:#166534;margin-top:8px;font-weight:600}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.score-bar{display:flex;justify-content:center;gap:16px;font-size:.9em;font-weight:600;color:#166534}
+.controls{display:flex;justify-content:center;gap:12px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#166534,#22c55e);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,101,52,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:500px){.kw-card{padding:8px 14px;font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .area > * + * { margin-top: 12px; }
+  .keyword-pool > * { margin: 5px; }
+  .search-preview > * + * { margin-left: 8px; }
+  .score-bar > * + * { margin-left: 16px; }
+  .controls > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔑 Λέξεις-Κλειδιά για Αναζήτηση</h1>
+<p>Διάλεξε τις κατάλληλες λέξεις-κλειδιά για κάθε αναζήτηση!</p>
+</div>
+<div class="area">
+<div class="info">💡 Οι <b>λέξεις-κλειδιά</b> είναι οι σημαντικότερες λέξεις που περιγράφουν αυτό που θέλουμε να βρούμε. Όσο πιο συγκεκριμένες είναι, τόσο καλύτερα αποτελέσματα θα πάρουμε!</div>
+<div class="score-bar">⭐ <span id="scoreDisplay">0</span>/<span id="totalDisplay">0</span></div>
+<div class="challenge-box" id="challengeBox"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="checkBtn" onclick="checkKeywords()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-next" id="nextBtn" onclick="nextChallenge()" style="display:none">⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var challenges=[
+{
+emoji:'🦁',
+label:'Θέλεις να βρεις πληροφορίες για τα λιοντάρια',
+allWords:['λιοντάρι','ζούγκλα','βιόλι','Αφρική','γάτα','ζώο','αυτοκίνητο'],
+correctWords:['λιοντάρι','ζώο','Αφρική']
+},
+{
+emoji:'🌍',
+label:'Θέλεις να βρεις τον χάρτη της Ελλάδας',
+allWords:['χάρτης','Γαλλία','Ελλάδα','μουσική','πόλεις','φαγητό','νότια'],
+correctWords:['χάρτης','Ελλάδα']
+},
+{
+emoji:'🎂',
+label:'Θέλεις να βρεις συνταγή για σοκολατόπιτα',
+allWords:['συνταγή','σοκολατόπιτα','δίατρο','γάλα','αυτοκίνητο','γλυκό','ώρες'],
+correctWords:['συνταγή','σοκολατόπιτα']
+},
+{
+emoji:'🏀',
+label:'Θέλεις να μάθεις τους κανόνες του μπάσκετ',
+allWords:['μπάσκετ','κανόνες','πλοίαρο','ομάδα','γλώσσα','παιχνίδι','χρώμα'],
+correctWords:['μπάσκετ','κανόνες']
+},
+{
+emoji:'🚀',
+label:'Θέλεις να βρεις πώς φτιάχνεται ένας πύραυλος από χαρτί',
+allWords:['πύραυλος','χαρτί','φτιάχνω','ψωμί','κατασκευή','πώς','ρύζι'],
+correctWords:['πύραυλος','χαρτί','φτιάχνω']
+},
+{
+emoji:'🎨',
+label:'Θέλεις να δεις πίνακες του Βίνσεντ βαν Γκοχ',
+allWords:['ζωγραφική','Βίνσεντ','βαν Γκοχ','πίνακες','θήρα','βιβλίο','πλοίαρο'],
+correctWords:['Βίνσεντ','βαν Γκοχ','πίνακες']
+}
+];
+
+var currentChallenge=0;
+var score=0;
+var selectedWords=[];
+var checked=false;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function renderChallenge(){
+var ch=challenges[currentChallenge];
+var box=document.getElementById('challengeBox');
+selectedWords=[];
+checked=false;
+document.getElementById('checkBtn').disabled=true;
+document.getElementById('checkBtn').style.display='inline-block';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+
+var words=ch.allWords.slice();
+shuffle(words);
+
+var html='<div class="target-img">'+ch.emoji+'</div>';
+html+='<div class="target-label">'+ch.label+'</div>';
+html+='<div class="keyword-pool" id="kwPool">';
+for(var i=0;i<words.length;i++){
+html+='<div class="kw-card" data-word="'+words[i]+'" onclick="toggleWord(this)">'+words[i]+'</div>';
+}
+html+='</div>';
+html+='<div class="search-preview"><span class="sp-label">🔍 Αναζήτηση:</span><span class="sp-words" id="spWords">—</span></div>';
+html+='<div class="result-msg" id="resultMsg"></div>';
+box.innerHTML=html;
+}
+
+function toggleWord(el){
+if(checked)return;
+var word=el.dataset.word;
+var idx=selectedWords.indexOf(word);
+if(idx===-1){
+selectedWords.push(word);
+el.classList.add('selected');
+}else{
+selectedWords.splice(idx,1);
+el.classList.remove('selected');
+}
+document.getElementById('spWords').textContent=selectedWords.length>0?selectedWords.join(' '):'—';
+document.getElementById('checkBtn').disabled=selectedWords.length===0;
+}
+
+function checkKeywords(){
+if(checked)return;
+checked=true;
+var ch=challenges[currentChallenge];
+var cards=document.querySelectorAll('.kw-card');
+var correct=0;
+var wrong=0;
+for(var i=0;i<cards.length;i++){
+var card=cards[i];
+var word=card.dataset.word;
+var isCorrect=ch.correctWords.indexOf(word)!==-1;
+var isSelected=selectedWords.indexOf(word)!==-1;
+if(isCorrect&&isSelected){
+card.classList.remove('selected');
+card.classList.add('correct');
+correct++;
+}else if(!isCorrect&&isSelected){
+card.classList.remove('selected');
+card.classList.add('wrong');
+wrong++;
+}else if(isCorrect&&!isSelected){
+card.classList.add('disabled');
+}
+card.classList.add('disabled');
+}
+var allFound=correct===ch.correctWords.length&&wrong===0;
+score+=correct;
+document.getElementById('scoreDisplay').textContent=score;
+if(allFound){
+showFeedback('🎉 Τέλεια! Βρήκες όλες τις σωστές λέξεις-κλειδιά!',true);
+}else{
+showFeedback('✅ '+correct+'/'+ch.correctWords.length+' σωστές λέξεις-κλειδιά.'+(wrong>0?' Αφαίρεσες '+wrong+' λάθος λέξεις.':''),false);
+}
+document.getElementById('resultMsg').textContent='Οι σωστές λέξεις-κλειδιά: '+ch.correctWords.join(', ');
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='inline-block';
+document.getElementById('nextBtn').disabled=false;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextChallenge(){
+if(currentChallenge<challenges.length-1){
+currentChallenge++;
+renderChallenge();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+var totalCorrect=0;
+for(var i=0;i<challenges.length;i++)totalCorrect+=challenges[i].correctWords.length;
+var pct=Math.round(score/totalCorrect*100);
+var stars=pct>=90?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+var box=document.getElementById('challengeBox');
+box.innerHTML='<div style="padding:20px"><div style="font-size:2.5em">'+stars+'</div><h3 style="color:#166534;margin:10px 0">Βρήκες '+score+'/'+totalCorrect+' λέξεις-κλειδιά!</h3><p style="color:#64748b;font-size:.95em">'+(pct>=80?'Μπράβο! Ξέρεις να διαλέγεις σωστές λέξεις-κλειδιά!':'Συνέχισε! Η πρακτική κάνει τονmaster!')+'</p></div>';
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('feedback').innerHTML='🎉 Ολοκλήρωσες την πρόκληση λέξεων-κλειδιών!';
+document.getElementById('feedback').className='feedback ok';
+}
+
+function resetAll(){
+currentChallenge=0;
+score=0;
+document.getElementById('scoreDisplay').textContent='0';
+renderChallenge();
+}
+
+function countTotal(){var c=0;for(var i=0;i<challenges.length;i++)c+=challenges[i].correctWords.length;return c;}
+document.getElementById('totalDisplay').textContent=countTotal();
+renderChallenge();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Κατηγορίες Εφαρμογών",
+  "subtitle": "Ταξινόμησε τις εφαρμογές στις σωστές κατηγορίες!",
+  "instructions": "Βάλε κάθε εφαρμογή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "browser", "name": "Φυλλομετρητής", "color": "#2196f3", "key": "1" },
+    { "id": "office", "name": "Εφαρμογή Γραφείου", "color": "#ff9800", "key": "2" },
+    { "id": "creative", "name": "Δημιουργία / Προγραμματισμός", "color": "#4caf50", "key": "3" }
+  ],
+  "items": [
+    { "text": "Firefox", "category": "browser" },
+    { "text": "Writer", "category": "office" },
+    { "text": "Scratch", "category": "creative" },
+    { "text": "Chrome", "category": "browser" },
+    { "text": "Calc", "category": "office" },
+    { "text": "TuxPaint", "category": "creative" },
+    { "text": "Edge", "category": "browser" },
+    { "text": "Impress", "category": "office" },
+    { "text": "MakeCode", "category": "creative" },
+    { "text": "PowerPoint", "category": "office" }
+  ],
+  "duration": 45
+}

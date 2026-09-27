@@ -1,0 +1,43 @@
+{
+  "title": "Βρες τα Λάθη: Διορθώνω Προγράμματα",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "Κοντορεβιθούλης", "error": false},
+        {"text": "άφησε", "error": false},
+        {"text": "λιθάρια", "error": true, "correct": "ψίχουλα", "feedback": "Ο Κοντορεβιθούλης άφησε ψίχουλα, όχι λιθάρια!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Βρες", "error": false},
+        {"text": "το", "error": false},
+        {"text": "λάθος", "error": false},
+        {"text": "και", "error": false},
+        {"text": "δέσσε", "error": true, "correct": "διόρθωσε", "feedback": "Διορθώνουμε το λάθος, δεν το δένουμε!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Γράψε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σωστό", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "στον", "error": true, "correct": "στο", "feedback": "Γράφουμε στο πλαίσιο, όχι στον πλαίσιο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "πάει", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "σχολείο", "error": true, "correct": "σπίτι", "feedback": "Ο Κοντορεβιθούλης θέλει να γυρίσει στο σπίτι!"}
+      ]
+    }
+  ]
+}

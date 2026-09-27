@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Διάστημα",
+  "subtitle": "Μόνο λέξεις για το διάστημα!",
+  "instruction": "Σπάσε μόνο ό,τι ανήκει στο ΔΙΑΣΤΗΜΑ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Πύραυλος", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κούνια", "correct": false, "color": "#4ECDC4" },
+    { "text": "Φεγγάρι", "correct": true, "color": "#45B7D1" },
+    { "text": "Κουτάλι", "correct": false, "color": "#96CEB4" },
+    { "text": "Αστροναύτης", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Αστέρια", "correct": true, "color": "#98D8C8" },
+    { "text": "Κουβέρτα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ιστορία", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μπίλιες", "correct": false, "color": "#85C1E9" }
+  ]
+}

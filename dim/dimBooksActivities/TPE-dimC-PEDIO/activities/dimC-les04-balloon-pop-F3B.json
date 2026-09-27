@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Scratch",
+  "subtitle": "Μόνο λέξεις από το περιβάλλον Scratch!",
+  "instruction": "Σπάσε μόνο τις λέξεις σχετικές με το ΠΕΡΙΒΑΛΛΟΝ του SCRATCH!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Σκηνή", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπανάνα", "correct": false, "color": "#f44336" },
+    { "text": "Πλακίδιο", "correct": true, "color": "#2196F3" },
+    { "text": "Καρέκλα", "correct": false, "color": "#FF9800" },
+    { "text": "Σενάριο", "correct": true, "color": "#9C27B0" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#E91E63" },
+    { "text": "Συμβάν", "correct": true, "color": "#00BCD4" },
+    { "text": "Γάτα", "correct": false, "color": "#FFC107" },
+    { "text": "Μορφή", "correct": true, "color": "#795548" },
+    { "text": "Μήλο", "correct": false, "color": "#607D8B" }
+  ]
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λογικές Εκφράσεις | Μάθημα 3</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#eff6ff,#bfdbfe);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#1e3a5f;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#2563eb;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#1e3a5f;font-size:.75rem;font-weight:700;border:1px solid #93c5fd;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.expr-card{background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:12px;margin:8px 0}
+.expr-text{font-size:.78rem;font-weight:700;color:#1e293b;text-align:center;margin:4px 0}
+.expr-parts{display:flex;gap:4px;justify-content:center;align-items:center;flex-wrap:wrap;margin:6px 0}
+.expr-part{padding:4px 8px;border-radius:8px;font-size:.7rem;font-weight:700}
+.expr-part.expr-true{background:#dcfce7;color:#14532d;border:1px solid #86efac}
+.expr-part.expr-false{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5}
+.expr-part.expr-op{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;font-size:.8rem}
+.expr-part.expr-target{background:#fef3c7;color:#92400e;border:2px solid #f59e0b;font-size:.85rem}
+.btn-row{display:flex;gap:8px;justify-content:center;margin:6px 0}
+.tf-btn{padding:8px 20px;border:2px solid #e2e8f0;border-radius:10px;font-size:.78rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.tf-btn:hover{border-color:#2563eb;background:#eff6ff}
+.tf-btn.sel-true{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.tf-btn.sel-false{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.tf-btn.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.tf-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#1d4ed8}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #2563eb;border-radius:10px;background:transparent;color:#2563eb;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#eff6ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .expr-parts > * { margin: 2px; }
+  .btn-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🧠 Λογικές Εκφράσεις</h1>
+<p class="subtitle">Αξιολόγησε σύνθετες λογικές εκφράσεις με ΚΑΙ, Ή, ΟΧΙ!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Ερώτηση:</span> <span id="qNum">1</span>/<span id="qTotal">6</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var questions=[
+{
+parts:[
+{text:'Η Γη είναι σφαιρική',val:true},
+{text:'ΚΑΙ',op:true},
+{text:'Ο ήλιος είναι πλανήτης',val:false}
+],
+answer:false
+},
+{
+parts:[
+{text:'Οι εποχές είναι 4',val:true},
+{text:'ΚΑΙ',op:true},
+{text:'Κάθε μήνας έχει 30 μέρες',val:false}
+],
+answer:false
+},
+{
+parts:[
+{text:'Η εβδομάδα έχει 6 μέρες',val:false},
+{text:'Ή',op:true},
+{text:'Η ώρα έχει 60 λεπτά',val:true}
+],
+answer:true
+},
+{
+parts:[
+{text:'5 × 6 = 30',val:true},
+{text:'ΚΑΙ',op:true},
+{text:'3 × 4 = 12',val:true}
+],
+answer:true
+},
+{
+parts:[
+{text:'ΟΧΙ',op:true,neg:true},
+{text:'(7 × 6 = 42)',val:true}
+],
+answer:false
+},
+{
+parts:[
+{text:'ΟΧΙ',op:true,neg:true},
+{text:'(1 > 2)',val:false}
+],
+answer:true
+}
+];
+var curQ=0,pts=0,answer=null,checked=false;
+
+function initQ(){answer=null;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var q=questions[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="expr-card">';
+h+='<div class="expr-parts">';
+for(var i=0;i<q.parts.length;i++){
+var p=q.parts[i];
+if(p.op){
+var cls='expr-part expr-op';
+if(p.neg)cls='expr-part expr-op';
+h+='<span class="'+cls+'">'+p.text+'</span>';
+}else{
+var cls='expr-part '+(p.val?'expr-true':'expr-false');
+h+='<span class="'+cls+'">'+p.text+' ('+(p.val?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ')+')</span>';
+}
+}
+h+='</div>';
+h+='<div class="expr-text">Το αποτέλεσμα είναι ΑΛΗΘΕΣ ή ΨΕΥΔΕΣ;</div>';
+h+='</div>';
+h+='<div class="btn-row">';
+if(!checked){
+var tcls='tf-btn'+(answer===true?' sel-true':'');
+var fcls='tf-btn'+(answer===false?' sel-false':'');
+h+='<button class="'+tcls+'" onclick="pickAnswer(true)">✅ ΑΛΗΘΕΣ</button>';
+h+='<button class="'+fcls+'" onclick="pickAnswer(false)">❌ ΨΕΥΔΕΣ</button>';
+}else{
+var correct=answer===q.answer;
+var tcls='tf-btn'+(q.answer===true?' correct':'');
+var fcls='tf-btn'+(q.answer===false?' correct':'');
+if(!correct){
+if(answer===true)tcls+=' wrong';
+if(answer===false)fcls+=' wrong';
+}
+h+='<button class="'+tcls+'">✅ ΑΛΗΘΕΣ</button>';
+h+='<button class="'+fcls+'">❌ ΨΕΥΔΕΣ</button>';
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+}
+h+='</div>';
+if(checked){
+var correct=answer===q.answer;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστό!':'❌ Λάθος. Η σωστή απάντηση: '+(q.answer?'ΑΛΗΘΕΣ':'ΨΕΥΔΕΣ'))+'</div>';
+if(curQ<questions.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Ερώτηση ▶</button>';
+}
+}else{
+h+='<button class="check-btn" onclick="checkAnswer()"'+(answer===null?' disabled':'')+'>✓ Επιβεβαίωση</button>';
+}
+main.innerHTML=h;
+}
+
+function pickAnswer(val){answer=val;render();}
+
+function checkAnswer(){
+if(answer!==null){checked=true;render();}
+}
+
+function nextQ(){
+if(curQ<questions.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

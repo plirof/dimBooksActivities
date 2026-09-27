@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διαχείριση Επαφών e-me</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+width: 100%;
+max-width: 1200px;
+justify-content: center;
+}
+.requests-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 350px;
+max-width: 500px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.section-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+text-align: center;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+justify-content: center;
+}
+.safety-box {
+background: #fff3cd;
+border-radius: 12px;
+padding: 15px;
+margin-bottom: 20px;
+border: 2px solid #ffc107;
+}
+.safety-title {
+font-weight: bold;
+color: #856404;
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.safety-text {
+color: #856404;
+font-size: 0.9rem;
+line-height: 1.5;
+}
+.request-item {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 15px;
+border: 2px solid #e0e0e0;
+}
+.request-header {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 15px;
+}
+.request-icon {
+font-size: 2.5rem;
+}
+.request-info {
+flex: 1;
+}
+.request-name {
+font-weight: bold;
+color: #333;
+font-size: 1.1rem;
+}
+.request-school {
+color: #666;
+font-size: 0.9rem;
+margin-top: 5px;
+}
+.request-status {
+background: #667eea;
+color: white;
+padding: 5px 15px;
+border-radius: 20px;
+font-size: 0.85rem;
+font-weight: bold;
+}
+.action-buttons {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+.action-btn {
+flex: 1;
+min-width: 100px;
+padding: 10px 15px;
+border: none;
+border-radius: 8px;
+font-size: 0.95rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.action-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.accept-btn {
+background: #27ae60;
+color: white;
+}
+.reject-btn {
+background: #e67e22;
+color: white;
+}
+.block-btn {
+background: #e74c3c;
+color: white;
+}
+.completed-section {
+background: white;
+border-radius: 20px;
+padding: 25px;
+flex: 1;
+min-width: 350px;
+max-width: 500px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.completed-item {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 15px;
+margin-bottom: 10px;
+border: 2px solid #ddd;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.completed-icon {
+font-size: 2rem;
+}
+.completed-info {
+flex: 1;
+}
+.completed-name {
+font-weight: bold;
+color: #333;
+font-size: 1rem;
+}
+.completed-action {
+font-size: 0.85rem;
+color: #666;
+margin-top: 3px;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .container > * { margin: 15px; }
+  .section-title > * + * { margin-left: 10px; }
+  .safety-title > * + * { margin-left: 8px; }
+  .request-header > * + * { margin-left: 15px; }
+  .action-buttons > * { margin: 5px; }
+  .completed-item > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>👥 Διαχείριση Επαφών e-me</h1>
+<p class="subtitle">Διαχειριστείτε τα αιτήματα σύνδεσης με ασφάλεια</p>
+
+<div class="score">✅ Επεξεργασμένα: <span id="score">0</span>/6</div>
+
+<div class="container">
+<div class="requests-section">
+<div class="section-title">🔔 Αιτήματα Σύνδεσης</div>
+
+<div class="safety-box">
+<div class="safety-title">⚠️ Κανόνας Ασφαλείας</div>
+<div class="safety-text">Ποτέ δεν δέχεσαι αιτήματα από άγνωστα άτομα! Αποδέχεσαι μόνο από συμμαθητές, δασκάλους ή γνωστούς.</div>
+</div>
+
+<div id="requestsList"></div>
+</div>
+
+<div class="completed-section">
+<div class="section-title">✅ Ολοκληρωμένα</div>
+<div id="completedList">
+<p style="color: #999; text-align: center; padding-top: 50px;">Δεν έχετε επεξεργαστεί κανένα αίτημα ακόμα.</p>
+</div>
+</div>
+</div>
+
+<div class="mascot">🔒</div>
+
+<script>
+const requests = [
+{
+id: 1,
+name: 'Γιώργος Παπαδόπουλος',
+school: 'Σχολείο σας, 4η Δημοτικού',
+icon: '👦',
+isKnown: true
+},
+{
+id: 2,
+name: 'Άγνωστος Χρήστης',
+school: 'Άγνωστο σχολείο',
+icon: '👤',
+isKnown: false
+},
+{
+id: 3,
+name: 'Μαρία Αντωνίου',
+school: 'Σχολείο σας, 4η Δημοτικού',
+icon: '👧',
+isKnown: true
+},
+{
+id: 4,
+name: 'SuperUser123',
+school: 'Άγνωστο σχολείο',
+icon: '🎭',
+isKnown: false
+},
+{
+id: 5,
+name: 'Δάσκαλος Νικόλαος',
+school: 'Σχολείο σας',
+icon: '👨‍🏫',
+isKnown: true
+},
+{
+id: 6,
+name: 'UnknownPlayer',
+school: 'Άγνωστο σχολείο',
+icon: '🎮',
+isKnown: false
+}
+];
+
+let completed = [];
+let score = 0;
+
+function renderRequests() {
+const requestsList = document.getElementById('requestsList');
+
+if (requests.length === 0) {
+requestsList.innerHTML = '<p style="color: #999; text-align: center; padding-top: 50px;">Όλα τα αιτήματα έχουν επεξεργαστεί!</p>';
+return;
+}
+
+requestsList.innerHTML = '';
+
+requests.forEach(request => {
+const item = document.createElement('div');
+item.className = 'request-item';
+
+item.innerHTML = `
+<div class="request-header">
+<div class="request-icon">${request.icon}</div>
+<div class="request-info">
+<div class="request-name">${request.name}</div>
+<div class="request-school">${request.school}</div>
+</div>
+<div class="request-status">Εκκρεμεί</div>
+</div>
+<div class="action-buttons">
+<button class="action-btn accept-btn" onclick="handleRequest(${request.id}, 'accept')">✓ Αποδοχή</button>
+<button class="action-btn reject-btn" onclick="handleRequest(${request.id}, 'reject')">✗ Απόρριψη</button>
+<button class="action-btn block-btn" onclick="handleRequest(${request.id}, 'block')">🚫 Αποκλεισμός</button>
+</div>
+`;
+
+requestsList.appendChild(item);
+});
+}
+
+function handleRequest(requestId, action) {
+const requestIndex = requests.findIndex(r => r.id === requestId);
+if (requestIndex === -1) return;
+
+const request = requests[requestIndex];
+requests.splice(requestIndex, 1);
+
+let actionText = '';
+let icon = '';
+
+if (action === 'accept') {
+actionText = 'Αποδοχή';
+icon = '✅';
+} else if (action === 'reject') {
+actionText = 'Απόρριψη';
+icon = '❌';
+} else if (action === 'block') {
+actionText = 'Αποκλεισμός';
+icon = '🚫';
+}
+
+completed.unshift({
+...request,
+action: actionText,
+actionIcon: icon
+});
+
+score++;
+document.getElementById('score').textContent = score;
+
+renderRequests();
+renderCompleted();
+
+if (requests.length === 0) {
+alert('🎉 Επεξεργαστήκατε όλα τα αιτήματα σύνδεσης!');
+}
+}
+
+function renderCompleted() {
+const completedList = document.getElementById('completedList');
+
+if (completed.length === 0) {
+completedList.innerHTML = '<p style="color: #999; text-align: center; padding-top: 50px;">Δεν έχετε επεξεργαστεί κανένα αίτημα ακόμα.</p>';
+return;
+}
+
+completedList.innerHTML = '';
+
+completed.forEach(item => {
+const itemEl = document.createElement('div');
+itemEl.className = 'completed-item';
+
+itemEl.innerHTML = `
+<div class="completed-icon">${item.actionIcon}</div>
+<div class="completed-info">
+<div class="completed-name">${item.name}</div>
+<div class="completed-action">${item.action} • ${item.school}</div>
+</div>
+`;
+
+completedList.appendChild(itemEl);
+});
+}
+
+renderRequests();
+</script>
+</body>
+</html>

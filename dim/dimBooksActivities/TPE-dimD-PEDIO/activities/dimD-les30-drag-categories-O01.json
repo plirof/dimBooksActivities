@@ -1,0 +1,68 @@
+{
+  "title": "5 κριτήρια σε ορισμούς",
+  "subtitle": "Ταίριαξε κάθε ερώτηση στο σωστό κριτήριο",
+  "categories": [
+    {
+      "id": "patrop",
+      "name": "ΠΑΤΡΟΤΗΤΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "epikair",
+      "name": "ΕΠΙΚΑΙΡΟΤΗΤΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "akriveia",
+      "name": "ΑΚΡΙΒΕΙΑ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "antikeim",
+      "name": "ΑΝΤΙΚΕΙΜΟΝΙΚΟΤΗΤΑ",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "axiopist",
+      "name": "ΑΞΙΟΠΙΣΤΙΑ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Ποιος έγραψε;",
+      "category": "patrop"
+    },
+    {
+      "id": "item2",
+      "text": "Πότε δημοσιεύτηκε;",
+      "category": "epikair"
+    },
+    {
+      "id": "item3",
+      "text": "Είναι σωστά τα στοιχεία;",
+      "category": "akriveia"
+    },
+    {
+      "id": "item4",
+      "text": "Είναι αμερόληπτο;",
+      "category": "antikeim"
+    },
+    {
+      "id": "item5",
+      "text": "Είναι γνωστή πηγή;",
+      "category": "axiopist"
+    },
+    {
+      "id": "item6",
+      "text": "Έχει στοιχεία επικοινωνίας;",
+      "category": "patrop"
+    },
+    {
+      "id": "item7",
+      "text": "Είναι ενημερωμένο;",
+      "category": "epikair"
+    }
+  ]
+}

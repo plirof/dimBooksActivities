@@ -1,0 +1,61 @@
+{
+  "title": "Βρες τα Λάθη: Εξαρτήματα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "μνήμη", "error": false},
+        {"text": "αποθηκεύει", "error": false},
+        {"text": "μόνιμα", "error": true, "correct": "προσωρινά", "feedback": "Η μνήμη αποθηκεύει ΠΡΟΣΩΡΙΝΑ! Μόνιμα αποθηκεύει ο δίσκος!"},
+        {"text": "τα", "error": false},
+        {"text": "δεδομένα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "δίσκος", "error": false},
+        {"text": "αποθηκεύει", "error": false},
+        {"text": "προσωρινά", "error": true, "correct": "μόνιμα", "feedback": "Ο δίσκος αποθηκεύει ΜΟΝΙΜΑ τα δεδομένα!"},
+        {"text": "τα", "error": false},
+        {"text": "δεδομένα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κατά", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "τερματισμό", "error": false},
+        {"text": "του", "error": false},
+        {"text": "υπολογιστή", "error": false},
+        {"text": "το", "error": false},
+        {"text": "περιεχόμενο", "error": false},
+        {"text": "του", "error": false},
+        {"text": "δίσκου", "error": true, "correct": "της μνήμης", "feedback": "Σβήνεται το περιεχόμενο της ΜΝΗΜΗΣ, όχι του δίσκου!"},
+        {"text": "σβήνεται.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "χρήστης", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "το", "error": false},
+        {"text": "λογισμικό", "error": true, "correct": "ο άνθρωπος", "feedback": "Ο χρήστης είναι ο ΑΝΘΡΩΠΟΣ που χρησιμοποιεί τον υπολογιστή!"},
+        {"text": "του", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "καλώδιο", "error": false},
+        {"text": "εφαρμόζει", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "οποιαδήποτε", "error": true, "correct": "την αντίστοιχη", "feedback": "Κάθε καλώδιο εφαρμόζει ΜΟΝΟ στην ΑΝΤΙΣΤΟΙΧΗ θύρα ίδιου είδους!"},
+        {"text": "θύρα.", "error": false}
+      ]
+    }
+  ]
+}

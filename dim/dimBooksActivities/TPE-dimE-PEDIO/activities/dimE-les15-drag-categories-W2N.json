@@ -1,0 +1,48 @@
+{
+  "title": "Ασφαλές ή Υποψήφια URL",
+  "subtitle": "Διάκρινε τα ασφαλή από τα ύποπτα URL",
+  "categories": [
+    {
+      "id": "safe",
+      "name": "ΑΣΦΑΛΕΣ (HTTPS)",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "suspect",
+      "name": "ΥΠΟΨΗΦΙΑ (HTTP)",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "https://bank.com",
+      "category": "safe"
+    },
+    {
+      "id": "item2",
+      "text": "http://free-stuff.xyz",
+      "category": "suspect"
+    },
+    {
+      "id": "item3",
+      "text": "https://gov.gr",
+      "category": "safe"
+    },
+    {
+      "id": "item4",
+      "text": "http://download-free.com",
+      "category": "suspect"
+    },
+    {
+      "id": "item5",
+      "text": "https://school.edu",
+      "category": "safe"
+    },
+    {
+      "id": "item6",
+      "text": "http://unknown-site.net",
+      "category": "suspect"
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Βρες το Μονοπάτι 🐸</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c3ec52 0%, #0ba29d 100%);
+    padding: 12px;
+    color: #333;
+    touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(17,153,142,.4);
+    margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; }
+  .header p { font-size: .9rem; opacity: .85; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #11998e; }
+  .level { font-size: 1rem; color: #888; }
+  .instruction {
+    background: #fff; border-radius: 20px; padding: 16px 18px;
+    margin-bottom: 14px; text-align: center; font-size: 1rem;
+    font-weight: 700; color: #2d3436;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    line-height: 1.5;
+  }
+  .program-card {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 20px; margin-bottom: 14px;
+    text-align: center;
+  }
+  .program-card h3 { font-size: .9rem; color: #888; margin-bottom: 10px; }
+  .code-block {
+    display: inline-flex; flex-direction: column; align-items: center;
+    gap: 6px;
+  }
+  .code-repeat {
+    background: #e3f2fd; border: 3px solid #90caf9;
+    border-radius: 14px; padding: 10px 20px;
+    font-size: 1.2rem; font-weight: 700; color: #1565c0;
+  }
+  .code-repeat .cr-num {
+    background: #1976d2; color: #fff; border-radius: 50%;
+    width: 36px; height: 36px; display: inline-flex;
+    align-items: center; justify-content: center;
+    margin: 0 4px;
+  }
+  .code-cmds {
+    display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  }
+  .code-cmd {
+    background: #e8f5e9; border: 2px solid #a5d6a7;
+    border-radius: 10px; padding: 8px 14px;
+    font-size: 1rem; font-weight: 600; color: #2e7d32;
+  }
+  .paths-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-gap: 12px; margin-bottom: 14px;
+  }
+  .path-card {
+    background: #fff; border: 3px solid #e8e8e8;
+    border-radius: 18px; padding: 16px 10px;
+    text-align: center; cursor: pointer;
+    transition: all .2s; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .path-card:active { transform: scale(.95); }
+  .path-card .pc-label {
+    font-size: .85rem; color: #888; font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .path-card .pc-visual {
+    display: flex; gap: 3px; justify-content: center; flex-wrap: wrap;
+  }
+  .path-card .pc-step {
+    background: #fff3e0; border: 2px solid #ffcc80;
+    border-radius: 8px; padding: 4px 8px;
+    font-size: 1rem;
+  }
+  .path-card.correct {
+    border-color: #28a745; background: #d4edda;
+    animation: pop .4s ease;
+  }
+  .path-card.wrong {
+    border-color: #dc3545; background: #f8d7da;
+    animation: shake .4s ease;
+  }
+  .path-card.disabled { pointer-events: none; }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.yay { background: #d4edda; color: #155724; }
+  .feedback.nay { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff;
+    border: none; border-radius: 16px; padding: 14px 36px;
+    font-size: 1.2rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 14px rgba(17,153,142,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:active { transform: scale(.95); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .paths-grid { grid-template-columns: 1fr; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .code-block > * + * { margin-top: 6px; }
+  .code-cmds > * { margin: 3px; }
+  .path-card .pc-visual > * { margin: 1.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>🐸 Βρες το Μονοπάτι</h1>
+    <p>Ποιο μονοπάτι θα ακολουθήσει το βατραχάκι;</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="level" id="levelDisplay">1/8</span>
+  </div>
+
+  <div id="gameArea">
+    <div class="instruction">👀 Διάβασε το πρόγραμμα και βρες πού θα φτάσει το βατραχάκι!</div>
+
+    <div class="program-card">
+      <h3>📋 Το πρόγραμμα:</h3>
+      <div class="code-block" id="codeBlock"></div>
+    </div>
+
+    <div class="paths-grid" id="pathsGrid"></div>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+
+<script>
+  var levels = [
+    { repeat: 3, cmds: ['➡️'], paths: [['➡️','➡️','➡️'],['➡️','➡️'],['➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️','➡️']], answer: 0 },
+    { repeat: 4, cmds: ['➡️','⬅️'], paths: [['➡️','⬅️','➡️','⬅️','➡️','⬅️','➡️','⬅️'],['➡️','⬅️','➡️'],['➡️','⬅️','➡️','⬅️','➡️'],['➡️','⬅️','➡️','⬅️','➡️','⬅️']], answer: 0 },
+    { repeat: 2, cmds: ['➡️','➡️','⬅️'], paths: [['➡️','➡️','⬅️','➡️','➡️','⬅️'],['➡️','➡️','⬅️','➡️','⬅️'],['➡️','➡️','⬅️'],['➡️','⬅️','➡️','⬅️']], answer: 0 },
+    { repeat: 5, cmds: ['➡️'], paths: [['➡️','➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️','➡️','➡️'],['➡️','➡️','➡️']], answer: 0 },
+    { repeat: 3, cmds: ['➡️','⬆️'], paths: [['➡️','⬆️','➡️','⬆️','➡️','⬆️'],['➡️','⬆️','➡️','⬆️'],['➡️','⬆️'],['➡️','⬆️','➡️','⬆️','➡️']], answer: 0 },
+    { repeat: 2, cmds: ['⬆️','⬆️','⬆️'], paths: [['⬆️','⬆️','⬆️','⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️','⬆️']], answer: 0 },
+    { repeat: 6, cmds: ['➡️'], paths: [['➡️','➡️','➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️'],['➡️','➡️','➡️','➡️','➡️','➡️','➡️']], answer: 0 },
+    { repeat: 4, cmds: ['⬆️','⬆️'], paths: [['⬆️','⬆️','⬆️','⬆️','⬆️','⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️','⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️','⬆️'],['⬆️','⬆️','⬆️','⬆️','⬆️']], answer: 0 }
+  ];
+
+  var currentLevel = 0;
+  var score = 0;
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function startGame() {
+    shuffle(levels);
+    currentLevel = 0;
+    score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    var lv = levels[currentLevel];
+    document.getElementById('levelDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var code = document.getElementById('codeBlock');
+    var cmdsHtml = '';
+    for (var i = 0; i < lv.cmds.length; i++) {
+      cmdsHtml += '<span class="code-cmd">' + lv.cmds[i] + '</span>';
+    }
+    code.innerHTML = '<div class="code-repeat">🔁 Επανάλαβε <span class="cr-num">' + lv.repeat + '</span> φορές</div><div class="code-cmds">' + cmdsHtml + '</div>';
+
+    var grid = document.getElementById('pathsGrid');
+    grid.innerHTML = '';
+    for (var j = 0; j < lv.paths.length; j++) {
+      (function(idx) {
+        var card = document.createElement('div');
+        card.className = 'path-card';
+        var pathHtml = '';
+        for (var k = 0; k < lv.paths[idx].length; k++) {
+          pathHtml += '<span class="pc-step">' + lv.paths[idx][k] + '</span>';
+        }
+        card.innerHTML = '<div class="pc-label">Διαδρομή ' + (idx + 1) + '</div><div class="pc-visual">' + pathHtml + '</div>';
+        card.addEventListener('click', function() { choose(idx, lv); });
+        grid.appendChild(card);
+      })(j);
+    }
+  }
+
+  function choose(idx, lv) {
+    var cards = document.querySelectorAll('.path-card');
+    for (var i = 0; i < cards.length; i++) cards[i].classList.add('disabled');
+    var fb = document.getElementById('feedback');
+    var correct = (idx === lv.answer);
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      cards[idx].classList.add('correct');
+      fb.className = 'feedback show yay';
+      fb.textContent = '✅ Μπράβο! Αυτό είναι το σωστό μονοπάτι!';
+    } else {
+      cards[idx].classList.add('wrong');
+      cards[lv.answer].classList.add('correct');
+      fb.className = 'feedback show nay';
+      fb.textContent = '❌ Δεν είναι αυτό! Το σωστό μονοπάτι είναι το ' + (lv.answer + 1) + '!';
+    }
+    setTimeout(function() { currentLevel++; loadLevel(); }, 1800);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var pct = score / total;
+    var emoji, title, msg;
+    if (pct === 1) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Βρήκες όλα τα μονοπάτια! Είσαι σούπερ!'; }
+    else if (pct >= 0.75) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!'; }
+    else if (pct >= 0.5) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Προσπάθησε ξανά! Θα τα πας καλύτερα!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

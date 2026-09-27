@@ -1,0 +1,53 @@
+{
+  "title": "Θετικό ή Αρνητικό",
+  "subtitle": "Διάκρινε τα θετικά από τα αρνητικά της τεχνολογίας",
+  "categories": [
+    {
+      "id": "pos",
+      "name": "ΘΕΤΙΚΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "neg",
+      "name": "ΑΡΝΗΤΙΚΟ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🏥 Τηλεϊατρική",
+      "category": "pos"
+    },
+    {
+      "id": "item2",
+      "text": "😡 Cyberbullying",
+      "category": "neg"
+    },
+    {
+      "id": "item3",
+      "text": "🏠 Έξυπνο σπίτι",
+      "category": "pos"
+    },
+    {
+      "id": "item4",
+      "text": "📰 Fake news",
+      "category": "neg"
+    },
+    {
+      "id": "item5",
+      "text": "🌍 Ψηφιακό χάσμα",
+      "category": "neg"
+    },
+    {
+      "id": "item6",
+      "text": "📚 Διαδικτυακή εκπαίδευση",
+      "category": "pos"
+    },
+    {
+      "id": "item7",
+      "text": "📱 Εθισμός",
+      "category": "neg"
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ανοίγω και Κλείνω τον Υπολογιστή 🖥️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(102,126,234,.4);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .step-indicator { font-size: 1rem; font-weight: 700; color: #764ba2; }
+  .task-msg {
+    font-size: .95rem; color: #888;
+  }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900;
+  }
+  .scene {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 24px 20px;
+    text-align: center; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .monitor {
+    background: #2d3436; border-radius: 16px 16px 4px 4px;
+    padding: 20px 16px 12px; margin: 0 auto 8px;
+    max-width: 320px; position: relative;
+  }
+  .screen {
+    background: #1a1a2e; border-radius: 8px;
+    padding: 24px 12px; min-height: 160px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: all .5s ease;
+  }
+  .screen.off { background: #111; }
+  .screen.on {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    animation: screenOn .6s ease;
+  }
+  @keyframes screenOn {
+    0% { opacity: 0; transform: scale(.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .screen .s-icon {
+    font-size: 3rem; cursor: pointer;
+    transition: transform .2s;
+    padding: 8px;
+  }
+  .screen .s-icon:hover { transform: scale(1.15); }
+  .screen .s-label {
+    color: #fff; font-size: .85rem; margin-top: 4px;
+  }
+  .screen-win {
+    background: #fff; border-radius: 6px;
+    padding: 16px; text-align: center;
+    position: relative; width: 100%;
+  }
+  .screen-win .win-title {
+    font-size: .9rem; font-weight: 700; color: #333;
+    margin-bottom: 10px;
+  }
+  .screen-win .win-close {
+    position: absolute; top: 4px; right: 6px;
+    background: #e74c3c; color: #fff; border: none;
+    border-radius: 50%; width: 24px; height: 24px;
+    font-size: .8rem; cursor: pointer; line-height: 24px;
+  }
+  .screen-win .win-close:hover { background: #c0392b; }
+  .stand {
+    width: 60px; height: 16px; background: #636e72;
+    margin: 0 auto; border-radius: 0 0 6px 6px;
+  }
+  .base {
+    width: 120px; height: 8px; background: #636e72;
+    margin: 0 auto; border-radius: 4px;
+  }
+  .power-btn-area {
+    display: flex; justify-content: center; gap: 16px;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+  .btn-action {
+    border: none; border-radius: 16px; padding: 14px 24px;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s, box-shadow .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 14px rgba(0,0,0,.1);
+  }
+  .btn-action:hover { transform: scale(1.05); }
+  .btn-action:active { transform: scale(.95); }
+  .btn-action:disabled { opacity: .4; cursor: default; transform: none !important; }
+  .btn-power { background: #e74c3c; color: #fff; }
+  .btn-app { background: #4facfe; color: #fff; }
+  .btn-shutdown { background: #636e72; color: #fff; }
+  .btn-win-close-area { background: #e74c3c; color: #fff; }
+  .btn-next {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 12px 28px; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(67,233,123,.3);
+    transition: transform .15s;
+  }
+  .btn-next:hover { transform: scale(1.05); }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  .feedback-text {
+    font-size: 1rem; color: #fff; margin-top: 8px;
+    font-weight: 600;
+  }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .monitor { max-width: 280px; }
+    .screen { min-height: 130px; }
+    .screen .s-icon { font-size: 2.5rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .power-btn-area > * { margin: 8px; }
+  .g61f12_0 > * { margin: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🖥️ Ανοίγω &amp; Κλείνω τον Υπολογιστή</h1>
+    <p>Ακολούθησε τα βήματα!</p>
+  </div>
+  <div class="info-bar">
+    <span class="step-indicator" id="stepLabel">🔘 Βήμα 1/5</span>
+    <span class="task-msg" id="taskLabel">Πάτα το κουμπί!</span>
+  </div>
+  <div class="instructions" id="instructions">💡 Ακολούθησε τις οδηγίες για να ανοίξεις και να κλείσεις τον υπολογιστή!</div>
+  <div id="gameArea">
+    <div class="scene">
+      <div class="monitor">
+        <div class="screen off" id="computerScreen">
+          <div id="screenContent"></div>
+        </div>
+      </div>
+      <div class="stand"></div>
+      <div class="base"></div>
+      <div class="power-btn-area" id="actionArea"></div>
+      <div class="feedback-text" id="feedbackMsg"></div>
+    </div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji">🎉</div>
+    <h2>Μπράβο!</h2>
+    <p>Έμαθες πώς να ανοίγεις και να κλείνεις τον υπολογιστή!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var steps = [
+    { label: 'Βήμα 1/5', task: '🔌 Πάτα το κουμπί για να ανοίξει!', screen: 'off', 
+      render: function() {
+        return '<div style="color:#666;font-size:3rem;">💤</div><div style="color:#555;font-size:.9rem;margin-top:8px;">Ο υπολογιστής είναι κλειστός</div>';
+      },
+      buttons: [{ text: '🔘 Πάτα για Άνοιγμα!', cls: 'btn-power', action: 'step1' }]
+    },
+    { label: 'Βήμα 2/5', task: '👀 Κοίτα! Εμφανίστηκαν τα εικονίδια!', screen: 'on',
+      render: function() {
+        return '<div class="g61f12_0" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">🎨</div><div style="color:#fff;font-size:.75rem;">Ζωγραφική</div></div>' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">✍️</div><div style="color:#fff;font-size:.75rem;">Κείμενο</div></div>' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">🌐</div><div style="color:#fff;font-size:.75rem;">Πληροφορίες</div></div>' +
+          '</div>';
+      },
+      buttons: [{ text: '🎨 Άνοιξε μια εφαρμογή!', cls: 'btn-app', action: 'step2' }]
+    },
+    { label: 'Βήμα 3/5', task: '📂 Η εφαρμογή άνοιξε σε ένα παράθυρο!', screen: 'on',
+      render: function() {
+        return '<div class="screen-win">' +
+          '<button class="win-close" id="winCloseBtn">✕</button>' +
+          '<div class="win-title">🎨 Ζωγραφική</div>' +
+          '<div style="font-size:3rem;margin:8px 0;">🌈</div>' +
+          '<div style="font-size:.85rem;color:#666;">Ζωγράφισε ό,τι θες!</div>' +
+          '</div>';
+      },
+      buttons: [{ text: '✕ Κλείσε το παράθυρο', cls: 'btn-win-close-area', action: 'step3' }]
+    },
+    { label: 'Βήμα 4/5', task: '🖥️ Ώρα να κλείσουμε τον υπολογιστή!', screen: 'on',
+      render: function() {
+        return '<div class="g61f12_0" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">🎨</div><div style="color:#fff;font-size:.75rem;">Ζωγραφική</div></div>' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">✍️</div><div style="color:#fff;font-size:.75rem;">Κείμενο</div></div>' +
+          '<div style="text-align:center;"><div style="font-size:2.5rem;">🌐</div><div style="color:#fff;font-size:.75rem;">Πληροφορίες</div></div>' +
+          '</div><div style="margin-top:12px;padding:8px 16px;background:#e74c3c;color:#fff;border-radius:8px;font-size:.9rem;cursor:pointer;display:inline-block;" id="shutdownBtn">⏻ Τερματισμός</div>';
+      },
+      buttons: [{ text: '⏻ Πάτα Τερματισμός', cls: 'btn-shutdown', action: 'step4' }]
+    },
+    { label: 'Βήμα 5/5', task: '✅ Τέλος! Ο υπολογιστής έκλεισε!', screen: 'off',
+      render: function() {
+        return '<div style="color:#666;font-size:3rem;">💤</div><div style="color:#555;font-size:.9rem;margin-top:8px;">Ο υπολογιστής είναι κλειστός</div>';
+      },
+      buttons: [{ text: '🎉 Μπράβο! Τέλος!', cls: 'btn-next', action: 'finish' }]
+    }
+  ];
+  var currentStep = 0;
+
+  function startGame() {
+    currentStep = 0;
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showStep();
+  }
+
+  function showStep() {
+    var s = steps[currentStep];
+    document.getElementById('stepLabel').textContent = '🔘 ' + s.label;
+    document.getElementById('taskLabel').textContent = s.task;
+    var screen = document.getElementById('computerScreen');
+    screen.className = 'screen ' + s.screen;
+    document.getElementById('screenContent').innerHTML = s.render();
+    document.getElementById('feedbackMsg').textContent = '';
+    var area = document.getElementById('actionArea');
+    area.innerHTML = '';
+    for (var i = 0; i < s.buttons.length; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-action ' + s.buttons[i].cls;
+      btn.textContent = s.buttons[i].text;
+      btn.setAttribute('data-action', s.buttons[i].action);
+      btn.addEventListener('click', handleAction);
+      area.appendChild(btn);
+    }
+  }
+
+  function handleAction(e) {
+    var action = e.currentTarget.getAttribute('data-action');
+    if (action === 'step1') {
+      document.getElementById('feedbackMsg').textContent = '⚡ Μπράβο! Ο υπολογιστής άνοιξε!';
+      setTimeout(function() {
+        currentStep++;
+        showStep();
+      }, 800);
+    } else if (action === 'step2') {
+      document.getElementById('feedbackMsg').textContent = '📂 Μπράβο! Άνοιξε η εφαρμογή!';
+      setTimeout(function() {
+        currentStep++;
+        showStep();
+      }, 800);
+    } else if (action === 'step3') {
+      document.getElementById('feedbackMsg').textContent = '✕ Μπράβο! Έκλεισες το παράθυρο!';
+      setTimeout(function() {
+        currentStep++;
+        showStep();
+      }, 800);
+    } else if (action === 'step4') {
+      document.getElementById('feedbackMsg').textContent = '⏻ Μπράβο! Ο υπολογιστής κλείνει...';
+      setTimeout(function() {
+        currentStep++;
+        showStep();
+      }, 800);
+    } else if (action === 'finish') {
+      document.getElementById('gameArea').style.display = 'none';
+      document.getElementById('resultScreen').style.display = 'block';
+    }
+  }
+
+  startGame();
+</script>
+</body>
+</html>

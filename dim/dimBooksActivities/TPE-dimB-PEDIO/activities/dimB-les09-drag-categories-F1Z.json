@@ -1,0 +1,26 @@
+{
+  "title": "Γεγονότα στο micro:bit",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "input",
+      "name": "Είσοδοι / Γεγονότα",
+      "color": "#E91E63"
+    },
+    {
+      "id": "basic",
+      "name": "Εντολές «Βασικά»",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Κουμπί Α", "category": "input" },
+    { "id": "item2", "text": "Κουμπί Β", "category": "input" },
+    { "id": "item3", "text": "Λογότυπο", "category": "input" },
+    { "id": "item4", "text": "«εμφάνιση εικονιδίου»", "category": "basic" },
+    { "id": "item5", "text": "Πέτρα", "category": "input" },
+    { "id": "item6", "text": "Ψαλίδι", "category": "input" },
+    { "id": "item7", "text": "Χαρτί", "category": "input" },
+    { "id": "item8", "text": "«για πάντα»", "category": "basic" }
+  ]
+}

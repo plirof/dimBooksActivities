@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 13,
+  unit: "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα",
+  slides: [
+    { type:"title", title:"Μάθημα 13ο: Δίκτυα υπολογιστών" },
+    { type:"text", text:"«Ήρωνα, έχεις ταξιδέψει από την Αθήνα στη Θεσσαλονίκη.» «Φυσικά, Υπατία μου. Έχουμε περάσει από διάφορους δρόμους που ενώνονται.»" },
+    { type:"text", text:"Στις πόλεις που έχεις ταξιδέψει, αν έχεις παρατηρήσει, υπάρχουν δρόμοι που ενώνονται μεταξύ τους. Αυτό το σύνολο των δρόμων σχηματίζει ένα δίκτυο σε όλη τη χώρα." },
+    { type:"concept", text:"Με τον όρο δίκτυο εννοούμε τη σύνδεση πολλών αντικειμένων για να εξυπηρετήσουν κάποιον σκοπό." },
+    { type:"list", title:"Παραδείγματα δικτύων", items:["Οδικό δίκτυο - δρόμοι που ενώνονται μεταξύ τους","Δίκτυο τηλεπικοινωνιών - καλώδια και πύργοι","Δίκτυο ύδρευσης - σωλήνες που μεταφέρουν νερό"] },
+    { type:"text", text:"Μα και στο σχολείο μας υπάρχουν υπολογιστές συνδεδεμένοι μεταξύ τους. «Μα φυσικά, Υπατία μου, όλο το εργαστήριο Πληροφορικής μοιάζει με το οδικό δίκτυο.»" },
+    { type:"text", text:"Παρατήρησε πώς συνδέονται οι υπολογιστές μεταξύ τους με καλώδια στο εργαστήριο Πληροφορικής του σχολείου σου." },
+    { type:"concept", text:"Όταν λέμε δίκτυο υπολογιστών εννοούμε ένα σύνολο από δύο ή περισσότερους υπολογιστές που είναι συνδεδεμένοι μεταξύ τους." },
+    { type:"practice", title:"Συνδέστε τις συσκευές", items:["Συνδέστε τον υπολογιστή Α με τον υπολογιστή Δ","Συνδέστε τον υπολογιστή Θ με τον υπολογιστή Ε"] },
+    { type:"assessment", check:"Μπορώ να εξηγώ τι είναι δίκτυο και δίκτυο υπολογιστών", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα. Μάθημα 13ο: Δίκτυα υπολογιστών",
+  "Ήρωνα, έχεις ταξιδέψει από την Αθήνα στη Θεσσαλονίκη. Φυσικά, Υπατία μου. Έχουμε περάσει από διάφορους δρόμους που ενώνονται.",
+  "Στις πόλεις που έχεις ταξιδέψει, αν έχεις παρατηρήσει, υπάρχουν δρόμοι που ενώνονται μεταξύ τους. Αυτό το σύνολο των δρόμων σχηματίζει ένα δίκτυο σε όλη τη χώρα.",
+  "Με τον όρο δίκτυο εννοούμε τη σύνδεση πολλών αντικειμένων για να εξυπηρετήσουν κάποιον σκοπό.",
+  "Παραδείγματα δικτύων. Οδικό δίκτυο - δρόμοι που ενώνονται μεταξύ τους. Δίκτυο τηλεπικοινωνιών - καλώδια και πύργοι. Δίκτυο ύδρευσης - σωλήνες που μεταφέρουν νερό.",
+  "Μα και στο σχολείο μας υπάρχουν υπολογιστές συνδεδεμένοι μεταξύ τους. Μα φυσικά, Υπατία μου, όλο το εργαστήριο Πληροφορικής μοιάζει με το οδικό δίκτυο.",
+  "Παρατήρησε πώς συνδέονται οι υπολογιστές μεταξύ τους με καλώδια στο εργαστήριο Πληροφορικής του σχολείου σου.",
+  "Όταν λέμε δίκτυο υπολογιστών εννοούμε ένα σύνολο από δύο ή περισσότερους υπολογιστές που είναι συνδεδεμένοι μεταξύ τους.",
+  "Συνδέστε τις συσκευές. Συνδέστε τον υπολογιστή Α με τον υπολογιστή Δ. Συνδέστε τον υπολογιστή Θ με τον υπολογιστή Ε.",
+  "Μπορώ να εξηγώ τι είναι δίκτυο και δίκτυο υπολογιστών. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

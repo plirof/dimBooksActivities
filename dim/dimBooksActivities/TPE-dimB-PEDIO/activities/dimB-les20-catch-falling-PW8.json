@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι περιέχει η ιστοσελίδα;",
+  "subtitle": "Πιάσε μόνο τους ψηφιακούς πόρους",
+  "instructions": "Πιάσε βίντεο, ήχο, εικόνα, κείμενο. Απόφυγε τα άλλα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Τούβλο", "correct": false, "color": "#f44336" },
+    { "text": "Ήχος", "correct": true, "color": "#4CAF50" },
+    { "text": "Πέτρα", "correct": false, "color": "#f44336" },
+    { "text": "Εικόνα", "correct": true, "color": "#4CAF50" },
+    { "text": "Αμμος", "correct": false, "color": "#f44336" },
+    { "text": "Κείμενο", "correct": true, "color": "#4CAF50" },
+    { "text": "Σκυρόδεμα", "correct": false, "color": "#f44336" },
+    { "text": "Υπερσύνδεσμος", "correct": true, "color": "#4CAF50" },
+    { "text": "Τσιμέντο", "correct": false, "color": "#f44336" }
+  ]
+}

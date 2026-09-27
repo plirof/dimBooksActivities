@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ρομπότ",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "kinisi", "name": "Εντολή κίνησης", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "koumpia", "name": "Κουμπί ρομπότ", "color": "#FF9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πήγαινε μπροστά", "category": "kinisi"},
+    {"text": "Στρογγυλό", "category": "koumpia"},
+    {"text": "Στρίψε αριστερά", "category": "kinisi"},
+    {"text": "Τρίγωνο", "category": "koumpia"},
+    {"text": "Σταμάτα", "category": "kinisi"},
+    {"text": "Τετράγωνο", "category": "koumpia"},
+    {"text": "Πήγαινε πίσω", "category": "kinisi"},
+    {"text": "Φόρτωση προγράμματος", "category": "koumpia"},
+    {"text": "Στρίψε δεξιά", "category": "kinisi"},
+    {"text": "Εκτέλεση προγράμματος", "category": "koumpia"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Το Πληκτρολόγιο",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πατάω", "error": false},
+        {"text": " τα ", "error": false},
+        {"text": "πλήκτρα", "error": false},
+        {"text": "πολύ", "error": true, "correct": "απαλά", "feedback": "Πατάμε τα πλήκτρα ΑΠΑΛΑ, όχι πολύ δυνατά!"},
+        {"text": "δυνατά", "error": false},
+        {"text": "!", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "κέρσορας", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένας", "error": false},
+        {"text": "κύκλος", "error": true, "correct": "κάθετη γραμμή", "feedback": "Ο κέρσορας είναι ΚΑΘΕΤΗ ΓΡΑΜΜΗ που αναβοσβήνει, όχι κύκλος!"},
+        {"text": "που", "error": false},
+        {"text": "αναβοσβήνει.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γράψω", "error": false},
+        {"text": "λέξη", "error": false},
+        {"text": "χρησιμοποιώ", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ποντίκι", "error": true, "correct": "πληκτρολόγιο", "feedback": "Για να γράψω χρησιμοποιώ το ΠΛΗΚΤΡΟΛΟΓΙΟ, όχι το ποντίκι!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "πλήκτρα", "error": false},
+        {"text": "έχουν", "error": false},
+        {"text": "ζώα", "error": true, "correct": "γράμματα", "feedback": "Τα πλήκτρα έχουν ΓΡΑΜΜΑΤΑ και αριθμούς, όχι ζώα!"},
+        {"text": "πάνω", "error": false},
+        {"text": "τους.", "error": false}
+      ]
+    }
+  ]
+}

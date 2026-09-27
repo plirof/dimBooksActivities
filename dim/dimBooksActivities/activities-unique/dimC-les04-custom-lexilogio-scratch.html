@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λεξιλόγιο Scratch</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #4C97FF 0%, #9966FF 50%, #FF6680 100%);
+min-height: 100vh;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 6px;
+font-size: 1.7rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 16px;
+font-size: 1rem;
+max-width: 700px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 24px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+background: #e9ecef;
+border-radius: 12px;
+height: 28px;
+margin-bottom: 20px;
+overflow: hidden;
+position: relative;
+}
+.progress-fill {
+background: linear-gradient(90deg, #4C97FF, #9966FF);
+height: 100%;
+border-radius: 12px;
+transition: width 0.5s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-weight: bold;
+font-size: 0.85rem;
+min-width: 60px;
+}
+.instructions {
+background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+border-radius: 12px;
+padding: 14px 18px;
+margin-bottom: 20px;
+font-size: 0.95rem;
+color: #444;
+text-align: center;
+border: 2px dashed #9966FF;
+}
+.terms-area {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+margin-bottom: 24px;
+min-height: 60px;
+padding: 10px;
+background: #f8f9ff;
+border-radius: 14px;
+border: 2px solid #dde;
+}
+.term-card {
+padding: 10px 18px;
+border-radius: 12px;
+color: white;
+font-weight: bold;
+font-size: 1rem;
+cursor: grab;
+user-select: none;
+touch-action: none;
+box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+transition: transform 0.15s, box-shadow 0.15s;
+position: relative;
+z-index: 1;
+}
+.term-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.term-card.dragging {
+opacity: 0.85;
+transform: scale(1.08);
+box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+z-index: 1000;
+cursor: grabbing;
+}
+.term-card.placed {
+opacity: 0.4;
+pointer-events: none;
+transform: scale(0.95);
+}
+.match-grid {
+display: grid;
+grid-gap: 14px;
+}
+.match-row {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.desc-card {
+flex: 1;
+background: #f8f9fa;
+border-radius: 12px;
+padding: 14px 16px;
+font-size: 0.92rem;
+color: #333;
+border-left: 5px solid #ccc;
+line-height: 1.4;
+}
+.drop-zone {
+width: 150px;
+min-width: 130px;
+min-height: 48px;
+border: 3px dashed #bbb;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: #fafafa;
+transition: all 0.2s;
+flex-shrink: 0;
+}
+.drop-zone.hover {
+border-color: #4C97FF;
+background: #e8f0ff;
+transform: scale(1.03);
+}
+.drop-zone.correct {
+border-style: solid;
+border-color: #28a745;
+background: #d4edda;
+}
+.drop-zone.wrong {
+animation: shake 0.4s ease;
+border-color: #dc3545;
+background: #f8d7da;
+}
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-8px); }
+50% { transform: translateX(8px); }
+75% { transform: translateX(-4px); }
+}
+.drop-zone .placed-term {
+padding: 6px 14px;
+border-radius: 10px;
+color: white;
+font-weight: bold;
+font-size: 0.88rem;
+}
+.check-btn {
+display: none;
+width: 100%;
+padding: 14px;
+margin-top: 20px;
+background: linear-gradient(135deg, #4C97FF, #9966FF);
+color: white;
+border: none;
+border-radius: 14px;
+font-size: 1.15rem;
+font-weight: bold;
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.check-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(76,151,255,0.4);
+}
+.reset-btn {
+display: inline-block;
+margin-top: 14px;
+padding: 10px 24px;
+background: linear-gradient(135deg, #FF6680, #FF8A65);
+color: white;
+border: none;
+border-radius: 12px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+}
+.completion-screen {
+display: none;
+text-align: center;
+padding: 30px 20px;
+}
+.completion-screen h2 {
+font-size: 1.8rem;
+color: #4C97FF;
+margin-bottom: 10px;
+}
+.stars {
+font-size: 2.5rem;
+margin: 16px 0;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.score-text {
+font-size: 1.2rem;
+color: #555;
+margin-bottom: 8px;
+}
+.message {
+font-size: 1rem;
+color: #666;
+margin-bottom: 20px;
+}
+.ghost {
+position: fixed;
+pointer-events: none;
+z-index: 9999;
+opacity: 0.9;
+transform: translate(-50%, -50%) scale(1.1);
+}
+@media (max-width: 600px) {
+h1 { font-size: 1.3rem; }
+.container { padding: 16px; }
+.match-row { flex-direction: column; }
+.drop-zone { width: 100%; min-width: unset; }
+.term-card { font-size: 0.9rem; padding: 8px 14px; }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .terms-area > * { margin: 5px; }
+  .match-row > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🧩 Λεξιλόγιο Scratch</h1>
+<p class="subtitle">Σύρε κάθε όρο στη σωστή περιγραφή!</p>
+<div class="container">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width:0%">0/6</div>
+</div>
+<div class="instructions">
+📩 Σύρε τα χρωματιστά κουτάκια από κάτω στη σωστή περιγραφή!
+</div>
+<div class="terms-area" id="termsArea"></div>
+<div class="match-grid" id="matchGrid"></div>
+<button class="check-btn" id="checkBtn" onclick="showCompletion()">🌟 Δες το αποτέλεσμα!</button>
+<div class="completion-screen" id="completionScreen">
+<h2>🎯 Μπράβο!</h2>
+<div class="stars" id="stars"></div>
+<div class="score-text" id="scoreText"></div>
+<div class="message" id="message"></div>
+<button class="reset-btn" onclick="resetGame()">🔄 Ξαναπαίξουμε!</button>
+</div>
+</div>
+<script>
+var data = [
+{
+term: "Αντικείμενο (Sprite)",
+desc: "Ο χαρακτήρας που κινείται και ενεργεί στη σκηνή του Scratch.",
+color: "#FF8C1A",
+catColor: "#FF8C1A"
+},
+{
+term: "Εντολή (Block)",
+desc: "Μια χρωματιστή οδηγία που λέει στο αντικείμενο τι να κάνει.",
+color: "#4C97FF",
+catColor: "#4C97FF"
+},
+{
+term: "Σενάριο (Script)",
+desc: "Ομάδα εντολών συνδεδεμένων μεταξύ τους που δημιουργούν ένα πρόγραμμα.",
+color: "#FFAB19",
+catColor: "#FFAB19"
+},
+{
+term: "Συμβάν (Event)",
+desc: "Κάτι που ξεκινάει το σενάριο, π.χ. το κλικ στη σημαία.",
+color: "#FFBF00",
+catColor: "#FFBF00"
+},
+{
+term: "Σκηνή (Stage)",
+desc: "Η περιοχή όπου φαίνεται το αποτέλεσμα του προγράμματος.",
+color: "#9966FF",
+catColor: "#9966FF"
+},
+{
+term: "Κατηγορία εντολών",
+desc: "Ομάδα εντολών με το ίδιο χρώμα, π.χ. κίνηση, ήχος, εμφάνιση.",
+color: "#CF63CF",
+catColor: "#CF63CF"
+}
+];
+
+var placedCount = 0;
+var termPositions = {};
+var ghostEl = null;
+var currentDragTerm = null;
+var currentDragIdx = null;
+var offsetX = 0;
+var offsetY = 0;
+
+function shuffle(arr) {
+var a = arr.slice();
+for (var i = a.length - 1; i > 0; i--) {
+var j = Math.floor(Math.random() * (i + 1));
+var tmp = a[i];
+a[i] = a[j];
+a[j] = tmp;
+}
+return a;
+}
+
+var shuffledOrder = shuffle([0,1,2,3,4,5]);
+
+function buildGame() {
+var termsArea = document.getElementById('termsArea');
+var matchGrid = document.getElementById('matchGrid');
+termsArea.innerHTML = '';
+matchGrid.innerHTML = '';
+
+var shuffledTerms = shuffle([0,1,2,3,4,5]);
+shuffledTerms.forEach(function(idx) {
+var d = data[idx];
+var card = document.createElement('div');
+card.className = 'term-card';
+card.style.background = d.color;
+card.textContent = d.term;
+card.setAttribute('data-idx', idx);
+card.id = 'term-' + idx;
+termsArea.appendChild(card);
+});
+
+shuffledOrder.forEach(function(idx) {
+var d = data[idx];
+var row = document.createElement('div');
+row.className = 'match-row';
+
+var drop = document.createElement('div');
+drop.className = 'drop-zone';
+drop.setAttribute('data-answer', idx);
+drop.id = 'drop-' + idx;
+
+var desc = document.createElement('div');
+desc.className = 'desc-card';
+desc.style.borderLeftColor = d.catColor;
+desc.textContent = d.desc;
+
+row.appendChild(drop);
+row.appendChild(desc);
+matchGrid.appendChild(row);
+});
+
+placedCount = 0;
+updateProgress();
+document.getElementById('checkBtn').style.display = 'none';
+document.getElementById('completionScreen').style.display = 'none';
+document.getElementById('matchGrid').style.display = '';
+document.getElementById('termsArea').style.display = '';
+var instr = document.querySelector('.instructions');
+instr.style.display = '';
+}
+
+function updateProgress() {
+var fill = document.getElementById('progressFill');
+fill.style.width = Math.round((placedCount / 6) * 100) + '%';
+fill.textContent = placedCount + '/6';
+if (placedCount === 6) {
+document.getElementById('checkBtn').style.display = 'block';
+}
+}
+
+function getX(e) {
+if (e.touches && e.touches.length > 0) return e.touches[0].clientX;
+if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0].clientX;
+return e.clientX;
+}
+function getY(e) {
+if (e.touches && e.touches.length > 0) return e.touches[0].clientY;
+if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0].clientY;
+return e.clientY;
+}
+
+function startDrag(e) {
+var card = e.target.closest('.term-card');
+if (!card || card.classList.contains('placed')) return;
+e.preventDefault();
+
+var rect = card.getBoundingClientRect();
+var x = getX(e);
+var y = getY(e);
+offsetX = x - rect.left - rect.width / 2;
+offsetY = y - rect.top - rect.height / 2;
+
+currentDragIdx = parseInt(card.getAttribute('data-idx'));
+currentDragTerm = card;
+
+ghostEl = card.cloneNode(true);
+ghostEl.className = 'term-card ghost';
+ghostEl.style.background = card.style.background;
+ghostEl.style.left = x + 'px';
+ghostEl.style.top = y + 'px';
+ghostEl.style.width = rect.width + 'px';
+document.body.appendChild(ghostEl);
+
+card.style.opacity = '0.3';
+}
+
+function moveDrag(e) {
+if (!ghostEl) return;
+e.preventDefault();
+var x = getX(e);
+var y = getY(e);
+ghostEl.style.left = x + 'px';
+ghostEl.style.top = y + 'px';
+
+var drops = document.querySelectorAll('.drop-zone:not(.correct)');
+drops.forEach(function(dz) {
+var r = dz.getBoundingClientRect();
+if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+dz.classList.add('hover');
+} else {
+dz.classList.remove('hover');
+}
+});
+}
+
+function endDrag(e) {
+if (!ghostEl) return;
+e.preventDefault();
+var x = getX(e);
+var y = getY(e);
+
+var dropped = false;
+var drops = document.querySelectorAll('.drop-zone:not(.correct)');
+drops.forEach(function(dz) {
+dz.classList.remove('hover');
+var r = dz.getBoundingClientRect();
+if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+var answer = parseInt(dz.getAttribute('data-answer'));
+if (answer === currentDragIdx) {
+dz.classList.add('correct');
+var placed = document.createElement('div');
+placed.className = 'placed-term';
+placed.style.background = data[currentDragIdx].color;
+placed.textContent = data[currentDragIdx].term;
+dz.innerHTML = '';
+dz.appendChild(placed);
+currentDragTerm.classList.add('placed');
+placedCount++;
+updateProgress();
+dropped = true;
+} else {
+dz.classList.add('wrong');
+setTimeout(function() { dz.classList.remove('wrong'); }, 500);
+currentDragTerm.style.opacity = '1';
+dropped = true;
+}
+}
+});
+
+if (!dropped) {
+currentDragTerm.style.opacity = '1';
+}
+
+ghostEl.remove();
+ghostEl = null;
+currentDragTerm = null;
+currentDragIdx = null;
+}
+
+function showCompletion() {
+document.getElementById('checkBtn').style.display = 'none';
+document.getElementById('matchGrid').style.display = 'none';
+document.getElementById('termsArea').style.display = 'none';
+document.querySelector('.instructions').style.display = 'none';
+
+var cs = document.getElementById('completionScreen');
+cs.style.display = 'block';
+
+var correct = document.querySelectorAll('.drop-zone.correct').length;
+var starsCount = correct;
+var starsStr = '';
+for (var i = 0; i < 6; i++) {
+starsStr += i < starsCount ? '⭐' : '☆';
+}
+document.getElementById('stars').textContent = starsStr;
+document.getElementById('scoreText').textContent = 'Σωστές απαντήσεις: ' + correct + ' / 6';
+
+var fill = document.getElementById('progressFill');
+fill.style.width = '100%';
+fill.textContent = '6/6 🎉';
+
+if (correct === 6) {
+document.getElementById('message').textContent = 'Τέλεια! Ξέρεις καλά το λεξιλόγιο του Scratch! 🚀';
+} else if (correct >= 4) {
+document.getElementById('message').textContent = 'Πολύ καλά! Σχεδόν τα βρήκες όλα! 💪';
+} else {
+document.getElementById('message').textContent = 'Καλή προσπάθεια! Δοκίμασε ξανά! 📚';
+}
+}
+
+function resetGame() {
+shuffledOrder = shuffle([0,1,2,3,4,5]);
+buildGame();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+buildGame();
+
+var termsArea = document.getElementById('termsArea');
+termsArea.addEventListener('mousedown', startDrag);
+document.addEventListener('mousemove', moveDrag);
+document.addEventListener('mouseup', endDrag);
+
+termsArea.addEventListener('touchstart', startDrag, { passive: false });
+document.addEventListener('touchmove', moveDrag, { passive: false });
+document.addEventListener('touchend', endDrag, { passive: false });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "title": "Βρες τα Λάθη: Επιδράσεις Διαδικτύου",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ενεργό", "error": false},
+        {"text": "αποτύπωμα", "error": false},
+        {"text": "δημιουργείται", "error": false},
+        {"text": "όταν", "error": false},
+        {"text": "άλλοι", "error": true, "correct": "εμείς", "feedback": "Το ΕΝΕΡΓΟ αποτύπωμα το δημιουργούμε ΕΜΕΙΣ, όχι άλλοι!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "cookies", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ιός", "error": true, "correct": "αρχεία", "feedback": "Τα cookies είναι ΑΡΧΕΙΑ, δεν είναι ιοί!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "παθητικό", "error": false},
+        {"text": "αποτύπωμα", "error": false},
+        {"text": "δημιουργείται", "error": false},
+        {"text": "από", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "δικές", "error": true, "correct": "ενέργειες τρίτων", "feedback": "Το ΠΑΘΗΤΙΚΟ αποτύπωμα δημιουργείται από ΕΝΕΡΓΕΙΕΣ ΤΡΙΤΩΝ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "fake", "error": false},
+        {"text": "news", "error": false},
+        {"text": "ομάζονται", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "εμπορικά", "error": false},
+        {"text": "κλικμπέιτ", "error": false},
+        {"text": "και", "error": false},
+        {"text": "αθλητικά", "error": true, "correct": "πολιτικά", "feedback": "Οι κατηγορίες fake news είναι: εμπορικά, κλικμπέιτ, ΠΟΛΙΤΙΚΑ και ρητορική μίσους!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ψηφιακό", "error": false},
+        {"text": "χάσμα", "error": false},
+        {"text": "αναφέρεται", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "ισότητα", "error": true, "correct": "ανισότητα", "feedback": "Το ψηφιακό χάσμα αναφέρεται στην ΑΝΙΣΟΤΗΤΑ πρόσβασης, όχι ισότητα!"}
+      ]
+    }
+  ]
+}

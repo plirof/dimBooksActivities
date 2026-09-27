@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ανάκτηση Αρχείων | Μάθημα 23</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#fefce8,#fef08a);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#713f12;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#ca8a04;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#713f12;font-size:.75rem;font-weight:700;border:1px solid #fef08a;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.folder-scene{background:#fefce8;border:2px solid #fde047;border-radius:12px;padding:10px;margin:8px 0;min-height:80px}
+.folder-title{font-size:.72rem;font-weight:700;color:#713f12;text-align:center;margin-bottom:6px}
+.files-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0}
+.file-item{padding:8px 10px;border:2px solid #e2e8f0;border-radius:10px;text-align:center;cursor:pointer;transition:all .2s;background:#fff;min-width:70px}
+.file-item:hover{border-color:#ca8a04;background:#fefce8}
+.file-item .fi-icon{font-size:1.2rem}
+.file-item .fi-name{font-size:.6rem;font-weight:700;color:#334155;margin-top:2px}
+.file-item.selected{border-color:#ca8a04;background:#fef9c3}
+.file-item.target{border-color:#22c55e;background:#dcfce7}
+.file-item.wrong-pick{border-color:#ef4444;background:#fef2f2}
+.task-card{background:#fff;border:2px solid #fde047;border-radius:12px;padding:10px;margin:8px 0}
+.task-q{font-size:.72rem;font-weight:700;color:#713f12;text-align:center}
+.task-opts{display:flex;flex-direction:column;gap:5px;margin:6px 0}
+.task-opt{padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s}
+.task-opt:hover{border-color:#ca8a04;background:#fefce8}
+.task-opt.selected{border-color:#ca8a04;background:#fef9c3;color:#713f12;font-weight:700}
+.task-opt.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.task-opt.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#ca8a04;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#a16207}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #ca8a04;border-radius:10px;background:transparent;color:#ca8a04;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#fefce8}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .files-grid > * { margin: 3px; }
+  .task-opts > * + * { margin-top: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📂 Ανάκτηση Αρχείων</h1>
+<p class="subtitle">Βρες το αρχείο και κάνε τα σωστά βήματα!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόκληση:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var challenges=[
+{
+type:'find',
+q:'Πού αποθηκεύεται ένα νέο έγγραφο από προεπιλογή;',
+files:['📁 Έγγραφα','📁 Επιφάνεια Εργασίας','📁 Λήψεις','📁 Εικόνες'],
+correct:0
+},
+{
+type:'find',
+q:'Αποθήκευσες ένα αρχείο αλλά δεν το βρίσκεις στα "Έγγραφα". Τι κάνεις;',
+files:['Χρησιμοποιείς την προβολή φακέλων για να το βρεις','Διαγράφεις το αρχείο και το ξαναφτιάχνεις','Πατάς Ctrl+Z','Ανοίγεις νέο έγγραφο'],
+correct:0
+},
+{
+type:'find',
+q:'Πώς ανοίγεις ένα αποθηκευμένο αρχείο στον κειμενογράφο;',
+files:['Αρχείο → Άνοιγμα → Διπλό κλικ στο αρχείο','Αρχείο → Νέο → Γράψε το όνομα','Πατάς Delete στο αρχείο','Κάνεις δεξί κλικ → Διαγραφή'],
+correct:0
+}
+];
+var curQ=0,pts=0,selected=-1,checked=false;
+
+function initQ(){selected=-1;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var c=challenges[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="folder-scene">';
+h+='<div class="folder-title">📂 Φάκελος: Έγγραφα</div>';
+h+='<div class="files-grid">';
+var fakeFiles=['📄 Εργασία','📊 Δεδομένα','📷 Φωτογραφία','📝 Σημειώσεις','🎵 Τραγούδι'];
+for(var i=0;i<fakeFiles.length;i++){
+h+='<div class="file-item"><div class="fi-icon">'+fakeFiles[i].split(' ')[0]+'</div><div class="fi-name">'+fakeFiles[i].split(' ')[1]+'</div></div>';
+}
+h+='</div></div>';
+h+='<div class="task-card"><div class="task-q">'+c.q+'</div></div>';
+h+='<div class="task-opts">';
+for(var i=0;i<c.files.length;i++){
+var cls='task-opt';
+if(!checked&&selected===i)cls+=' selected';
+if(checked){
+if(i===c.correct)cls+=' correct';
+else if(selected===i)cls+=' wrong';
+}
+h+='<div class="'+cls+'" onclick="selectOpt('+i+')">'+c.files[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&selected>=0){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===c.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ Σωστά!':'❌ Η σωστή απάντηση: '+c.files[c.correct])+'</div>';
+if(curQ<challenges.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόκληση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function selectOpt(idx){if(!checked){selected=idx;render();}}
+function checkAnswer(){if(selected>=0){checked=true;render();}}
+function nextQ(){if(curQ<challenges.length-1){curQ++;initQ();render();}}
+
+initQ();render();
+</script>
+</body>
+</html>

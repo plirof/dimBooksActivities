@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πρώτα", "error": false},
+        {"text": "βλέπω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πρόγραμμα", "error": true, "correct": "πρόγραμμα", "feedback": "Σωστά! Αλλά δοκίμασε να βρεις άλλο λάθος!"},
+        {"text": "της", "error": false},
+        {"text": "ημέρας.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μετά", "error": false},
+        {"text": "βάζω", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "παιχνίδια", "error": true, "correct": "βιβλία", "feedback": "Στο σχολείο παίρνουμε βιβλία, όχι παιχνίδια!"},
+        {"text": "στη", "error": false},
+        {"text": "τσάντα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μετά", "error": false},
+        {"text": "ετοιμάζω", "error": false},
+        {"text": "την", "error": false},
+        {"text": "κουζίνα", "error": true, "correct": "κασετίνα", "feedback": "Ετοιμάζουμε την κασετίνα, όχι την κουζίνα!"},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "τέλος", "error": false},
+        {"text": "ανοίγω", "error": true, "correct": "κλείνω", "feedback": "Στο τέλος κλείνουμε την τσάντα!"},
+        {"text": "τη", "error": false},
+        {"text": "τσάντα.", "error": false}
+      ]
+    }
+  ]
+}

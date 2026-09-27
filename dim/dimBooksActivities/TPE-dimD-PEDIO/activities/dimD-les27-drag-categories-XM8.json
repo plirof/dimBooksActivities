@@ -1,0 +1,58 @@
+{
+  "title": "Εικονίδια τηλεκπαίδευσης",
+  "subtitle": "Ταίριαξε κάθε εικονίδιο στη σωστή λειτουργία",
+  "categories": [
+    {
+      "id": "mic",
+      "name": "ΜΙΚΡΟΦΩΝΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "cam",
+      "name": "ΚΑΜΕΡΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "chat",
+      "name": "CHAT",
+      "color": "#FF9800"
+    },
+    {
+      "id": "hand",
+      "name": "ΧΕΙΡΟΣΚΕΛΟΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🎤 Μίλα",
+      "category": "mic"
+    },
+    {
+      "id": "item2",
+      "text": "📹 Βλέπω",
+      "category": "cam"
+    },
+    {
+      "id": "item3",
+      "text": "💬 Γράψε",
+      "category": "chat"
+    },
+    {
+      "id": "item4",
+      "text": "✋ Συμμετέχω",
+      "category": "hand"
+    },
+    {
+      "id": "item5",
+      "text": "🔇 Σίγαση",
+      "category": "mic"
+    },
+    {
+      "id": "item6",
+      "text": "📷 Φωτογράφιση",
+      "category": "cam"
+    }
+  ]
+}

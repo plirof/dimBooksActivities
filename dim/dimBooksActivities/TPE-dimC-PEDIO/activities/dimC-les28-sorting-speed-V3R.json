@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αποθετήρια",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "fotodentro", "name": "Φωτόδεντρο", "color": "#2196F3", "key": "ArrowLeft"},
+    {"id": "bibliothiki", "name": "Ανοιχτή Βιβλιοθήκη", "color": "#4CAF50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μαθησιακά αντικείμενα", "category": "fotodentro"},
+    {"text": "Ελεύθερα βιβλία", "category": "bibliothiki"},
+    {"text": "Edusoft", "category": "fotodentro"},
+    {"text": "Audio books", "category": "bibliothiki"},
+    {"text": "Εκπαιδευτικά βίντεο", "category": "fotodentro"},
+    {"text": "Λογοτεχνικά βιβλία", "category": "bibliothiki"},
+    {"text": "Παιχνίδια και κουίζ", "category": "fotodentro"},
+    {"text": "Θεατρικά έργα", "category": "bibliothiki"},
+    {"text": "Αίσωπος", "category": "fotodentro"},
+    {"text": "Εκπαιδευτικά βοηθήματα", "category": "bibliothiki"}
+  ],
+  "duration": 30
+}

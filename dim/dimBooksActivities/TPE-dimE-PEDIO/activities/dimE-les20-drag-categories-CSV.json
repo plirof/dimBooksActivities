@@ -1,0 +1,53 @@
+{
+  "title": "Παραδείγματα AI",
+  "subtitle": "Ταίριαξε κάθε παράδειγμα στη σωστή κατηγορία AI",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΑΝΑΓΝΩΡΙΣΗ ΕΙΚΟΝΩΝ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "voice",
+      "name": "ΦΩΝΗΤΙΚΟΣ ΒΟΗΘΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "rec",
+      "name": "ΣΥΣΤΑΤΙΚΕΣ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Face ID",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": "Siri",
+      "category": "voice"
+    },
+    {
+      "id": "item3",
+      "text": "YouTube προτάσεις",
+      "category": "rec"
+    },
+    {
+      "id": "item4",
+      "text": "Google Lens",
+      "category": "img"
+    },
+    {
+      "id": "item5",
+      "text": "Alexa",
+      "category": "voice"
+    },
+    {
+      "id": "item6",
+      "text": "Netflix προτάσεις",
+      "category": "rec"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Βρες τα Λάθη: Εργαλεία Ζωγραφικής",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σχεδιάσω", "error": false},
+        {"text": "κύκλο", "error": false},
+        {"text": "χρησιμοποιώ", "error": true, "correct": "επιλέγω", "feedback": "Λέμε «επιλέγω» το εργαλείο του κύκλου!"},
+        {"text": "το", "error": false},
+        {"text": "εργαλείο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "γόμα", "error": false},
+        {"text": "ζωγραφίζει", "error": true, "correct": "σβήνει", "feedback": "Η γόμα σβήνει, δεν ζωγραφίζει!"},
+        {"text": "τα", "error": false},
+        {"text": "λάθη", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "την", "error": false},
+        {"text": "αναίρεση", "error": false},
+        {"text": "διαγράφω", "error": true, "correct": "ακυρώνω", "feedback": "Με την αναίρεση ακυρώνω την τελευταία ενέργεια!"},
+        {"text": "την", "error": false},
+        {"text": "τελευταία", "error": false},
+        {"text": "ενέργεια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "γέμισμα", "error": false},
+        {"text": "βάφει", "error": false},
+        {"text": "έξω", "error": true, "correct": "μέσα", "feedback": "Το γέμισμα βάφει ΜΕΣΑ στο σχήμα!"},
+        {"text": "στο", "error": false},
+        {"text": "σχήμα.", "error": false}
+      ]
+    }
+  ]
+}

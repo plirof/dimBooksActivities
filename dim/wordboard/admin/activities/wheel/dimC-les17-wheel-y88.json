@@ -1,0 +1,26 @@
+{
+    "id": "dimC-les17-wheel-y88",
+    "title": "Περισσότερα εργαλεία στο πληκτρολόγιο - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Shift",
+            "Caps Lock",
+            "Tab",
+            "Alt + Shift",
+            "Κενό",
+            "Τόνος",
+            "Κόμμα",
+            "Τελεία",
+            "ς",
+            "Παράγραφος"
+        ]
+    },
+    "tags": [
+        "dimC",
+        "les17",
+        "πληκτρολόγιο"
+    ]
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Διάγραμμα Venn: Κίνδυνοι και Πρόληψη",
+  "subtitle": "Τοποθέτησε τα στοιχεία στις σωστές περιοχές",
+  "circleA": {
+    "label": "Κίνδυνοι Διαδικτύου",
+    "color": "#f44336"
+  },
+  "circleB": {
+    "label": "Μέτρα Πρόληψης",
+    "color": "#4CAF50"
+  },
+  "items": [
+    {
+      "text": "Hacking",
+      "zone": "A"
+    },
+    {
+      "text": "Antivirus",
+      "zone": "B"
+    },
+    {
+      "text": "Phishing",
+      "zone": "A"
+    },
+    {
+      "text": "Ισχυρός κωδικός",
+      "zone": "B"
+    },
+    {
+      "text": "Malware",
+      "zone": "A"
+    },
+    {
+      "text": "Ενημερώσεις ασφαλείας",
+      "zone": "B"
+    },
+    {
+      "text": "Cyberbullying",
+      "zone": "A"
+    },
+    {
+      "text": "Αποφυγή ύποπτων email",
+      "zone": "B"
+    },
+    {
+      "text": "Εξάρτηση",
+      "zone": "A"
+    },
+    {
+      "text": "Διαδίκτυο των Πραγμάτων",
+      "zone": "none"
+    }
+  ]
+}

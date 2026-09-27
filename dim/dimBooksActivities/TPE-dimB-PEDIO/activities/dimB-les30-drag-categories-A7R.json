@@ -1,0 +1,53 @@
+{
+  "title": "Μοιράζομαι ή Δεν μοιράζομαι",
+  "subtitle": "Τι είναι ασφαλές να μοιράζεσαι στο διαδίκτυο;",
+  "categories": [
+    {
+      "id": "share",
+      "name": "ΜΟΙΡΑΖΟΜΑΙ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΔΕΝ ΜΟΙΡΑΖΟΜΑΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αγαπημένο χρώμα",
+      "category": "share"
+    },
+    {
+      "id": "item2",
+      "text": "Τηλέφωνο",
+      "category": "no"
+    },
+    {
+      "id": "item3",
+      "text": "Όνομα",
+      "category": "share"
+    },
+    {
+      "id": "item4",
+      "text": "Διεύθυνση σπιτιού",
+      "category": "no"
+    },
+    {
+      "id": "item5",
+      "text": "Χόμπι",
+      "category": "share"
+    },
+    {
+      "id": "item6",
+      "text": "Κωδικός",
+      "category": "no"
+    },
+    {
+      "id": "item7",
+      "text": "Φωτογραφία με φίλους",
+      "category": "no"
+    }
+  ]
+}

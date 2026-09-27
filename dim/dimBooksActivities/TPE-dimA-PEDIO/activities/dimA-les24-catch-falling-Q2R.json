@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα Σωστά: Κεφαλαία και Αριθμοί",
+  "subtitle": "Πιάστε μόνο κεφαλαία!",
+  "instructions": "Πιάσε μόνο ΚΕΦΑΛΑΙΑ ΓΡΑΜΜΑΤΑ και ΑΡΙΘΜΟΥΣ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Α", "correct": true, "color": "#4CAF50"},
+    {"text": "α", "correct": false, "color": "#f44336"},
+    {"text": "5", "correct": true, "color": "#2196F3"},
+    {"text": "κ", "correct": false, "color": "#FF9800"},
+    {"text": "Μ", "correct": true, "color": "#9C27B0"},
+    {"text": "τ", "correct": false, "color": "#E91E63"},
+    {"text": "8", "correct": true, "color": "#009688"},
+    {"text": "ε", "correct": false, "color": "#FFC107"},
+    {"text": "Ω", "correct": true, "color": "#795548"},
+    {"text": "ω", "correct": false, "color": "#607D8B"},
+    {"text": "2", "correct": true, "color": "#3F51B5"},
+    {"text": "μ", "correct": false, "color": "#8BC34A"}
+  ]
+}

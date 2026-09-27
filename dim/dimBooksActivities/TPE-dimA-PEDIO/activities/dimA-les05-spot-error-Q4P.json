@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "πάπια", "error": false},
+        {"text": "πάει", "error": false},
+        {"text": "στο", "error": true, "correct": "στη", "feedback": "Η πάπια πάει στη λιμνούλα!"},
+        {"text": "λιμνούλα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "μονοπάτι", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "κοντό", "error": true, "correct": "σωστό", "feedback": "Το μονοπάτι είναι σωστό, όχι κοντό!"},
+        {"text": "και", "error": false},
+        {"text": "ωραίο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αποφεύγω", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "λουλούδια", "error": true, "correct": "εμπόδια", "feedback": "Αποφεύγω τα εμπόδια, όχι τα λουλούδια!"},
+        {"text": "στο", "error": false},
+        {"text": "μονοπάτι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Φτάνω", "error": false},
+        {"text": "στον", "error": false},
+        {"text": "προορισμό", "error": false},
+        {"text": "γρήγορα!", "error": true, "correct": "χωρίς εμπόδια!", "feedback": "Φτάνω στον προορισμό χωρίς εμπόδια!"}
+      ]
+    }
+  ]
+}

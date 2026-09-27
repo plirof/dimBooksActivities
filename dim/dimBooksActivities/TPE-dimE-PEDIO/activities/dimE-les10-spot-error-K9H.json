@@ -1,0 +1,52 @@
+{
+  "title": "Βρες τα Λάθη: Μηνύματα",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "μήνυμα", "error": false, "correct": "", "feedback": "" },
+        { "text": "στέλνεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "τον", "error": false, "correct": "", "feedback": "" },
+        { "text": "εαυτό", "error": true, "correct": "ένα άλλο", "feedback": "Το μήνυμα στέλνεται από ΕΝΑ ΑΝΤΙΚΕΙΜΕΝΟ σε ΕΝΑ ΑΛΛΟ, όχι στον εαυτό του" },
+        { "text": "του.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "παραλαβή", "error": false, "correct": "", "feedback": "" },
+        { "text": "ενός", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνύματος", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "μια", "error": false, "correct": "", "feedback": "" },
+        { "text": "εντολή.", "error": true, "correct": "συμβάν", "feedback": "Η παραλαβή ενός μηνύματος είναι ΣΥΜΒΑΝ, όχι απλή εντολή" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνύματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρίσκονται", "error": false, "correct": "", "feedback": "" },
+        { "text": "στην", "error": false, "correct": "", "feedback": "" },
+        { "text": "κατηγορία", "error": false, "correct": "", "feedback": "" },
+        { "text": "των", "error": false, "correct": "", "feedback": "" },
+        { "text": "επαναλήψεων.", "error": true, "correct": "συμβάντων", "feedback": "Τα μηνύματα βρίσκονται στην κατηγορία των ΣΥΜΒΑΝΤΩΝ" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Με", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνύματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "αντικείμενα", "error": false, "correct": "", "feedback": "" },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Με τα μηνύματα τα αντικείμενα ΕΠΙΚΟΙΝΩΝΟΥΝ και ΣΥΝΕΡΓΑΖΟΝΤΑΙ" },
+        { "text": "μπορούν", "error": true, "correct": "επικοινωνούν", "feedback": "Με τα μηνύματα τα αντικείμενα ΕΠΙΚΟΙΝΩΝΟΥΝ και ΣΥΝΕΡΓΑΖΟΝΤΑΙ" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "συνεργαστούν.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

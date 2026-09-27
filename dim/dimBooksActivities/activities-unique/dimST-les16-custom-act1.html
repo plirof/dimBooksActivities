@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Φόρμα: Ερώτηση + Επιλογές → Αποτελέσματα</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{color:#fff;text-align:center;margin-bottom:6px;font-size:1.5em;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.subtitle{color:rgba(255,255,255,.85);text-align:center;margin-bottom:20px;font-size:.92em}
+.container{background:#fff;border-radius:18px;padding:24px;max-width:700px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.2);margin-bottom:16px}
+.survey-card{background:linear-gradient(135deg,#f8f8ff,#f0f0ff);border-radius:14px;padding:20px;margin-bottom:16px;border:2px solid #e0e0ff}
+.question-header{text-align:center;margin-bottom:14px}
+.question-header .q-icon{font-size:2em}
+.question-header h3{color:#764ba2;font-size:1.1em;margin-top:4px}
+.options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.option-btn{padding:12px 18px;border:2px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:.95em;transition:all .2s;text-align:left;display:flex;align-items:center;gap:10px}
+.option-btn:hover{border-color:#667eea;background:#f8f8ff}
+.option-btn.selected{border-color:#764ba2;background:linear-gradient(135deg,#667eea15,#764ba215)}
+.option-radio{width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.option-btn.selected .option-radio{border-color:#764ba2;background:#764ba2}
+.option-btn.selected .option-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+.submit-btn{display:block;margin:0 auto 16px;padding:12px 28px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:.95em;cursor:pointer;font-family:inherit;font-weight:600;transition:all .2s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,.4)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.results-section{margin-top:16px}
+.results-section h3{color:#764ba2;margin-bottom:12px;text-align:center;font-size:1em}
+.chart-area{background:#f8f8ff;border-radius:14px;padding:16px;margin-bottom:12px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{min-width:100px;font-size:.85em;font-weight:600;color:#555;text-align:right}
+.bar-track{flex:1;height:28px;background:#eee;border-radius:14px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:14px;transition:width .6s ease;display:flex;align-items:center;padding-left:8px;font-size:.75em;font-weight:700;color:#fff;min-width:30px}
+.bar-count{font-size:.85em;font-weight:700;color:#764ba2;min-width:30px;text-align:center}
+.total-votes{text-align:center;font-size:.85em;color:#888;margin-top:8px}
+.nav{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.nav-btn{padding:8px 18px;border:2px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;font-family:inherit;font-size:.85em;transition:all .2s}
+.nav-btn:hover{border-color:#764ba2}
+.nav-btn.active{background:#764ba2;color:#fff;border-color:#764ba2}
+.thanks{display:none;text-align:center;padding:14px;background:#f0fff0;border-radius:12px;color:#2d6a2d;margin-bottom:12px;font-weight:600}
+.thanks.show{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .options > * + * { margin-top: 8px; }
+  .option-btn > * + * { margin-left: 10px; }
+  .bar-row > * + * { margin-left: 10px; }
+  .nav > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<h1>📊 Ψηφοφορία: Ερώτηση → Αποτελέσματα</h1>
+<p class="subtitle">Ψήφισε και δες τα αποτελέσματα σε πραγματικό χρόνο!</p>
+
+<div class="container">
+  <div class="nav" id="navBar"></div>
+  <div id="surveyArea"></div>
+  <div class="results-section" id="resultsSection">
+    <h3>📊 Αποτελέσματα Ψηφοφορίας</h3>
+    <div class="chart-area" id="chartArea"></div>
+    <div class="total-votes" id="totalVotes"></div>
+  </div>
+</div>
+
+<script>
+var surveys=[
+  {
+    id:'sport',
+    icon:'⚽',
+    question:'Ποιο είναι το αγαπημένο σου άθλημα;',
+    options:['Ποδόσφαιρο','Μπάσκετ','Κολύμβηση','Τένις'],
+    colors:['#667eea','#e74c3c','#3498db','#f39c12'],
+    votes:[12,8,6,3]
+  },
+  {
+    id:'season',
+    icon:'🌸',
+    question:'Ποια είναι η αγαπημένη σου εποχή;',
+    options:['Άνοιξη','Καλοκαίρι','Φθινόπωρο','Χειμώνας'],
+    colors:['#27ae60','#f39c12','#e67e22','#3498db'],
+    votes:[7,15,4,9]
+  },
+  {
+    id:'subject',
+    icon:'📚',
+    question:'Ποιο είναι το αγαπημένο σου μάθημα;',
+    options:['Μαθηματικά','Γλώσσα','Ερευνητική Εργασία','Τεχνولوجία'],
+    colors:['#e74c3c','#3498db','#27ae60','#9b59b6'],
+    votes:[10,5,8,14]
+  },
+  {
+    id:'food',
+    icon:'🍕',
+    question:'Ποιο είναι το αγαπημένο σου φαγητό;',
+    options:['Πίτσα','Μακαρόνια','Σουβλάκι','Μπέργκερ'],
+    colors:['#e74c3c','#f39c12','#27ae60','#8e44ad'],
+    votes:[11,6,13,7]
+  }
+];
+
+var currentSurvey=0;
+var selectedOption=-1;
+
+function init(){
+  var nav=document.getElementById('navBar');
+  nav.innerHTML='';
+  surveys.forEach(function(s,i){
+    var btn=document.createElement('button');
+    btn.className='nav-btn'+(i===0?' active':'');
+    btn.textContent=s.icon+' Ερώτηση '+(i+1);
+    btn.onclick=function(){switchSurvey(i)};
+    nav.appendChild(btn);
+  });
+  renderSurvey();
+  renderResults();
+}
+
+function switchSurvey(idx){
+  currentSurvey=idx;
+  selectedOption=-1;
+  document.querySelectorAll('.nav-btn').forEach(function(b,i){
+    b.classList.toggle('active',i===idx);
+  });
+  renderSurvey();
+  renderResults();
+}
+
+function renderSurvey(){
+  var s=surveys[currentSurvey];
+  var area=document.getElementById('surveyArea');
+  var html='<div class="survey-card">';
+  html+='<div class="question-header"><div class="q-icon">'+s.icon+'</div><h3>'+s.question+'</h3></div>';
+  html+='<div class="options" id="optionsList">';
+  s.options.forEach(function(opt,i){
+    html+='<div class="option-btn" onclick="selectOpt('+i+')" id="opt'+i+'"><div class="option-radio"></div><span>'+opt+'</span></div>';
+  });
+  html+='</div>';
+  html+='<button class="submit-btn" id="submitBtn" onclick="submitVote()" disabled>✅ Υποβολή Ψήφου</button>';
+  html+='<div class="thanks" id="thanksMsg">Ευχαριστούμε για την ψήφο σου! Μπορείς να ψηφίσεις ξανά. 🎉</div>';
+  html+='</div>';
+  area.innerHTML=html;
+}
+
+function selectOpt(idx){
+  selectedOption=idx;
+  var s=surveys[currentSurvey];
+  s.options.forEach(function(o,i){
+    var el=document.getElementById('opt'+i);
+    if(el) el.classList.toggle('selected',i===idx);
+  });
+  document.getElementById('submitBtn').disabled=false;
+}
+
+function submitVote(){
+  if(selectedOption===-1) return;
+  var s=surveys[currentSurvey];
+  s.votes[selectedOption]++;
+  renderResults();
+  selectedOption=-1;
+  var msg=document.getElementById('thanksMsg');
+  if(msg){msg.classList.add('show');setTimeout(function(){msg.classList.remove('show')},2000)}
+  document.querySelectorAll('.option-btn').forEach(function(b){b.classList.remove('selected')});
+  document.getElementById('submitBtn').disabled=true;
+}
+
+function renderResults(){
+  var s=surveys[currentSurvey];
+  var total=s.votes.reduce(function(a,b){return a+b},0);
+  var chart=document.getElementById('chartArea');
+  var html='';
+  s.options.forEach(function(opt,i){
+    var pct=total>0?(s.votes[i]/total*100):0;
+    html+='<div class="bar-row">';
+    html+='<div class="bar-label">'+opt+'</div>';
+    html+='<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+s.colors[i]+'">'+(pct>8?pct.toFixed(0)+'%':'')+'</div></div>';
+    html+='<div class="bar-count">'+s.votes[i]+'</div>';
+    html+='</div>';
+  });
+  chart.innerHTML=html;
+  document.getElementById('totalVotes').textContent='Σύνολο ψήφων: '+total;
+}
+
+init();
+</script>
+</body>
+</html>

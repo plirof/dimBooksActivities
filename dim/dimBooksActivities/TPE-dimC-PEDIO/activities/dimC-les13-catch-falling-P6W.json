@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ασφαλείς Πρακτικές",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΣΩΣΤΕΣ πρακτικές ασφαλείας! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Εγκατάσταση antivirus", "correct": true, "color": "#4CAF50"},
+    {"text": "Κλικ σε άγνωστα δώρα", "correct": false, "color": "#f44336"},
+    {"text": "Ισχυρός κωδικός", "correct": true, "color": "#2196F3"},
+    {"text": "Μοίρασμα κωδικού", "correct": false, "color": "#FF9800"},
+    {"text": "Ενημέρωση antivirus", "correct": true, "color": "#9C27B0"},
+    {"text": "Κωδικός: 123456", "correct": false, "color": "#E91E63"},
+    {"text": "Αποσύνδεση λογαριασμού", "correct": true, "color": "#00BCD4"},
+    {"text": "Άνοιγμα ύποπτου email", "correct": false, "color": "#FFC107"},
+    {"text": "Προσοχή σε εγκαταστάσεις", "correct": true, "color": "#795548"},
+    {"text": "Κωδικός: το όνομά μου", "correct": false, "color": "#607D8B"}
+  ]
+}

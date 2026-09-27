@@ -1,0 +1,24 @@
+{
+  "title": "Εννοιολογικός Χάρτης",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "concept",
+      "name": "Έννοιες",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "link",
+      "name": "Συνδέσεις",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Ζώα", "category": "concept" },
+    { "id": "item2", "text": "Ζώα της Φάρμας", "category": "concept" },
+    { "id": "item3", "text": "Ζώα του Δάσους", "category": "concept" },
+    { "id": "item4", "text": "Κατοικίδια", "category": "concept" },
+    { "id": "item5", "text": "χωρίζονται σε", "category": "link" },
+    { "id": "item6", "text": "όπως", "category": "link" }
+  ]
+}

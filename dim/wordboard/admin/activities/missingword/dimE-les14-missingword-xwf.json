@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les14-missingword-xwf",
+    "title": "Το ταξίδι των δεδομένων σε ένα δίκτυο - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το τοπικό δίκτυο ονομάζεται ___.",
+                "options": [
+                    "LAN",
+                    "WAN",
+                    "URL",
+                    "HTML"
+                ],
+                "correct": "LAN"
+            },
+            {
+                "sentence": "Ο υπολογιστής που παρέχει υπηρεσίες λέγεται ___.",
+                "options": [
+                    "server",
+                    "client",
+                    "router",
+                    "switch"
+                ],
+                "correct": "server"
+            },
+            {
+                "sentence": "Η ___ διεύθυνση είναι μοναδική για κάθε συσκευή.",
+                "options": [
+                    "IP",
+                    "ID",
+                    "URL",
+                    "HTTP"
+                ],
+                "correct": "IP"
+            },
+            {
+                "sentence": "Το διαδίκτυο είναι ένα δίκτυο ευρείας περιοχής (___.",
+                "options": [
+                    "WAN",
+                    "LAN",
+                    "PAN",
+                    "MAN"
+                ],
+                "correct": "WAN"
+            },
+            {
+                "sentence": "Τα δεδομένα ταξιδεύουν σε ___ μέσω του δικτύου.",
+                "options": [
+                    "πακέτα",
+                    "φάκελους",
+                    "αρχεία",
+                    "εικόνες"
+                ],
+                "correct": "πακέτα"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les14",
+        "δίκτυα"
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "id": "dimE-les11-match-zju",
+    "title": "Χαρούμενα γενέθλια! (micro:bit) - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "pairs": [
+            {
+                "left": "micro:bit",
+                "right": "Μικρός προγραμματίσιμος υπολογιστής"
+            },
+            {
+                "left": "MakeCode",
+                "right": "Περιβάλλον προγραμματισμού micro:bit"
+            },
+            {
+                "left": "LED",
+                "right": "Μικρά φώτα στο micro:bit"
+            },
+            {
+                "left": "Αισθητήρες",
+                "right": "Ανιχνεύουν κίνηση, φως, θερμοκρασία"
+            },
+            {
+                "left": "Παίξε μελωδία",
+                "right": "Εντολή για ήχο στο micro:bit"
+            },
+            {
+                "left": "Εμφάνισε κείμενο",
+                "right": "Δείχνει γράμματα στο LED"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les11",
+        "microbit"
+    ]
+}

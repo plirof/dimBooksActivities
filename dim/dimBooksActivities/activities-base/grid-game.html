@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πλέγμα & Εντολές</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:800px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:20px;font-weight:400}
+.game-area{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.grid-wrapper{flex:1;min-width:280px}
+.grid{display:inline-grid;gap:2px;background:#ddd;border:2px solid #ccc;border-radius:8px;padding:2px}
+.cell{width:40px;height:40px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3em;position:relative}
+.cell.obstacle{background:#795548}
+.cell.goal{background:#4CAF50}
+.cell.goal::after{content:'★';color:#fff;font-size:1.2em}
+.cell.start::after{content:'🏠';font-size:1em}
+.cell.path{background:#e1bee7}
+.cell.player{background:#9c27b0;color:#fff;font-weight:700;font-size:1.1em}
+.cell.player::after{content:'🐱'}
+.controls{flex:0 0 180px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:15px;background:#f8f9fa;border-radius:12px}
+.controls h3{margin-bottom:8px;color:#555;font-size:.9em}
+.ctrl-btn{width:60px;height:60px;border:2px solid #a18cd1;background:#fff;border-radius:12px;font-size:1.3em;cursor:pointer;transition:all .15s;color:#333}
+.ctrl-btn:hover{background:#f3e5f5;transform:scale(1.1)}
+.ctrl-btn:active{background:#e1bee7;transform:scale(.95)}
+.ctrl-row{display:flex;gap:8px}
+.commands-list{margin-top:15px;flex:0 0 180px;padding:15px;background:#f8f9fa;border-radius:12px;max-height:300px;overflow-y:auto}
+.commands-list h3{margin-bottom:8px;color:#555;font-size:.9em}
+.command-item{padding:6px 10px;margin-bottom:4px;background:#e1bee7;border-radius:6px;font-size:.85em;color:#333}
+.reset-btn{margin-top:10px;padding:8px 20px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.9em}
+.reset-btn:hover{opacity:.9}
+.run-btn{margin-top:8px;padding:8px 20px;background:#4CAF50;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.9em}
+.run-btn:hover{opacity:.9}
+.result-msg{text-align:center;margin-top:15px;padding:12px;border-radius:10px;font-size:1.1em;font-weight:600;display:none}
+.result-msg.win{background:#e8f5e9;color:#2e7d32}
+.result-msg.lose{background:#ffebee;color:#c62828}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const gridSize=data.gridSize||8;
+const obstacles=new Set((data.obstacles||[]).map(o=>o.row+','+o.col));
+const goal=data.goal;
+const start=data.start||{row:0,col:0};
+let player={...start};
+let commands=[];
+let path=new Set();
+let running=false;
+
+function cellKey(r,c){return r+','+c}
+
+function render(){
+player={...start};
+commands=[];
+path=new Set();
+running=false;
+const gridHTML=Array.from({length:gridSize},(_,r)=>Array.from({length:gridSize},(_,c)=>{
+let cls='cell';
+if(obstacles.has(cellKey(r,c)))cls+=' obstacle';
+if(r===goal.row&&c===goal.col)cls+=' goal';
+if(r===start.row&&c===start.col)cls+=' start';
+return`<div class="${cls}" data-r="${r}" data-c="${c}"></div>`
+}).join('')).join('');
+
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>${esc(data.subtitle||'Οδήγησε τον χαρακτήρα στο ★')}</h2>
+<div class="game-area">
+<div class="grid-wrapper">
+<div class="grid" id="grid" style="grid-template-columns:repeat(${gridSize},40px)">${gridHTML}</div>
+<div class="result-msg" id="result"></div>
+</div>
+<div class="controls">
+<h3>Εντολές:</h3>
+<div class="ctrl-row"><button class="ctrl-btn" onclick="addCmd('up')">↑</button></div>
+<div class="ctrl-row">
+<button class="ctrl-btn" onclick="addCmd('left')">←</button>
+<button class="ctrl-btn" onclick="addCmd('down')">↓</button>
+<button class="ctrl-btn" onclick="addCmd('right')">→</button>
+</div>
+<button class="run-btn" onclick="runCommands()">▶ Εκτέλεση</button>
+<button class="reset-btn" onclick="resetGame()">↺ Καθαρισμός</button>
+</div>
+</div>
+<div class="commands-list" id="cmdList"><h3>Πρόγραμμα:</h3><div id="cmdItems"></div></div>
+`;
+updatePlayer()
+}
+
+function getCell(r,c){return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`)}
+
+function updatePlayer(){
+document.querySelectorAll('.cell').forEach(c=>{c.classList.remove('player','path')});
+path.forEach(k=>{const[r,c]=k.split(',').map(Number);const cell=getCell(r,c);if(cell)cell.classList.add('path')});
+const cell=getCell(player.row,player.col);
+if(cell)cell.classList.add('player')
+}
+
+function updateCmdList(){
+document.getElementById('cmdItems').innerHTML=commands.map((c,i)=>{
+const arrows={up:'↑',down:'↓',left:'←',right:'→'};
+return`<div class="command-item">${i+1}. ${arrows[c]} ${c==='up'?'Πάνω':c==='down'?'Κάτω':c==='left'?'Αριστερά':'Δεξιά'}</div>`
+}).join('')
+}
+
+window.addCmd=function(dir){
+if(running)return;
+commands.push(dir);
+updateCmdList()
+};
+
+window.resetGame=function(){render()};
+
+window.runCommands=function(){
+if(running||commands.length===0)return;
+running=true;
+player={...start};
+path=new Set();
+updatePlayer();
+let i=0;
+const interval=setInterval(()=>{
+if(i>=commands.length){clearInterval(interval);running=false;checkResult();return}
+const dir=commands[i];
+let nr=player.row,nc=player.col;
+if(dir==='up')nr--;if(dir==='down')nr++;if(dir==='left')nc--;if(dir==='right')nc++;
+if(nr<0||nr>=gridSize||nc<0||nc>=gridSize||obstacles.has(cellKey(nr,nc))){
+running=false;clearInterval(interval);showResult(false,'Αποτυχία! Έβγες εκτός ή χτύπησες εμπόδιο!');return
+}
+path.add(cellKey(player.row,player.col));
+player.row=nr;player.col=nc;
+updatePlayer();
+i++
+},400)
+};
+
+function checkResult(){
+if(player.row===goal.row&&player.col===goal.col){showResult(true,'Μπράβο! Έφτασες στον στόχο!')}else{showResult(false,'Δεν έφτασες στον στόχο. Δοκίμασε ξανά!')}
+}
+
+function showResult(win,msg){
+const el=document.getElementById('result');
+el.textContent=msg;
+el.className='result-msg '+(win?'win':'lose');
+el.style.display='block'
+}
+
+render()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

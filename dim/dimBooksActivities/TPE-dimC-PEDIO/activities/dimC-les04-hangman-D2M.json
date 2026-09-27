@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: Περιβάλλον Scratch",
+  "subtitle": "Μάντεψε λέξεις από το περιβάλλον του Scratch!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΣΚΗΝΗ", "hint": "Ο χώρος όπου φαίνονται οι χαρακτήρες", "category": "Scratch" },
+    { "word": "ΑΝΤΙΚΕΙΜΕΝΟ", "hint": "Κάθε χαρακτήρας στο Scratch", "category": "Scratch" },
+    { "word": "ΣΕΝΑΡΙΟ", "hint": "Το πρόγραμμα στο Scratch", "category": "Scratch" },
+    { "word": "ΠΛΑΚΙΔΙΟ", "hint": "Η εντολή στο Scratch (block)", "category": "Scratch" },
+    { "word": "ΣΥΜΒΑΝ", "hint": "Κάτι που συμβαίνει, π.χ. πάτημα κουμπιού", "category": "Scratch" },
+    { "word": "ΓΑΤΟΥΛΑ", "hint": "Ο πρώτος χαρακτήρας που εμφανίζεται" }
+  ]
+}

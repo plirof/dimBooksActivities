@@ -1,0 +1,42 @@
+{
+  "title": "Βρες τα Λάθη: Πάρτι Χορού",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "πράσινη", "error": false},
+        {"text": "σημαία", "error": false},
+        {"text": "σταματάει", "error": true, "correct": "ξεκινάει", "feedback": "Η πράσινη σημαία ξεκινάει, δεν σταματάει!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΣΤΡΙΨΕ", "error": false},
+        {"text": "ΔΕΞΙΑ", "error": false},
+        {"text": "περιστρέφει", "error": false},
+        {"text": "προς", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "πάνω", "error": true, "correct": "δεξιά", "feedback": "ΣΤΡΙΨΕ ΔΕΞΙΑ περιστρέφει προς τα δεξιά!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "ΕΠΑΝΑΛΑΒΕ", "error": false},
+        {"text": "ΓΙΑ", "error": false},
+        {"text": "ΠΑΝΤΑ", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στις", "error": false},
+        {"text": "μπλε", "error": true, "correct": "κόκκινες", "feedback": "Η εντολή ΕΠΑΝΑΛΑΒΕ ΓΙΑ ΠΑΝΤΑ είναι στις κόκκινες εντολές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Γράψε", "error": false},
+        {"text": "τίτλο", "error": false},
+        {"text": "στον", "error": false},
+        {"text": "κόκκινο", "error": true, "correct": "γαλάζιο", "feedback": "Γράφουμε τίτλο στον γαλάζιο κύκλο ABC!"}
+      ]
+    }
+  ]
+}

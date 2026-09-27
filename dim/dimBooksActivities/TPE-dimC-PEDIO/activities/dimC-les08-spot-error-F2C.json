@@ -1,0 +1,192 @@
+{
+  "title": "Βρες τα Λάθη: Παγίδευσε",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false
+        },
+        {
+          "text": "εντολή",
+          "error": false
+        },
+        {
+          "text": "«Επανάλαβε",
+          "error": false
+        },
+        {
+          "text": "για",
+          "error": false
+        },
+        {
+          "text": "πάντα»",
+          "error": false
+        },
+        {
+          "text": "είναι",
+          "error": false
+        },
+        {
+          "text": "στην",
+          "error": false
+        },
+        {
+          "text": "πορτοκαλί",
+          "error": true,
+          "correct": "κίτρινη",
+          "feedback": "Η εντολή Επανάλαβε για πάντα είναι στην ΚΙΤΡΙΝΗ κατηγορία (Control)!"
+        },
+        {
+          "text": "κατηγορία.",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false
+        },
+        {
+          "text": "εντολή",
+          "error": false
+        },
+        {
+          "text": "επιλογής",
+          "error": false
+        },
+        {
+          "text": "(Wait",
+          "error": false
+        },
+        {
+          "text": "Until)",
+          "error": false
+        },
+        {
+          "text": "είναι",
+          "error": false
+        },
+        {
+          "text": "στην",
+          "error": false
+        },
+        {
+          "text": "μπλε",
+          "error": true,
+          "correct": "πορτοκαλί",
+          "feedback": "Η εντολή Wait Until είναι στην ΠΟΡΤΟΚΑΛΙ κατηγορία!"
+        },
+        {
+          "text": "κατηγορία.",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Το",
+          "error": false
+        },
+        {
+          "text": "ρομπότ",
+          "error": false
+        },
+        {
+          "text": "σταματάει",
+          "error": false
+        },
+        {
+          "text": "όταν",
+          "error": false
+        },
+        {
+          "text": "δεν",
+          "error": true,
+          "correct": "",
+          "feedback": "Το ρομπότ σταματάει όταν ΣΥΝΑΝΤΆ εμπόδιο, όχι όταν δεν υπάρχει!"
+        },
+        {
+          "text": "υπάρχει",
+          "error": false
+        },
+        {
+          "text": "εμπόδιο.",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Βάλε",
+          "error": false
+        },
+        {
+          "text": "όλες",
+          "error": false
+        },
+        {
+          "text": "τις",
+          "error": false
+        },
+        {
+          "text": "εντολές",
+          "error": false
+        },
+        {
+          "text": "μέσα",
+          "error": false
+        },
+        {
+          "text": "στην",
+          "error": false
+        },
+        {
+          "text": "εντολή",
+          "error": false
+        },
+        {
+          "text": "επιλογής.",
+          "error": true,
+          "correct": "επανάληψης",
+          "feedback": "Βάζουμε τις εντολές ΜΕΣΑ στην εντολή ΕΠΑΝΑΛΑΒΕ ΓΙΑ ΠΑΝΤΑ!"
+        },
+        {
+          "text": "",
+          "error": false
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Το",
+          "error": false
+        },
+        {
+          "text": "πρόγραμμα",
+          "error": false
+        },
+        {
+          "text": "εκτελείται",
+          "error": false
+        },
+        {
+          "text": "μία",
+          "error": true,
+          "correct": "συνέχεια",
+          "feedback": "Με το Επανάλαβε για πάντα το πρόγραμμα εκτελείται ΣΥΝΕΧΕΙΑ!"
+        },
+        {
+          "text": "φορά.",
+          "error": false
+        }
+      ]
+    }
+  ]
+}

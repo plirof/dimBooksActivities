@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αποθήκευση Αρχείων | Μάθημα 23</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdf4,#bbf7d0);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#14532d;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#16a34a;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#14532d;font-size:.75rem;font-weight:700;border:1px solid #86efac;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.file-row{display:flex;gap:6px;align-items:center;margin:5px 0;padding:8px 10px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;transition:all .2s}
+.file-icon{font-size:1.2rem;flex-shrink:0}
+.file-name{flex:1;font-size:.75rem;font-weight:700;color:#334155}
+.file-ext{font-size:.6rem;color:#64748b;font-weight:700;background:#f1f5f9;padding:2px 6px;border-radius:4px}
+.file-btns{display:flex;gap:4px}
+.fb{padding:5px 10px;border:2px solid #e2e8f0;border-radius:8px;font-size:.65rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.fb:hover{border-color:#16a34a}
+.fb.ok-btn{color:#16a34a;border-color:#86efac}
+.fb.no-btn{color:#dc2626;border-color:#fca5a5}
+.fb.ok-btn.active{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.fb.no-btn.active{background:#fef2f2;border-color:#ef4444;color:#dc2626}
+.fb.correct-show{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.fb.wrong-show{background:#fef2f2;border-color:#ef4444;color:#dc2626}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700}
+.badge.valid{background:#dcfce7;color:#14532d}
+.badge.invalid{background:#fef2f2;color:#dc2626}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#15803d}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #16a34a;border-radius:10px;background:transparent;color:#16a34a;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0fdf4}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .file-row > * + * { margin-left: 6px; }
+  .file-btns > * + * { margin-left: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>💾 Αποθήκευση Αρχείων</h1>
+<p class="subtitle">Ποια ονόματα αρχείων είναι αποδεκτά;</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Μέρος:</span> <span id="qNum">1</span>/<span id="qTotal">3</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var parts=[
+{
+title:'Αποδεκτά Ονόματα Αρχείων',
+hint:'Δεν επιτρέπονται οι χαρακτήρες: < > / \\ : |',
+files:[
+{name:'Εργασία 1',valid:true},
+{name:'ΑΣΚΗΣΗ-ΙΣΤΟΡΙΑ',valid:true},
+{name:'ΚΑΤΕΡΙΝΑ<>',valid:false},
+{name:'ΤΠΕ:Scratch',valid:false},
+{name:'Robot',valid:true},
+{name:'Δημοτικό/',valid:false}
+]
+},
+{
+title:'Αποθήκευση ή Αποθήκευση ως;',
+hint:'Τι κάνει η κάθε εντολή;',
+files:[
+{name:'Πρώτη αποθήκευση νέου εγγράφου',valid:true,question:'Αποθήκευση ή Αποθήκευση ως;',isScenario:true,correctLabel:'Αποθήκευση'},
+{name:'Αλλαγή ονόματος υπάρχοντος αρχείου',valid:true,question:'Αποθήκευση ή Αποθήκευση ως;',isScenario:true,correctLabel:'Αποθήκευση ως'},
+{name:'Συνέχεια δουλειάς, σώσιμο αλλαγών',valid:true,question:'Αποθήκευση ή Αποθήκευση ως;',isScenario:true,correctLabel:'Αποθήκευση'},
+{name:'Αλλαγή φακέλου αποθήκευσης',valid:true,question:'Αποθήκευση ή Αποθήκευση ως;',isScenario:true,correctLabel:'Αποθήκευση ως'}
+],
+isScenarioPart:true
+},
+{
+title:'Βήματα Αποθήκευσης στη σωστή σειρά',
+hint:'Βάλε τα βήματα στη σωστή σειρά',
+isOrderPart:true,
+steps:[
+'Αρχείο → Αποθήκευση',
+'Γράψε όνομα αρχείου στο πεδίο "Όνομα αρχείου"',
+'Επίλεξε φάκελο αποθήκευσης',
+'Πάτησε κουμπί "Αποθήκευση"'
+]
+}
+];
+var curQ=0,pts=0,answers={},checked=false,orderPlaced={},scenarioAnswers={};
+
+function initQ(){answers={};checked=false;orderPlaced={};scenarioAnswers={};}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var p=parts[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div style="font-size:.78rem;font-weight:700;color:#14532d;text-align:center">'+p.title+'</div>';
+h+='<div class="info-text">'+p.hint+'</div>';
+
+if(p.isOrderPart){
+h+='<div id="orderList">';
+var unplaced=[];
+for(var i=0;i<p.steps.length;i++){if(orderPlaced[i]===undefined)unplaced.push(i);}
+for(var i=0;i<unplaced.length;i++){
+h+='<div class="file-row" style="cursor:pointer;border-color:#86efac" onclick="placeOrderStep('+unplaced[i]+')">';
+h+='<span class="file-name">'+p.steps[unplaced[i]]+'</span>';
+h+='</div>';
+}
+h+='<div style="margin:8px 0">';
+var placed=[];
+for(var i=0;i<p.steps.length;i++){if(orderPlaced[i]!==undefined)placed.push({orig:i,slot:orderPlaced[i]});}
+placed.sort(function(a,b){return a.slot-b.slot;});
+for(var s=0;s<p.steps.length;s++){
+if(s<placed.length){
+var isCorrect=placed[s].orig===s;
+var cls='file-row'+(checked?(isCorrect?' style="border-color:#22c55e;background:#dcfce7"':' style="border-color:#ef4444;background:#fef2f2"'):'');
+h+='<div class="'+cls+'"><span style="font-weight:700;color:#16a34a;margin-right:6px">'+(s+1)+'.</span><span class="file-name">'+p.steps[placed[s].orig]+'</span></div>';
+}else{
+h+='<div class="file-row" style="border-style:dashed"><span style="font-weight:700;color:#94a3b8;margin-right:6px">'+(s+1)+'.</span><span class="file-name" style="color:#94a3b8">Κάνε κλικ...</span></div>';
+}
+}
+h+='</div>';
+var allPlaced=Object.keys(orderPlaced).length===p.steps.length;
+if(allPlaced&&!checked){h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';}
+}else if(p.isScenarioPart){
+for(var i=0;i<p.files.length;i++){
+var f=p.files[i];
+h+='<div class="file-row">';
+h+='<span class="file-icon">📄</span>';
+h+='<span class="file-name">'+f.name+'</span>';
+h+='<div class="file-btns">';
+var clsA='fb ok-btn',clsB='fb no-btn';
+if(checked){
+var userAns=scenarioAnswers[i];
+if(userAns==='Αποθήκευση')clsA+=' correct-show';
+else clsB+=' correct-show';
+}else{
+if(scenarioAnswers[i]==='Αποθήκευση')clsA+=' active';
+if(scenarioAnswers[i]==='Αποθήκευση ως')clsB+=' active';
+}
+h+='<button class="'+clsA+'" onclick="pickScenario('+i+',\'Αποθήκευση\')">Αποθήκευση</button>';
+h+='<button class="'+clsB+'" onclick="pickScenario('+i+',\'Αποθήκευση ως\')">Αποθήκευση ως</button>';
+h+='</div></div>';
+}
+var allAnswered=Object.keys(scenarioAnswers).length===p.files.length;
+if(allAnswered&&!checked){h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';}
+}else{
+for(var i=0;i<p.files.length;i++){
+var f=p.files[i];
+h+='<div class="file-row">';
+h+='<span class="file-icon">'+(f.valid?'📄':'⚠️')+'</span>';
+h+='<span class="file-name">'+f.name+'</span>';
+h+='<div class="file-btns">';
+var clsA='fb ok-btn',clsB='fb no-btn';
+if(checked){
+if(f.valid)clsA+=' correct-show';
+else clsB+=' correct-show';
+if(answers[i]===true&&!f.valid)clsA+=' wrong-show';
+if(answers[i]===false&&f.valid)clsB+=' wrong-show';
+}else{
+if(answers[i]===true)clsA+=' active';
+if(answers[i]===false)clsB+=' active';
+}
+h+='<button class="'+clsA+'" onclick="pickValid('+i+',true)">✅ Έγκυρο</button>';
+h+='<button class="'+clsB+'" onclick="pickValid('+i+',false)">❌ Μη έγκυρο</button>';
+h+='</div></div>';
+}
+var allAnswered=Object.keys(answers).length===p.files.length;
+if(allAnswered&&!checked){h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';}
+}
+
+if(checked){
+var correct=0,total=0;
+if(p.isOrderPart){
+total=p.steps.length;
+for(var i=0;i<p.steps.length;i++){if(orderPlaced[i]===i)correct++;}
+}else if(p.isScenarioPart){
+total=p.files.length;
+for(var i=0;i<p.files.length;i++){if(scenarioAnswers[i]===p.files[i].correctLabel)correct++;}
+}else{
+total=p.files.length;
+for(var i=0;i<p.files.length;i++){if(answers[i]===p.files[i].valid)correct++;}
+}
+var pct=Math.round(correct/total*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ '+correct+'/'+total+' σωστά!':'❌ '+correct+'/'+total+' σωστά.')+'</div>';
+if(curQ<parts.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Μέρος ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function pickValid(idx,val){answers[idx]=val;render();}
+function pickScenario(idx,val){scenarioAnswers[idx]=val;render();}
+function placeOrderStep(idx){
+if(checked||orderPlaced[idx]!==undefined)return;
+orderPlaced[idx]=Object.keys(orderPlaced).length;
+render();
+}
+function checkAnswer(){checked=true;render();}
+function nextQ(){if(curQ<parts.length-1){curQ++;initQ();render();}}
+
+initQ();render();
+</script>
+</body>
+</html>

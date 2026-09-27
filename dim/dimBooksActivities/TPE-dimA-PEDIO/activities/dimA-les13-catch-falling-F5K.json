@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Δίκτυο",
+  "subtitle": "Πιάσε ό,τι ανήκει στο δίκτυο!",
+  "instructions": "Πιάσε μόνο τα πράγματα για το ΔΙΚΤΥΟ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Υπολογιστής", "correct": true, "color": "#4CAF50"},
+    {"text": "Μολύβι", "correct": false, "color": "#f44336"},
+    {"text": "Καλώδιο", "correct": true, "color": "#2196F3"},
+    {"text": "Γάτα", "correct": false, "color": "#FF9800"},
+    {"text": "Οθόνη", "correct": true, "color": "#9C27B0"},
+    {"text": "Μπάλα", "correct": false, "color": "#E91E63"},
+    {"text": "Πληκτρολόγιο", "correct": true, "color": "#009688"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FFC107"},
+    {"text": "Ποντίκι", "correct": true, "color": "#795548"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#607D8B"}
+  ]
+}

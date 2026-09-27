@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 12,
+  unit: "Ενότητα 2η: Υπολογιστικά Συστήματα (Μαθήματα 12-15)",
+  slides: [
+    { type:"title", title:"Μάθημα 12ο: Ψηφιοποίηση κειμένου" },
+    { type:"concept", text:"Στους υπολογιστές και στις ψηφιακές συσκευές, τα δεδομένα αποθηκεύονται και επεξεργάζονται ψηφιακά. Εικόνα, βίντεο, ήχος, κείμενο και αριθμοί ψηφιοποιούνται." },
+    { type:"concept", text:"Ψηφιοποίηση σημαίνει μετατροπή σε μία σειρά από δυαδικά ψηφία, 0 και 1, που αντιστοιχούν σε ηλεκτρικά σήματα. Κάθε χαρακτήρας αντιστοιχίζεται σε μία σειρά από διαδοχικά δυαδικά ψηφία." },
+    { type:"concept", text:"Χρησιμοποιώντας έναν πίνακα ψηφιοποίησης, μπορώ να ψηφιοποιήσω ένα μήνυμα σε 0 και 1. Αντίστροφα, μπορώ να αποκωδικοποιήσω μία σειρά από 0 και 1 και να βρω το μήνυμα." },
+    { type:"list", title:"Οδηγίες για ψηφιοποίηση μηνύματος", items:["Βρω στον πίνακα το γράμμα που θα ψηφιοποιήσω","Γράψω τον αριθμό που βρίσκεται στον πίνακα δεξιά από το γράμμα"] },
+    { type:"concept", text:"Για κάθε γράμμα της λέξης που θέλω να ψηφιοποιήσω, βρίσκω στον πίνακα το γράμμα και γράφω τον αριθμό που βρίσκεται δεξιά από αυτό." },
+    { type:"concept", text:"Παράδειγμα: Η λέξη ΕΚΔΡΟΜΗ ψηφιοποιείται ως 00101 01010 00100 10001 01111 01100 00111." },
+    { type:"list", title:"Οδηγίες για αποκωδικοποίηση ψηφιοποιημένου μηνύματος", items:["Βρω στον πίνακα τη σειρά διαδοχικών 0 και 1 που θέλω να αποκωδικοποιήσω","Γράψω το γράμμα που βρίσκεται στον πίνακα αριστερά από τους αριθμούς"] },
+    { type:"concept", text:"Για κάθε σειρά πέντε διαδοχικών δυαδικών ψηφίων, βρίσκω στο πίνακα τη σειρά και γράφω το γράμμα που βρίσκεται αριστερά από τους αριθμούς." },
+    { type:"concept", text:"Παράδειγμα: Η σειρά 10111 00111 10101 01001 00001 01010 01111 αποκωδικοποιείται ως ΨΗΦΙΑΚΟ." },
+    { type:"list", title:"Βασικές έννοιες ψηφιοποίησης", items:["Δυαδικά ψηφία: 0 και 1","Ψηφιοποίηση: μετατροπή κειμένου σε 0 και 1","Αποκωδικοποίηση: μετατροπή 0 και 1 σε κείμενο","Πίνακας ψηφιοποίησης: αντιστοίχιση γραμμάτων σε αριθμούς"] },
+    { type:"practice", title:"Συζητήστε", items:["Γιατί χρησιμοποιούμε μόνο 0 και 1 στον υπολογιστή;","Πώς θα ψηφιοποιήσετε το όνομά σας;","Πώς θα αποκωδικοποιήσετε μια σειρά από 0 και 1;"] },
+    { type:"assessment", check:"Μπορώ να ψηφιοποιώ χαρακτήρες κειμένου και να αποκωδικοποιώ ένα ψηφιακό μήνυμα ακολουθώντας οδηγίες", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 2η: Υπολογιστικά Συστήματα (Μαθήματα 12-15). Μάθημα 12ο: Ψηφιοποίηση κειμένου",
+  "Στους υπολογιστές και στις ψηφιακές συσκευές, τα δεδομένα αποθηκεύονται και επεξεργάζονται ψηφιακά. Εικόνα, βίντεο, ήχος, κείμενο και αριθμοί ψηφιοποιούνται.",
+  "Ψηφιοποίηση σημαίνει μετατροπή σε μία σειρά από δυαδικά ψηφία, 0 και 1, που αντιστοιχούν σε ηλεκτρικά σήματα. Κάθε χαρακτήρας αντιστοιχίζεται σε μία σειρά από διαδοχικά δυαδικά ψηφία.",
+  "Χρησιμοποιώντας έναν πίνακα ψηφιοποίησης, μπορώ να ψηφιοποιήσω ένα μήνυμα σε 0 και 1. Αντίστροφα, μπορώ να αποκωδικοποιήσω μία σειρά από 0 και 1 και να βρω το μήνυμα.",
+  "Οδηγίες για ψηφιοποίηση μηνύματος. Βρω στον πίνακα το γράμμα που θα ψηφιοποιήσω. Γράψω τον αριθμό που βρίσκεται στον πίνακα δεξιά από το γράμμα",
+  "Για κάθε γράμμα της λέξης που θέλω να ψηφιοποιήσω, βρίσκω στον πίνακα το γράμμα και γράφω τον αριθμό που βρίσκεται δεξιά από αυτό.",
+  "Παράδειγμα: Η λέξη ΕΚΔΡΟΜΗ ψηφιοποιείται ως 00101 01010 00100 10001 01111 01100 00111.",
+  "Οδηγίες για αποκωδικοποίηση ψηφιοποιημένου μηνύματος. Βρω στον πίνακα τη σειρά διαδοχικών 0 και 1 που θέλω να αποκωδικοποιήσω. Γράψω το γράμμα που βρίσκεται στον πίνακα αριστερά από τους αριθμούς",
+  "Για κάθε σειρά πέντε διαδοχικών δυαδικών ψηφίων, βρίσκω στο πίνακα τη σειρά και γράφω το γράμμα που βρίσκεται αριστερά από τους αριθμούς.",
+  "Παράδειγμα: Η σειρά 10111 00111 10101 01001 00001 01010 01111 αποκωδικοποιείται ως ΨΗΦΙΑΚΟ.",
+  "Βασικές έννοιες ψηφιοποίησης. Δυαδικά ψηφία: 0 και 1. Ψηφιοποίηση: μετατροπή κειμένου σε 0 και 1. Αποκωδικοποίηση: μετατροπή 0 και 1 σε κείμενο. Πίνακας ψηφιοποίησης: αντιστοίχιση γραμμάτων σε αριθμούς",
+  "Συζητήστε. Γιατί χρησιμοποιούμε μόνο 0 και 1 στον υπολογιστή; Πώς θα ψηφιοποιήσετε το όνομά σας; Πώς θα αποκωδικοποιήσετε μια σειρά από 0 και 1;",
+  "Μπορώ να ψηφιοποιώ χαρακτήρες κειμένου και να αποκωδικοποιώ ένα ψηφιακό μήνυμα ακολουθώντας οδηγίες. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

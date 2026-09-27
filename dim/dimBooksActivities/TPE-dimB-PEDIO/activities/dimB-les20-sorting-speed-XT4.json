@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Βίντεο, Ήχος ή Εικόνα;",
+  "subtitle": "Ταξινόμησε τα χαρακτηριστικά",
+  "instructions": "Βάλε κάθε χαρακτηριστικό στη σωστή κατηγορία",
+  "categories": [
+    { "id": "video", "name": "Βίντεο", "color": "#2196F3", "key": "A" },
+    { "id": "ixos", "name": "Ήχος", "color": "#f44336", "key": "L" },
+    { "id": "eikona", "name": "Εικόνα", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Εικόνα προεπισκόπησης", "category": "video" },
+    { "text": "Χωρίς εικόνα πίσω", "category": "ixos" },
+    { "text": "Μεγέθυνση με κλικ", "category": "eikona" },
+    { "text": "Κινούμενη εικόνα", "category": "video" },
+    { "text": "Κουμπί σίγασης", "category": "ixos" },
+    { "text": "Υπερσύνδεσμος στο ποντίκι", "category": "eikona" },
+    { "text": "Δείχνει διάρκεια", "category": "video" },
+    { "text": "Χρειάζεται ηχεία", "category": "ixos" },
+    { "text": "Φωτογραφία αρκούδας", "category": "eikona" },
+    { "text": "Play button", "category": "video" }
+  ],
+  "duration": 30
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 8,
+  unit: "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική",
+  slides: [
+    { type:"title", title:"Μάθημα 8ο: Γνωρίζω το micro:bit" },
+    { type:"concept", text:"Το micro:bit είναι μια μικρή ηλεκτρονική συσκευή που μπορείς να την προγραμματίσεις για να κάνεις διάφορα ενδιαφέροντα πράγματα. Έχει πάνω του φωτάκια που ανάβουν, κουμπιά που τα πατάς, μικρόφωνο που ακούει ήχους, ηχείο για να παίζει μουσική και πολλά άλλα." },
+    { type:"concept", text:"Το micro:bit είναι τόσο μικρό που μπορεί να χωράει στην τσέπη σου. Έτσι μπορείς να το μεταφέρεις μαζί σου όπου και αν βρίσκεσαι." },
+    { type:"concept", text:"Για να προγραμματίσεις το micro:bit, πρέπει να χρησιμοποιήσεις τον υπολογιστή σου, καθώς, επειδή είναι τόσο μικρό, δεν έχει οθόνη και πληκτρολόγιο. Στη συνέχεια θα μεταφέρεις το πρόγραμμα που έφτιαξες από τον υπολογιστή σου στο micro:bit." },
+    { type:"list", title:"Βήματα για να προγραμματίσεις το micro:bit", items:["Επισκέψου τη σελίδα makecode.microbit.org","Δημιούργησε ένα νέο έργο","Δώσε ένα όνομα στο έργο σου","Ξεκίνα να φτιάχνεις το πρόγραμμά σου"] },
+    { type:"concept", text:"Στο περιβάλλον προγραμματισμού μπορείς να φτιάξεις τα προγράμματά σου και στη συνέχεια να δεις τι συμβαίνει στο micro:bit στο αριστερό μέρος της οθόνης. Αν έχεις το πραγματικό micro:bit, μπορείς να του μεταφέρεις το πρόγραμμά σου πατώντας το κουμπί «Λήψη»." },
+    { type:"concept", text:"Η εντολή «για πάντα» είναι μια εντολή επανάληψης. Όποιες εντολές βάλεις μέσα θα εκτελούνται για πάντα." },
+    { type:"list", title:"Χρήση της εντολής εμφάνισης εικονιδίου", items:["Πάτα πάνω στην μπλε κατηγορία εντολών «Βασικά»","Διάλεξε την εντολή «εμφάνιση εικονιδίου»","Τράβηξέ τη μέσα στην εντολή «για πάντα»","Δες τι συμβαίνει στο micro:bit"] },
+    { type:"practice", title:"Πειραματίσου", items:["Διάλεξε το χαρωπό προσωπάκι για την πρώτη εντολή","Διάλεξε το λυπημένο προσωπάκι για τη δεύτερη εντολή","Προσπάθησε να περιγράψεις με λόγια πώς συμπεριφέρεται το micro:bit","Πειραματίσου και με άλλα εικονίδια για περισσότερη διασκέδαση"] },
+    { type:"assessment", check:"Μπορώ να χρησιμοποιώ το micro:bit και να φτιάχνω έργα με εντολές επανάληψης", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική. Μάθημα 8ο: Γνωρίζω το micro:bit",
+  "Το micro:bit είναι μια μικρή ηλεκτρονική συσκευή που μπορείς να την προγραμματίσεις για να κάνεις διάφορα ενδιαφέροντα πράγματα. Έχει πάνω του φωτάκια που ανάβουν, κουμπιά που τα πατάς, μικρόφωνο που ακούει ήχους, ηχείο για να παίζει μουσική και πολλά άλλα.",
+  "Το micro:bit είναι τόσο μικρό που μπορεί να χωράει στην τσέπη σου. Έτσι μπορείς να το μεταφέρεις μαζί σου όπου και αν βρίσκεσαι.",
+  "Για να προγραμματίσεις το micro:bit, πρέπει να χρησιμοποιήσεις τον υπολογιστή σου, καθώς, επειδή είναι τόσο μικρό, δεν έχει οθόνη και πληκτρολόγιο. Στη συνέχεια θα μεταφέρεις το πρόγραμμα που έφτιαξες από τον υπολογιστή σου στο micro:bit.",
+  "Βήματα για να προγραμματίσεις το micro:bit. Επισκέψου τη σελίδα makecode.microbit.org. Δημιούργησε ένα νέο έργο. Δώσε ένα όνομα στο έργο σου. Ξεκίνα να φτιάχνεις το πρόγραμμά σου",
+  "Στο περιβάλλον προγραμματισμού μπορείς να φτιάξεις τα προγράμματά σου και στη συνέχεια να δεις τι συμβαίνει στο micro:bit στο αριστερό μέρος της οθόνης. Αν έχεις το πραγματικό micro:bit, μπορείς να του μεταφέρεις το πρόγραμμά σου πατώντας το κουμπί «Λήψη».",
+  "Η εντολή «για πάντα» είναι μια εντολή επανάληψης. Όποιες εντολές βάλεις μέσα θα εκτελούνται για πάντα.",
+  "Χρήση της εντολής εμφάνισης εικονιδίου. Πάτα πάνω στην μπλε κατηγορία εντολών «Βασικά». Διάλεξε την εντολή «εμφάνιση εικονιδίου». Τράβηξέ τη μέσα στην εντολή «για πάντα». Δες τι συμβαίνει στο micro:bit",
+  "Πειραματίσου. Διάλεξε το χαρωπό προσωπάκι για την πρώτη εντολή. Διάλεξε το λυπημένο προσωπάκι για τη δεύτερη εντολή. Προσπάθησε να περιγράψεις με λόγια πώς συμπεριφέρεται το micro:bit. Πειραματίσου και με άλλα εικονίδια για περισσότερη διασκέδαση",
+  "Μπορώ να χρησιμοποιώ το micro:bit και να φτιάχνω έργα με εντολές επανάληψης. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

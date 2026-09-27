@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Όροι Creative Commons",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "allowed", "name": "Επιτρέπεται", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "not_allowed", "name": "Δεν Επιτρέπεται", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αναφορά του δημιουργού", "category": "allowed"},
+    {"text": "Πώληση του έργου χωρίς άδεια", "category": "not_allowed"},
+    {"text": "Διαμοιρασμός με φίλους", "category": "allowed"},
+    {"text": "Αλλαγή του έργου (Όχι Παράγωγα)", "category": "not_allowed"},
+    {"text": "Αντιγραφή για προσωπική χρήση", "category": "allowed"},
+    {"text": "Εμπορική εκμετάλλευση (Μη Εμπορική)", "category": "not_allowed"},
+    {"text": "Χρήση σε σχολική εργασία", "category": "allowed"},
+    {"text": "Αφαίρεση του ονόματος δημιουργού", "category": "not_allowed"},
+    {"text": "Δημοσίευση με την ίδια άδεια", "category": "allowed"},
+    {"text": "Διανομή με διαφορετική άδεια (Share-Alike)", "category": "not_allowed"}
+  ],
+  "duration": 30
+}

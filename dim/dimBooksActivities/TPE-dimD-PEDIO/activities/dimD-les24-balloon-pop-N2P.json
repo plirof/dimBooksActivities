@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Στοιχεία Παρουσίασης",
+  "subtitle": "Σπάσε τα μπαλόνια με στοιχεία παρουσίασης!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν πραγματικά στοιχεία και ενέργειες παρουσίασης.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Τίτλος διαφάνειας",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "Εισαγωγή εικόνας",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "Νέα διαφάνεια",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "Αποθήκευση",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "Προβολή διαφανειών",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "Μαγείρεμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Υπότιτλος",
+      "correct": true,
+      "color": "#8bc34a"
+    },
+    {
+      "text": "Κώδικας προγραμματισμού",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Κείμενο από το διαδίκτυο",
+      "correct": true,
+      "color": "#e91e63"
+    },
+    {
+      "text": "Πτήση αεροπλάνου",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

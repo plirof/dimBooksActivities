@@ -1,0 +1,26 @@
+{
+    "id": "dimD-les15-wheel-5hl",
+    "title": "Προστατεύομαι από διαδικτυακές επιθέσεις - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Ιός",
+            "Virus",
+            "Antivirus",
+            "Firewall",
+            "Τείχος προστασίας",
+            "Κακόβουλο λογισμικό",
+            "Pop-ups",
+            "Backup",
+            "Ενημέρωση",
+            "Ασφάλεια"
+        ]
+    },
+    "tags": [
+        "dimD",
+        "les15",
+        "ασφάλεια"
+    ]
+}

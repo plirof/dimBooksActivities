@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 8,
+  unit: "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική",
+  slides: [
+    { type:"title", title:"Μάθημα 8ο: Παιχνίδι με το ρομπότ: Παγίδευσε το ρομπότ σου!" },
+    { type:"concept", text:"Χρησιμοποιήστε μια νέα εντολή για να προγραμματίσετε το ρομπότ σας. Η εντολή από την κατηγορία των μπλε εντολών κίνησης κρύβει και άλλες εντολές που εμφανίζονται αν πατήσετε στο άσπρο τριγωνάκι." },
+    { type:"list", title:"Βήματα για το βασικό πρόγραμμα", items:["Διάλεξε την εντολή «Πήγαινε μπροστά συνεχώς»","Κάνε την την πρώτη εντολή του προγράμματός σου","Διάλεξε την εντολή επιλογής από τις πορτοκαλί εντολές","Βάλε την εντολή επιλογής ως δεύτερη εντολή","Διάλεξε την εντολή «Σταμάτα» ως τρίτη εντολή"] },
+    { type:"concept", text:"Η εντολή από τις πορτοκαλί εντολές (Wait Until) είναι μια εντολή επιλογής, κρύβει μέσα της δηλαδή μία συνθήκη και σημαίνει «Αν συναντήσεις εμπόδιο, τότε…». Χρησιμοποιώντας την εντολή αυτή το ρομπότ ελέγχει αν υπάρχει κάτι μπροστά του ή όχι." },
+    { type:"concept", text:"Τέλος, χρησιμοποίησε την εντολή «Σταμάτα» ως την τρίτη εντολή του προγράμματός σου για να κάνεις το ρομπότ να σταματήσει όταν συναντήσει κάποιο εμπόδιο." },
+    { type:"practice", title:"Δοκίμασε το πρόγραμμά σου", items:["Βάλε το χέρι σου μπροστά στο ρομπότ για να δεις αν θα σταματήσει","Γράψε τι πιστεύεις ότι κάνει το ρομπότ όταν εκτελεί το πρόγραμμα"] },
+    { type:"concept", text:"Τροποποίησε το πρόγραμμά σου βάλλοντας όλες τις εντολές του προγράμματός σου μέσα σε μία εντολή «Επανάλαβε για πάντα». Θα τη βρεις στην κατηγορία των κίτρινων εντολών (Control)." },
+    { type:"concept", text:"«Φόρτωσε» το πρόγραμμά σου στο ρομπότ. Βάλε το ρομπότ στο πάτωμα και προσπάθησε να το παγιδεύεις βάζοντας μπροστά του το πόδι σου ή άλλα εμπόδια." },
+    { type:"practice", title:"Παιχνίδι", items:["Παγίδευσε το ρομπότ σου με το πόδι σου ή άλλα εμπόδια","Καλή διασκέδαση!"] },
+    { type:"assessment", check:"Μπορώ να χρησιμοποιώ την εντολή επανάληψης και την εντολή επιλογής στον προγραμματισμό του ρομπότ", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική. Μάθημα 8ο: Παιχνίδι με το ρομπότ: Παγίδευσε το ρομπότ σου!",
+  "Χρησιμοποιήστε μια νέα εντολή για να προγραμματίσετε το ρομπότ σας. Η εντολή από την κατηγορία των μπλε εντολών κίνησης κρύβει και άλλες εντολές που εμφανίζονται αν πατήσετε στο άσπρο τριγωνάκι.",
+  "Βήματα για το βασικό πρόγραμμα. Διάλεξε την εντολή «Πήγαινε μπροστά συνεχώς». Κάνε την την πρώτη εντολή του προγράμματός σου. Διάλεξε την εντολή επιλογής από τις πορτοκαλί εντολές. Βάλε την εντολή επιλογής ως δεύτερη εντολή. Διάλεξε την εντολή «Σταμάτα» ως τρίτη εντολή",
+  "Η εντολή από τις πορτοκαλί εντολές (Wait Until) είναι μια εντολή επιλογής, κρύβει μέσα της δηλαδή μία συνθήκη και σημαίνει «Αν συναντήσεις εμπόδιο, τότε…». Χρησιμοποιώντας την εντολή αυτή το ρομπότ ελέγχει αν υπάρχει κάτι μπροστά του ή όχι.",
+  "Τέλος, χρησιμοποίησε την εντολή «Σταμάτα» ως την τρίτη εντολή του προγράμματός σου για να κάνεις το ρομπότ να σταματήσει όταν συναντήσει κάποιο εμπόδιο.",
+  "Δοκίμασε το πρόγραμμά σου. Βάλε το χέρι σου μπροστά στο ρομπότ για να δεις αν θα σταματήσει. Γράψε τι πιστεύεις ότι κάνει το ρομπότ όταν εκτελεί το πρόγραμμα",
+  "Τροποποίησε το πρόγραμμά σου βάλλοντας όλες τις εντολές του προγράμματός σου μέσα σε μία εντολή «Επανάλαβε για πάντα». Θα τη βρεις στην κατηγορία των κίτρινων εντολών (Control).",
+  "«Φόρτωσε» το πρόγραμμά σου στο ρομπότ. Βάλε το ρομπότ στο πάτωμα και προσπάθησε να το παγιδεύεις βάζοντας μπροστά του το πόδι σου ή άλλα εμπόδια.",
+  "Παιχνίδι. Παγίδευσε το ρομπότ σου με το πόδι σου ή άλλα εμπόδια. Καλή διασκέδαση!",
+  "Μπορώ να χρησιμοποιώ την εντολή επανάληψης και την εντολή επιλογής στον προγραμματισμό του ρομπότ. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

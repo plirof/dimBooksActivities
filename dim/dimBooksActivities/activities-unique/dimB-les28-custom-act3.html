@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 28 - Δραστηριότητα 3: Αλληλογραφία 3 γύροι</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{text-align:center;color:#fff;margin-bottom:10px;font-size:1.4rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;margin-bottom:20px}
+.round-badge{display:inline-block;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;padding:8px 20px;border-radius:20px;font-weight:700;font-size:1rem;margin-bottom:14px;box-shadow:0 3px 10px rgba(79,172,254,.3)}
+.progress-wrap{margin-bottom:16px}
+.progress-label{font-size:.85rem;color:#555;margin-bottom:6px;font-weight:700}
+.progress-bar-outer{background:#e0e0e0;border-radius:15px;height:24px;overflow:hidden}
+.progress-bar-inner{height:100%;background:linear-gradient(90deg,#43e97b,#38f9d7);border-radius:15px;transition:width .5s;width:0}
+.topic-box{background:#fff3e0;border-radius:14px;padding:14px 18px;margin-bottom:16px;border-left:5px solid #ff9800}
+.topic-box .topic-label{font-weight:700;color:#e65100;font-size:.85rem;margin-bottom:4px}
+.topic-box .topic-text{color:#333;font-size:1rem}
+.chat-area{max-height:400px;overflow-y:auto;padding:10px 0;margin-bottom:16px}
+.bubble-row{display:flex;margin-bottom:12px;animation:fadeIn .3s}
+.bubble-row.user{justify-content:flex-end}
+.bubble-row.bot{justify-content:flex-start}
+.bubble{max-width:75%;padding:12px 16px;border-radius:18px;font-size:.95rem;line-height:1.5;word-wrap:break-word;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.bubble-row.user .bubble{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1b5e20;border-bottom-right-radius:4px}
+.bubble-row.bot .bubble{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#0d47a1;border-bottom-left-radius:4px}
+.bubble .sender{font-size:.75rem;font-weight:700;opacity:.7;margin-bottom:4px;display:block}
+.compose-area{background:#f1f8e9;border-radius:14px;padding:16px}
+.compose-area label{display:block;font-weight:700;color:#33691e;margin-bottom:8px;font-size:.95rem}
+.compose-area textarea{width:100%;padding:12px;border:2px solid #a5d6a7;border-radius:12px;font-size:1rem;font-family:inherit;resize:none;height:80px;transition:border-color .3s}
+.compose-area textarea:focus{outline:none;border-color:#43a047}
+.send-btn{margin-top:10px;padding:12px 28px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(67,233,123,.4);transition:transform .2s,opacity .3s;display:block;margin-left:auto;margin-right:auto}
+.send-btn:hover{transform:scale(1.04)}
+.send-btn:disabled{opacity:.5;cursor:default;transform:none}
+.round-info{text-align:center;margin-bottom:12px;font-size:.9rem;color:#555;font-style:italic}
+.congrats{text-align:center;padding:30px 10px;display:none}
+.congrats .big-emoji{font-size:4rem;margin-bottom:10px}
+.congrats h2{color:#2e7d32;font-size:1.4rem;margin-bottom:10px}
+.congrats p{color:#555;font-size:1.05rem;line-height:1.6}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.container{padding:15px}h1{font-size:1.1rem}.bubble{max-width:85%;font-size:.88rem}.compose-area textarea{height:65px}}
+</style>
+</head>
+<body>
+<h1>✉️ Αλληλογραφία: 3 γύροι μηνυμάτων</h1>
+<div class="container" id="mainArea">
+<div class="progress-wrap">
+<div class="progress-label" id="progLabel">Πρόοδος: Γύρος 0/3</div>
+<div class="progress-bar-outer"><div class="progress-bar-inner" id="progBar"></div></div>
+</div>
+<div class="round-badge" id="roundBadge">Γύρος 1/3</div>
+<div class="topic-box" id="topicBox">
+<div class="topic-label">📧 Θέμα:</div>
+<div class="topic-text" id="topicText"></div>
+</div>
+<div class="chat-area" id="chatArea"></div>
+<div class="round-info" id="roundInfo"></div>
+<div class="compose-area" id="composeArea">
+<label id="composeLabel"></label>
+<textarea id="userInput" placeholder="Γράψε το μήνυμά σου..."></textarea>
+<button class="send-btn" id="sendBtn" onclick="sendMessage()">📤 Αποστολή</button>
+</div>
+</div>
+<div class="container congrats" id="congratsArea">
+<div class="big-emoji">🎉</div>
+<h2>Μπράβο! Ολοκλήρωσες την αλληλογραφία σου!</h2>
+<p>Έστειλες και έλαβες μηνύματα 3 φορές!<br>Τώρα ξέρεις πώς γίνεται η αλληλογραφία! 📬✨</p>
+</div>
+<script>
+var round=0;
+var totalRounds=3;
+var waiting=false;
+var rounds=[
+{
+topic:'Τι αγαπημένο ζώο έχεις;',
+composeLabel:'✍️ Γράψε στο Γιάννη τι αγαπημένο ζώο έχεις:',
+info:'Γράψε το μήνυμά σου και πάτα Αποστολή!',
+autoReply:'Γιάννης: Εγώ αγαπώ τις γάτες! 🐱 Εσύ;'
+},
+{
+topic:'Τι αγαπημένο ζώο έχεις;',
+composeLabel:'✍️ Απάντησε στο Γιάννη για τα ζώα:',
+info:'Ο Γιάννης σε ρωτάει! Απάντησέ του!',
+autoReply:'Γιάννης: Τέλεια! Πάμε να παίξουμε στο διάλειμμα;'
+},
+{
+topic:'Τι αγαπημένο ζώο έχεις;',
+composeLabel:'✍️ Στείλε τελικό μήνυμα στο Γιάννη:',
+info:'Τελευταίος γύρος! Στείλε ένα μήνυμα!',
+autoReply:'Γιάννης: Εντάξει! Τα λέμε αύριο! 👋'
+}
+];
+
+function startRound(){
+round++;
+document.getElementById('roundBadge').textContent='Γύρος '+round+'/'+totalRounds;
+document.getElementById('progBar').style.width=((round-1)/totalRounds*100)+'%';
+document.getElementById('progLabel').textContent='Πρόοδος: Γύρος '+round+'/'+totalRounds;
+var r=rounds[round-1];
+document.getElementById('topicText').textContent=r.topic;
+document.getElementById('composeLabel').textContent=r.composeLabel;
+document.getElementById('roundInfo').textContent=r.info;
+document.getElementById('userInput').value='';
+document.getElementById('sendBtn').disabled=false;
+document.getElementById('composeArea').style.display='block';
+document.getElementById('userInput').focus();
+if(round===1){
+addBubble('Γιάννης','Γεια σου! 😊 Θέλω να σε ρωτήσω κάτι...','bot');
+}
+}
+
+function addBubble(sender,text,type){
+var row=document.createElement('div');
+row.className='bubble-row '+type;
+var bubble=document.createElement('div');
+bubble.className='bubble';
+var senderSpan=document.createElement('span');
+senderSpan.className='sender';
+senderSpan.textContent=sender;
+var textNode=document.createElement('div');
+textNode.textContent=text;
+bubble.appendChild(senderSpan);
+bubble.appendChild(textNode);
+row.appendChild(bubble);
+var chat=document.getElementById('chatArea');
+chat.appendChild(row);
+chat.scrollTop=chat.scrollHeight;
+}
+
+function sendMessage(){
+if(waiting)return;
+var input=document.getElementById('userInput');
+var text=input.value.trim();
+if(!text){alert('Γράψε ένα μήνυμα πρώτα! 😊');return}
+waiting=true;
+document.getElementById('sendBtn').disabled=true;
+addBubble('Εγώ',text,'user');
+input.value='';
+setTimeout(function(){
+addBubble('',rounds[round-1].autoReply,'bot');
+document.getElementById('progBar').style.width=(round/totalRounds*100)+'%';
+document.getElementById('progLabel').textContent='Πρόοδος: Γύρος '+round+'/'+totalRounds;
+if(round>=totalRounds){
+document.getElementById('composeArea').style.display='none';
+document.getElementById('roundInfo').textContent='';
+document.getElementById('roundBadge').textContent='Ολοκληρώθηκε! ✅';
+setTimeout(function(){
+document.getElementById('mainArea').style.display='none';
+document.getElementById('congratsArea').style.display='block';
+},1200);
+}else{
+setTimeout(function(){
+startRound();
+waiting=false;
+},500);
+}
+},1200);
+}
+
+startRound();
+</script>
+</body>
+</html>

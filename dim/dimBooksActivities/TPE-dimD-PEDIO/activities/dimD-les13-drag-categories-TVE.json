@@ -1,0 +1,58 @@
+{
+  "title": "Εφαρμογές σε κατηγορίες",
+  "subtitle": "Ταίριαξε κάθε εφαρμογή στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "prog",
+      "name": "ΠΡΟΓΡΑΜΜΑΤΙΣΜΟΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "browser",
+      "name": "ΦΥΛΛΟΜΕΤΡΗΤΗΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "paint",
+      "name": "ΖΩΓΡΑΦΙΚΗ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🐱 Scratch",
+      "category": "prog"
+    },
+    {
+      "id": "item2",
+      "text": "🦊 Firefox",
+      "category": "browser"
+    },
+    {
+      "id": "item3",
+      "text": "📝 Writer",
+      "category": "text"
+    },
+    {
+      "id": "item4",
+      "text": "🐧 TuxPaint",
+      "category": "paint"
+    },
+    {
+      "id": "item5",
+      "text": "🐍 Python",
+      "category": "prog"
+    },
+    {
+      "id": "item6",
+      "text": "🌐 Chrome",
+      "category": "browser"
+    }
+  ]
+}

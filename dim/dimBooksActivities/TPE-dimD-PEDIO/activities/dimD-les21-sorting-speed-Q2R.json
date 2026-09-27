@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αποτελέσματα Αναζήτησης",
+  "subtitle": "Ταξινόμησε τα στοιχεία στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε στοιχείο.",
+  "categories": [
+    { "id": "xoroumenos", "name": "Χορηγούμενο", "color": "#f44336", "key": "ArrowLeft" },
+    { "id": "organiko", "name": "Οργανικό", "color": "#4caf50", "key": "ArrowRight" },
+    { "id": "aksiopisto", "name": "Αξιόπιστο", "color": "#2196f3", "key": "ArrowUp" },
+    { "id": "ksenoferto", "name": "Αναξιόπιστο", "color": "#ff9800", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Διαφήμιση καταστήματος", "category": "xoroumenos" },
+    { "text": "Ετικέτα «Sponsored»", "category": "xoroumenos" },
+    { "text": "Πληρωμένο αποτέλεσμα", "category": "xoroumenos" },
+    { "text": "Φυσικό αποτέλεσμα", "category": "organiko" },
+    { "text": "Βασισμένο σε λέξεις-κλειδιά", "category": "organiko" },
+    { "text": "Ιστότοπος μουσείου", "category": "aksiopisto" },
+    { "text": "Έχει στοιχεία επικοινωνίας", "category": "aksiopisto" },
+    { "text": "Χωρίς πηγή", "category": "ksenoferto" },
+    { "text": "Πουλάει μόνο προϊόντα", "category": "ksenoferto" },
+    { "text": "Ετικέτα «Διαφήμιση»", "category": "xoroumenos" },
+    { "text": "Εκπαιδευτικός ιστότοπος", "category": "aksiopisto" },
+    { "text": "Δεν έχει όνομα συγγραφέα", "category": "ksenoferto" }
+  ],
+  "duration": 45
+}

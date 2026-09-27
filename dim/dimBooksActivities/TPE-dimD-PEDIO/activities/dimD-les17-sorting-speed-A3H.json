@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μορφές Αρχείων",
+  "subtitle": "Ταξινόμησε τις μορφές αρχείων στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε μορφή αρχείου.",
+  "categories": [
+    { "id": "eikona", "name": "Εικόνα", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "video", "name": "Βίντεο", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "ixos", "name": "Ήχος", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "keimeno", "name": "Κείμενο", "color": "#9c27b0", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "JPEG", "category": "eikona" },
+    { "text": "MP4", "category": "video" },
+    { "text": "WAV", "category": "ixos" },
+    { "text": "ODT", "category": "keimeno" },
+    { "text": "PNG", "category": "eikona" },
+    { "text": "GIF", "category": "eikona" },
+    { "text": "MP3", "category": "ixos" },
+    { "text": "JPG", "category": "eikona" },
+    { "text": "AVI", "category": "video" },
+    { "text": "DOC", "category": "keimeno" },
+    { "text": "OGG", "category": "ixos" },
+    { "text": "MOV", "category": "video" }
+  ],
+  "duration": 45
+}

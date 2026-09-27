@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Ψηφιοποίηση",
+  "subtitle": "Πιάσε τις σωστές δυαδικές τιμές!",
+  "instructions": "Πιάσε τις σωστές δυαδικές τιμές των γραμμάτων!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Α = 00001", "correct": true, "color": "#4CAF50" },
+    { "text": "Ε = 00101", "correct": true, "color": "#2196F3" },
+    { "text": "Ο = 01111", "correct": true, "color": "#FF9800" },
+    { "text": "Μ = 01100", "correct": true, "color": "#9C27B0" },
+    { "text": "Ι = 01001", "correct": true, "color": "#00BCD4" },
+    { "text": "Ω = 11000", "correct": true, "color": "#E91E63" },
+    { "text": "Η = 00110", "correct": false, "color": "#F44336" },
+    { "text": "Α = 00010", "correct": false, "color": "#795548" },
+    { "text": "Ε = 00111", "correct": false, "color": "#607D8B" },
+    { "text": "Ο = 10000", "correct": false, "color": "#FF5722" }
+  ]
+}

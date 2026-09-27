@@ -1,0 +1,58 @@
+{
+  "title": "CC σύμβολα",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στο σωστό CC σύμβολο",
+  "categories": [
+    {
+      "id": "by",
+      "name": "BY",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "nc",
+      "name": "NC",
+      "color": "#2196F3"
+    },
+    {
+      "id": "nd",
+      "name": "ND",
+      "color": "#FF9800"
+    },
+    {
+      "id": "sa",
+      "name": "SA",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αναφορά δημιουργού",
+      "category": "by"
+    },
+    {
+      "id": "item2",
+      "text": "Μη εμπορική",
+      "category": "nc"
+    },
+    {
+      "id": "item3",
+      "text": "Όχι παράγωγα",
+      "category": "nd"
+    },
+    {
+      "id": "item4",
+      "text": "Παρόμοια διανομή",
+      "category": "sa"
+    },
+    {
+      "id": "item5",
+      "text": "Credit",
+      "category": "by"
+    },
+    {
+      "id": "item6",
+      "text": "Απαγόρευση πώλησης",
+      "category": "nc"
+    }
+  ]
+}

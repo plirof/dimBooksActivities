@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βήματα e-me Εργασίες | Μάθημα 26</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#eff6ff,#60a5fa);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#1e3a8a;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#2563eb;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#1e3a8a;font-size:.75rem;font-weight:700;border:1px solid #60a5fa;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.task-title{font-size:.78rem;font-weight:700;color:#1e3a8a;text-align:center;margin-bottom:8px}
+.step-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.step-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.7rem;color:#334155;background:#fff;cursor:pointer;transition:all .2s;user-select:none}
+.step-item:hover{border-color:#2563eb;background:#eff6ff}
+.step-item .step-num{min-width:22px;height:22px;border-radius:50%;background:#dbeafe;color:#1e3a8a;font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-item.placed{opacity:.4;pointer-events:none}
+.step-item.in-order{border-color:#2563eb;background:#dbeafe}
+.step-item.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.step-item.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.step-item.disabled{pointer-events:none}
+.order-area{background:#eff6ff;border:2px dashed #93c5fd;border-radius:12px;padding:10px;min-height:60px;margin:8px 0}
+.order-label{font-size:.65rem;color:#64748b;text-align:center;margin-bottom:4px}
+.order-slot{padding:6px 10px;margin:4px 0;border:1px solid #bfdbfe;border-radius:8px;font-size:.68rem;color:#1e3a8a;background:#fff}
+.order-slot.empty{text-align:center;color:#93c5fd;font-style:italic}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#1d4ed8}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #2563eb;border-radius:10px;background:transparent;color:#2563eb;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#eff6ff}
+.reset-btn{display:block;margin:4px auto;padding:6px 16px;border:2px solid #d1d5db;border-radius:8px;background:transparent;color:#6b7280;font-size:.68rem;cursor:pointer}
+.reset-btn:hover{background:#f9fafb}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .step-list > * + * { margin-top: 6px; }
+  .step-item > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📋 Βήματα e-me Εργασίες</h1>
+<p class="subtitle">Βάλε τα βήματα στη σωστή σειρά!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var tasks=[
+{
+title:'📤 Υποβολή εργασίας στο e-me',
+steps:[
+'Ο δάσκαλος αναρτά την εργασία με περιγραφή και προθεσμία',
+'Βλέπεις την εργασία στη λίστα και πατάς "Προβολή"',
+'Διαβάζεις την περιγραφή και τις οδηγίες',
+'Γράφεις την απάντησή σου (κείμενο, εικόνα, αρχείο κ.λπ.)',
+'Πατάς "Υποβολή απάντησης"',
+'Λαμβάνεις ανατροφοδότηση / βαθμολογία από τον δάσκαλο'
+]
+},
+{
+title:'📰 Δημοσίευση άρθρου στο SchoolPress',
+steps:[
+'Συνδέεσαι στο SchoolPress με τα στοιχεία ΠΣΔ',
+'Επιλέγεις το περιοδικό της τάξης σου',
+'Γράφεις το άρθρο σου (τίτλο + περιεχόμενο)',
+'Υποβάλλεις το άρθρο για έγκριση',
+'Ο διαχειριστής / αρχισυντάκτης εγκρίνει το άρθρο',
+'Το άρθρο δημοσιεύεται και διαβάζεται από όλους'
+]
+},
+{
+title:'📻 Ακρόαση ραδιοφώνου στο European School Radio',
+steps:[
+'Μπαίνεις στο europeanschoolradio.eu',
+'Επιλέγεις ένα πρόγραμμα / εκπομπή από τη λίστα',
+'Πατάς "Αναπαραγωγή" για να ακούσεις',
+'Μπορείς να συμμετέχεις στο chat χωρίς σύνδεση ΠΣΔ',
+'Αν θες να ανεβάσεις περιεχόμενο, μιλάς με τον δάσκαλο',
+'Ο δάσκαλος ανεβάζει την εκπομπή με τον λογαριασμό του σχολείου'
+]
+},
+{
+title:'🎧 Τι είναι Podcast και Playlist;',
+steps:[
+'Podcast: Ηχητική ηχογράφηση στο ίντερνετ',
+'Μπορείς να την ακούσεις ΟΤΕ ΔΗΠΟΤΕ θέλεις',
+'Playlist: Λίστα αναπαραγωγής βίντεο ή ήχων',
+'Τα αρχεία παίζονται με τη ΣΕΙΡΑ που τα έβαλες',
+'Podcast ≠ ζωντανή ραδιοφωνική εκπομπή',
+'Και τα δύο βρίσκονται στο ίντερνετ'
+]
+}
+];
+var curQ=0,pts=0,order=[],checked=false;
+function initQ(){order=[];checked=false;}
+function shuffle(arr){
+var a=arr.slice();
+for(var i=a.length-1;i>0;i--){
+var j=Math.floor(Math.random()*(i+1));
+var t=a[i];a[i]=a[j];a[j]=t;
+}
+return a;
+}
+var shuffled=[];
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var t=tasks[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="task-title">'+t.title+'</div>';
+h+='<div class="order-area">';
+h+='<div class="order-label">📋 Σωστή σειρά (κλικ βήματα από κάτω):</div>';
+if(order.length===0){
+h+='<div class="order-slot empty">Κλικ στα βήματα με τη σωστή σειρά...</div>';
+}else{
+for(var i=0;i<order.length;i++){
+var cls='order-slot';
+if(checked){
+if(order[i]===i)cls+=' correct';
+else cls+=' wrong';
+}
+h+='<div class="'+cls+'"><strong>'+(i+1)+'.</strong> '+t.steps[order[i]]+'</div>';
+}
+}
+h+='</div>';
+h+='<p style="font-size:.65rem;color:#64748b;text-align:center;margin:2px 0">Διαθέσιμα βήματα (κλικ για προσθήκη):</p>';
+h+='<div class="step-list">';
+for(var i=0;i<shuffled.length;i++){
+var origIdx=t.steps.indexOf(shuffled[i]);
+var isPlaced=order.indexOf(origIdx)>=0;
+var cls='step-item'+(isPlaced?' placed':'');
+h+='<div class="'+cls+'" onclick="addStep('+origIdx+')"><span class="step-num">'+(isPlaced?'✓':'+')+'</span>'+shuffled[i]+'</div>';
+}
+h+='</div>';
+if(!checked&&order.length===t.steps.length){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος Σειράς</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<order.length;i++){
+if(order[i]===i)correct++;
+}
+var allCorrect=correct===t.steps.length;
+if(allCorrect)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(allCorrect?'ok':'bad')+'">'+(allCorrect?'✅ Τέλεια! Σωστή σειρά!':'❌ '+correct+'/'+t.steps.length+' στη σωστή θέση')+'</div>';
+if(curQ<tasks.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Σενάριο ▶</button>';
+}
+}
+h+='<button class="reset-btn" onclick="resetOrder()">🔄 Ξανά</button>';
+main.innerHTML=h;
+}
+function addStep(origIdx){
+if(checked)return;
+if(order.indexOf(origIdx)>=0)return;
+order.push(origIdx);
+render();
+}
+function resetOrder(){
+var t=tasks[curQ];
+shuffled=shuffle(t.steps);
+order=[];
+checked=false;
+render();
+}
+function checkAnswer(){if(order.length===tasks[curQ].steps.length){checked=true;render();}}
+function nextQ(){
+if(curQ<tasks.length-1){
+curQ++;
+var t=tasks[curQ];
+shuffled=shuffle(t.steps);
+initQ();
+render();
+}
+}
+shuffled=shuffle(tasks[curQ].steps);
+initQ();render();
+</script>
+</body>
+</html>

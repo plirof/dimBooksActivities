@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Εννοιολογικός Χάρτης",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "έννοιες", "error": false, "correct": "", "feedback": "" },
+        { "text": "ειναι", "error": true, "correct": "είναι", "feedback": "Λείπει ο τόνος" },
+        { "text": "ουσιαστικά", "error": false, "correct": "", "feedback": "" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρίζονται", "error": true, "correct": "βρίσκονται", "feedback": "Λάθος λέξη" },
+        { "text": "μέσα", "error": false, "correct": "", "feedback": "" },
+        { "text": "σε", "error": false, "correct": "", "feedback": "" },
+        { "text": "σχήματα", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Οι", "error": false, "correct": "", "feedback": "" },
+        { "text": "λεξεις", "error": true, "correct": "λέξεις", "feedback": "Λείπει ο τόνος" },
+        { "text": "στις", "error": false, "correct": "", "feedback": "" },
+        { "text": "συνδέσεις", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "επιθετικα", "error": true, "correct": "ρήματα", "feedback": "Οι συνδέσεις περιέχουν ρήματα, όχι επίθετα" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "κυρια", "error": true, "correct": "κύρια", "feedback": "Λείπει ο τόνος" },
+        { "text": "έννοια", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρίσκεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "κάτω", "error": true, "correct": "πάνω", "feedback": "Η κύρια έννοια είναι από πάνω, όχι κάτω" }
+      ]
+    }
+  ]
+}

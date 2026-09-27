@@ -1,0 +1,140 @@
+<!-- v002-260919: tap-to-place fallback for touch screens -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάγραμμα Venn</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.15);padding:30px;text-align:center}
+h1{color:#5e35b1;font-size:1.8rem;margin-bottom:5px}
+h2{color:#7e57c2;font-size:1.1rem;margin-bottom:15px;font-weight:400}
+.start-btn,.restart-btn{background:linear-gradient(135deg,#5e35b1,#d81b60);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.2rem;cursor:pointer;box-shadow:0 5px 15px rgba(94,53,177,.3);transition:transform .2s,box-shadow .2s}
+.start-btn:hover,.restart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(94,53,177,.4)}
+.venn-container{position:relative;width:100%;height:320px;margin:10px auto}
+.venn-circle{position:absolute;border-radius:50%;opacity:.25;top:30px;width:260px;height:240px;display:flex;align-items:flex-start;justify-content:center}
+.venn-circle span{opacity:1;font-weight:700;font-size:.85rem;padding-top:15px;display:block}
+.circle-a{left:20px;z-index:1}
+.circle-b{right:20px;z-index:1}
+.zone-hint{font-size:.72rem;color:rgba(0,0,0,.35);font-weight:600;width:100%;text-align:center;margin-bottom:2px;pointer-events:none}
+.drop-zone{position:absolute;z-index:2;border-radius:15px;border:2px dashed rgba(0,0,0,.15);display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:5px;padding:8px;transition:all .2s;min-height:60px}
+.drop-zone.hover{border-color:#5e35b1;background:rgba(94,53,177,.08);transform:scale(1.02)}
+.drop-zone.highlight-ok{background:rgba(76,175,80,.15);border-color:#4caf50}
+.drop-zone.highlight-fail{background:rgba(244,67,54,.15);border-color:#f44336}
+.zone-a{left:30px;top:60px;width:140px;height:180px}
+.zone-ab{left:175px;top:60px;width:150px;height:180px}
+.zone-b{right:30px;top:60px;width:140px;height:180px}
+.zone-none{left:20px;bottom:5px;width:calc(100% - 40px);height:35px}
+.items-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0;min-height:40px;padding:8px;background:#f3e5f5;border-radius:12px}
+.chip{padding:8px 14px;border-radius:20px;font-size:.85rem;font-weight:600;background:#fff;border:2px solid #ce93d8;color:#4a148c;cursor:grab;user-select:none;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.chip:active{cursor:grabbing}
+.chip.placed{display:none}
+.chip.correct{border-color:#4caf50;background:#e8f5e9}
+.chip.wrong{border-color:#f44336;background:#ffebee}
+.chip.tap-selected{outline:3px solid #667eea!important;background:#eef0ff!important;box-shadow:0 0 12px rgba(102,126,234,.4)!important}
+.drop-zone.tap-target{border-color:#667eea;background:rgba(102,126,234,.06)}
+.info-bar{display:flex;justify-content:space-between;margin-bottom:10px;font-size:.95rem;color:#666}
+.check-btn{background:linear-gradient(135deg,#5e35b1,#7e57c2);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1rem;cursor:pointer;margin:8px;box-shadow:0 4px 12px rgba(94,53,177,.3);transition:transform .2s}
+.check-btn:hover{transform:translateY(-2px)}
+.feedback{font-size:1.1rem;font-weight:600;margin:8px 0;min-height:28px}
+.feedback.ok{color:#4caf50}
+.feedback.fail{color:#f44336}
+.hidden{display:none}
+.end-score{font-size:3rem;color:#5e35b1;font-weight:700;margin:15px 0}
+.zone-label{position:absolute;font-size:.65rem;color:rgba(0,0,0,.4);font-weight:600;z-index:3}
+@media(max-width:500px){.venn-circle{width:180px;height:170px}.circle-a{left:5px}.circle-b{right:5px}.zone-a{left:10px;width:100px;height:120px}.zone-ab{left:110px;width:120px;height:120px}.zone-b{right:10px;width:100px;height:120px}.venn-container{height:250px}}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div id="error" class="hidden" style="color:#f44336;font-size:1.1rem;padding:30px"></div>
+<div id="startScreen">
+<h1 id="gameTitle">Διάγραμμα Venn</h1>
+<h2 id="gameSubtitle">Τοποθέτησε κάθε στοιχείο στη σωστή περιοχή!</h2>
+<p style="color:#666;margin-bottom:20px">Σύρε κάθε στοιχείο στη σωστή περιοχή του διαγράμματος.<br>Άφησε το κουμπί για να το τοποθετήσεις.<br><b>Οθόνες αφής:</b> πάτα το στοιχείο και μετά την περιοχή-στόχο — ή σύρε το με το δάχτυλο.</p>
+<button class="start-btn" onclick="startGame()">▶ Έναρξη</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="info-bar"><span id="scoreInfo"></span><span id="placedInfo"></span></div>
+<div class="feedback" id="feedback"></div>
+<div class="venn-container" id="vennContainer">
+<div class="venn-circle circle-a" id="circleA"><span id="labelA"></span></div>
+<div class="venn-circle circle-b" id="circleB"><span id="labelB"></span></div>
+<div class="drop-zone zone-a" data-zone="A" id="zoneA"></div>
+<div class="drop-zone zone-ab" data-zone="AB" id="zoneAB"></div>
+<div class="drop-zone zone-b" data-zone="B" id="zoneB"></div>
+<div class="drop-zone zone-none" data-zone="none" id="zoneNone">Κανένα</div>
+</div>
+<div class="items-pool" id="itemsPool"></div>
+<div><button class="check-btn" onclick="checkAnswers()">✓ Έλεγχος</button></div>
+</div>
+<div id="endScreen" class="hidden">
+<h1>Αποτέλεσμα</h1>
+<div class="end-score" id="endScore"></div>
+<p id="endMsg" style="font-size:1.1rem;color:#666;margin-bottom:20px"></p>
+<button class="restart-btn" onclick="restartGame()">🔄 Ξανά!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+let gameData=null,placements={},dragEl=null,dragItemIdx=null,touchMoved=false,tapStartX=0,tapStartY=0,tapSelIdx=null;
+if(!dataFile){document.getElementById('error').textContent='Δεν βρέθηκε αρχείο δεδομένων. Χρησιμοποίησε ?data=file.json';document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')}else{fetch(dataFile).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(d=>{gameData=d;document.getElementById('gameTitle').textContent=esc(d.title||'Διάγραμμα Venn');document.getElementById('gameSubtitle').textContent=esc(d.subtitle||'')}).catch(()=>{document.getElementById('error').textContent='Σφάλμα φόρτωσης δεδομένων: '+esc(dataFile);document.getElementById('error').classList.remove('hidden');document.getElementById('startScreen').classList.add('hidden')})}
+function startGame(){placements={};document.getElementById('startScreen').classList.add('hidden');document.getElementById('endScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');const ca=gameData.circleA;const cb=gameData.circleB;document.getElementById('circleA').style.backgroundColor=ca.color;document.getElementById('circleB').style.backgroundColor=cb.color;document.getElementById('labelA').textContent=ca.label;document.getElementById('labelB').textContent=cb.color;document.getElementById('labelA').style.color=ca.color;document.getElementById('labelB').textContent=cb.label;document.getElementById('labelB').style.color=cb.color;document.getElementById('scoreInfo').textContent='';document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';buildItems();setupDropZones();updateCounts()}
+function buildItems(){const pool=document.getElementById('itemsPool');pool.innerHTML='';gameData.items.forEach((item,i)=>{const chip=document.createElement('div');chip.className='chip';chip.textContent=item.text;chip.dataset.index=i;chip.draggable=true;chip.ondragstart=e=>{dragEl=chip;dragItemIdx=i;e.dataTransfer.setData('text/plain',i);chip.style.opacity='.5'};chip.ondragend=()=>{if(chip)chip.style.opacity='1'};chip.ontouchstart=e=>{touchMoved=false;dragEl=chip;dragItemIdx=i};pool.appendChild(chip)});setupTouch()}
+function setupTouch(){
+document.ontouchstart=e=>{
+const t=e.touches[0];
+if(t){tapStartX=t.clientX;tapStartY=t.clientY}
+};
+document.ontouchmove=e=>{
+if(!dragEl)return;
+const t=e.touches[0];
+if(!touchMoved){if(Math.abs(t.clientX-tapStartX)<10&&Math.abs(t.clientY-tapStartY)<10)return;touchMoved=true;dragEl.classList.add('dragging')}
+e.preventDefault();
+const el=document.elementFromPoint(t.clientX,t.clientY);
+document.querySelectorAll('.drop-zone').forEach(z=>z.classList.remove('hover'));
+if(el){const zone=el.closest('.drop-zone');if(zone)zone.classList.add('hover')}
+};
+document.ontouchend=e=>{
+const t=e.changedTouches[0];
+if(!t)return;
+const moved=Math.abs(t.clientX-tapStartX)>10||Math.abs(t.clientY-tapStartY)>10;
+document.querySelectorAll('.drop-zone').forEach(z=>z.classList.remove('hover'));
+if(dragEl&&moved){
+const el=document.elementFromPoint(t.clientX,t.clientY);
+if(el){const zone=el.closest('.drop-zone');if(zone)placeItem(dragItemIdx,zone.dataset.zone)}
+dragEl.classList.remove('dragging');
+}else if(!moved){handleTap(t)}
+dragEl=null;dragItemIdx=null;touchMoved=false;
+};
+}
+function handleTap(t){
+const el=document.elementFromPoint(t.clientX,t.clientY);
+if(!el)return;
+const poolChip=el.closest('.items-pool .chip');
+const placedChip=el.closest('.drop-zone .chip');
+if(tapSelIdx===null){
+if(poolChip){tapSelIdx=parseInt(poolChip.dataset.index);poolChip.classList.add('tap-selected');document.querySelectorAll('.drop-zone').forEach(z=>z.classList.add('tap-target'))}
+else if(placedChip){removePlaced(parseInt(placedChip.dataset.index))}
+return}
+if(poolChip){const i2=parseInt(poolChip.dataset.index);const same=(i2===tapSelIdx);clearTapSel();if(!same){tapSelIdx=i2;poolChip.classList.add('tap-selected');document.querySelectorAll('.drop-zone').forEach(z=>z.classList.add('tap-target'))}return}
+if(placedChip){removePlaced(parseInt(placedChip.dataset.index));return}
+if(el.closest('.drop-zone')){placeItem(tapSelIdx,el.closest('.drop-zone').dataset.zone)}
+clearTapSel();
+}
+function clearTapSel(){tapSelIdx=null;document.querySelectorAll('.chip.tap-selected').forEach(c=>c.classList.remove('tap-selected'));document.querySelectorAll('.drop-zone.tap-target').forEach(z=>z.classList.remove('tap-target'))}
+function setupDropZones(){const zl=gameData.zoneLabels||{};const defaults={A:'Μόνο '+gameData.circleA.label,B:'Μόνο '+gameData.circleB.label,AB:'Και τα δύο',none:'Κανένα'};document.querySelectorAll('.drop-zone').forEach(zone=>{const key=zone.dataset.zone;const hint=zl[key]||defaults[key]||'';zone.innerHTML='<span class="zone-hint">'+esc(hint)+'</span>';zone.ondragover=e=>{e.preventDefault();zone.classList.add('hover')};zone.ondragleave=()=>{zone.classList.remove('hover')};zone.ondrop=e=>{e.preventDefault();zone.classList.remove('hover');const idx=parseInt(e.dataTransfer.getData('text/plain'));placeItem(idx,zone.dataset.zone)}})}
+function placeItem(itemIdx,zone){if(placements[itemIdx]!==undefined){const oldZone=document.querySelector('.drop-zone[data-zone="'+placements[itemIdx]+'"]');const existing=oldZone.querySelector('.chip[data-index="'+itemIdx+'"]');if(existing)existing.remove()}placements[itemIdx]=zone;const zoneEl=document.querySelector('.drop-zone[data-zone="'+zone+'"]');const poolChip=document.querySelector('.items-pool .chip[data-index="'+itemIdx+'"]');if(poolChip)poolChip.classList.add('placed');const clone=document.createElement('div');clone.className='chip';clone.textContent=gameData.items[itemIdx].text;clone.dataset.index=itemIdx;clone.onclick=()=>removePlaced(itemIdx);zoneEl.appendChild(clone);updateCounts()}
+function removePlaced(itemIdx){const zc=document.querySelector('.drop-zone .chip[data-index="'+itemIdx+'"]');if(zc)zc.remove();delete placements[itemIdx];const pc=document.querySelector('.items-pool .chip[data-index="'+itemIdx+'"]');if(pc)pc.classList.remove('placed');updateCounts()}
+function updateCounts(){const placed=Object.keys(placements).length;const total=gameData.items.length;document.getElementById('placedInfo').textContent='Τοποθετημένα: '+placed+'/'+total;document.getElementById('scoreInfo').textContent=''}
+function checkAnswers(){let correct=0;const total=gameData.items.length;gameData.items.forEach((item,i)=>{const chips=document.querySelectorAll('.chip[data-index="'+i+'"]');chips.forEach(c=>{c.classList.remove('correct','wrong')});if(placements[i]!==undefined&&placements[i]===item.zone){correct++;chips.forEach(c=>c.classList.add('correct'))}else{chips.forEach(c=>c.classList.add('wrong'))}});document.querySelectorAll('.drop-zone').forEach(z=>{z.classList.remove('highlight-ok','highlight-fail')});document.getElementById('feedback').textContent='Σωστά: '+correct+' / '+total;if(correct===total){document.getElementById('feedback').textContent='Τέλεια! Όλα σωστά! 🎉';document.getElementById('feedback').className='feedback ok';setTimeout(()=>endGame(correct,total),1500)}else{document.getElementById('feedback').textContent=correct+' / '+total+' σωστά. Δοκίμασε ξανά!';document.getElementById('feedback').className='feedback fail'}}
+function endGame(score,total){document.getElementById('gameScreen').classList.add('hidden');document.getElementById('endScreen').classList.remove('hidden');document.getElementById('endScore').textContent=score+' / '+total;if(score===total)document.getElementById('endMsg').textContent='Τέλεια! Τα ξέρεις όλα! 🌟';else if(score>=total*0.7)document.getElementById('endMsg').textContent='Πολύ καλά! 😊';else document.getElementById('endMsg').textContent='Δοκίμασε ξανά! 💪'}
+function restartGame(){document.getElementById('endScreen').classList.add('hidden');document.getElementById('startScreen').classList.remove('hidden')}
+</script>
+</body>
+</html>

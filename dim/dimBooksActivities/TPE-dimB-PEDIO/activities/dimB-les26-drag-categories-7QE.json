@@ -1,0 +1,53 @@
+{
+  "title": "Λειτουργίες e-me",
+  "subtitle": "Ταίριαξε κάθε λειτουργία στη σωστή ενότητα του e-me",
+  "categories": [
+    {
+      "id": "cell",
+      "name": "ΚΥΨΕΛΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wall",
+      "name": "ΤΟΙΧΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "edu",
+      "name": "ΕΚΠΑΙΔΕΥΤΙΚΟ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📁 Αρχεία",
+      "category": "cell"
+    },
+    {
+      "id": "item2",
+      "text": "📝 Αναρτήσεις",
+      "category": "wall"
+    },
+    {
+      "id": "item3",
+      "text": "📚 Βιβλία",
+      "category": "edu"
+    },
+    {
+      "id": "item4",
+      "text": "💬 Σχόλια",
+      "category": "wall"
+    },
+    {
+      "id": "item5",
+      "text": "📎 Κοινή χρήση",
+      "category": "cell"
+    },
+    {
+      "id": "item6",
+      "text": "🎬 Βίντεο μαθήματος",
+      "category": "edu"
+    }
+  ]
+}

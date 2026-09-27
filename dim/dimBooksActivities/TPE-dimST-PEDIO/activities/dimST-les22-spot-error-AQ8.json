@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Συζητήσεις",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Φόρουμ",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Φόρουμμ",
+          "error": true,
+          "correct": "Φόρουμ",
+          "feedback": "Το σωστό είναι 'Φόρουμ' με ένα 'μ'"
+        },
+        {
+          "text": "Ιστολόγιο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Καταχώριση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Καταχωρίση",
+          "error": true,
+          "correct": "Καταχώριση",
+          "feedback": "Το σωστό είναι 'Καταχώριση' με 'ι' και όχι 'η'"
+        },
+        {
+          "text": "Νήμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Δημοσίευση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κοινότητα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Δημοσεύση",
+          "error": true,
+          "correct": "Δημοσίευση",
+          "feedback": "Το σωστό είναι 'Δημοσίευση' με 'ι'"
+        },
+        {
+          "text": "Μήνυμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Συζήτηση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Συζύτηση",
+          "error": true,
+          "correct": "Συζήτηση",
+          "feedback": "Το σωστό είναι 'Συζήτηση' με 'η' και όχι 'υ'"
+        }
+      ]
+    }
+  ]
+}

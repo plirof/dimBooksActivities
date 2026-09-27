@@ -1,0 +1,36 @@
+{
+  "title": "Πλήκτρα του Πληκτρολογίου",
+  "subtitle": "Σύρε κάθε πλήκτρο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "lang",
+      "name": "Αλλαγή γλώσσας",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "write",
+      "name": "Γράψιμο κειμένου",
+      "color": "#2196F3"
+    },
+    {
+      "id": "caps",
+      "name": "Κεφαλαία & Σύμβολα",
+      "color": "#FF9800"
+    },
+    {
+      "id": "edit",
+      "name": "Διόρθωση & Πλοήγηση",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "Alt + Shift", "category": "lang" },
+    { "id": "item2", "text": "Κενό (Space)", "category": "write" },
+    { "id": "item3", "text": "Enter / Παράγραφος", "category": "write" },
+    { "id": "item4", "text": "Τόνος", "category": "write" },
+    { "id": "item5", "text": "Shift", "category": "caps" },
+    { "id": "item6", "text": "Caps Lock", "category": "caps" },
+    { "id": "item7", "text": "Tab", "category": "edit" },
+    { "id": "item8", "text": "Σβήνω (Backspace)", "category": "edit" }
+  ]
+}

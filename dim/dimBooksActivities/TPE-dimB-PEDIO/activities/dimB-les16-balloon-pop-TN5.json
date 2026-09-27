@@ -1,0 +1,19 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Σωστός Φάκελος",
+  "subtitle": "Σπάσε τα μπαλόνια που ταιριάζουν στον φάκελο Έγγραφα",
+  "instruction": "Σπάσε μόνο τα αρχεία που ανήκουν στον φάκελο Έγγραφα",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Κείμενο παραμυθιού", "correct": true, "color": "#4CAF50" },
+    { "text": "Ζωγραφιά γάτας", "correct": false, "color": "#f44336" },
+    { "text": "Έκθεση σχολείου", "correct": true, "color": "#4CAF50" },
+    { "text": "Φωτογραφία διακοπών", "correct": false, "color": "#f44336" },
+    { "text": "Λίστα αγορών", "correct": true, "color": "#4CAF50" },
+    { "text": "Σχεδιάσεις γεωμετρίας", "correct": false, "color": "#f44336" },
+    { "text": "Μύθοι του Αισώπου", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρτ ποστάλ", "correct": false, "color": "#f44336" }
+  ]
+}

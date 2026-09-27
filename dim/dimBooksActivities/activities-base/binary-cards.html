@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δυαδικοί Αριθμοί</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:30px;text-align:center}
+h1{color:#4a4a4a;font-size:1.8em;margin-bottom:5px}
+h2{color:#7f8c8d;font-size:1.1em;font-weight:normal;margin-bottom:15px}
+.instructions{background:#f0f4ff;border-radius:15px;padding:15px;margin-bottom:20px;color:#555;font-size:0.95em;line-height:1.5}
+.target{font-size:1.5em;color:#e74c3c;font-weight:bold;margin:15px 0;text-shadow:2px 2px 4px rgba(0,0,0,0.1)}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0}
+.card{width:90px;height:120px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;font-size:1.4em;font-weight:bold;user-select:none;-webkit-user-select:none;border:3px solid #ddd;position:relative}
+.card.off{background:#ecf0f1;color:#bdc3c7;border-color:#ddd}
+.card.on{background:linear-gradient(135deg,#f39c12,#e74c3c);color:#fff;border-color:#e67e22;box-shadow:0 5px 20px rgba(243,156,18,0.4);transform:scale(1.05)}
+.card .val{font-size:1.3em}
+.card .bit{font-size:1.2em;opacity:0.8;margin-top:5px}
+.total{font-size:1em;margin:15px 0;color:#2c3e50}
+.total span{color:#27ae60;font-weight:bold;font-size:1.1em}
+.btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;padding:12px 30px;border-radius:15px;font-size:1.1em;cursor:pointer;transition:all 0.3s;box-shadow:0 5px 15px rgba(39,174,96,0.3)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(39,174,96,0.4)}
+.btn:disabled{background:#bdc3c7;cursor:not-allowed;transform:none;box-shadow:none}
+.score-display{margin-top:15px;font-size:1.1em;color:#7f8c8d}
+.score-display span{color:#e74c3c;font-weight:bold}
+.hint{margin-top:10px;color:#e67e22;font-size:0.95em;min-height:20px}
+.success-anim{animation:popIn 0.5s ease}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.end-screen h1{color:#27ae60;font-size:2em;margin-bottom:15px}
+.end-screen .stars{font-size:3em;margin:20px 0}
+.end-screen p{color:#555;font-size:1.1em;margin:10px 0}
+.start-screen .emoji{font-size:3em;margin:10px 0}
+@media(max-width:500px){.card{width:60px;height:85px;font-size:1em}.card .val{font-size:1.1em}.card .bit{font-size:1em}.target{font-size:1.2em}.container{padding:15px}}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+
+let gameData=null;
+let currentChallenge=0;
+let bits=[];
+let score=0;
+
+if(!dataFile){document.getElementById('app').innerHTML='<h1>Δεν βρέθηκαν δεδομένα</h1><p>Πρόσθεσε ?data=archivo.json στο URL</p>';}
+
+function loadGame(){
+fetch(dataFile).then(r=>r.json()).then(d=>{gameData=d;showStart();}).catch(()=>{document.getElementById('app').innerHTML='<h1>Σφάλμα φόρτωσης</h1>';});
+}
+
+function showStart(){
+const app=document.getElementById('app');
+app.innerHTML='<div class="start-screen"><div class="emoji">💻</div><h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><div class="instructions">'+esc(gameData.instructions)+'</div><br><button class="btn" onclick="startGame()">Ξεκίνα! 🚀</button></div>';
+}
+
+function startGame(){
+currentChallenge=0;
+score=0;
+loadChallenge();
+}
+
+function loadChallenge(){
+if(currentChallenge>=gameData.challenges.length){showEnd();return;}
+const ch=gameData.challenges[currentChallenge];
+const numBits=gameData.bits||5;
+bits=new Array(numBits).fill(0);
+renderGame(ch);
+}
+
+function renderGame(ch){
+const numBits=bits.length;
+const values=[];
+for(let i=numBits-1;i>=0;i--)values.push(Math.pow(2,i));
+let cardsHtml='';
+for(let i=0;i<numBits;i++){
+const on=bits[i]===1;
+cardsHtml+='<div class="card '+(on?'on':'off')+'" onclick="toggleCard('+i+')"><div class="val">'+values[i]+'</div><div class="bit">'+(on?'1':'0')+'</div></div>';
+}
+const total=bits.reduce((s,b,idx)=>s+b*values[idx],0);
+const match=total===ch.decimal;
+const app=document.getElementById('app');
+app.innerHTML='<h1>'+esc(gameData.title)+'</h1><h2>Πρόκληση '+(currentChallenge+1)+'/'+gameData.challenges.length+'</h2><div class="instructions">'+esc(gameData.instructions)+'</div><div class="target">Στόχος: '+ch.decimal+'</div><div class="cards">'+cardsHtml+'</div><div class="total">Άθροισμα: <span>'+total+'</span></div><div class="hint" id="hint"></div><div class="score-display">Σκορ: <span>'+score+'/'+gameData.challenges.length+'</span></div>';
+if(match){
+score++;
+showSuccess();
+}
+}
+
+function toggleCard(idx){
+bits[idx]=bits[idx]===1?0:1;
+const ch=gameData.challenges[currentChallenge];
+renderGame(ch);
+}
+
+function showSuccess(){
+const hint=document.getElementById('hint');
+if(hint){
+hint.innerHTML='<span style="color:#27ae60;font-weight:bold;font-size:2.2em" class="success-anim">🎉 Σωστό! '+gameData.challenges[currentChallenge].decimal+' = '+bits.join('')+'</span>';
+}
+const cards=document.querySelectorAll('.card');
+cards.forEach(c=>c.style.pointerEvents='none');
+setTimeout(()=>{
+currentChallenge++;
+loadChallenge();
+},1800);
+}
+
+function showEnd(){
+const app=document.getElementById('app');
+const pct=score/gameData.challenges.length;
+let stars='';
+if(pct>=0.9)stars='⭐⭐⭐';
+else if(pct>=0.7)stars='⭐⭐';
+else if(pct>=0.5)stars='⭐';
+else stars='💪';
+app.innerHTML='<div class="end-screen"><div class="stars">'+stars+'</div><h1>Μπράβο!</h1><p>Βρήκες <strong>'+score+'</strong> από <strong>'+gameData.challenges.length+'</strong></p><br><button class="btn" onclick="startGame()">Ξαναπαίξε! 🔄</button></div>';
+}
+
+if(dataFile)loadGame();
+</script>
+</body>
+</html>

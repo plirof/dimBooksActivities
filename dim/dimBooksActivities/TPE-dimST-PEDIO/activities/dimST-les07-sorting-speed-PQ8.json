@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εφέ Παιχνιδιού",
+  "subtitle": "Ταξινόμησε κάθε όρο στη σωστή κατηγορία",
+  "instructions": "Πάτα αριστερό βέλος για Ηχητικά Εφέ, δεξιό για Γραφικά Εφέ",
+  "categories": [
+    { "id": "sound", "name": "Ηχητικά Εφέ", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "graphic", "name": "Γραφικά Εφέ", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Ήχος αλλαγής επιπέδου", "category": "sound" },
+    { "text": "Αλλαγή ενδυμασίας", "category": "graphic" },
+    { "text": "Μουσική έναρξης", "category": "sound" },
+    { "text": "Κίνηση χαρακτήρα", "category": "graphic" },
+    { "text": "Ήχος επιτυχίας", "category": "sound" },
+    { "text": "Αλλαγή χρώματος σκηνής", "category": "graphic" },
+    { "text": "Ήχος λάθους", "category": "sound" },
+    { "text": "Εμφάνιση μηνύματος", "category": "graphic" },
+    { "text": "Φωνητική οδηγία", "category": "sound" },
+    { "text": "Μεγέθυνση χαρακτήρα", "category": "graphic" }
+  ],
+  "duration": 30
+}

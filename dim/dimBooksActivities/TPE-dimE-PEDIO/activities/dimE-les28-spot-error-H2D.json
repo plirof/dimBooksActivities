@@ -1,0 +1,56 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακές Υπηρεσίες",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ψηφιακή", "error": false},
+        {"text": "υπογραφή", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "μικρότερη", "error": true, "correct": "ίδια", "feedback": "Η ψηφιακή υπογραφή έχει την ΙΔΙΑ νομική ισχύ με τη χειρόγραφη!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ψηφιακό", "error": false},
+        {"text": "πιστοποιητικό", "error": false},
+        {"text": "επιβεβαιώνει", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "διεύθυνση", "error": true, "correct": "ταυτότητα", "feedback": "Το ψηφιακό πιστοποιητικό επιβεβαιώνει την ΤΑΥΤΟΤΗΤΑ, όχι τη διεύθυνση!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ψηφιακές", "error": false},
+        {"text": "υπηρεσίες", "error": false},
+        {"text": "του", "error": false},
+        {"text": "πολίτη", "error": false},
+        {"text": "βρίσκονται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "google", "error": true, "correct": "gov.gr", "feedback": "Οι υπηρεσίες βρίσκονται στο GOV.GR, όχι στο Google!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "QR", "error": false},
+        {"text": "κωδικοί", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "τυχαία", "error": true, "correct": "γραμμωτοί", "feedback": "Οι QR είναι ΓΡΑΜΜΩΤΟΙ κώδικες, όχι τυχαίοι!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "κρυπτογραφική", "error": false},
+        {"text": "σύνδεση", "error": false},
+        {"text": "εξασφαλίζει", "error": false},
+        {"text": "την", "error": false},
+        {"text": "αλλοίωση", "error": true, "correct": "ακεραιότητα", "feedback": "Η κρυπτογραφική σύνδεση εξασφαλίζει την ΑΚΕΡΑΙΟΤΗΤΑ του εγγράφου!"}
+      ]
+    }
+  ]
+}

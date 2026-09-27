@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Νέες Εντολές",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Αλλιώς", "error": false, "correct": "Αλλιώς", "feedback": "" },
+        { "text": "Αλιώς", "error": true, "correct": "Αλλιώς", "feedback": "Γράφεται Αλλιώς με δύο λ" },
+        { "text": "Ώσπου", "error": false, "correct": "Ώσπου", "feedback": "" },
+        { "text": "Ωσπου", "error": true, "correct": "Ώσπου", "feedback": "Χρειάζεται τόνος στο Ώ" },
+        { "text": "Σχόλιο", "error": false, "correct": "Σχόλιο", "feedback": "" },
+        { "text": "Σχόλεο", "error": true, "correct": "Σχόλιο", "feedback": "Γράφεται Σχόλιο" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Στοίβα", "error": false, "correct": "Στοίβα", "feedback": "" },
+        { "text": "Στοιβα", "error": true, "correct": "Στοίβα", "feedback": "Χρειάζεται τόνος στο Στοίβα" },
+        { "text": "Κάρτα", "error": false, "correct": "Κάρτα", "feedback": "" },
+        { "text": "Κάρταρ", "error": true, "correct": "Κάρτα", "feedback": "Γράφεται Κάρτα" },
+        { "text": "Υπατία", "error": false, "correct": "Υπατία", "feedback": "" },
+        { "text": "Ηρωςνας", "error": true, "correct": "Ήρωνας", "feedback": "Γράφεται Ήρωνας" }
+      ]
+    }
+  ]
+}

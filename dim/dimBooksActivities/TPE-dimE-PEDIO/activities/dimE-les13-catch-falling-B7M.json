@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Είσοδος vs Έξοδος",
+  "subtitle": "Πιάσε τις σωστές συσκευές!",
+  "instructions": "Πιάσε τις περιφερειακές συσκευές!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Πληκτρολόγιο", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποντίκι", "correct": true, "color": "#2196F3" },
+    { "text": "Οθόνη", "correct": true, "color": "#FF9800" },
+    { "text": "Ηχεία", "correct": true, "color": "#9C27B0" },
+    { "text": "Κάμερα", "correct": true, "color": "#00BCD4" },
+    { "text": "Μικρόφωνο", "correct": true, "color": "#E91E63" },
+    { "text": "Επεξεργαστής", "correct": true, "color": "#8BC34A" },
+    { "text": "Δίσκος", "correct": true, "color": "#3F51B5" },
+    { "text": "Ψυγείο", "correct": false, "color": "#F44336" },
+    { "text": "Φούρνος", "correct": false, "color": "#795548" }
+  ]
+}

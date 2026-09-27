@@ -1,0 +1,12 @@
+{
+  "title": "Φτιάξε το διάγραμμα!",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Στέλνω ένα email",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Άνοιξε τον υπολογιστή"},
+    {"id": 2, "type": "action", "text": "Γράψε το μήνυμα"},
+    {"id": 3, "type": "action", "text": "Βάλε τη διεύθυνση email"},
+    {"id": 4, "type": "action", "text": "Πάτα αποστολή"}
+  ],
+  "correctOrder": [1, 2, 3, 4]
+}

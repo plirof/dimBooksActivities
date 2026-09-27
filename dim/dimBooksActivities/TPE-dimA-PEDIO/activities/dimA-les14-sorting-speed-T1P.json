@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Email ή Ταχυδρομείο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Email ή Ταχυδρομείο;",
+  "categories": [
+    {"id": "email", "name": "Email", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "taxidromio", "name": "Ταχυδρομείο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Υπολογιστής", "category": "email"},
+    {"text": "Γραμματόσημο", "category": "taxidromio"},
+    {"text": "Πατήστε αποστολή", "category": "email"},
+    {"text": "Ταχυδρόμος", "category": "taxidromio"},
+    {"text": "Ηλεκτρονικό μήνυμα", "category": "email"},
+    {"text": "Φάκελος", "category": "taxidromio"},
+    {"text": "Γρήγορη αποστολή", "category": "email"},
+    {"text": "Χαρτί", "category": "taxidromio"}
+  ],
+  "duration": 30
+}

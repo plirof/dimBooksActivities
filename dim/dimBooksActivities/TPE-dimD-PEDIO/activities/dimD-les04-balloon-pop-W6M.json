@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αριθμητικά Αποτελέσματα",
+  "subtitle": "Σπάσε τα σωστά αποτελέσματα!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστά αποτελέσματα πράξεων",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "200 ÷ 10 = 20", "correct": true, "color": "#4caf50" },
+    { "text": "200 ÷ 10 = 15", "correct": false, "color": "#f44336" },
+    { "text": "20 × 10 = 200", "correct": true, "color": "#2196f3" },
+    { "text": "20 × 10 = 100", "correct": false, "color": "#ff9800" },
+    { "text": "200 ÷ 5 = 40", "correct": true, "color": "#8bc34a" },
+    { "text": "200 ÷ 5 = 45", "correct": false, "color": "#9c27b0" },
+    { "text": "200 ÷ 8 = 25", "correct": true, "color": "#00bcd4" },
+    { "text": "10 × 10 = 200", "correct": false, "color": "#ff5722" },
+    { "text": "200 ÷ 20 = 10", "correct": true, "color": "#607d8b" },
+    { "text": "40 × 5 = 300", "correct": false, "color": "#e91e63" }
+  ]
+}

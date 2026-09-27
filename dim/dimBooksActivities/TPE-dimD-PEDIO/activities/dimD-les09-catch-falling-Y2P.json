@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Άσπρο ή Μαύρο",
+  "subtitle": "Πιάσε τα σωστά!",
+  "instructions": "Πιάσε μόνο ό,τι ισχύει για τον έξυπνο τρόπο οδήγησης",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Κίνηση σε άσπρο", "correct": true, "color": "#4caf50" },
+    { "text": "Κίνηση σε μαύρο", "correct": false, "color": "#f44336" },
+    { "text": "Σταματά σε μαύρη γραμμή", "correct": true, "color": "#2196f3" },
+    { "text": "Αγνοεί μαύρη γραμμή", "correct": false, "color": "#ff9800" },
+    { "text": "Χρησιμοποιεί αισθητήρα", "correct": true, "color": "#8bc34a" },
+    { "text": "Δεν έχει αισθητήρα", "correct": false, "color": "#9c27b0" },
+    { "text": "Πάει πίσω πριν στρίψει", "correct": true, "color": "#00bcd4" },
+    { "text": "Στρίφει χωρίς προετοιμασία", "correct": false, "color": "#ff5722" }
+  ]
+}

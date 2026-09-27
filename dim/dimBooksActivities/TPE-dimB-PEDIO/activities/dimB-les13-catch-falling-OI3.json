@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Επιφάνεια Εργασίας",
+  "subtitle": "Πιάσε μόνο στοιχεία παραθύρου!",
+  "instructions": "Πιάσε μόνο ΣΤΟΙΧΕΙΑ ΠΑΡΑΘΥΡΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Γραμμή τίτλου", "correct": true, "color": "#4CAF50"},
+    {"text": "Σαρωτής", "correct": false, "color": "#f44336"},
+    {"text": "Κουμπί κλεισίματος", "correct": true, "color": "#2196F3"},
+    {"text": "Μικρόφωνο", "correct": false, "color": "#FF9800"},
+    {"text": "Γραμμή εργασιών", "correct": true, "color": "#9C27B0"},
+    {"text": "Κάμερα", "correct": false, "color": "#E91E63"},
+    {"text": "Παράθυρο", "correct": true, "color": "#009688"},
+    {"text": "Μνήμη φλας", "correct": false, "color": "#FFC107"},
+    {"text": "Εικονίδιο", "correct": true, "color": "#795548"},
+    {"text": "Εκτυπωτής", "correct": false, "color": "#607D8B"}
+  ]
+}

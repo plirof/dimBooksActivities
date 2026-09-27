@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πράξεις",
+  "subtitle": "Ταξινόμησε κάθε πράξη",
+  "instructions": "Πάτα αριστερό βέλος για Πρόσθεση/Πολλαπλασιασμό, δεξιό για Αφαίρεση/Διαίρεση",
+  "categories": [
+    { "id": "pos", "name": "Πρόσθεση / Πολλαπλασιασμός", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "neg", "name": "Αφαίρεση / Διαίρεση", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "3 + 5 = 8", "category": "pos" },
+    { "text": "10 - 4 = 6", "category": "neg" },
+    { "text": "2 * 6 = 12", "category": "pos" },
+    { "text": "15 / 3 = 5", "category": "neg" },
+    { "text": "7 + 2 = 9", "category": "pos" },
+    { "text": "20 - 8 = 12", "category": "neg" },
+    { "text": "4 * 3 = 12", "category": "pos" },
+    { "text": "12 / 4 = 3", "category": "neg" },
+    { "text": "5 + 9 = 14", "category": "pos" },
+    { "text": "18 - 7 = 11", "category": "neg" }
+  ],
+  "duration": 30
+}

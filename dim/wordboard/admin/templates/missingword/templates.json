@@ -1,0 +1,124 @@
+{
+  "templates": [
+    {
+      "id": "missingword_sentences_001",
+      "name": "Simple Sentences",
+      "description": "Fill in the missing word in simple sentences",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["sentences", "vocabulary", "elementary"],
+      "items": [
+        {"text": "The cat is sleeping on the ______.", "answer": "BED"},
+        {"text": "I like to eat ______ for breakfast.", "answer": "EGGS"},
+        {"text": "The sun is ______ in the sky.", "answer": "BRIGHT"},
+        {"text": "Please close the ______ when you leave.", "answer": "DOOR"},
+        {"text": "My favorite color is ______.", "answer": "BLUE"},
+        {"text": "The bird can ______ in the sky.", "answer": "FLY"},
+        {"text": "I brush my ______ every morning.", "answer": "TEETH"},
+        {"text": "The water is very ______ today.", "answer": "COLD"},
+        {"text": "Please ______ me the book.", "answer": "GIVE"},
+        {"text": "The ______ is shining brightly.", "answer": "SUN"}
+      ]
+    },
+    {
+      "id": "missingword_verbs_001",
+      "name": "Action Words",
+      "description": "Complete sentences with the correct action word",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["verbs", "actions", "grammar"],
+      "items": [
+        {"text": "The dog likes to ______ in the park.", "answer": "RUN"},
+        {"text": "Birds ______ in the trees.", "answer": "SING"},
+        {"text": "I ______ my homework every day.", "answer": "DO"},
+        {"text": "She ______ to music every morning.", "answer": "LISTENS"},
+        {"text": "The cat ______ mice.", "answer": "CATCHES"},
+        {"text": "We ______ basketball on Saturdays.", "answer": "PLAY"},
+        {"text": "The baby ______ when she is hungry.", "answer": "CRIES"},
+        {"text": "The teacher ______ us math.", "answer": "TEACHES"},
+        {"text": "Fish ______ in the water.", "answer": "SWIM"},
+        {"text": "The leaves ______ in the wind.", "answer": "DANCE"}
+      ]
+    },
+    {
+      "id": "missingword_animals_001",
+      "name": "Animal Facts",
+      "description": "Complete sentences about animals",
+      "category": "missingword",
+      "difficulty": "easy",
+      "tags": ["animals", "facts", "science"],
+      "items": [
+        {"text": "The lion is called the ______ of the jungle.", "answer": "KING"},
+        {"text": "Elephants have long ______ that they use like arms.", "answer": "TRUNKS"},
+        {"text": "Giraffes have very long ______ to reach leaves.", "answer": "NECKS"},
+        {"text": "Penguins cannot ______ but they can swim.", "answer": "FLY"},
+        {"text": "A group of lions is called a ______.", "answer": "PRIDE"},
+        {"text": "Bats are the only mammals that can ______.", "answer": "FLY"},
+        {"text": "Cheetahs are the fastest ______ on land.", "answer": "ANIMALS"},
+        {"text": "Octopuses have eight ______.", "answer": "TENTACLES"},
+        {"text": "Frogs start as ______ and turn into frogs.", "answer": "TADPOLES"},
+        {"text": "Butterflies have ______ wings with colorful patterns.", "answer": "PATTERNED"}
+      ]
+    },
+    {
+      "id": "missingword_science_001",
+      "name": "Science Facts",
+      "description": "Complete sentences about scientific concepts",
+      "category": "missingword",
+      "difficulty": "medium",
+      "tags": ["science", "facts", "biology"],
+      "items": [
+        {"text": "Plants need ______, water, and sunlight to grow.", "answer": "SOIL"},
+        {"text": "The ______ is the center of our solar system.", "answer": "SUN"},
+        {"text": "Water turns into ice when it gets very ______.", "answer": "COLD"},
+        {"text": "The ______ is the largest organ in the human body.", "answer": "SKIN"},
+        {"text": "Rainbow appears when sunlight hits water ______ in the air.", "answer": "DROPLETS"},
+        {"text": "Our body needs ______ to carry oxygen in the blood.", "answer": "BLOOD"},
+        {"text": "The earth is surrounded by a layer of gas called the ______.", "answer": "ATMOSPHERE"},
+        {"text": "Magnets have two ______: north and south.", "answer": "POLES"},
+        {"text": "Sound travels in the form of ______.", "answer": "WAVES"},
+        {"text": "The process by which plants make food is called ______.", "answer": "PHOTOSYNTHESIS"}
+      ]
+    },
+    {
+      "id": "missingword_geography_001",
+      "name": "Geography Facts",
+      "description": "Complete sentences about geography and places",
+      "category": "missingword",
+      "difficulty": "medium",
+      "tags": ["geography", "world", "places"],
+      "items": [
+        {"text": "The longest river in the world is the ______ River.", "answer": "NILE"},
+        {"text": "The largest ocean on Earth is the ______ Ocean.", "answer": "PACIFIC"},
+        {"text": "France is famous for the ______ Tower.", "answer": "EIFFEL"},
+        {"text": "Australia is both a country and a ______.", "answer": "CONTINENT"},
+        {"text": "The hottest desert in the world is the ______ Desert.", "answer": "SAHARA"},
+        {"text": "The North ______ is the top of the Earth.", "answer": "POLE"},
+        {"text": "Brazil is famous for its ______ rainforests.", "answer": "AMAZON"},
+        {"text": "Japan consists of many ______ islands.", "answer": "VOLCANIC"},
+        {"text": "The ______ Mountains are the highest in the world.", "answer": "HIMALAYAN"},
+        {"text": "Greece is famous for its ancient ______ temples.", "answer": "GREEK"}
+      ]
+    },
+    {
+      "id": "missingword_history_001",
+      "name": "History Facts",
+      "description": "Complete sentences about historical events and figures",
+      "category": "missingword",
+      "difficulty": "medium",
+      "tags": ["history", "events", "facts"],
+      "items": [
+        {"text": "The first President of the United States was ______ Washington.", "answer": "GEORGE"},
+        {"text": "The Great ______ Wall is in China.", "answer": "WALL"},
+        {"text": "Ancient Egyptians built ______ as tombs for pharaohs.", "answer": "PYRAMIDS"},
+        {"text": "The ______ Empire was ruled by Julius Caesar.", "answer": "ROMAN"},
+        {"text": "Christopher ______ discovered America in 1492.", "answer": "COLUMBUS"},
+        {"text": "The Titanic sank on its ______ voyage.", "answer": "MAIDEN"},
+        {"text": "The ______ Revolution changed how people work.", "answer": "INDUSTRIAL"},
+        {"text": "Neil Armstrong was the first man to walk on the ______.", "answer": "MOON"},
+        {"text": "The Berlin ______ divided East and West Germany.", "answer": "WALL"},
+        {"text": "Martin Luther King Jr. gave his famous 'I Have a ______' speech.", "answer": "DREAM"}
+      ]
+    }
+  ]
+}

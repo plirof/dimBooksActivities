@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τεχνητή Νοημοσύνη",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "ai", "name": "Τεχνητή Νοημοσύνη", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "ml", "name": "Μηχανική Μάθηση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μιμείται ανθρώπινη σκέψη", "category": "ai"},
+    {"text": "Αναγνώριση μοτίβων", "category": "ml"},
+    {"text": "Ψηφιακός βοηθός", "category": "ai"},
+    {"text": "Εκπαίδευση με παραδείγματα", "category": "ml"},
+    {"text": "AutoDraw", "category": "ai"},
+    {"text": "Κοινά στοιχεία δεδομένων", "category": "ml"},
+    {"text": "Προτάσεις ταινιών", "category": "ai"},
+    {"text": "Αλγόριθμοι αναγνώρισης", "category": "ml"},
+    {"text": "Chatbot", "category": "ai"},
+    {"text": "Μεγάλος όγκος δεδομένων", "category": "ml"}
+  ],
+  "duration": 30
+}

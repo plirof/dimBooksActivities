@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Στοιχεία Χάρτη",
+  "subtitle": "Σπάσε τα μπαλόνια με στοιχεία εννοιολογικού χάρτη!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν στοιχεία που υπάρχουν σε έναν εννοιολογικό χάρτη.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Έννοια (σχήμα)",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "Σύνδεση (γραμμή)",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "Εικόνα",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "Υπερσύνδεσμος",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "Ήχος ήχου",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Κείμενο έννοιας",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "Τρισδιάστατο μοντέλο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Τίτλος χάρτη",
+      "correct": true,
+      "color": "#8bc34a"
+    },
+    {
+      "text": "Εικονική πραγματικότητα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Διεύθυνση ιστού",
+      "correct": true,
+      "color": "#e91e63"
+    }
+  ]
+}

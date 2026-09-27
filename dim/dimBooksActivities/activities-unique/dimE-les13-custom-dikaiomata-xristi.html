@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δικαιώματα Χρηστών | Μάθημα 13</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.15rem;text-align:center;margin:6px 0 2px}
+.subtitle{color:#94a3b8;font-size:.78rem;text-align:center;margin-bottom:10px}
+.desktop{max-width:750px;width:100%;background:#0f172a;border-radius:16px;border:2px solid #1e293b;padding:12px;position:relative}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:#1e293b;border-radius:10px;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.topbar-left{display:flex;align-items:center;gap:8px}
+.user-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.user-avatar:hover{transform:scale(1.1)}
+.user-avatar.active{border-color:#fbbf24;box-shadow:0 0 10px rgba(251,191,36,.3)}
+.user-name{color:#e2e8f0;font-size:.8rem;font-weight:700}
+.user-role{color:#64748b;font-size:.6rem}
+.topbar-right{display:flex;gap:6px;align-items:center}
+.login-btn{padding:4px 12px;border:none;border-radius:8px;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s}
+.login-btn:hover{transform:translateY(-1px)}
+.login-btn.login{background:#22c55e;color:#064e3b}
+.login-btn.logout{background:#ef4444;color:#fff}
+.file-explorer{display:flex;gap:10px;min-height:300px}
+.folder-nav{width:140px;background:#1e293b;border-radius:12px;padding:8px;flex-shrink:0}
+.nav-title{color:#94a3b8;font-size:.65rem;font-weight:700;text-align:center;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #334155}
+.nav-folder{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:4px;font-size:.72rem;color:#e2e8f0}
+.nav-folder:hover{background:#334155}
+.nav-folder.active{background:#6366f1;color:#fff}
+.nav-folder.locked{opacity:.5}
+.nav-folder .folder-icon{font-size:1rem}
+.file-area{flex:1;background:#0f172a;border-radius:12px;padding:10px;border:1px solid #1e293b}
+.file-area-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1e293b}
+.file-area-title{color:#94a3b8;font-size:.7rem;font-weight:700}
+.access-badge{padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700}
+.access-badge.granted{background:rgba(34,197,94,.15);color:#4ade80}
+.access-badge.denied{background:rgba(239,68,68,.15);color:#f87171}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));grid-gap:8px}
+.file-item{background:#1e293b;border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent;position:relative}
+.file-item:hover{border-color:#6366f1;transform:translateY(-2px)}
+.file-item.locked-file{opacity:.6;cursor:not-allowed}
+.file-item .file-icon{font-size:1.8rem;display:block;margin-bottom:4px}
+.file-item .file-name{font-size:.6rem;color:#cbd5e1;line-height:1.2;word-break:break-word}
+.file-item .lock-overlay{position:absolute;top:4px;right:4px;font-size:.7rem}
+.file-preview{display:none;margin-top:10px;background:#1e293b;border-radius:12px;padding:12px;border:2px solid #334155}
+.file-preview.show{display:block}
+.file-preview .preview-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.file-preview .preview-title{color:#e2e8f0;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:6px}
+.file-preview .close-btn{background:none;border:none;color:#64748b;font-size:1.2rem;cursor:pointer}
+.file-preview .preview-content{color:#94a3b8;font-size:.75rem;line-height:1.6;padding:8px;background:#0f172a;border-radius:8px}
+.access-denied-msg{text-align:center;padding:20px;color:#f87171}
+.access-denied-msg .denied-icon{font-size:2.5rem;margin-bottom:8px}
+.access-denied-msg .denied-title{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.access-denied-msg .denied-reason{font-size:.72rem;color:#94a3b8}
+.challenge-bar{margin-top:10px;background:#1e293b;border-radius:12px;padding:10px;border:2px solid #334155}
+.challenge-title{color:#fbbf24;font-size:.75rem;font-weight:700;text-align:center;margin-bottom:8px}
+.challenge-text{color:#94a3b8;font-size:.7rem;text-align:center;line-height:1.4;margin-bottom:8px}
+.challenge-options{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.ch-opt-btn{padding:6px 14px;border:2px solid #334155;border-radius:10px;background:#0f172a;color:#e2e8f0;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s}
+.ch-opt-btn:hover{border-color:#6366f1;background:#1e1b4b}
+.ch-opt-btn.correct{border-color:#22c55e;background:rgba(34,197,94,.1);color:#4ade80}
+.ch-opt-btn.wrong{border-color:#ef4444;background:rgba(239,68,68,.1);color:#f87171}
+.score-row{display:flex;gap:10px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.score-item{background:#1e293b;border-radius:10px;padding:5px 12px;display:flex;align-items:center;gap:5px;border:1px solid #334155}
+.score-item .sl{color:#64748b;font-size:.65rem}
+.score-item .sv{color:#fbbf24;font-size:.8rem;font-weight:800}
+.os-info{position:absolute;top:4px;right:12px;font-size:.55rem;color:#475569}
+@media(max-width:600px){.file-explorer{flex-direction:column}.folder-nav{width:100%;display:flex;gap:4px;overflow-x:auto}.nav-title{display:none}.file-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .topbar > * { margin: 3px; }
+  .topbar-left > * + * { margin-left: 8px; }
+  .topbar-right > * + * { margin-left: 6px; }
+  .file-explorer > * + * { margin-left: 10px; }
+  .nav-folder > * + * { margin-left: 6px; }
+  .file-preview .preview-title > * + * { margin-left: 6px; }
+  .challenge-options > * { margin: 3px; }
+  .score-row > * { margin: 5px; }
+  .score-item > * + * { margin-left: 5px; }
+  .g61f10_0 > * + * { margin-left: 10px; }
+  @media(max-width:600px){
+    .folder-nav > * + * { margin-left: 4px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>👥 Δικαιώματα Χρηστών Υπολογιστή</h1>
+<p class="subtitle">Συνδέσου ως διαφορετικός χρήστης και δες ποιος μπορεί να ανοίξει ποιο αρχείο!</p>
+<div class="score-row">
+<div class="score-item"><span class="sl">Πόντοι:</span><span class="sv" id="pts">0</span></div>
+<div class="score-item"><span class="sl">Προσπάθειες:</span><span class="sv" id="attempts">0</span></div>
+</div>
+<div class="desktop" id="desktop">
+<div class="os-info">Λειτουργικό Σύστημα — Εικονικό</div>
+<div class="topbar">
+<div class="topbar-left">
+<div class="user-avatar" id="av1" style="background:#7c3aed" onclick="loginAs('ypatia')">Υ</div>
+<div class="user-avatar" id="av2" style="background:#2563eb" onclick="loginAs('irownas')">Η</div>
+<div id="currentUser" style="display:none"><span class="user-name" id="uName"></span><br><span class="user-role" id="uRole"></span></div>
+</div>
+<div class="topbar-right">
+<button class="login-btn login" id="loginBtn" onclick="showLoginPrompt()">🔐 Σύνδεση</button>
+</div>
+</div>
+<div class="file-explorer">
+<div class="folder-nav" id="folderNav">
+<div class="nav-title">📁 Φάκελοι</div>
+</div>
+<div class="file-area" id="fileArea">
+<div class="file-area-header">
+<span class="file-area-title" id="areaTitle">Επιλέξτε φάκελο</span>
+<span class="access-badge" id="accessBadge" style="display:none"></span>
+</div>
+<div class="file-grid" id="fileGrid">
+<div style="grid-column:1/-1;text-align:center;color:#475569;font-size:.75rem;padding:30px">🔑 Συνδεθείτε για να δείτε τα αρχεία</div>
+</div>
+<div class="file-preview" id="filePreview">
+<div class="preview-header">
+<span class="preview-title" id="previewTitle"></span>
+<button class="close-btn" onclick="closePreview()">✕</button>
+</div>
+<div class="preview-content" id="previewContent"></div>
+</div>
+</div>
+</div>
+<div class="challenge-bar" id="challengeBar">
+<div class="challenge-title">🎯 Πρόκληση</div>
+<div class="challenge-text" id="challengeText"></div>
+<div class="challenge-options" id="challengeOpts"></div>
+</div>
+</div>
+<script>
+var users={
+ypatia:{name:'Υπατία',avatar:'Υ',color:'#7c3aed',folder:'ΥΠΑΤΙΑ'},
+irownas:{name:'Ήρωνας',avatar:'Η',color:'#2563eb',folder:'ΗΡΩΝΑΣ'}
+};
+var folders=[
+{id:'shared',name:'ΚΟΙΝΟΧΡΗΣΤΑ',icon:'📂',owner:null,access:'all'},
+{id:'ypatia',name:'ΥΠΑΤΙΑ',icon:'📁',owner:'ypatia',access:'owner'},
+{id:'irownas',name:'ΗΡΩΝΑΣ',icon:'📁',owner:'irownas',access:'owner'}
+];
+var files={
+shared:[
+{id:'names',name:'ΟΝΟΜΑΤΑ ΜΑΘΗΤΩΝ ΤΑΞΗΣ',icon:'📋',content:'1. Γεωργία Παπαδοπούλου\n2. Νίκος Κωνσταντίνου\n3. Μαρία Ιωάννου\n4. Κώστας Δημητρίου\n5. Ελένη Νικολάου\n6. Υπατία Αλεξάνδρου\n7. Ήρωνας Μακρίδης'},
+{id:'schedule',name:'ΠΡΟΓΡΑΜΜΑ ΜΑΘΗΜΑΤΩΝ',icon:'📅',content:'Δευτέρα: Γλώσσα, Μαθηματικά\nΤρίτη: Φυσική, Ιστορία\nΤετάρτη: Πληροφορική, Γλώσσα\nΠέμπτη: Μαθηματικά, Γεωγραφία\nΠαρασκευή: Τέχνη, Μουσική'},
+{id:'rules',name:'ΚΑΝΟΝΕΣ ΤΑΞΗΣ',icon:'📜',content:'1. Σεβόμαστε τους συμμαθητές μας\n2. Μιλάμε με τη σειρά μας\n3. Κρατάμε καθαρή την τάξη\n4. Φροντίζουμε τον εξοπλισμό'},
+{id:'notes',name:'ΣΗΜΕΙΩΣΕΙΣ ΜΑΘΗΜΑΤΟΣ',icon:'📝',content:'Σημειώσεις Πληροφορικής:\n- Ο υπολογιστής αποθηκεύει δεδομένα σε δυαδικό κώδικα\n- Η μνήμη είναι προσωρινή, ο δίσκος μόνιμος\n- Ο επεξεργαστής είναι το «μυαλό»'}
+],
+ypatia:[
+{id:'diary',name:'ΗΜΕΡΟΛΟΓΙΟ',icon:'📔',content:'Δευτέρα 15 Μαρτίου:\nΣήμερα μάθαμε για την ψηφιοποίηση κειμένου! Είναι πολύ ενδιαφέρον πώς οι υπολογιστές χρησιμοποιούν μόνο 0 και 1.'},
+{id:'photo',name:'ΦΩΤΟΓΡΑΦΙΕΣ ΓΛΥΚΟΥ',icon:'🐕',content:'Φωτογραφία: Ο Γλυκός παίζει στο πάρκο!\nΟ Γλυκός είναι το σκυλάκι μου. Του αρέσει πολύ να τρέχει!'},
+{id:'homework',name:'ΕΡΓΑΣΙΑ ΠΛΗΡΟΦΟΡΙΚΗΣ',icon:'💻',content:'Εργασία: Τι είναι το υλικό του υπολογιστή\n- Επεξεργαστής: το «μυαλό»\n- Μνήμη: προσωρινή αποθήκευση\n- Δίσκος: μόνιμη αποθήκευση'}
+],
+irownas:[
+{id:'games',name:'ΑΓΑΠΗΜΕΝΑ ΠΑΙΧΝΙΔΙΑ',icon:'🎮',content:'Τα αγαπημένα μου παιχνίδια:\n1. Minecraft\n2. Roblox\n3. Scratch\n4. Tinkercad'},
+{id:'drawing',name:'ΖΩΓΡΑΦΙΕΣ ΜΟΥ',icon:'🎨',content:'Οι ζωγραφιές μου:\n- Ένα διαστημόπλοιο\n- Ο ήρωας μου\n- Το σχολείο μου'},
+{id:'codes',name:'ΚΩΔΙΚΟΙ SCRATCH',icon:'🧩',content:'Οι κώδikes μου στο Scratch:\n- Παιχνίδι λαβύρινθου\n- Κίνηση χαρακτήρα\n- Μετάδοση μηνυμάτων'}
+]
+};
+var currentUser=null;
+var currentFolder=null;
+var pts=0;
+var attempts=0;
+var challenges=[
+{q:'Το αρχείο «ΟΝΟΜΑΤΑ ΜΑΘΗΤΩΝ ΤΑΞΗΣ» βρίσκεται στον φάκελο ΚΟΙΝΟΧΡΗΣΤΑ. Ποιος χρήστης έχει δικαίωμα να το ανοίξει;',opts:['Μόνο η Υπατία','Μόνο ο Ήρωνας','Κανένα από τα δύο','Και τα δύο παιδιά'],correct:3,explanation:'Σωστό! Ο φάκελος ΚΟΙΝΟΧΡΗΣΤΑ έχει πρόσβαση όλοι οι χρήστες.'},
+{q:'Η Υπατία μπορεί να δει τις «ΖΩΓΡΑΦΙΕΣ ΜΟΥ» του Ήρωνα;',opts:['Ναι, είναι στην ίδια τάξη','Όχι, είναι στον προσωπικό φάκελο του Ήρωνα','Ναι, αν ξέρει τον κωδικό','Μόνο αν ο Ήρωνας τη βοηθήσει'],correct:1,explanation:'Σωστό! Ο φάκελος ΗΡΩΝΑΣ είναι προσωπικός. Μόνο ο Ήρωνας έχει δικαίωμα πρόσβασης.'},
+{q:'Ο Ήρωνας θέλει να διαβάσει το «ΗΜΕΡΟΛΟΓΙΟ» της Υπατίας. Μπορεί;',opts:['Ναι, είναι φίλοι','Ναι, αν μπει στον φάκελο ΥΠΑΤΙΑ','Όχι, ο φάκελος ΥΠΑΤΙΑ είναι προσωπικός','Ναι, αν ρωτήσει τη δασκάλα'],correct:2,explanation:'Σωστό! Ο φάκελος ΥΠΑΤΙΑ είναι προσωπικός. Κανένας άλλος χρήστης δεν μπορεί να τον ανοίξει.'},
+{q:'Πού πρέπει να αποθηκεύσει η Υπατία ένα αρχείο για να μπορεί να το δει και ο Ήρωνας;',opts:['Στον φάκελο ΥΠΑΤΙΑ','Στον φάκελο ΗΡΩΝΑΣ','Στον φάκελο ΚΟΙΝΟΧΡΗΣΤΑ','Στη μνήμη του υπολογιστή'],correct:2,explanation:'Σωστό! Ο φάκελος ΚΟΙΝΟΧΡΗΣΤΑ έχουν δικαίωμα πρόσβασης όλοι οι χρήστες.'}
+];
+var currentChallenge=0;
+var challengeAnswered={};
+function init(){
+buildFolderNav();
+loadChallenge();
+}
+function buildFolderNav(){
+var nav=document.getElementById('folderNav');
+var title=nav.querySelector('.nav-title');
+nav.innerHTML='';
+nav.appendChild(title);
+for(var i=0;i<folders.length;i++){
+var f=folders[i];
+var isLocked=currentUser&&f.owner&&f.owner!==currentUser;
+var div=document.createElement('div');
+div.className='nav-folder'+(currentFolder===f.id?' active':'')+(isLocked?' locked':'');
+div.innerHTML='<span class="folder-icon">'+(isLocked?'🔒':f.icon)+'</span><span>'+f.name+'</span>';
+div.onclick=(function(fid,locked){return function(){
+if(locked){showAccessDeniedFolder(fid);return;}
+openFolder(fid);
+};})(f.id,isLocked);
+nav.appendChild(div);
+}
+}
+function showLoginPrompt(){
+var html='<div style="text-align:center;padding:10px">';
+html+='<p style="color:#94a3b8;font-size:.75rem;margin-bottom:8px">Επίλεξε χρήστη για σύνδεση:</p>';
+html+='<div class="g61f10_0" style="display:flex;gap:10px;justify-content:center">';
+html+='<div onclick="loginAs(\'ypatia\')" style="cursor:pointer;padding:10px;background:#7c3aed22;border:2px solid #7c3aed;border-radius:12px;text-align:center;width:100px">';
+html+='<div style="font-size:1.5rem">👩‍🎓</div><div style="color:#e2e8f0;font-size:.75rem;font-weight:700">Υπατία</div></div>';
+html+='<div onclick="loginAs(\'irownas\')" style="cursor:pointer;padding:10px;background:#2563eb22;border:2px solid #2563eb;border-radius:12px;text-align:center;width:100px">';
+html+='<div style="font-size:1.5rem">👨‍🎓</div><div style="color:#e2e8f0;font-size:.75rem;font-weight:700">Ήρωνας</div></div>';
+html+='</div></div>';
+document.getElementById('fileGrid').innerHTML=html;
+document.getElementById('areaTitle').textContent='Επιλέξτε χρήστη';
+}
+function loginAs(userId){
+currentUser=userId;
+var u=users[userId];
+document.getElementById('av1').classList.toggle('active',userId==='ypatia');
+document.getElementById('av2').classList.toggle('active',userId==='irownas');
+document.getElementById('uName').textContent=u.name;
+document.getElementById('uRole').textContent='Συνδεδεμένος χρήστης';
+document.getElementById('currentUser').style.display='inline-block';
+document.getElementById('loginBtn').textContent='🚪 Αποσύνδεση';
+document.getElementById('loginBtn').className='login-btn logout';
+document.getElementById('loginBtn').onclick=function(){logout();};
+currentFolder=null;
+closePreview();
+buildFolderNav();
+openFolder('shared');
+showFeedback('✅ Συνδέθηκες ως '+u.name,3);
+}
+function logout(){
+currentUser=null;
+currentFolder=null;
+document.getElementById('av1').classList.remove('active');
+document.getElementById('av2').classList.remove('active');
+document.getElementById('currentUser').style.display='none';
+document.getElementById('loginBtn').textContent='🔐 Σύνδεση';
+document.getElementById('loginBtn').className='login-btn login';
+document.getElementById('loginBtn').onclick=function(){showLoginPrompt();};
+closePreview();
+buildFolderNav();
+document.getElementById('fileGrid').innerHTML='<div style="grid-column:1/-1;text-align:center;color:#475569;font-size:.75rem;padding:30px">🔑 Συνδεθείτε για να δείτε τα αρχεία</div>';
+document.getElementById('areaTitle').textContent='Επιλέξτε φάκελο';
+document.getElementById('accessBadge').style.display='none';
+showFeedback('🔒 Αποσυνδέθηκες',2);
+}
+function openFolder(folderId){
+currentFolder=folderId;
+var f=folders.find(function(x){return x.id===folderId;});
+var fileList=files[folderId];
+document.getElementById('areaTitle').textContent=f.icon+' '+f.name;
+var badge=document.getElementById('accessBadge');
+if(!currentUser){
+badge.style.display='none';
+}else if(f.access==='all'){
+badge.textContent='✅ Πρόσβαση: Όλοι';
+badge.className='access-badge granted';
+badge.style.display='inline-block';
+}else if(f.owner===currentUser){
+badge.textContent='✅ Πρόσβαση: Ιδιοκτήτης';
+badge.className='access-badge granted';
+badge.style.display='inline-block';
+}else{
+badge.textContent='🚫 Πρόσβαση: Αρνούνται';
+badge.className='access-badge denied';
+badge.style.display='inline-block';
+}
+buildFolderNav();
+renderFiles(folderId);
+closePreview();
+}
+function renderFiles(folderId){
+var grid=document.getElementById('fileGrid');
+grid.innerHTML='';
+var fileList=files[folderId];
+if(!fileList)return;
+for(var i=0;i<fileList.length;i++){
+var file=fileList[i];
+var canAccess=currentUser&&(folders.find(function(x){return x.id===folderId;}).access==='all'||folders.find(function(x){return x.id===folderId;}).owner===currentUser);
+var div=document.createElement('div');
+div.className='file-item'+(canAccess?'':' locked-file');
+div.innerHTML='<span class="file-icon">'+file.icon+'</span><span class="file-name">'+file.name+'</span>';
+if(!canAccess)div.innerHTML+='<span class="lock-overlay">🔒</span>';
+if(canAccess){
+div.onclick=(function(fid,fl){return function(){openFile(fid,fl);};})(folderId,file);
+}else{
+div.onclick=(function(fn){return function(){
+showFeedback('🔒 Δεν έχεις δικαίωμα πρόσβασης στο αρχείο «'+fn+'»!',3);
+};})(file.name);
+}
+grid.appendChild(div);
+}
+}
+function openFile(folderId,file){
+var f=folders.find(function(x){return x.id===folderId;});
+var canAccess=currentUser&&(f.access==='all'||f.owner===currentUser);
+var preview=document.getElementById('filePreview');
+var title=document.getElementById('previewTitle');
+var content=document.getElementById('previewContent');
+if(canAccess){
+title.innerHTML=file.icon+' '+file.name;
+content.textContent=file.content;
+content.style.color='#94a3b8';
+preview.classList.add('show');
+pts+=2;
+document.getElementById('pts').textContent=pts;
+}else{
+title.innerHTML='🔒 '+file.name;
+content.innerHTML='<div class="access-denied-msg"><div class="denied-icon">🚫</div><div class="denied-title">Δεν έχετε δικαίωμα πρόσβασης</div><div class="denied-reason">Αυτό το αρχείο ανήκει σε άλλον χρήστη. Μόνο ο ιδιοκτήτης μπορεί να το ανοίξει.</div></div>';
+preview.classList.add('show');
+}
+}
+function closePreview(){
+document.getElementById('filePreview').classList.remove('show');
+}
+function showAccessDeniedFolder(folderId){
+var f=folders.find(function(x){return x.id===folderId;});
+var ownerName=users[f.owner]?users[f.owner].name:'';
+showFeedback('🔒 Ο φάκελος «'+f.name+'» ανήκει στον/στην '+ownerName+'. Μόνο αυτός/ή μπορεί να τον ανοίξει!',4);
+}
+function loadChallenge(){
+if(currentChallenge>=challenges.length){
+document.getElementById('challengeBar').innerHTML='<div style="text-align:center;color:#4ade80;font-weight:700;padding:6px">🎉 Μπράβο! Ολοκλήρωσες όλες τις προκλήσεις!</div>';
+return;
+}
+var ch=challenges[currentChallenge];
+document.getElementById('challengeText').textContent=ch.q;
+var opts=document.getElementById('challengeOpts');
+opts.innerHTML='';
+for(var i=0;i<ch.opts.length;i++){
+var btn=document.createElement('button');
+btn.className='ch-opt-btn';
+btn.textContent=String.fromCharCode(945+i)+'. '+ch.opts[i];
+btn.onclick=(function(idx){return function(){answerChallenge(idx);};})(i);
+opts.appendChild(btn);
+}
+}
+function answerChallenge(idx){
+if(challengeAnswered[currentChallenge])return;
+challengeAnswered[currentChallenge]=true;
+attempts++;
+document.getElementById('attempts').textContent=attempts;
+var ch=challenges[currentChallenge];
+var btns=document.querySelectorAll('.ch-opt-btn');
+btns.forEach(function(b,i){
+if(i===ch.correct)b.classList.add('correct');
+if(i===idx&&i!==ch.correct)b.classList.add('wrong');
+b.style.pointerEvents='none';
+});
+if(idx===ch.correct){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+showFeedback('✅ '+ch.explanation,4);
+}else{
+showFeedback('❌ Λάθος. Η σωστή απάντηση: '+ch.opts[ch.correct],4);
+}
+setTimeout(function(){
+currentChallenge++;
+loadChallenge();
+},2500);
+}
+var feedbackTimer=null;
+function showFeedback(msg,duration){
+var area=document.getElementById('fileArea');
+var existing=area.querySelector('.temp-fb');
+if(existing)existing.remove();
+if(feedbackTimer)clearTimeout(feedbackTimer);
+var div=document.createElement('div');
+div.className='temp-fb';
+div.style.cssText='position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid #334155;border-radius:10px;padding:8px 16px;color:#e2e8f0;font-size:.72rem;font-weight:600;white-space:nowrap;z-index:10';
+div.textContent=msg;
+area.style.position='relative';
+area.appendChild(div);
+feedbackTimer=setTimeout(function(){div.remove();},duration*1000);
+}
+init();
+</script>
+</body>
+</html>

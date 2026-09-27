@@ -1,0 +1,21 @@
+{
+  "title": "Πιάστε τα: Τι έχει το διαδραστικό βιβλίο;",
+  "subtitle": "Πιάστε μόνο διαδραστικό περιεχόμενο",
+  "instructions": "Πιάστε τι έχει το διαδραστικό βιβλίο. Απόφυγε τα χάρτινα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Βίντεο", "correct": true, "color": "#4CAF50" },
+    { "text": "Μολύβι", "correct": false, "color": "#f44336" },
+    { "text": "Κουίζ", "correct": true, "color": "#4CAF50" },
+    { "text": "Γόμα", "correct": false, "color": "#f44336" },
+    { "text": "Παιχνίδι", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπογιές", "correct": false, "color": "#f44336" },
+    { "text": "Ήχος", "correct": true, "color": "#4CAF50" },
+    { "text": "Χάρακας", "correct": false, "color": "#f44336" },
+    { "text": "Παρουσίαση", "correct": true, "color": "#4CAF50" },
+    { "text": "Ψαλίδι", "correct": false, "color": "#f44336" }
+  ]
+}

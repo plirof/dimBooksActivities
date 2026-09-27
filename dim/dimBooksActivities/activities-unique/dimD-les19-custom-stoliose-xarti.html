@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Στολίζω τον Χάρτη μου - Βήματα</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:860px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#92400e,#d97706);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fffbeb;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#92400e;text-align:center;line-height:1.5}
+.step-area{background:#fefce8;border-radius:16px;border:2px dashed #fde68a;padding:16px;margin-bottom:14px;min-height:320px}
+.step-slot{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #fde68a;border-radius:14px;padding:12px 16px;margin-bottom:8px;min-height:54px;transition:all .3s}
+.step-slot .step-num{width:32px;height:32px;border-radius:50%;background:#d97706;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em;flex-shrink:0}
+.step-slot .step-content{flex:1;font-size:.92em;color:#78350f}
+.step-slot.filled{border-color:#d97706;background:#fffbeb}
+.step-slot.filled .step-content{font-weight:500}
+.step-slot.drag-over{border-color:#92400e;background:#fef3c7;transform:scale(1.01)}
+.pool-area{background:#fefce8;border-radius:16px;border:2px solid #fde68a;padding:16px;margin-bottom:14px}
+.pool-area h3{text-align:center;color:#92400e;margin-bottom:12px;font-size:1em}
+.step-pool{display:flex;flex-direction:column;gap:8px}
+.step-card{padding:12px 16px;background:#fff;border:2px solid #fde68a;border-radius:14px;cursor:grab;font-size:.92em;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);user-select:none;touch-action:none;display:flex;align-items:center;gap:10px;color:#78350f}
+.step-card:hover{transform:translateX(4px);box-shadow:0 4px 14px rgba(0,0,0,.1);border-color:#d97706}
+.step-card:active{cursor:grabbing}
+.step-card.dragging{opacity:.35}
+.step-card.placed{display:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:10px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(146,64,14,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#92400e}
+@media(max-width:550px){.step-slot{padding:10px 12px}.step-card{font-size:.85em;padding:10px 12px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .step-slot > * + * { margin-left: 12px; }
+  .step-pool > * + * { margin-top: 8px; }
+  .step-card > * + * { margin-left: 10px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎨 Στολίζω τον Χάρτη μου: Εισαγωγή Εικόνας</h1>
+<p>Βάλε τα βήματα στη σωστή σειρά για να προσθέσεις μια εικόνα σε μία έννοια!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Θυμήσου: Στο CmapTools μπορείς να εμπλουτίσεις τον εννοιολογικό χάρτη σου με εικόνες από το διαδίκτυο. Ακολούθησε τα σωστά βήματα!</div>
+<div class="score-bar" id="scoreBar">Τοποθετημένα: 0 / 6</div>
+<div class="step-area" id="stepArea"></div>
+<div class="pool-area">
+<h3>📋 Βήματα — σύρε το καθένα στη σωστή θέση</h3>
+<div class="step-pool" id="stepPool"></div>
+</div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswers()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var steps=[
+{id:0,text:'Βρες μία εικόνα στο διαδίκτυο που σου αρέσει',emoji:'🔍'},
+{id:1,text:'Κάνε δεξί κλικ στην εικόνα και επέλεξε «Αντιγραφή εικόνας»',emoji:'📋'},
+{id:2,text:'Πήγαινε στον εννοιολογικό χάρτη στο CmapTools',emoji:'🗺️'},
+{id:3,text:'Κάνε δεξί κλικ στην έννοια όπου θες να βάλεις την εικόνα',emoji:'🖱️'},
+{id:4,text:'Επίλεξε «Επικόλληση» από το μενού',emoji:'📌'},
+{id:5,text:'Επίλεξε «Ορισμός ως φόντο» και προσάρμοσε το μέγεθος',emoji:'🖼️'}
+];
+
+var slotContents={};
+var dragItem=null;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function buildSlots(){
+var area=document.getElementById('stepArea');
+area.innerHTML='';
+for(var i=0;i<steps.length;i++){
+var slot=document.createElement('div');
+slot.className='step-slot';
+slot.dataset.index=i;
+slot.innerHTML='<div class="step-num">'+(i+1)+'</div><div class="step-content" id="slotContent-'+i+'">—</div>';
+slot.ondragover=function(e){e.preventDefault();
+var s=e.target.closest('.step-slot');if(s){s.classList.add('drag-over');dragItem.dataset.targetSlot=s.dataset.index;}};
+slot.ondragleave=function(e){var s=e.target.closest('.step-slot');if(s)s.classList.remove('drag-over');};
+slot.ondrop=function(e){e.preventDefault();var s=e.target.closest('.step-slot');if(s&&dragItem){s.classList.remove('drag-over');tryPlace(dragItem,s.dataset.index);}};
+area.appendChild(slot);
+}
+}
+
+function initPool(){
+var pool=document.getElementById('stepPool');
+pool.innerHTML='';
+var order=shuffle(steps.slice());
+for(var i=0;i<order.length;i++){
+var it=order[i];
+var card=document.createElement('div');
+card.className='step-card';
+card.setAttribute('draggable','true');
+card.dataset.itemId=it.id;
+card.innerHTML='<span>'+it.emoji+'</span><span>'+it.text+'</span>';
+card.ondragstart=function(e){dragStart(e,this);};
+card.ondragend=function(e){dragEnd(e,this);};
+card.ontouchstart=function(e){touchStart(e,this);};
+card.ontouchmove=function(e){touchMove(e,this);};
+card.ontouchend=function(e){touchEnd(e,this);};
+pool.appendChild(card);
+}
+}
+
+function updateScoreBar(){
+var count=Object.keys(slotContents).length;
+document.getElementById('scoreBar').textContent='Τοποθετημένα: '+count+' / '+steps.length;
+document.getElementById('checkBtn').disabled=count<steps.length;
+}
+
+function dragStart(e,el){
+dragItem=el;el.classList.add('dragging');
+e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',el.dataset.itemId);
+}
+
+function dragEnd(e,el){el.classList.remove('dragging');dragItem=null;clearDragOver();}
+
+function touchStart(e,el){dragItem=el;el.classList.add('dragging');}
+
+function touchMove(e,el){
+e.preventDefault();
+var touch=e.touches[0];
+var elUnder=document.elementFromPoint(touch.clientX,touch.clientY);
+clearDragOver();
+if(elUnder){
+var slot=elUnder.closest('.step-slot');
+if(slot){slot.classList.add('drag-over');dragItem.dataset.targetSlot=slot.dataset.index;}
+else{dragItem.dataset.targetSlot='';}
+}else{dragItem.dataset.targetSlot='';}
+}
+
+function touchEnd(e,el){
+el.classList.remove('dragging');clearDragOver();
+if(el.dataset.targetSlot){tryPlace(el,el.dataset.targetSlot);}
+el.dataset.targetSlot='';
+}
+
+function clearDragOver(){
+var slots=document.querySelectorAll('.step-slot');
+for(var i=0;i<slots.length;i++)slots[i].classList.remove('drag-over');
+}
+
+document.addEventListener('dragover',function(e){
+if(dragItem){var slot=e.target.closest('.step-slot');if(slot)e.preventDefault();}
+});
+
+document.addEventListener('drop',function(e){
+e.preventDefault();
+if(!dragItem)return;
+var slot=e.target.closest('.step-slot');
+if(slot){tryPlace(dragItem,slot.dataset.index);}
+});
+
+function tryPlace(card,slotIndex){
+var itemId=parseInt(card.dataset.itemId);
+if(slotContents[slotIndex]!==undefined){
+var prevId=slotContents[slotIndex];
+document.querySelector('.step-card[data-item-id="'+prevId+'"]').classList.remove('placed');
+}
+slotContents[slotIndex]=itemId;
+card.classList.add('placed');
+var contentEl=document.getElementById('slotContent-'+slotIndex);
+var item=steps[itemId];
+contentEl.innerHTML=item.emoji+' '+item.text;
+var slot=contentEl.closest('.step-slot');
+if(slot)slot.classList.add('filled');
+updateScoreBar();
+}
+
+function checkAnswers(){
+var correct=0;
+for(var i=0;i<steps.length;i++){
+if(slotContents[i]!==undefined&&parseInt(slotContents[i])===i)correct++;
+}
+if(correct===steps.length){
+showFeedback('🎉 Μπράβο! Έβαλες όλα τα βήματα στη σωστή σειρά! Τώρα ξέρεις να στολίζεις τον χάρτη σου! 🌟',true);
+}else{
+showFeedback('🔍 '+correct+'/'+steps.length+' σωστά. Κάποια βήματα μπερδεύτηκαν — δοκίμασε ξανά!',false);
+}
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},5000);
+}
+
+function resetGame(){
+slotContents={};
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+var slots=document.querySelectorAll('.step-slot');
+for(var i=0;i<slots.length;i++){
+slots[i].classList.remove('filled');
+document.getElementById('slotContent-'+i).innerHTML='—';
+}
+initPool();updateScoreBar();
+}
+
+buildSlots();initPool();updateScoreBar();
+</script>
+</body>
+</html>

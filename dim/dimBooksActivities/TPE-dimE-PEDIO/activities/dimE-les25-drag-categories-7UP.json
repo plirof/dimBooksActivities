@@ -1,0 +1,58 @@
+{
+  "title": "Πολυμέσα",
+  "subtitle": "Ταίριαξε κάθε πολυμέσο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "audio",
+      "name": "ΗΧΟΣ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "text",
+      "name": "ΚΕΙΜΕΝΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖼️ Φωτογραφία",
+      "category": "img"
+    },
+    {
+      "id": "item2",
+      "text": "🎥 Εκπαιδευτικό κλιπ",
+      "category": "video"
+    },
+    {
+      "id": "item3",
+      "text": "🎵 Ηχητικό απόσπασμα",
+      "category": "audio"
+    },
+    {
+      "id": "item4",
+      "text": "📝 Παραγράφος",
+      "category": "text"
+    },
+    {
+      "id": "item5",
+      "text": "📷 Σχεδιάγραμμα",
+      "category": "img"
+    },
+    {
+      "id": "item6",
+      "text": "🎬 Tutorial",
+      "category": "video"
+    }
+  ]
+}

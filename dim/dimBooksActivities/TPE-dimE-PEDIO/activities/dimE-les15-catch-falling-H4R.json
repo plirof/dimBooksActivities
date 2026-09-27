@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Ασφαλής Πλοήγηση",
+  "subtitle": "Πιάσε τις ασφαλείς πρακτικές!",
+  "instructions": "Πιάσε τις σωστές πρακτικές ασφαλείας!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Αξιόπιστην πηγή", "correct": true, "color": "#4CAF50" },
+    { "text": "Antivirus", "correct": true, "color": "#2196F3" },
+    { "text": "Αυθεντικοποίηση", "correct": true, "color": "#FF9800" },
+    { "text": "HTTPS", "correct": true, "color": "#9C27B0" },
+    { "text": "Ισχυρός κωδικός", "correct": true, "color": "#00BCD4" },
+    { "text": "Επίσημη σελίδα", "correct": true, "color": "#E91E63" },
+    { "text": "Κακόβουλο λογισμικό", "correct": false, "color": "#F44336" },
+    { "text": "Παράνομο download", "correct": false, "color": "#795548" },
+    { "text": "Μοιρασμός κωδικού", "correct": false, "color": "#607D8B" },
+    { "text": "Άνοιγμα παλιών συνδέσμων", "correct": false, "color": "#FF5722" }
+  ]
+}

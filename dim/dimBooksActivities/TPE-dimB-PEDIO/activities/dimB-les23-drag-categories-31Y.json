@@ -1,0 +1,48 @@
+{
+  "title": "Δείκτες ποντικιού + περιγραφές",
+  "subtitle": "Ταίριαξε κάθε δείκτη στη σωστή λειτουργία",
+  "categories": [
+    {
+      "id": "move",
+      "name": "ΜΕΤΑΚΙΝΗΣΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "resize",
+      "name": "ΜΕΓΕΘΥΝΣΗ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "rotate",
+      "name": "ΠΕΡΙΣΤΡΟΦΗ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "✛ Σταυρός βέλος",
+      "category": "move"
+    },
+    {
+      "id": "item2",
+      "text": "↔️ Διπλό βέλος",
+      "category": "resize"
+    },
+    {
+      "id": "item3",
+      "text": "🔄 Κυκλικό βέλος",
+      "category": "rotate"
+    },
+    {
+      "id": "item4",
+      "text": "✋ Ανοιχτό χέρι",
+      "category": "move"
+    },
+    {
+      "id": "item5",
+      "text": "⤡ Διαγώνιο",
+      "category": "resize"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Γενίκευση Αλγορίθμου | Μάθημα 2</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#ecfdf5,#a7f3d0);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#064e3b;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#059669;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#064e3b;font-size:.75rem;font-weight:700;border:1px solid #6ee7b7;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.word-row{display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.wcell{width:40px;height:44px;border:2px solid #d1fae5;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#064e3b;background:#ecfdf5}
+.wcell.wrap{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+.wcell.answer{border:2px dashed #059669;background:#f0fdf4;cursor:pointer;transition:all .2s}
+.wcell.answer:hover{background:#ecfdf5;border-color:#059669}
+.wcell.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.wcell.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.disp-badge{display:inline-block;background:#059669;color:#fff;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin:4px 2px}
+.alphabet-bar{display:flex;gap:1px;justify-content:center;margin:6px 0;flex-wrap:wrap}
+.achar{width:22px;height:26px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#475569;background:#f8fafc;border-radius:4px}
+.achar.highlight{background:#fef3c7;color:#92400e;border:1px solid #f59e0b}
+.achar.sel{background:#d1fae5;color:#064e3b;border:1px solid #059669}
+.letter-picker{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.lopt{width:36px;height:36px;border:2px solid #e2e8f0;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.lopt:hover{border-color:#059669;background:#ecfdf5}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#059669;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#047857}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #059669;border-radius:10px;background:transparent;color:#059669;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#ecfdf5}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .word-row > * { margin: 3px; }
+  .alphabet-bar > * { margin: 0.5px; }
+  .letter-picker > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔄 Γενίκευση Αλγορίθμου</h1>
+<p class="subtitle">Κρυπτογράφησε λέξεις με περιτύλιξη στο τέλος του αλφαβήτου!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Λέξη:</span> <span id="qNum">1</span>/<span id="qTotal">4</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var alpha='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+var words=[
+{word:'ΨΑΡΙ',disp:3},
+{word:'ΩΡΑΙΟΣ',disp:4},
+{word:'ΧΩΡΑ',disp:5},
+{word:'ΤΡΟΧΟΣ',disp:6}
+];
+var curQ=0,pts=0,answers={},checked=false;
+
+function encrypt(w,d){
+var r='';
+for(var i=0;i<w.length;i++){
+var idx=alpha.indexOf(w[i]);
+if(idx===-1){r+=w[i];continue;}
+r+=alpha[(idx+d)%24];
+}
+return r;
+}
+
+function isWrap(ch,disp){
+var idx=alpha.indexOf(ch);
+return(idx+disp)>=24;
+}
+
+function initQ(){answers={};checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var w=words[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div style="text-align:center"><span class="disp-badge">Μετατόπιση: '+w.disp+'</span></div>';
+h+='<div class="info-text">Η λέξη: <strong>'+w.word+'</strong> — Προσοχή στα γράμματα που "τυλίγουν"! 🟡</div>';
+h+='<div class="word-row">';
+for(var i=0;i<w.word.length;i++){
+var wrap=isWrap(w.word[i],w.disp);
+if(answers[i]!==undefined){
+var correct=alpha[(alpha.indexOf(w.word[i])+w.disp)%24];
+var cls='wcell'+(answers[i]===correct?' correct':' wrong');
+h+='<div class="'+cls+'">'+answers[i]+'</div>';
+}else{
+h+='<div class="wcell answer" onclick="selectPos('+i+')">?</div>';
+}
+}
+h+='</div>';
+h+='<div class="alphabet-bar">';
+for(var i=0;i<24;i++){
+var cls='achar';
+if(isWrap(alpha[i],w.disp))cls+=' highlight';
+h+='<span class="'+cls+'">'+alpha[i]+'</span>';
+}
+h+='</div>';
+h+='<div class="info-text">🟡 = γράμματα που περνούν το τέλος του αλφαβήτου (24)</div>';
+var unfilled=-1;
+for(var i=0;i<w.word.length;i++){if(answers[i]===undefined){unfilled=i;break;}}
+if(unfilled>=0&&!checked){
+var origIdx=alpha.indexOf(w.word[unfilled]);
+var newPos=(origIdx+w.disp)%24;
+h+='<div class="info-text">Γράμμα <strong>'+w.word[unfilled]+'</strong> (θέση '+(origIdx+1)+') + '+w.disp+' = '+(origIdx+w.disp)+(isWrap(w.word[unfilled],w.disp)?' → τύλιγμα! '+(newPos+1):'')+'</div>';
+h+='<div class="letter-picker">';
+var opts=[alpha[newPos]];
+for(var j=1;j<=3;j++){
+var li=(newPos+j)%24;if(opts.indexOf(alpha[li])===-1)opts.push(alpha[li]);
+li=(newPos-j+24)%24;if(opts.indexOf(alpha[li])===-1)opts.push(alpha[li]);
+}
+while(opts.length<6){var r=alpha[Math.floor(Math.random()*24)];if(opts.indexOf(r)===-1)opts.push(r);}
+opts.sort(function(){return Math.random()-.5;});
+for(var k=0;k<opts.length;k++){
+h+='<button class="lopt" onclick="pickLetter('+unfilled+',\''+opts[k]+'\')">'+opts[k]+'</button>';
+}
+h+='</div>';
+}
+var allFilled=Object.keys(answers).length===w.word.length;
+if(allFilled&&!checked){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=0;
+for(var i=0;i<w.word.length;i++){
+var c=alpha[(alpha.indexOf(w.word[i])+w.disp)%24];
+if(answers[i]===c)correct++;
+}
+var pct=Math.round(correct/w.word.length*100);
+if(pct>=80)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(pct>=80?'ok':'bad')+'">'+(pct>=80?'✅ Σωστά! '+encrypt(w.word,w.disp):'❌ Η σωστή: '+encrypt(w.word,w.disp))+'</div>';
+if(curQ<words.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Λέξη ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function selectPos(idx){render();}
+
+function pickLetter(idx,letter){
+var w=words[curQ];
+var correct=alpha[(alpha.indexOf(w.word[idx])+w.disp)%24];
+answers[idx]=letter;
+if(letter!==correct){
+var wrongIdx=idx;
+setTimeout(function(){delete answers[wrongIdx];render();},500);
+}
+render();
+}
+
+function checkAnswer(){checked=true;render();}
+
+function nextQ(){
+if(curQ<words.length-1){curQ++;initQ();render();}
+}
+
+initQ();render();
+</script>
+</body>
+</html>

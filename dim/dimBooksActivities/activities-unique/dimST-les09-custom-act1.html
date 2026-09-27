@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ηχο-γράφημα: Φώναζε!</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:700px;width:100%;padding:25px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.3rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:20px;}
+
+.microbit{width:320px;margin:0 auto 20px;position:relative;background:#1a7a3a;border-radius:20px;padding:20px 15px 12px;box-shadow:0 6px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);}
+.microbit::before{content:'micro:bit';position:absolute;top:5px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.3);font-size:.6rem;font-weight:bold;letter-spacing:1px;}
+.microbit-inner{display:flex;flex-direction:column;align-items:center;gap:8px;}
+
+.bar-display{width:260px;height:120px;background:#1a1a2e;border-radius:8px;padding:10px;display:flex;align-items:flex-end;justify-content:center;gap:6px;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.bar{width:30px;border-radius:4px 4px 0 0;background:#333;transition:all .15s;min-height:4px;}
+.bar-label{color:rgba(255,255,255,.5);font-size:.55rem;}
+.bar-seg{width:100%;height:4px;border-radius:1px;margin-bottom:1px;}
+
+.buttons-row{display:flex;gap:50px;justify-content:center;margin-top:5px;}
+.mbtn{width:44px;height:44px;border-radius:50%;background:#c0c0c0;border:2px solid #999;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.7rem;color:#444;box-shadow:0 2px 4px rgba(0,0,0,.3);cursor:pointer;transition:all .15s;}
+.mbtn:hover{background:#ddd;}
+.mbtn:active{transform:scale(.9);}
+
+.value-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:1.8rem;font-weight:bold;text-shadow:0 0 10px rgba(255,255,0,.5);pointer-events:none;display:none;}
+
+.slider-section{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:15px;}
+.slider-section label{display:block;font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:1rem;text-align:center;}
+.slider-wrapper{display:flex;align-items:center;gap:12px;justify-content:center;}
+.slider-wrapper span{font-weight:bold;color:#764ba2;min-width:35px;text-align:center;}
+input[type=range]{width:280px;height:8px;-webkit-appearance:none;background:linear-gradient(90deg,#3b82f6,#22c55e,#eab308,#ef4444);border-radius:4px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+
+.current-value{text-align:center;margin-bottom:15px;font-size:1.3rem;font-weight:bold;color:#5b3ea8;}
+
+.graph-section{margin-bottom:15px;}
+.graph-title{font-weight:bold;color:#5b3ea8;margin-bottom:10px;font-size:.95rem;text-align:center;}
+.graph-container{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:14px;padding:15px;min-height:160px;}
+.graph-bars{display:flex;align-items:flex-end;gap:4px;height:130px;border-bottom:2px solid #e2e8f0;padding-bottom:5px;overflow-x:auto;}
+.graph-bar{flex-shrink:0;width:22px;border-radius:4px 4px 0 0;transition:all .2s;position:relative;min-height:4px;}
+.graph-bar-num{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:.55rem;color:#888;font-weight:bold;white-space:nowrap;}
+.graph-line{position:absolute;bottom:0;left:0;right:0;border-top:1px dashed #ccc;}
+
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:12px 24px;border:none;border-radius:12px;cursor:pointer;font-size:.95rem;font-weight:bold;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-danger{background:linear-gradient(135deg,#f43f5e,#ec4899);color:#fff;}
+.btn-success{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#166534;}
+
+.info-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:14px;padding:15px;margin-top:15px;}
+.info-title{font-weight:bold;color:#5b3ea8;margin-bottom:8px;font-size:.9rem;}
+.info-text{color:#666;font-size:.85rem;line-height:1.5;}
+.info-text code{background:#1e1e2e;color:#cdd6f4;padding:2px 6px;border-radius:4px;font-size:.8rem;}
+
+.stats-row{display:flex;gap:10px;justify-content:center;margin-bottom:15px;flex-wrap:wrap;}
+.stat{background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:8px 16px;border-radius:10px;font-size:.85rem;color:#5b3ea8;border:2px solid #c4b5fd;font-weight:bold;}
+
+@media(max-width:600px){.container{padding:15px;}.microbit{width:260px;}.bar-display{width:220px;height:100px;}.bar{width:22px;}input[type=range]{width:200px;}.graph-bar{width:16px;}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .microbit-inner > * + * { margin-top: 8px; }
+  .bar-display > * + * { margin-left: 6px; }
+  .bar-col > * + * { margin-top: 2px; }
+  .buttons-row > * + * { margin-left: 50px; }
+  .slider-wrapper > * + * { margin-left: 12px; }
+  .graph-bars > * + * { margin-left: 4px; }
+  .controls > * { margin: 5px; }
+  .stats-row > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎤 Ηχο-γράφημα: Φώναζε!</h1>
+<p class="subtitle">Προσομοίωση μετρητή ήχου micro:bit</p>
+
+<div class="microbit">
+<div class="microbit-inner">
+<div class="bar-display" id="microbitDisplay">
+<div class="bar-col"><div class="bar" id="mb-bar-0"></div><div class="bar-label">A</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-1"></div><div class="bar-label">B</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-2"></div><div class="bar-label">C</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-3"></div><div class="bar-label">D</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-4"></div><div class="bar-label">E</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-5"></div><div class="bar-label">F</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-6"></div><div class="bar-label">G</div></div>
+<div class="bar-col"><div class="bar" id="mb-bar-7"></div><div class="bar-label">H</div></div>
+<div class="value-overlay" id="valueOverlay">0</div>
+</div>
+<div class="buttons-row">
+<div class="mbtn" onclick="showValue()">A</div>
+<div class="mbtn" onclick="resetGraph()">B</div>
+</div>
+</div>
+</div>
+
+<div class="stats-row">
+<div class="stat">📊 Μετρήσεις: <span id="measureCount">0</span></div>
+<div class="stat">📈 Μέγιστο: <span id="maxLevel">0</span></div>
+</div>
+
+<div class="current-value" id="currentValue">Τρέχον επίπεδο: 0</div>
+
+<div class="slider-section">
+<label>🔊 Ρύθμιση Έντασης Ήχου</label>
+<div class="slider-wrapper">
+<span>🔇</span>
+<input type="range" id="soundSlider" min="0" max="255" value="0" oninput="updateSound(this.value)">
+<span>📢</span>
+</div>
+</div>
+
+<div class="controls">
+<button class="btn btn-success" onclick="recordValue()">📝 Καταγραφή</button>
+<button class="btn btn-danger" onclick="resetGraph()">🗑️ Διαγραφή</button>
+</div>
+
+<div class="graph-section">
+<div class="graph-title">📊 Ηχο-γράφημα</div>
+<div class="graph-container">
+<div class="graph-bars" id="graphBars">
+<div style="color:#aaa;font-size:.85rem;width:100%;text-align:center;padding-top:50px;">Πάτα «Καταγραφή» για να ξεκινήσεις...</div>
+</div>
+</div>
+</div>
+
+<div class="info-box">
+<div class="info-title">💡 Πώς δουλεύει:</div>
+<div class="info-text">
+Κούνα τον slider για να προσομοιώσεις την ένταση του ήχου.<br>
+Κουμπί <code>A</code>: Δείχνει την αριθμητική τιμή στην οθόνη.<br>
+Κουμπί <code>B</code>: Καθαρίζει το γράφημα.<br>
+Πάτα <strong>«Καταγραφή»</strong> για να προσθέσεις τη μέτρηση στο γράφημα!
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+var measurements=[];
+var maxLevel=0;
+var showNumeric=false;
+var showTimer=null;
+
+function getBarColor(val){
+if(val<50)return '#3b82f6';
+if(val<100)return '#22c55e';
+if(val<150)return '#eab308';
+if(val<200)return '#f97316';
+return '#ef4444';
+}
+
+function getLevelBars(val){
+var active=Math.ceil(val/32);
+if(active>8)active=8;
+return active;
+}
+
+window.updateSound=function(val){
+val=parseInt(val);
+document.getElementById('currentValue').textContent='Τρέχον επίπεδο: '+val;
+
+var active=getLevelBars(val);
+var color=getBarColor(val);
+
+for(var i=0;i<8;i++){
+var bar=document.getElementById('mb-bar-'+i);
+if(i<active){
+bar.style.height=((i+1)*12)+'px';
+bar.style.background=color;
+bar.style.boxShadow='0 0 6px '+color;
+}else{
+bar.style.height='4px';
+bar.style.background='#333';
+bar.style.boxShadow='none';
+}
+}
+
+if(showNumeric){
+document.getElementById('valueOverlay').textContent=val;
+document.getElementById('valueOverlay').style.display='block';
+}
+
+if(val>maxLevel){
+maxLevel=val;
+document.getElementById('maxLevel').textContent=maxLevel;
+}
+};
+
+window.showValue=function(){
+var val=parseInt(document.getElementById('soundSlider').value);
+showNumeric=true;
+document.getElementById('valueOverlay').textContent=val;
+document.getElementById('valueOverlay').style.display='block';
+clearTimeout(showTimer);
+showTimer=setTimeout(function(){
+showNumeric=false;
+document.getElementById('valueOverlay').style.display='none';
+},3000);
+};
+
+window.recordValue=function(){
+var val=parseInt(document.getElementById('soundSlider').value);
+measurements.push(val);
+document.getElementById('measureCount').textContent=measurements.length;
+renderGraph();
+};
+
+function renderGraph(){
+var container=document.getElementById('graphBars');
+container.innerHTML='';
+var maxH=125;
+var displayMeasurements=measurements.slice(-30);
+var startIdx=Math.max(0,measurements.length-30);
+
+displayMeasurements.forEach(function(val,i){
+var bar=document.createElement('div');
+bar.className='graph-bar';
+var h=Math.max(4,(val/255)*maxH);
+bar.style.height=h+'px';
+bar.style.background=getBarColor(val);
+bar.style.boxShadow='0 0 4px '+getBarColor(val)+'44';
+
+var num=document.createElement('div');
+num.className='graph-bar-num';
+num.textContent=val;
+bar.appendChild(num);
+
+container.appendChild(bar);
+});
+}
+
+window.resetGraph=function(){
+measurements=[];
+maxLevel=0;
+document.getElementById('measureCount').textContent='0';
+document.getElementById('maxLevel').textContent='0';
+document.getElementById('graphBars').innerHTML='<div style="color:#aaa;font-size:.85rem;width:100%;text-align:center;padding-top:50px;">Πάτα «Καταγραφή» για να ξεκινήσεις...</div>';
+};
+
+window.updateSound(0);
+})();
+</script>
+</body>
+</html>

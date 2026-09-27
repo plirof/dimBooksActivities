@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ρόλος Δρομολογητή",
+  "subtitle": "Ταξινόμησε τις προτάσεις!",
+  "instructions": "Βάλε κάθε πρόταση στη σωστή κατηγορία",
+  "categories": [
+    { "id": "true", "name": "Σωστό για δρομολογητή", "color": "#4caf50", "key": "1" },
+    { "id": "false", "name": "Λάθος για δρομολογητή", "color": "#f44336", "key": "2" }
+  ],
+  "items": [
+    { "text": "Μεταφέρει δεδομένα", "category": "true" },
+    { "text": "Παίζει μουσική", "category": "false" },
+    { "text": "Εκπέμπει Wi-Fi", "category": "true" },
+    { "text": "Είναι τηλεόραση", "category": "false" },
+    { "text": "Αποφασίζει διαδρομή", "category": "true" },
+    { "text": "Ζωγραφίζει", "category": "false" },
+    { "text": "Προστατεύει με κωδικό", "category": "true" },
+    { "text": "Κάνει καφέ", "category": "false" },
+    { "text": "Συνδέεται με καλώδια", "category": "true" },
+    { "text": "Είναι πλυντήριο", "category": "false" }
+  ],
+  "duration": 45
+}

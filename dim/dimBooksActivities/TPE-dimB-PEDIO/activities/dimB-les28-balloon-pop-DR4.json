@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Στέλνω Μήνυμα σε;",
+  "subtitle": "Σπάσε μόνο αυτούς που μπορώ να στείλω μήνυμα στην e-me",
+  "instruction": "Σπάσε μόνο αυτούς που μπορώ να στείλω μήνυμα στην e-me",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Συμμαθητής", "correct": true, "color": "#4CAF50" },
+    { "text": "Άγνωστος", "correct": false, "color": "#f44336" },
+    { "text": "Δασκάλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Διάσημος", "correct": false, "color": "#f44336" },
+    { "text": "Συμμαθήτρια", "correct": true, "color": "#4CAF50" },
+    { "text": "Ξένος", "correct": false, "color": "#f44336" },
+    { "text": "Δάσκαλος", "correct": true, "color": "#4CAF50" },
+    { "text": "Τυχαίος", "correct": false, "color": "#f44336" },
+    { "text": "Επαφή", "correct": true, "color": "#4CAF50" },
+    { "text": "Αγνώστου", "correct": false, "color": "#f44336" }
+  ]
+}

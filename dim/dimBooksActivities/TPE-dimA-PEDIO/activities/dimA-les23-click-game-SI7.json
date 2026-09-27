@@ -1,0 +1,15 @@
+{
+  "title": "Ποιο Πλήκτρο;",
+  "subtitle": "Εμφανίζεται γράμμα — κάνε κλικ στο σωστό",
+  "instructions": "Εμφανίζεται ένα γράμμα — βρες το γρήγορα!",
+  "duration": 30,
+  "maxTargets": 2,
+  "targetLife": 2200,
+  "targets": [
+    { "label": "Α", "color": "#FFCDD2" },
+    { "label": "Β", "color": "#FFE0B2" },
+    { "label": "Γ", "color": "#FFF9C4" },
+    { "label": "Δ", "color": "#C8E6C9" },
+    { "label": "Ε", "color": "#B3E5FC" }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Παθητική ή Δημιουργική",
+  "subtitle": "Διάκρινε την παθητική από τη δημιουργική χρήση",
+  "categories": [
+    {
+      "id": "passive",
+      "name": "ΠΑΘΗΤΙΚΗ",
+      "color": "#F44336"
+    },
+    {
+      "id": "creative",
+      "name": "ΔΗΜΙΟΥΡΓΙΚΗ",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📱 Σκρολάρισμα",
+      "category": "passive"
+    },
+    {
+      "id": "item2",
+      "text": "💻 Coding",
+      "category": "creative"
+    },
+    {
+      "id": "item3",
+      "text": "📺 Passive viewing",
+      "category": "passive"
+    },
+    {
+      "id": "item4",
+      "text": "🎨 Ψηφιακή ζωγραφική",
+      "category": "creative"
+    },
+    {
+      "id": "item5",
+      "text": "📖 Ανάγνωση",
+      "category": "passive"
+    },
+    {
+      "id": "item6",
+      "text": "🎮 Δημιουργία παιχνιδιού",
+      "category": "creative"
+    },
+    {
+      "id": "item7",
+      "text": "😴 Ατενής παρακολούθηση",
+      "category": "passive"
+    },
+    {
+      "id": "item8",
+      "text": "✍️ Συγγραφή ιστορίας",
+      "category": "creative"
+    }
+  ]
+}

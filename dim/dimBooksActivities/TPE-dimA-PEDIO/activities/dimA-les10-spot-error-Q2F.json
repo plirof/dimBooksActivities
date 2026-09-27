@@ -1,0 +1,44 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "υπολογιστής", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "κουζίνα", "error": true, "correct": "οθόνη", "feedback": "Ο υπολογιστής έχει οθόνη, όχι κουζίνα!"},
+        {"text": "και", "error": false},
+        {"text": "πληκτρολόγιο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "την", "error": false},
+        {"text": "ταμπλέτα", "error": false},
+        {"text": "μαγειρεύω", "error": true, "correct": "παίζω", "feedback": "Με την ταμπλέτα παίζουμε, δεν μαγειρεύουμε!"},
+        {"text": "παιχνίδια.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "κινητό", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μεγάλο", "error": true, "correct": "μικρό", "feedback": "Το κινητό είναι μικρό, όχι μεγάλο!"},
+        {"text": "τηλέφωνο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "φορητός", "error": false},
+        {"text": "υπολογιστής", "error": false},
+        {"text": "μένει", "error": true, "correct": "πάω", "feedback": "Ο φορητός τον παίρνω μαζί μου!"},
+        {"text": "μαζί", "error": false},
+        {"text": "μου.", "error": false}
+      ]
+    }
+  ]
+}

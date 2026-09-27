@@ -1,0 +1,56 @@
+{
+  "title": "Βρες τα Λάθη: Ψηφιακό Περιεχόμενο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "βάλουμε", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "κατεβάσουμε", "error": true, "correct": "αντιγράψουμε τον σύνδεσμο", "feedback": "ΔΕΝ κατεβάζουμε το βίντεο! Αντιγράφουμε τον σύνδεσμο URL!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "από", "error": false},
+        {"text": "το", "error": false},
+        {"text": "YouTube", "error": false},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "internet", "error": false},
+        {"text": "для", "error": true, "correct": "για", "feedback": "Η λέξη είναι στα ελληνικά: ΓΙΑ να παίξει!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "αρχεία", "error": false},
+        {"text": "ήχου", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "μπορούν", "error": true, "correct": "μπορούν", "feedback": "Μπορούν ΝΑ μπουν σε παρουσίαση! Υπάρχει η επιλογή εισαγωγής ήχου!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ενσωμάτωση", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "διαγράφουμε", "error": true, "correct": "τοποθετούμε", "feedback": "Ενσωμάτωση σημαίνει ΤΟΠΟΘΕΤΟΥΜΕ το βίντεο, ΔΕΝ το διαγράφουμε!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εικόνες", "error": false},
+        {"text": "εισάγονται", "error": false},
+        {"text": "μόνο", "error": true, "correct": "και", "feedback": "ΔΕΝ εισάγονται ΜΟΝΟ από υπολογιστή! Μπορούν και από το διαδίκτυο!"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Πιάσε τα!: Αισθητήρες Φωτός",
+  "subtitle": "Πιάσε μόνο τα σωστά στοιχεία",
+  "instructions": "Πιάσε τα στοιχεία που σχετίζονται με τους αισθητήρες και το micro:bit",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 2000,
+  "winScore": 8,
+  "items": [
+    { "text": "Αισθητήρας", "correct": true, "color": "#4CAF50" },
+    { "text": "Φωτοδίοδος", "correct": true, "color": "#2196F3" },
+    { "text": "Micro:bit", "correct": true, "color": "#FF9800" },
+    { "text": "Φωτισμός", "correct": true, "color": "#9C27B0" },
+    { "text": "MakeCode", "correct": true, "color": "#00BCD4" },
+    { "text": "Ήλιος", "correct": true, "color": "#8BC34A" },
+    { "text": "Φεγγάρι", "correct": true, "color": "#FF5722" },
+    { "text": "LED", "correct": true, "color": "#3F51B5" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#f44336" },
+    { "text": "Κουζίνα", "correct": false, "color": "#795548" },
+    { "text": "Ζωγραφική", "correct": false, "color": "#607D8B" },
+    { "text": "Μπάσκετ", "correct": false, "color": "#E91E63" }
+  ]
+}

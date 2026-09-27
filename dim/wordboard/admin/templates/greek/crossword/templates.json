@@ -1,0 +1,84 @@
+{
+  "templates": [
+    {
+      "id": "greek_crossword_animals_001",
+      "name": "Ζώα (Animals)",
+      "description": "Λέξεις σχετικά με ζώα",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "elementary"],
+      "words": [
+        {"word": "ΣΚΥΛΟΣ", "clue": "Το καλύτερο φίλο του ανθρώπου"},
+        {"word": "ΓΑΤΑ", "clue": "Ένα ζώο που λέει νιαου"},
+        {"word": "ΠΟΥΛΙ", "clue": "Ζώο που πετάει"},
+        {"word": "ΨΑΡΙ", "clue": "Ζώο που ζει στη θάλασσα"},
+        {"word": "ΑΛΟΓΟ", "clue": "Ζώο που μπορούμε να το ιππεύσουμε"},
+        {"word": "ΛΙΟΝΤΑΡΙ", "clue": "Βασιλιάς των ζώων"}
+      ]
+    },
+    {
+      "id": "greek_crossword_colors_001",
+      "name": "Χρώματα (Colors)",
+      "description": "Λέξεις σχετικά με χρώματα",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "words": [
+        {"word": "ΚΟΚΚΙΝΟ", "clue": "Το χρώμα της φράουλας"},
+        {"word": "ΜΠΛΕ", "clue": "Το χρώμα του ουρανού"},
+        {"word": "ΠΡΑΣΙΝΟ", "clue": "Το χρώμα του γρασιδιού"},
+        {"word": "ΚΙΤΡΙΝΟ", "clue": "Το χρώμα της μπανάνας"},
+        {"word": "ΠΟΡΤΟΚΑΛΙ", "clue": "Ένα φρούτο και χρώμα"},
+        {"word": "ΜΩΒ", "clue": "Χρώμα σαν του σταφυλιού"}
+      ]
+    },
+    {
+      "id": "greek_crossword_body_001",
+      "name": "Σώμα (Body)",
+      "description": "Μέρη του σώματος",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["greek", "body", "elementary"],
+      "words": [
+        {"word": "ΜΑΤΙ", "clue": "Με αυτό βλέπουμε"},
+        {"word": "ΑΥΤΙ", "clue": "Με αυτό ακούμε"},
+        {"word": "ΜΥΤΗ", "clue": "Με αυτό μυρίζουμε"},
+        {"word": "ΣΤΟΜΑ", "clue": "Με αυτό τρώμε και μιλάμε"},
+        {"word": "ΧΕΡΙ", "clue": "Με αυτό γράφουμε"},
+        {"word": "ΠΟΔΙ", "clue": "Με αυτό περπατάμε"}
+      ]
+    },
+    {
+      "id": "greek_crossword_family_001",
+      "name": "Οικογένεια (Family)",
+      "description": "Μέλη της οικογένειας",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["greek", "family", "elementary"],
+      "words": [
+        {"word": "ΜΑΜΑ", "clue": "Η μητέρα μας"},
+        {"word": "ΜΠΑΜΠΑΣ", "clue": "Ο πατέρας μας"},
+        {"word": "ΓΙΑΓΙΑ", "clue": "Η μητέρα της μαμάς ή του μπαμπά"},
+        {"word": "ΠΑΠΠΟΥΣ", "clue": "Ο πατέρας της μαμάς ή του μπαμπά"},
+        {"word": "ΑΔΕΡΦΗ", "clue": "Κορίτσι με τους ίδιους γονείς"},
+        {"word": "ΑΔΕΡΦΟΣ", "clue": "Αγόρι με τους ίδιους γονείς"}
+      ]
+    },
+    {
+      "id": "greek_crossword_school_001",
+      "name": "Σχολείο (School)",
+      "description": "Αντικείμενα του σχολείου",
+      "category": "crossword",
+      "difficulty": "easy",
+      "tags": ["greek", "school", "elementary"],
+      "words": [
+        {"word": "ΒΙΒΛΙΟ", "clue": "Το διαβάζουμε για να μάθουμε"},
+        {"word": "ΤΕΤΡΑΔΙΟ", "clue": "Γράφουμε μέσα"},
+        {"word": "ΜΟΛΥΒΙ", "clue": "Γράφουμε με αυτό"},
+        {"word": "ΣΤΥΛΟ", "clue": "Γράφουμε με μελάνι"},
+        {"word": "ΓΟΜΑ", "clue": "Σβήνουμε τα λάθη"},
+        {"word": "ΤΣΑΝΤΑ", "clue": "Βάζουμε μέσα τα βιβλία"}
+      ]
+    }
+  ]
+}

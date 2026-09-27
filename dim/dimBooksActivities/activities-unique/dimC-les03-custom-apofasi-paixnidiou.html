@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Απόφαση στο Παιχνίδι</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+.container {
+    background: #fff;
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+h1 {
+    text-align: center;
+    color: #880e4f;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+}
+.subtitle {
+    text-align: center;
+    color: #ad1457;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.progress-bar-wrap {
+    background: #fce4ec;
+    border-radius: 12px;
+    height: 18px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    border-radius: 12px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+.progress-text {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #880e4f;
+}
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.hud-item {
+    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #880e4f;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.hud-item .emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 1.1rem;
+}
+.grid-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, 56px);
+    grid-template-rows: repeat(5, 56px);
+    grid-gap: 3px;
+    background: #fce4ec;
+    padding: 8px;
+    border-radius: 16px;
+    border: 2px solid #f8bbd0;
+}
+.cell {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    user-select: none;
+    border: 2px solid transparent;
+}
+.cell:hover { transform: scale(1.05); }
+.cell.adjacent {
+    border-color: #f48fb1;
+    background: #fce4ec;
+}
+.cell.hero-cell {
+    background: linear-gradient(135deg, #e1bee7, #ce93d8);
+    font-size: 1.6rem;
+}
+.cell.fruit-cell { background: #e8f5e9; }
+.cell.ghost-cell { background: #ffebee; }
+.cell.wall-cell { background: #efebe9; cursor: default; }
+.cell.wall-cell::after { content: "🧱"; font-size: 1.2rem; font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif; }
+.cell.star-cell { background: #fffde7; }
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.ctrl-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s, box-shadow 0.12s;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.ctrl-btn:active { transform: scale(0.92); }
+.ctrl-btn:hover { box-shadow: 0 2px 10px rgba(240,147,251,0.5); }
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+    background: #fff;
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    animation: popIn 0.3s ease;
+}
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.modal .modal-emoji {
+    font-size: 2.8rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 8px;
+}
+.modal h3 {
+    color: #880e4f;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+.modal p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+.modal .modal-condition {
+    background: #f3e5f5;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    color: #6a1b9a;
+    font-size: 0.95rem;
+}
+.modal-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.modal-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s;
+    color: #fff;
+    min-width: 130px;
+}
+.modal-btn:active { transform: scale(0.95); }
+.modal-btn.btn-yes {
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+.modal-btn.btn-no {
+    background: linear-gradient(135deg, #e53935, #c62828);
+}
+.modal-btn.btn-ok {
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+}
+.modal-btn.btn-next {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+.message-bar {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #880e4f;
+    font-weight: 600;
+    min-height: 24px;
+    margin-bottom: 8px;
+}
+
+.quiz-area {
+    display: none;
+    margin-top: 10px;
+}
+.quiz-area.show { display: block; }
+.quiz-question {
+    background: #f3e5f5;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+.quiz-question p {
+    color: #4a148c;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.quiz-opt {
+    padding: 10px 14px;
+    border: 2px solid #ce93d8;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #4a148c;
+    transition: background 0.15s, border-color 0.15s;
+    font-weight: 500;
+}
+.quiz-opt:hover { background: #f3e5f5; }
+.quiz-opt.selected { border-color: #880e4f; background: #e1bee7; font-weight: 700; }
+.quiz-opt.correct-answer { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
+.quiz-opt.wrong-answer { border-color: #c62828; background: #ffebee; color: #c62828; }
+
+.btn-submit-quiz {
+    display: block;
+    margin: 12px auto 0;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #880e4f, #ad1457);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s;
+}
+.btn-submit-quiz:active { transform: scale(0.95); }
+
+.completion-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 10px;
+}
+.completion-screen.show { display: flex; }
+.completion-screen .big-emoji {
+    font-size: 3.5rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 10px;
+}
+.completion-screen h2 {
+    color: #880e4f;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+.completion-screen .stars {
+    font-size: 2.5rem;
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    margin-bottom: 10px;
+}
+.completion-screen p {
+    color: #ad1457;
+    font-size: 1rem;
+    margin-bottom: 14px;
+}
+.btn-replay {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #1b5e20;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.btn-replay:hover { transform: translateY(-2px); }
+.game-area { display: block; }
+.game-area.hidden { display: none; }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .hud > * { margin: 4px; }
+  .hud-item > * + * { margin-left: 4px; }
+  .controls > * { margin: 3px; }
+  .modal-btns > * { margin: 5px; }
+  .quiz-options > * + * { margin-top: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🎮 Απόφαση στο Παιχνίδι</h1>
+    <p class="subtitle">Βοήθησε τον ήρωα! Πάρε αποφάσεις!</p>
+
+    <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressFill"></div>
+        <span class="progress-text" id="progressText">Βήμα 1 / 3</span>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <div class="hud">
+            <div class="hud-item"><span class="emoji">⭐</span> Πόντοι: <span id="scoreVal">0</span></div>
+            <div class="hud-item"><span class="emoji">❤️</span> Ζωές: <span id="livesVal">3</span></div>
+            <div class="hud-item"><span class="emoji">🍎</span> Φρούτα: <span id="fruitsVal">0</span></div>
+        </div>
+
+        <div class="message-bar" id="messageBar">Μετακίνηση: Βήματα <span id="stepsVal">0</span></div>
+
+        <div class="grid-wrap">
+            <div class="grid" id="gameGrid"></div>
+        </div>
+
+        <div class="controls">
+            <button class="ctrl-btn" onclick="moveHero(0,-1)" aria-label="Πάνω">⬆</button>
+            <button class="ctrl-btn" onclick="moveHero(-1,0)" aria-label="Αριστερά">⬅</button>
+            <button class="ctrl-btn" onclick="moveHero(1,0)" aria-label="Δεξιά">➡</button>
+            <button class="ctrl-btn" onclick="moveHero(0,1)" aria-label="Κάτω">⬇</button>
+        </div>
+
+        <div class="quiz-area" id="quizArea">
+            <div class="quiz-question" id="quizQ1">
+                <p>1. Τι έλεγχε ο υπολογιστής όταν βρήκες φρούτο 🍎;</p>
+                <div class="quiz-options">
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q1','a')">Αν αγγίξεις φρούτο → +1 πόντος</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q1','b')">Αν αγγίξεις τοίχο → σταμάτα</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q1','c')">Τίποτα, συνέχισε</button>
+                </div>
+            </div>
+            <div class="quiz-question" id="quizQ2">
+                <p>2. Τι συμβαίνει αν αγγίξεις φαντασματάκι 👻;</p>
+                <div class="quiz-options">
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q2','a')">Κερδίζεις πόντο</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q2','b')">Αν αγγίξεις φάντασμα → -1 ζωή</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q2','c')">Το παιχνίδι τελειώνει αμέσως</button>
+                </div>
+            </div>
+            <div class="quiz-question" id="quizQ3">
+                <p>3. Ποιο σχήμα χρησιμοποιούμε για «απόφαση» στο διάγραμμα;</p>
+                <div class="quiz-options">
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q3','a')">Οβάλ (αρχή/τέλος)</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q3','b')">Τετράγωνο (ενέργεια)</button>
+                    <button class="quiz-opt" onclick="selectQuiz(this,'q3','c')">Ρόμβος (συνθήκη/απόφαση)</button>
+                </div>
+            </div>
+            <button class="btn-submit-quiz" onclick="submitQuiz()">✔ Έλεγξε Απαντήσεις</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <div class="completion-screen" id="completionScreen">
+        <div class="big-emoji">🏆</div>
+        <h2>Συγχαρητήρια!</h2>
+        <div class="stars" id="starsDisplay"></div>
+        <p id="completionMsg"></p>
+        <button class="btn-replay" onclick="restartGame()">🔄 Ξαναπαίξε!</button>
+    </div>
+</div>
+
+<script>
+var COLS = 6;
+var ROWS = 5;
+var HERO = 0;
+var FRUIT = 1;
+var GHOST = 2;
+var WALL = 3;
+var STAR = 4;
+var EMPTY = 5;
+var EXIT = 6;
+
+var levelData = [
+    [WALL, WALL, WALL, WALL, WALL, WALL],
+    [WALL, HERO, EMPTY, FRUIT, EMPTY, WALL],
+    [WALL, EMPTY, WALL, EMPTY, GHOST, WALL],
+    [WALL, EMPTY, FRUIT, EMPTY, EMPTY, EXIT],
+    [WALL, WALL, WALL, WALL, WALL, WALL]
+];
+
+var heroPos = { r: 1, c: 1 };
+var score = 0;
+var lives = 3;
+var fruits = 0;
+var steps = 0;
+var gamePhase = "play";
+var quizAnswers = {};
+var totalQuizCorrect = 0;
+var encountersFruit = 0;
+var encountersGhost = 0;
+var chosenYesCount = 0;
+var chosenNoCount = 0;
+
+function initGrid() {
+    var grid = document.getElementById("gameGrid");
+    grid.innerHTML = "";
+    for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+            var cell = document.createElement("div");
+            cell.className = "cell";
+            cell.id = "cell-" + r + "-" + c;
+            cell.setAttribute("data-r", r);
+            cell.setAttribute("data-c", c);
+            cell.addEventListener("click", function() {
+                var rr = parseInt(this.getAttribute("data-r"));
+                var cc = parseInt(this.getAttribute("data-c"));
+                tryMove(rr, cc);
+            });
+            grid.appendChild(cell);
+        }
+    }
+    renderGrid();
+}
+
+function renderGrid() {
+    for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+            var cell = document.getElementById("cell-" + r + "-" + c);
+            cell.className = "cell";
+            cell.textContent = "";
+            var t = levelData[r][c];
+            if (t === WALL) {
+                cell.classList.add("wall-cell");
+            } else if (t === HERO) {
+                cell.classList.add("hero-cell");
+                cell.textContent = "🦊";
+            } else if (t === FRUIT) {
+                cell.classList.add("fruit-cell");
+                cell.textContent = "🍎";
+            } else if (t === GHOST) {
+                cell.classList.add("ghost-cell");
+                cell.textContent = "👻";
+            } else if (t === STAR) {
+                cell.classList.add("star-cell");
+                cell.textContent = "⭐";
+            } else if (t === EXIT) {
+                cell.textContent = "🚪";
+                cell.style.background = "#e8eaf6";
+            } else {
+                cell.textContent = "";
+            }
+            if (t !== WALL && t !== HERO) {
+                var dr = Math.abs(r - heroPos.r);
+                var dc = Math.abs(c - heroPos.c);
+                if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+                    cell.classList.add("adjacent");
+                }
+            }
+        }
+    }
+}
+
+function tryMove(tr, tc) {
+    var dr = tr - heroPos.r;
+    var dc = tc - heroPos.c;
+    if (Math.abs(dr) + Math.abs(dc) === 1) {
+        moveHero(dc, dr);
+    }
+}
+
+function moveHero(dx, dy) {
+    if (gamePhase !== "play") return;
+    var nr = heroPos.r + dy;
+    var nc = heroPos.c + dx;
+    if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) return;
+    if (levelData[nr][nc] === WALL) return;
+
+    var target = levelData[nr][nc];
+    if (target === FRUIT) {
+        encountersFruit++;
+        showDecision("🍎", "Βρήκες ένα φρούτο!", "Αν αγγίξεις φρούτο 🍎, τότε κερδίζεις +1 πόντο! Τι θα κάνεις;", "Πάρω το φρούτο (+1 πόντος)", "Το αποφύγω", "fruit", nr, nc);
+        return;
+    }
+    if (target === GHOST) {
+        encountersGhost++;
+        showDecision("👻", "Φαντασματάκι!", "Αν αγγίξεις φαντασματάκι 👻, τότε χάνεις ζωή! Τι θα κάνεις;", "Τρέξω από την άλλη!", "Το αντιμετωπίσω (-1 ζωή)", "ghost", nr, nc);
+        return;
+    }
+    doMove(nr, nc);
+}
+
+function doMove(nr, nc) {
+    levelData[heroPos.r][heroPos.c] = EMPTY;
+    var target = levelData[nr][nc];
+    if (target === STAR) {
+        score += 2;
+    }
+    heroPos.r = nr;
+    heroPos.c = nc;
+    levelData[nr][nc] = HERO;
+    steps++;
+    updateHUD();
+    renderGrid();
+    if (target === EXIT) {
+        finishPlay();
+    }
+}
+
+function showDecision(emoji, title, condition, yesText, noText, type, nr, nc) {
+    gamePhase = "decision";
+    var modal = document.getElementById("modalContent");
+    modal.innerHTML =
+        '<div class="modal-emoji">' + emoji + '</div>' +
+        '<h3>' + title + '</h3>' +
+        '<div class="modal-condition">' + condition + '</div>' +
+        '<div class="modal-btns">' +
+        '<button class="modal-btn btn-yes" id="modalYes">' + yesText + '</button>' +
+        '<button class="modal-btn btn-no" id="modalNo">' + noText + '</button>' +
+        '</div>';
+    document.getElementById("modalOverlay").classList.add("show");
+    document.getElementById("modalYes").onclick = function() {
+        chosenYesCount++;
+        document.getElementById("modalOverlay").classList.remove("show");
+        if (type === "fruit") {
+            score += 1;
+            fruits += 1;
+            doMove(nr, nc);
+        } else {
+            lives -= 1;
+            if (lives <= 0) {
+                doMove(nr, nc);
+                gameOver();
+                return;
+            }
+            doMove(nr, nc);
+        }
+        gamePhase = "play";
+    };
+    document.getElementById("modalNo").onclick = function() {
+        chosenNoCount++;
+        document.getElementById("modalOverlay").classList.remove("show");
+        gamePhase = "play";
+        updateHUD();
+        renderGrid();
+    };
+}
+
+function updateHUD() {
+    document.getElementById("scoreVal").textContent = score;
+    document.getElementById("livesVal").textContent = lives;
+    document.getElementById("fruitsVal").textContent = fruits;
+    document.getElementById("stepsVal").textContent = steps;
+}
+
+function gameOver() {
+    gamePhase = "over";
+    var modal = document.getElementById("modalContent");
+    modal.innerHTML =
+        '<div class="modal-emoji">💔</div>' +
+        '<h3>Έχασες όλες τις ζωές!</h3>' +
+        '<p>Δεν πειράζει! Μπορείς να ξαναπαίξεις.</p>' +
+        '<div class="modal-btns">' +
+        '<button class="modal-btn btn-ok" onclick="restartGame()">🔄 Ξαναξεκίνα</button>' +
+        '</div>';
+    document.getElementById("modalOverlay").classList.add("show");
+}
+
+function finishPlay() {
+    gamePhase = "quiz";
+    document.getElementById("progressFill").style.width = "60%";
+    document.getElementById("progressText").textContent = "Βήμα 2 / 3";
+    var modal = document.getElementById("modalContent");
+    modal.innerHTML =
+        '<div class="modal-emoji">🚪</div>' +
+        '<h3>Μπράβο! Φτάσες στην έξοδο!</h3>' +
+        '<p>Τώρα ας δούμε τι έμαθες για τις αποφάσεις του υπολογιστή!</p>' +
+        '<div class="modal-btns">' +
+        '<button class="modal-btn btn-next" onclick="startQuiz()">📝 Συνέχεια</button>' +
+        '</div>';
+    document.getElementById("modalOverlay").classList.add("show");
+}
+
+function startQuiz() {
+    document.getElementById("modalOverlay").classList.remove("show");
+    document.getElementById("quizArea").classList.add("show");
+    document.getElementById("progressFill").style.width = "80%";
+    document.getElementById("progressText").textContent = "Βήμα 3 / 3";
+    document.getElementById("messageBar").textContent = "Απάντησε στις ερωτήσεις!";
+}
+
+function selectQuiz(btn, q, ans) {
+    var parent = btn.parentElement;
+    var opts = parent.querySelectorAll(".quiz-opt");
+    for (var i = 0; i < opts.length; i++) {
+        opts[i].classList.remove("selected");
+    }
+    btn.classList.add("selected");
+    quizAnswers[q] = ans;
+}
+
+function submitQuiz() {
+    if (!quizAnswers.q1 || !quizAnswers.q2 || !quizAnswers.q3) {
+        alert("Απάντησε σε όλες τις ερωτήσεις!");
+        return;
+    }
+    totalQuizCorrect = 0;
+    checkQ("quizQ1", quizAnswers.q1, "a");
+    checkQ("quizQ2", quizAnswers.q2, "b");
+    checkQ("quizQ3", quizAnswers.q3, "c");
+
+    document.getElementById("progressFill").style.width = "100%";
+    document.getElementById("progressText").textContent = "Ολοκληρώθηκε!";
+
+    setTimeout(function() { showCompletion(); }, 800);
+}
+
+function checkQ(qId, userAns, correctAns) {
+    var qEl = document.getElementById(qId);
+    var opts = qEl.querySelectorAll(".quiz-opt");
+    var answers = { a: 0, b: 1, c: 2 };
+    if (userAns === correctAns) {
+        totalQuizCorrect++;
+        opts[answers[userAns]].classList.add("correct-answer");
+    } else {
+        opts[answers[userAns]].classList.add("wrong-answer");
+        opts[answers[correctAns]].classList.add("correct-answer");
+    }
+    for (var i = 0; i < opts.length; i++) {
+        opts[i].style.pointerEvents = "none";
+    }
+}
+
+function showCompletion() {
+    document.getElementById("gameArea").classList.add("hidden");
+    var cs = document.getElementById("completionScreen");
+    cs.classList.add("show");
+    var total = score + totalQuizCorrect * 3;
+    var maxPossible = 11;
+    var starCount = 0;
+    if (total >= 10) starCount = 3;
+    else if (total >= 6) starCount = 2;
+    else if (total >= 1) starCount = 1;
+    var starsStr = "";
+    for (var i = 0; i < 3; i++) {
+        starsStr += i < starCount ? "⭐" : "☆";
+    }
+    document.getElementById("starsDisplay").textContent = starsStr;
+    document.getElementById("completionMsg").textContent = "Συνολικό σκορ: " + total + " | Σωστές απαντήσεις: " + totalQuizCorrect + "/3 | Βήματα: " + steps;
+}
+
+function restartGame() {
+    heroPos = { r: 1, c: 1 };
+    score = 0;
+    lives = 3;
+    fruits = 0;
+    steps = 0;
+    gamePhase = "play";
+    quizAnswers = {};
+    totalQuizCorrect = 0;
+    encountersFruit = 0;
+    encountersGhost = 0;
+    chosenYesCount = 0;
+    chosenNoCount = 0;
+    levelData = [
+        [WALL, WALL, WALL, WALL, WALL, WALL],
+        [WALL, HERO, EMPTY, FRUIT, EMPTY, WALL],
+        [WALL, EMPTY, WALL, EMPTY, GHOST, WALL],
+        [WALL, EMPTY, FRUIT, EMPTY, EMPTY, EXIT],
+        [WALL, WALL, WALL, WALL, WALL, WALL]
+    ];
+    document.getElementById("gameArea").classList.remove("hidden");
+    document.getElementById("completionScreen").classList.remove("show");
+    document.getElementById("quizArea").classList.remove("show");
+    document.getElementById("modalOverlay").classList.remove("show");
+    document.getElementById("progressFill").style.width = "20%";
+    document.getElementById("progressText").textContent = "Βήμα 1 / 3";
+    document.getElementById("messageBar").innerHTML = 'Μετακίνηση: Βήματα <span id="stepsVal">0</span>';
+    var qOpts = document.querySelectorAll(".quiz-opt");
+    for (var i = 0; i < qOpts.length; i++) {
+        qOpts[i].classList.remove("selected", "correct-answer", "wrong-answer");
+        qOpts[i].style.pointerEvents = "";
+    }
+    initGrid();
+    updateHUD();
+}
+
+document.addEventListener("keydown", function(e) {
+    if (gamePhase !== "play") return;
+    if (e.key === "ArrowUp" || e.key === "w") { moveHero(0, -1); e.preventDefault(); }
+    else if (e.key === "ArrowDown" || e.key === "s") { moveHero(0, 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" || e.key === "a") { moveHero(-1, 0); e.preventDefault(); }
+    else if (e.key === "ArrowRight" || e.key === "d") { moveHero(1, 0); e.preventDefault(); }
+});
+
+initGrid();
+updateHUD();
+</script>
+</body>
+</html>

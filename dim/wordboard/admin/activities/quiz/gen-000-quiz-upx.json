@@ -1,0 +1,21 @@
+{
+    "id": "gen-000-quiz-upx",
+    "title": "aaaaa",
+    "type": "quiz",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "questions": [
+            {
+                "question": "aaaa",
+                "options": [
+                    "aaa",
+                    "sbbb",
+                    "bbccc",
+                    "ddd"
+                ],
+                "correct": 0
+            }
+        ]
+    }
+}

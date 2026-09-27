@@ -1,0 +1,36 @@
+{
+    "id": "dimB-les22-match-mk5",
+    "title": "Γράφω περισσότερα στον υπολογιστή - Αντιστοίχιση",
+    "type": "match",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "pairs": [
+            {
+                "left": "Space",
+                "right": "Κενό ανάμεσα στις λέξεις"
+            },
+            {
+                "left": "Backspace",
+                "right": "Σβήσιμο γραμμάτων"
+            },
+            {
+                "left": "Shift",
+                "right": "Κεφαλαίο γράμμα"
+            },
+            {
+                "left": "Τόνος",
+                "right": "Τονισμός γραμμάτων"
+            },
+            {
+                "left": "ENTER",
+                "right": "Αλλαγή παραγράφου"
+            }
+        ]
+    },
+    "tags": [
+        "dimB",
+        "les22",
+        "κείμενο"
+    ]
+}

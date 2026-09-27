@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δραστηριότητα 27.3 - Σχολιασμός 🐾</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+    padding: 12px;
+    color: #333;
+  }
+
+  .app-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+  .header p {
+    font-size: 1rem;
+    opacity: .9;
+  }
+
+  /* ── Instructions Banner ── */
+  .instructions {
+    background: #fff9db;
+    border: 2px dashed #f0c040;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+    text-align: center;
+    line-height: 1.5;
+    color: #6b5900;
+  }
+  .instructions .step {
+    display: inline-block;
+    background: #ffe066;
+    border-radius: 50%;
+    width: 26px; height: 26px;
+    line-height: 26px;
+    font-weight: 700;
+    margin-right: 4px;
+    font-size: .9rem;
+  }
+
+  /* ── Post Card ── */
+  .post-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .post-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    flex-shrink: 0;
+  }
+  .author-info .name { font-weight: 700; font-size: 1.05rem; }
+  .author-info .time { font-size: .8rem; color: #999; }
+
+  .post-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .post-image .bg-animals {
+    position: absolute;
+    font-size: 2.8rem;
+    opacity: .35;
+  }
+  .post-image .bg-animals:nth-child(1){ top:10%; left:8%; }
+  .post-image .bg-animals:nth-child(2){ top:15%; right:12%; font-size:2.2rem; }
+  .post-image .bg-animals:nth-child(3){ bottom:12%; left:15%; font-size:2.4rem; }
+  .post-image .bg-animals:nth-child(4){ bottom:8%; right:8%; }
+  .post-image .main-icon { position: relative; z-index: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,.2)); }
+
+  .post-body { padding: 16px 18px; }
+  .post-body h2 { font-size: 1.3rem; margin-bottom: 8px; color: #2d3436; }
+  .post-body p  { font-size: 1.05rem; line-height: 1.6; color: #555; }
+
+  /* ── Reactions Bar ── */
+  .reactions-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .heart-btn {
+    background: none;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 8px 16px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .25s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .heart-btn:hover { border-color: #e04060; background: #fff0f3; }
+  .heart-btn.liked {
+    border-color: #e74c6f;
+    background: linear-gradient(135deg, #ffeef2, #ffd6e0);
+    animation: heartPop .4s ease;
+  }
+  .heart-btn .count { font-size: 1.1rem; font-weight: 700; color: #555; }
+  .heart-btn.liked .count { color: #e74c6f; }
+
+  @keyframes heartPop {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.25); }
+    60%  { transform: scale(.95); }
+    100% { transform: scale(1); }
+  }
+
+  .share-info {
+    margin-left: auto;
+    font-size: .85rem;
+    color: #aaa;
+  }
+
+  /* ── Comments Section ── */
+  .comments-section { padding: 14px 18px; }
+  .comments-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #444;
+  }
+
+  .comment {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    animation: fadeSlideIn .4s ease;
+  }
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .comment .c-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .comment .c-body {
+    background: #f4f4f8;
+    border-radius: 14px;
+    padding: 10px 14px;
+    flex: 1;
+  }
+  .comment .c-name {
+    font-weight: 700;
+    font-size: .9rem;
+    margin-bottom: 2px;
+  }
+  .comment .c-text {
+    font-size: .95rem;
+    color: #555;
+    line-height: 1.45;
+    word-wrap: break-word;
+  }
+  .comment .c-time {
+    font-size: .72rem;
+    color: #bbb;
+    margin-top: 4px;
+  }
+
+  .comment.user-comment .c-body { background: #e8f5e9; }
+
+  /* ── Comment Input ── */
+  .comment-form {
+    display: flex;
+    gap: 10px;
+    padding: 14px 18px 18px;
+    border-top: 1px solid #f0f0f0;
+    flex-wrap: wrap;
+  }
+  .comment-form .input-wrap {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+  .comment-input {
+    width: 100%;
+    border: 2px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 1.05rem;
+    font-family: inherit;
+    resize: none;
+    transition: border-color .2s;
+    outline: none;
+  }
+  .comment-input:focus { border-color: #764ba2; }
+  .comment-input::placeholder { color: #bbb; }
+
+  .submit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 22px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.35);
+  }
+  .submit-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(102,126,234,.45); }
+  .submit-btn:active { transform: scale(.97); }
+
+  /* ── Toast / Congrats ── */
+  .toast-overlay {
+    position: fixed;
+    top:0;right:0;bottom:0;left:0;
+    background: rgba(0,0,0,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
+  .toast-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .toast-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px 28px;
+    text-align: center;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 16px 48px rgba(0,0,0,.2);
+    transform: scale(.8);
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .toast-overlay.show .toast-box { transform: scale(1); }
+  .toast-box .toast-emoji { font-size: 3.2rem; margin-bottom: 10px; }
+  .toast-box h3 { font-size: 1.3rem; color: #2d3436; margin-bottom: 6px; }
+  .toast-box p  { font-size: 1rem; color: #666; margin-bottom: 16px; }
+  .toast-close {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    border: none;
+    border-radius: 14px;
+    padding: 10px 28px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(67,233,123,.3);
+  }
+
+  /* ── Stars for completed actions ── */
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: .78rem;
+    color: #888;
+  }
+  .progress-item .p-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    background: #eee;
+    transition: all .4s ease;
+  }
+  .progress-item.done .p-icon {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    box-shadow: 0 4px 12px rgba(67,233,123,.4);
+  }
+  .progress-item.done { color: #2d8f5a; font-weight: 700; }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .post-image { font-size: 3.5rem; }
+    .post-image .bg-animals { font-size: 2rem; }
+    .comment-form { flex-direction: column; }
+    .submit-btn { width: 100%; }
+    .heart-btn { padding: 8px 12px; font-size: 1.15rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .post-author > * + * { margin-left: 12px; }
+  .reactions-bar > * + * { margin-left: 16px; }
+  .heart-btn > * + * { margin-left: 8px; }
+  .comment > * + * { margin-left: 10px; }
+  .comment-form > * { margin: 5px; }
+  .progress-bar > * + * { margin-left: 10px; }
+  .progress-item > * + * { margin-top: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🐾 Σχολιασμός: Ανάρτηση &amp; Σχόλια</h1>
+    <p>Διάβασε, κάνε like &amp; γράψε σχόλιο!</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-item" id="progRead">
+      <div class="p-icon">📖</div>
+      <span>Διάβασα</span>
+    </div>
+    <div class="progress-item" id="progHeart">
+      <div class="p-icon">💗</div>
+      <span>Καρδούλα</span>
+    </div>
+    <div class="progress-item" id="progComment">
+      <div class="p-icon">✍️</div>
+      <span>Σχόλιο</span>
+    </div>
+  </div>
+
+  <!-- Instructions -->
+  <div class="instructions">
+    <span class="step">1</span> Διάβασε την ανάρτηση &nbsp;➡️&nbsp;
+    <span class="step">2</span> Πάτα την καρδούλα &nbsp;➡️&nbsp;
+    <span class="step">3</span> Γράψε σχόλιο!
+  </div>
+
+  <!-- Post Card -->
+  <div class="post-card">
+
+    <!-- Author -->
+    <div class="post-author">
+      <div class="avatar">🦉</div>
+      <div class="author-info">
+        <div class="name">🔥 Φυσιολατρική Ομάδα</div>
+        <div class="time">πριν από 2 ώρες · 🌍 Ελλάδα</div>
+      </div>
+    </div>
+
+    <!-- Image placeholder -->
+    <div class="post-image">
+      <span class="bg-animals">🦊</span>
+      <span class="bg-animals">🦌</span>
+      <span class="bg-animals">🐿️</span>
+      <span class="bg-animals">🦔</span>
+      <span class="main-icon">🌲🦉🦊🌲</span>
+    </div>
+
+    <!-- Post Body -->
+    <div class="post-body" id="postBody">
+      <h2>🌳 Τα ζώα του δάσους 🌳</h2>
+      <p>
+        Τα δάση είναι το σπίτι πολλών ζώων! 🦊 Η αλεπού, το ελάφι 🦌, ο σκίουρος 🐿️
+        και ο σκαντζόχοιρος 🦔 ζουν στα δάση μας. Τι ζώο σου αρέσει περισσότερο;
+        Γράψε μας παρακάτω! 👇
+      </p>
+    </div>
+
+    <!-- Reactions -->
+    <div class="reactions-bar">
+      <button class="heart-btn" id="heartBtn" onclick="toggleHeart()" aria-label="Καρδούλα">
+        <span id="heartIcon">🤍</span>
+        <span class="count" id="heartCount">4</span>
+      </button>
+      <div class="share-info">💬 <span id="commentCount">3</span> σχόλια</div>
+    </div>
+
+    <!-- Comments -->
+    <div class="comments-section" id="commentsSection">
+      <div class="comments-title">💬 Σχόλια</div>
+      <div id="commentsList"></div>
+    </div>
+
+    <!-- Comment Input -->
+    <form class="comment-form" onsubmit="submitComment(event)">
+      <div class="input-wrap">
+        <textarea
+          class="comment-input"
+          id="commentInput"
+          rows="2"
+          placeholder="✍️ Γράψε το σχόλιό σου εδώ..."
+          maxlength="200"
+        ></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Αποστολή 🚀</button>
+    </form>
+  </div>
+
+</div>
+
+<!-- Toast overlay -->
+<div class="toast-overlay" id="toastOverlay" onclick="closeToast(event)">
+  <div class="toast-box">
+    <div class="toast-emoji" id="toastEmoji">🎉</div>
+    <h3 id="toastTitle">Μπράβο!</h3>
+    <p id="toastMsg">Τέλειο σχόλιο!</p>
+    <button class="toast-close" onclick="closeToast(event)">Συνέχεια ⭐</button>
+  </div>
+</div>
+
+<script>
+  /* ── Data ── */
+  var heartLiked = false;
+  var heartCount = 4;
+  var commentCount = 3;
+  var readMarked = false;
+  var heartMarked = false;
+  var commentMarked = false;
+
+  var sampleComments = [
+    { name: 'κυρία Μαρία', emoji: '👩‍🏫', bg: 'linear-gradient(135deg,#f093fb,#f5576c)', text: 'Πολύ ωραία ανάρτηση! Μου αρέσει πολύ η αλεπού! 🦊❤️', time: 'πριν από 1 ώρα' },
+    { name: 'Γιάννης', emoji: '👦', bg: 'linear-gradient(135deg,#4facfe,#00f2fe)', text: 'Μου αρέσει ο σκαντζόχοιρος! Είναι πολύ χαριτωμένος! 🦔', time: 'πριν από 45 λεπτά' },
+    { name: 'Ελένη', emoji: '👧', bg: 'linear-gradient(135deg,#43e97b,#38f9d7)', text: 'Θέλω να πάω στο δάσος να δω ελάφια! 🦌🌿', time: 'πριν από 30 λεπτά' }
+  ];
+
+  /* ── Render initial comments ── */
+  function renderComment(c, isUser) {
+    var div = document.createElement('div');
+    div.className = 'comment' + (isUser ? ' user-comment' : '');
+
+    var avatarDiv = document.createElement('div');
+    avatarDiv.className = 'c-avatar';
+    avatarDiv.style.background = c.bg || 'linear-gradient(135deg,#667eea,#764ba2)';
+    avatarDiv.textContent = c.emoji;
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'c-body';
+
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'c-name';
+    nameDiv.textContent = c.name;
+
+    var textDiv = document.createElement('div');
+    textDiv.className = 'c-text';
+    textDiv.textContent = c.text;
+
+    var timeDiv = document.createElement('div');
+    timeDiv.className = 'c-time';
+    timeDiv.textContent = c.time;
+
+    bodyDiv.appendChild(nameDiv);
+    bodyDiv.appendChild(textDiv);
+    bodyDiv.appendChild(timeDiv);
+
+    div.appendChild(avatarDiv);
+    div.appendChild(bodyDiv);
+    return div;
+  }
+
+  function initComments() {
+    var list = document.getElementById('commentsList');
+    for (var i = 0; i < sampleComments.length; i++) {
+      list.appendChild(renderComment(sampleComments[i], false));
+    }
+  }
+  initComments();
+
+  /* ── Mark "read" on scroll / interaction ── */
+  function markRead() {
+    if (!readMarked) {
+      readMarked = true;
+      document.getElementById('progRead').classList.add('done');
+    }
+  }
+  window.addEventListener('scroll', markRead, { once: true });
+  document.getElementById('postBody').addEventListener('click', markRead);
+  /* auto-mark after 3s */
+  setTimeout(markRead, 3000);
+
+  /* ── Heart Toggle ── */
+  function toggleHeart() {
+    var btn = document.getElementById('heartBtn');
+    var icon = document.getElementById('heartIcon');
+    var countEl = document.getElementById('heartCount');
+
+    heartLiked = !heartLiked;
+    if (heartLiked) {
+      heartCount++;
+      icon.textContent = '❤️';
+      btn.classList.add('liked');
+    } else {
+      heartCount--;
+      icon.textContent = '🤍';
+      btn.classList.remove('liked');
+    }
+    countEl.textContent = heartCount;
+
+    if (!heartMarked && heartLiked) {
+      heartMarked = true;
+      document.getElementById('progHeart').classList.add('done');
+      showToast('💗 Μπράβο!', 'Έκανες like την ανάρτηση!', '💖');
+    }
+  }
+
+  /* ── Submit Comment ── */
+  function submitComment(e) {
+    e.preventDefault();
+    var input = document.getElementById('commentInput');
+    var text = input.value.trim();
+    if (!text) {
+      input.style.borderColor = '#e74c3c';
+      setTimeout(function() { input.style.borderColor = '#e0e0e0'; }, 1200);
+      return;
+    }
+
+    var c = {
+      name: 'Εγώ 🌟',
+      emoji: '🧒',
+      bg: 'linear-gradient(135deg,#f5af19,#f12711)',
+      text: text,
+      time: 'τώρα'
+    };
+
+    var list = document.getElementById('commentsList');
+    list.appendChild(renderComment(c, true));
+
+    commentCount++;
+    document.getElementById('commentCount').textContent = commentCount;
+
+    input.value = '';
+
+    if (!commentMarked) {
+      commentMarked = true;
+      document.getElementById('progComment').classList.add('done');
+      showToast('🎉 Μπράβο!', 'Έγραψες ένα ωραίο σχόλιο! Συνέχισε έτσι!', '⭐');
+    } else {
+      showToast('✨ Ωραία!', 'Καινούργιο σχόλιο! Μπράβο!', '👍');
+    }
+
+    /* Scroll to new comment */
+    var lastComment = list.lastElementChild;
+    if (lastComment) {
+      lastComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  /* ── Toast ── */
+  function showToast(title, msg, emoji) {
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastEmoji').textContent = emoji;
+    document.getElementById('toastOverlay').classList.add('show');
+  }
+
+  function closeToast(e) {
+    if (e.target === document.getElementById('toastOverlay') || e.target.classList.contains('toast-close')) {
+      document.getElementById('toastOverlay').classList.remove('show');
+    }
+  }
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '16/9')) return;
+  var F = [['.post-image', 16/9]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+
+</body>
+</html>

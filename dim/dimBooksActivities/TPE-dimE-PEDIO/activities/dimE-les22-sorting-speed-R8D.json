@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τύποι Αποτελεσμάτων",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "visual", "name": "Οπτικά", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "audio", "name": "Κίνηση/Ήχος", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εικόνες", "category": "visual"},
+    {"text": "Βίντεο", "category": "audio"},
+    {"text": "Φωτογραφίες", "category": "visual"},
+    {"text": "Ταινίες", "category": "audio"},
+    {"text": "Στατική εικόνα", "category": "visual"},
+    {"text": "Κίνηση + ήχος", "category": "audio"},
+    {"text": "JPG, PNG", "category": "visual"},
+    {"text": "MP4", "category": "audio"},
+    {"text": "Γραφικά", "category": "visual"},
+    {"text": "Ντοκιμαντέρ", "category": "audio"}
+  ],
+  "duration": 30
+}

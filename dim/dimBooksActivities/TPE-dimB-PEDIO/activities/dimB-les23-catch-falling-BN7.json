@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Ενέργειες Ποντικιού",
+  "subtitle": "Πιάσε μόνο τις ενέργειες",
+  "instructions": "Πιάσε ενέργειες ποντικιού. Απόφυγε τις μη ενέργειες.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Μετακίνηση", "correct": true, "color": "#4CAF50" },
+    { "text": "Κούρεμα", "correct": false, "color": "#f44336" },
+    { "text": "Περιστροφή", "correct": true, "color": "#4CAF50" },
+    { "text": "Ψήσιμο", "correct": false, "color": "#f44336" },
+    { "text": "Αλλαγή μεγέθους", "correct": true, "color": "#4CAF50" },
+    { "text": "Πλύσιμο", "correct": false, "color": "#f44336" },
+    { "text": "Επιλογή", "correct": true, "color": "#4CAF50" },
+    { "text": "Σεντούκι", "correct": false, "color": "#f44336" },
+    { "text": "Σύρσιμο", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρέκλα", "correct": false, "color": "#f44336" }
+  ]
+}

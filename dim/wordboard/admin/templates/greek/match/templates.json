@@ -1,0 +1,112 @@
+{
+  "templates": [
+    {
+      "id": "greek_match_animals_001",
+      "name": "Ζώα και οι ήχοι τους (Animals and Sounds)",
+      "description": "Ταίριαξε τα ζώα με τον ήχο που κάνουν",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "sounds", "elementary"],
+      "pairs": [
+        {"left": "Σκύλος", "right": "Γαβ γαβ"},
+        {"left": "Γάτα", "right": "Νιαου νιαου"},
+        {"left": "Αγελάδα", "right": "Μου μου"},
+        {"left": "Πρόβατο", "right": "Μπεεε"},
+        {"left": "Κόκορας", "right": "Κικιρικού"},
+        {"left": "Χοίρος", "right": "Γουρού γουρού"},
+        {"left": "Πάπια", "right": "Παπ παπ"},
+        {"left": "Γαϊδούρι", "right": "Ιαα ιαα"}
+      ]
+    },
+    {
+      "id": "greek_match_numbers_001",
+      "name": "Αριθμοί (Numbers)",
+      "description": "Ταίριαξε τους αριθμούς με τα ελληνικά τους",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "numbers", "math", "elementary"],
+      "pairs": [
+        {"left": "One", "right": "Ένα"},
+        {"left": "Two", "right": "Δύο"},
+        {"left": "Three", "right": "Τρία"},
+        {"left": "Four", "right": "Τέσσερα"},
+        {"left": "Five", "right": "Πέντε"},
+        {"left": "Six", "right": "Έξι"},
+        {"left": "Seven", "right": "Επτά"},
+        {"left": "Eight", "right": "Οκτώ"}
+      ]
+    },
+    {
+      "id": "greek_match_colors_001",
+      "name": "Χρώματα (Colors)",
+      "description": "Ταίριαξε τα χρώματα με την ελληνική τους λέξη",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "pairs": [
+        {"left": "Red", "right": "Κόκκινο"},
+        {"left": "Blue", "right": "Μπλε"},
+        {"left": "Green", "right": "Πράσινο"},
+        {"left": "Yellow", "right": "Κίτρινο"},
+        {"left": "Orange", "right": "Πορτοκαλί"},
+        {"left": "Purple", "right": "Μωβ"},
+        {"left": "Black", "right": "Μαύρο"},
+        {"left": "White", "right": "Λευκό"}
+      ]
+    },
+    {
+      "id": "greek_match_fruits_001",
+      "name": "Φρούτα (Fruits)",
+      "description": "Ταίριαξε τα φρούτα με την εικόνα",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "fruits", "food", "elementary"],
+      "pairs": [
+        {"left": "Μήλο", "right": "Apple"},
+        {"left": "Μπανάνα", "right": "Banana"},
+        {"left": "Πορτοκάλι", "right": "Orange"},
+        {"left": "Σταφύλι", "right": "Grape"},
+        {"left": "Φράουλα", "right": "Strawberry"},
+        {"left": "Κεράσι", "right": "Cherry"},
+        {"left": "Αχλάδι", "right": "Pear"},
+        {"left": "Ροδάκινο", "right": "Peach"}
+      ]
+    },
+    {
+      "id": "greek_match_body_001",
+      "name": "Μέρη του σώματος (Body Parts)",
+      "description": "Ταίριαξε τα μέρη του σώματος",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "body", "elementary"],
+      "pairs": [
+        {"left": "Μάτια", "right": "Eyes"},
+        {"left": "Αυτιά", "right": "Ears"},
+        {"left": "Μύτη", "right": "Nose"},
+        {"left": "Στόμα", "right": "Mouth"},
+        {"left": "Χέρια", "right": "Hands"},
+        {"left": "Πόδια", "right": "Feet"},
+        {"left": "Κεφάλι", "right": "Head"},
+        {"left": "Δάχτυλα", "right": "Fingers"}
+      ]
+    },
+    {
+      "id": "greek_match_school_001",
+      "name": "Σχολείο (School)",
+      "description": "Αντικείμενα του σχολείου",
+      "category": "match",
+      "difficulty": "easy",
+      "tags": ["greek", "school", "elementary"],
+      "pairs": [
+        {"left": "Βιβλίο", "right": "Book"},
+        {"left": "Τετράδιο", "right": "Notebook"},
+        {"left": "Μολύβι", "right": "Pencil"},
+        {"left": "Στυλό", "right": "Pen"},
+        {"left": "Γόμα", "right": "Eraser"},
+        {"left": "Χάρακας", "right": "Ruler"},
+        {"left": "Τσάντα", "right": "Bag"},
+        {"left": "Κιμωλία", "right": "Chalk"}
+      ]
+    }
+  ]
+}

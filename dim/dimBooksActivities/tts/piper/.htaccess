@@ -1,0 +1,8 @@
+# Chrome streams WebAssembly only with the right MIME type; without this line
+# ort/espeak fall back to (slower, noisier) ArrayBuffer instantiation.
+AddType application/wasm .wasm
+# The engine files are large but must never be served stale: an old cached .wasm
+# keeps the wrong MIME type (and old code) alive across server updates.
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, must-revalidate"
+</IfModule>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v007_260523 - added proxy for remote URLs (eg : youtube_quiz.html?data=https://pastebin.com/raw/FmNn7LhG)
+v006_260523 - initial version
+
+-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+    h1 { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 30px; }
+    #player-wrapper { position: relative; width: 100%; max-width: 800px; margin: 0 auto; }
+    #player { width: 100%; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+    #video-time {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 10;
+    }
+    #quiz-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      z-index: 1000;
+      max-width: 550px;
+      min-width: 400px;
+    }
+    .question { font-size: 1.5em; margin-bottom: 30px; color: #333; font-weight: bold; }
+    #answers { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+    .answer-btn {
+      padding: 15px 25px;
+      margin: 5px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    .answer-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    .answer-btn:active { transform: translateY(0); }
+    .answer-btn.correct { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .answer-btn.incorrect { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
+    .resume-button {
+      display: none;
+      padding: 15px 35px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    .resume-button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    #feedback {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      display: none;
+    }
+    #feedback.success { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+    #feedback.error { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
+    .loading { color: white; font-size: 1.2em; padding: 20px; }
+    .error { color: white; background: rgba(255,0,0,0.3); padding: 20px; border-radius: 10px; }
+    #question-markers {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 4px;
+      margin: 0 15px;
+    }
+    .q-marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      top: -1px;
+      transform: translateX(-50%);
+      background: #aaa;
+      cursor: default;
+      transition: all 0.3s ease;
+    }
+    .q-marker.pending { background: #aaa; }
+    .q-marker.answered-correct { background: #38ef7d; }
+    .q-marker.answered-wrong { background: #f45c43; }
+    .q-marker.missed {
+      background: #f45c43;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.3); opacity: 0.7; }
+    }
+    .q-marker:hover.missed {
+      transform: translateX(-50%) scale(1.5);
+    }
+    #missed-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      z-index: 2000;
+      min-width: 280px;
+    }
+    #missed-toast.show {
+      display: flex;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    #missed-toast.slideOut {
+      animation: slideOut 0.3s ease forwards;
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    .toast-message { font-size: 1em; }
+    .toast-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+    .toast-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .toast-btn-close { background: #555; color: white; }
+    .toast-btn-close:hover { background: #666; }
+    .toast-btn-go { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+    .toast-btn-go:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4); }
+  </style>
+</head>
+<body>
+
+  <div class="loading" id="loading">Φόρτωση...</div>
+  <div id="error" style="display:none;"></div>
+
+  <div id="content" style="display:none;">
+    <h1 id="quiz-title">Video Quiz</h1>
+    <div id="player-wrapper">
+      <div id="player"></div>
+      <div id="video-time">00:00 / 00:00</div>
+      <div id="question-markers"></div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container">
+      <div class="question" id="question-text"></div>
+      <div id="answers"></div>
+      <div id="feedback"></div>
+      <button class="resume-button" onclick="resumeVideo()">Συνέχεια Βίντεο</button>
+    </div>
+  </div>
+
+  <div id="missed-toast">
+    <div class="toast-message" id="toast-message"></div>
+    <div class="toast-buttons">
+      <button class="toast-btn toast-btn-close" onclick="hideToast()">Κλείσιμο</button>
+      <button class="toast-btn toast-btn-go" id="toast-go-btn">Πήγαινε πίσω</button>
+    </div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let player;
+    let questionStates = [];
+    let currentTriggeredQuestionIndex = -1;
+    let isPausedForQuiz = false;
+    let hasAnswered = false;
+    let quizData = null;
+    let toastTimeout = null;
+
+    const params = new URLSearchParams(window.location.search);
+    const dataFile = params.get('data');
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+    const contentEl = document.getElementById('content');
+
+    function showError(msg) {
+      loadingEl.style.display = 'none';
+      contentEl.style.display = 'none';
+      errorEl.style.display = 'block';
+      errorEl.innerHTML = '<div class="error">' + msg + '</div>';
+    }
+
+    if (!dataFile) {
+      showError('Δεν βρέθηκε το αρχείο δεδομένων. Πρόσθεσε ?data=αρχείο.json στο URL.');
+    } else {
+      // Check if dataFile is a URL (starts with http:// or https://)
+      const isUrl = dataFile.startsWith('http://') || dataFile.startsWith('https://');
+      
+      // If it's a URL, use the proxy
+      const fetchUrl = isUrl ? 'proxy.php?url=' + encodeURIComponent(dataFile) : dataFile;
+      
+      fetch(fetchUrl, {
+        mode: isUrl ? 'cors' : 'same-origin',
+        headers: isUrl ? {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        } : {}
+      })
+        .then(r => {
+          if (!r.ok) throw new Error('Δεν βρέθηκε: ' + dataFile + ' (Status: ' + r.status + ')');
+          return r.json();
+        })
+        .then(data => {
+          quizData = data;
+          questionStates = data.questions.map(() => 'pending');
+          loadingEl.style.display = 'none';
+          contentEl.style.display = 'block';
+          if (data.title) {
+            document.getElementById('quiz-title').textContent = data.title;
+          }
+        })
+        .catch(err => showError('Σφάλμα φόρτωσης: ' + err.message));
+    }
+
+    // ================== ΦΟΡΤΩΣΗ YOUTUBE PLAYER ==================
+    function onYouTubeIframeAPIReady() {
+      if (!quizData) {
+        setTimeout(onYouTubeIframeAPIReady, 100);
+        return;
+      }
+
+      player = new YT.Player('player', {
+        height: '450',
+        width: '800',
+        videoId: quizData.videoId,
+        playerVars: {
+          'playsinline': 1,
+          'rel': 0,
+          'modestbranding': 1,
+          'controls': 1,
+          'fs': 0
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      console.log("✅ Το βίντεο είναι έτοιμο");
+      updateVideoTime();
+      setInterval(updateVideoTime, 1000);
+      setTimeout(buildMarkers, 500);
+    }
+
+    function onPlayerStateChange(event) {
+      updateVideoTime();
+      if (event.data === YT.PlayerState.PLAYING && !isPausedForQuiz) {
+        checkForQuizTime();
+      }
+    }
+
+    // ================== ΕΛΕΓΧΟΣ ΧΡΟΝΟΥ ==================
+    function checkForQuizTime() {
+      if (isPausedForQuiz || !quizData) return;
+
+      updateVideoTime();
+
+      const currentTime = Math.floor(player.getCurrentTime());
+      const questions = quizData.questions;
+
+      questions.forEach((q, i) => {
+        const state = questionStates[i];
+        if (state === 'triggered' || state === 'answered-correct' || state === 'answered-wrong') return;
+
+        if (currentTime >= q.time && currentTime <= q.time + 2) {
+          pauseForQuiz(q, i);
+        } else if (state === 'pending' && currentTime > q.time + 2) {
+          questionStates[i] = 'missed';
+          showMissedToast(q, i);
+          updateMarkers();
+        }
+      });
+
+      setTimeout(checkForQuizTime, 800);
+    }
+
+    // ================== MARKERS ==================
+    function buildMarkers() {
+      if (!player || !player.getDuration || !quizData) {
+        setTimeout(buildMarkers, 500);
+        return;
+      }
+      const duration = player.getDuration();
+      if (!duration) {
+        setTimeout(buildMarkers, 500);
+        return;
+      }
+
+      const markersContainer = document.getElementById('question-markers');
+      markersContainer.innerHTML = '';
+
+      quizData.questions.forEach((q, i) => {
+        const marker = document.createElement('div');
+        marker.className = 'q-marker pending';
+        marker.dataset.index = i;
+        const position = (q.time / duration) * 100;
+        marker.style.left = position + '%';
+        marker.onclick = () => {
+          if (questionStates[i] === 'missed') {
+            goToQuestion(i);
+          }
+        };
+        markersContainer.appendChild(marker);
+      });
+    }
+
+    function updateMarkers() {
+      const markers = document.querySelectorAll('.q-marker');
+      markers.forEach((marker, i) => {
+        marker.className = 'q-marker ' + questionStates[i];
+      });
+    }
+
+    // ================== TOAST ==================
+    function showMissedToast(question, index) {
+      const toast = document.getElementById('missed-toast');
+      const message = document.getElementById('toast-message');
+      const goBtn = document.getElementById('toast-go-btn');
+
+      message.textContent = 'Προχόρησες την ερώτηση #' + (index + 1) + '!';
+      goBtn.onclick = () => goToQuestion(index);
+
+      toast.className = 'show';
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        hideToast();
+      }, 6000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('missed-toast');
+      toast.classList.remove('show');
+      toast.classList.add('slideOut');
+      setTimeout(() => {
+        toast.classList.remove('slideOut');
+      }, 300);
+    }
+
+    function goToQuestion(index) {
+      if (!quizData || !player) return;
+      const q = quizData.questions[index];
+      player.seekTo(q.time - 1, true);
+      isPausedForQuiz = false;
+      hideToast();
+    }
+
+    // ================== ΠΑΥΣΗ & ΕΜΦΑΝΙΣΗ ΕΡΩΤΗΣΗΣ ==================
+    function pauseForQuiz(question, index) {
+      player.pauseVideo();
+      isPausedForQuiz = true;
+      hasAnswered = false;
+      currentTriggeredQuestionIndex = index;
+      questionStates[index] = 'triggered';
+      updateMarkers();
+
+      document.getElementById('question-text').innerHTML = question.text;
+
+      const answersDiv = document.getElementById('answers');
+      answersDiv.innerHTML = '';
+
+      const feedbackDiv = document.getElementById('feedback');
+      feedbackDiv.style.display = 'none';
+      feedbackDiv.className = '';
+
+      question.options.forEach((answer, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = answer;
+        btn.className = 'answer-btn';
+        btn.onclick = () => checkAnswer(i, question.correctIndex, index);
+        answersDiv.appendChild(btn);
+      });
+
+      document.getElementById('quiz-container').style.display = 'block';
+      document.querySelector('.resume-button').style.display = 'none';
+    }
+
+    function checkAnswer(selected, correct, questionIndex) {
+      hasAnswered = true;
+      const feedbackDiv = document.getElementById('feedback');
+      const answerBtns = document.querySelectorAll('.answer-btn');
+
+      answerBtns.forEach((btn, index) => {
+        btn.disabled = true;
+        if (index === correct) {
+          btn.classList.add('correct');
+        } else if (index === selected && selected !== correct) {
+          btn.classList.add('incorrect');
+        }
+      });
+
+      if (selected === correct) {
+        questionStates[questionIndex] = 'answered-correct';
+        feedbackDiv.textContent = '✅ Σωστή απάντηση!';
+        feedbackDiv.className = 'success';
+      } else {
+        questionStates[questionIndex] = 'answered-wrong';
+        feedbackDiv.textContent = '❌ Λάθος! Η σωστή απάντηση είναι η: ' + (correct + 1);
+        feedbackDiv.className = 'error';
+      }
+
+      feedbackDiv.style.display = 'block';
+      document.querySelector('.resume-button').style.display = 'inline-block';
+      updateMarkers();
+    }
+
+    function resumeVideo() {
+      document.getElementById('quiz-container').style.display = 'none';
+      isPausedForQuiz = false;
+      player.playVideo();
+    }
+
+    function updateVideoTime() {
+      if (player && player.getCurrentTime) {
+        const currentTime = player.getCurrentTime();
+        const duration = player.getDuration();
+
+        if (duration) {
+          const currentMinutes = Math.floor(currentTime / 60);
+          const currentSeconds = Math.floor(currentTime % 60);
+          const durationMinutes = Math.floor(duration / 60);
+          const durationSeconds = Math.floor(duration % 60);
+
+          const formatTime = (minutes, seconds) => {
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+          };
+
+          document.getElementById('video-time').textContent =
+            `${formatTime(currentMinutes, currentSeconds)} / ${formatTime(durationMinutes, durationSeconds)}`;
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ποιο Κριτήριο;",
+  "subtitle": "Ταξινόμησε τις ενέργειες στο σωστό κριτήριο!",
+  "instructions": "Πάτα ← για Πατρότητα, → για Επικαιρότητα!",
+  "categories": [
+    { "id": "authority", "name": "Πατρότητα", "color": "#2196F3", "key": "ArrowLeft" },
+    { "id": "recency", "name": "Επικαιρότητα", "color": "#4CAF50", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Ψάχνω το όνομα του συγγραφέα", "category": "authority" },
+    { "text": "Ελέγχω πότε δημοσιεύτηκε", "category": "recency" },
+    { "text": "Βλέπω αν υπάρχουν στοιχεία επικοινωνίας", "category": "authority" },
+    { "text": "Ψάχνω ημερομηνία τελευταίας ενημέρωσης", "category": "recency" },
+    { "text": "Ελέγχω βιογραφικά στοιχεία συγγραφέα", "category": "authority" },
+    { "text": "Η πληροφορία είναι πρόσφατη;", "category": "recency" },
+    { "text": "Υπάρχει server/εξυπηρετητής;", "category": "authority" },
+    { "text": "Κατάλληλο για επιστήμες με συχνές αλλαγές", "category": "recency" },
+    { "text": "Ελέγχω κριτικές και σχόλια αναγνωστών", "category": "authority" },
+    { "text": "Πότε δημιουργήθηκε το περιεχόμενο;", "category": "recency" },
+    { "text": "Υπάρχουν σύνδεσμοι σε επιπλέον περιεχόμενο;", "category": "authority" },
+    { "text": "Η πληροφορία είναι ενημερωμένη;", "category": "recency" }
+  ],
+  "duration": 45
+}

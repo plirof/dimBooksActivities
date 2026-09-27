@@ -1,0 +1,26 @@
+{
+    "id": "dimE-les23-wheel-zw6",
+    "title": "Αποθήκευση και ανάκτηση ψηφιακών αρχείων - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Backup",
+            "Φάκελος",
+            "Αρχείο",
+            ".jpg",
+            ".mp3",
+            ".docx",
+            ".pdf",
+            "Νέφος",
+            "USB",
+            "Ονοματοδοσία"
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les23",
+        "αρχεία"
+    ]
+}

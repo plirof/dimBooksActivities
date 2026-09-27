@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Στήλες Πίνακα",
+  "subtitle": "Ταξινόμησε κάθε αισθητήρα στη σωστή στήλη",
+  "instructions": "Πάτα αριστερό βέλος για Φως (fws), δεξιό για Θερμοκρασία (therm)",
+  "categories": [
+    { "id": "light", "name": "Φωτισμός (fws)", "color": "#FF9800", "key": "ArrowLeft" },
+    { "id": "temp", "name": "Θερμοκρασία (therm)", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Ηλιοφωτισμένο παράθυρο", "category": "light" },
+    { "text": "Καλοριφέρ αναμμένο", "category": "temp" },
+    { "text": "Λαμπτήρας αναμμένος", "category": "light" },
+    { "text": "Κλιματιστικό σε 22°C", "category": "temp" },
+    { "text": "Σκοτεινή ντουλάπα", "category": "light" },
+    { "text": "Κατάψυξη στους -5°C", "category": "temp" },
+    { "text": "Φωτεινή αίθουσα", "category": "light" },
+    { "text": "Ηλιακός θερμοσίφωνας", "category": "temp" },
+    { "text": "Τυφλό παραθύρου κλειστό", "category": "light" },
+    { "text": "Θερμόμετρο 36°C", "category": "temp" }
+  ],
+  "duration": 30
+}

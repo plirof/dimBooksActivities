@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 8,
+  unit: "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική",
+  slides: [
+    { type:"title", title:"Μάθημα 8ο: Μαθαίνω για τα ρομπότ!" },
+    { type:"concept", text:"Τα ρομπότ είναι μηχανές που μπορούν να βοηθούν τους ανθρώπους, κάνοντας δουλειές που είναι δύσκολες, επικίνδυνες ή κουραστικές. Οι άνθρωποι μπορούν να ελέγχουν τα ρομπότ και να τους λένε τι ακριβώς πρέπει να κάνουν, δίνοντάς τους εντολές." },
+    { type:"list", title:"Τα ρομπότ μπορεί να τα βλέπουμε σε διαφορετικά μέρη", items:["Στον ουρανό που πετούν","Στα βάθη των ωκεανών","Σε πολύ μακρινούς πλανήτες","Στα παράθυρα που παραδίδουν πακέτα","Στα εργοστάσια που συναρμολογούν αυτοκίνητα","Στα σπίτια που καθαρίζουν ως ρομπότ-σκούπες"] },
+    { type:"concept", text:"Όλα τα ρομπότ δεν είναι ίδια. Κάποια μπορούν να πετάνε στον ουρανό, ενώ κάποια άλλα μπορούν να πηγαίνουν στα βάθη των ωκεανών ή σε πολύ μακρινούς πλανήτες." },
+    { type:"list", title:"Τι μπορούν να κάνουν τα ρομπότ", items:["Να περπατούν","Να μιλάνε","Να ακούν","Να βλέπουν","Να μεταφέρουν αντικείμενα","Να κάνουν υπολογισμούς","Να λύνουν προβλήματα"] },
+    { type:"concept", text:"Τα ρομπότ δεν κουράζονται, δεν τρώνε και δεν αναπνέουν. Επίσης, δεν κλαίνε, δεν γελάνε, δεν διασκεδάζουν και δεν κοιμούνται!" },
+    { type:"list", title:"Τι δεν μπορούν να κάνουν τα ρομπότ", items:["Δεν κουράζονται","Δεν τρώνε και δεν αναπνέουν","Δεν κλαίνε","Δεν γελάνε","Δεν διασκεδάζουν","Δεν κοιμούνται"] },
+    { type:"concept", text:"Οι άνθρωποι και τα ρομπότ σε κάποια πράγματα μοιάζουν και σε άλλα διαφέρουν. Από τα πράγματα που κάνουν οι άνθρωποι, τα ρομπότ κάποια μπορούν να τα κάνουν και κάποια όχι." },
+    { type:"practice", title:"Συζητήστε στην τάξη", items:["Τι θα θέλατε να κάνει το ρομπότ-βοηθός σας;","Πώς φαντάζεστε το ρομπότ-βοηθό σας;"] },
+    { type:"assessment", check:"Μπορώ να περιγράφω τι μπορούν και τι δεν μπορούν να κάνουν τα ρομπότ", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική. Μάθημα 8ο: Μαθαίνω για τα ρομπότ!",
+  "Τα ρομπότ είναι μηχανές που μπορούν να βοηθούν τους ανθρώπους, κάνοντας δουλειές που είναι δύσκολες, επικίνδυνες ή κουραστικές. Οι άνθρωποι μπορούν να ελέγχουν τα ρομπότ και να τους λένε τι ακριβώς πρέπει να κάνουν, δίνοντάς τους εντολές.",
+  "Τα ρομπότ μπορεί να τα βλέπουμε σε διαφορετικά μέρη. Στον ουρανό που πετούν. Στα βάθη των ωκεανών. Σε πολύ μακρινούς πλανήτες. Στα παράθυρα που παραδίδουν πακέτα. Στα εργοστάσια που συναρμολογούν αυτοκίνητα. Στα σπίτια που καθαρίζουν ως ρομπότ-σκούπες",
+  "Όλα τα ρομπότ δεν είναι ίδια. Κάποια μπορούν να πετάνε στον ουρανό, ενώ κάποια άλλα μπορούν να πηγαίνουν στα βάθη των ωκεανών ή σε πολύ μακρινούς πλανήτες.",
+  "Τι μπορούν να κάνουν τα ρομπότ. Να περπατούν. Να μιλάνε. Να ακούν. Να βλέπουν. Να μεταφέρουν αντικείμενα. Να κάνουν υπολογισμούς. Να λύνουν προβλήματα",
+  "Τα ρομπότ δεν κουράζονται, δεν τρώνε και δεν αναπνέουν. Επίσης, δεν κλαίνε, δεν γελάνε, δεν διασκεδάζουν και δεν κοιμούνται!",
+  "Τι δεν μπορούν να κάνουν τα ρομπότ. Δεν κουράζονται. Δεν τρώνε και δεν αναπνέουν. Δεν κλαίνε. Δεν γελάνε. Δεν διασκεδάζουν. Δεν κοιμούνται",
+  "Οι άνθρωποι και τα ρομπότ σε κάποια πράγματα μοιάζουν και σε άλλα διαφέρουν. Από τα πράγματα που κάνουν οι άνθρωποι, τα ρομπότ κάποια μπορούν να τα κάνουν και κάποια όχι.",
+  "Συζητήστε στην τάξη. Τι θα θέλατε να κάνει το ρομπότ-βοηθός σας; Πώς φαντάζεστε το ρομπότ-βοηθό σας;",
+  "Μπορώ να περιγράφω τι μπορούν και τι δεν μπορούν να κάνουν τα ρομπότ. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ρομπότ",
+  "subtitle": "Πιάσε ό,τι μπορεί να κάνει ένα ρομπότ!",
+  "instructions": "Πιάσε μόνο ό,τι ΜΠΟΡΕΙ να κάνει ένα ΡΟΜΠΟΤ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Σκουπίζει", "correct": true, "color": "#4CAF50"},
+    {"text": "Κλαίει", "correct": false, "color": "#f44336"},
+    {"text": "Κουδουνίζει", "correct": true, "color": "#2196F3"},
+    {"text": "Ονειρεύεται", "correct": false, "color": "#FF9800"},
+    {"text": "Φτιάχνει αυτοκίνητα", "correct": true, "color": "#9C27B0"},
+    {"text": "Αγαπάει", "correct": false, "color": "#E91E63"},
+    {"text": "Παίζει μουσική", "correct": true, "color": "#009688"},
+    {"text": "Χαίρεται", "correct": false, "color": "#FFC107"},
+    {"text": "Βοηθάει", "correct": true, "color": "#795548"},
+    {"text": "Νιώθει", "correct": false, "color": "#607D8B"}
+  ]
+}

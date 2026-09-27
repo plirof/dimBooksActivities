@@ -1,0 +1,53 @@
+{
+  "title": "Υλικό vs Λογισμικό",
+  "subtitle": "Διάκρινε τι είναι υλικό και τι λογισμικό",
+  "categories": [
+    {
+      "id": "hw",
+      "name": "ΥΛΙΚΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "sw",
+      "name": "ΛΟΓΙΣΜΙΚΟ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "⌨️ Πληκτρολόγιο",
+      "category": "hw"
+    },
+    {
+      "id": "item2",
+      "text": "🖥️ Οθόνη",
+      "category": "hw"
+    },
+    {
+      "id": "item3",
+      "text": "🎮 Scratch",
+      "category": "sw"
+    },
+    {
+      "id": "item4",
+      "text": "📝 LibreOffice",
+      "category": "sw"
+    },
+    {
+      "id": "item5",
+      "text": "🖨️ Εκτυπωτής",
+      "category": "hw"
+    },
+    {
+      "id": "item6",
+      "text": "🌐 Firefox",
+      "category": "sw"
+    },
+    {
+      "id": "item7",
+      "text": "💾 Σκληρός δίσκος",
+      "category": "hw"
+    }
+  ]
+}

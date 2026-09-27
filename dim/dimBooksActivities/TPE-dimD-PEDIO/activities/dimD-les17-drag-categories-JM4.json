@@ -1,0 +1,19 @@
+{
+  "title": "Τύποι αρχείων: Σωστή κατηγορία;",
+  "subtitle": "Σύρε κάθε μορφή αρχείου στη σωστή κατηγορία",
+  "categories": [
+    { "id": "image", "name": "Εικόνα", "color": "#4CAF50" },
+    { "id": "video", "name": "Βίντεο", "color": "#2196F3" },
+    { "id": "audio", "name": "Ήχος", "color": "#FF9800" },
+    { "id": "text", "name": "Κείμενο", "color": "#9C27B0" }
+  ],
+  "items": [
+    { "id": "jpg", "text": "🖼️ JPEG", "category": "image" },
+    { "id": "png", "text": "🎨 PNG", "category": "image" },
+    { "id": "gif", "text": "🎞️ GIF", "category": "image" },
+    { "id": "mp4", "text": "🎬 MP4", "category": "video" },
+    { "id": "wav", "text": "🎵 WAV", "category": "audio" },
+    { "id": "mp3", "text": "🔊 MP3", "category": "audio" },
+    { "id": "odt", "text": "📄 ODT", "category": "text" }
+  ]
+}

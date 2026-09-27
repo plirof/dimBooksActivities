@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+v002-250622 - Randomise the order of the blocks in the pool
+
+-->   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φτιάξε το Ροήγραμμα!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;display:flex;align-items:center;justify-content:center;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:30px;text-align:center}
+h1{color:#4a4a4a;font-size:1.8em;margin-bottom:5px}
+h2{color:#7f8c8d;font-size:1.1em;font-weight:normal;margin-bottom:15px}
+.instructions{background:#fff0f5;border-radius:15px;padding:15px;margin-bottom:20px;color:#555;font-size:0.95em;line-height:1.5}
+.game-area{display:flex;gap:20px;min-height:400px;align-items:flex-start}
+@media(max-width:600px){.game-area{flex-direction:column}}
+.source{flex:1;min-width:0}
+.source h3{color:#555;margin-bottom:10px;font-size:1em}
+.flow-area{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
+.flow-area h3{color:#555;margin-bottom:10px;font-size:1em}
+.flow-vertical{display:flex;flex-direction:column;align-items:center;gap:0;width:100%}
+.flow-node{padding:10px 16px;border-radius:12px;font-size:0.9em;cursor:pointer;transition:all 0.3s;user-select:none;max-width:220px;width:100%;text-align:center;position:relative}
+.flow-node.action{background:#e8f4fd;border:2px solid #3498db;color:#2c3e50}
+.flow-node.decision{background:#fff3cd;border:2px solid #f39c12;color:#856404;transform:rotate(0deg)}
+.flow-node.start{background:#27ae60;color:#fff;font-weight:bold;border:2px solid #27ae60}
+.flow-node.end{background:#e74c3c;color:#fff;font-weight:bold;border:2px solid #e74c3c}
+.flow-node.in-slot{background:#d5f5e3;border:2px solid #27ae60}
+.flow-node.drag-over{box-shadow:0 0 15px rgba(243,156,18,0.6);transform:scale(1.05)}
+.flow-arrow{color:#bbb;font-size:1.2em;line-height:1}
+.source-block{padding:10px 15px;margin:6px 0;border-radius:12px;font-size:0.9em;cursor:grab;transition:all 0.3s;user-select:none;border:2px solid transparent}
+.source-block:hover{transform:translateX(5px)}
+.source-block.action{background:#e8f4fd;border-color:#3498db;color:#2c3e50}
+.source-block.decision{background:#fff3cd;border-color:#f39c12;color:#856404}
+.source-block.used{opacity:0.3;pointer-events:none;cursor:default}
+.slot{min-height:50px;border:2px dashed #ccc;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:2px 0;padding:8px;transition:all 0.3s}
+.slot.drag-over{border-color:#f5576c;background:#fff0f5}
+.slot.filled{border-style:solid}
+.slot.correct{border-color:#27ae60;background:#d5f5e3}
+.slot.wrong{border-color:#e74c3c;background:#fadbd8}
+.btn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;padding:12px 30px;border-radius:15px;font-size:1.1em;cursor:pointer;transition:all 0.3s;box-shadow:0 5px 15px rgba(245,87,108,0.3);margin:5px}
+.btn:hover{transform:translateY(-2px)}
+.btn-check{background:linear-gradient(135deg,#27ae60,#2ecc71);box-shadow:0 5px 15px rgba(39,174,96,0.3)}
+.result-box{padding:20px;border-radius:15px;margin:15px 0;animation:popIn 0.5s ease}
+.result-box.success{background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff}
+.result-box.fail{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff}
+.start-screen .emoji{font-size:3em;margin:10px 0}
+.dragging{opacity:0.5}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@media(max-width:600px){.flow-node{font-size:0.8em;padding:8px 10px}.source-block{font-size:0.8em}}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+let gameData=null;
+let slots=[];
+let blockMap={};
+let usedCount={};
+let checkResult=null;
+
+if(!dataFile){document.getElementById('app').innerHTML='<h1>Δεν βρέθηκαν δεδομένα</h1><p>Πρόσθεσε ?data=archivo.json στο URL</p>';}
+
+function loadGame(){
+fetch(dataFile).then(r=>r.json()).then(d=>{gameData=d;showStart();}).catch(()=>{document.getElementById('app').innerHTML='<h1>Σφάλμα φόρτωσης</h1>';});
+}
+
+function showStart(){
+const app=document.getElementById('app');
+app.innerHTML='<div class="start-screen"><div class="emoji">📊</div><h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><div class="instructions">'+esc(gameData.processTitle)+'</div><div class="instructions" style="background:#fff0f5">Σύρε τα βήματα από αριστερά και τοποθέτησέ τα στη σωστή σειρά στα δεξιά!</div><br><button class="btn" onclick="startGame()">Ξεκίνα! 🚀</button></div>';
+}
+
+function shuffleBlocks(){
+  for(let i=gameData.blocks.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const tmp=gameData.blocks[i];
+    gameData.blocks[i]=gameData.blocks[j];
+    gameData.blocks[j]=tmp;
+  }
+}
+
+function startGame(){
+  gameData.blocks.forEach(b=>{blockMap[b.id]=b;});
+  shuffleBlocks();
+  usedCount={};
+  slots=new Array(gameData.correctOrder.length).fill(null);
+  checkResult=null;
+  renderGame();
+}
+
+function getUsed(id){
+return usedCount[id]||0;
+}
+
+function incUsed(id){
+usedCount[id]=(usedCount[id]||0)+1;
+}
+
+function decUsed(id){
+if(usedCount[id])usedCount[id]--;
+}
+
+function renderGame(){
+  const app=document.getElementById('app');
+  let sourceHtml='<h3>📦 Μπλοκ</h3>';
+  const usedCounts={};
+  slots.forEach(s=>{if(s!==null){usedCounts[s]=(usedCounts[s]||0)+1;}});
+  gameData.blocks.forEach(b=>{
+    const maxUses=gameData.correctOrder.filter(x=>x===b.id).length;
+    const used=usedCounts[b.id]||0;
+    const available=maxUses-used;
+    const disabled=available<=0;
+    const counter=available>1?' <span style="color:#e74c3c;font-weight:bold">*'+available+'</span>':'';
+    sourceHtml+='<div class="source-block '+b.type+(disabled?' used':'')+'" draggable="true" data-id="'+b.id+'" ondragstart="onDragStart(event,'+b.id+')" ontouchstart="onTouchStart(event,'+b.id+')">'+esc(b.text)+counter+'</div>';
+  });
+let flowHtml='';
+for(let i=0;i<slots.length;i++){
+const s=slots[i];
+if(i===0){
+flowHtml+='<div class="flow-node start">Αρχή</div><div class="flow-arrow">⬇</div>';
+}
+let slotClass='slot';
+if(s!==null){
+const b=blockMap[s];
+if(checkResult&&checkResult.correct.includes(i))slotClass+=' correct';
+else if(checkResult&&checkResult.wrong.includes(i))slotClass+=' wrong';
+flowHtml+='<div class="'+slotClass+' filled" data-slot="'+i+'" ondragover="onDragOver(event)" ondrop="onDrop(event,'+i+')" ondragleave="onDragLeave(event)"><div class="flow-node in-slot '+b.type+'" draggable="true" data-id="'+b.id+'" data-slot="'+i+'" onclick="removeFromSlot('+i+')" title="Κλικ για αφαίρεση">'+esc(b.text)+'</div></div>';
+}else{
+flowHtml+='<div class="'+slotClass+'" data-slot="'+i+'" ondragover="onDragOver(event)" ondrop="onDrop(event,'+i+')" ondragleave="onDragLeave(event)">Κάνε κλικ σε ένα μπλοκ</div>';
+}
+flowHtml+='<div class="flow-arrow">⬇</div>';
+}
+flowHtml+='<div class="flow-node end">Τέλος</div>';
+app.innerHTML='<h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><div class="game-area"><div class="source" id="source">'+sourceHtml+'</div><div class="flow-area"><h3>📋 Διάγραμμα ροής</h3><div class="flow-vertical" id="flow">'+flowHtml+'</div></div></div><br><button class="btn btn-check" onclick="checkOrder()">Έλεγχος ✅</button><button class="btn" onclick="startGame()">Ξανάρχισε 🔄</button>';
+}
+
+let dragId=null;
+
+function onDragStart(e,id){
+  dragId=id;
+  e.dataTransfer.effectAllowed='move';
+  e.target.classList.add('dragging');
+}
+
+function onDragOver(e){
+e.preventDefault();
+e.currentTarget.classList.add('drag-over');
+}
+
+function onDragLeave(e){
+e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e,slotIdx){
+e.preventDefault();
+e.currentTarget.classList.remove('drag-over');
+if(dragId===null)return;
+const b=blockMap[dragId];
+const maxUses=gameData.correctOrder.filter(x=>x===dragId).length;
+if(getUsed(dragId)>=maxUses&&slots[slotIdx]===null)return;
+if(slots[slotIdx]!==null){
+const oldId=slots[slotIdx];
+decUsed(oldId);
+}
+slots[slotIdx]=dragId;
+incUsed(dragId);
+if(slots.filter(s=>s===dragId).length>1){
+if(slots.filter(s=>s===dragId).length>maxUses){
+decUsed(dragId);
+slots[slotIdx]=null;
+renderGame();
+return;
+}
+}
+checkResult=null;
+dragId=null;
+renderGame();
+}
+
+function removeFromSlot(idx){
+if(slots[idx]!==null){
+decUsed(slots[idx]);
+slots[idx]=null;
+checkResult=null;
+renderGame();
+}
+}
+
+let touchBlockId=null;
+function onTouchStart(e,id){
+  touchBlockId=id;
+  const firstEmpty=slots.indexOf(null);
+  if(firstEmpty!==-1){
+    const b=blockMap[id];
+    const maxUses=gameData.correctOrder.filter(x=>x===id).length;
+    if(getUsed(id)>=maxUses)return;
+    slots[firstEmpty]=id;
+    incUsed(id);
+    checkResult=null;
+    renderGame();
+  }
+}
+
+function checkOrder(){
+const isCorrect=slots.every((s,i)=>s===gameData.correctOrder[i]);
+const allFilled=slots.every(s=>s!==null);
+const correctIndices=[];
+const wrongIndices=[];
+slots.forEach((s,i)=>{
+if(s===gameData.correctOrder[i])correctIndices.push(i);
+else if(s!==null)wrongIndices.push(i);
+});
+checkResult={correct:correctIndices,wrong:wrongIndices};
+renderGame();
+const app=document.getElementById('app');
+if(!allFilled){
+app.innerHTML+='<div class="result-box fail">⚠️ Βάλε όλα τα βήματα στη σειρά!</div>';
+return;
+}
+if(isCorrect){
+app.innerHTML+='<div class="result-box success">🎉 Μπράβο! Σωστή σειρά!</div>';
+checkResult=null;
+}else{
+let correctCount=0;
+slots.forEach((s,i)=>{if(s===gameData.correctOrder[i])correctCount++;});
+app.innerHTML+='<div class="result-box fail">❌ Δεν είναι σωστό. Έχεις '+correctCount+' από '+slots.length+' στη σωστή θέση. Δοκίμασε ξανά!</div>';
+}
+}
+
+if(dataFile)loadGame();
+</script>
+</body>
+</html>

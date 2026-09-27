@@ -1,0 +1,67 @@
+{
+  "title": "Βρες τα Λάθη: Διαγράμματα Ροής",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "ήρωας", "error": false},
+        {"text": "έφαγε", "error": false},
+        {"text": "φρούτο,", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "αφαίρεσε", "error": true, "correct": "πρόσθεσε", "feedback": "Το φρούτο δίνει πόντο, δεν αφαιρεί!"},
+        {"text": "έναν", "error": false},
+        {"text": "πόντο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "ήρωας", "error": false},
+        {"text": "άγγιξε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "φρούτο,", "error": true, "correct": "φαντασματάκι", "feedback": "Το φρούτο δίνει πόντο! Το φαντασματάκι αφαιρεί ζωή!"},
+        {"text": "τότε", "error": false},
+        {"text": "χάνει", "error": false},
+        {"text": "ζωή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μόνο", "error": false},
+        {"text": "οι", "error": false},
+        {"text": "άνθρωποι", "error": true, "correct": "υπολογιστές", "feedback": "Και οι υπολογιστές παίρνουν αποφάσεις!"},
+        {"text": "παίρνουν", "error": false},
+        {"text": "αποφάσεις", "error": false},
+        {"text": "στα", "error": false},
+        {"text": "προγράμματα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "ηλεκτρονικά", "error": false},
+        {"text": "παιχνίδια", "error": false},
+        {"text": "αποτελούνται", "error": false},
+        {"text": "από", "error": false},
+        {"text": "ζωγραφιές", "error": true, "correct": "εντολές", "feedback": "Τα παιχνίδια αποτελούνται από εντολές, όχι από ζωγραφιές!"},
+        {"text": "που", "error": false},
+        {"text": "εκτελεί", "error": false},
+        {"text": "ο", "error": false},
+        {"text": "υπολογιστής.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "διάγραμμα ροής", "error": false},
+        {"text": "δείχνει", "error": false},
+        {"text":"γραπτά", "error": true, "correct": "γραφικά", "feedback": "Το διάγραμμα ροής δείχνει ΓΡΑΦΙΚΑ την απόφαση, με σχήματα και γραμμές!"},
+        {"text": "μία", "error": false},
+        {"text": "απόφαση.", "error": false}
+      ]
+    }
+  ]
+}

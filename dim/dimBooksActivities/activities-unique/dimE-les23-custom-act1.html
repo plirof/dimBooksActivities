@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Manager | Μάθημα 23</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:700px;width:100%;padding:16px;overflow:hidden;}
+.toolbar{display:flex;gap:6px;align-items:center;padding:8px 10px;background:#e8eaf6;border-radius:10px;margin-bottom:10px;flex-wrap:wrap;}
+.toolbar button{padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;background:#667eea;color:#fff;transition:all .2s;}
+.toolbar button:hover{background:#4527a0;}
+.toolbar .path{flex:1;font-size:.85rem;color:#4527a0;font-weight:600;padding:4px 8px;background:#fff;border-radius:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.fm{min-height:350px;border:2px solid #e0e0e0;border-radius:12px;padding:12px;}
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));grid-gap:10px;}
+.fm-item{display:flex;flex-direction:column;align-items:center;padding:10px 6px;border-radius:10px;cursor:pointer;transition:all .15s;user-select:none;}
+.fm-item:hover{background:#f3e5f5;}
+.fm-item.selected{background:#ede9fe;border:2px solid #667eea;}
+.fm-item .icon{font-size:2.2rem;margin-bottom:4px;}
+.fm-item .name{font-size:.75rem;font-weight:600;color:#333;text-align:center;word-break:break-all;max-width:80px;}
+.fm-item .meta{font-size:.6rem;color:#999;}
+.fm-empty{text-align:center;color:#999;padding:40px;font-size:.9rem;}
+.context-menu{display:none;position:absolute;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:100;min-width:150px;overflow:hidden;}
+.context-menu.show{display:block;}
+.context-menu div{padding:8px 14px;cursor:pointer;font-size:.85rem;font-weight:600;transition:background .1s;}
+.context-menu div:hover{background:#f3e5f5;color:#4527a0;}
+.modal-overlay{display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:#fff;border-radius:16px;padding:20px;max-width:350px;width:90%;}
+.modal-box h3{margin-bottom:10px;color:#4527a0;}
+.modal-box input{width:100%;padding:8px;border:2px solid #e0e0e0;border-radius:8px;outline:none;margin-bottom:10px;}
+.modal-box input:focus{border-color:#667eea;}
+.modal-box .btn-row{display:flex;gap:8px;justify-content:flex-end;}
+.modal-box .btn{padding:8px 16px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:.85rem;}
+.modal-box .btn-ok{background:#667eea;color:#fff;}
+.modal-box .btn-cancel{background:#e0e0e0;color:#333;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .toolbar > * { margin: 3px; }
+  .modal-box .btn-row > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📁 File Manager</h1>
+<p class="subtitle">Φάκελοι, Υποφακέλοι & Drag αρχείων!</p>
+<div class="container">
+<div class="toolbar">
+<button onclick="goUp()">⬆️ Πάνω</button>
+<button onclick="newFolder()">📁+ Φάκελος</button>
+<button onclick="newFile()">📄+ Αρχείο</button>
+<button onclick="deleteSelected()">🗑️ Διαγραφή</button>
+<div class="path" id="pathBar">📁 Αρχική</div>
+</div>
+<div class="fm" id="fm"></div>
+</div>
+<div class="context-menu" id="ctxMenu">
+<div onclick="openItem()">📂 Άνοιγμα</div>
+<div onclick="renameItem()">✏️ Μετονομασία</div>
+<div onclick="deleteSelected()">🗑️ Διαγραφή</div>
+</div>
+<div class="modal-overlay" id="modal">
+<div class="modal-box">
+<h3 id="modalTitle">Νέος Φάκελος</h3>
+<input type="text" id="modalInput" placeholder="Όνομα...">
+<div class="btn-row">
+<button class="btn btn-cancel" onclick="closeModal()">Ακύρωση</button>
+<button class="btn btn-ok" id="modalOk">OK</button>
+</div>
+</div>
+</div>
+<script>
+var fs={
+name:'Αρχική',type:'folder',children:[
+{name:'Εργασίες',type:'folder',children:[
+{name:'Μαθηματικά.docx',type:'file',ext:'docx'},{name:'Εργασία_Ιστορίας.pdf',type:'file',ext:'pdf'},{name:'Γλώσσα.odt',type:'file',ext:'odt'}
+]},
+{name:'Φωτογραφίες',type:'folder',children:[
+{name:'Διακοπές',type:'folder',children:[{name:'θάλασσα.jpg',type:'file',ext:'jpg'},{name:'ηλιοβασίλεμα.png',type:'file',ext:'png'}]},
+{name:'σχολείο.jpg',type:'file',ext:'jpg'}
+]},
+{name:'Μουσική',type:'folder',children:[
+{name:'αγαπημένο.mp3',type:'file',ext:'mp3'}
+]},
+{name:'Βίντεο',type:'folder',children:[
+{name:'παρουσίαση.mp4',type:'file',ext:'mp4'}
+]},
+{name:'ανακοίνωση.txt',type:'file',ext:'txt'},
+{name:'πρόγραμμα.pdf',type:'file',ext:'pdf'}
+]
+};
+var path=[fs];var selectedIdx=-1;
+var extIcons={docx:'📄',pdf:'📕',odt:'📝',jpg:'🖼️',png:'🖼️',mp3:'🎵',mp4:'🎬',txt:'📃',xlsx:'📊',ods:'📊'};
+function icon(item){return item.type==='folder'?'📁':(extIcons[item.ext]||'📄');}
+function currentFolder(){return path[path.length-1];}
+function renderPath(){
+var p='📁 ';path.forEach(function(f,i){
+if(i>0)p+=' > ';p+=f.name;
+});document.getElementById('pathBar').textContent=p;
+}
+function render(){
+var fm=document.getElementById('fm');var items=currentFolder().children||[];
+if(items.length===0){fm.innerHTML='<div class="fm-empty">Κενός φάκελος<br><small>Δημιούργησε φακέλους και αρχεία!</small></div>';return;}
+var html='<div class="fm-grid">';
+items.forEach(function(item,i){
+html+='<div class="fm-item'+(i===selectedIdx?' selected':'')+'" data-idx="'+i+'" onclick="selectItem('+i+')" ondblclick="openItem()" oncontextmenu="showCtx(event,'+i+')">';
+html+='<div class="icon">'+icon(item)+'</div>';
+html+='<div class="name">'+item.name+'</div>';
+html+='<div class="meta">'+(item.type==='folder'?(item.children?item.children.length+' στοιχεία':'—'):item.ext||'')+'</div>';
+html+='</div>';
+});
+html+='</div>';fm.innerHTML=html;
+}
+function selectItem(i){selectedIdx=i;render();}
+function openItem(){
+if(selectedIdx<0)return;var item=currentFolder().children[selectedIdx];
+if(!item)return;
+if(item.type==='folder'){path.push(item);selectedIdx=-1;renderPath();render();}
+else{alert('📄 Άνοιγμα: '+item.name);}
+}
+function goUp(){if(path.length>1){path.pop();selectedIdx=-1;renderPath();render();}}
+function newFolder(){showModal('Νέος Φάκελος','Φάκελος',function(name){
+var cf=currentFolder();if(!cf.children)cf.children=[];
+cf.children.push({name:name,type:'folder',children:[]});selectedIdx=-1;render();
+});}
+function newFile(){showModal('Νέο Αρχείο','αρχείο.txt',function(name){
+var cf=currentFolder();if(!cf.children)cf.children=[];
+var ext=name.split('.').pop();cf.children.push({name:name,type:'file',ext:ext});selectedIdx=-1;render();
+});}
+function deleteSelected(){
+if(selectedIdx<0)return;var cf=currentFolder();
+cf.children.splice(selectedIdx,1);selectedIdx=-1;render();
+}
+function renameItem(){
+if(selectedIdx<0)return;var item=currentFolder().children[selectedIdx];
+showModal('Μετονομασία',item.name,function(name){item.name=name;render();});
+}
+function showCtx(e,i){
+e.preventDefault();selectedIdx=i;render();
+var m=document.getElementById('ctxMenu');m.classList.add('show');
+m.style.left=Math.min(e.clientX,window.innerWidth-160)+'px';
+m.style.top=Math.min(e.clientY,window.innerHeight-120)+'px';
+}
+document.addEventListener('click',function(){document.getElementById('ctxMenu').classList.remove('show');});
+var modalCallback=null;
+function showModal(title,defaultVal,cb){
+document.getElementById('modalTitle').textContent=title;
+document.getElementById('modalInput').value=defaultVal;
+document.getElementById('modal').classList.add('show');
+document.getElementById('modalInput').select();
+modalCallback=cb;
+}
+function closeModal(){document.getElementById('modal').classList.remove('show');modalCallback=null;}
+document.getElementById('modalOk').onclick=function(){
+var v=document.getElementById('modalInput').value.trim();
+if(v&&modalCallback){modalCallback(v);}closeModal();
+};
+document.getElementById('modalInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('modalOk').click();});
+renderPath();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Καθημερινές Αποφάσεις - dimC les01</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #fd79a8 0%, #e17055 50%, #fdcb6e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.start-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.start-screen .title-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.start-screen h1 {
+    color: #2d3436;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.start-screen .subtitle {
+    color: #636e72;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.start-screen .example-box {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 24px;
+    text-align: left;
+    line-height: 2;
+    font-size: 1.05rem;
+    color: #2d3436;
+}
+
+.highlight-if {
+    color: #d63031;
+    font-weight: bold;
+}
+
+.highlight-then {
+    color: #00b894;
+    font-weight: bold;
+}
+
+.btn-start {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #e17055, #d63031);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-start:hover {
+    background: linear-gradient(135deg, #d63031, #e17055);
+    transform: translateY(-2px);
+}
+
+.btn-start:active {
+    transform: scale(0.95);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-header h2 {
+    color: #2d3436;
+    font-size: 1.2rem;
+}
+
+.score-badge {
+    background: linear-gradient(135deg, #e17055, #d63031);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 22px;
+    background: #e8e0f0;
+    border-radius: 11px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e17055, #fd79a8);
+    border-radius: 11px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+.scenario-card {
+    background: linear-gradient(135deg, #f8f9ff, #eee);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-bottom: 18px;
+    border: 3px solid #d5d0f0;
+    text-align: center;
+}
+
+.scenario-card .scenario-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.scenario-card .scenario-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.scenario-card .scenario-text {
+    font-size: 1.25rem;
+    color: #2d3436;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.options-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+    background: white;
+    border: 3px solid #d5d0f0;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    color: #2d3436;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    line-height: 1.5;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.option-btn:hover {
+    border-color: #a29bfe;
+    background: #f8f4ff;
+    transform: translateX(4px);
+}
+
+.option-btn:active {
+    transform: scale(0.98);
+}
+
+.option-btn .option-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.option-btn.correct-selected {
+    border-color: #00b894;
+    background: #e6fff9;
+    animation: correctPulse 0.5s ease;
+}
+
+.option-btn.correct-selected .option-letter {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.option-btn.wrong-selected {
+    border-color: #d63031;
+    background: #fff0ec;
+    animation: shake 0.5s ease;
+}
+
+.option-btn.wrong-selected .option-letter {
+    background: linear-gradient(135deg, #e17055, #d63031);
+}
+
+.option-btn.show-correct {
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.option-btn.show-correct .option-letter {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.option-btn:disabled {
+    cursor: default;
+    transform: none;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.feedback-area {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.15rem;
+    margin-bottom: 14px;
+    min-height: 34px;
+}
+
+.feedback-area.correct-fb {
+    color: #00b894;
+}
+
+.feedback-area.wrong-fb {
+    color: #d63031;
+}
+
+.feedback-area .feedback-text {
+    display: inline-block;
+    animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.btn-next {
+    display: block;
+    margin: 0 auto;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    transform: translateY(-2px);
+}
+
+.btn-next:active {
+    transform: scale(0.95);
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.completion-screen .star {
+    display: inline-block;
+    animation: starBounce 0.5s ease;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.completion-screen .star:nth-child(1) { animation-delay: 0.1s; }
+.completion-screen .star:nth-child(2) { animation-delay: 0.3s; }
+.completion-screen .star:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes starBounce {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.completion-screen .star.dim {
+    opacity: 0.2 !important;
+    animation: none;
+}
+
+.completion-screen h2 {
+    color: #2d3436;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #d63031;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.completion-screen .score-detail {
+    color: #636e72;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    transform: translateY(-2px);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .game-header > * { margin: 4px; }
+  .options-area > * + * { margin-top: 10px; }
+  .option-btn > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="screen active" id="start-screen">
+        <div class="start-screen">
+            <span class="title-emoji">\u{1F914}</span>
+            <h1>Καθημερινές Αποφάσεις</h1>
+            <p class="subtitle">Κάθε μέρα παίρνουμε αποφάσεις!<br>Βρες τη σωστή απόφαση για κάθε περίσταση!</p>
+            <div class="example-box">
+                <div>\u{1F319} Είναι 9 το βράδυ. Τι κάνεις;</div>
+                <div>\u27A1 <span class="highlight-if">Αν</span> είναι 9 το βράδυ, <span class="highlight-then">τότε</span> ετοιμάζομαι για ύπνο!</div>
+                <div style="margin-top:8px">\u{1F324}\uFE0F Κάνει κρύο έξω. Τι φοράς;</div>
+                <div>\u27A1 <span class="highlight-if">Αν</span> κάνει κρύο, <span class="highlight-then">τότε</span> φοράω μπουφάν!</div>
+            </div>
+            <p class="subtitle">Διάλεξε τη σωστή <b>Αν...τότε...</b> πρόταση!</p>
+            <button class="btn-start" onclick="startGame()">Ξεκινάω! \u{1F680}</button>
+        </div>
+    </div>
+
+    <div class="screen" id="game-screen">
+        <div class="game-header">
+            <h2>\u{1F4CB} Καθημερινές Αποφάσεις</h2>
+            <div class="score-badge" id="score-badge">0 σωστές</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width:0%">0/10</div>
+        </div>
+        <div id="scenario-area"></div>
+    </div>
+
+    <div class="screen" id="end-screen">
+        <div class="completion-screen">
+            <span class="stars" id="stars-container"></span>
+            <h2 id="end-title"></h2>
+            <p class="score-text" id="end-score"></p>
+            <p class="score-detail" id="end-detail"></p>
+            <button class="btn-restart" onclick="restartGame()">Ξαναπαίζω! \u{1F504}</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+var allScenarios = [
+    {
+        text: '\u{1F55B} Είναι 7:00 το πρωί. Τι κάνεις;',
+        options: [
+            { text: '\u{1F4A} Αν είναι 7:00 το πρωί, τότε ξυπνάω!', correct: true },
+            { text: '\u{1F634} Αν είναι 7:00 το πρωί, τότε κοιμάμαι!', correct: false },
+            { text: '\u{1F37D}\uFE0F Αν είναι 7:00 το πρωί, τότε τρώω βραδινό!', correct: false },
+            { text: '\u{26BD} Αν είναι 7:00 το πρωί, τότε παίζω στην αυλή!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F327}\uFE0F Βρέχει έξω. Τι κάνεις;',
+        options: [
+            { text: '\u{1F455} Αν βρέχει, τότε φοράω σορτσάκι!', correct: false },
+            { text: '\u{1F302} Αν βρέχει, τότε παίρνω ομπρέλα!', correct: true },
+            { text: '\u{1F9F4} Αν βρέχει, τότε βάζω αντηλιακό!', correct: false },
+            { text: '\u{1F3BE} Αν βρέχει, τότε βγαίνω έξω!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F37C} Πεινάς πολύ. Τι κάνεις;',
+        options: [
+            { text: '\u{1F634} Αν πεινάω, τότε κοιμάμαι!', correct: false },
+            { text: '\u{1F3AE} Αν πεινάω, τότε παίζω βιντεοπαιχνίδια!', correct: false },
+            { text: '\u{1F35C} Αν πεινάω, τότε τρώω κάτι νόστιμο!', correct: true },
+            { text: '\u{1F4A7} Αν πεινάω, τότε πίνω μόνο νερό!', correct: false }
+        ]
+    },
+    {
+        text: '\u2744\uFE0F Κάνει πολύ κρύο. Τι κάνεις;',
+        options: [
+            { text: '\u{1F9E5} Αν κάνει κρύο, τότε φοράω μπουφάν!', correct: true },
+            { text: '\u{1F459} Αν κάνει κρύο, τότε φοράω σορτσάκι!', correct: false },
+            { text: '\u{1F525} Αν κάνει κρύο, τότε ανάβω φωτιά μέσα!', correct: false },
+            { text: '\u{1F3C3} Αν κάνει κρύο, τότε τρέχω γύρω-γύρω!', correct: false }
+        ]
+    },
+    {
+        text: '\u2600\uFE0F Έχει έντονο ήλιο. Τι κάνεις;',
+        options: [
+            { text: '\u{1F302} Αν έχει ήλιο, τότε παίρνω ομπρέλα για βροχή!', correct: false },
+            { text: '\u{1F637} Αν έχει ήλιο, τότε φοράω σκουφί!', correct: false },
+            { text: '\u{1F319} Αν έχει ήλιο, τότε μένω μέσα στο σκοτάδι!', correct: false },
+            { text: '\u{1F9F4} Αν έχει ήλιο, τότε βάζω αντηλιακό!', correct: true }
+        ]
+    },
+    {
+        text: '\u{1F55A} Είναι 10:00 το βράδυ. Τι κάνεις;',
+        options: [
+            { text: '\u{1F4DA} Αν είναι 10 το βράδυ, τότε αρχίζω διάβασμα!', correct: false },
+            { text: '\u{1F634} Αν είναι 10 το βράδυ, τότε ετοιμάζομαι για ύπνο!', correct: true },
+            { text: '\u{1F3AE} Αν είναι 10 το βράδυ, τότε παίζω φωνητικά!', correct: false },
+            { text: '\u{1F3C3} Αν είναι 10 το βράδυ, τότε πάω τρέξιμο!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F4D6} Τελείωσε το μάθημα στο σχολείο. Τι κάνεις;',
+        options: [
+            { text: '\u{1F4AA} Αν τελείωσε το μάθημα, τότε κάνω γυμναστική!', correct: false },
+            { text: '\u{1F4DA} Αν τελείωσε το μάθημα, τότε αρχίζω καινούργιο βιβλίο!', correct: false },
+            { text: '\u{1F393} Αν τελείωσε το μάθημα, τότε μαζεύω τα πράγματά μου!', correct: true },
+            { text: '\u{1F634} Αν τελείωσε το μάθημα, τότε κοιμάμαι στο θρανίο!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F1F7}\u{1F1EC} Είναι Σάββατο! Τι κάνεις;',
+        options: [
+            { text: '\u{1F393} Αν είναι Σάββατο, τότε πάω σχολείο!', correct: false },
+            { text: '\u{1F551} Αν είναι Σάββατο, τότε ξυπνάω στις 6 το πρωί!', correct: false },
+            { text: '\u{1F3B2} Αν είναι Σάββατο, τότε παίζω με τους φίλους μου!', correct: true },
+            { text: '\u{1F4DD} Αν είναι Σάββατο, τότε γράφω τεστ!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F4AA} Έχεις διαβάσει όλο το μάθημα. Τι κάνεις;',
+        options: [
+            { text: '\u{1F3AE} Αν διάβασα το μάθημα, τότε μπορώ να παίξω!', correct: true },
+            { text: '\u{1F4DA} Αν διάβασα το μάθημα, τότε διαβάζω πάλι από την αρχή!', correct: false },
+            { text: '\u{1F634} Αν διάβασα το μάθημα, τότε κοιμάμαι αμέσως!', correct: false },
+            { text: '\u{1F622} Αν διάβασα το μάθημα, τότε κλαίω!', correct: false }
+        ]
+    },
+    {
+        text: '\u{1F3EB} Φτάνεις στο σχολείο. Τι κάνεις;',
+        options: [
+            { text: '\u{1F3E0} Αν φτάσω στο σχολείο, τότε γυρίζω σπίτι!', correct: false },
+            { text: '\u{1F3DF}\uFE0F Αν φτάσω στο σχολείο, τότε πάω στο πάρκο!', correct: false },
+            { text: '\u{1F634} Αν φτάσω στο σχολείο, τότε κοιμάμαι στην πόρτα!', correct: false },
+            { text: '\u{1F4AA} Αν φτάσω στο σχολείο, τότε μπαίνω στην τάξη μου!', correct: true }
+        ]
+    }
+];
+
+var currentScenario = 0;
+var score = 0;
+var answered = false;
+var gameScenarios = [];
+
+function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a;
+}
+
+function startGame() {
+    currentScenario = 0;
+    score = 0;
+    answered = false;
+    gameScenarios = shuffleArray(allScenarios);
+    gameScenarios.forEach(function(s) {
+        s._shuffled = shuffleArray(s.options);
+    });
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    document.getElementById('end-screen').classList.remove('active');
+    updateProgress();
+    updateScore();
+    showScenario();
+}
+
+function updateProgress() {
+    var total = gameScenarios.length;
+    var pct = ((currentScenario) / total) * 100;
+    if (currentScenario >= total) pct = 100;
+    var fill = document.getElementById('progress-fill');
+    fill.style.width = pct + '%';
+    fill.textContent = currentScenario + '/' + total;
+}
+
+function updateScore() {
+    document.getElementById('score-badge').textContent = score + ' σωστές';
+}
+
+function showScenario() {
+    if (currentScenario >= gameScenarios.length) {
+        showEndScreen();
+        return;
+    }
+
+    answered = false;
+    var s = gameScenarios[currentScenario];
+    var letters = ['\u0391', '\u0392', '\u0393', '\u0394'];
+
+    var html = '';
+    html += '<div class="scenario-card">';
+    html += '<div class="scenario-number">' + (currentScenario + 1) + '</div>';
+    html += '<div class="scenario-text">' + s.text + '</div>';
+    html += '</div>';
+
+    html += '<div class="options-area">';
+    s._shuffled.forEach(function(opt, idx) {
+        html += '<button class="option-btn" data-idx="' + idx + '" data-correct="' + opt.correct + '" onclick="selectOption(this)">';
+        html += '<span class="option-letter">' + letters[idx] + '</span>';
+        html += '<span>' + opt.text + '</span>';
+        html += '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="feedback-area" id="feedback-area"></div>';
+
+    document.getElementById('scenario-area').innerHTML = html;
+}
+
+function selectOption(btn) {
+    if (answered) return;
+    answered = true;
+
+    var isCorrect = btn.dataset.correct === 'true';
+    var allBtns = document.querySelectorAll('.option-btn');
+
+    allBtns.forEach(function(b) {
+        b.disabled = true;
+        if (b.dataset.correct === 'true') {
+            b.classList.add('show-correct');
+        }
+    });
+
+    var fb = document.getElementById('feedback-area');
+
+    if (isCorrect) {
+        btn.classList.add('correct-selected');
+        score++;
+        updateScore();
+        fb.className = 'feedback-area correct-fb';
+        fb.innerHTML = '<span class="feedback-text">\u2705 Σωστά! Μπράβο!</span>';
+    } else {
+        btn.classList.add('wrong-selected');
+        fb.className = 'feedback-area wrong-fb';
+        fb.innerHTML = '<span class="feedback-text">\u274C Δεν είναι σωστό. Δες τη σωστή απάντηση!</span>';
+    }
+
+    var nextLabel = (currentScenario < gameScenarios.length - 1) ? 'Επόμενο \u27A1\uFE0F' : 'Αποτελέσματα \u{1F3C6}';
+
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'btn-next';
+    nextBtn.textContent = nextLabel;
+    nextBtn.onclick = function() {
+        currentScenario++;
+        updateProgress();
+        showScenario();
+    };
+
+    var area = document.getElementById('scenario-area');
+    area.appendChild(nextBtn);
+}
+
+function showEndScreen() {
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('end-screen').classList.add('active');
+
+    var total = gameScenarios.length;
+    var stars = 1;
+    if (score >= 9) stars = 3;
+    else if (score >= 7) stars = 2;
+
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        if (i < stars) {
+            starsHtml += '<span class="star">\u2B50</span>';
+        } else {
+            starsHtml += '<span class="star dim">\u2B50</span>';
+        }
+    }
+    document.getElementById('stars-container').innerHTML = starsHtml;
+
+    var titles = {};
+    titles[3] = '\u{1F389} Εξαιρετικά! Τα ήξερες όλα!';
+    titles[2] = '\u{1F44D} Πολύ καλά! Μπράβο!';
+    titles[1] = '\u{1F60A} Καλή προσπάθεια! Δοκίμασε ξανά!';
+
+    document.getElementById('end-title').textContent = titles[stars];
+    document.getElementById('end-score').textContent = score + ' σωστές απαντήσεις από ' + total + '!';
+    document.getElementById('end-detail').textContent = '\u{1F4CA} Βαθμολογία: ' + Math.round((score / total) * 100) + '%';
+}
+
+function restartGame() {
+    document.getElementById('end-screen').classList.remove('active');
+    document.getElementById('start-screen').classList.add('active');
+}
+</script>
+</body>
+</html>

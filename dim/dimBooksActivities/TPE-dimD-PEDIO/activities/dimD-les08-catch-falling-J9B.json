@@ -1,0 +1,19 @@
+{
+  "title": "Πιάστε τα: Εντολές Ρομπότ",
+  "subtitle": "Πιάστε τις σωστές εντολές!",
+  "instructions": "Πιάσε μόνο τις εντολές που δίνουμε στο ρομπότ",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Προχώρα μπροστά", "correct": true, "color": "#4caf50" },
+    { "text": "Πήδηξε", "correct": false, "color": "#f44336" },
+    { "text": "Στρίψε δεξιά", "correct": true, "color": "#2196f3" },
+    { "text": "Τρέξε", "correct": false, "color": "#ff9800" },
+    { "text": "Στρίψε αριστερά", "correct": true, "color": "#8bc34a" },
+    { "text": "Πέτα", "correct": false, "color": "#9c27b0" },
+    { "text": "Σταμάτα", "correct": true, "color": "#00bcd4" },
+    { "text": "Κολύμπα", "correct": false, "color": "#ff5722" }
+  ]
+}

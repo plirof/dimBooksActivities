@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Δεξί Κλικ και Σύρε",
+  "subtitle": "Μόνο ενέργειες ποντικιού!",
+  "instruction": "Σπάσε μόνο ΕΝΕΡΓΕΙΕΣ ΠΟΥ ΚΑΝΩ ΜΕ ΤΟ ΠΟΝΤΙΚΙ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Δεξί κλικ", "correct": true, "color": "#f44336" },
+    { "text": "Τρέξιμο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Κύλιση", "correct": true, "color": "#2196F3" },
+    { "text": "Κολύμπι", "correct": false, "color": "#96CEB4" },
+    { "text": "Σύρω", "correct": true, "color": "#FFC107" },
+    { "text": "Μαγειρική", "correct": false, "color": "#DDA0DD" },
+    { "text": "Μονό κλικ", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#F7DC6F" },
+    { "text": "Διπλό κλικ", "correct": true, "color": "#9C27B0" },
+    { "text": "Καθαρισμός", "correct": false, "color": "#85C1E9" }
+  ]
+}

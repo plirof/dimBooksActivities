@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>micro:bit LED Προκλήσεις | Μάθημα 11</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;padding:12px;display:flex;flex-direction:column;align-items:center;color:#e2e8f0}
+h1{color:#22d3ee;font-size:1.2rem;text-align:center;margin:6px 0}
+.subtitle{color:#94a3b8;font-size:.82rem;text-align:center;margin-bottom:10px}
+.main{display:flex;gap:16px;max-width:860px;width:100%;flex-wrap:wrap;justify-content:center}
+.microbit-wrap{position:relative;width:240px;flex-shrink:0}
+.microbit{width:240px;height:320px;background:linear-gradient(180deg,#374151,#1f2937);border-radius:24px;border:3px solid #4b5563;position:relative;display:flex;flex-direction:column;align-items:center;padding:15px 10px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.mb-title{font-size:.7rem;color:#9ca3af;text-align:center;margin-bottom:6px;letter-spacing:1px}
+.mb-leds{background:#111827;border-radius:8px;padding:12px;border:2px solid #374151;position:relative}
+.led-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-gap:4px}
+.led{width:36px;height:36px;border-radius:4px;background:#1a1a1a;cursor:pointer;transition:all .15s;position:relative;border:1px solid #374151}
+.led:hover{border-color:#22d3ee}
+.led.on{background:#22d3ee;box-shadow:0 0 12px rgba(34,211,238,.6);border-color:#22d3ee}
+.led.on.brightness-med{background:#0e7490;box-shadow:0 0 6px rgba(14,116,144,.4)}
+.mb-btns{display:flex;gap:30px;margin-top:12px;justify-content:center}
+.mb-hw-btn{width:50px;height:24px;background:#4b5563;border-radius:12px;border:2px solid #6b7280;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#9ca3af;font-weight:700}
+.mb-hw-btn:hover{background:#6b7280}
+.mb-hw-btn:active{background:#22d3ee;color:#0f172a}
+.mb-connector{width:60px;height:8px;background:#4b5563;border-radius:4px;margin-top:6px}
+.mb-label{font-size:.6rem;color:#6b7280;margin-top:6px;text-align:center}
+.challenge-panel{flex:1;min-width:300px;display:flex;flex-direction:column;gap:10px}
+.ch-nav{display:flex;gap:6px;flex-wrap:wrap}
+.ch-btn{padding:6px 14px;border:2px solid #334155;border-radius:20px;background:transparent;color:#94a3b8;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.ch-btn:hover{border-color:#22d3ee;color:#22d3ee}
+.ch-btn.active{background:#0891b2;color:#fff;border-color:#22d3ee}
+.ch-btn.done{background:#22c55e;color:#fff;border-color:#4ade80}
+.ch-card{background:#111827;border-radius:16px;border:2px solid #334155;padding:14px}
+.ch-title{color:#22d3ee;font-size:.95rem;font-weight:700;margin-bottom:4px}
+.ch-desc{color:#94a3b8;font-size:.8rem;line-height:1.4;margin-bottom:8px}
+.ch-preview{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.preview-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-gap:2px;background:#0f172a;padding:6px;border-radius:8px;border:1px solid #334155}
+.preview-led{width:14px;height:14px;border-radius:2px;background:#1a1a1a}
+.preview-led.on{background:#22d3ee}
+.preview-label{color:#64748b;font-size:.75rem}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.tool-btn{padding:6px 14px;border:2px solid #475569;border-radius:10px;background:#1e293b;color:#94a3b8;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.tool-btn:hover{border-color:#22d3ee;color:#e2e8f0}
+.tool-btn.active{background:#0891b2;color:#fff;border-color:#22d3ee}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap}
+.ctrl-btn{padding:8px 18px;border:none;border-radius:12px;cursor:pointer;font-size:.82rem;font-weight:700;transition:all .2s}
+.ctrl-btn:hover{transform:translateY(-2px)}
+.ctrl-check{background:linear-gradient(135deg,#0891b2,#22d3ee);color:#0f172a}
+.ctrl-clear{background:#374151;color:#d1d5db}
+.ctrl-anim{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff}
+.ctrl-shake{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#451a03}
+.anim-panel{background:#111827;border-radius:12px;border:2px solid #334155;padding:10px;display:none}
+.anim-panel.show{display:block}
+.anim-title{color:#a78bfa;font-size:.8rem;font-weight:700;margin-bottom:6px}
+.frame-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.frame-thumb{min-width:44px;height:44px;background:#1a1a1a;border:2px solid #475569;border-radius:6px;cursor:pointer;display:grid;grid-template-columns:repeat(5,1fr);grid-gap:1px;padding:3px;transition:all .15s}
+.frame-thumb.active{border-color:#a78bfa}
+.frame-thumb:hover{border-color:#c4b5fd}
+.frame-thumb .ft-led{border-radius:1px;background:transparent}
+.frame-thumb .ft-led.on{background:#22d3ee}
+.anim-ctrls{display:flex;gap:6px;margin-top:6px}
+.feedback{text-align:center;font-size:.85rem;font-weight:700;min-height:24px;margin-top:8px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.score-bar{text-align:center;color:#fbbf24;font-size:.88rem;font-weight:700;margin-bottom:6px}
+@media(max-width:600px){.main{flex-direction:column;align-items:center}.challenge-panel{min-width:100%}.led{width:32px;height:32px}.microbit-wrap{width:210px}.microbit{width:210px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .main > * { margin: 8px; }
+  .mb-btns > * + * { margin-left: 30px; }
+  .challenge-panel > * + * { margin-top: 10px; }
+  .ch-nav > * { margin: 3px; }
+  .ch-preview > * + * { margin-left: 12px; }
+  .tools > * { margin: 3px; }
+  .ctrl-row > * { margin: 4px; }
+  .frame-row > * + * { margin-left: 6px; }
+  .anim-ctrls > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📟 micro:bit LED Προκλήσεις</h1>
+<p class="subtitle">Κάνε κλικ στα LEDs για να ανάψουν! Φτιάξε τα σχέδια που ζητούνται.</p>
+<div class="score-bar">Αστεράκια: ⭐ <span id="stars">0</span> / <span id="totalStars">6</span></div>
+<div class="main">
+<div class="microbit-wrap">
+<div class="microbit">
+<div class="mb-title">BBC micro:bit</div>
+<div class="mb-leds">
+<div class="led-grid" id="ledGrid"></div>
+</div>
+<div class="mb-btns">
+<div class="mb-hw-btn" onclick="onShake()">A</div>
+<div class="mb-hw-btn" onclick="onShake()">B</div>
+</div>
+<div class="mb-connector"></div>
+<div class="mb-label">ΤΑΛΑΝΤΕΨΕ (shake) για έξτρα εφέ!</div>
+</div>
+</div>
+<div class="challenge-panel">
+<div class="ch-nav" id="chNav"></div>
+<div class="ch-card" id="chCard">
+<div class="ch-title" id="chTitle"></div>
+<div class="ch-desc" id="chDesc"></div>
+<div class="ch-preview">
+<div class="preview-grid" id="previewGrid"></div>
+<div class="preview-label">🎯 Στόχος</div>
+</div>
+<div class="tools">
+<button class="tool-btn active" onclick="setTool('draw')">🖊️ Ζωγράφισε</button>
+<button class="tool-btn" onclick="setTool('erase')">🧹 Σβήσε</button>
+<button class="tool-btn" onclick="setTool('toggle')">🔄 Αντιστροφή</button>
+</div>
+</div>
+<div class="ctrl-row">
+<button class="ctrl-btn ctrl-check" onclick="checkChallenge()">✅ Έλεγχος</button>
+<button class="ctrl-btn ctrl-clear" onclick="clearGrid()">🗑️ Καθαρισμός</button>
+<button class="ctrl-btn ctrl-anim" onclick="toggleAnim()">🎬 Κίνηση</button>
+<button class="ctrl-btn ctrl-shake" onclick="onShake()">📳 Ταλάντευση</button>
+</div>
+<div class="anim-panel" id="animPanel">
+<div class="anim-title">🎬 Καρέ κίνησης</div>
+<div class="frame-row" id="frameRow"></div>
+<div class="anim-ctrls">
+<button class="tool-btn" onclick="addFrame()">+ Προσθήκη καρέ</button>
+<button class="tool-btn" onclick="playAnimation()">▶ Αναπαραγωγή</button>
+<button class="tool-btn" onclick="stopAnimation()">⏹️ Στοπ</button>
+</div>
+</div>
+</div>
+</div>
+<div class="feedback" id="feedback"></div>
+<script>
+var challenges=[
+{id:0,title:'❤️ Καρδιά',desc:'Φτιάξε μια καρδιά! Άναψε τα LEDs που φαίνονται στο στόχο.',
+pattern:[
+[0,1,0,1,0],
+[1,1,1,1,1],
+[1,1,1,1,1],
+[0,1,1,1,0],
+[0,0,1,0,0]
+]},
+{id:1,title:'😊 Χαμογελαστό',desc:'Φτιάξε ένα χαμογελαστό πρόσωπο!',
+pattern:[
+[1,0,0,0,1],
+[0,0,0,0,0],
+[0,0,0,0,0],
+[1,0,0,0,1],
+[0,1,1,1,0]
+]},
+{id:2,title:'⬆️ Βέλος Πάνω',desc:'Φτιάξε ένα βέλος που δείχνει προς τα πάνω!',
+pattern:[
+[0,0,1,0,0],
+[0,1,1,1,0],
+[1,0,1,0,1],
+[0,0,1,0,0],
+[0,0,1,0,0]
+]},
+{id:3,title:'⭐ Αστεράκι',desc:'Φτιάξε ένα αστέρι στο κέντρο της οθόνης!',
+pattern:[
+[0,0,1,0,0],
+[0,1,1,1,0],
+[1,1,1,1,1],
+[0,1,1,1,0],
+[0,0,1,0,0]
+]},
+{id:4,title:'🏠 Σπίτι',desc:'Φτιάξε ένα σπιτάκι!',
+pattern:[
+[0,0,1,0,0],
+[0,1,0,1,0],
+[1,0,0,0,1],
+[1,1,1,1,1],
+[1,0,1,0,1]
+]},
+{id:5,title:'✏️ Γράμμα "A"',desc:'Δείξε το γράμμα A στα LEDs!',
+pattern:[
+[0,1,1,1,0],
+[1,0,0,0,1],
+[1,1,1,1,1],
+[1,0,0,0,1],
+[1,0,0,0,1]
+]}
+];
+var grid=[];
+var currentCh=0;
+var tool='draw';
+var stars=0;
+var completedCh={};
+var frames=[];
+var currentFrame=0;
+var animInterval=null;
+function init(){
+grid=createEmptyGrid();
+frames=[copyGrid(grid)];
+buildNav();
+buildGrid();
+loadChallenge(0);
+}
+function createEmptyGrid(){return[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];}
+function copyGrid(g){return g.map(function(r){return r.slice();});}
+function buildNav(){
+var nav=document.getElementById('chNav');
+nav.innerHTML='';
+for(var i=0;i<challenges.length;i++){
+var btn=document.createElement('button');
+btn.className='ch-btn'+(i===currentCh?' active':'')+(completedCh[i]?' done':'');
+btn.textContent=challenges[i].title;
+btn.onclick=(function(idx){return function(){saveFrame();loadChallenge(idx);};})(i);
+nav.appendChild(btn);
+}
+}
+function buildGrid(){
+var container=document.getElementById('ledGrid');
+container.innerHTML='';
+for(var r=0;r<5;r++){
+for(var c=0;c<5;c++){
+var led=document.createElement('div');
+led.className='led'+(grid[r][c]?' on':'');
+led.dataset.r=r;led.dataset.c=c;
+led.onclick=(function(row,col){return function(){toggleLed(row,col);};})(r,c);
+led.ontouchstart=(function(row,col){return function(e){e.preventDefault();toggleLed(row,col);};})(r,c);
+container.appendChild(led);
+}
+}
+}
+function toggleLed(r,c){
+if(tool==='draw'){grid[r][c]=1;}
+else if(tool==='erase'){grid[r][c]=0;}
+else if(tool==='toggle'){grid[r][c]=grid[r][c]?0:1;}
+saveFrame();
+updateGrid();
+}
+function updateGrid(){
+var leds=document.querySelectorAll('#ledGrid .led');
+for(var i=0;i<leds.length;i++){
+var r=parseInt(leds[i].dataset.r);
+var c=parseInt(leds[i].dataset.c);
+leds[i].className='led'+(grid[r][c]?' on':'');
+}
+}
+function setTool(t){
+tool=t;
+document.querySelectorAll('.tools .tool-btn').forEach(function(b){b.classList.remove('active');});
+event.target.classList.add('active');
+}
+function loadChallenge(idx){
+currentCh=idx;
+var ch=challenges[idx];
+document.getElementById('chTitle').textContent=ch.title;
+document.getElementById('chDesc').textContent=ch.desc;
+buildPreview(ch.pattern);
+if(!completedCh[idx]){grid=createEmptyGrid();frames=[copyGrid(grid)];}
+else{grid=copyGrid(ch.pattern);frames=[copyGrid(grid)];}
+updateGrid();
+updateFrameThumbs();
+buildNav();
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+}
+function buildPreview(pattern){
+var pg=document.getElementById('previewGrid');
+pg.innerHTML='';
+for(var r=0;r<5;r++){
+for(var c=0;c<5;c++){
+var led=document.createElement('div');
+led.className='preview-led'+(pattern[r][c]?' on':'');
+pg.appendChild(led);
+}
+}
+}
+function clearGrid(){
+grid=createEmptyGrid();
+frames=[copyGrid(grid)];
+updateGrid();
+updateFrameThumbs();
+document.getElementById('feedback').className='feedback';
+document.getElementById('feedback').textContent='';
+}
+function checkChallenge(){
+var ch=challenges[currentCh];
+var correct=0;
+var total=0;
+for(var r=0;r<5;r++){
+for(var c=0;c<5;c++){
+if(ch.pattern[r][c])total++;
+if(ch.pattern[r][c]&&grid[r][c])correct++;
+if(!ch.pattern[r][c]&&grid[r][c])correct-=0.5;
+}
+}
+var pct=correct/total;
+if(pct>=0.9&&isExactMatch(ch.pattern,grid)){
+if(!completedCh[currentCh]){
+stars++;
+completedCh[currentCh]=true;
+document.getElementById('stars').textContent=stars;
+}
+showFeedback('🎉 Τέλεια! Το σχέδιο «'+ch.title+'» είναι ακριβές! ⭐',true);
+flashLeds();
+}else if(pct>=0.7){
+showFeedback('🔍 Σχεδόν! Λίγα LEDs ακόμα... Συνέχισε!',false);
+}else{
+showFeedback('❌ Δεν ταιριάζει ακόμα. Κοίτα το στόχο στα δεξιά και προσπάθησε ξανά!',false);
+}
+buildNav();
+}
+function isExactMatch(p,g){
+for(var r=0;r<5;r++)for(var c=0;c<5;c++)if(p[r][c]!==g[r][c])return false;
+return true;
+}
+function flashLeds(){
+var count=0;
+var flash=setInterval(function(){
+var leds=document.querySelectorAll('#ledGrid .led');
+for(var i=0;i<leds.length;i++){
+if(leds[i].classList.contains('on')){
+leds[i].style.background=count%2===0?'#4ade80':'#22d3ee';
+}
+}
+count++;
+if(count>5){
+clearInterval(flash);
+var leds2=document.querySelectorAll('#ledGrid .led');
+for(var j=0;j<leds2.length;j++){leds2[j].style.background='';}
+}
+},200);
+}
+function onShake(){
+var wrap=document.querySelector('.microbit');
+wrap.style.transform='translateX(-5px)';
+setTimeout(function(){wrap.style.transform='translateX(5px)';},50);
+setTimeout(function(){wrap.style.transform='translateX(-3px)';},100);
+setTimeout(function(){wrap.style.transform='translateX(3px)';},150);
+setTimeout(function(){wrap.style.transform='translateX(0)';},200);
+setTimeout(function(){
+for(var r=0;r<5;r++){for(var c=0;c<5;c++){grid[r][c]=Math.random()>0.5?1:0;}}
+updateGrid();
+setTimeout(function(){
+grid=createEmptyGrid();
+updateGrid();
+},400);
+},250);
+}
+function toggleAnim(){
+var panel=document.getElementById('animPanel');
+panel.classList.toggle('show');
+if(panel.classList.contains('show')){updateFrameThumbs();}
+}
+function saveFrame(){frames[currentFrame]=copyGrid(grid);}
+function addFrame(){
+saveFrame();
+frames.push(createEmptyGrid());
+currentFrame=frames.length-1;
+grid=copyGrid(frames[currentFrame]);
+updateGrid();
+updateFrameThumbs();
+}
+function updateFrameThumbs(){
+var row=document.getElementById('frameRow');
+row.innerHTML='';
+for(var f=0;f<frames.length;f++){
+var thumb=document.createElement('div');
+thumb.className='frame-thumb'+(f===currentFrame?' active':'');
+for(var r=0;r<5;r++){
+for(var c=0;c<5;c++){
+var led=document.createElement('div');
+led.className='ft-led'+(frames[f][r][c]?' on':'');
+thumb.appendChild(led);
+}
+}
+thumb.onclick=(function(idx){return function(){
+saveFrame();
+currentFrame=idx;
+grid=copyGrid(frames[idx]);
+updateGrid();
+updateFrameThumbs();
+};})(f);
+row.appendChild(thumb);
+}
+}
+function playAnimation(){
+if(frames.length<2){showFeedback('Πρόσθεσε τουλάχιστον 2 καρέ για κίνηση!',false);return;}
+stopAnimation();
+var fi=0;
+animInterval=setInterval(function(){
+fi=(fi+1)%frames.length;
+grid=copyGrid(frames[fi]);
+currentFrame=fi;
+updateGrid();
+updateFrameThumbs();
+},300);
+}
+function stopAnimation(){if(animInterval){clearInterval(animInterval);animInterval=null;}}
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+if(isOk)setTimeout(function(){el.className='feedback';},4000);
+}
+init();
+</script>
+</body>
+</html>

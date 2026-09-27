@@ -1,0 +1,26 @@
+{
+  "title": "Τι Μπορώ να Στείλω σε Μήνυμα",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "content",
+      "name": "Περιεχόμενο μηνύματος",
+      "color": "#2196F3"
+    },
+    {
+      "id": "steps",
+      "name": "Βήματα αποστολής",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    { "id": "i1", "text": "Κείμενο", "category": "content" },
+    { "id": "i2", "text": "Φωτογραφία", "category": "content" },
+    { "id": "i3", "text": "Βίντεο", "category": "content" },
+    { "id": "i4", "text": "Ήχος", "category": "content" },
+    { "id": "i5", "text": "Emoticons", "category": "content" },
+    { "id": "i6", "text": "Γράφεις όνομα παραλήπτη", "category": "steps" },
+    { "id": "i7", "text": "Γράφεις το μήνυμα", "category": "steps" },
+    { "id": "i8", "text": "Πατάς «Αποστολή»", "category": "steps" }
+  ]
+}

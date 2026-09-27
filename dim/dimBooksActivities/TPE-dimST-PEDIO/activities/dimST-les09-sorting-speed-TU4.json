@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είσοδος ή Έξοδος;",
+  "subtitle": "Ταξινόμησε κάθε στοιχείο του micro:bit",
+  "instructions": "Πάτα αριστερό βέλος για Είσοδο, δεξιό για Έξοδο",
+  "categories": [
+    { "id": "input", "name": "Είσοδος", "color": "#4CAF50", "key": "ArrowLeft" },
+    { "id": "output", "name": "Έξοδος", "color": "#2196F3", "key": "ArrowRight" }
+  ],
+  "items": [
+    { "text": "Μικρόφωνο", "category": "input" },
+    { "text": "Ηχείο", "category": "output" },
+    { "text": "Αισθητήρας φωτός", "category": "input" },
+    { "text": "Φωτοδίοδος (εμφάνιση)", "category": "output" },
+    { "text": "Κουμπί Α", "category": "input" },
+    { "text": "Show leds", "category": "output" },
+    { "text": "Επίπεδο ήχου", "category": "input" },
+    { "text": "Εμφάνισε αριθμό", "category": "output" },
+    { "text": "Επίπεδο φωτισμού", "category": "input" },
+    { "text": "Play melody", "category": "output" }
+  ],
+  "duration": 30
+}

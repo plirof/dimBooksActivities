@@ -1,0 +1,52 @@
+{
+  "title": "Βρες τα Λάθη: Το Διαδίκτυο",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένας", "error": false},
+        {"text": "υπολογιστής.", "error": true, "correct": "μεγάλο δίκτυο υπολογιστών", "feedback": "Το διαδίκτυο ΔΕΝ είναι ένας υπολογιστής! Είναι ένα ΜΕΓΑΛΟ ΔΙΚΤΥΟ υπολογιστών!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "παγκόσμιος", "error": false},
+        {"text": "ιστός", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ίδιο", "error": true, "correct": "μέρος", "feedback": "Ο παγκόσμιος ιστός είναι ΜΕΡΟΣ του διαδικτύου, δεν είναι το ίδιο!"},
+        {"text": "πράγμα", "error": false},
+        {"text": "με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "διαδίκτυο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "συνομιλία", "error": false},
+        {"text": "chat", "error": false},
+        {"text": "μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "δω", "error": true, "correct": "γράψω", "feedback": "Στο chat ΓΡΑΦΟΥΜΕ κείμενο, δεν βλέπουμε εικόνα!"},
+        {"text": "τον", "error": false},
+        {"text": "άλλο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "email", "error": false},
+        {"text": "στέλνει", "error": false},
+        {"text": "μηνύματα", "error": false},
+        {"text": "με", "error": false},
+        {"text": "χαρτί.", "error": true, "correct": "ψηφιακά", "feedback": "Το email στέλνει ΨΗΦΙΑΚΑ μηνύματα, όχι με χαρτί!"}
+      ]
+    }
+  ]
+}

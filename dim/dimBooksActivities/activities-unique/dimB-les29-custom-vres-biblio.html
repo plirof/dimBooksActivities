@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Βρες το Βιβλίο σου 📚</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ede7f6 0%, #d1c4e9 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #4527a0, #7e57c2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(69,39,160,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #4527a0; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #ede7f6; border: 2px dashed #7e57c2; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #311b92;
+  }
+  .browser-mock {
+    background: #fff; border-radius: 24px; padding: 14px;
+    margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  }
+  .browser-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    background: #f5f5f5; border-radius: 16px; padding: 8px 14px;
+    border: 1px solid #e0e0e0;
+  }
+  .bb-dots { display: flex; gap: 4px; }
+  .bb-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .bb-dot.r { background: #f44336; }
+  .bb-dot.y { background: #ffb300; }
+  .bb-dot.g { background: #4caf50; }
+  .bb-url { flex:1; font-size:.8rem; color:#1565c0; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; }
+  .browser-content {
+    background: #f5f5f5; border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .site-title { font-size: 1.2rem; font-weight: 700; color: #4527a0; margin-bottom: 4px; }
+  .site-sub { font-size: .8rem; color: #888; margin-bottom: 12px; }
+  .site-options {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+  }
+  .site-btn {
+    background: #fff; border: 2px solid #e0e0e0; border-radius: 12px;
+    padding: 8px 16px; font-size: .8rem; font-weight: 600; color: #555; font-family: inherit;
+  }
+  .action-area {
+    background: #fff; border-radius: 20px; padding: 20px;
+    margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    text-align: center;
+  }
+  .action-q { font-size: 1.1rem; font-weight: 700; color: #2d3436; margin-bottom: 14px; }
+  .q-options { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; }
+  .q-opt {
+    background: #fff; border: 3px solid #e0e0e0; border-radius: 14px;
+    padding: 14px 10px; cursor: pointer; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent; text-align: center;
+  }
+  .q-opt:active { transform: scale(.95); }
+  .q-opt .qo-emoji { font-size: 2rem; }
+  .q-opt .qo-text { font-size: .85rem; font-weight: 600; color: #555; margin-top: 4px; }
+  .q-opt.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .q-opt.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .q-opt.disabled { pointer-events: none; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .feedback { text-align:center; padding:14px; border-radius:16px; font-size:1.1rem; font-weight:700; margin-bottom:12px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.yay { background:#d4edda; color:#155724; }
+  .feedback.nay { background:#f8d7da; color:#721c24; }
+  .result-screen { background:#fff; border-radius:24px; box-shadow:0 8px 28px rgba(0,0,0,.1); padding:40px 24px; text-align:center; display:none; }
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#4527a0,#7e57c2);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(69,39,160,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}.q-options{grid-template-columns:1fr}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .browser-bar > * + * { margin-left: 8px; }
+  .bb-dots > * + * { margin-left: 4px; }
+  .site-options > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>📚 Βρες το Βιβλίο σου</h1>
+    <p>Πλοηγήσου στα διαδραστικά βιβλία!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/8</span>
+  </div>
+  <div class="instructions">🌐 Μπες στο ebooks.edu.gr και βρες το βιβλίο που θες!</div>
+  <div id="gameArea">
+    <div class="browser-mock">
+      <div class="browser-bar">
+        <div class="bb-dots"><span class="bb-dot r"></span><span class="bb-dot y"></span><span class="bb-dot g"></span></div>
+        <span class="bb-url" id="urlBar">🔒 ebooks.edu.gr</span>
+      </div>
+      <div class="browser-content">
+        <div class="site-title">📚 ebooks.edu.gr</div>
+        <div class="site-sub">Διαδραστικά Σχολικά Βιβλία</div>
+        <div class="site-options">
+          <span class="site-btn">🔍 Αναζήτηση</span>
+          <span class="site-btn">🏫 Υλικό ανά τάξη</span>
+          <span class="site-btn">📖 Υλικό ανά μάθημα</span>
+        </div>
+      </div>
+    </div>
+    <div class="action-area">
+      <div class="action-q" id="actionQ">🔹 Πώς θα βρεις το βιβλίο της Πληροφορικής;</div>
+      <div class="q-options" id="qOptions"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var questions = [
+    {q:'🔹 Ποια είναι η διεύθυνση των διαδραστικών βιβλίων;',
+     opts:[{e:'🌐',t:'ebooks.edu.gr',ans:true},{e:'📧',t:'ebooks@gmail.com',ans:false},{e:'📖',t:'biblia.edu.gr',ans:false},{e:'🏫',t:'ebooks.school.gr',ans:false}]},
+    {q:'🔹 Τι έχει ένα διαδραστικό βιβλίο ΠΑΡΑΠΑΝΩ από ένα κανονικό;',
+     opts:[{e:'🎬',t:'Βίντεο, κουίζ, ήχους, παιχνίδια',ans:true},{e:'📄',t:'Περισσότερες σελίδες',ans:false},{e:'🖼️',t:'Μόνο εικόνες',ans:false},{e:'📝',t:'Μόνο κείμενο',ans:false}]},
+    {q:'🔹 Πώς μπορείς να ψάξεις για ένα βιβλίο;',
+     opts:[{e:'🔍',t:'Πληκτρολογώ λέξη στο πλαίσιο αναζήτησης',ans:true},{e:'📞',t:'Τηλεφωνώ στη βιβλιοθήκη',ans:false},{e:'✉️',t:'Στέλνω email',ans:false},{e:'📋',t:'Γράφω αίτηση',ans:false}]},
+    {q:'🔹 Πού πατάς για να δεις όλα τα βιβλία της τάξης σου;',
+     opts:[{e:'🏫',t:'Υλικό ανά τάξη',ans:true},{e:'📖',t:'Υλικό ανά μάθημα',ans:false},{e:'🔍',t:'Αναζήτηση',ans:false},{e:'📚',t:'Όλα τα βιβλία',ans:false}]},
+    {q:'🔹 Πού πατάς για να δεις βιβλία ενός μαθήματος (π.χ. Πληροφορική);',
+     opts:[{e:'🏫',t:'Υλικό ανά τάξη',ans:false},{e:'📖',t:'Υλικό ανά μάθημα',ans:true},{e:'🔍',t:'Αναζήτηση',ans:false},{e:'📚',t:'Όλα τα βιβλία',ans:false}]},
+    {q:'🔹 Πώς αναγνωρίζεις ένα διαδραστικό αντικείμενο στο βιβλίο;',
+     opts:[{e:'🔍',t:'Από τα εικονίδιά του',ans:true},{e:'📝',t:'Από το χρώμα',ans:false},{e:'📏',t:'Από το μέγεθος',ans:false},{e:'📄',t:'Από την σελίδα',ans:false}]},
+    {q:'🔹 Τι ΔΕΝ μπορείς να βρεις σε ένα διαδραστικό βιβλίο;',
+     opts:[{e:'🎮',t:'Παιχνίδια και κουίζ',ans:false},{e:'🎬',t:'Βίντεο και ήχους',ans:false},{e:'🍕',t:'Αληθινή πίτσα',ans:true},{e:'🖼️',t:'Εικόνες',ans:false}]},
+    {q:'🔹 Για ποιες τάξεις υπάρχουν διαδραστικά βιβλία;',
+     opts:[{e:'🏫',t:'Για όλες τις τάξεις του Δημοτικού',ans:true},{e:'📚',t:'Μόνο για μεγάλες τάξεις',ans:false},{e:'📖',t:'Μόνο για την Πληροφορική',ans:false},{e:'🎓',t:'Μόνο για Γυμνάσιο',ans:false}]}
+  ];
+  var cur=0,score=0;
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){
+    shuffle(questions);cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    loadQ();
+  }
+  function loadQ(){
+    if(cur>=questions.length){showResult();return;}
+    var q=questions[cur];
+    document.getElementById('roundDisplay').textContent=(cur+1)+'/'+questions.length;
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('actionQ').textContent=q.q;
+    var g=document.getElementById('qOptions');g.innerHTML='';
+    for(var i=0;i<q.opts.length;i++){
+      (function(idx){
+        var o=document.createElement('div');o.className='q-opt';
+        o.innerHTML='<div class="qo-emoji">'+q.opts[idx].e+'</div><div class="qo-text">'+q.opts[idx].t+'</div>';
+        o.addEventListener('click',function(){choose(idx);});
+        g.appendChild(o);
+      })(i);
+    }
+  }
+  function choose(idx){
+    var q=questions[cur];var fb=document.getElementById('feedback');
+    var opts=document.querySelectorAll('#qOptions .q-opt');
+    for(var i=0;i<opts.length;i++)opts[i].classList.add('disabled');
+    if(idx===q.ans){score++;
+      document.getElementById('scoreDisplay').textContent='⭐ '+score;
+      opts[idx].classList.add('correct');
+      fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Σωστά!';
+    }else{
+      opts[idx].classList.add('wrong');opts[q.ans].classList.add('correct');
+      fb.className='feedback show nay';fb.textContent='❌ Δεν είναι σωστό!';
+    }
+    setTimeout(function(){cur++;loadQ();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=questions.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Ξέρεις να πλοηγείσαι στα διαδραστικά βιβλία! Μπράβο!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Τα πήγες πολύ καλά!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Βρήκες '+score+' από '+total+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

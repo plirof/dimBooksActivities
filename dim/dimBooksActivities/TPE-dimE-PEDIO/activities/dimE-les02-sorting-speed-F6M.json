@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αλγόριθμοι",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "alg2", "name": "Αλγόριθμος 2", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "alg3", "name": "Αλγόριθμος 3", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ελέγχει Χ, Ψ, Ω ξεχωριστά", "category": "alg2"},
+    {"text": "Ελέγχει θέση+3 > 24", "category": "alg3"},
+    {"text": "Πιο ειδικός", "category": "alg2"},
+    {"text": "Πιο γενικός", "category": "alg3"},
+    {"text": "Πολλά Αν...Αλλιώς", "category": "alg2"},
+    {"text": "Μόνο ένας έλεγχος", "category": "alg3"},
+    {"text": "Δύσκολος να αλλάξει μετατόπιση", "category": "alg2"},
+    {"text": "Εύκολος να αλλάξει μετατόπιση", "category": "alg3"},
+    {"text": "Πιο μεγαλύτερος σε βήματα", "category": "alg2"},
+    {"text": "Πιο σύντομος σε βήματα", "category": "alg3"}
+  ],
+  "duration": 30
+}

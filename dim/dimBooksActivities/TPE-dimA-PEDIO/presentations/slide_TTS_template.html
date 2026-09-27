@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+    4. Generate MP3s:
+         ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                               TPE-dimX-PEDIO/presentations/audio/lessonNN
+    5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 1,
+  unit: "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική",
+  slides: [
+    { type:"title", title:"Μάθημα 1ο: Πώς λύνω ένα πρόβλημα" },
+    { type:"text", text:"Η Υπατία ετοιμάζει την τσάντα της για το σχολείο. Δεν θυμάται όμως τι πρέπει να κάνει. «Ήρωνα, έχω ένα πρόβλημα!»" },
+    { type:"steps", title:"Τα 4 βήματα", steps:["① Δες το πρόγραμμα","② Μάζεψε τα πράγματα","③ Βάλε τα στην τσάντα","④ Κλείσε την τσάντα"] },
+    { type:"list", title:"Αναλυτικά βήματα", items:["Κοίτα το πρόγραμμα","Βρες τα βιβλία","Βρες τα τετράδια","Βρες την κασετίνα","Βάλε τα μέσα στην τσάντα","Κλείσε την τσάντα"] },
+    { type:"concept", text:"Λύνουμε ευκολότερα ένα πρόβλημα όταν το χωρίζουμε σε μικρά, απλά βήματα." },
+    { type:"practice", title:"Συζητήστε", items:["Πλύσιμο δοντιών","Βόλτα σκύλου","Φαγητό για το σχολείο","Στρώσιμο κρεβατιού"] },
+    { type:"assessment", check:"Μπορώ να περιγράφω ένα πρόβλημα με μικρά και απλά βήματα", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 1: Αλγοριθμική – Προγραμματισμός – Ρομποτική. Μάθημα 1ο: Πώς λύνω ένα πρόβλημα",
+  "Η Υπατία ετοιμάζει την τσάντα της για το σχολείο. Δεν θυμάται όμως τι πρέπει να κάνει. «Ήρωνα, έχω ένα πρόβλημα!»",
+  "Τα 4 βήματα. ① Δες το πρόγραμμα. ② Μάζεψε τα πράγματα. ③ Βάλε τα στην τσάντα. ④ Κλείσε την τσάντα",
+  "Αναλυτικά βήματα. Κοίτα το πρόγραμμα. Βρες τα βιβλία. Βρες τα τετράδια. Βρες την κασετίνα. Βάλε τα μέσα στην τσάντα. Κλείσε την τσάντα",
+  "Λύνουμε ευκολότερα ένα πρόβλημα όταν το χωρίζουμε σε μικρά, απλά βήματα.",
+  "Συζητήστε. Πλύσιμο δοντιών. Βόλτα σκύλου. Φαγητό για το σχολείο. Στρώσιμο κρεβατιού",
+  "Μπορώ να περιγράφω ένα πρόβλημα με μικρά και απλά βήματα. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

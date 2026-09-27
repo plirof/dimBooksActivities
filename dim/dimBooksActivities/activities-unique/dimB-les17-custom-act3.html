@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εννοιολογικός Χάρτης - Μάθημα 17</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 50%,#4facfe 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;margin:0 auto;padding:20px}
+h1{text-align:center;font-size:1.4rem;color:#2e7d32;margin-bottom:5px}
+h1 .emoji{font-size:1.6rem}
+.instructions{text-align:center;color:#555;margin-bottom:12px;font-size:.92rem;line-height:1.4}
+#mapArea{position:relative;width:100%;min-height:480px;background:linear-gradient(180deg,#f0f9ff,#e8f5e9);border-radius:16px;border:2px solid #c8e6c9;overflow:hidden}
+#mapSvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.map-node{position:absolute;padding:10px 16px;border-radius:14px;font-weight:700;font-size:.95rem;color:#fff;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.18);cursor:default;white-space:nowrap;z-index:2;transition:transform .2s}
+.map-node:hover{transform:scale(1.05)}
+.map-node.root{background:linear-gradient(135deg,#667eea,#764ba2);font-size:1.15rem;padding:12px 22px}
+.map-node.cat-0{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.map-node.cat-1{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.map-node.cat-2{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1b5e20}
+.map-node.animal{background:#fff;color:#555;border:2px solid #ccc;font-size:.85rem;padding:6px 12px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.map-node.animal.cat-0{border-color:#f5576c;color:#c62828}
+.map-node.animal.cat-1{border-color:#4facfe;color:#0d47a1}
+.map-node.animal.cat-2{border-color:#43e97b;color:#1b5e20}
+.line-label{position:absolute;background:#fff3e0;color:#e65100;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:8px;z-index:3;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.add-section{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+.add-group{display:flex;align-items:center;gap:5px;background:#f5f5f5;padding:6px 10px;border-radius:12px;border:2px solid #e0e0e0}
+.add-group.cat-0{border-color:#f5576c;background:#fce4ec}
+.add-group.cat-1{border-color:#4facfe;background:#e3f2fd}
+.add-group.cat-2{border-color:#43e97b;background:#e8f5e9}
+.add-group label{font-size:.82rem;font-weight:700;white-space:nowrap}
+.add-group input{padding:5px 8px;border-radius:8px;border:2px solid #ccc;font-size:.85rem;width:90px;outline:none}
+.add-group input:focus{border-color:#667eea}
+.add-group button{padding:5px 12px;border:none;border-radius:8px;font-weight:700;font-size:.85rem;cursor:pointer;color:#fff;transition:transform .15s}
+.add-group button:hover{transform:scale(1.05)}
+.add-group.cat-0 button{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.add-group.cat-1 button{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.add-group.cat-2 button{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.btn-row{text-align:center;margin-top:14px}
+.btn{padding:12px 28px;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s,box-shadow .15s;margin:0 5px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.22)}
+.btn-done{background:linear-gradient(135deg,#fbc2eb,#a6c1ee);color:#4a3f8a}
+.msg-box{text-align:center;margin-top:12px;padding:14px;border-radius:14px;font-size:1.15rem;font-weight:700;display:none}
+.msg-box.show{display:block;background:linear-gradient(135deg,#a8edea,#fed6e3);color:#2e7d32}
+@media(max-width:600px){
+#mapArea{min-height:520px}
+.map-node{font-size:.78rem;padding:7px 10px}
+.map-node.root{font-size:.95rem}
+.add-group input{width:65px;font-size:.78rem}
+.add-group label{font-size:.72rem}
+h1{font-size:1.15rem}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .add-section > * { margin: 5px; }
+  .add-group > * + * { margin-left: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+  <h1><span class="emoji">🧠</span> Εννοιολογικός Χάρτης <span class="emoji">🗺️</span></h1>
+  <p class="instructions">Πρόσθεσε ζώα στις σωστές κατηγορίες! 🐾</p>
+  <div id="mapArea">
+    <svg id="mapSvg"></svg>
+  </div>
+  <div class="add-section" id="addSection"></div>
+  <div class="btn-row">
+    <button class="btn btn-done" onclick="finishMap()">🏁 Ολοκλήρωση</button>
+  </div>
+  <div class="msg-box" id="msgBox"></div>
+</div>
+<script>
+var categories = [
+  {name:"Κατοικίδια", animals:["Γάτα 🐱","Σκύλος 🐶"]},
+  {name:"Ζώα Φάρμας", animals:[]},
+  {name:"Ζώα Δάσους", animals:[]}
+];
+
+var rootLabel = "Ζώα 🦁";
+var linkLabel = "χωρίζονται σε";
+var mapArea = document.getElementById("mapArea");
+var mapSvg = document.getElementById("mapSvg");
+var nodePositions = {};
+
+function getAreaDims(){
+  var w = mapArea.offsetWidth;
+  var h = mapArea.offsetHeight;
+  return {w:w, h:h};
+}
+
+function layoutNodes(){
+  var d = getAreaDims();
+  nodePositions = {};
+
+  nodePositions.root = {x: d.w/2, y: 45};
+
+  var catSpacing = d.w / (categories.length + 1);
+  categories.forEach(function(cat, i){
+    nodePositions["cat_"+i] = {x: catSpacing*(i+1), y: 150};
+  });
+
+  categories.forEach(function(cat, ci){
+    var baseX = nodePositions["cat_"+ci].x;
+    var startY = 240;
+    cat.animals.forEach(function(a, ai){
+      var offsetY = ai * 38;
+      nodePositions["animal_"+ci+"_"+ai] = {x: baseX, y: startY + offsetY};
+    });
+  });
+}
+
+function render(){
+  var existing = mapArea.querySelectorAll(".map-node,.line-label");
+  existing.forEach(function(el){ el.remove(); });
+  mapSvg.textContent = "";
+
+  layoutNodes();
+
+  var rp = nodePositions.root;
+
+  var rootEl = document.createElement("div");
+  rootEl.className = "map-node root";
+  rootEl.textContent = rootLabel;
+  rootEl.style.left = rp.x + "px";
+  rootEl.style.top = rp.y + "px";
+  rootEl.style.transform = "translate(-50%,0)";
+  mapArea.appendChild(rootEl);
+
+  categories.forEach(function(cat, i){
+    var cp = nodePositions["cat_"+i];
+
+    var line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1", rp.x);
+    line.setAttribute("y1", rp.y + 36);
+    line.setAttribute("x2", cp.x);
+    line.setAttribute("y2", cp.y);
+    line.setAttribute("stroke","#999");
+    line.setAttribute("stroke-width","2");
+    line.setAttribute("stroke-dasharray","6,3");
+    mapSvg.appendChild(line);
+
+    var lbl = document.createElement("div");
+    lbl.className = "line-label";
+    lbl.textContent = linkLabel;
+    lbl.style.left = ((rp.x + cp.x)/2) + "px";
+    lbl.style.top = ((rp.y + 36 + cp.y)/2 - 10) + "px";
+    lbl.style.transform = "translate(-50%,0)";
+    mapArea.appendChild(lbl);
+
+    var catEl = document.createElement("div");
+    catEl.className = "map-node cat-"+i;
+    catEl.textContent = cat.name;
+    catEl.style.left = cp.x + "px";
+    catEl.style.top = cp.y + "px";
+    catEl.style.transform = "translate(-50%,0)";
+    mapArea.appendChild(catEl);
+
+    cat.animals.forEach(function(animal, ai){
+      var ap = nodePositions["animal_"+i+"_"+ai];
+
+      var aLine = document.createElementNS("http://www.w3.org/2000/svg","line");
+      aLine.setAttribute("x1", cp.x);
+      aLine.setAttribute("y1", cp.y + 36);
+      aLine.setAttribute("x2", ap.x);
+      aLine.setAttribute("y2", ap.y);
+      aLine.setAttribute("stroke","#bbb");
+      aLine.setAttribute("stroke-width","1.5");
+      aLine.setAttribute("stroke-dasharray","4,3");
+      mapSvg.appendChild(aLine);
+
+      var aEl = document.createElement("div");
+      aEl.className = "map-node animal cat-"+i;
+      aEl.textContent = animal;
+      aEl.style.left = ap.x + "px";
+      aEl.style.top = ap.y + "px";
+      aEl.style.transform = "translate(-50%,0)";
+      mapArea.appendChild(aEl);
+    });
+  });
+
+  renderInputs();
+  resizeSvg();
+}
+
+function renderInputs(){
+  var sec = document.getElementById("addSection");
+  sec.textContent = "";
+  categories.forEach(function(cat, i){
+    var g = document.createElement("div");
+    g.className = "add-group cat-"+i;
+
+    var lbl = document.createElement("label");
+    lbl.textContent = cat.name + ":";
+
+    var inp = document.createElement("input");
+    inp.setAttribute("type","text");
+    inp.setAttribute("placeholder","ζώο...");
+    inp.setAttribute("id","inp_"+i);
+    inp.setAttribute("maxlength","20");
+
+    var btn = document.createElement("button");
+    btn.textContent = "➕ Πρόσθεσε";
+    btn.addEventListener("click", function(){ addAnimal(i); });
+
+    g.appendChild(lbl);
+    g.appendChild(inp);
+    g.appendChild(btn);
+    sec.appendChild(g);
+  });
+}
+
+function addAnimal(ci){
+  var inp = document.getElementById("inp_"+ci);
+  var val = inp.value.trim();
+  if(!val) return;
+  var safeVal = val.replace(/[<>&"']/g,"");
+  if(!safeVal) return;
+  categories[ci].animals.push(safeVal);
+  inp.value = "";
+  render();
+}
+
+function resizeSvg(){
+  mapSvg.setAttribute("width", mapArea.offsetWidth);
+  mapSvg.setAttribute("height", mapArea.offsetHeight);
+}
+
+function finishMap(){
+  var total = 0;
+  categories.forEach(function(c){ total += c.animals.length; });
+  var mb = document.getElementById("msgBox");
+  mb.className = "msg-box show";
+  if(total >= 5){
+    mb.textContent = "🎉 Μπράβο! Τέλειος χάρτης με " + total + " ζώα! 🌟⭐🏆";
+  } else {
+    mb.textContent = "👍 Καλή αρχή! Πρόσθεσε κι άλλα ζώα! (Έχεις " + total + " ζώα)";
+  }
+}
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    var active = document.activeElement;
+    if(active && active.tagName === "INPUT" && active.id && active.id.indexOf("inp_") === 0){
+      var ci = parseInt(active.id.split("_")[1]);
+      addAnimal(ci);
+    }
+  }
+});
+
+var resizeTimer;
+window.addEventListener("resize", function(){
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(render, 150);
+});
+
+render();
+</script>
+</body>
+</html>

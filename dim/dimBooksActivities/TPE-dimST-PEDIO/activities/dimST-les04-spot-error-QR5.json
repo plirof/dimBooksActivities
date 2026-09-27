@@ -1,0 +1,110 @@
+{
+  "title": "Βρες τα Λάθη: Υποπρογράμματα",
+  "subtitle": "Βρες τις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Το",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "υποπρόγραμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "δεν",
+          "error": true,
+          "correct": "",
+          "feedback": "Το υποπρόγραμμα ΜΠΟΡΕΙ να πάρει δεδομένα ως είσοδο"
+        },
+        {
+          "text": "μπορεί",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "να",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πάρει",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "δεδομένα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "είσοδου",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Η",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "περίμετρος",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "τετραγώνου",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "ισούται",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "με",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "3",
+          "error": true,
+          "correct": "4",
+          "feedback": "Περίμετρος τετραγώνου = 4 * πλευρά, όχι 3"
+        },
+        {
+          "text": "επί",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "πλευρά",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    }
+  ]
+}

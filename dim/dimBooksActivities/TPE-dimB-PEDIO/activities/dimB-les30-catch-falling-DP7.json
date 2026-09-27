@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Σωστές Συμπεριφορές",
+  "subtitle": "Πιάσε μόνο τις σωστές συμπεριφορές στο διαδίκτυο",
+  "instructions": "Χρησιμοποίησε τα βελάκια για να πιάσεις τις σωστές συμπεριφορές!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "Σεβασμός",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Προστασία δεδομένων",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Προσβολή άλλων",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Έλεγχος χρόνου",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Μοίρασμα κωδικών",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Σκέψη πριν ανάρτηση",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Αλόγιστη χρήση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Πρόσβαση για όλους",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Δημοσίευση στοιχείων",
+      "correct": false,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Υπεύθυνη συμμετοχή",
+      "correct": true,
+      "color": "#3F51B5"
+    }
+  ]
+}

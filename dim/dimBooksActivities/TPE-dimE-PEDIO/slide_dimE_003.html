@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 3ο: Σύνθετες λογικές εκφράσεις</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a1628;color:#222;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+.topbar{background:linear-gradient(135deg,#00598a,#0077b6);color:#fff;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;height:46px;flex-shrink:0}
+.topbar .left{display:flex;align-items:center;gap:10px}
+.topbar .badge{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+.topbar h1{font-size:14px}
+.topbar .counter{font-size:13px;opacity:.8}
+.pbar{height:3px;background:#1a2a40;flex-shrink:0}
+.pbar-fill{height:100%;background:linear-gradient(90deg,#00598a,#00b4d8);transition:width .3s}
+.stage{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:20px}
+.slide{display:none;max-width:860px;width:100%;background:#fff;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,.4);padding:40px 50px;animation:fadeIn .3s}
+.slide.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide h2{color:#00598a;font-size:24px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #00b4d8}
+.slide h3{color:#0077b6;font-size:18px;margin:18px 0 10px}
+.slide p{line-height:1.7;margin-bottom:12px;font-size:15px}
+.slide ul{margin:10px 0 14px 24px;line-height:1.8;font-size:15px}
+.slide ul li{margin-bottom:4px}
+.slide .box{background:#e8f4fd;border-left:4px solid #00598a;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0}
+.slide .box.orange{background:#fff3e0;border-left-color:#e65100}
+.slide .box.green{background:#e8f5e9;border-left-color:#2e7d32}
+.slide .keyword{color:#00598a;font-weight:700}
+.slide .true-val{color:#2e7d32;font-weight:700}
+.slide .false-val{color:#d32f2f;font-weight:700}
+table.truth{border-collapse:collapse;margin:14px auto;width:100%}
+table.truth th,table.truth td{border:1px solid #ccc;padding:10px 14px;text-align:center;font-size:14px}
+table.truth th{background:#00598a;color:#fff}
+table.truth td:first-child{text-align:left}
+.navbar{background:#0f1b2d;height:52px;display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0}
+.nbtn{background:#00598a;border:none;color:#fff;padding:7px 20px;border-radius:6px;cursor:pointer;font-size:14px;transition:background .2s}
+.nbtn:hover{background:#0077b6}
+.nbtn:disabled{opacity:.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="left"><span class="badge">Μάθημα 3ο</span><h1>Σύνθετες λογικές εκφράσεις</h1></div>
+<span class="counter"><span id="cur">1</span> / <span id="tot"></span></span>
+</div>
+<div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+<div class="stage">
+
+<div class="slide active">
+<h2>Μάθημα 3ο: Σύνθετες λογικές εκφράσεις</h2>
+<div class="box green"><strong>Στόχοι μαθήματος:</strong>
+<ul>
+<li>Πώς σχηματίζονται οι <strong>σύνθετες λογικές εκφράσεις</strong></li>
+<li>Να προβλέπεις το αποτέλεσμα των σύνθετων λογικών εκφράσεων</li>
+<li>Τι είναι οι <strong>λογικοί τελεστές</strong></li>
+</ul></div>
+</div>
+
+<div class="slide">
+<h2>Απλές λογικές εκφράσεις</h2>
+<div class="box">
+<strong>Θυμάμαι ότι...</strong> Οι συνθήκες των εντολών αποτελούνται από λογικές εκφράσεις. Μία <span class="keyword">λογική έκφραση</span> είναι μία πρόταση για την οποία μπορούμε να πούμε αν είναι <span class="true-val">ΑΛΗΘΕΙΑ</span> ή <span class="false-val">ΨΕΜΑ</span>.
+</div>
+<p><strong>Απλές λογικές εκφράσεις:</strong></p>
+<ul>
+<li>«Η Γη είναι στρογγυλή» → <span class="true-val">ΑΛΗΘΕΙΑ</span></li>
+<li>«Η Γη γυρίζει γύρω από τη σελήνη» → <span class="false-val">ΨΕΜΑ</span></li>
+</ul>
+<p>Μπορούμε όμως να φτιάξουμε και <span class="keyword">σύνθετες λογικές εκφράσεις</span> συνδυάζοντας απλές λογικές εκφράσεις και βάζοντας ανάμεσά τους τις λέξεις:</p>
+<ul>
+<li><strong>«ΚΑΙ»</strong></li>
+<li><strong>«Ή»</strong></li>
+<li><strong>«ΔΕΝ»</strong></li>
+</ul>
+<p>Οι λέξεις αυτές ονομάζονται <span class="keyword">λογικοί τελεστές</span>.</p>
+</div>
+
+<div class="slide">
+<h2>Ο τελεστής «ΚΑΙ» (AND)</h2>
+<div class="box orange">
+<strong>Κανόνας:</strong> Ο τελεστής «ΚΑΙ» δίνει <span class="true-val">ΑΛΗΘΕΙΑ</span> όταν και οι <strong>δύο</strong> λογικές εκφράσεις, ανάμεσα στις οποίες βρίσκεται, είναι <span class="true-val">ΑΛΗΘΕΙΑ</span>.
+</div>
+<table class="truth">
+<tr><th>Παράδειγμα</th><th>Έκφραση 1</th><th>Έκφραση 2</th><th>Αποτέλεσμα</th></tr>
+<tr><td>Η Ελλάδα έχει 9 διαμερίσματα <strong>ΚΑΙ</strong> 13 περιφέρειες</td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td></tr>
+<tr><td>Η Γη είναι σφαίρα <strong>ΚΑΙ</strong> η σελήνη είναι κύβος</td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td></tr>
+<tr><td>Η πάπια έχει 4 πόδια <strong>ΚΑΙ</strong> η γάτα έχει 2</td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td></tr>
+</table>
+</div>
+
+<div class="slide">
+<h2>Ο τελεστής «Ή» (OR)</h2>
+<div class="box orange">
+<strong>Κανόνας:</strong> Ο τελεστής «Ή» δίνει <span class="true-val">ΑΛΗΘΕΙΑ</span> όταν η <strong>μία τουλάχιστον</strong> από τις λογικές εκφράσεις είναι <span class="true-val">ΑΛΗΘΕΙΑ</span>.
+</div>
+<table class="truth">
+<tr><th>Παράδειγμα</th><th>Έκφραση 1</th><th>Έκφραση 2</th><th>Αποτέλεσμα</th></tr>
+<tr><td>Η μέρα έχει 23 ώρες <strong>Ή</strong> 1440 λεπτά</td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td></tr>
+<tr><td>Το 5 < 7 <strong>Ή</strong> το 3 < 4</td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td></tr>
+<tr><td>7 × 6 = 48 <strong>Ή</strong> 3 × 7 = 56</td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td><td><span class="false-val">ΨΕΜΑ</span></td></tr>
+</table>
+</div>
+
+<div class="slide">
+<h2>Ο τελεστής «ΔΕΝ» (NOT)</h2>
+<div class="box orange">
+<strong>Κανόνας:</strong> Ο τελεστής «ΔΕΝ» ή «ΟΧΙ» <strong>αντιστρέφει</strong> το αποτέλεσμα μιας λογικής έκφρασης. Αν είναι ΑΛΗΘΕΙΑ την κάνει ΨΕΜΑ και αν είναι ΨΕΜΑ την κάνει ΑΛΗΘΕΙΑ.
+</div>
+<table class="truth">
+<tr><th>Λογική έκφραση</th><th>Αποτέλεσμα</th></tr>
+<tr><td>Το λεπτό έχει 60 δευτερόλεπτα</td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td></tr>
+<tr><td>Το λεπτό <strong>ΔΕΝ</strong> έχει 60 δευτερόλεπτα</td><td><span class="false-val">ΨΕΜΑ</span></td></tr>
+<tr><td>Το 1 είναι μεγαλύτερο του 2</td><td><span class="false-val">ΨΕΜΑ</span></td></tr>
+<tr><td>Το 1 <strong>ΔΕΝ</strong> είναι μεγαλύτερο του 2</td><td><span class="true-val">ΑΛΗΘΕΙΑ</span></td></tr>
+</table>
+</div>
+
+<div class="slide">
+<h2>Παραδείγματα προς λύση</h2>
+<p>Βρες αν είναι αλήθεια ή ψέμα οι παρακάτω λογικές εκφράσεις:</p>
+<table class="truth">
+<tr><th>#</th><th>Λογική έκφραση</th><th>Αποτέλεσμα;</th></tr>
+<tr><td>1</td><td>Οι εποχές έχουν 3 μήνες <strong>ΚΑΙ</strong> οι μήνες έχουν 30 ημέρες</td><td>?</td></tr>
+<tr><td>2</td><td>Η εβδομάδα έχει 6 μέρες <strong>Ή</strong> η ώρα έχει 60 λεπτά</td><td>?</td></tr>
+<tr><td>3</td><td>5 × 6 = 30 <strong>ΚΑΙ</strong> 3 × 4 = 12</td><td>?</td></tr>
+<tr><td>4</td><td>Το 6 > 2 <strong>Ή</strong> το 9 > 11</td><td>?</td></tr>
+<tr><td>5</td><td>4 = 3 + 1 <strong>Ή</strong> 7 = 4 + 2</td><td>?</td></tr>
+<tr><td>6</td><td>Το 8 > 6 <strong>ΚΑΙ</strong> το 3 > 4</td><td>?</td></tr>
+</table>
+</div>
+
+<div class="slide">
+<h2>Τι έμαθα;</h2>
+<div class="box green">
+<strong>Σύνοψη μαθήματος:</strong>
+<ul>
+<li>Οι <strong>απλές λογικές εκφράσεις</strong> είναι προτάσεις που είναι ΑΛΗΘΕΙΑ ή ΨΕΜΑ</li>
+<li>Οι <strong>σύνθετες λογικές εκφράσεις</strong> συνδυάζουν απλές με τους τελεστές ΚΑΙ, Ή, ΔΕΝ</li>
+<li><strong>ΚΑΙ:</strong> ΑΛΗΘΕΙΑ μόνο όταν ΚΑΙ ΟΙ ΔΥΟ εκφράσεις είναι ΑΛΗΘΕΙΑ</li>
+<li><strong>Ή:</strong> ΑΛΗΘΕΙΑ όταν ΤΟΥΛΑΧΙΣΤΟΝ ΜΙΑ έκφραση είναι ΑΛΗΘΕΙΑ</li>
+<li><strong>ΔΕΝ:</strong> Αντιστρέφει το αποτέλεσμα (ΑΛΗΘΕΙΑ ↔ ΨΕΜΑ)</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navbar">
+<button class="nbtn" id="prevBtn" onclick="go(-1)">◀ Προηγούμενο</button>
+<button class="nbtn" id="nextBtn" onclick="go(1)">Επόμενο ▶</button>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');let c=0;
+document.getElementById('tot').textContent=slides.length;
+function show(i){c=Math.max(0,Math.min(i,slides.length-1));slides.forEach((s,j)=>{s.classList.toggle('active',j===c)});document.getElementById('cur').textContent=c+1;document.getElementById('pbar').style.width=((c+1)/slides.length*100)+'%';document.getElementById('prevBtn').disabled=c===0;document.getElementById('nextBtn').disabled=c===slides.length-1}
+function go(d){show(c+d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}if(e.key==='Home'){e.preventDefault();show(0)}if(e.key==='End'){e.preventDefault();show(slides.length-1)}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?go(1):go(-1)}});
+show(0);
+</script>
+</body>
+</html>

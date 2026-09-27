@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Μονοπάτι ή Εμπόδιο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Μονοπάτι ή Εμπόδιο;",
+  "categories": [
+    {"id": "monopati", "name": "Μονοπάτι", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "empodio", "name": "Εμπόδιο", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Δρόμος", "category": "monopati"},
+    {"text": "Πέτρα", "category": "empodio"},
+    {"text": "Γραμμή", "category": "monopati"},
+    {"text": "Τοίχος", "category": "empodio"},
+    {"text": "Πλακόστρωτο", "category": "monopati"},
+    {"text": "Λάκκος", "category": "empodio"},
+    {"text": "Πάτημα", "category": "monopati"},
+    {"text": "Καλάμια", "category": "empodio"}
+  ],
+  "duration": 30
+}

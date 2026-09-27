@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Αρχείο ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Αρχείο ή Όχι;",
+  "categories": [
+    {"id": "arxeio", "name": "Αρχείο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εικόνα", "category": "arxeio"},
+    {"text": "Κουτάλι", "category": "oxi"},
+    {"text": "Βίντεο", "category": "arxeio"},
+    {"text": "Μπάλα", "category": "oxi"},
+    {"text": "Ήχος", "category": "arxeio"},
+    {"text": "Κούνια", "category": "oxi"},
+    {"text": "Κείμενο", "category": "arxeio"},
+    {"text": "Κουβέρτα", "category": "oxi"}
+  ],
+  "duration": 30
+}

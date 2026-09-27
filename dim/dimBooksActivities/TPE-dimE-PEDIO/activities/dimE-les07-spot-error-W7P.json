@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Νίκη/Ήττα",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "παιχνίδι", "error": false},
+        {"text": "δείχνει", "error": false},
+        {"text": "νίκη", "error": false},
+        {"text": "μόνο", "error": true, "correct": "νίκη ή ήττα", "feedback": "Το παιχνίδι δείχνει ΝΙΚΗ Ή ΗΤΤΑ, όχι μόνο νίκη!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "δούμε", "error": false},
+        {"text": "νίκη", "error": false},
+        {"text": "ελέγχουμε", "error": false},
+        {"text": "ζωές", "error": true, "correct": "πόντοι", "feedback": "Για νίκη ελέγχουμε ΠΟΝΤΟΙ=10, όχι ζωές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "υπόβαθρο", "error": false},
+        {"text": "αλλάζει", "error": false},
+        {"text": "χειροκίνητα.", "error": true, "correct": "προγραμματιστικά", "feedback": "Το υπόβαθρο αλλάζει ΠΡΟΓΡΑΜΜΑΤΙΣΤΙΚΑ με εντολές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Χρησιμοποιούμε", "error": false},
+        {"text": "Εάν", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "χωρίς", "error": true, "correct": "με", "feedback": "Χρησιμοποιούμε Εάν...τότε...ΑΛΛΙΩΣ, όχι χωρίς Αλλιώς!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "δοκιμάσουμε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "παιχνίδι", "error": false},
+        {"text": "μια", "error": true, "correct": "πολλές", "feedback": "Πρέπει να δοκιμάσουμε το παιχνίδι ΠΟΛΛΕΣ φορές!"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ασφαλής ή Επικίνδυνη;",
+  "subtitle": "Ταξινόμησε τις ενέργειες!",
+  "instructions": "Βάλε κάθε ενέργεια στη σωστή κατηγορία",
+  "categories": [
+    { "id": "safe", "name": "Ασφαλής Ενέργεια", "color": "#4caf50", "key": "1" },
+    { "id": "danger", "name": "Επικίνδυνη Ενέργεια", "color": "#f44336", "key": "2" }
+  ],
+  "items": [
+    { "text": "Εγκατάσταση antivirus", "category": "safe" },
+    { "text": "Άνοιγμα ύποπτου αρχείου", "category": "danger" },
+    { "text": "Τακτική ενημέρωση", "category": "safe" },
+    { "text": "Κοινοποίηση κωδικών", "category": "danger" },
+    { "text": "Αντίγραφα ασφαλείας", "category": "safe" },
+    { "text": "Λήψη από άγνωστο site", "category": "danger" },
+    { "text": "Αυτόματοι έλεγχοι", "category": "safe" },
+    { "text": "Κλικ σε pop-up", "category": "danger" },
+    { "text": "Firewall ενεργό", "category": "safe" },
+    { "text": "Άνοιγμα άγνωστου link", "category": "danger" }
+  ],
+  "duration": 45
+}

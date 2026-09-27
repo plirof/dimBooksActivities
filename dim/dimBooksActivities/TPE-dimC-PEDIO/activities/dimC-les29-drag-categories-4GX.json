@@ -1,0 +1,48 @@
+{
+  "title": "Ζυγαριά: οθόνη vs άλλα",
+  "subtitle": "Ισορροπία ή υπερβολική χρήση οθόνης;",
+  "categories": [
+    {
+      "id": "excess",
+      "name": "ΠΕΡΙΣΣΗ ΟΘΟΝΗ",
+      "color": "#F44336"
+    },
+    {
+      "id": "balance",
+      "name": "ΙΣΟΡΡΟΠΙΑ",
+      "color": "#4CAF50"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "4 ώρες βίντεο",
+      "category": "excess"
+    },
+    {
+      "id": "item2",
+      "text": "30 λεπτά διάβασμα",
+      "category": "balance"
+    },
+    {
+      "id": "item3",
+      "text": "2 ώρες παιχνίδι",
+      "category": "excess"
+    },
+    {
+      "id": "item4",
+      "text": "1 ώρα άθληση",
+      "category": "balance"
+    },
+    {
+      "id": "item5",
+      "text": "1 ώρα οθόνη",
+      "category": "balance"
+    },
+    {
+      "id": "item6",
+      "text": "0 λεπτά ύπνου",
+      "category": "excess"
+    }
+  ]
+}

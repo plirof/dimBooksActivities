@@ -1,0 +1,21 @@
+{
+  "title": "Ταξινόμηση: Εφαρμογή, Φάκελος ή Αρχείο;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Εφαρμογή, Φάκελος ή Αρχείο;",
+  "categories": [
+    {"id": "efarmogi", "name": "Εφαρμογή", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "fakelos", "name": "Φάκελος", "color": "#f44336", "key": "ArrowUp"},
+    {"id": "arxeio", "name": "Αρχείο", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πρόγραμμα ζωγραφικής", "category": "efarmogi"},
+    {"text": "Φάκελος Μαθημάτων", "category": "fakelos"},
+    {"text": "Κείμενο εργασίας", "category": "arxeio"},
+    {"text": "Πρόγραμμα αριθμομηχανής", "category": "efarmogi"},
+    {"text": "Φάκελος Εικόνων", "category": "fakelos"},
+    {"text": "Φωτογραφία διακοπών", "category": "arxeio"},
+    {"text": "Πρόγραμμα περιήγησης", "category": "efarmogi"},
+    {"text": "Η μουσική μου", "category": "arxeio"}
+  ],
+  "duration": 30
+}

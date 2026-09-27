@@ -1,0 +1,53 @@
+{
+  "title": "Βρες τα Λάθη: Δεξί Κλικ και Σύρε",
+  "subtitle": "Ποιο είναι λάθος;",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "δεξί", "error": false},
+        {"text": "κλικ", "error": false},
+        {"text": "ανοίγω", "error": true, "correct": "εμφανίζεται", "feedback": "Με το δεξί κλικ ΕΜΦΑΝΙΖΕΤΑΙ λίστα, δεν ανοίγω εφαρμογή!"},
+        {"text": "λίστα", "error": false},
+        {"text": "επιλογών.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "ροδέλα", "error": false},
+        {"text": "κύλισης", "error": false},
+        {"text": "κυλίει", "error": false},
+        {"text": "τη", "error": false},
+        {"text": "σελίδα", "error": false},
+        {"text": "αριστερά", "error": true, "correct": "πάνω και κάτω", "feedback": "Η ροδέλα κυλίει ΠΑΝΩ και ΚΑΤΩ, όχι αριστερά!"},
+        {"text": "και", "error": false},
+        {"text": "δεξιά.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σύρω", "error": false},
+        {"text": "κρατάω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "δεξί", "error": true, "correct": "αριστερό", "feedback": "Κρατάω πατημένο το ΑΡΙΣΤΕΡΟ πλήκτρο για να σύρω!"},
+        {"text": "πλήκτρο", "error": false},
+        {"text": "πατημένο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στην", "error": false},
+        {"text": "ταμπλέτα", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "κλικ", "error": true, "correct": "αγγίζω", "feedback": "Στην ταμπλέτα ΑΓΓΙΖΩ με δάχτυλο, δεν κάνω κλικ!"},
+        {"text": "με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "δάχτυλο.", "error": false}
+      ]
+    }
+  ]
+}

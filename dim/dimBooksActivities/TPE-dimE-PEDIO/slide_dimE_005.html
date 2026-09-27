@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 5ο: Αυξάνοντας τους πόντους και χάνοντας ζωές – Οι μεταβλητές</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a1628;color:#222;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+.topbar{background:linear-gradient(135deg,#00598a,#0077b6);color:#fff;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;height:46px;flex-shrink:0}
+.topbar .left{display:flex;align-items:center;gap:10px}
+.topbar .badge{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+.topbar h1{font-size:14px}
+.topbar .counter{font-size:13px;opacity:.8}
+.pbar{height:3px;background:#1a2a40;flex-shrink:0}
+.pbar-fill{height:100%;background:linear-gradient(90deg,#00598a,#00b4d8);transition:width .3s}
+.stage{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:20px}
+.slide{display:none;max-width:860px;width:100%;background:#fff;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,.4);padding:40px 50px;animation:fadeIn .3s}
+.slide.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide h2{color:#00598a;font-size:24px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #00b4d8}
+.slide h3{color:#0077b6;font-size:18px;margin:18px 0 10px}
+.slide p{line-height:1.7;margin-bottom:12px;font-size:15px}
+.slide ul{margin:10px 0 14px 24px;line-height:1.8;font-size:15px}
+.slide ul li{margin-bottom:4px}
+.slide .box{background:#e8f4fd;border-left:4px solid #00598a;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0}
+.slide .box.orange{background:#fff3e0;border-left-color:#e65100}
+.slide .box.green{background:#e8f5e9;border-left-color:#2e7d32}
+.slide .box.red{background:#ffebee;border-left-color:#d32f2f}
+.slide .algo{background:#f5f5f5;border:1px solid #ddd;border-radius:8px;padding:18px 22px;margin:14px 0;font-family:'Courier New',monospace;font-size:14px;line-height:1.9}
+.slide .indent{padding-left:24px}
+.slide .keyword{color:#00598a;font-weight:700}
+.slide .step-num{display:inline-block;background:#00598a;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:14px;font-weight:700;margin-right:8px}
+.navbar{background:#0f1b2d;height:52px;display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0}
+.nbtn{background:#00598a;border:none;color:#fff;padding:7px 20px;border-radius:6px;cursor:pointer;font-size:14px;transition:background .2s}
+.nbtn:hover{background:#0077b6}
+.nbtn:disabled{opacity:.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="left"><span class="badge">Μάθημα 5ο</span><h1>Αυξάνοντας τους πόντους και χάνοντας ζωές – Οι μεταβλητές</h1></div>
+<span class="counter"><span id="cur">1</span> / <span id="tot"></span></span>
+</div>
+<div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+<div class="stage">
+
+<div class="slide active">
+<h2>Μάθημα 5ο: Αυξάνοντας τους πόντους και χάνοντας ζωές</h2>
+<div class="box green"><strong>Στόχοι μαθήματος:</strong>
+<ul>
+<li>Να χρησιμοποιείς στο παιχνίδι σου <strong>πόντους και ζωές</strong></li>
+<li>Να δημιουργείς νέες <strong>μεταβλητές</strong> στο Scratch</li>
+<li>Να βρίσκεις νέους ήχους στη <strong>βιβλιοθήκη ήχων</strong></li>
+</ul></div>
+</div>
+
+<div class="slide">
+<h2>Τι είναι οι μεταβλητές στον προγραμματισμό;</h2>
+<p>Οι <span class="keyword">μεταβλητές</span> είναι σαν κουτάκια που αποθηκεύουν πληροφορίες. Μια μεταβλητή έχει ένα <strong>όνομα</strong> (π.χ. «πόντοι») και αποθηκεύει μία <strong>τιμή</strong>.</p>
+<div class="box">
+<strong>Στο παιχνίδι μας:</strong> Τέτοια δεδομένα μπορεί να είναι οι <strong>πόντοι</strong> που κερδίζει ο παίκτης ή οι <strong>ζωές</strong> που χάνει. Καθώς παίζεις το παιχνίδι η τιμή των μεταβλητών μπορεί να αλλάζει και αυτές οι αλλαγές κάνουν το παιχνίδι να εξελίσσεται.
+</div>
+<p><strong>Παράδειγμα:</strong> Κάθε φορά που η Έλλη φωτογραφίζει τον Αστερία (δηλαδή τον αγγίζει), θα κερδίζει έναν πόντο. Θέλουμε λοιπόν οι πόντοι του παιχνιδιού να αυξάνονται κατά 1.</p>
+</div>
+
+<div class="slide">
+<h2>Δημιουργία μεταβλητής «πόντοι»</h2>
+<h3>Βήματα:</h3>
+<ul>
+<li><span class="step-num">1</span>Στην κατηγορία <span class="keyword">«Μεταβλητές»</span>, πάτησε «Δημιουργία μεταβλητής»</li>
+<li><span class="step-num">2</span>Δώσε το όνομα <strong>«πόντοι»</strong> και πάτησε ΟΚ</li>
+<li><span class="step-num">3</span>Βεβαιώσου ότι το κουτάκι είναι <strong>μπλε</strong> (όχι άσπρο) για να εμφανίζεται στη σκηνή</li>
+</ul>
+<h3>Αρχικοποίηση:</h3>
+<p>Κάθε μεταβλητή πρέπει να την <span class="keyword">αρχικοποιούμε</span> στην αρχή των προγραμμάτων μας, δηλαδή να της δίνουμε μία αρχική τιμή.</p>
+<ul>
+<li>Βάλε την εντολή <span class="keyword">«όρισε πόντοι σε 0»</span> στην αρχή του προγράμματος του Αστερίου</li>
+<li>Ακριβώς κάτω από την εντολή της πράσινης σημαίας</li>
+</ul>
+</div>
+
+<div class="slide">
+<h2>Ενημέρωση μεταβλητής</h2>
+<p>Χρησιμοποίησε την εντολή <span class="keyword">«άλλαξε πόντοι κατά 1»</span>. Η εντολή αυτή προσθέτει 1 στην τιμή της μεταβλητής κάθε φορά που εκτελείται.</p>
+<div class="box orange">
+<strong>Ενημέρωση μεταβλητής:</strong> Κάθε φορά που αλλάζουμε την τιμή μιας μεταβλητής, λέμε ότι την <span class="keyword">ενημερώνουμε</span>.
+</div>
+<h3>Πού μπαίνει;</h3>
+<ul>
+<li>Βάλε την εντολή <strong>«άλλαξε πόντοι κατά 1»</strong> μέσα στην εντολή <span class="keyword">«Εάν αγγίζει την Έλλη, τότε...»</span> του Αστερία</li>
+<li>Κάτω από την εντολή «παίξε ήχο collect»</li>
+<li>Τα δύο σενάρια (Έλλη και Αστερίας) εκτελούνται <strong>ταυτόχρονα</strong></li>
+</ul>
+<p><strong>Παίξε το παιχνίδι!</strong> Προσπάθησε να κερδίσεις 10 πόντους αγγίζοντας τον Αστερία.</p>
+</div>
+
+<div class="slide">
+<h2>Προσθήκη εχθρού: Φουσκωτό ψάρι</h2>
+<p>Σε ένα παιχνίδι μπορεί ο ήρωάς σου να έχει και κάποιον <strong>εχθρό</strong> που τον καταδιώκει. Θα βάλουμε μία νέα μορφή μέσα στο παιχνίδι που θα <strong>αφαιρεί ζωές</strong>.</p>
+<h3>Βήματα:</h3>
+<ul>
+<li><span class="step-num">1</span>Ψάξε να βρεις μία νέα μορφή: το <strong>φουσκωτό ψάρι</strong></li>
+<li><span class="step-num">2</span>Δώσε του όνομα και <strong>μείωσε το μέγεθός του στο 50</strong></li>
+<li><span class="step-num">3</span>Το ψάρι <strong>ακολουθεί την Έλλη</strong> χρησιμοποιώντας την εντολή <span class="keyword">«ολίσθησε προς Έλλη»</span></li>
+<li>Μπορείς να αλλάξεις την ταχύτητα αλλάζοντας τα δευτερόλεπτα</li>
+</ul>
+</div>
+
+<div class="slide">
+<h2>Δημιουργία μεταβλητής «ζωές»</h2>
+<p>Το φουσκωτό ψάρι είναι τοξικό και έχει δηλητήριο στα αγκάθια του. Η Έλλη <strong>αρχικά έχει 3 ζωές</strong>. Κάθε φορά που αγγίζει το ψάρι <strong>χάνει μία ζωή</strong>.</p>
+<h3>Βήματα:</h3>
+<ul>
+<li><span class="step-num">1</span>Δημιούργησε νέα μεταβλητή με όνομα <strong>«ζωές»</strong></li>
+<li><span class="step-num">2</span>Αρχικοποίηση: <span class="keyword">«όρισε ζωές σε 3»</span> στην αρχή του προγράμματος του ψαριού</li>
+<li><span class="step-num">3</span>Ενημέρωση: <span class="keyword">«άλλαξε ζωές κατά -1»</span> (μείον 1!)</li>
+<li><span class="step-num">4</span>Βάλε εντολή <span class="keyword">«Εάν αγγίζει την Έλλη, τότε άλλαξε ζωές κατά -1»</span> μέσα στην επανάληψη</li>
+</ul>
+<div class="box red">
+<strong>Προσοχή:</strong> Για να μειωθούν οι ζωές αντί να αυξηθούν, πρόσθεσε το <strong>−</strong> μπροστά από το 1!
+</div>
+</div>
+
+<div class="slide">
+<h2>Βιβλιοθήκη ήχων</h2>
+<p>Διάλεξε έναν ήχο που να ακούγεται όταν το φουσκωτό ψάρι αγγίζει την Έλλη.</p>
+<ul>
+<li>Πάτησε στην <strong>προσθήκη ήχων</strong> στο κάτω μέρος της οθόνης</li>
+<li>Μπορείς να γράψεις μία λέξη στην αναζήτηση (στα αγγλικά), π.χ. <strong>bubbles</strong> (φυσαλίδες)</li>
+<li>Τώρα το ψάρι έχει αποκτήσει δεύτερο διαθέσιμο ήχο</li>
+</ul>
+<div class="box green">
+<strong>Tip:</strong> Άλλαξε τον αριθμό των επαναλήψεων από 10 σε 20 στο πρόγραμμα του Αστερίου, αν δεν προλαβαίνεις να μαζέψεις τους 10 πόντους. Αποθήκευσε το έργο σου!
+</div>
+</div>
+
+<div class="slide">
+<h2>Τι έμαθα;</h2>
+<div class="box green">
+<strong>Σύνοψη μαθήματος:</strong>
+<ul>
+<li>Οι <strong>μεταβλητές</strong> αποθηκεύουν δεδομένα (πόντοι, ζωές) που αλλάζουν κατά τη διάρκεια του παιχνιδιού</li>
+<li><strong>Αρχικοποίηση:</strong> Δίνουμε αρχική τιμή στη μεταβλητή στην αρχή του προγράμματος</li>
+<li><strong>Ενημέρωση:</strong> Αλλάζουμε την τιμή της μεταβλητής κατά τη διάρκεια του παιχνιδιού</li>
+<li>Οι εντολές <strong>«άλλαξε κατά +1»</strong> αυξάνουν, ενώ <strong>«άλλαξε κατά −1»</strong> μειώνουν</li>
+<li>Η <strong>βιβλιοθήκη ήχων</strong> του Scratch περιέχει πολλούς ήχους για τα αντικείμενά μας</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navbar">
+<button class="nbtn" id="prevBtn" onclick="go(-1)">◀ Προηγούμενο</button>
+<button class="nbtn" id="nextBtn" onclick="go(1)">Επόμενο ▶</button>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');let c=0;
+document.getElementById('tot').textContent=slides.length;
+function show(i){c=Math.max(0,Math.min(i,slides.length-1));slides.forEach((s,j)=>{s.classList.toggle('active',j===c)});document.getElementById('cur').textContent=c+1;document.getElementById('pbar').style.width=((c+1)/slides.length*100)+'%';document.getElementById('prevBtn').disabled=c===0;document.getElementById('nextBtn').disabled=c===slides.length-1}
+function go(d){show(c+d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}if(e.key==='Home'){e.preventDefault();show(0)}if(e.key==='End'){e.preventDefault();show(slides.length-1)}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?go(1):go(-1)}});
+show(0);
+</script>
+</body>
+</html>

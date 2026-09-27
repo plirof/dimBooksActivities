@@ -1,0 +1,19 @@
+{
+  "title": "Πιάσε τα: Παραμύθι Scratch",
+  "subtitle": "Πιάσε τα σωστά!",
+  "instructions": "Πιάστε τα στοιχεία που χρειάζονται για το παραμύθι",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    { "text": "Μάγισσα", "correct": true, "color": "#4caf50" },
+    { "text": "Αυτοκίνητο", "correct": false, "color": "#f44336" },
+    { "text": "Βάτραχος", "correct": true, "color": "#2196f3" },
+    { "text": "Τηλεόραση", "correct": false, "color": "#ff9800" },
+    { "text": "Μαγικό ξόρκι", "correct": true, "color": "#8bc34a" },
+    { "text": "Μαθηματικά", "correct": false, "color": "#9c27b0" },
+    { "text": "Πρίγκιπας", "correct": true, "color": "#00bcd4" },
+    { "text": "Διάστημα", "correct": false, "color": "#ff5722" }
+  ]
+}

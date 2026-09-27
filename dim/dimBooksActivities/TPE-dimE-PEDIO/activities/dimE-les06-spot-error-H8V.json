@@ -1,0 +1,54 @@
+{
+  "title": "Βρες τα Λάθη: Συνθήκη Τέλους",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "παιχνίδι", "error": false},
+        {"text": "τελειώνει", "error": false},
+        {"text": "όταν", "error": false},
+        {"text": "πόντοι", "error": false},
+        {"text": "=", "error": false},
+        {"text": "5.", "error": true, "correct": "10", "feedback": "Το παιχνίδι τελειώνει όταν πόντοι = 10, όχι 5!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "συνθήκη", "error": false},
+        {"text": "χρησιμοποιεί", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "τελεστή", "error": false},
+        {"text": "ΚΑΙ", "error": true, "correct": "Ή", "feedback": "Χρησιμοποιούμε τελεστή Ή (όχι ΚΑΙ) για τερματισμό!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "«Επανάλαβε", "error": false},
+        {"text": "για", "error": false},
+        {"text": "πάντα»", "error": true, "correct": "ώσπου", "feedback": "Πρέπει «Επανάλαβε ΩΣΠΟΥ» η συνθήκη γίνει αλήθεια, όχι «για πάντα»!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "ζωές", "error": false},
+        {"text": "μπορούν", "error": false},
+        {"text": "να", "error": false},
+        {"text": "γίνουν", "error": false},
+        {"text": "αρνητικές.", "error": true, "correct": "μηδέν και να σταματήσει το παιχνίδι", "feedback": "Οι ζωές ΔΕΝ πρέπει να γίνουν κάτω από 0! Το παιχνίδι τερματίζει."}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μόνο", "error": false},
+        {"text": "το", "error": false},
+        {"text": "σενάριο", "error": false},
+        {"text": "της", "error": false},
+        {"text": "Έλλης", "error": false},
+        {"text": "χρειάζεται", "error": true, "correct": "και τα τρία σενάρια", "feedback": "ΟΛΑ τα σενάρια (Έλλη, Αστερίας, Ψάρι) χρειάζονται συνθήκη τερματισμού!"}
+      ]
+    }
+  ]
+}

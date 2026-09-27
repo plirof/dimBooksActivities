@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τι γράφω;",
+  "subtitle": "Ταξινόμησε: τι είδους κείμενο είναι;",
+  "instructions": "Βάλε κάθε κείμενο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "prosripsi", "name": "Πρόσκληση", "color": "#2196F3", "key": "A" },
+    { "id": "lista", "name": "Λίστα", "color": "#f44336", "key": "L" },
+    { "id": "grafo", "name": "Γράμμα", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Έλα στο πάρτι μου!", "category": "prosripsi" },
+    { "text": "Γάλα, ψωμί, αυγά", "category": "lista" },
+    { "text": "Αγαπητέ φίλε μου...", "category": "grafo" },
+    { "text": "Σας προσκαλώ το Σάββατο", "category": "prosripsi" },
+    { "text": "Μήλο, μπανάνα, πορτοκάλι", "category": "lista" },
+    { "text": "Σε ευχαριστώ για τα γενέθλια", "category": "grafo" },
+    { "text": "Παρακαλώ έλα νωρίς", "category": "prosripsi" },
+    { "text": "Τυρί, ζάχαρη, αλεύρι", "category": "lista" },
+    { "text": "Μου αρέσεις πολύ ως φίλος", "category": "grafo" },
+    { "text": "Θα έχουμε κέικ και παιχνίδια", "category": "prosripsi" }
+  ],
+  "duration": 30
+}

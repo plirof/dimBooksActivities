@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Χαρακτήρες Παραμυθιού",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "charaktires", "name": "Χαρακτήρες", "color": "#4caf50", "key": "1" },
+    { "id": "entoles", "name": "Εντολές Scratch", "color": "#2196f3", "key": "2" },
+    { "id": "stoixeia", "name": "Στοιχεία Ιστορίας", "color": "#ff9800", "key": "3" }
+  ],
+  "items": [
+    { "text": "Μάγισσα", "category": "charaktires" },
+    { "text": "Για πάντα", "category": "entoles" },
+    { "text": "Μαγικό ξόρκι", "category": "stoixeia" },
+    { "text": "Βάτραχος", "category": "charaktires" },
+    { "text": "Αν… Αλλιώς", "category": "entoles" },
+    { "text": "Μεταμόρφωση", "category": "stoixeia" },
+    { "text": "Πρίγκιπας", "category": "charaktires" },
+    { "text": "Γίνε ενδυμασία", "category": "entoles" },
+    { "text": "Δάσος", "category": "stoixeia" },
+    { "text": "Βράχος", "category": "charaktires" }
+  ],
+  "duration": 45
+}

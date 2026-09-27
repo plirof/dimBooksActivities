@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Παράλληλες Ακολουθίες",
+  "subtitle": "Πιάσε τις έννοιες των παράλληλων ακολουθιών!",
+  "instructions": "Πιάσε τις σωστές εντολές και έννοιες!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Παράλληλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Ταυτόχρονα", "correct": true, "color": "#2196F3" },
+    { "text": "Κοινό συμβάν", "correct": true, "color": "#FF9800" },
+    { "text": "Διπλασιασμός", "correct": true, "color": "#9C27B0" },
+    { "text": "Αντίγραφο", "correct": true, "color": "#00BCD4" },
+    { "text": "Για πάντα", "correct": true, "color": "#E91E63" },
+    { "text": "Πράσινη σημαία", "correct": true, "color": "#8BC34A" },
+    { "text": "Σύρσιμο μπλοκ", "correct": true, "color": "#3F51B5" },
+    { "text": "Σειριακή γραμμή", "correct": false, "color": "#F44336" },
+    { "text": "Ανάγνωση δίσκου", "correct": false, "color": "#795548" }
+  ]
+}

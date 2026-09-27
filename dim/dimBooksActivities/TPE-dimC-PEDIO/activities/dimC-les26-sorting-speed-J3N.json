@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αναζήτηση & Σχόλια",
+  "subtitle": "Είναι σωστό ή λάθος;",
+  "instructions": "Είναι σωστή ή λάθος η πρόταση;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Νεότερο άρθρο = πάνω", "category": "swsto"},
+    {"text": "Δεν χρειάζομαι σύνδεση", "category": "lathos"},
+    {"text": "Πλευρικό μενού βοηθάει", "category": "swsto"},
+    {"text": "Μπορώ να σχολιάσω μόνο δικά μου", "category": "lathos"},
+    {"text": "Ροδέλα κύλισης = βλέπω παλιά", "category": "swsto"},
+    {"text": "Πλευρικό μενού εξαφανίζεται", "category": "lathos"},
+    {"text": "Μπορώ να απαντήσω σε σχόλια", "category": "swsto"},
+    {"text": "Άρθρα = παλιό προς νέο", "category": "lathos"},
+    {"text": "Μπορώ να ξεκινήσω συζήτηση", "category": "swsto"},
+    {"text": "Σχολιάζω μόνο μέλη κυψέλης", "category": "lathos"}
+  ],
+  "duration": 30
+}

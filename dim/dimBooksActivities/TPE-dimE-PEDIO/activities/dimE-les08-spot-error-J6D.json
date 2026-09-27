@@ -1,0 +1,49 @@
+{
+  "title": "Βρες τα Λάθη: Υποπρογράμματα",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Υποπρόγραμμα", "error": false, "correct": "", "feedback": "" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "μια", "error": false, "correct": "", "feedback": "" },
+        { "text": "έτοιμη", "error": true, "correct": "νέα", "feedback": "Το υποπρόγραμμα είναι ΝΕΑ εντολή που δημιουργεί ο χρήστης, όχι έτοιμη" },
+        { "text": "εντολή.", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Όταν", "error": false, "correct": "", "feedback": "" },
+        { "text": "μεγαλώνει", "error": false, "correct": "", "feedback": "" },
+        { "text": "η", "error": false, "correct": "", "feedback": "" },
+        { "text": "μεταβλητή", "error": false, "correct": "", "feedback": "" },
+        { "text": "Ρυθμός", "error": false, "correct": "", "feedback": "" },
+        { "text": "ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "χορός", "error": false, "correct": "", "feedback": "" },
+        { "text": "γίνεται", "error": false, "correct": "", "feedback": "" },
+        { "text": "πιο", "error": false, "correct": "", "feedback": "" },
+        { "text": "αργός.", "error": true, "correct": "γρήγορος", "feedback": "Μεγαλώνοντας τον ρυθμό, η διαίρεση δίνει μικρότερο χρόνο αναμονής, άρα πιο ΓΡΗΓΟΡΟΣ χορός" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Τα", "error": false, "correct": "", "feedback": "" },
+        { "text": "υποπρογράμματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "κάνουν", "error": false, "correct": "", "feedback": "" },
+        { "text": "τον", "error": false, "correct": "", "feedback": "" },
+        { "text": "κώδικα", "error": false, "correct": "", "feedback": "" },
+        { "text": "πιο", "error": false, "correct": "", "feedback": "" },
+        { "text": "δύσκολο", "error": true, "correct": "ευανάγνωστο", "feedback": "Τα υποπρογράμματα κάνουν τον κώδικα πιο ΕΥΑΝΑΓΝΩΣΤΟ, όχι δύσκολο" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ένας", "error": false, "correct": "", "feedback": "" },
+        { "text": "κύκλος", "error": false, "correct": "", "feedback": "" },
+        { "text": "έχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "180", "error": true, "correct": "360", "feedback": "Ένας κύκλος έχει 360 μοίρες, όχι 180" },
+        { "text": "μοίρες.", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

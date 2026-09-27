@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Μοτίβα",
+  "subtitle": "Πιάσε μόνο λέξεις σχετικές με μοτίβα!",
+  "instructions": "Πιάσε μόνο λέξεις ΣΧΕΤΙΚΕΣ με μοτίβα! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Χάντρα", "correct": true, "color": "#4CAF50"},
+    {"text": "Καρέκλα", "correct": false, "color": "#f44336"},
+    {"text": "Βραχιόλι", "correct": true, "color": "#2196F3"},
+    {"text": "Κουτάλι", "correct": false, "color": "#FF9800"},
+    {"text": "Μοτίβο", "correct": true, "color": "#9C27B0"},
+    {"text": "Κουβέρτα", "correct": false, "color": "#E91E63"},
+    {"text": "Επανάληψη", "correct": true, "color": "#009688"},
+    {"text": "Μολύβι", "correct": false, "color": "#FFC107"},
+    {"text": "Παρατήρηση", "correct": true, "color": "#795548"},
+    {"text": "Κούνια", "correct": false, "color": "#607D8B"}
+  ]
+}

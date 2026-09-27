@@ -1,0 +1,12 @@
+for TPE-dimC-PEDIO, make a folder activities/ . I want to check lessons_seperated/ .I want for each lesson to generate 2-3 activities to help students understand the lesson. The activities should be html/js and in Greek and can be anything you see fit . You should add a related to the lesson game always.The naming of the activities would be like this : dimC-les04-quiz-XXX.json. Before you start tell me ideas for activities and we will proceed after that
+
+=========================
+
+
+=========================
+
+
+=========================
+
+
+=========================

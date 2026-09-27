@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Νίκη ή Ήττα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα Αριστερά για ΝΙΚΗ, Δεξιά για ΉΤΤΑ!",
+  "categories": [
+    {"id": "win", "name": "Νίκη", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "lose", "name": "Ήττα", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μάζεψα 10 πόντους", "category": "win"},
+    {"text": "Έχασα όλες τις ζωές", "category": "lose"},
+    {"text": "Φωτογράφισα αστερία 10 φορές", "category": "win"},
+    {"text": "Το ψάρι με χτύπησε 3 φορές", "category": "lose"},
+    {"text": "Πόντοι = 10", "category": "win"},
+    {"text": "Ζωές = 0", "category": "lose"},
+    {"text": "Κέρδισα!", "category": "win"},
+    {"text": "Έχασα!", "category": "lose"},
+    {"text": "Συνθήκη: πόντοι = 10", "category": "win"},
+    {"text": "Συνθήκη: ζωές = 0", "category": "lose"}
+  ],
+  "duration": 30
+}

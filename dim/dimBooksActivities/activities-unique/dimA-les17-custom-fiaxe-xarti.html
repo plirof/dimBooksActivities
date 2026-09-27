@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Φτιάξε τον χάρτη σου! 🗺️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7, #ce93d8);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(123,31,162,.35); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #7b1fa2; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900; line-height: 1.5;
+  }
+  .map-area {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 20px; margin-bottom: 16px; min-height: 200px;
+    position: relative;
+  }
+  .map-canvas {
+    position: relative; width: 100%; min-height: 200px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 12px;
+  }
+  .map-node {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #e8f5e9; border: 3px solid #66bb6a;
+    border-radius: 16px; padding: 10px 16px;
+    font-size: 1.1rem; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .map-node .node-emoji { font-size: 1.6rem; }
+  .map-node:active { transform: scale(.95); }
+  .map-node.main {
+    background: #e3f2fd; border-color: #42a5f5; font-size: 1.3rem;
+    padding: 14px 22px;
+  }
+  .map-node .connector {
+    position: absolute; width: 12px; height: 12px;
+    background: #66bb6a; border-radius: 50%;
+    cursor: pointer; transition: transform .15s;
+  }
+  .map-node .connector:active { transform: scale(1.3); }
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center; padding: 16px;
+    background: #f5f5f5; border-radius: 16px; margin-bottom: 16px;
+  }
+  .word-chip {
+    background: #fff; border: 2px solid #ce93d8;
+    border-radius: 14px; padding: 10px 18px;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .word-chip:active { transform: scale(.95); }
+  .word-chip.placed { opacity: .4; pointer-events: none; }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; display: none; margin-top: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(123,31,162,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  .line-svg {
+    position: absolute; top:0;right:0;bottom:0;left:0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .map-node { font-size: .95rem; padding: 8px 12px; }
+    .word-chip { padding: 8px 14px; font-size: .9rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .map-canvas > * { margin: 6px; }
+  .map-node > * + * { margin-left: 8px; }
+  .word-bank > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🗺️ Φτιάξε τον χάρτη σου!</h1>
+    <p>Βάλε τις λέξεις στη σωστή θέση</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Χάρτης 1/3</span>
+  </div>
+  <div class="instructions">
+    👆 Πάτησε μια λέξη και μετά πάτησε την τελεία (●) στο σημείο που θέλεις να την τοποθετήσεις!
+  </div>
+  <div id="gameArea">
+    <div class="map-area">
+      <div class="map-canvas" id="mapCanvas"></div>
+    </div>
+    <div class="word-bank" id="wordBank"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Έφτιαξες όλους τους χάρτες!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var levels = [
+    {
+      main: { emoji: '🐾', name: 'Ζώα' },
+      nodes: [
+        { emoji: '🐶', name: 'Σκύλος', label: 'Σκύλος' },
+        { emoji: '🐱', name: 'Γάτα', label: 'Γάτα' },
+        { emoji: '🐴', name: 'Άλογο', label: 'Άλογο' }
+      ],
+      correct: ['Σκύλος', 'Γάτα', 'Άλογο'],
+      distractors: ['Τριαντάφυλλο', 'Καρέκλα']
+    },
+    {
+      main: { emoji: '🍎', name: 'Φρούτα' },
+      nodes: [
+        { emoji: '🍌', name: 'Μπανάνα', label: 'Μπανάνα' },
+        { emoji: '🍇', name: 'Σταφύλι', label: 'Σταφύλι' },
+        { emoji: '🍊', name: 'Πορτοκάλι', label: 'Πορτοκάλι' }
+      ],
+      correct: ['Μπανάνα', 'Σταφύλι', 'Πορτοκάλι'],
+      distractors: ['Παπούτσι', 'Βιβλίο']
+    },
+    {
+      main: { emoji: '🎨', name: 'Χρώματα' },
+      nodes: [
+        { emoji: '🔴', name: 'Κόκκινο', label: 'Κόκκινο' },
+        { emoji: '🔵', name: 'Μπλε', label: 'Μπλε' },
+        { emoji: '🟡', name: 'Κίτρινο', label: 'Κίτρινο' }
+      ],
+      correct: ['Κόκκινο', 'Μπλε', 'Κίτρινο'],
+      distractors: ['Τραπέζι', 'Πόρτα']
+    }
+  ];
+
+  var currentLevel = 0;
+  var placed = 0;
+  var score = 0;
+  var selectedWord = null;
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    var lv = levels[currentLevel];
+    placed = 0;
+    selectedWord = null;
+    document.getElementById('roundDisplay').textContent = 'Χάρτης ' + (currentLevel+1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var mc = document.getElementById('mapCanvas');
+    mc.innerHTML = '';
+
+    var mainNode = document.createElement('div');
+    mainNode.className = 'map-node main';
+    mainNode.innerHTML = '<span class="node-emoji">' + lv.main.emoji + '</span>' + lv.main.name;
+    mc.appendChild(mainNode);
+
+    for (var i = 0; i < lv.correct.length; i++) {
+      var node = document.createElement('div');
+      node.className = 'map-node';
+      node.setAttribute('data-slot', i);
+      node.innerHTML = '<span class="node-emoji">❓</span><span class="node-name"></span>';
+      node.style.visibility = 'hidden';
+      node.style.position = 'absolute';
+      mc.appendChild(node);
+    }
+
+    var words = lv.correct.concat(lv.distractors);
+    shuffle(words);
+    var wb = document.getElementById('wordBank');
+    wb.innerHTML = '';
+    for (var i = 0; i < words.length; i++) {
+      var chip = document.createElement('div');
+      chip.className = 'word-chip';
+      chip.textContent = words[i];
+      chip.setAttribute('data-word', words[i]);
+      chip.addEventListener('click', function() { selectWord(this); });
+      wb.appendChild(chip);
+    }
+
+    var slots = mc.querySelectorAll('.map-node:not(.main)');
+    var usedPositions = [];
+    var padding = 20;
+    var slotW = 120, slotH = 50;
+
+    for (var i = 0; i < slots.length; i++) {
+      var s = slots[i];
+      s.style.visibility = 'visible';
+      s.style.position = 'relative';
+      s.innerHTML = '<span class="node-emoji">●</span><span class="node-name"></span>';
+      var connector = document.createElement('span');
+      connector.className = 'connector';
+      connector.setAttribute('data-slot', i);
+      connector.addEventListener('click', function() { placeWord(this.getAttribute('data-slot')); });
+      s.appendChild(connector);
+    }
+
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+  }
+
+  function selectWord(el) {
+    if (el.classList.contains('placed')) return;
+    if (selectedWord) selectedWord.style.borderColor = '#ce93d8';
+    selectedWord = el;
+    el.style.borderColor = '#7b1fa2';
+  }
+
+  function placeWord(slotIdx) {
+    if (!selectedWord) {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback show false';
+      fb.textContent = '👆 Πάτησε πρώτα μια λέξη από κάτω!';
+      setTimeout(function() { fb.style.display = 'none'; }, 1000);
+      return;
+    }
+    var lv = levels[currentLevel];
+    var word = selectedWord.getAttribute('data-word');
+    var correctWord = lv.correct[parseInt(slotIdx)];
+    if (!correctWord) return;
+    if (word === correctWord) {
+      var mc = document.getElementById('mapCanvas');
+      var slots = mc.querySelectorAll('.map-node:not(.main)');
+      var slot = slots[parseInt(slotIdx)];
+      slot.querySelector('.node-emoji').textContent = lv.nodes[parseInt(slotIdx)].emoji;
+      slot.querySelector('.node-name').textContent = word;
+      slot.querySelector('.connector').style.display = 'none';
+      slot.style.borderColor = '#43a047';
+      slot.style.background = '#e8f5e9';
+      selectedWord.classList.add('placed');
+      selectedWord.style.borderColor = '#ce93d8';
+      placed++;
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback show true';
+      fb.textContent = '✅ Μπράβο! Το ' + word + ' ανήκει στα ' + lv.main.name + '!';
+      setTimeout(function() { fb.style.display = 'none'; }, 800);
+      selectedWord = null;
+      if (placed >= lv.correct.length) {
+        setTimeout(function() { currentLevel++; loadLevel(); }, 1200);
+      }
+    } else {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Το ' + word + ' δεν ταιριάζει εδώ!';
+      setTimeout(function() { fb.style.display = 'none'; }, 1000);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = levels.length * 3;
+    var e, ti, m;
+    if (score === t) { e = '🏆'; ti = 'Τέλεια!'; m = 'Έφτιαξες όλους τους χάρτες σωστά!' }
+    else if (score >= t-2) { e = '🎉'; ti = 'Μπράβο!'; m = 'Σχεδόν όλα στη σωστή θέση!' }
+    else if (score >= t/2) { e = '👍'; ti = 'Ωραία!'; m = 'Δοκίμασε ξανά!' }
+    else { e = '💪'; ti = 'Καλή αρχή!'; m = 'Κάθε λέξη έχει τη θέση της!' }
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Τοποθέτησες ' + score + ' από ' + t + ' λέξεις! ' + m;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

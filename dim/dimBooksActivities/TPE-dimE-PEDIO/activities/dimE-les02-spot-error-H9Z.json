@@ -1,0 +1,69 @@
+{
+  "title": "Βρες τα Λάθη: Γενίκευση",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αλγόριθμος", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "λειτουργεί", "error": false},
+        {"text": "μόνο", "error": true, "correct": "για κάθε", "feedback": "Ο αλγόριθμος πρέπει να είναι ΓΕΝΙΚΟΣ, όχι μόνο για συγκεκριμένα δεδομένα!"},
+        {"text": "για", "error": false},
+        {"text": "συγκεκριμένα", "error": false},
+        {"text": "δεδομένα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "θέση", "error": false},
+        {"text": "+", "error": false},
+        {"text": "3", "error": false},
+        {"text": "<", "error": true, "correct": ">", "feedback": "Το πρόβλημα υπάρχει όταν θέση+3 > 24, όχι < 24!"},
+        {"text": "24", "error": false},
+        {"text": "τότε", "error": false},
+        {"text": "υπάρχει", "error": false},
+        {"text": "πρόβλημα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "λατινικό", "error": false},
+        {"text": "αλφάβητο", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "24", "error": true, "correct": "26", "feedback": "Το λατινικό αλφάβητο έχει 26 γράμματα, όχι 24!"},
+        {"text": "γράμματα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "αλγόριθμος", "error": false},
+        {"text": "2", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πιο", "error": false},
+        {"text": "γενικός", "error": true, "correct": "ειδικός", "feedback": "Ο Αλγόριθμος 2 είναι πιο ΕΙΔΙΚΟΣ, ο 3 είναι πιο γενικός!"},
+        {"text": "από", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "αλγόριθμο", "error": false},
+        {"text": "3.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορεί", "error": false},
+        {"text": "να", "error": false},
+        {"text": "υπάρχουν", "error": false},
+        {"text": "ένας", "error": true, "correct": "περισσότεροι από ένας", "feedback": "Πολλοί αλγόριθμοι μπορούν να λύσουν το ίδιο πρόβλημα!"},
+        {"text": "μόνο", "error": false},
+        {"text": "αλγόριθμος", "error": false},
+        {"text": "για", "error": false},
+        {"text": "κάθε", "error": false},
+        {"text": "πρόβλημα.", "error": false}
+      ]
+    }
+  ]
+}

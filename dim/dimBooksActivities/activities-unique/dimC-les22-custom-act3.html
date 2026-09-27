@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 22.3 - Flipbook: 4 καρέ + ταχύτητα 🎬</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #43e97b 100%);
+    padding: 12px;
+    color: #333;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 22px 18px 16px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(240, 147, 251, 0.45);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.6rem; margin-bottom: 6px; }
+  .header p { font-size: 1.05rem; opacity: .92; }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .frames-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .frame-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .frame-label {
+    font-weight: 700;
+    font-size: .9rem;
+    color: #666;
+  }
+  .frame-canvas-wrap {
+    border: 3px solid #d0d5dd;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: crosshair;
+    position: relative;
+    background: #fff;
+    transition: border-color .2s;
+  }
+  .frame-canvas-wrap:hover { border-color: #4facfe; }
+  .frame-canvas-wrap.active-frame { border-color: #f5576c; box-shadow: 0 0 12px rgba(245,87,108,.3); }
+  .frame-canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    image-rendering: pixelated;
+  }
+  .frame-btns {
+    display: flex;
+    gap: 4px;
+  }
+  .frame-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform .1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .frame-btn:active { transform: scale(.92); }
+  .frame-btn-clear {
+    background: #ffe0e0;
+    color: #c0392b;
+  }
+
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .color-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #e0e0e0;
+    cursor: pointer;
+    transition: transform .15s, border-color .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .color-btn:hover { transform: scale(1.1); }
+  .color-btn.active { border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,.15); transform: scale(1.15); }
+
+  .eraser-btn {
+    background: #fff;
+    border: 3px solid #e0e0e0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .15s, border-color .2s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .eraser-btn:hover { transform: scale(1.1); }
+  .eraser-btn.active { border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,.15); transform: scale(1.15); }
+
+  .speed-section {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .speed-section label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #555;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .speed-section input[type="range"] {
+    width: 70%;
+    max-width: 300px;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg, #43e97b, #f5576c);
+    border-radius: 5px;
+    outline: none;
+  }
+  .speed-section input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #f5576c;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    cursor: pointer;
+  }
+  .speed-section input[type="range"]::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #f5576c;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    cursor: pointer;
+  }
+  .speed-val {
+    font-weight: 700;
+    font-size: .95rem;
+    color: #764ba2;
+    margin-top: 4px;
+  }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 16px;
+    padding: 14px 28px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .btn:hover { transform: scale(1.05); }
+  .btn:active { transform: scale(.96); }
+
+  .btn-play {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
+  }
+  .btn-stop {
+    background: linear-gradient(135deg, #f5576c, #ff6a88);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+  }
+  .btn-example {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+  }
+  .btn-clear-all {
+    background: #e0e0e0;
+    color: #555;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  }
+
+  .playback-display {
+    text-align: center;
+    margin-bottom: 10px;
+    display: none;
+  }
+  .playback-display.show { display: block; }
+
+  .playback-frame {
+    border: 4px solid #f5576c;
+    border-radius: 14px;
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 10px;
+    box-shadow: 0 6px 20px rgba(245,87,108,.3);
+  }
+  .playback-frame canvas {
+    display: block;
+    image-rendering: pixelated;
+  }
+  .playback-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #764ba2;
+  }
+
+  .info-box {
+    text-align: center;
+    background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 2px dashed #81c784;
+  }
+  .info-box p {
+    font-size: .95rem;
+    color: #2e7d32;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .header p { font-size: .9rem; }
+    .frames-row { grid-template-columns: repeat(2, 1fr); grid-gap: 8px; }
+    .btn { padding: 12px 18px; font-size: 1rem; }
+    .color-btn { width: 34px; height: 34px; }
+    .eraser-btn { width: 34px; height: 34px; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .frame-wrapper > * + * { margin-top: 6px; }
+  .frame-btns > * + * { margin-left: 4px; }
+  .tools-row > * { margin: 5px; }
+  .btn-row > * { margin: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🎬 Flipbook: 4 καρέ + ταχύτητα</h1>
+    <p>Ζωγράφισε καρέ και δημιούργησε animation!</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🎨 Ζωγράφισε στα 4 καρέ</div>
+
+    <div class="tools-row">
+      <button class="color-btn active" style="background:#000" onclick="selectColor('#000000', this)"></button>
+      <button class="color-btn" style="background:#e74c3c" onclick="selectColor('#e74c3c', this)"></button>
+      <button class="color-btn" style="background:#2980b9" onclick="selectColor('#2980b9', this)"></button>
+      <button class="color-btn" style="background:#27ae60" onclick="selectColor('#27ae60', this)"></button>
+      <button class="eraser-btn" id="eraserBtn" onclick="selectEraser(this)">🧽</button>
+    </div>
+
+    <div class="frames-row" id="framesRow"></div>
+
+    <div class="speed-section">
+      <label>⚡ Ταχύτητα: αργά ← → γρήγορα</label>
+      <input type="range" id="speedSlider" min="100" max="800" value="300" step="50" oninput="updateSpeed()">
+      <div class="speed-val" id="speedVal">300ms</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-play" id="playBtn" onclick="playAnimation()">▶ Δες το animation!</button>
+      <button class="btn btn-stop" id="stopBtn" style="display:none" onclick="stopAnimation()">⏹ Σταμάτα</button>
+      <button class="btn btn-example" onclick="loadExample()">📐 Παράδειγμα</button>
+      <button class="btn btn-clear-all" onclick="clearAll()">🗑 Καθαρισμός όλων</button>
+    </div>
+
+    <div class="playback-display" id="playbackDisplay">
+      <div class="playback-frame">
+        <canvas id="playbackCanvas" width="160" height="160"></canvas>
+      </div>
+      <div class="playback-label" id="playbackLabel">Καρέ 1/4</div>
+    </div>
+
+    <div class="info-box">
+      <p>💡 Το animation είναι πολλά καρέ που παίζουν γρήγορα!<br>
+      Ζωγράφισε λίγο διαφορετικά κάθε καρέ για να δεις κίνηση!</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var GRID = 8;
+  var CELL_SIZE = 20;
+  var NUM_FRAMES = 4;
+  var currentColor = '#000000';
+  var isEraser = false;
+  var frames = [];
+  var isPlaying = false;
+  var playInterval = null;
+  var currentPlayFrame = 0;
+  var painting = false;
+
+  function init() {
+    var row = document.getElementById('framesRow');
+    var f, w, c, ctx;
+
+    for (f = 0; f < NUM_FRAMES; f++) {
+      frames[f] = [];
+      var r, cl;
+      for (r = 0; r < GRID; r++) {
+        frames[f][r] = [];
+        for (cl = 0; cl < GRID; cl++) {
+          frames[f][r][cl] = null;
+        }
+      }
+
+      var wrapper = document.createElement('div');
+      wrapper.className = 'frame-wrapper';
+
+      var label = document.createElement('div');
+      label.className = 'frame-label';
+      label.textContent = 'Καρέ ' + (f + 1);
+
+      var canvasWrap = document.createElement('div');
+      canvasWrap.className = 'frame-canvas-wrap';
+      canvasWrap.id = 'frameWrap' + f;
+
+      c = document.createElement('canvas');
+      c.className = 'frame-canvas';
+      c.width = GRID * CELL_SIZE;
+      c.height = GRID * CELL_SIZE;
+      c.id = 'frameCanvas' + f;
+      c.dataset.frame = f;
+
+      canvasWrap.appendChild(c);
+
+      (function(frameIdx, canvas) {
+        canvas.addEventListener('mousedown', function(e) { painting = true; paintCell(e, frameIdx); });
+        canvas.addEventListener('mousemove', function(e) { if (painting) paintCell(e, frameIdx); });
+        canvas.addEventListener('mouseup', function() { painting = false; });
+        canvas.addEventListener('mouseleave', function() { painting = false; });
+        canvas.addEventListener('touchstart', function(e) { e.preventDefault(); paintCellTouch(e, frameIdx); }, { passive: false });
+        canvas.addEventListener('touchmove', function(e) { e.preventDefault(); paintCellTouch(e, frameIdx); }, { passive: false });
+      })(f, c);
+
+      var btns = document.createElement('div');
+      btns.className = 'frame-btns';
+      var clearBtn = document.createElement('button');
+      clearBtn.className = 'frame-btn frame-btn-clear';
+      clearBtn.textContent = '🗑 Καθαρισμός';
+      (function(frameIdx) {
+        clearBtn.addEventListener('click', function() { clearFrame(frameIdx); });
+      })(f);
+      btns.appendChild(clearBtn);
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(canvasWrap);
+      wrapper.appendChild(btns);
+      row.appendChild(wrapper);
+      drawGrid(f);
+    }
+  }
+
+  function paintCell(e, frameIdx) {
+    var canvas = document.getElementById('frameCanvas' + frameIdx);
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var x = Math.floor((e.clientX - rect.left) * scaleX / CELL_SIZE);
+    var y = Math.floor((e.clientY - rect.top) * scaleY / CELL_SIZE);
+    if (x >= 0 && x < GRID && y >= 0 && y < GRID) {
+      frames[frameIdx][y][x] = isEraser ? null : currentColor;
+      drawGrid(frameIdx);
+    }
+  }
+
+  function paintCellTouch(e, frameIdx) {
+    e.preventDefault();
+    var touch = e.touches[0];
+    var canvas = document.getElementById('frameCanvas' + frameIdx);
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var x = Math.floor((touch.clientX - rect.left) * scaleX / CELL_SIZE);
+    var y = Math.floor((touch.clientY - rect.top) * scaleY / CELL_SIZE);
+    if (x >= 0 && x < GRID && y >= 0 && y < GRID) {
+      frames[frameIdx][y][x] = isEraser ? null : currentColor;
+      drawGrid(frameIdx);
+    }
+  }
+
+  function drawGrid(frameIdx) {
+    var canvas = document.getElementById('frameCanvas' + frameIdx);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var r, c;
+    for (r = 0; r < GRID; r++) {
+      for (c = 0; c < GRID; c++) {
+        if (frames[frameIdx][r][c]) {
+          ctx.fillStyle = frames[frameIdx][r][c];
+          ctx.fillRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        } else {
+          ctx.fillStyle = (r + c) % 2 === 0 ? '#f8f9fa' : '#e9ecef';
+          ctx.fillRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+      }
+    }
+
+    ctx.strokeStyle = '#dee2e6';
+    ctx.lineWidth = 0.5;
+    for (r = 0; r <= GRID; r++) {
+      ctx.beginPath();
+      ctx.moveTo(0, r * CELL_SIZE);
+      ctx.lineTo(canvas.width, r * CELL_SIZE);
+      ctx.stroke();
+    }
+    for (c = 0; c <= GRID; c++) {
+      ctx.beginPath();
+      ctx.moveTo(c * CELL_SIZE, 0);
+      ctx.lineTo(c * CELL_SIZE, canvas.height);
+      ctx.stroke();
+    }
+  }
+
+  function selectColor(color, btn) {
+    currentColor = color;
+    isEraser = false;
+    var btns = document.querySelectorAll('.color-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById('eraserBtn').classList.remove('active');
+  }
+
+  function selectEraser(btn) {
+    isEraser = true;
+    var btns = document.querySelectorAll('.color-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    btn.classList.add('active');
+  }
+
+  function clearFrame(frameIdx) {
+    var r, c;
+    for (r = 0; r < GRID; r++) {
+      for (c = 0; c < GRID; c++) {
+        frames[frameIdx][r][c] = null;
+      }
+    }
+    drawGrid(frameIdx);
+  }
+
+  function clearAll() {
+    for (var f = 0; f < NUM_FRAMES; f++) clearFrame(f);
+  }
+
+  function updateSpeed() {
+    var val = document.getElementById('speedSlider').value;
+    document.getElementById('speedVal').textContent = val + 'ms';
+    if (isPlaying) {
+      stopAnimation();
+      startPlayback();
+    }
+  }
+
+  function playAnimation() {
+    if (isPlaying) return;
+    startPlayback();
+  }
+
+  function startPlayback() {
+    isPlaying = true;
+    currentPlayFrame = 0;
+    document.getElementById('playBtn').style.display = 'none';
+    document.getElementById('stopBtn').style.display = 'inline-block';
+    document.getElementById('playbackDisplay').classList.add('show');
+
+    for (var f = 0; f < NUM_FRAMES; f++) {
+      document.getElementById('frameWrap' + f).classList.remove('active-frame');
+    }
+
+    showPlayFrame(0);
+    var speed = parseInt(document.getElementById('speedSlider').value, 10);
+    playInterval = setInterval(function() {
+      currentPlayFrame = (currentPlayFrame + 1) % NUM_FRAMES;
+      showPlayFrame(currentPlayFrame);
+    }, speed);
+  }
+
+  function showPlayFrame(idx) {
+    var pc = document.getElementById('playbackCanvas');
+    var pctx = pc.getContext('2d');
+    pctx.clearRect(0, 0, pc.width, pc.height);
+
+    var cellS = 20;
+    var r, c;
+    for (r = 0; r < GRID; r++) {
+      for (c = 0; c < GRID; c++) {
+        if (frames[idx][r][c]) {
+          pctx.fillStyle = frames[idx][r][c];
+          pctx.fillRect(c * cellS, r * cellS, cellS, cellS);
+        } else {
+          pctx.fillStyle = (r + c) % 2 === 0 ? '#f8f9fa' : '#e9ecef';
+          pctx.fillRect(c * cellS, r * cellS, cellS, cellS);
+        }
+      }
+    }
+
+    pctx.strokeStyle = '#dee2e6';
+    pctx.lineWidth = 0.5;
+    for (r = 0; r <= GRID; r++) {
+      pctx.beginPath();
+      pctx.moveTo(0, r * cellS);
+      pctx.lineTo(pc.width, r * cellS);
+      pctx.stroke();
+    }
+    for (c = 0; c <= GRID; c++) {
+      pctx.beginPath();
+      pctx.moveTo(c * cellS, 0);
+      pctx.lineTo(c * cellS, pc.height);
+      pctx.stroke();
+    }
+
+    document.getElementById('playbackLabel').textContent = 'Καρέ ' + (idx + 1) + '/' + NUM_FRAMES;
+
+    for (var f = 0; f < NUM_FRAMES; f++) {
+      var wrap = document.getElementById('frameWrap' + f);
+      if (f === idx) {
+        wrap.classList.add('active-frame');
+      } else {
+        wrap.classList.remove('active-frame');
+      }
+    }
+  }
+
+  function stopAnimation() {
+    isPlaying = false;
+    if (playInterval) { clearInterval(playInterval); playInterval = null; }
+    document.getElementById('playBtn').style.display = 'inline-block';
+    document.getElementById('stopBtn').style.display = 'none';
+    document.getElementById('playbackDisplay').classList.remove('show');
+    for (var f = 0; f < NUM_FRAMES; f++) {
+      document.getElementById('frameWrap' + f).classList.remove('active-frame');
+    }
+  }
+
+  function loadExample() {
+    stopAnimation();
+
+    clearFrame(0);
+    clearFrame(1);
+    clearFrame(2);
+    clearFrame(3);
+
+    var stick = [
+      [
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,1,0,0,1,0,0],
+        [0,1,0,0,0,0,1,0]
+      ],
+      [
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,1,0,0,0,0,0],
+        [0,0,0,1,0,0,0,0]
+      ],
+      [
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,1,0,0,1,0,0]
+      ],
+      [
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,1,1,1,1,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,1,0,0],
+        [0,0,0,0,1,0,0,0]
+      ]
+    ];
+
+    var f, r, c;
+    for (f = 0; f < 4; f++) {
+      for (r = 0; r < GRID; r++) {
+        for (c = 0; c < GRID; c++) {
+          if (stick[f][r][c]) {
+            frames[f][r][c] = '#000000';
+          }
+        }
+      }
+      drawGrid(f);
+    }
+  }
+
+  init();
+/* iron61-aspect-fallback */
+(function(){
+  if (window.CSS && CSS.supports && CSS.supports('aspect-ratio', '1')) return;
+  var F = [['.frame-canvas', 1]];
+  function sz() {
+    for (var j = 0; j < F.length; j++) {
+      var els = document.querySelectorAll(F[j][0]), r = F[j][1], mx = F[j][2];
+      for (var i = 0; i < els.length; i++) {
+        var w = els[i].getBoundingClientRect().width;
+        if (w > 1) {
+          var h = w / r;
+          if (mx && h > mx) h = mx;
+          els[i].style.height = Math.round(h) + 'px';
+        }
+      }
+    }
+  }
+  sz();
+  window.addEventListener('resize', sz);
+  window.addEventListener('load', sz);
+  document.addEventListener('click', function() { setTimeout(sz, 60); });
+})();
+</script>
+
+</body>
+</html>

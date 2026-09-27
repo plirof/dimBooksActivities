@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάκριση Διαφημίσεων από Οργανικά Αποτελέσματα</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+}
+.search-bar {
+background: white;
+border-radius: 50px;
+padding: 15px 30px;
+width: 100%;
+max-width: 600px;
+margin-bottom: 30px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.search-icon {
+font-size: 1.5rem;
+}
+.search-query {
+flex: 1;
+border: none;
+outline: none;
+font-size: 1.1rem;
+color: #333;
+}
+.results-container {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+justify-content: center;
+width: 100%;
+max-width: 1200px;
+}
+.category-box {
+background: white;
+border-radius: 15px;
+padding: 20px;
+min-width: 280px;
+flex: 1;
+min-height: 400px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.category-header {
+text-align: center;
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+font-weight: bold;
+font-size: 1.2rem;
+color: white;
+}
+.sponsored-header {
+background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+}
+.organic-header {
+background: linear-gradient(135deg, #4ecdc4, #44a08d);
+}
+.drop-zone {
+min-height: 300px;
+border: 3px dashed #ddd;
+border-radius: 10px;
+padding: 10px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+transition: all 0.3s ease;
+}
+.drop-zone.drag-over {
+border-color: #667eea;
+background: rgba(102, 126, 234, 0.1);
+}
+.results-pool {
+background: rgba(255,255,255,0.2);
+border-radius: 15px;
+padding: 20px;
+margin-top: 30px;
+width: 100%;
+max-width: 900px;
+}
+.pool-title {
+color: white;
+text-align: center;
+margin-bottom: 15px;
+font-size: 1.2rem;
+}
+.pool-items {
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+justify-content: center;
+}
+.result-item {
+background: white;
+padding: 15px 20px;
+border-radius: 10px;
+cursor: grab;
+user-select: none;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+transition: all 0.3s ease;
+min-width: 200px;
+max-width: 300px;
+}
+.result-item:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-item.dragging {
+opacity: 0.5;
+cursor: grabbing;
+}
+.result-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 5px;
+font-size: 0.95rem;
+}
+.result-url {
+color: #666;
+font-size: 0.8rem;
+margin-bottom: 8px;
+word-break: break-all;
+}
+.result-badge {
+display: inline-block;
+padding: 4px 10px;
+border-radius: 20px;
+font-size: 0.75rem;
+font-weight: bold;
+}
+.ad-badge {
+background: #ffeaa7;
+color: #d35400;
+}
+.result-desc {
+font-size: 0.85rem;
+color: #555;
+line-height: 1.4;
+}
+.btn {
+background: white;
+color: #667eea;
+border: none;
+padding: 12px 30px;
+border-radius: 25px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin-top: 20px;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+.correct {
+border: 3px solid #4ecdc4;
+background: rgba(78, 205, 196, 0.1);
+}
+.wrong {
+border: 3px solid #ff6b6b;
+background: rgba(255, 107, 107, 0.1);
+}
+.feedback {
+position: fixed;
+bottom: 80px;
+left: 50%;
+transform: translateX(-50%);
+background: white;
+padding: 20px 40px;
+border-radius: 15px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+font-weight: bold;
+font-size: 1.2rem;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
+.feedback.show {
+opacity: 1;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .search-bar > * + * { margin-left: 10px; }
+  .results-container > * { margin: 10px; }
+  .drop-zone > * + * { margin-top: 10px; }
+  .pool-items > * { margin: 7.5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Διάκριση Αποτελεσμάτων Αναζήτησης</h1>
+<p class="subtitle">Διάκρισε τις διαφημίσεις από τα οργανικά αποτελέσματα</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/8</div>
+
+<div class="search-bar">
+<span class="search-icon">🔎</span>
+<span class="search-query">δημητριακά πρωινού</span>
+</div>
+
+<div class="results-container">
+<div class="category-box">
+<div class="category-header sponsored-header">📢 Χορηγούμενα Διαφημίσεις</div>
+<div class="drop-zone" id="sponsored" data-type="sponsored"></div>
+</div>
+
+<div class="category-box">
+<div class="category-header organic-header">🌿 Οργανικά Αποτελέσματα</div>
+<div class="drop-zone" id="organic" data-type="organic"></div>
+</div>
+</div>
+
+<div class="results-pool">
+<div class="pool-title">📋 Τα αποτελέσματα αναζήτησης - Τραβήξτε τα στην κατάλληλη κατηγορία</div>
+<div class="pool-items" id="pool"></div>
+</div>
+
+<button class="btn" onclick="checkAnswers()">✓ Ελέγξτε τις απαντήσεις</button>
+
+<div class="mascot">🦉</div>
+<div class="feedback" id="feedback"></div>
+
+<script>
+const results = [
+{
+id: 1,
+title: 'SuperStore - Δημητριακά',
+url: 'superstore.gr/dimhtriaka',
+badge: 'Διαφήμιση',
+badgeClass: 'ad-badge',
+isSponsored: true,
+desc: 'Δημητριακά σε προσφορά! 30% έκπτωση σε όλα τα είδη'
+},
+{
+id: 2,
+title: 'Βικιπαίδεια: Δημητριακά',
+url: 'el.wikipedia.org/wiki/Δημητριακά',
+badge: null,
+isSponsored: false,
+desc: 'Τα δημητριακά είναι τρόφιμα που προέρχονται από καλλιέργεια σιτηρών...'
+},
+{
+id: 3,
+title: 'FitnessLife - Γρήγορα Δημητριακά',
+url: 'fitnesslife.gr/products',
+badge: 'Sponsored',
+badgeClass: 'ad-badge',
+isSponsored: true,
+desc: 'Ενεργειακά δημητριακά για αθλητές. Παραγγελία online!'
+},
+{
+id: 4,
+title: 'Ygeia.gov - Διατροφή και Δημητριακά',
+url: 'ygeia.gov/diatrofia/dimhtriaka',
+badge: null,
+isSponsored: false,
+desc: 'Οδηγός για υγιή διατροφή και επιλογή δημητριακών'
+},
+{
+id: 5,
+title: 'KidsBreakfast.gr',
+url: 'kidsbreakfast.gr',
+badge: 'Χορηγούμενο',
+badgeClass: 'ad-badge',
+isSponsored: true,
+desc: 'Τα πιο αγαπημένα δημητριακά των παιδιών! Παραγγείλετε τώρα'
+},
+{
+id: 6,
+title: 'Διατροφόλογος: Δημητριακά',
+url: 'diatrofologos.gr/dimhtriaka',
+badge: null,
+isSponsored: false,
+desc: 'Αναλυτικός οδηγός για τα είδη δημητριακών και τις διατροφικές τους αξίες'
+},
+{
+id: 7,
+title: 'NutriShop - Προσφορές Δημητριακών',
+url: 'nutrishop.gr/offer/dimhtriaka',
+badge: 'Διαφήμιση',
+badgeClass: 'ad-badge',
+isSponsored: true,
+desc: 'Μοναδικές προσφορές σε βιολογικά δημητριακά!'
+},
+{
+id: 8,
+title: 'Ελληνική Διατροφή: Δημητριακά',
+url: 'greeknutrition.org/dimhtriaka',
+badge: null,
+isSponsored: false,
+desc: 'Πληροφορίες για παραδοσιακά ελληνικά δημητριακά και τα θρεπτικά συστατικά τους'
+}
+];
+
+let score = 0;
+let checked = false;
+
+function init() {
+const pool = document.getElementById('pool');
+results.forEach(result => {
+const item = createResultItem(result);
+pool.appendChild(item);
+});
+setupDragAndDrop();
+}
+
+function createResultItem(result) {
+const item = document.createElement('div');
+item.className = 'result-item';
+item.draggable = true;
+item.dataset.id = result.id;
+item.dataset.type = result.isSponsored ? 'sponsored' : 'organic';
+
+let badgeHtml = '';
+if (result.badge) {
+badgeHtml = `<span class="result-badge ${result.badgeClass}">${result.badge}</span>`;
+}
+
+item.innerHTML = `
+<div class="result-title">${result.title}</div>
+<div class="result-url">${result.url}</div>
+${badgeHtml}
+<div class="result-desc">${result.desc}</div>
+`;
+
+return item;
+}
+
+function setupDragAndDrop() {
+const dropZones = document.querySelectorAll('.drop-zone');
+const pool = document.getElementById('pool');
+
+pool.addEventListener('dragover', (e) => {
+e.preventDefault();
+});
+
+pool.addEventListener('drop', (e) => {
+e.preventDefault();
+if (checked) return;
+const item = document.querySelector('.dragging');
+if (item) {
+pool.appendChild(item);
+item.classList.remove('correct', 'wrong');
+}
+});
+
+dropZones.forEach(zone => {
+zone.addEventListener('dragover', (e) => {
+e.preventDefault();
+zone.classList.add('drag-over');
+});
+
+zone.addEventListener('dragleave', () => {
+zone.classList.remove('drag-over');
+});
+
+zone.addEventListener('drop', (e) => {
+e.preventDefault();
+zone.classList.remove('drag-over');
+if (checked) return;
+const item = document.querySelector('.dragging');
+if (item) {
+zone.appendChild(item);
+}
+});
+});
+
+document.addEventListener('dragstart', (e) => {
+if (e.target.classList.contains('result-item')) {
+e.target.classList.add('dragging');
+}
+});
+
+document.addEventListener('dragend', (e) => {
+if (e.target.classList.contains('result-item')) {
+e.target.classList.remove('dragging');
+}
+});
+
+setupTouchEvents();
+}
+
+function setupTouchEvents() {
+let draggedItem = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+document.addEventListener('touchstart', (e) => {
+if (e.target.closest('.result-item')) {
+draggedItem = e.target.closest('.result-item');
+if (checked) return;
+const rect = draggedItem.getBoundingClientRect();
+touchOffsetX = e.touches[0].clientX - rect.left;
+touchOffsetY = e.touches[0].clientY - rect.top;
+draggedItem.style.position = 'fixed';
+draggedItem.style.zIndex = '1000';
+draggedItem.style.width = rect.width + 'px';
+}
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+if (draggedItem) {
+e.preventDefault();
+draggedItem.style.left = (e.touches[0].clientX - touchOffsetX) + 'px';
+draggedItem.style.top = (e.touches[0].clientY - touchOffsetY) + 'px';
+}
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+if (draggedItem) {
+const dropZones = document.querySelectorAll('.drop-zone');
+const pool = document.getElementById('pool');
+let dropped = false;
+
+dropZones.forEach(zone => {
+const rect = zone.getBoundingClientRect();
+const touch = e.changedTouches[0];
+if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+zone.appendChild(draggedItem);
+dropped = true;
+}
+});
+
+if (!dropped) {
+const poolRect = pool.getBoundingClientRect();
+const touch = e.changedTouches[0];
+if (touch.clientX >= poolRect.left && touch.clientX <= poolRect.right &&
+touch.clientY >= poolRect.top && touch.clientY <= poolRect.bottom) {
+pool.appendChild(draggedItem);
+dropped = true;
+}
+}
+
+draggedItem.style.position = '';
+draggedItem.style.zIndex = '';
+draggedItem.style.width = '';
+draggedItem.style.left = '';
+draggedItem.style.top = '';
+draggedItem = null;
+}
+}, { passive: true });
+}
+
+function checkAnswers() {
+const sponsoredZone = document.getElementById('sponsored');
+const organicZone = document.getElementById('organic');
+const items = sponsoredZone.querySelectorAll('.result-item');
+items = [...items, ...organicZone.querySelectorAll('.result-item')];
+
+score = 0;
+items.forEach(item => {
+const id = parseInt(item.dataset.id);
+const result = results.find(r => r.id === id);
+const zoneType = item.parentElement.dataset.type;
+
+item.classList.remove('correct', 'wrong');
+
+if (result.isSponsored && zoneType === 'sponsored' ||
+!result.isSponsored && zoneType === 'organic') {
+item.classList.add('correct');
+score++;
+} else {
+item.classList.add('wrong');
+}
+});
+
+document.getElementById('score').textContent = score;
+checked = true;
+
+const feedback = document.getElementById('feedback');
+if (score === 8) {
+feedback.textContent = '🎉 Εξαιρετικό! Είστε ειδικοί στην αναζήτηση!';
+feedback.style.background = 'linear-gradient(135deg, #4ecdc4, #44a08d)';
+} else if (score >= 6) {
+feedback.textContent = '👍 Πολύ καλά! Κάντε λίγη εξάσκηση ακόμα!';
+feedback.style.background = 'linear-gradient(135deg, #ffeaa7, #fdcb6e)';
+} else {
+feedback.textContent = '📚 Προσπαθήστε ξανά! Προσέξτε τις ετικέτες "Διαφήμιση"';
+feedback.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a5a)';
+}
+feedback.classList.add('show');
+
+setTimeout(() => {
+feedback.classList.remove('show');
+checked = false;
+}, 3000);
+}
+
+init();
+</script>
+</body>
+</html>

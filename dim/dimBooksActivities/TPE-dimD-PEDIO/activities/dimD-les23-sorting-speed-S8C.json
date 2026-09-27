@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ενέργειες Email",
+  "subtitle": "Ταξινόμησε τις ενέργειες στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε ενέργεια.",
+  "categories": [
+    { "id": "dimiourgia", "name": "Δημιουργία", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "apantisi", "name": "Απάντηση/Προώθηση", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "diagrafi", "name": "Διαγραφή/Αποθήκευση", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "kanena", "name": "Δεν ανήκει", "color": "#f44336", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Νέο μήνυμα", "category": "dimiourgia" },
+    { "text": "Συμπλήρωση Προς", "category": "dimiourgia" },
+    { "text": "Γράψιμο Θέματος", "category": "dimiourgia" },
+    { "text": "Προσθήκη συνημμένου", "category": "dimiourgia" },
+    { "text": "Απάντηση σε αποστολέα", "category": "apantisi" },
+    { "text": "Προώθηση σε άλλον", "category": "apantisi" },
+    { "text": "Διαγραφή μηνύματος", "category": "diagrafi" },
+    { "text": "Αποθήκευση εικόνας", "category": "diagrafi" },
+    { "text": "Ζωγραφική καμβά", "category": "kanena" },
+    { "text": "Αποστολή μηνύματος", "category": "dimiourgia" },
+    { "text": "Ανάγνωση εισερχομένων", "category": "apantisi" },
+    { "text": "Μουσική", "category": "kanena" }
+  ],
+  "duration": 45
+}

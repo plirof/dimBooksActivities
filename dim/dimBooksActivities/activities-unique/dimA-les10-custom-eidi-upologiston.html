@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Τα είδη των υπολογιστών 🖥️</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+    padding: 12px;
+    color: #333;
+  }
+  .app-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    padding: 20px 16px 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    padding: 10px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #764ba2; }
+  .round { font-size: 1rem; color: #888; }
+  .riddle-box {
+    background: linear-gradient(135deg, #fff9db, #fff3bf);
+    border: 3px solid #f0c040;
+    border-radius: 20px;
+    padding: 28px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(240, 192, 64, 0.2);
+  }
+  .riddle-emoji {
+    font-size: 3rem;
+    margin-bottom: 8px;
+  }
+  .riddle-text {
+    font-size: 1.2rem;
+    color: #6b5900;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+  .choices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 12px;
+    margin-bottom: 16px;
+  }
+  .choice-card {
+    background: #fff;
+    border: 3px solid #e0e0e0;
+    border-radius: 18px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .choice-card:hover:not(.disabled) {
+    border-color: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.15);
+  }
+  .choice-card:active:not(.disabled) { transform: scale(.96); }
+  .choice-card .c-emoji { font-size: 3rem; margin-bottom: 6px; }
+  .choice-card .c-name { font-size: 1.1rem; font-weight: 700; color: #2d3436; }
+  .choice-card.correct {
+    border-color: #28a745;
+    background: #d4edda;
+    animation: pulseGreen .5s ease;
+  }
+  .choice-card.wrong {
+    border-color: #dc3545;
+    background: #f8d7da;
+    animation: shake .4s ease;
+  }
+  .choice-card.disabled { pointer-events: none; opacity: .7; }
+  .choice-card.reveal { opacity: 1; border-color: #28a745; background: #d4edda; }
+  @keyframes pulseGreen {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .feedback {
+    text-align: center;
+    padding: 14px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .feedback.info { background: #d1ecf1; color: #0c5460; }
+  .result-screen {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px;
+    text-align: center;
+    display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 14px rgba(102,126,234,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  @media (max-width: 480px) {
+    body { padding: 8px; }
+    .header h1 { font-size: 1.2rem; }
+    .riddle-text { font-size: 1.05rem; }
+    .choice-card .c-emoji { font-size: 2.5rem; }
+    .choices-grid { grid-gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>🖥️ Τα Είδη των Υπολογιστών</h1>
+    <p>Μάντεψε ποιος υπολογιστής μιλάει!</p>
+  </div>
+
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Γύρος 1/4</span>
+  </div>
+
+  <div id="gameArea">
+    <div class="riddle-box" id="riddleBox">
+      <div class="riddle-emoji" id="riddleEmoji">🤔</div>
+      <div class="riddle-text" id="riddleText">Είμαι μεγάλος και έχω πολλές συσκευές συνδεδεμένες!</div>
+    </div>
+
+    <div class="choices-grid" id="choicesGrid"></div>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+
+<script>
+  var riddles = [
+    {
+      emoji: '🤔',
+      text: 'Είμαι μεγάλος! Έχω ξεχωριστή οθόνη, πληκτρολόγιο και ποντίκι. Με λένε...',
+      answer: 0,
+      choices: [
+        { emoji: '🖥️', name: 'Υπολογιστής Γραφείου' },
+        { emoji: '💻', name: 'Φορητός Υπολογιστής' },
+        { emoji: '📱', name: 'Ταμπλέτα' },
+        { emoji: '📟', name: 'Έξυπνο Κινητό' }
+      ],
+      funFact: 'Ο υπολογιστής γραφείου είναι ο πιο μεγάλος! Ταιριάζει σε ένα γραφείο.'
+    },
+    {
+      emoji: '🤔',
+      text: 'Είμαι μικρότερος, σαν ένα μεγάλο βιβλίο. Μπορώ να με πάρεις μαζί σου! Με λένε...',
+      answer: 1,
+      choices: [
+        { emoji: '🖥️', name: 'Υπολογιστής Γραφείου' },
+        { emoji: '💻', name: 'Φορητός Υπολογιστής' },
+        { emoji: '📱', name: 'Ταμπλέτα' },
+        { emoji: '📟', name: 'Έξυπνο Κινητό' }
+      ],
+      funFact: 'Ο φορητός υπολογιστής έχει μπαταρία! Δεν χρειάζεται πάντα ρεύμα.'
+    },
+    {
+      emoji: '🤔',
+      text: 'Είμαι μικρή και ελαφριά, σαν ένα μικρό βιβλίο. Πατάω στην οθόνη μου με το δάχτυλο! Με λένε...',
+      answer: 2,
+      choices: [
+        { emoji: '🖥️', name: 'Υπολογιστής Γραφείου' },
+        { emoji: '💻', name: 'Φορητός Υπολογιστής' },
+        { emoji: '📱', name: 'Ταμπλέτα' },
+        { emoji: '📟', name: 'Έξυπνο Κινητό' }
+      ],
+      funFact: 'Η ταμπλέτα έχει οθόνη αφής! Δεν χρειάζεται ποντίκι.'
+    },
+    {
+      emoji: '🤔',
+      text: 'Είμαι τόσο μικρός που χωράω στην παλάμη σου! Είμαι τηλέφωνο αλλά και υπολογιστής! Με λένε...',
+      answer: 3,
+      choices: [
+        { emoji: '🖥️', name: 'Υπολογιστής Γραφείου' },
+        { emoji: '💻', name: 'Φορητός Υπολογιστής' },
+        { emoji: '📱', name: 'Ταμπλέτα' },
+        { emoji: '📟', name: 'Έξυπνο Κινητό' }
+      ],
+      funFact: 'Το έξυπνο κινητό χωράει στην τσέπη σου! Μπορείς να τηλεφωνείς και να σερφάρεις.'
+    }
+  ];
+
+  var currentIndex = 0;
+  var score = 0;
+
+  function startGame() {
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showRiddle();
+  }
+
+  function showRiddle() {
+    if (currentIndex >= riddles.length) {
+      showResult();
+      return;
+    }
+    var r = riddles[currentIndex];
+    document.getElementById('riddleEmoji').textContent = r.emoji;
+    document.getElementById('riddleText').textContent = r.text;
+    document.getElementById('roundDisplay').textContent = 'Γύρος ' + (currentIndex + 1) + '/' + riddles.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var grid = document.getElementById('choicesGrid');
+    grid.innerHTML = '';
+    for (var i = 0; i < r.choices.length; i++) {
+      var card = document.createElement('div');
+      card.className = 'choice-card';
+      card.setAttribute('data-index', i);
+      card.innerHTML = '<div class="c-emoji">' + r.choices[i].emoji + '</div><div class="c-name">' + r.choices[i].name + '</div>';
+      card.addEventListener('click', function(e) { makeChoice(this); });
+      grid.appendChild(card);
+    }
+  }
+
+  function makeChoice(el) {
+    var r = riddles[currentIndex];
+    var chosen = parseInt(el.getAttribute('data-index'));
+    var correct = (chosen === r.answer);
+
+    var cards = document.querySelectorAll('.choice-card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.add('disabled');
+    }
+
+    var fb = document.getElementById('feedback');
+
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      el.classList.add('correct');
+      fb.className = 'feedback show true';
+      fb.innerHTML = '✅ Μπράβο! ' + r.funFact;
+      setTimeout(function() {
+        currentIndex++;
+        showRiddle();
+      }, 2000);
+    } else {
+      el.classList.add('wrong');
+      cards[r.answer].classList.add('reveal');
+      fb.className = 'feedback show false';
+      fb.textContent = '❌ Ωχ! Αυτός ήταν ο ' + r.choices[r.answer].name + '! ' + r.funFact;
+      setTimeout(function() {
+        currentIndex++;
+        showRiddle();
+      }, 2500);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = riddles.length;
+    var emoji, title, msg;
+    if (score === total) {
+      emoji = '🏆'; title = 'Τέλεια!'; msg = 'Γνωρίζεις όλα τα είδη υπολογιστών!';
+    } else if (score >= 3) {
+      emoji = '🎉'; title = 'Μπράβο!'; msg = 'Τα πήγες πολύ καλά!';
+    } else if (score >= 2) {
+      emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!';
+    } else {
+      emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Προσπάθησε ξανά!';
+    }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

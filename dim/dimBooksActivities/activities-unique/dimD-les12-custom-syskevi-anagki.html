@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συσκευή για Κάθε Ανάγκη</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef9c3,#fde047);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#ca8a04,#fde047);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fef9c3;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#854d0e;text-align:center;line-height:1.5}
+.need-card{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px;text-align:center}
+.need-emoji{font-size:4em;margin-bottom:10px}
+.need-text{font-size:1.1em;font-weight:700;color:#475569}
+.devices-area{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.devices-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em;text-align:center}
+.device-options{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.device-btn{background:#fff;border:2px solid #fdba74;border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all .2s}
+.device-btn:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.device-btn.selected{border-color:#ca8a04;background:#fef9c3}
+.device-emoji{font-size:2.5em}
+.device-name{font-weight:700;color:#9a3412;font-size:.9em}
+.device-desc{font-size:.8em;color:#c2410c;text-align:center}
+.btn-check{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#ca8a04;margin-bottom:12px}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#ca8a04;transform:scale(1.3)}
+@media(max-width:550px){.need-emoji{font-size:3em}.device-emoji{font-size:2em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .device-options > * { margin: 6px; }
+  .device-btn > * + * { margin-top: 8px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>💻 Συσκευή για Κάθε Ανάγκη</h1>
+<p>Ταίριξε την κατάλληλη συσκευή με κάθε ανάγκη!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Κάθε συσκευή έχει τα δικά της χαρακτηριστικά! Ο υπολογιστής γραφείου είναι για εργασία, το κινητό για μετακίνηση, η ταμπλέτα για ψυχαγωγία!</div>
+
+<div class="score-display" id="scoreDisplay">Βαθμολογία: 0 / 6</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="need-card">
+<div class="need-emoji" id="needEmoji">📝</div>
+<div class="need-text" id="needText">Θέλω να γράψω μεγάλο κείμενο με πληκτρολόγιο</div>
+</div>
+
+<div class="devices-area">
+<div class="devices-label">🎯 Επιλέξε την κατάλληλη συσκευή:</div>
+<div class="device-options" id="deviceOptions"></div>
+</div>
+
+<button class="btn-check" id="checkBtn" onclick="checkAnswer()">✅ Επιβεβαίωση</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentIndex=0;
+var score=0;
+var selectedDevice=null;
+
+var needs=[
+{
+  emoji:'📝',
+  text:'Θέλω να γράψω μεγάλο κείμενο με πληκτρολόγιο',
+  devices:[
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Μεγάλη οθόνη, άνετο πληκτρολόγιο'},
+    {name:'Φορητός υπολογιστής',emoji:'💻',desc:'Μικρότερη οθόνη, λιγότερο άνετο'},
+    {name:'Ταμπλέτα',emoji:'📱',desc:'Εικονικό πληκτρολόγιο'},
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Πολύ μικρή οθόνη'}
+  ],
+  correct:0
+},
+{
+  emoji:'🎨',
+  text:'Θέλω να ζωγραφίζω και να παίζω παιχνίδια',
+  devices:[
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Μεγάλη οθόνη, λεπτομέρειες'},
+    {name:'Ταμπλέτα',emoji:'📱',desc:'Αφή, οθόνη αφής'},
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Μικρότερη οθόνη'},
+    {name:'Έξυπνο ρολόι',emoji:'⌚',desc:'Πολύ μικρή οθόνη'}
+  ],
+  correct:0
+},
+{
+  emoji:'🌐',
+  text:'Θέλω να βρίσκομαι στο διαδίκτυο όπου κι αν είμαι',
+  devices:[
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Δεν μετακινείται'},
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Μικρό, ελαφρύ, πάντα μαζί μου'},
+    {name:'Σκληρός δίσκος',emoji:'💾',desc:'Αποθήκευση μόνο'},
+    {name:'Κάρτα μνήμης',emoji:'💳',desc:'Μικρή χωρητικότητα'}
+  ],
+  correct:1
+},
+{
+  emoji:'📸',
+  text:'Θέλω να βγάζω φωτογραφίες και να τις μοιράζομαι',
+  devices:[
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Κάμερα, Wi-Fi, κοινωνικά δίκτυα'},
+    {name:'Ταμπλέτα',emoji:'📱',desc:'Κάμερα, αλλά μεγαλύτερη'},
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Χρειάζεται εξωτερική κάμερα'},
+    {name:'Κάρτα μνήμης',emoji:'💳',desc:'Αποθήκευση μόνο'}
+  ],
+  correct:0
+},
+{
+  emoji:'📚',
+  text:'Θέλω να διαβάζω βιβλία ψηφιακά σε ταξίδι',
+  devices:[
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Μικρή οθόνη'},
+    {name:'Ταμπλέτα',emoji:'📱',desc:'Κατάλληλη για ανάγνωση'},
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Δεν είναι για ταξίδι'},
+    {name:'Έξυπνο ρολόι',emoji:'⌚',desc:'Πολύ μικρή οθόνη'}
+  ],
+  correct:1
+},
+{
+  emoji:'🎮',
+  text:'Θέλω να παίζω παιχνίδια με φίλους στο ίδιο σπίτι',
+  devices:[
+    {name:'Ταμπλέτα',emoji:'📱',desc:'Αφή, πολλαπλοί παίκτες'},
+    {name:'Έξυπνο κινητό',emoji:'📲',desc:'Μικρότερη εμπειρία'},
+    {name:'Υπολογιστής γραφείου',emoji:'🖥️',desc:'Είναι για ένα άτομο'},
+    {name:'Έξυπνο βραχιόλι',emoji:'⌚',desc:'Πολύ μικρή οθόνη'}
+  ],
+  correct:0
+}
+];
+
+function buildDots(){
+  var container=document.getElementById('progressDots');
+  container.innerHTML='';
+  for(var i=0;i<needs.length;i++){
+    var dot=document.createElement('div');
+    dot.className='dot';
+    dot.id='dot-'+i;
+    container.appendChild(dot);
+  }
+}
+
+function initChallenge(){
+  var need=needs[currentIndex];
+  document.getElementById('needEmoji').textContent=need.emoji;
+  document.getElementById('needText').textContent=need.text;
+  
+  var container=document.getElementById('deviceOptions');
+  container.innerHTML='';
+  selectedDevice=null;
+  
+  for(var i=0;i<need.devices.length;i++){
+    (function(idx){
+      var btn=document.createElement('div');
+      btn.className='device-btn';
+      btn.innerHTML='<div class="device-emoji">'+need.devices[idx].emoji+'</div><div class="device-name">'+need.devices[idx].name+'</div><div class="device-desc">'+need.devices[idx].desc+'</div>';
+      btn.onclick=function(){
+        selectDevice(this,idx);
+      };
+      btn.dataset.index=idx;
+      container.appendChild(btn);
+    })(i);
+  }
+  
+  document.getElementById('checkBtn').disabled=true;
+  updateDots();
+}
+
+function selectDevice(btn,index){
+  var buttons=document.querySelectorAll('.device-btn');
+  for(var i=0;i<buttons.length;i++){
+    buttons[i].classList.remove('selected');
+  }
+  btn.classList.add('selected');
+  selectedDevice=index;
+  document.getElementById('checkBtn').disabled=false;
+}
+
+function checkAnswer(){
+  if(selectedDevice===null){
+    showFeedback('❌ Διάλεξε πρώτα μια συσκευή!',false);
+    return;
+  }
+  
+  var need=needs[currentIndex];
+  var isCorrect=selectedDevice===need.correct;
+  
+  if(isCorrect){
+    score++;
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-ok');
+    showFeedback('✅ Σωστά! '+need.devices[need.correct].name+' είναι κατάλληλο!',true);
+    
+    currentIndex++;
+    
+    if(currentIndex>=needs.length){
+      showFinalResult();
+    }else{
+      setTimeout(function(){
+        document.getElementById('feedback').textContent='';
+        document.getElementById('feedback').className='feedback';
+        initChallenge();
+      },1500);
+    }
+  }else{
+    var dot=document.getElementById('dot-'+currentIndex);
+    dot.classList.remove('current');
+    dot.classList.add('done-wrong');
+    showFeedback('❌ Λάθος! '+need.devices[need.correct].name+' είναι καλύτερο για αυτή την ανάγκη!',false);
+    
+    setTimeout(function(){
+      document.getElementById('feedback').textContent='';
+      document.getElementById('feedback').className='feedback';
+      dot.classList.remove('done-wrong');
+      dot.classList.add('current');
+    },2000);
+  }
+  
+  updateScore();
+}
+
+function updateDots(){
+  var dots=document.querySelectorAll('.dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.remove('current');
+  }
+  document.getElementById('dot-'+currentIndex).classList.add('current');
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent='Βαθμολογία: '+score+' / '+needs.length;
+}
+
+function showFinalResult(){
+  document.getElementById('needEmoji').textContent='🏆';
+  document.getElementById('needText').textContent='Ολοκληρώθηκε!';
+  document.getElementById('deviceOptions').innerHTML='';
+  document.getElementById('checkBtn').style.display='none';
+  
+  if(score===needs.length){
+    showFeedback('🏆 Τέλεια! Είσαι expert στις συσκευές!',true);
+  }else if(score>=4){
+    showFeedback('👍 Καλά! '+score+'/'+needs.length+' σωστά!',true);
+  }else{
+    showFeedback('📚 '+score+'/'+needs.length+' σωστά. Θυμήσου τα χαρακτηριστικά!',false);
+  }
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+buildDots();
+initChallenge();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "title": "Ταξινόμηση: Αριστερό ή Δεξί;",
+  "subtitle": "Χρώμα πλήκτρων!",
+  "instructions": "Πάτα: ΠΡΑΣΙΝΟ (αριστερό) ή ΚΟΚΚΙΝΟ (δεξί)",
+  "categories": [
+    {"id": "aristero", "name": "Πράσινο - Αριστερό", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "dexi", "name": "Κόκκινο - Δεξί", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κάνω κλικ για επιλογή", "category": "aristero"},
+    {"text": "Ανοίγω μενού", "category": "dexi"},
+    {"text": "Ανοίγω εφαρμογή", "category": "aristero"},
+    {"text": "Βλέπω επιλογές", "category": "dexi"},
+    {"text": "Πατάω δύο φορές γρήγορα", "category": "aristero"},
+    {"text": "Εμφανίζω βοήθεια", "category": "dexi"},
+    {"text": "Επιλέγω αντικείμενο", "category": "aristero"},
+    {"text": "Ιδιότητες αρχείου", "category": "dexi"},
+    {"text": "Τραβώ αρχείο", "category": "aristero"},
+    {"text": "Αντιγραφή-Επικόλληση μενού", "category": "dexi"}
+  ],
+  "duration": 30
+}

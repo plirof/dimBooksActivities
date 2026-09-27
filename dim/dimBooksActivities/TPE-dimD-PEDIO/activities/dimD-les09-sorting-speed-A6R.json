@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Τρόποι Προγραμματισμού",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε χαρακτηριστικό στη σωστή κατηγορία",
+  "categories": [
+    { "id": "xrono", "name": "Χρονομετρημένος", "color": "#2196f3", "key": "1" },
+    { "id": "exypnos", "name": "Έξυπνος (αισθητήρας)", "color": "#4caf50", "key": "2" },
+    { "id": "koina", "name": "Και τα δύο", "color": "#ff9800", "key": "3" }
+  ],
+  "items": [
+    { "text": "Ακριβής χρόνος μπροστά", "category": "xrono" },
+    { "text": "Κίνηση όσο υπάρχει άσπρο", "category": "exypnos" },
+    { "text": "Στροφή δεξιά σε ορθή γωνία", "category": "koina" },
+    { "text": "Επανυπολογισμός αν αλλάξει πίστα", "category": "xrono" },
+    { "text": "Αισθητήρας χρώματος", "category": "exypnos" },
+    { "text": "Χρήση Edblocks", "category": "koina" },
+    { "text": "Χρόνος σε κάθε εντολή", "category": "xrono" },
+    { "text": "Σταματάει σε μαύρη γραμμή", "category": "exypnos" },
+    { "text": "Προχώρα μπροστά εντολή", "category": "koina" },
+    { "text": "Δεν χρειάζεται ακριβής χρόνος", "category": "exypnos" }
+  ],
+  "duration": 50
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Παράλληλες Ακολουθίες",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με έννοιες των παράλληλων ακολουθιών!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Παράλληλα", "correct": true, "color": "#4CAF50" },
+    { "text": "Ταυτόχρονα", "correct": true, "color": "#2196F3" },
+    { "text": "Διπλασιασμός", "correct": true, "color": "#FF9800" },
+    { "text": "Κοινό συμβάν", "correct": true, "color": "#9C27B0" },
+    { "text": "Για πάντα", "correct": true, "color": "#00BCD4" },
+    { "text": "Αντιγραφή κώδικα", "correct": true, "color": "#E91E63" },
+    { "text": "Σειριακή εκτέλεση", "correct": false, "color": "#F44336" },
+    { "text": "Διαγραφή αρχείου", "correct": false, "color": "#795548" },
+    { "text": "Εκτύπωση", "correct": false, "color": "#607D8B" },
+    { "text": "Κατέβασμα", "correct": false, "color": "#FF5722" }
+  ]
+}

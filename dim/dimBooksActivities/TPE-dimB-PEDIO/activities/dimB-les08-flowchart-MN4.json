@@ -1,0 +1,13 @@
+{
+  "title": "Διάγραμμα Ροής: Πρώτο Πρόγραμμα micro:bit",
+  "subtitle": "Βάλε τα βήματα στη σειρά",
+  "processTitle": "Φτιάχνω πρώτο πρόγραμμα στο micro:bit",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Πήγαινε στη σελίδα makecode.microbit.org"},
+    {"id": 2, "type": "action", "text": "Δημιούργησε νέο έργο"},
+    {"id": 3, "type": "action", "text": "Σύρε εμφάνιση εικονιδίου μέσα στο για πάντα"},
+    {"id": 4, "type": "action", "text": "Διάλεξε χαρωπό προσωπάκι"},
+    {"id": 5, "type": "action", "text": "Πάτα Λήψη για μεταφορά"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5]
+}

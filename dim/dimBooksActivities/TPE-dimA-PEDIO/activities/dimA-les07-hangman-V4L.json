@@ -1,0 +1,13 @@
+{
+  "title": "Κρεμάλα: Ταξίδι στο Φεγγάρι",
+  "subtitle": "Μάντεψε τις λέξεις!",
+  "maxWrong": 6,
+  "words": [
+    { "word": "ΠΥΡΑΥΛΟΣ", "hint": "Πετάει ψηλά στον ουρανό", "category": "Διάστημα" },
+    { "word": "ΦΕΓΓΑΡΙ", "hint": "Λάμπει τη νύχτα", "category": "Διάστημα" },
+    { "word": "ΑΣΤΡΟΝΑΥΤΗΣ", "hint": "Ταξιδεύει στο διάστημα", "category": "Διάστημα" },
+    { "word": "ΕΜΦΑΝΙΣΟΥ", "hint": "Εντολή ScratchJr - φαίνεται!", "category": "ScratchJr" },
+    { "word": "ΕΞΑΦΑΝΙΣΟΥ", "hint": "Εντολή ScratchJr - κρύβεται!", "category": "ScratchJr" },
+    { "word": "ΙΣΤΟΡΙΑ", "hint": "Λέμε μια ιστορία στο ScratchJr", "category": "ScratchJr" }
+  ]
+}

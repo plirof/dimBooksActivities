@@ -1,0 +1,72 @@
+pregen.AppImage — Portable MP3 Generator for Lesson Presentations
+=================================================================
+
+OVERVIEW
+--------
+Generates high-quality Greek TTS MP3 audio files from lesson presentation
+HTML files. Bundles Python 3.11 + edge-tts — no system dependencies required.
+
+USAGE
+-----
+  ./pregen.AppImage [options] <lesson.html> <output-dir>
+
+EXAMPLES
+--------
+  # Generate audio for lesson 1 (7 slides -> 01.mp3 ... 07.mp3)
+  ./pregen.AppImage \
+    TPE-dimA-PEDIO/presentations/lesson01.html \
+    TPE-dimA-PEDIO/presentations/audio/lesson01
+
+  # Slower speech, overwrite existing files
+  ./pregen.AppImage --rate=-15% --force \
+    TPE-dimA-PEDIO/presentations/lesson02.html \
+    TPE-dimA-PEDIO/presentations/audio/lesson02
+
+  # Different voice
+  ./pregen.AppImage --voice=el-GR-AthinaNeural \
+    TPE-dimA-PEDIO/presentations/lesson03.html \
+    TPE-dimA-PEDIO/presentations/audio/lesson03
+
+OPTIONS
+-------
+  --voice VOICE    TTS voice (default: el-GR-NestorasNeural)
+                   Available: el-GR-NestorasNeural (male)
+                              el-GR-AthinaNeural    (female)
+
+  --rate RATE      Speaking rate relative to normal (default: +0%)
+                   Examples: -20% (slower), +10% (faster)
+                   Use --rate=-20% syntax (equals sign) for negative values.
+
+  --volume VOLUME  Volume adjustment (default: +0%)
+                   Examples: -10% (quieter), +20% (louder)
+
+  --force          Overwrite MP3 files if they already exist.
+                   Without this flag, existing files are skipped.
+
+INPUT FORMAT
+------------
+The HTML file must contain a JavaScript array named `slideTexts`:
+
+    <script>
+    var slideTexts = [
+      "Text for slide 1.",
+      "Text for slide 2.",
+      ...
+    ];
+    </script>
+
+Each string generates one MP3 file named 01.mp3, 02.mp3, etc.
+
+OUTPUT
+------
+  output-dir/01.mp3      MPEG ADTS, layer III, 48 kbps, 24 kHz, mono
+  output-dir/02.mp3
+  ...
+
+NOTES
+-----
+  * Runs on any Linux x86_64 system. No Python, pip, or edge-tts install.
+  * Internet connection required (edge-tts calls Microsoft cloud TTS API).
+  * Use --rate=-20% syntax (with equals sign) for negative rate values.
+  * Existing files are skipped unless --force is passed.
+  * Progress output: [01] Generating: 01.mp3 ... OK (21888 bytes)

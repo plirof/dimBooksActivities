@@ -1,0 +1,131 @@
+{
+  "templates": [
+    {
+      "id": "greek_groupsort_animals_001",
+      "name": "Κατοικίδια vs Ζώα φάρμας",
+      "description": "Χώρισε τα ζώα σε κατοικίδια και ζώα της φάρμας",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "farm", "pets", "elementary"],
+      "groups": ["Κατοικίδια", "Ζώα φάρμας"],
+      "items": [
+        {"text": "Σκύλος", "group": "Κατοικίδια"},
+        {"text": "Γάτα", "group": "Κατοικίδια"},
+        {"text": "Χάμστερ", "group": "Κατοικίδια"},
+        {"text": "Κουνέλι", "group": "Κατοικίδια"},
+        {"text": "Αγελάδα", "group": "Ζώα φάρμας"},
+        {"text": "Πρόβατο", "group": "Ζώα φάρμας"},
+        {"text": "Κότα", "group": "Ζώα φάρμας"},
+        {"text": "Γαϊδούρι", "group": "Ζώα φάρμας"},
+        {"text": "Χοίρος", "group": "Ζώα φάρμας"},
+        {"text": "Ψάρι", "group": "Κατοικίδια"}
+      ]
+    },
+    {
+      "id": "greek_groupsort_animals_wild_001",
+      "name": "Ζώα vs Έντομα",
+      "description": "Χώρισε τα ζώα σε μεγάλα ζώα και έντομα",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "insects", "elementary"],
+      "groups": ["Μεγάλα ζώα", "Έντομα"],
+      "items": [
+        {"text": "Ελέφαντας", "group": "Μεγάλα ζώα"},
+        {"text": "Λιοντάρι", "group": "Μεγάλα ζώα"},
+        {"text": "Τίγρη", "group": "Μεγάλα ζώα"},
+        {"text": "Φάλαινα", "group": "Μεγάλα ζώα"},
+        {"text": "Καμήλα", "group": "Μεγάλα ζώα"},
+        {"text": "Πεταλούδα", "group": "Έντομα"},
+        {"text": "Μέλισσα", "group": "Έντομα"},
+        {"text": "Κουνούπι", "group": "Έντομα"},
+        {"text": "Μυρμήγκι", "group": "Έντομα"},
+        {"text": "Σκαθάρι", "group": "Έντομα"}
+      ]
+    },
+    {
+      "id": "greek_groupsort_fruits_001",
+      "name": "Φρούτα vs Λαχανικά",
+      "description": "Χώρισε τα τρόφιμα σε φρούτα και λαχανικά",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "food", "fruits", "vegetables", "elementary"],
+      "groups": ["Φρούτα", "Λαχανικά"],
+      "items": [
+        {"text": "Μήλο", "group": "Φρούτα"},
+        {"text": "Μπανάνα", "group": "Φρούτα"},
+        {"text": "Πορτοκάλι", "group": "Φρούτα"},
+        {"text": "Φράουλα", "group": "Φρούτα"},
+        {"text": "Σταφύλι", "group": "Φρούτα"},
+        {"text": "Καρότο", "group": "Λαχανικά"},
+        {"text": "Ντομάτα", "group": "Λαχανικά"},
+        {"text": "Αγγούρι", "group": "Λαχανικά"},
+        {"text": "Πατάτα", "group": "Λαχανικά"},
+        {"text": "Μαρούλι", "group": "Λαχανικά"}
+      ]
+    },
+    {
+      "id": "greek_groupsort_colors_001",
+      "name": "Ζεστά vs Κρύα χρώματα",
+      "description": "Χώρισε τα χρώματα σε ζεστά και κρύα",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "groups": ["Ζεστά χρώματα", "Κρύα χρώματα"],
+      "items": [
+        {"text": "Κόκκινο", "group": "Ζεστά χρώματα"},
+        {"text": "Πορτοκαλί", "group": "Ζεστά χρώματα"},
+        {"text": "Κίτρινο", "group": "Ζεστά χρώματα"},
+        {"text": "Ροζ", "group": "Ζεστά χρώματα"},
+        {"text": "Καφέ", "group": "Ζεστά χρώματα"},
+        {"text": "Μπλε", "group": "Κρύα χρώματα"},
+        {"text": "Πράσινο", "group": "Κρύα χρώματα"},
+        {"text": "Μωβ", "group": "Κρύα χρώματα"},
+        {"text": "Γκρι", "group": "Κρύα χρώματα"},
+        {"text": "Μαύρο", "group": "Κρύα χρώματα"}
+      ]
+    },
+    {
+      "id": "greek_groupsort_body_001",
+      "name": "Μέρη του σώματος",
+      "description": "Χώρισε τα μέρη του σώματος",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "body", "elementary"],
+      "groups": ["Κεφάλι", "Σώμα"],
+      "items": [
+        {"text": "Μάτια", "group": "Κεφάλι"},
+        {"text": "Αυτιά", "group": "Κεφάλι"},
+        {"text": "Μύτη", "group": "Κεφάλι"},
+        {"text": "Στόμα", "group": "Κεφάλι"},
+        {"text": "Μαλλιά", "group": "Κεφάλι"},
+        {"text": "Λαιμός", "group": "Σώμα"},
+        {"text": "Χέρια", "group": "Σώμα"},
+        {"text": "Στήθος", "group": "Σώμα"},
+        {"text": "Πόδια", "group": "Σώμα"},
+        {"text": "Κοιλιά", "group": "Σώμα"}
+      ]
+    },
+    {
+      "id": "greek_groupsort_seasons_001",
+      "name": "Εποχές (Seasons)",
+      "description": "Χώρισε τις εποχές του χρόνου",
+      "category": "groupsort",
+      "difficulty": "easy",
+      "tags": ["greek", "seasons", "weather", "elementary"],
+      "groups": ["Άνοιξη", "Καλοκαίρι", "Φθινόπωρο", "Χειμώνας"],
+      "items": [
+        {"text": "Λουλούδια ανθίζουν", "group": "Άνοιξη"},
+        {"text": "Πεταλούδες πετάνε", "group": "Άνοιξη"},
+        {"text": "Βροχές πέφτουν", "group": "Άνοιξη"},
+        {"text": "Ζεστός καιρός", "group": "Καλοκαίρι"},
+        {"text": "Θάλασσα για κολύμπι", "group": "Καλοκαίρι"},
+        {"text": "Παγωτό", "group": "Καλοκαίρι"},
+        {"text": "Φύλλα πέφτουν", "group": "Φθινόπωρο"},
+        {"text": "Καστανές κολόκες", "group": "Φθινόπωρο"},
+        {"text": "Κρύος καιρός", "group": "Χειμώνας"},
+        {"text": "Χιόνι πέφτει", "group": "Χειμώνας"},
+        {"text": "Χριστουγεννιάτικα δώρα", "group": "Χειμώνας"}
+      ]
+    }
+  ]
+}

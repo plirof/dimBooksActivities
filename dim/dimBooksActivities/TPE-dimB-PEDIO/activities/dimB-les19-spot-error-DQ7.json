@@ -1,0 +1,38 @@
+{
+  "title": "Βρες τα Λάθη: Φυλλομετρητής",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "φυλλομετρητης", "error": true, "correct": "φυλλομετρητής", "feedback": "Λείπει ο τόνος" },
+        { "text": "είναι", "error": false, "correct": "", "feedback": "" },
+        { "text": "εφαρμογή", "error": false, "correct": "", "feedback": "" },
+        { "text": "για", "error": false, "correct": "", "feedback": "" },
+        { "text": "ζωγραφική", "error": true, "correct": "ιστοσελίδες", "feedback": "Ο φυλλομετρητής δείχνει ιστοσελίδες, όχι ζωγραφική" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Η", "error": false, "correct": "", "feedback": "" },
+        { "text": "καρτελα", "error": true, "correct": "καρτέλα", "feedback": "Λείπει ο τόνος" },
+        { "text": "δείχνει", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "όνομα", "error": false, "correct": "", "feedback": "" },
+        { "text": "της", "error": false, "correct": "", "feedback": "" },
+        { "text": "εικονας", "error": true, "correct": "ιστοσελίδας", "feedback": "Η καρτέλα δείχνει όνομα ιστοσελίδας, όχι εικόνας" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "σελιδοδεικτης", "error": true, "correct": "σελιδοδείκτης", "feedback": "Λείπει ο τόνος" },
+        { "text": "έχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "πράσινο", "error": true, "correct": "μπλε", "feedback": "Ο σελιδοδείκτης γίνεται μπλε, όχι πράσινο" },
+        { "text": "χρώμα", "error": false, "correct": "", "feedback": "" },
+        { "text": "όταν", "error": false, "correct": "", "feedback": "" },
+        { "text": "αποθηκεύω", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

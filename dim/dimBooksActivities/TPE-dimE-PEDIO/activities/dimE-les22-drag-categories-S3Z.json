@@ -1,0 +1,63 @@
+{
+  "title": "Αποτελέσματα σε κατηγορίες",
+  "subtitle": "Ταίριαξε κάθε αποτέλεσμα στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "ad",
+      "name": "ΔΙΑΦΗΜΙΣΗ",
+      "color": "#F44336"
+    },
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "article",
+      "name": "ΑΡΘΡΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "academic",
+      "name": "ΑΚΑΔΗΜΑΪΚΟ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "📢 Ad",
+      "category": "ad"
+    },
+    {
+      "id": "item2",
+      "text": "🖼️ Photo",
+      "category": "img"
+    },
+    {
+      "id": "item3",
+      "text": "▶️ YouTube",
+      "category": "video"
+    },
+    {
+      "id": "item4",
+      "text": "📰 News",
+      "category": "article"
+    },
+    {
+      "id": "item5",
+      "text": "🎓 Paper",
+      "category": "academic"
+    },
+    {
+      "id": "item6",
+      "text": "📢 Sponsored",
+      "category": "ad"
+    }
+  ]
+}

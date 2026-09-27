@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ρομπότ Builder | Μάθημα 23</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#00b09b 0%,#96c93d 50%,#f7ff00 100%);
+  padding:12px;
+  display:flex;flex-direction:column;align-items:center;
+}
+h1{color:#fff;font-size:1.7rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:1rem;text-align:center;margin-bottom:10px;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.container{
+  background:#fff;border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);
+  max-width:800px;width:100%;padding:20px 18px 24px;
+}
+.instructions{
+  background:linear-gradient(90deg,#e3f2fd,#bbdefb);
+  border-radius:12px;padding:10px 16px;margin-bottom:14px;
+  font-size:.95rem;color:#1565c0;font-weight:600;
+  text-align:center;border:1px solid #90caf9;
+}
+.workspace{display:flex;gap:14px;min-height:400px;}
+@media(max-width:600px){
+  .workspace{flex-direction:column;}
+  .toolbar{flex-direction:row!important;flex-wrap:wrap;justify-content:center;}
+}
+.toolbar{
+  display:flex;flex-direction:column;gap:8px;
+  background:#f5f5f5;border-radius:14px;padding:12px 10px;
+  border:2px solid #e0e0e0;min-width:80px;align-items:center;
+}
+.toolbar h3{font-size:.8rem;color:#757575;margin-bottom:4px;text-align:center;white-space:nowrap;}
+.tool-part{
+  width:60px;height:50px;border-radius:10px;cursor:grab;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;border:2px solid #e0e0e0;
+  transition:transform .15s,box-shadow .15s;
+  user-select:none;position:relative;
+}
+.tool-part:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.tool-part:active{cursor:grabbing;}
+.tool-label{font-size:.6rem;color:#757575;text-align:center;margin-top:2px;pointer-events:none;}
+.tool-wrap{display:flex;flex-direction:column;align-items:center;}
+.canvas-area{
+  flex:1;position:relative;
+  background-color:#fafafa;
+  background-image:
+    linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+  background-size:20px 20px;
+  border-radius:14px;border:2px dashed #bdbdbd;
+  overflow:hidden;min-height:360px;
+  touch-action:none;
+}
+.canvas-part{
+  position:absolute;cursor:move;
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .15s;
+  user-select:none;touch-action:none;
+}
+.canvas-part.selected{
+  outline:3px solid #ff6f00;
+  outline-offset:3px;
+  box-shadow:0 0 12px rgba(255,111,0,.4);
+}
+.controls-bar{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin-top:14px;padding-top:14px;border-top:2px solid #eee;
+}
+.ctrl-btn{
+  padding:10px 18px;border-radius:12px;border:2px solid #e0e0e0;
+  background:#fff;font-size:.95rem;font-weight:700;cursor:pointer;
+  transition:all .15s;color:#455a64;
+}
+.ctrl-btn:hover{background:#e3f2fd;border-color:#42a5f5;}
+.ctrl-btn.danger{border-color:#ef9a9a;color:#c62828;}
+.ctrl-btn.danger:hover{background:#ffebee;border-color:#e53935;}
+.ctrl-btn.success{border-color:#a5d6a7;color:#2e7d32;}
+.ctrl-btn.success:hover{background:#e8f5e9;border-color:#43a047;}
+.ctrl-btn:disabled{opacity:.4;cursor:default;}
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.5);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.hidden{display:none;}
+.modal-box{
+  background:#fff;border-radius:20px;padding:30px;
+  max-width:420px;width:100%;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:modalPop .35s ease;
+}
+@keyframes modalPop{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-box .big-emoji{font-size:3.5rem;}
+.modal-box h2{color:#2e7d32;margin:10px 0;font-size:1.4rem;}
+.modal-box p{color:#616161;font-size:1rem;margin:8px 0;}
+.modal-box button{
+  margin-top:14px;padding:12px 30px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,#66bb6a,#2e7d32);
+  color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 12px rgba(46,125,50,.35);
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .workspace > * + * { margin-left: 14px; }
+  .toolbar > * + * { margin-top: 8px; }
+  .controls-bar > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+
+<h1>🤖 Ρομπότ Builder! 🛠️</h1>
+<p class="subtitle">Φτιάξε το δικό σου ρομπότ! 🎨</p>
+
+<div class="container">
+  <div class="instructions">
+    👉 Σύρε τα κομμάτια στο καμβά! Κάνε κλικ για να τα διαλέξεις. Χρησιμοποίησε τα κουμπιά για να μεγαλώσεις, μικρύνεις ή περιστρέψεις! 🎮
+  </div>
+  <div class="workspace">
+    <div class="toolbar" id="toolbar">
+      <h3>🧩 Κομμάτια</h3>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="body" data-w="80" data-h="100" style="background:#42a5f5;border-radius:6px;">🟦</div>
+        <span class="tool-label">Σώμα</span>
+      </div>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="head" data-w="60" data-h="60" style="background:#ffcc80;border-radius:50%;">⭕</div>
+        <span class="tool-label">Κεφάλι</span>
+      </div>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="arm" data-w="50" data-h="20" style="background:#ef5350;border-radius:4px;">🟥</div>
+        <span class="tool-label">Χέρι</span>
+      </div>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="leg" data-w="20" data-h="50" style="background:#ffee58;border-radius:4px;">🟨</div>
+        <span class="tool-label">Πόδι</span>
+      </div>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="eye" data-w="14" data-h="14" style="background:#ab47bc;border-radius:50%;">🟣</div>
+        <span class="tool-label">Μάτι</span>
+      </div>
+      <div class="tool-wrap">
+        <div class="tool-part" draggable="false" data-shape="hat" data-w="50" data-h="40" style="background:#546e7a;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);">⬛</div>
+        <span class="tool-label">Καπέλο</span>
+      </div>
+    </div>
+    <div class="canvas-area" id="canvas"></div>
+  </div>
+  <div class="controls-bar">
+    <button class="ctrl-btn" id="btnBigger" disabled>➕ Μεγάλωσε</button>
+    <button class="ctrl-btn" id="btnSmaller" disabled>➖ Μίκρυνε</button>
+    <button class="ctrl-btn" id="btnRotate" disabled>🔄 Περίστρεψε</button>
+    <button class="ctrl-btn" id="btnDuplicate" disabled>📋 Αντιγραφή</button>
+    <button class="ctrl-btn" id="btnDelete" disabled>🗑️ Διαγραφή</button>
+    <button class="ctrl-btn danger" id="btnClear">🧹 Καθαρισμός</button>
+    <button class="ctrl-btn success" id="btnSave">💾 Αποθήκευση</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="saveModal">
+  <div class="modal-box">
+    <div class="big-emoji">🎉🤖🏆</div>
+    <h2>Μπράβο! Τέλειο ρομπότ!</h2>
+    <p>Αποθήκευσες τη δημιουργία σου!</p>
+    <p>Είσαι ένας/μια σπουδαίος/α κατασκευαστής/τρια ρομπότ! ⭐</p>
+    <button id="closeModal">👍 Συνέχισε!</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var canvas = document.getElementById("canvas");
+  var selectedEl = null;
+  var partIdCounter = 0;
+  var dragState = null;
+
+  var shapeColors = {
+    body: "#42a5f5",
+    head: "#ffcc80",
+    arm: "#ef5350",
+    leg: "#ffee58",
+    eye: "#ab47bc",
+    hat: "#546e7a"
+  };
+  var shapeRadii = {
+    body: "6px",
+    head: "50%",
+    arm: "4px",
+    leg: "4px",
+    eye: "50%",
+    hat: "0"
+  };
+
+  function createCanvasPart(shape, w, h, x, y, rotation) {
+    var el = document.createElement("div");
+    el.className = "canvas-part";
+    var id = "part-" + (partIdCounter++);
+    el.setAttribute("data-id", id);
+    el.setAttribute("data-shape", shape);
+    el.setAttribute("data-w", w);
+    el.setAttribute("data-h", h);
+    el.style.width = w + "px";
+    el.style.height = h + "px";
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.style.backgroundColor = shapeColors[shape];
+    el.style.borderRadius = shapeRadii[shape];
+    el.style.transform = "rotate(" + (rotation || 0) + "deg)";
+    el.style.border = "2px solid rgba(0,0,0,.12)";
+    if (shape === "hat") {
+      el.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
+      el.style.border = "none";
+    }
+    canvas.appendChild(el);
+    return el;
+  }
+
+  function placeExampleRobot() {
+    var cx = canvas.offsetWidth / 2;
+    var cy = canvas.offsetHeight / 2;
+    var ox = cx - 40;
+    var oy = cy - 80;
+
+    createCanvasPart("body", 80, 100, ox, oy + 50, 0);
+    createCanvasPart("head", 60, 60, ox + 10, oy - 10, 0);
+    createCanvasPart("arm", 50, 20, ox - 50, oy + 60, 0);
+    createCanvasPart("arm", 50, 20, ox + 80, oy + 60, 0);
+    createCanvasPart("leg", 20, 50, ox + 15, oy + 150, 0);
+    createCanvasPart("leg", 20, 50, ox + 45, oy + 150, 0);
+    createCanvasPart("eye", 14, 14, ox + 20, oy + 8, 0);
+    createCanvasPart("eye", 14, 14, ox + 46, oy + 8, 0);
+    createCanvasPart("hat", 50, 40, ox + 15, oy - 48, 0);
+
+    var refLabel = document.createElement("div");
+    refLabel.style.cssText = "position:absolute;bottom:8px;right:10px;font-size:.75rem;color:#9e9e9e;font-style:italic;pointer-events:none;";
+    refLabel.textContent = "💡 Παράδειγμα ρομπότ";
+    canvas.appendChild(refLabel);
+  }
+
+  function selectPart(el) {
+    if (selectedEl) selectedEl.classList.remove("selected");
+    selectedEl = el;
+    if (el) {
+      el.classList.add("selected");
+      document.getElementById("btnBigger").disabled = false;
+      document.getElementById("btnSmaller").disabled = false;
+      document.getElementById("btnRotate").disabled = false;
+      document.getElementById("btnDuplicate").disabled = false;
+      document.getElementById("btnDelete").disabled = false;
+    } else {
+      document.getElementById("btnBigger").disabled = true;
+      document.getElementById("btnSmaller").disabled = true;
+      document.getElementById("btnRotate").disabled = true;
+      document.getElementById("btnDuplicate").disabled = true;
+      document.getElementById("btnDelete").disabled = true;
+    }
+  }
+
+  function getPos(e) {
+    if (e.touches && e.touches.length > 0) {
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  function startDragFromToolbar(e) {
+    e.preventDefault();
+    var toolEl = e.currentTarget;
+    var shape = toolEl.getAttribute("data-shape");
+    var w = parseInt(toolEl.getAttribute("data-w"));
+    var h = parseInt(toolEl.getAttribute("data-h"));
+    var pos = getPos(e);
+    var canvasRect = canvas.getBoundingClientRect();
+
+    var ghost = document.createElement("div");
+    ghost.className = "canvas-part";
+    ghost.style.width = w + "px";
+    ghost.style.height = h + "px";
+    ghost.style.backgroundColor = shapeColors[shape];
+    ghost.style.borderRadius = shapeRadii[shape];
+    ghost.style.border = "2px solid rgba(0,0,0,.12)";
+    ghost.style.opacity = "0.7";
+    ghost.style.pointerEvents = "none";
+    if (shape === "hat") {
+      ghost.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
+      ghost.style.border = "none";
+    }
+    ghost.style.left = (pos.x - canvasRect.left - w / 2) + "px";
+    ghost.style.top = (pos.y - canvasRect.top - h / 2) + "px";
+    canvas.appendChild(ghost);
+
+    dragState = {
+      source: "toolbar",
+      shape: shape,
+      w: w,
+      h: h,
+      ghost: ghost,
+      offsetX: w / 2,
+      offsetY: h / 2
+    };
+  }
+
+  function startDragFromCanvas(e) {
+    var target = e.target;
+    if (!target.classList.contains("canvas-part")) {
+      selectPart(null);
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    selectPart(target);
+
+    var pos = getPos(e);
+    var rect = target.getBoundingClientRect();
+    var canvasRect = canvas.getBoundingClientRect();
+
+    dragState = {
+      source: "canvas",
+      el: target,
+      offsetX: pos.x - rect.left,
+      offsetY: pos.y - rect.top,
+      canvasRect: canvasRect
+    };
+  }
+
+  function onMove(e) {
+    if (!dragState) return;
+    e.preventDefault();
+    var pos = getPos(e);
+
+    if (dragState.source === "toolbar") {
+      var canvasRect = canvas.getBoundingClientRect();
+      var nx = pos.x - canvasRect.left - dragState.offsetX;
+      var ny = pos.y - canvasRect.top - dragState.offsetY;
+      nx = Math.max(0, Math.min(nx, canvasRect.width - dragState.w));
+      ny = Math.max(0, Math.min(ny, canvasRect.height - dragState.h));
+      dragState.ghost.style.left = nx + "px";
+      dragState.ghost.style.top = ny + "px";
+    } else if (dragState.source === "canvas") {
+      var cr = dragState.canvasRect;
+      var nx = pos.x - cr.left - dragState.offsetX;
+      var ny = pos.y - cr.top - dragState.offsetY;
+      var el = dragState.el;
+      var ew = el.offsetWidth;
+      var eh = el.offsetHeight;
+      nx = Math.max(0, Math.min(nx, cr.width - ew));
+      ny = Math.max(0, Math.min(ny, cr.height - eh));
+      el.style.left = nx + "px";
+      el.style.top = ny + "px";
+    }
+  }
+
+  function onEnd(e) {
+    if (!dragState) return;
+    if (dragState.source === "toolbar") {
+      var ghost = dragState.ghost;
+      if (ghost.parentNode) ghost.parentNode.removeChild(ghost);
+      var left = parseFloat(ghost.style.left);
+      var top = parseFloat(ghost.style.top);
+      var newPart = createCanvasPart(dragState.shape, dragState.w, dragState.h, left, top, 0);
+      selectPart(newPart);
+    }
+    dragState = null;
+  }
+
+  document.querySelectorAll(".tool-part").forEach(function(tp) {
+    tp.addEventListener("mousedown", startDragFromToolbar);
+    tp.addEventListener("touchstart", startDragFromToolbar, { passive: false });
+  });
+
+  canvas.addEventListener("mousedown", startDragFromCanvas);
+  canvas.addEventListener("touchstart", startDragFromCanvas, { passive: false });
+
+  document.addEventListener("mousemove", onMove);
+  document.addEventListener("touchmove", onMove, { passive: false });
+  document.addEventListener("mouseup", onEnd);
+  document.addEventListener("touchend", onEnd);
+
+  function getCurrentRotation(el) {
+    var t = el.style.transform || "";
+    var m = t.match(/rotate\(([-\d.]+)deg\)/);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  document.getElementById("btnBigger").addEventListener("click", function() {
+    if (!selectedEl) return;
+    var w = parseInt(selectedEl.getAttribute("data-w"));
+    var h = parseInt(selectedEl.getAttribute("data-h"));
+      w += 8;
+      h += 8;
+      selectedEl.setAttribute("data-w", w);
+      selectedEl.setAttribute("data-h", h);
+      selectedEl.style.width = w + "px";
+      selectedEl.style.height = h + "px";
+  });
+
+  document.getElementById("btnSmaller").addEventListener("click", function() {
+    if (!selectedEl) return;
+    var w = parseInt(selectedEl.getAttribute("data-w"));
+    var h = parseInt(selectedEl.getAttribute("data-h"));
+      w = Math.max(10, w - 8);
+      h = Math.max(10, h - 8);
+      selectedEl.setAttribute("data-w", w);
+      selectedEl.setAttribute("data-h", h);
+      selectedEl.style.width = w + "px";
+      selectedEl.style.height = h + "px";
+  });
+
+  document.getElementById("btnRotate").addEventListener("click", function() {
+    if (!selectedEl) return;
+    var rot = getCurrentRotation(selectedEl);
+    rot += 15;
+    selectedEl.style.transform = "rotate(" + rot + "deg)";
+  });
+
+  document.getElementById("btnDuplicate").addEventListener("click", function() {
+    if (!selectedEl) return;
+    var shape = selectedEl.getAttribute("data-shape");
+    var w = parseInt(selectedEl.getAttribute("data-w"));
+    var h = parseInt(selectedEl.getAttribute("data-h"));
+    var left = parseFloat(selectedEl.style.left) + 20;
+    var top = parseFloat(selectedEl.style.top) + 20;
+    var rot = getCurrentRotation(selectedEl);
+    var dup = createCanvasPart(shape, w, h, left, top, rot);
+    selectPart(dup);
+  });
+
+  document.getElementById("btnDelete").addEventListener("click", function() {
+    if (!selectedEl) return;
+    if (selectedEl.parentNode) selectedEl.parentNode.removeChild(selectedEl);
+    selectPart(null);
+  });
+
+  document.getElementById("btnClear").addEventListener("click", function() {
+    canvas.textContent = "";
+    partIdCounter = 0;
+    selectPart(null);
+  });
+
+  document.getElementById("btnSave").addEventListener("click", function() {
+    document.getElementById("saveModal").classList.remove("hidden");
+  });
+
+  document.getElementById("closeModal").addEventListener("click", function() {
+    document.getElementById("saveModal").classList.add("hidden");
+  });
+
+  document.getElementById("saveModal").addEventListener("click", function(e) {
+    if (e.target === this) this.classList.add("hidden");
+  });
+
+  window.addEventListener("load", function() {
+    placeExampleRobot();
+  });
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setTimeout(placeExampleRobot, 50);
+  }
+})();
+</script>
+</body>
+</html>

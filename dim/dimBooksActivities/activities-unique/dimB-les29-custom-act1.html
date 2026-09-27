@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 29 - Δραστηριότητα 1: Αναζήτηση ebooks.edu.gr</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{text-align:center;color:#fff;margin-bottom:10px;font-size:1.4rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;margin-bottom:20px}
+.search-header{display:flex;gap:10px;margin-bottom:16px}
+.search-input{flex:1;padding:12px 16px;border:2px solid #b39ddb;border-radius:14px;font-size:1rem;font-family:inherit;transition:border-color .3s}
+.search-input:focus{outline:none;border-color:#667eea}
+.search-btn{padding:12px 22px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(102,126,234,.4);transition:transform .2s;white-space:nowrap}
+.search-btn:hover{transform:scale(1.04)}
+.tags-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tag{padding:7px 16px;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all .3s;background:#f3e5f5;color:#6a1b9a}
+.tag:hover{background:#e1bee7}
+.tag.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:transparent}
+.results-count{font-size:.9rem;color:#777;margin-bottom:12px;font-weight:700}
+.book-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));grid-gap:14px}
+.book-card{background:#fff;border:2px solid #e0e0e0;border-radius:16px;padding:16px;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;align-items:center;text-align:center}
+.book-card:hover{border-color:#667eea;box-shadow:0 4px 18px rgba(102,126,234,.2);transform:translateY(-3px)}
+.book-icon{font-size:2.5rem;margin-bottom:8px}
+.book-title{font-weight:700;color:#333;font-size:.95rem;margin-bottom:6px}
+.book-subject{display:inline-block;padding:4px 12px;border-radius:12px;font-size:.75rem;font-weight:700}
+.s-pl{background:#e3f2fd;color:#1565c0}
+.s-ma{background:#fff3e0;color:#e65100}
+.s-gl{background:#fce4ec;color:#c62828}
+.s-me{background:#e8f5e9;color:#2e7d32}
+.s-fa{background:#f3e5f5;color:#6a1b9a}
+.s-mu{background:#fff8e1;color:#f57f17}
+.s-ka{background:#ffe0b2;color:#bf360c}
+.s-xg{background:#e0f7fa;color:#00695c}
+.detail-view{display:none}
+.back-btn{padding:8px 18px;background:#fff;color:#667eea;border:2px solid #667eea;border-radius:10px;cursor:pointer;font-weight:700;font-size:.9rem;margin-bottom:16px;transition:all .3s}
+.back-btn:hover{background:#ede7f6}
+.detail-card{text-align:center;padding:20px}
+.detail-icon{font-size:4rem;margin-bottom:12px}
+.detail-title{font-size:1.3rem;font-weight:700;color:#333;margin-bottom:8px}
+.detail-subject{margin-bottom:14px}
+.detail-desc{color:#666;line-height:1.6;margin-bottom:18px;padding:14px;background:#f5f5f5;border-radius:12px;font-size:.95rem}
+.open-btn{padding:14px 32px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(102,126,234,.4);transition:transform .2s}
+.open-btn:hover{transform:scale(1.04)}
+.reader-view{display:none}
+.reader-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.reader-title{font-weight:700;color:#333;font-size:1rem}
+.reader-nav{display:flex;gap:8px}
+.reader-nav button{padding:8px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;transition:opacity .3s}
+.reader-nav button:disabled{opacity:.4;cursor:default}
+.reader-page{background:#fffde7;border:2px solid #fff9c4;border-radius:16px;padding:24px;min-height:250px;line-height:1.8;font-size:1.05rem;color:#444;position:relative}
+.reader-page .page-num{position:absolute;bottom:10px;right:16px;font-size:.8rem;color:#999}
+.reader-page h3{color:#667eea;margin-bottom:10px}
+.reader-page ul{padding-left:20px}
+.reader-page ul li{margin-bottom:6px}
+.no-results{text-align:center;padding:30px;color:#999;font-size:1.05rem}
+.search-views{display:none}
+.sv-instructions{background:#ede7f6;border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:.9rem;color:#4a148c;line-height:1.5}
+@media(max-width:600px){.container{padding:15px}h1{font-size:1.1rem}.book-cards{grid-template-columns:1fr}.search-header{flex-direction:column}.reader-header{flex-direction:column;align-items:stretch}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .search-header > * + * { margin-left: 10px; }
+  .tags-row > * { margin: 4px; }
+  .reader-header > * { margin: 4px; }
+  .reader-nav > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📚 Αναζήτηση ebooks.edu.gr</h1>
+<div class="container">
+<div class="search-header">
+<input type="text" class="search-input" id="searchInput" placeholder="Αναζήτησε βιβλίο..." oninput="doSearch()">
+<button class="search-btn" onclick="doSearch()">🔍 Αναζήτηση</button>
+</div>
+<div class="sv-instructions">
+🔍 <strong>Ψάξε</strong> για βιβλία γράφοντας λέξεις ή πάτα ένα <strong>μάθημα</strong> παρακάτω!
+</div>
+<div class="tags-row" id="tagsRow"></div>
+
+<div id="browseView">
+<div class="results-count" id="resultsCount"></div>
+<div class="book-cards" id="bookCards"></div>
+</div>
+
+<div class="detail-view" id="detailView">
+<button class="back-btn" onclick="showBrowse()">⬅️ Πίσω στα αποτελέσματα</button>
+<div class="detail-card" id="detailCard"></div>
+</div>
+
+<div class="reader-view" id="readerView">
+<button class="back-btn" onclick="closeReader()">⬅️ Πίσω στο βιβλίο</button>
+<div class="reader-header">
+<div class="reader-title" id="readerTitle"></div>
+<div class="reader-nav">
+<button id="prevBtn" onclick="prevPage()">⬅️ Προηγούμενη</button>
+<button id="nextBtn" onclick="nextPage()">Επόμενη ➡️</button>
+</div>
+</div>
+<div class="reader-page" id="readerPage"></div>
+</div>
+</div>
+
+<script>
+var subjectMap={
+'Πληροφορική':{cls:'s-pl',icon:'💻'},
+'Μαθηματικά':{cls:'s-ma',icon:'🔢'},
+'Γλώσσα':{cls:'s-gl',icon:'📝'},
+'Μελέτη':{cls:'s-me',icon:'🌍'},
+'Φυσική Αγωγή':{cls:'s-fa',icon:'⚽'},
+'Μουσική':{cls:'s-mu',icon:'🎵'},
+'Καλλιτεχνικά':{cls:'s-ka',icon:'🎨'},
+'Ξένες Γλώσσες':{cls:'s-xg',icon:'🇬🇧'}
+};
+
+var books=[
+{id:0,title:'Πληροφορική Β\' Δημοτικού',subject:'Πληροφορική',pages:[
+'<h3>📖 Κεφάλαιο 1: Υπολογιστής</h3><p>Ο υπολογιστής είναι ένα πολύ χρήσιμο μηχάνημα!</p><ul><li>🖥️ Οθόνη</li><li>⌨️ Πληκτρολόγιο</li><li>🖱️ Ποντίκι</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Το Διαδίκτυο</h3><p>Το Διαδίκτυο μάς συνδέει όλου του κόσμου!</p><ul><li>🌐 Ιστοσελίδες</li><li>📧 Ηλεκτρονικό ταχυδρομείο</li><li>🔍 Μηχανές αναζήτησης</li></ul>',
+'<h3>🎮 Δραστηριότητα</h3><p>Βρες τις σωστές λέξεις!</p><p>Ο ________ είναι μηχάνημα που επεξεργάζεται πληροφορίες.</p><p><em>(Υπολογιστής)</em></p>'
+]},
+{id:1,title:'Μαθηματικά Β\' Δημοτικού',subject:'Μαθηματικά',pages:[
+'<h3>📖 Κεφάλαιο 1: Αριθμοί 0-100</h3><p>Ας μάθουμε τους αριθμούς!</p><ul><li>1️⃣ Μονάδες</li><li>🔟 Δεκάδες</li><li>🔢 Αριθμοί ως το 100</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Πρόσθεση</h3><p>Η πρόσθεση ενώνει αριθμούς!</p><p>3 + 4 = 7 🌟</p><p>12 + 5 = 17 🌟</p>',
+'<h3>🎮 Δραστηριότητα</h3><p>Λύσε τις πράξεις:</p><ul><li>5 + 3 = ?</li><li>10 + 7 = ?</li><li>20 + 15 = ?</li></ul>'
+]},
+{id:2,title:'Γλώσσα Β\' Δημοτικού',subject:'Γλώσσα',pages:[
+'<h3>📖 Κεφάλαιο 1: Φωνήεντα και Συμφωνα</h3><p>Τα γράμματα χωρίζονται σε δύο ομάδες!</p><ul><li>🔤 Φωνήεντα: α, ε, η, ι, ο, υ, ω</li><li>🔤 Συμφωνα: β, γ, δ, κ, λ, μ...</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Συλλαβές</h3><p>Κάθε λέξη έχει συλλαβές!</p><p>μα-ντά-βα-ρος = 4 συλλαβές! 🎵</p><p>να-υσ-τά-κι = 4 συλλαβές!</p>',
+'<h3>🎮 Δραστηριότητα</h3><p>Χώρισε τις λέξεις σε συλλαβές:</p><ul><li>πεταλούδα = ?</li><li>πατατούδα = ?</li></ul>'
+]},
+{id:3,title:'Μελέτη Περιβάλλοντος Β\'',subject:'Μελέτη',pages:[
+'<h3>📖 Κεφάλαιο 1: Η γειτονιά μου</h3><p>Η γειτονιά είναι ο τόπος όπου ζω!</p><ul><li>🏠 Σπίτια</li><li>🏫 Σχολείο</li><li>🌳 Πάρκο</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Τα ζώα</h3><p>Τα ζώα ζουν σε διάφορα μέρη!</p><ul><li>🐶 Κατοικίδια</li><li>🦁 Άγρια</li><li>🐟 Θαλάσσια</li></ul>',
+'<h3>🎮 Δραστηριότητα</h3><p>Ταίριαξε το ζώο με τον τόπο του!</p><ul><li>Καμήλος → ?</li><li>Πιγκουίνος → ?</li></ul>'
+]},
+{id:4,title:'Φυσική Αγωγή Β\'',subject:'Φυσική Αγωγή',pages:[
+'<h3>📖 Κεφάλαιο 1: Ζέσταμα</h3><p>Πριν το παιχνίδι, ζεσταίνουμε το σώμα!</p><ul><li>🏃 Τρέξιμο επιτόπου</li><li>🤸 Τεντώματα</li><li>⭕ Κύκλοι με τα χέρια</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Παιχνίδια</h3><p>Ας παίξουμε!</p><ul><li>⚽ Ποδόσφαιρο</li><li>🏀 Μπάσκετ</li><li>🎯 Σκοποβολή</li></ul>',
+'<h3>🎮 Δραστηριότητα</h3><p>Κάνε 10 αναπηδήσεις! Μέτρα δυνατά!</p><p>1️⃣ 2️⃣ 3️⃣ ... 🔟</p>'
+]},
+{id:5,title:'Μουσική Β\' Δημοτικού',subject:'Μουσική',pages:[
+'<h3>📖 Κεφάλαιο 1: Νότες</h3><p>Η μουσική γράφεται με νότες!</p><ul><li>🎵 Ντο</li><li>🎵 Ρε</li><li>🎵 Μι</li><li>🎵 Φα</li><li>🎵 Σολ</li></ul>',
+'<h3>📖 Κεφάλαιο 2: Ρυθμός</h3><p>Ο ρυθμός είναι η καρδιά της μουσικής!</p><p>👏 Τακ-τακ-τακ! 👏</p>',
+'<h3>🎮 Δραστηριότητα</h3><p>Χτύπα τον ρυθμό με τα χέρια!</p><p>👏👏 <em>παύση</em> 👏👏👏</p>'
+]},
+{id:6,title:'Καλλιτεχνικά Β\'',subject:'Καλλιτεχνικά',pages:[
+'<h3>📖 Κεφάλαιο 1: Χρώματα</h3><p>Τα βασικά χρώματα!</p><ul><li>🔴 Κόκκινο</li><li>🔵 Μπλε</li><li>🟡 Κίτρινο</li></ul><p>Αν τα αναμείξουμε φτιάχνουμε νέα χρώματα!</p>',
+'<h3>📖 Κεφάλαιο 2: Ζωγραφική</h3><p>Ζωγράφισε ότι σου αρέσει!</p><p>🎨 Χρησιμοποίησε τη φαντασία σου!</p>',
+'<h3>🎮 Δραστηριότητα</h3><p>Τι χρώμα φτιάχνουμε αν αναμείξουμε:</p><ul><li>Κόκκινο + Μπλε = ?</li><li>Κόκκινο + Κίτρινο = ?</li></ul>'
+]},
+{id:7,title:'Αγγλικά Β\' Δημοτικού',subject:'Ξένες Γλώσσες',pages:[
+'<h3>📖 Chapter 1: Greetings</h3><p>Ας χαιρετίσουμε στα Αγγλικά!</p><ul><li>Hello! = Γεια σου!</li><li>Good morning! = Καλημέρα!</li><li>Goodbye! = Γεια χαρά!</li></ul>',
+'<h3>📖 Chapter 2: Numbers</h3><p>Οι αριθμοί στα Αγγλικά!</p><ul><li>One, Two, Three 🔢</li><li>Four, Five, Six 🔢</li><li>Seven, Eight, Nine, Ten 🔢</li></ul>',
+'<h3>🎮 Δραστηριότητα</h3><p>Πες στα Αγγλικά:</p><ul><li>Γεια σου! = ?</li><li>Ένα, δύο, τρία = ?</li></ul>'
+]}
+];
+
+var activeFilter=null;
+var currentBookId=null;
+var currentPage=0;
+
+function buildTags(){
+var row=document.getElementById('tagsRow');
+var allTag=document.createElement('span');
+allTag.className='tag active';
+allTag.textContent='📚 Όλα';
+allTag.onclick=function(){
+activeFilter=null;
+updateTags();
+doSearch();
+};
+row.appendChild(allTag);
+var subjects=[];
+books.forEach(function(b){if(subjects.indexOf(b.subject)===-1)subjects.push(b.subject)});
+subjects.forEach(function(s){
+var tag=document.createElement('span');
+tag.className='tag';
+tag.setAttribute('data-subject',s);
+tag.textContent=subjectMap[s].icon+' '+s;
+tag.onclick=function(){
+activeFilter=s;
+updateTags();
+doSearch();
+};
+row.appendChild(tag);
+});
+}
+
+function updateTags(){
+var tags=document.querySelectorAll('.tag');
+tags.forEach(function(t){
+if(!t.getAttribute('data-subject')){
+t.classList.toggle('active',activeFilter===null);
+}else{
+t.classList.toggle('active',t.getAttribute('data-subject')===activeFilter);
+}
+});
+}
+
+function doSearch(){
+var query=document.getElementById('searchInput').value.trim().toLowerCase();
+var filtered=books.filter(function(b){
+var matchSubject=activeFilter===null||b.subject===activeFilter;
+var matchQuery=!query||b.title.toLowerCase().indexOf(query)!==-1||b.subject.toLowerCase().indexOf(query)!==-1;
+return matchSubject&&matchQuery;
+});
+renderCards(filtered);
+showBrowse();
+}
+
+function renderCards(list){
+var cards=document.getElementById('bookCards');
+cards.innerHTML='';
+document.getElementById('resultsCount').textContent='Βρέθηκαν '+list.length+' βιβλία';
+if(list.length===0){
+cards.innerHTML='<div class="no-results">😕 Δεν βρέθηκαν βιβλία. Δοκίμασε άλλη αναζήτηση!</div>';
+return;
+}
+list.forEach(function(b){
+var card=document.createElement('div');
+card.className='book-card';
+card.onclick=function(){openDetail(b.id)};
+var icon=document.createElement('div');
+icon.className='book-icon';
+icon.textContent='📘';
+var title=document.createElement('div');
+title.className='book-title';
+title.textContent=b.title;
+var subjTag=document.createElement('span');
+subjTag.className='book-subject '+(subjectMap[b.subject]?subjectMap[b.subject].cls:'s-pl');
+subjTag.textContent=(subjectMap[b.subject]?subjectMap[b.subject].icon+' ':'')+b.subject;
+card.appendChild(icon);
+card.appendChild(title);
+card.appendChild(subjTag);
+cards.appendChild(card);
+});
+}
+
+function openDetail(id){
+currentBookId=id;
+var b=books[id];
+document.getElementById('browseView').style.display='none';
+document.getElementById('detailView').style.display='block';
+document.getElementById('readerView').style.display='none';
+var card=document.getElementById('detailCard');
+card.innerHTML='';
+var icon=document.createElement('div');
+icon.className='detail-icon';
+icon.textContent='📘';
+var title=document.createElement('div');
+title.className='detail-title';
+title.textContent=b.title;
+var subjTag=document.createElement('div');
+subjTag.className='detail-subject';
+var subjSpan=document.createElement('span');
+subjSpan.className='book-subject '+(subjectMap[b.subject]?subjectMap[b.subject].cls:'s-pl');
+subjSpan.textContent=(subjectMap[b.subject]?subjectMap[b.subject].icon+' ':'')+b.subject;
+subjTag.appendChild(subjSpan);
+var desc=document.createElement('div');
+desc.className='detail-desc';
+desc.textContent='Διαδραστικό βιβλίο με παιχνίδια, βίντεο και κουίζ!';
+var btn=document.createElement('button');
+btn.className='open-btn';
+btn.textContent='📖 Άνοιγμα';
+btn.onclick=function(){openReader(id)};
+card.appendChild(icon);
+card.appendChild(title);
+card.appendChild(subjTag);
+card.appendChild(desc);
+card.appendChild(btn);
+}
+
+function openReader(id){
+currentBookId=id;
+currentPage=0;
+document.getElementById('detailView').style.display='none';
+document.getElementById('readerView').style.display='block';
+document.getElementById('readerTitle').textContent='📖 '+books[id].title;
+renderPage();
+}
+
+function renderPage(){
+var b=books[currentBookId];
+var p=b.pages[currentPage];
+var pageDiv=document.getElementById('readerPage');
+pageDiv.innerHTML='';
+var content=document.createElement('div');
+content.innerHTML=p;
+pageDiv.appendChild(content);
+var num=document.createElement('div');
+num.className='page-num';
+num.textContent='Σελίδα '+(currentPage+1)+'/'+b.pages.length;
+pageDiv.appendChild(num);
+document.getElementById('prevBtn').disabled=currentPage===0;
+document.getElementById('nextBtn').disabled=currentPage===b.pages.length-1;
+}
+
+function prevPage(){
+if(currentPage>0){currentPage--;renderPage()}
+}
+
+function nextPage(){
+var b=books[currentBookId];
+if(currentPage<b.pages.length-1){currentPage++;renderPage()}
+}
+
+function closeReader(){
+document.getElementById('readerView').style.display='none';
+document.getElementById('detailView').style.display='block';
+}
+
+function showBrowse(){
+document.getElementById('browseView').style.display='block';
+document.getElementById('detailView').style.display='none';
+document.getElementById('readerView').style.display='none';
+}
+
+buildTags();
+doSearch();
+</script>
+</body>
+</html>

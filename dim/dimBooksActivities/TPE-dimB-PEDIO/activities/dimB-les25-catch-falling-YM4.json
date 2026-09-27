@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Στοιχεία e-me",
+  "subtitle": "Πιάσε μόνο στοιχεία e-me",
+  "instructions": "Πιάσε στοιχεία της e-me. Απόφυγε άλλα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Κυψέλες", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουπί", "correct": false, "color": "#f44336" },
+    { "text": "Επαφές", "correct": true, "color": "#4CAF50" },
+    { "text": "Σφυρί", "correct": false, "color": "#f44336" },
+    { "text": "Μηνύματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Τέντες", "correct": false, "color": "#f44336" },
+    { "text": "Ειδοποιήσεις", "correct": true, "color": "#4CAF50" },
+    { "text": "Πριόνι", "correct": false, "color": "#f44336" },
+    { "text": "Προφίλ", "correct": true, "color": "#4CAF50" },
+    { "text": "Κασέλα", "correct": false, "color": "#f44336" }
+  ]
+}

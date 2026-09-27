@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα! Υποπρογράμματα",
+  "subtitle": "Πιάσε τις σωστές εντολές των υποπρογραμμάτων!",
+  "instructions": "Πιάσε τις εντολές που σχετίζονται με υποπρογράμματα!",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 10,
+  "items": [
+    { "text": "Ορισμός εντολής", "correct": true, "color": "#4CAF50" },
+    { "text": "Χορός", "correct": true, "color": "#2196F3" },
+    { "text": "Ρόδα", "correct": true, "color": "#FF9800" },
+    { "text": "Ανάποδη ρόδα", "correct": true, "color": "#9C27B0" },
+    { "text": "Στρίψε δεξιά", "correct": true, "color": "#00BCD4" },
+    { "text": "Στρίψε αριστερά", "correct": true, "color": "#E91E63" },
+    { "text": "Γραμμή κύλισης", "correct": true, "color": "#8BC34A" },
+    { "text": "Μεταβλητή Ρυθμός", "correct": true, "color": "#3F51B5" },
+    { "text": "Τυχαίος αριθμός", "correct": false, "color": "#F44336" },
+    { "text": "Εκτύπωση σελίδας", "correct": false, "color": "#795548" }
+  ]
+}

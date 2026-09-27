@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογισμός Επαναλήψεων — Διαίρεση</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f3e8ff,#d8b4fe);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#581c87,#9333ea);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#faf5ff;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#581c87;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.problem-card{background:#fafafa;border-radius:16px;border:2px solid #e5e7eb;padding:18px;margin-bottom:14px}
+.problem-desc{text-align:center;font-size:.92em;color:#334155;line-height:1.5;margin-bottom:14px}
+.formula-display{background:#1e293b;border-radius:14px;padding:16px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.9em;text-align:center;line-height:2.2}
+.formula-display .kw{color:#c084fc;font-weight:700}
+.formula-display .val{color:#34d399;font-weight:700}
+.formula-display .op{color:#fbbf24}
+.scratch-blocks{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.scratch-block{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.85em;font-weight:600;color:#fff;margin:4px}
+.block-flag{background:#22c55e}
+.block-repeat{background:#f59e0b}
+.block-move{background:#3b82f6}
+.block-op{background:#9333ea}
+.input-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.input-row label{font-size:.9em;font-weight:600;color:#581c87}
+.calc-input{width:70px;padding:8px 12px;border:2px solid #d8b4fe;border-radius:10px;text-align:center;font-size:1em;font-weight:700;color:#581c87;outline:none;font-family:'Courier New',monospace}
+.calc-input:focus{border-color:#9333ea;background:#faf5ff}
+.result-text{text-align:center;font-size:.85em;color:#6b7280;margin-top:8px}
+.road-mini{height:40px;background:linear-gradient(90deg,#334155,#475569);border-radius:6px;position:relative;margin-top:10px;overflow:hidden}
+.road-mini .road-dashes{position:absolute;top:50%;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,#fbbf24 0px,#fbbf24 8px,transparent 8px,transparent 16px);transform:translateY(-50%)}
+.road-mini .cat-mini{position:absolute;top:50%;transform:translateY(-50%);font-size:1.2em;left:4px;transition:left 1s ease-out}
+.road-mini .flag-mini{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:.7em}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#581c87,#9333ea);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(88,28,135,.4)}
+.btn-next{background:linear-gradient(135deg,#581c87,#9333ea);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(88,28,135,.4)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.formula-display{font-size:.78em;padding:12px}.calc-input{width:55px;font-size:.9em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .scratch-blocks > * { margin: 4px; }
+  .scratch-block > * + * { margin-left: 6px; }
+  .input-row > * { margin: 4px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>➗ Υπολογισμός Επαναλήψεων με Διαίρεση</h1>
+<p>Χρησιμοποίησε τη διαίρεση: Απόσταση / Βήμα = Επαναλήψεις</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Αν θέλουμε να διασχίσουμε <b>200 βήματα</b> και κάνουμε βήμα <b>25</b>, οι επαναλήψεις = <b>200 / 25 = 8</b>. Στο Scratch βάζουμε <b>200 / βήμα</b> μέσα στο μπλοκ «Επανάλαβε»!</div>
+<div class="score-bar">Πρόβλημα <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()">✅ Έλεγχος</button>
+<button class="btn btn-next" id="nextBtn" onclick="nextRound()" disabled>⏭ Επόμενο</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var problems=[
+{distance:200,step:10,answer:20},
+{distance:200,step:25,answer:8},
+{distance:200,step:40,answer:5},
+{distance:200,step:8,answer:25},
+{distance:200,step:50,answer:4},
+{distance:200,step:4,answer:50}
+];
+
+var currentRound=0;
+var score=0;
+
+function renderRound(){
+var p=problems[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=problems.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('checkBtn').disabled=false;
+document.getElementById('nextBtn').disabled=true;
+var area=document.getElementById('gameArea');
+var html='<div class="problem-card">';
+html+='<div class="problem-desc">🐱 Η γάτα θέλει να διασχίσει τον δρόμο (<b>'+p.distance+' βήματα</b>). Κάνει βήμα <b>'+p.step+'</b> κάθε φορά. Πόσες φορές πρέπει να επαναλάβει;</div>';
+html+='<div class="road-mini"><div class="road-dashes"></div><span class="cat-mini" id="catMini">🐱</span><span class="flag-mini">🏁 '+p.distance+'</span></div>';
+html+='</div>';
+html+='<div class="formula-display">';
+html+='<div><span class="kw">Επαναλήψεις</span> = <span class="val">'+p.distance+'</span> <span class="op">/</span> <span class="val">'+p.step+'</span> = <b>???</b></div>';
+html+='</div>';
+html+='<div class="scratch-blocks">';
+html+='<span class="scratch-block block-flag">🚩 Όταν πατηθεί πράσινη σημαία</span>';
+html+='<span class="scratch-block block-repeat">Επανάλαβε [ <span class="block-op">'+p.distance+' / '+p.step+'</span> ] φορές</span>';
+html+='<span class="scratch-block block-move">Κινήσου '+p.step+' βήματα</span>';
+html+='</div>';
+html+='<div class="input-row">';
+html+='<label>Πόσες επαναλήψεις;</label>';
+html+='<input class="calc-input" id="answerInput" type="number" min="1" max="200" placeholder="?">';
+html+='</div>';
+area.innerHTML=html;
+document.getElementById('answerInput').focus();
+}
+
+function checkAnswer(){
+var p=problems[currentRound];
+var input=document.getElementById('answerInput');
+var val=parseInt(input.value);
+if(isNaN(val)||val<1){
+showFeedback('⚠️ Γράψε έναν αριθμό!',false);
+return;
+}
+if(val===p.answer){
+score++;
+showFeedback('🎉 Σωστά! '+p.distance+' / '+p.step+' = '+p.answer+' επαναλήψεις!',true);
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+document.getElementById('nextBtn').disabled=false;
+animateCat();
+}else{
+showFeedback('❌ '+p.distance+' / '+p.step+' δεν κάνει '+val+'. Δοκίμασε ξανά!',false);
+}
+}
+
+function animateCat(){
+var cat=document.getElementById('catMini');
+var roadWidth=cat.parentElement.offsetWidth-30;
+cat.style.left=roadWidth+'px';
+}
+
+function nextRound(){
+if(currentRound<problems.length-1){currentRound++;renderRound();}
+else showFinal();
+}
+
+function showFinal(){
+var pct=Math.round(score/problems.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Υπολογίζεις τις επαναλήψεις σαν προγραμματιστής!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+problems.length+' σωστά!';
+else msg='💪 '+score+'/'+problems.length+' σωστά. Θυμήσου: Απόσταση / Βήμα = Επαναλήψεις!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#581c87">'+msg+'</div>';
+document.getElementById('checkBtn').disabled=true;
+document.getElementById('nextBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

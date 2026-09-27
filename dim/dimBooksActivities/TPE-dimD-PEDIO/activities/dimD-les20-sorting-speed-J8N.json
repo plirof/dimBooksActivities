@@ -1,0 +1,26 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Λειτουργίες Φυλλομετρητή",
+  "subtitle": "Ταξινόμησε τα στοιχεία στη σωστή κατηγορία!",
+  "instructions": "Πάτα το πλήκτρο βέλους για να ταξινομήσεις κάθε στοιχείο.",
+  "categories": [
+    { "id": "menou", "name": "Μενού Επιλογών", "color": "#4caf50", "key": "ArrowLeft" },
+    { "id": "selido", "name": "Σελιδοδείκτης", "color": "#2196f3", "key": "ArrowRight" },
+    { "id": "kartela", "name": "Καρτέλα", "color": "#ff9800", "key": "ArrowUp" },
+    { "id": "kanena", "name": "Δεν ανήκει", "color": "#f44336", "key": "ArrowDown" }
+  ],
+  "items": [
+    { "text": "Εκτύπωση", "category": "menou" },
+    { "text": "Ζουμ", "category": "menou" },
+    { "text": "Αναζήτηση λέξης", "category": "menou" },
+    { "text": "Αστέρι", "category": "selido" },
+    { "text": "Αγαπημένα", "category": "selido" },
+    { "text": "Όνομα σελιδοδείκτη", "category": "selido" },
+    { "text": "Νέα σελίδα", "category": "kartela" },
+    { "text": "Δεξί κλικ σύνδεσμος", "category": "kartela" },
+    { "text": "Κλείσιμο", "category": "kartela" },
+    { "text": "Αντιβιοτικό", "category": "kanena" },
+    { "text": "Κωδικός wifi", "category": "kanena" },
+    { "text": "Γραμμή σελιδοδεικτών", "category": "selido" }
+  ],
+  "duration": 45
+}

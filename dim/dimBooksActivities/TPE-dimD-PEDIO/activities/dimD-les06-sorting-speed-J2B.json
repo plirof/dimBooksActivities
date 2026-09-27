@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Animation vs Αριθμητικά",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "animation", "name": "Για Animation", "color": "#4caf50", "key": "1" },
+    { "id": "arithmoi", "name": "Αριθμητικά", "color": "#2196f3", "key": "2" },
+    { "id": "scratch", "name": "Scratch Γενικά", "color": "#ff9800", "key": "3" }
+  ],
+  "items": [
+    { "text": "Επόμενη ενδυμασία", "category": "animation" },
+    { "text": "1 ÷ 10 = 0.1", "category": "arithmoi" },
+    { "text": "Γατούλα", "category": "scratch" },
+    { "text": "Περίμενε δευτερόλεπτο", "category": "animation" },
+    { "text": "20 × 5 = 100", "category": "arithmoi" },
+    { "text": "Καρτέλα Κώδικας", "category": "scratch" },
+    { "text": "Flip book", "category": "animation" },
+    { "text": "200 ÷ 10 = 20", "category": "arithmoi" },
+    { "text": "Υπόβαθρο σκηνής", "category": "scratch" },
+    { "text": "Εναλλαγή εικόνων", "category": "animation" }
+  ],
+  "duration": 45
+}

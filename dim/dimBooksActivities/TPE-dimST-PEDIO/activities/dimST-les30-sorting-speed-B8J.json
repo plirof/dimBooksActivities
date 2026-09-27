@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: PEGI Κατηγορίες",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "creative", "name": "Δημιουργικά Εργαλεία", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "pegi", "name": "PEGI Εικονίδια", "color": "#FF9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Scratch", "category": "creative"},
+    {"text": "Βία", "category": "pegi"},
+    {"text": "Hour of Code", "category": "creative"},
+    {"text": "Τζόγος", "category": "pegi"},
+    {"text": "Οπτικός προγραμματισμός", "category": "creative"},
+    {"text": "Ναρκωτικά", "category": "pegi"},
+    {"text": "Serious games", "category": "creative"},
+    {"text": "Φόβος", "category": "pegi"},
+    {"text": "Κινούμενα σχέδια", "category": "creative"},
+    {"text": "Διακρίσεις", "category": "pegi"}
+  ],
+  "duration": 30
+}

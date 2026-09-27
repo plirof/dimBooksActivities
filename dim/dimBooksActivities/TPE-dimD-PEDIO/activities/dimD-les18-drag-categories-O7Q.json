@@ -1,0 +1,48 @@
+{
+  "title": "IoT: αισθητήρας ή όχι",
+  "subtitle": "Ποιες συσκευές έχουν αισθητήρα;",
+  "categories": [
+    {
+      "id": "sensor",
+      "name": "ΑΙΣΘΗΤΗΡΑΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "no",
+      "name": "ΔΕΝ ΕΧΕΙ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🌡️ Έξυπνο θερμοστάτη",
+      "category": "sensor"
+    },
+    {
+      "id": "item2",
+      "text": "🔒 Έξυπνη κλειδαριά",
+      "category": "sensor"
+    },
+    {
+      "id": "item3",
+      "text": "📺 Απλή τηλεόραση",
+      "category": "no"
+    },
+    {
+      "id": "item4",
+      "text": "🚗 GPS αυτοκινήτου",
+      "category": "sensor"
+    },
+    {
+      "id": "item5",
+      "text": "💡 Απλός φακός",
+      "category": "no"
+    },
+    {
+      "id": "item6",
+      "text": "🏠 Έξυπνο σπίτι",
+      "category": "sensor"
+    }
+  ]
+}

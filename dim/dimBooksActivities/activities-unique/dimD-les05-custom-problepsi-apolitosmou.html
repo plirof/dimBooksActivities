@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Πρόβλεψη Αποτελέσματος — Επανάλαβε ώσπου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f0fdf4,#86efac);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f0fdf4;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#14532d;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.code-card{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:18px;margin-bottom:14px}
+.code-desc{text-align:center;font-size:.92em;color:#334155;margin-bottom:14px;line-height:1.5}
+.scratch-code{background:#1e293b;border-radius:12px;padding:14px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.88em;line-height:2;text-align:left}
+.scratch-code .kw{color:#86efac;font-weight:700}
+.scratch-code .val{color:#fbbf24;font-weight:700}
+.scratch-code .act{color:#a78bfa}
+.trace-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.82em}
+.trace-table th{background:#14532d;color:#fff;padding:8px;text-align:center;font-weight:600}
+.trace-table td{padding:8px;text-align:center;border:1px solid #e2e8f0}
+.trace-table tr:nth-child(even){background:#f0fdf4}
+.trace-table .step-cell{font-weight:700;color:#14532d}
+.trace-table .highlight{background:#dcfce7;font-weight:700}
+.question-text{text-align:center;font-size:.95em;font-weight:700;color:#14532d;margin:14px 0}
+.answer-options{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.answer-btn{padding:12px 22px;background:#f0fdf4;border:3px solid #86efac;border-radius:14px;cursor:pointer;font-size:.95em;font-weight:700;transition:all .2s;color:#14532d;min-width:80px;text-align:center;user-select:none}
+.answer-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(22,163,74,.15);border-color:#16a34a}
+.answer-btn.selected{background:#16a34a;color:#fff;border-color:#14532d}
+.answer-btn:disabled{opacity:.4;pointer-events:none}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(20,83,45,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.explanation{background:#f0fdf4;border-radius:12px;padding:12px;margin-top:8px;font-size:.85em;color:#14532d;text-align:center;line-height:1.5;display:none}
+@media(max-width:600px){.scratch-code{font-size:.75em;padding:10px}.answer-btn{min-width:65px;font-size:.85em;padding:10px 14px}.trace-table{font-size:.75em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .answer-options > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔮 Πρόβλεψη Αποτελέσματος — Τι θα Γίνει;</h1>
+<p>Διάβασε τον κώδικα Scratch και βρες ποιος αριθμός θα εμφανιστεί!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο <b>«Επανάλαβε ώσπου»</b>, ο βρόχος τρέχει όσο η συνθήκη είναι <b>ΨΕΥΔΗΣ</b>. Μέτρησε βήμα-βήμα και βρες το αποτέλεσμα!</div>
+<div class="score-bar">Ερώτηση <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="explanation" id="explanation"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var puzzles=[
+{
+desc:'🐱 Η γάτα ξεκινά από τη θέση 0. Κινείται 10 βήματα κάθε φορά.',
+code:['<span class="kw">Όρισε</span> θέση = <span class="val">0</span>','<span class="kw">Επανάλαβε ώσπου</span> (θέση >= <span class="val">50</span>)','  <span class="act">θέση = θέση + 10</span>','  <span class="act">Κινήσου σε θέση</span>','<span class="kw">Δείξε</span> θέση'],
+traces:[{step:1,pos:10},{step:2,pos:20},{step:3,pos:30},{step:4,pos:40},{step:5,pos:50}],
+answer:50,
+options:[40,50,60,100],
+explanation:'Η γάτα κινείται +10 κάθε φορά: 10→20→30→40→50. Στο 50 η συνθήκη (>=50) γίνεται ΑΛΗΘΗΣ και σταματά!'
+},
+{
+desc:'🔢 Ξεκινάμε με αριθμό 2. Προσθέτουμε 3 κάθε φορά.',
+code:['<span class="kw">Όρισε</span> αριθμός = <span class="val">2</span>','<span class="kw">Επανάλαβε ώσπου</span> (αριθμός >= <span class="val">20</span>)','  <span class="act">αριθμός = αριθμός + 3</span>','<span class="kw">Δείξε</span> αριθμός'],
+traces:[{step:1,num:5},{step:2,num:8},{step:3,num:11},{step:4,num:14},{step:5,num:17},{step:6,num:20}],
+answer:20,
+options:[17,18,20,23],
+explanation:'2→5→8→11→14→17→20. Στο 20 η συνθήκη (>=20) γίνεται ΑΛΗΘΗΣ και σταματά!'
+},
+{
+desc:'⭐ Ξεκινάμε με 1. Πολλαπλασιάζουμε με 2 κάθε φορά.',
+code:['<span class="kw">Όρισε</span> αριθμός = <span class="val">1</span>','<span class="kw">Επανάλαβε ώσπου</span> (αριθμός >= <span class="val">16</span>)','  <span class="act">αριθμός = αριθμός × 2</span>','<span class="kw">Δείξε</span> αριθμός'],
+traces:[{step:1,num:2},{step:2,num:4},{step:3,num:8},{step:4,num:16}],
+answer:16,
+options:[8,12,16,32],
+explanation:'1→2→4→8→16. Στο 16 η συνθήκη (>=16) γίνεται ΑΛΗΘΗΣ και σταματά!'
+},
+{
+desc:'📏 Ξεκινάμε με 100. Αφαιρούμε 15 κάθε φορά.',
+code:['<span class="kw">Όρισε</span> αριθμός = <span class="val">100</span>','<span class="kw">Επανάλαβε ώσπου</span> (αριθμός <= <span class="val">10</span>)','  <span class="act">αριθμός = αριθμός - 15</span>','<span class="kw">Δείξε</span> αριθμός'],
+traces:[{step:1,num:85},{step:2,num:70},{step:3,num:55},{step:4,num:40},{step:5,num:25},{step:6,num:10}],
+answer:10,
+options:[25,15,10,0],
+explanation:'100→85→70→55→40→25→10. Στο 10 η συνθήκη (<=10) γίνεται ΑΛΗΘΗΣ και σταματά!'
+},
+{
+desc:'🎯 Ξεκινάμε με 5. Προσθέτουμε 7 κάθε φορά.',
+code:['<span class="kw">Όρισε</span> αριθμός = <span class="val">5</span>','<span class="kw">Επανάλαβε ώσπου</span> (αριθμός >= <span class="val">30</span>)','  <span class="act">αριθμός = αριθμός + 7</span>','<span class="kw">Δείξε</span> αριθμός'],
+traces:[{step:1,num:12},{step:2,num:19},{step:3,num:26},{step:4,num:33}],
+answer:33,
+options:[26,30,33,40],
+explanation:'5→12→19→26→33. Στο 33 η συνθήκη (>=30) γίνεται ΑΛΗΘΗΣ! Προσπέρασε το 30.'
+},
+{
+desc:'🔄 Ξεκινάμε με 50. Αφαιρούμε 8 κάθε φορά.',
+code:['<span class="kw">Όρισε</span> αριθμός = <span class="val">50</span>','<span class="kw">Επανάλαβε ώσπου</span> (αριθμός <= <span class="val">5</span>)','  <span class="act">αριθμός = αριθμός - 8</span>','<span class="kw">Δείξε</span> αριθμός'],
+traces:[{step:1,num:42},{step:2,num:34},{step:3,num:26},{step:4,num:18},{step:5,num:10},{step:6,num:2}],
+answer:2,
+options:[10,6,5,2],
+explanation:'50→42→34→26→18→10→2. Στο 2 η συνθήκη (<=5) γίνεται ΑΛΗΘΗΣ! Προσπέρασε το 5.'
+}
+];
+
+var currentRound=0;
+var score=0;
+var selectedAnswer=null;
+
+function renderRound(){
+var p=puzzles[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=puzzles.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('explanation').style.display='none';
+document.getElementById('checkBtn').disabled=true;
+selectedAnswer=null;
+var area=document.getElementById('gameArea');
+var html='<div class="code-card">';
+html+='<div class="code-desc">'+p.desc+'</div>';
+html+='<div class="scratch-code">';
+for(var i=0;i<p.code.length;i++){
+html+='<div>'+p.code[i]+'</div>';
+}
+html+='</div>';
+html+='</div>';
+html+='<table class="trace-table"><tr><th>Βήμα</th>';
+var keys=Object.keys(p.traces[0]).filter(function(k){return k!=='step';});
+var headLabels={pos:'Θέση',num:'Αριθμός'};
+for(var k=0;k<keys.length;k++){
+html+='<th>'+(headLabels[keys[k]]||keys[k])+'</th>';
+}
+html+='</tr>';
+var lastIdx=p.traces.length-1;
+for(var i=0;i<p.traces.length;i++){
+var t=p.traces[i];
+html+='<tr'+(i===lastIdx?' class="highlight"':'')+'><td class="step-cell">'+(i+1)+'</td>';
+for(var k=0;k<keys.length;k++){
+html+='<td>'+t[keys[k]]+'</td>';
+}
+html+='</tr>';
+}
+html+='<tr style="background:#dcfce7"><td colspan="'+(keys.length+1)+'" style="font-weight:700;color:#14532d">⬆️ Σταματάει εδώ — συνθήκη ΑΛΗΘΗΣ!</td></tr>';
+html+='</table>';
+html+='<div class="question-text">Ποιος αριθμός θα εμφανιστεί στο τέλος;</div>';
+html+='<div class="answer-options">';
+var shuffled=p.options.slice();
+for(var i=0;i<shuffled.length;i++){
+html+='<div class="answer-btn" onclick="selectAnswer(this,'+shuffled[i]+')">'+shuffled[i]+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function selectAnswer(el,val){
+document.querySelectorAll('.answer-btn').forEach(function(b){b.classList.remove('selected');});
+el.classList.add('selected');
+selectedAnswer=val;
+document.getElementById('checkBtn').disabled=false;
+}
+
+function checkAnswer(){
+var p=puzzles[currentRound];
+if(selectedAnswer===p.answer){
+score++;
+showFeedback('🎉 Σωστά! Το αποτέλεσμα είναι '+p.answer+'!',true);
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+document.querySelectorAll('.answer-btn').forEach(function(b){b.disabled=true;});
+var expl=document.getElementById('explanation');
+expl.textContent='💡 '+p.explanation;
+expl.style.display='block';
+setTimeout(function(){
+if(currentRound<puzzles.length-1){currentRound++;renderRound();}
+else showFinal();
+},3000);
+}else{
+showFeedback('❌ Λάθος! Ξαναμέτρησε βήμα-βήμα τον πίνακα.',false);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/puzzles.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Μπορείς να προβλέψεις τα αποτελέσματα των προγραμμάτων!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+puzzles.length+' σωστά!';
+else msg='💪 '+score+'/'+puzzles.length+' σωστά. Ακολούθησε τον πίνακα βήμα-βήμα!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#14532d">'+msg+'</div>';
+document.getElementById('checkBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

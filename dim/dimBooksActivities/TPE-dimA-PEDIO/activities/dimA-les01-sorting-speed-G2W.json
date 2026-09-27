@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Σχολείο ή Όχι;",
+  "subtitle": "Βάλε στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί: Σχολείο ή Όχι;",
+  "categories": [
+    {"id": "sxoleio", "name": "Σχολείο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "oxi", "name": "Όχι", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Βιβλίο", "category": "sxoleio"},
+    {"text": "Μπάλα", "category": "oxi"},
+    {"text": "Μολύβι", "category": "sxoleio"},
+    {"text": "Κουτάλι", "category": "oxi"},
+    {"text": "Τετράδιο", "category": "sxoleio"},
+    {"text": "Κούνια", "category": "oxi"},
+    {"text": "Κασετίνα", "category": "sxoleio"},
+    {"text": "Κουβέρτα", "category": "oxi"}
+  ],
+  "duration": 30
+}

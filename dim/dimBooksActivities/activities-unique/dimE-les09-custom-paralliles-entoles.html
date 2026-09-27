@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παράλληλες Εντολές | Μάθημα 9</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#e0e7ff,#a5b4fc);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#312e81;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#4f46e5;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#312e81;font-size:.75rem;font-weight:700;border:1px solid #a5b4fc;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.timeline{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.tl-row{display:flex;gap:8px;align-items:stretch}
+.tl-track{flex:1;display:flex;flex-direction:column;gap:2px}
+.tl-track-label{font-size:.6rem;font-weight:700;color:#64748b;text-align:center;margin-bottom:2px}
+.tl-block{padding:8px;border:2px solid #e2e8f0;border-radius:8px;font-size:.68rem;text-align:center;cursor:pointer;transition:all .2s;background:#fff;color:#334155}
+.tl-block:hover{border-color:#4f46e5;background:#e0e7ff}
+.tl-block.parallel{border-color:#818cf8;background:#e0e7ff;color:#312e81;font-weight:700}
+.tl-block.sequential{border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:700}
+.tl-block.correct{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.tl-block.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626}
+.tl-time{width:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.6rem;color:#64748b;font-weight:700}
+.classify-row{display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.class-btn{padding:8px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:.72rem;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:all .2s}
+.class-btn:hover{border-color:#4f46e5;background:#e0e7ff}
+.class-btn.sel-par{border-color:#818cf8;background:#c7d2fe;color:#312e81}
+.class-btn.sel-seq{border-color:#f59e0b;background:#fef3c7;color:#92400e}
+.info-text{font-size:.7rem;color:#475569;text-align:center;margin:4px 0}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#4f46e5;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#4338ca}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #4f46e5;border-radius:10px;background:transparent;color:#4f46e5;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#e0e7ff}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .timeline > * + * { margin-top: 4px; }
+  .tl-row > * + * { margin-left: 8px; }
+  .tl-track > * + * { margin-top: 2px; }
+  .classify-row > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>⚡ Παράλληλες Εντολές</h1>
+<p class="subtitle">Κατηγοριοποίησε: Παράλληλες ή Σειριακές εντολές;</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σενάριο:</span> <span id="qNum">1</span>/<span id="qTotal">5</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var scenarios=[
+{
+desc:'Η Αλεξία χορεύει ΚΑΙ συγχρόνως παίζει μουσική',
+answer:'par',
+explain:'Δύο σενάρια πράσινης σημαίας: χορός + μουσική ταυτόχρονα = Παράλληλες!'
+},
+{
+desc:'Η Αλεξία κάνει ρόδα ΚΑΙ ΜΕΤΑ ανάποδη ρόδα',
+answer:'seq',
+explain:'Ρόδα πρώτα, μετά ανάποδη ρόδα = Σειριακές (η μία μετά την άλλην).'
+},
+{
+desc:'Η Αλεξία χορεύει, η Αλεξία2 χορεύει ταυτόχρονα',
+answer:'par',
+explain:'Δύο sprites με ίδιο συμβάν = Παράλληλες (ταυτόχρονα)!'
+},
+{
+desc:'Η Αλεξία αλλάζει ενδυμασία ΚΑΙ ΜΕΤΑ περιμένει',
+answer:'seq',
+explain:'Αλλαγή ενδυμασίας, μετά αναμονή = Σειριακές (με τη σειρά).'
+},
+{
+desc:'Η Έλλη κολυμπάει ΚΑΙ ο αστερίας εμφανίζεται ταυτόχρονα',
+answer:'par',
+explain:'Δύο ανεξάρτητα σενάρια σε δύο sprites = Παράλληλες!'
+}
+];
+var curQ=0,pts=0,selected=null,checked=false;
+
+function initQ(){selected=null;checked=false;}
+
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var s=scenarios[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="info-text" style="font-size:.78rem;font-weight:700;color:#312e81">'+s.desc+'</div>';
+h+='<div class="classify-row">';
+var cls1='class-btn'+(selected==='par'?' sel-par':'');
+var cls2='class-btn'+(selected==='seq'?' sel-seq':'');
+if(checked){
+if(s.answer==='par')cls1+=' correct';
+else cls2+=' correct';
+if(selected!==s.answer){
+if(selected==='par')cls1+=' wrong';
+else cls2+=' wrong';
+}
+}
+h+='<button class="'+cls1+'" onclick="pick(\'par\')">⚡ Παράλληλες</button>';
+h+='<button class="'+cls2+'" onclick="pick(\'seq\')">➡️ Σειριακές</button>';
+h+='</div>';
+h+='<div class="info-text">Παράλληλες = ταυτόχρονα | Σειριακές = η μία μετά την άλλην</div>';
+if(!checked&&selected!==null){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===s.answer;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+s.explain:'❌ '+s.explain)+'</div>';
+if(curQ<scenarios.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενο Σενάριο ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+
+function pick(val){selected=val;render();}
+function checkAnswer(){checked=true;render();}
+function nextQ(){if(curQ<scenarios.length-1){curQ++;initQ();render();}}
+
+initQ();render();
+</script>
+</body>
+</html>

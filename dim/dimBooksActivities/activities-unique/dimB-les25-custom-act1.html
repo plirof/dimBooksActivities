@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σύνδεση στην e-me | Μάθημα 25</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#1565c0 0%,#42a5f5 40%,#90caf9 100%);
+  padding:12px;
+  display:flex;flex-direction:column;align-items:center;
+}
+h1{color:#fff;font-size:1.7rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#e3f2fd;font-size:1rem;text-align:center;margin-bottom:10px;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.container{
+  background:#fff;border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);
+  max-width:800px;width:100%;padding:24px 20px;
+}
+.instructions{
+  background:linear-gradient(90deg,#e3f2fd,#bbdefb);
+  border-radius:12px;padding:10px 16px;margin-bottom:16px;
+  font-size:.95rem;color:#1565c0;font-weight:600;
+  text-align:center;border:1px solid #90caf9;
+}
+.login-screen,.dashboard-screen{animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.eme-logo{
+  text-align:center;margin-bottom:18px;
+}
+.eme-logo .logo-text{
+  font-size:2.4rem;font-weight:800;color:#1565c0;
+  letter-spacing:-1px;
+}
+.eme-logo .logo-icon{font-size:2rem;}
+.eme-logo .logo-sub{font-size:.85rem;color:#78909c;margin-top:2px;}
+
+.login-form{max-width:360px;margin:0 auto;}
+.form-group{margin-bottom:14px;}
+.form-group label{
+  display:block;font-size:.9rem;font-weight:700;
+  color:#37474f;margin-bottom:5px;
+}
+.form-group input{
+  width:100%;padding:12px 14px;border-radius:12px;
+  border:2px solid #bbdefb;font-size:1rem;
+  transition:border-color .2s,box-shadow .2s;
+  outline:none;
+}
+.form-group input:focus{
+  border-color:#1565c0;box-shadow:0 0 0 3px rgba(21,101,192,.15);
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 22px;border-radius:12px;border:none;
+  font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .2s;width:100%;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;
+  box-shadow:0 4px 14px rgba(21,101,192,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(21,101,192,.45);}
+.btn-primary:active{transform:translateY(0);}
+.btn-danger{
+  background:linear-gradient(135deg,#c62828,#ef5350);color:#fff;
+  box-shadow:0 4px 14px rgba(198,40,40,.3);
+}
+.btn-danger:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(198,40,40,.4);}
+.btn-outline{
+  background:#fff;color:#1565c0;border:2px solid #90caf9;
+}
+.btn-outline:hover{background:#e3f2fd;border-color:#42a5f5;}
+.btn-sm{padding:8px 16px;font-size:.85rem;width:auto;}
+
+.error-msg{
+  background:#ffebee;color:#c62828;border-radius:10px;
+  padding:10px 14px;font-size:.9rem;font-weight:600;
+  text-align:center;margin-top:12px;
+  border:1px solid #ef9a9a;
+  animation:shake .4s ease;
+}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}};
+
+.hint-box{
+  background:#fff8e1;border:1px solid #ffe082;border-radius:10px;
+  padding:10px 14px;margin-top:14px;text-align:center;
+  font-size:.85rem;color:#f57f17;
+}
+.hint-box.hidden{display:none;}
+
+.educational-msg{
+  background:linear-gradient(90deg,#fff3e0,#ffe0b2);
+  border-radius:12px;padding:10px 16px;margin-top:16px;
+  font-size:.95rem;color:#e65100;font-weight:700;
+  text-align:center;border:2px solid #ffb74d;
+}
+
+.dashboard-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;flex-wrap:wrap;gap:10px;
+}
+.welcome-text{
+  font-size:1.3rem;font-weight:800;color:#1565c0;
+}
+
+.dashboard-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  grid-gap:14px;margin-bottom:16px;
+}
+.dash-card{
+  background:#f5f5f5;border-radius:14px;padding:18px 14px;
+  text-align:center;cursor:pointer;
+  border:2px solid #e0e0e0;
+  transition:all .2s;
+}
+.dash-card:hover{
+  transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12);
+  border-color:#42a5f5;background:#e3f2fd;
+}
+.dash-card .card-icon{font-size:2.2rem;margin-bottom:6px;}
+.dash-card .card-label{font-size:.9rem;font-weight:700;color:#37474f;}
+
+.card-detail{
+  background:linear-gradient(135deg,#e3f2fd,#bbdefb);
+  border-radius:14px;padding:16px;margin-top:14px;
+  border:1px solid #90caf9;
+  animation:fadeIn .3s ease;
+}
+.card-detail h3{color:#1565c0;font-size:1.05rem;margin-bottom:6px;}
+.card-detail p{color:#455a64;font-size:.9rem;line-height:1.5;}
+.card-detail.hidden{display:none;}
+
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.5);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.hidden{display:none;}
+.modal-box{
+  background:#fff;border-radius:20px;padding:30px;
+  max-width:400px;width:100%;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:modalPop .35s ease;
+}
+@keyframes modalPop{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-box .modal-icon{font-size:3rem;margin-bottom:10px;}
+.modal-box h2{color:#1565c0;font-size:1.3rem;margin-bottom:8px;}
+.modal-box p{color:#546e7a;font-size:.95rem;line-height:1.5;margin-bottom:14px;}
+
+.logout-bar{
+  display:flex;justify-content:flex-end;margin-top:10px;
+}
+
+@media(max-width:500px){
+  .dashboard-grid{grid-template-columns:1fr 1fr;}
+  h1{font-size:1.3rem;}
+  .eme-logo .logo-text{font-size:1.8rem;}
+  .dashboard-header{flex-direction:column;align-items:flex-start;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .btn > * + * { margin-left: 6px; }
+  .dashboard-header > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔐 Σύνδεση στην e-me</h1>
+<p class="subtitle">Μάθε πώς να συνδέεσαι με ασφάλεια!</p>
+
+<div class="container" id="mainContainer">
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="instructions">
+      ℹ️ Γράψε το όνομα χρήστη και τον κωδικό σου για να συνδεθείς στην πλατφόρμα e-me.
+    </div>
+
+    <div class="eme-logo">
+      <div><span class="logo-icon">🎓</span> <span class="logo-text">e-me</span></div>
+      <div class="logo-sub">Εκπαιδευτική Πλατφόρμα</div>
+    </div>
+
+    <div class="login-form">
+      <div class="form-group">
+        <label for="username">👤 Όνομα χρήστη</label>
+        <input type="text" id="username" placeholder="π.χ. student1" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="password">🔑 Κωδικός</label>
+        <input type="password" id="password" placeholder="κωδικός">
+      </div>
+      <button class="btn btn-primary" onclick="tryLogin()">🔓 Σύνδεση</button>
+      <div id="errorMsg" class="hidden"></div>
+      <div style="text-align:center;margin-top:12px;">
+        <button class="btn btn-outline btn-sm" onclick="toggleHint()">💡 Βοήθεια</button>
+      </div>
+      <div id="hintBox" class="hint-box hidden">
+        <strong>Υπενθύμιση:</strong><br>
+        Όνομα χρήστη: <strong>student1</strong><br>
+        Κωδικός: <strong>1234</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div class="dashboard-screen hidden" id="dashboardScreen">
+    <div class="dashboard-header">
+      <span class="welcome-text">Καλώς ήρθες, Μαθητή! 🎉</span>
+      <button class="btn btn-danger btn-sm" onclick="doLogout()">🚪 Αποσύνδεση</button>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dash-card" onclick="showDetail('home')">
+        <div class="card-icon">🏠</div>
+        <div class="card-label">Αρχική</div>
+      </div>
+      <div class="dash-card" onclick="showDetail('mail')">
+        <div class="card-icon">📧</div>
+        <div class="card-label">Κυψέλη</div>
+      </div>
+      <div class="dash-card" onclick="showDetail('homework')">
+        <div class="card-icon">📝</div>
+        <div class="card-label">Εργασίες</div>
+      </div>
+      <div class="dash-card" onclick="showDetail('profile')">
+        <div class="card-icon">👤</div>
+        <div class="card-label">Προφίλ</div>
+      </div>
+    </div>
+
+    <div id="detailHome" class="card-detail hidden">
+      <h3>🏠 Αρχική Σελίδα</h3>
+      <p>Εδώ βλέπεις τα τελευταία νέα και τις ανακοινώσεις του σχολείου σου. Είναι η κεντρική σελίδα της e-me!</p>
+    </div>
+    <div id="detailMail" class="card-detail hidden">
+      <h3>📧 Κυψέλη (Μηνύματα)</h3>
+      <p>Εδώ στέλνεις και διαβάζεις μηνύματα στους δασκάλους σου και τους συμμαθητές σου. Μπορείς να γράψεις νέα μηνύματα ή να απαντήσεις σε όσα έχεις λάβει!</p>
+    </div>
+    <div id="detailHomework" class="card-detail hidden">
+      <h3>📝 Εργασίες</h3>
+      <p>Εδώ βρίσκεις τις εργασίες που σου δίνουν οι δάσκαλοί σου. Μπορείς να δεις τι πρέπει να κάνεις και να παραδώσεις τις εργασίες σου!</p>
+    </div>
+    <div id="detailProfile" class="card-detail hidden">
+      <h3>👤 Προφίλ</h3>
+      <p>Εδώ βλέπεις τα στοιχεία σου και μπορείς να αλλάξεις τη φωτογραφία σου. Εδώ μπορείς επίσης να αλλάξεις τον κωδικό σου!</p>
+    </div>
+
+    <div class="educational-msg">
+      🔒 Ποτέ δεν μοιράζεσαι τον κωδικό σου με κανέναν!
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h2>Μπράβο! Συνδέθηκες!</h2>
+    <p>Αποθήκευες επιτυχώς στην πλατφόρμα e-me. Τώρα μπορείς να εξερευνήσεις τον πίνακα σου!</p>
+    <button class="btn btn-primary" onclick="closeModal()">🚀 Ξεκίνα!</button>
+  </div>
+</div>
+
+<script>
+var correctUser = 'student1';
+var correctPass = '1234';
+
+function esc(str) {
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+function tryLogin() {
+  var u = document.getElementById('username').value.trim();
+  var p = document.getElementById('password').value;
+  var errEl = document.getElementById('errorMsg');
+
+  if (u === correctUser && p === correctPass) {
+    errEl.className = 'hidden';
+    document.getElementById('loginScreen').className = 'login-screen hidden';
+    document.getElementById('dashboardScreen').className = 'dashboard-screen';
+    document.getElementById('successModal').className = 'modal-overlay';
+    hideAllDetails();
+  } else {
+    errEl.className = 'error-msg';
+    errEl.textContent = 'Λάθος όνομα χρήστη ή κωδικός. Ξαναδοκίμασε!';
+  }
+}
+
+document.getElementById('password').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') tryLogin();
+});
+document.getElementById('username').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('password').focus();
+});
+
+function doLogout() {
+  document.getElementById('dashboardScreen').className = 'dashboard-screen hidden';
+  document.getElementById('loginScreen').className = 'login-screen';
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('errorMsg').className = 'hidden';
+  hideAllDetails();
+}
+
+function hideAllDetails() {
+  var ids = ['detailHome','detailMail','detailHomework','detailProfile'];
+  for (var i = 0; i < ids.length; i++) {
+    document.getElementById(ids[i]).className = 'card-detail hidden';
+  }
+}
+
+function showDetail(key) {
+  hideAllDetails();
+  var map = {home:'detailHome',mail:'detailMail',homework:'detailHomework',profile:'detailProfile'};
+  if (map[key]) {
+    document.getElementById(map[key]).className = 'card-detail';
+  }
+}
+
+function toggleHint() {
+  var h = document.getElementById('hintBox');
+  if (h.className.indexOf('hidden') !== -1) {
+    h.className = 'hint-box';
+  } else {
+    h.className = 'hint-box hidden';
+  }
+}
+
+function closeModal() {
+  document.getElementById('successModal').className = 'modal-overlay hidden';
+}
+</script>
+</body>
+</html>

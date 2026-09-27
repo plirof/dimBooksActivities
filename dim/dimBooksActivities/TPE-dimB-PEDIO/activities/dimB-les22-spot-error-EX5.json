@@ -1,0 +1,35 @@
+{
+  "title": "Βρες τα Λάθη: Γράφω Κείμενο",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Γράφω", "error": false, "correct": "", "feedback": "" },
+        { "text": "κειμενο", "error": true, "correct": "κείμενο", "feedback": "Λείπει ο τόνος" },
+        { "text": "στον", "error": false, "correct": "", "feedback": "" },
+        { "text": "υπολογιστή", "error": false, "correct": "", "feedback": "" },
+        { "text": "χωρίς", "error": false, "correct": "", "feedback": "" },
+        { "text": "tovouc", "error": true, "correct": "τόνους", "feedback": "Πρέπει να βάζω τόνους" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "αλλάξω", "error": false, "correct": "", "feedback": "" },
+        { "text": "παραγωφο", "error": true, "correct": "παράγραφο", "feedback": "Λάθος λέξη και λείπει ο τόνος" },
+        { "text": "πατάω", "error": false, "correct": "", "feedback": "" },
+        { "text": "Delete", "error": true, "correct": "Enter", "feedback": "Το Enter αλλάζει παράγραφο, όχι το Delete" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "τελικό", "error": false, "correct": "", "feedback": "" },
+        { "text": "ς", "error": false, "correct": "", "feedback": "" },
+        { "text": "βρισκεται", "error": true, "correct": "βρίσκεται", "feedback": "Λείπει ο τόνος" },
+        { "text": "δεξιά", "error": true, "correct": "αριστερά", "feedback": "Το ς είναι αριστερά από το Ε" }
+      ]
+    }
+  ]
+}

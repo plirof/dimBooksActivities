@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Καταγραφή Δεδομένων | Μάθημα 11</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.main{max-width:750px;width:100%}
+.experiment-card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:8px}
+.exp-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.exp-icon{font-size:1.8rem}
+.exp-title{color:#fbbf24;font-size:.8rem;font-weight:700}
+.locations{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.loc-btn{padding:10px 16px;border:2px solid #334155;border-radius:12px;background:#1e293b;color:#e2e8f0;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:80px}
+.loc-btn:hover{border-color:#6366f1;transform:translateY(-2px)}
+.loc-btn .loc-icon{font-size:1.3rem}
+.loc-btn .loc-name{font-size:.65rem}
+.loc-btn.selected{border-color:#a78bfa;background:#1e1b4b}
+.loc-btn.measured{border-color:#22c55e;background:#22c55e11;color:#4ade80}
+.microbit-indicator{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;padding:8px;background:#1e293b;border-radius:10px}
+.mb-leds{display:flex;gap:3px}
+.mb-dot{width:8px;height:8px;border-radius:2px;background:#1a1a2e;transition:all .3s}
+.mb-dot.on{background:#ffd700;box-shadow:0 0 4px #ffd700}
+.mb-status{font-size:.65rem;color:#64748b;font-weight:600}
+.record-btn{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;margin:0 4px}
+.record-btn:hover{transform:scale(1.05)}
+.record-btn:disabled{opacity:.4;cursor:default;transform:none}
+.record-btn.recording{animation: pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.7)}50%{box-shadow:0 0 0 8px rgba(99,102,241,0)}}
+.data-table-wrap{overflow-x:auto;margin-top:6px;border-radius:10px;border:1px solid #334155}
+.data-table{width:100%;border-collapse:collapse;font-size:.68rem}
+.data-table th{background:#1e293b;color:#fbbf24;padding:6px 8px;text-align:left;font-weight:700;border-bottom:2px solid #334155}
+.data-table td{padding:5px 8px;color:#e2e8f0;border-bottom:1px solid #1e293b}
+.data-table tr:hover td{background:#1e293b}
+.data-table .td-time{color:#64748b;font-family:monospace;font-size:.62rem}
+.info-box{font-size:.65rem;color:#64748b;line-height:1.5;padding:8px;background:#1e293b;border-radius:8px;margin-top:6px}
+.info-box strong{color:#fbbf24}
+.clear-btn{padding:5px 12px;border:1px solid #ef4444;border-radius:6px;background:transparent;color:#f87171;font-size:.62rem;font-weight:600;cursor:pointer}
+.clear-btn:hover{background:#ef444422}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .exp-header > * + * { margin-left: 10px; }
+  .locations > * { margin: 3px; }
+  .loc-btn > * + * { margin-top: 2px; }
+  .microbit-indicator > * + * { margin-left: 10px; }
+  .mb-leds > * + * { margin-left: 3px; }
+  .g61f8_0 > * { margin: 4px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📡 Καταγραφή Δεδομένων</h1>
+<p class="subtitle">Χρησιμοποίησε το micro:bit για να καταγράψεις μετρήσεις από διάφορους χώρους!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Μετρήσεις:</span> <span id="measureCount">0</span></span>
+<span class="sc"><span class="sl">Μέσος όρος φωτός:</span> <span id="avgLight">—</span></span>
+</div>
+<div class="main" id="main"></div>
+<script>
+var rooms=[
+{icon:'🏫',name:'Αίθουσα',light:240,temp:24,sound:45},
+{icon:'🌳',name:'Προαύλιο',light:680,temp:32,sound:65},
+{icon:'📚',name:'Βιβλιοθήκη',light:120,temp:22,sound:25},
+{icon:'☀️',name:'Μπαλκόνι',light:800,temp:35,sound:55},
+{icon:'🌙',name:'Σκοτεινό δωμάτιο',light:15,temp:20,sound:20},
+{icon:'🍽️',name:'Κυλικείο',light:350,temp:27,sound:70}
+];
+var measurements=[];
+var selectedRoom=0;
+var isRecording=false;
+var columns=['fws','thrm','ixos'];
+var colNames={'fws':'Φως','thrm':'Θερμοκρασία','ixos':'Ήχος'};
+var hasMeasured={};
+function init(){render();}
+function render(){
+var main=document.getElementById('main');
+var h='';
+h+='<div class="experiment-card">';
+h+='<div class="exp-header"><span class="exp-icon">🔬</span><span class="exp-title">Πείραμα: Μέτρησε το φως, τη θερμοκρασία και τον ήχο σε διάφορους χώρους</span></div>';
+h+='<div class="locations">';
+for(var i=0;i<rooms.length;i++){
+var cls='loc-btn'+(selectedRoom===i?' selected':'')+(hasMeasured[i]?' measured':'');
+h+='<div class="'+cls+'" onclick="selectRoom('+i+')"><span class="loc-icon">'+rooms[i].icon+'</span><span class="loc-name">'+rooms[i].name+'</span></div>';
+}
+h+='</div>';
+var room=rooms[selectedRoom];
+h+='<div style="text-align:center;margin-bottom:8px">';
+h+='<span style="color:#94a3b8;font-size:.7rem">📍 Επιλεγμένος χώρος: <strong style="color:#e2e8f0">'+room.icon+' '+room.name+'</strong></span>';
+h+='</div>';
+h+='<div class="microbit-indicator">';
+h+='<div class="mb-leds">';
+for(var j=0;j<5;j++){
+h+='<div class="mb-dot'+(j<3?' on':'')+'" id="mbDot'+j+'"></div>';
+}
+h+='</div>';
+h+='<span class="mb-status" id="mbStatus">🔌 Σε αναμονή</span>';
+h+='<button class="record-btn" id="recordBtn" onclick="recordMeasurement()">📥 Καταγραφή</button>';
+h+='</div>';
+h+='<div class="g61f8_0" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;font-size:.65rem;color:#94a3b8">';
+h+='<span>💡 Φως: <strong style="color:#fbbf24">'+room.light+'</strong></span>';
+h+='<span>🌡️ Θερμοκρασία: <strong style="color:#fbbf24">'+room.temp+'°C</strong></span>';
+h+='<span>🔊 Ήχος: <strong style="color:#fbbf24">'+room.sound+'</strong></span>';
+h+='<button class="clear-btn" onclick="clearData()">🗑️ Καθαρισμός</button>';
+h+='</div>';
+if(measurements.length>0){
+h+='<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Χρόνος</th><th>📍 Χώρος</th><th>💡 Φως (fws)</th><th>🌡️ Θερμοκρασία (thrm)</th><th>🔊 Ήχος (ixos)</th></tr></thead><tbody>';
+for(var k=0;k<measurements.length;k++){
+var m=measurements[k];
+h+='<tr><td class="td-time">'+m.time+'</td><td>'+rooms[m.room].icon+' '+rooms[m.room].name+'</td><td>'+m.fws+'</td><td>'+m.thrm+'°C</td><td>'+m.ixos+'</td></tr>';
+}
+h+='</tbody></table></div>';
+}else{
+h+='<div style="text-align:center;padding:20px;color:#475569;font-size:.7rem">📋 Επίλεξε χώρο και πάτα «Καταγραφή» για να ξεκινήσεις το πείραμα!</div>';
+}
+h+='<div class="info-box">💡 <strong>Πώς λειτουργεί:</strong> Επίλεξε έναν χώρο, δες τις τιμές των αισθητήρων (φως, θερμοκρασία, ήχος) και πάτα <strong>Καταγραφή</strong> για να αποθηκεύσεις τα δεδομένα. Το micro:bit αποθηκεύει σε αρχείο MY_DATA.HTM που μπορείς να ανοίξεις σε υπολογιστικό φύλλο!</div>';
+h+='</div>';
+main.innerHTML=h;
+updateStats();
+}
+function selectRoom(idx){
+selectedRoom=idx;
+render();
+}
+function recordMeasurement(){
+if(isRecording)return;
+isRecording=true;
+var btn=document.getElementById('recordBtn');
+btn.disabled=true;
+btn.textContent='⏳ Καταγραφή...';
+var status=document.getElementById('mbStatus');
+status.textContent='📥 Καταγραφή δεδομένων...';
+for(var i=0;i<5;i++){
+var dot=document.getElementById('mbDot'+i);
+if(dot){dot.className='mb-dot on';}
+}
+setTimeout(function(){
+var room=rooms[selectedRoom];
+var now=new Date();
+var timeStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+measurements.push({
+time:timeStr,
+room:selectedRoom,
+fws:room.light,
+thrm:room.temp,
+ixos:room.sound
+});
+hasMeasured[selectedRoom]=true;
+isRecording=false;
+btn.disabled=false;
+btn.textContent='📥 Καταγραφή';
+status.textContent='✅ Καταγράφηκε!';
+updateStats();
+render();
+},600);
+}
+function updateStats(){
+document.getElementById('measureCount').textContent=measurements.length;
+if(measurements.length>0){
+var total=0;
+for(var i=0;i<measurements.length;i++){total+=measurements[i].fws;}
+var avg=Math.round(total/measurements.length);
+document.getElementById('avgLight').textContent=avg;
+}else{
+document.getElementById('avgLight').textContent='—';
+}
+}
+function clearData(){
+measurements=[];
+hasMeasured={};
+render();
+}
+init();
+</script>
+</body>
+</html>

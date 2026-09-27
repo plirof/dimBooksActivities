@@ -1,0 +1,20 @@
+{
+  "title": "Ψηφιακά δεδομένα — Κατηγοριοποίηση",
+  "subtitle": "Σύρε κάθε στοιχείο στη σωστή κατηγορία",
+  "categories": [
+    { "id": "img", "name": "Ψηφιακή εικόνα", "color": "#9C27B0" },
+    { "id": "binary", "name": "Δυαδική κωδικοποίηση", "color": "#FF9800" },
+    { "id": "dtype", "name": "Είδος δεδομένων", "color": "#4CAF50" }
+  ],
+  "items": [
+    { "id": "i1", "text": "Pixel / εικονοστοιχείο", "category": "img" },
+    { "id": "i2", "text": "10100 = Υ", "category": "binary" },
+    { "id": "i3", "text": "Βίντεο", "category": "dtype" },
+    { "id": "i4", "text": "Γραμμές και στήλες εικόνας", "category": "img" },
+    { "id": "i5", "text": "0 και 1 (δυαδικά ψηφία)", "category": "binary" },
+    { "id": "i6", "text": "Ήχος", "category": "dtype" },
+    { "id": "i7", "text": "Κωδικός χρώματος ανά pixel", "category": "img" },
+    { "id": "i8", "text": "5 ψηφία ανά γράμμα αλφαβήτου", "category": "binary" },
+    { "id": "i9", "text": "Κείμενο", "category": "dtype" }
+  ]
+}

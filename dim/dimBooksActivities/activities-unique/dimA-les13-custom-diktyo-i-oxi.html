@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δίκτυο ή όχι; 🔗</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 14px;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(79,172,254,.4); margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .header p { font-size: 1rem; opacity: .9; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #4facfe; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 1.1rem; text-align: center; color: #6b5900;
+  }
+  .scene-box {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 28px 20px; text-align: center; margin-bottom: 16px;
+    min-height: 200px;
+  }
+  .scene-grid {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center; align-items: center;
+    margin-bottom: 12px;
+  }
+  .scene-item {
+    text-align: center;
+  }
+  .scene-item .si-emoji { font-size: 3rem; }
+  .scene-item .si-label { font-size: .85rem; color: #666; font-weight: 600; }
+  .scene-connector { font-size: 2rem; color: #bbb; }
+  .scene-question {
+    font-size: 1.3rem; font-weight: 700; color: #2d3436;
+    margin-bottom: 16px;
+  }
+  .btn-group {
+    display: flex; gap: 16px; justify-content: center;
+  }
+  .btn-choice {
+    border: none; border-radius: 20px; padding: 16px 28px;
+    font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 14px rgba(0,0,0,.1);
+    flex: 1; max-width: 180px;
+  }
+  .btn-yes { background: linear-gradient(135deg,#43e97b,#38f9d7); color: #fff; }
+  .btn-no { background: linear-gradient(135deg,#f093fb,#f5576c); color: #fff; }
+  .btn-choice:hover { transform: scale(1.05); }
+  .btn-choice:active { transform: scale(.95); }
+  .btn-choice:disabled { opacity: .5; cursor: default; transform: none !important; }
+  .feedback {
+    text-align: center; padding: 14px; border-radius: 16px;
+    font-size: 1.1rem; font-weight: 700; display: none;
+    margin-bottom: 12px;
+  }
+  .feedback.show { display: block; }
+  .feedback.true { background: #d4edda; color: #155724; }
+  .feedback.false { background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 40px 24px; text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(79,172,254,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+  .explanation {
+    font-size: .95rem; color: #666; margin-top: 8px;
+    font-weight: 400;
+  }
+  @media (max-width:480px) {
+    .header h1 { font-size: 1.2rem; }
+    .scene-item .si-emoji { font-size: 2.5rem; }
+    .btn-choice { padding: 14px 20px; font-size: 1.1rem; }
+  }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .scene-grid > * { margin: 8px; }
+  .btn-group > * + * { margin-left: 16px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🔗 Δίκτυο ή όχι;</h1>
+    <p>Μάντεψε αν είναι δίκτυο!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">Ερώτηση 1/8</span>
+  </div>
+  <div class="instructions">👀 Κοίτα τα πράγματα. Είναι συνδεδεμένα μεταξύ τους; Αυτό είναι <strong>δίκτυο</strong>;</div>
+  <div id="gameArea">
+    <div class="scene-box" id="sceneBox">
+      <div class="scene-grid" id="sceneGrid"></div>
+      <div class="scene-question" id="sceneQuestion">Είναι δίκτυο αυτό;</div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="btn-group">
+      <button class="btn-choice btn-yes" id="btnYes" onclick="answer(true)">✅ Ναι</button>
+      <button class="btn-choice btn-no" id="btnNo" onclick="answer(false)">❌ Όχι</button>
+    </div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var items = [
+    { items: [{e:'🖥️',l:'Υπολογιστής'},{e:'🔗',l:''},{e:'🖥️',l:'Υπολογιστής'}], isNetwork: true, 
+      explain: 'Δύο υπολογιστές συνδεδεμένοι = δίκτυο!' },
+    { items: [{e:'🖥️',l:'Υπολογιστής'},{e:'🔗',l:''},{e:'🖥️',l:'Υπολογιστής'},{e:'🔗',l:''},{e:'💻',l:'Φορητός'}], isNetwork: true,
+      explain: 'Πολλοί υπολογιστές συνδεδεμένοι = δίκτυο!' },
+    { items: [{e:'📚',l:'Βιβλία'},{e:'📚',l:'Βιβλία'},{e:'📚',l:'Βιβλία'}], isNetwork: false,
+      explain: 'Τα βιβλία είναι απλά στοιβαγμένα, όχι συνδεδεμένα.' },
+    { items: [{e:'📱',l:'Κινητό'},{e:'📡',l:''},{e:'📱',l:'Κινητό'}], isNetwork: true,
+      explain: 'Τα κινητά συνδέονται ασύρματα! Αυτό είναι δίκτυο!' },
+    { items: [{e:'🚗',l:'Αυτοκίνητο'},{e:'🛣️',l:''},{e:'🚗',l:'Αυτοκίνητο'}], isNetwork: true,
+      explain: 'Οι δρόμοι συνδέουν πόλεις = οδικό δίκτυο!' },
+    { items: [{e:'🖥️',l:'Υπολογιστής'},{e:'❌',l:''},{e:'🖥️',l:'Υπολογιστής'}], isNetwork: false,
+      explain: 'Οι υπολογιστές δεν είναι συνδεδεμένοι. Δεν έχουν καλώδιο!' },
+    { items: [{e:'🧸',l:'Αρκουδάκι'},{e:'🧸',l:'Αρκουδάκι'},{e:'🧸',l:'Αρκουδάκι'}], isNetwork: false,
+      explain: 'Τα αρκουδάκια δεν συνδέονται μεταξύ τους!' },
+    { items: [{e:'💻',l:'Φορητός'},{e:'🔗',l:''},{e:'📱',l:'Ταμπλέτα'},{e:'🔗',l:''},{e:'🖨️',l:'Εκτυπωτής'}], isNetwork: true,
+      explain: 'Ναι! Υπολογιστής, ταμπλέτα και εκτυπωτής συνδεδεμένα = δίκτυο!' }
+  ];
+  var current = 0; var score = 0; var shuffled = [];
+  function shuffle(a) {
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+  function startGame() {
+    shuffled = shuffle(items.slice());
+    current = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    showItem();
+  }
+  function showItem() {
+    if (current >= shuffled.length) { showResult(); return; }
+    var it = shuffled[current];
+    document.getElementById('roundDisplay').textContent = 'Ερώτηση ' + (current+1) + '/' + shuffled.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnYes').disabled = false;
+    document.getElementById('btnNo').disabled = false;
+    var grid = document.getElementById('sceneGrid');
+    grid.innerHTML = '';
+    for (var i = 0; i < it.items.length; i++) {
+      var div = document.createElement('div');
+      div.className = 'scene-item';
+      div.innerHTML = '<div class="si-emoji">' + it.items[i].e + '</div>' +
+        (it.items[i].l ? '<div class="si-label">' + it.items[i].l + '</div>' : '');
+      grid.appendChild(div);
+    }
+    document.getElementById('sceneQuestion').textContent = 'Είναι δίκτυο αυτό;';
+  }
+  function answer(ans) {
+    var it = shuffled[current];
+    var correct = (ans === it.isNetwork);
+    document.getElementById('btnYes').disabled = true;
+    document.getElementById('btnNo').disabled = true;
+    var fb = document.getElementById('feedback');
+    if (correct) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      fb.className = 'feedback show true';
+      fb.innerHTML = '✅ Μπράβο! ' + it.explain;
+      setTimeout(function() { current++; showItem(); }, 1500);
+    } else {
+      fb.className = 'feedback show false';
+      fb.innerHTML = '❌ Ωχ! ' + it.explain;
+      setTimeout(function() { current++; showItem(); }, 2000);
+    }
+  }
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var t = shuffled.length;
+    var e,ti,m;
+    if (score===t){e='🏆';ti='Τέλεια!';m='Ξέρεις τι είναι δίκτυο!'}
+    else if(score>=6){e='🎉';ti='Μπράβο!';m='Τα πήγες πολύ καλά!'}
+    else if(score>=4){e='👍';ti='Ωραία!';m='Καλή προσπάθεια! Δοκίμασε ξανά!'}
+    else {e='💪';ti='Καλή αρχή!';m='Προσπάθησε ξανά!'}
+    document.getElementById('resultEmoji').textContent = e;
+    document.getElementById('resultTitle').textContent = ti;
+    document.getElementById('resultMsg').textContent = 'Βρήκες '+score+' από '+t+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

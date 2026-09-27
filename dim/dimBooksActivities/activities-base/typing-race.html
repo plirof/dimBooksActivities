@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αγώνας Πληκτρολόγησης</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e53935 0%,#e65100 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.25);text-align:center}
+h1{color:#b71c1c;font-size:1.8rem;margin-bottom:5px}
+h2{color:#d32f2f;font-size:1.1rem;margin-bottom:20px;font-weight:400}
+.start-btn,.restart-btn{background:linear-gradient(135deg,#d32f2f,#b71c1c);color:#fff;border:none;padding:14px 40px;border-radius:50px;font-size:1.2rem;cursor:pointer;transition:transform .2s;margin-top:15px}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.race-track{background:#333;border-radius:12px;padding:15px;margin:15px 0;position:relative}
+.lane{display:flex;align-items:center;margin:6px 0;position:relative;height:36px}
+.lane-label{color:#fff;font-size:.75rem;width:60px;text-align:right;padding-right:8px;font-weight:600}
+.track{flex:1;background:#555;height:30px;border-radius:15px;position:relative;overflow:hidden}
+.track .finish{position:absolute;right:0;top:0;bottom:0;width:4px;background:#fff;border-radius:2px}
+.racer{position:absolute;left:2px;top:2px;bottom:2px;width:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;transition:left .3s ease}
+.player-racer{background:#4CAF50}
+.opponent-racer{background:#FF9800}
+.score-bar{display:flex;justify-content:space-between;margin-bottom:10px;font-size:.95rem;color:#d32f2f;font-weight:600}
+.word-display{font-size:1.8rem;color:#b71c1c;font-weight:700;margin:15px 0;padding:10px;background:#fce4ec;border-radius:12px;letter-spacing:1px}
+.word-display .typed{color:#4CAF50}
+.word-display .pending{color:#b71c1c}
+.type-input{width:100%;max-width:350px;padding:12px 18px;font-size:1.2rem;border:3px solid #d32f2f;border-radius:25px;outline:none;text-align:center;color:#333;font-family:inherit;transition:border-color .2s}
+.type-input:focus{border-color:#4CAF50}
+.type-input.correct{border-color:#4CAF50;background:#e8f5e9}
+.type-input.wrong{border-color:#f44336;background:#ffebee}
+.feedback{margin-top:10px;font-size:1.1rem;font-weight:600;min-height:1.5em}
+.end-screen h1{font-size:1.6rem;margin-bottom:10px}
+.end-screen .final-score{font-size:2rem;color:#b71c1c;font-weight:700;margin:10px 0}
+.end-screen .stars{font-size:2rem;margin:10px 0}
+.hidden{display:none!important}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+let gameData,score,playerPos,opponentPos,raceLength,words,wordIndex,opponentInterval,gameActive;
+
+if(!dataFile){
+app.innerHTML='<h1>Αγώνας Πληκτρολόγησης</h1><p style="color:#d32f2f">Δεν βρέθηκε αρχείο δεδομένων.</p>';
+}else{
+fetch(dataFile).then(r=>r.json()).then(d=>{gameData=d;showStart()}).catch(()=>{app.innerHTML='<h1>Σφάλμα</h1><p style="color:#f44336">Δεν ήταν δυνατή η φόρτωση των δεδομένων.</p>'});
+}
+
+function showStart(){
+score=0;playerPos=0;opponentPos=0;wordIndex=0;gameActive=false;
+app.innerHTML='<div><h1>'+esc(gameData.title)+'</h1><h2>'+esc(gameData.subtitle)+'</h2><p style="color:#d32f2f;margin:10px 0">'+esc(gameData.instructions)+'</p><div style="font-size:3rem;margin:20px 0">🏎️</div><button class="start-btn" id="startBtn">Ξεκίνα!</button></div>';
+document.getElementById('startBtn').onclick=showGame;
+}
+
+function showGame(){
+gameActive=true;
+raceLength=gameData.raceLength||10;
+words=gameData.words.slice().sort(function(){return Math.random()-0.5});
+const speed=gameData.opponentSpeed||4;
+renderGame();
+opponentInterval=setInterval(function(){
+if(!gameActive)return;
+opponentPos++;
+updateTrack();
+if(opponentPos>=raceLength){endGame(false)}
+},speed*1000);
+document.getElementById('typeInput').focus();
+}
+
+function renderGame(){
+const word=words[wordIndex%words.length];
+app.innerHTML='<div><h1>'+esc(gameData.title)+'</h1><div class="score-bar"><span>Λέξη: '+(wordIndex+1)+'</span><span>Πρόοδος: '+playerPos+' / '+raceLength+'</span></div><div class="race-track"><div class="lane"><span class="lane-label">Εσύ 🟢</span><div class="track"><div class="finish"></div><div class="racer player-racer" id="playerRacer">🚗</div></div></div><div class="lane"><span class="lane-label">Αντίπαλος 🟠</span><div class="track"><div class="finish"></div><div class="racer opponent-racer" id="opponentRacer">🚕</div></div></div></div><div class="word-display" id="wordDisplay"><span class="pending">'+esc(word)+'</span></div><input type="text" class="type-input" id="typeInput" autocomplete="off" placeholder="Πληκτρολόγησε εδώ..."><div class="feedback" id="feedback"></div></div>';
+document.getElementById('typeInput').addEventListener('input',handleInput);
+updateTrack();
+}
+
+function updateTrack(){
+const playerRacer=document.getElementById('playerRacer');
+const opponentRacer=document.getElementById('opponentRacer');
+if(playerRacer){
+const trackW=playerRacer.parentElement.offsetWidth-30;
+playerRacer.style.left=Math.min(playerPos/(raceLength-1),1)*trackW+'px';
+}
+if(opponentRacer){
+const trackW=opponentRacer.parentElement.offsetWidth-30;
+opponentRacer.style.left=Math.min(opponentPos/(raceLength-1),1)*trackW+'px';
+}
+}
+
+function handleInput(e){
+if(!gameActive)return;
+const input=e.target;
+const word=words[wordIndex%words.length];
+const val=input.value;
+const display=document.getElementById('wordDisplay');
+let typedPart='';
+let pendingPart='';
+for(let i=0;i<word.length;i++){
+if(i<val.length){
+if(val[i]===word[i])typedPart+=word[i];else{pendingPart+=word.substring(i);break}
+}else{pendingPart+=word.substring(i);break}
+}
+display.innerHTML='<span class="typed">'+esc(typedPart)+'</span><span class="pending">'+esc(pendingPart)+'</span>';
+if(val===word){
+input.classList.add('correct');
+input.value='';
+score++;
+playerPos++;
+wordIndex++;
+updateTrack();
+if(playerPos>=raceLength){endGame(true)}
+else{
+setTimeout(function(){
+const nextWord=words[wordIndex%words.length];
+display.innerHTML='<span class="pending">'+esc(nextWord)+'</span>';
+input.classList.remove('correct');
+},300);
+}
+}else if(val.length>0&&val[0]!==word[0]){
+input.classList.add('wrong');
+}else{
+input.classList.remove('wrong');
+input.classList.remove('correct');
+}
+}
+
+function endGame(won){
+gameActive=false;
+clearInterval(opponentInterval);
+const pct=Math.round(score/(raceLength)*100);
+let stars='';
+if(pct>=90)stars='⭐⭐⭐';else if(pct>=60)stars='⭐⭐';else if(pct>=30)stars='⭐';
+app.innerHTML='<div class="end-screen"><h1>'+esc(gameData.title)+'</h1><div class="stars">'+stars+'</div><div class="final-score">'+(won?'🏆 Νίκησες!':'😤 Έχασες!')+'</div><p style="color:#b71c1c;font-size:1.1rem;margin:10px 0">Λέξεις: '+score+' | Αntίπαλος: '+opponentPos+' / '+raceLength+'</p><button class="restart-btn" id="restartBtn">Ξαναπαιξε!</button></div>';
+document.getElementById('restartBtn').onclick=showStart;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "title": "Βρες το Μοτίβο!",
+  "subtitle": "Κάνε κλικ στη χάντρα που ακολουθεί",
+  "instructions": "Ποια χάντρα έρχεται μετά στο μοτίβο; Κάνε κλικ!",
+  "duration": 30,
+  "maxTargets": 2,
+  "targetLife": 3000,
+  "targets": [
+    { "label": "🔴", "color": "#FFCDD2" },
+    { "label": "🔵", "color": "#BBDEFB" },
+    { "label": "🟢", "color": "#C8E6C9" },
+    { "label": "🟡", "color": "#FFF9C4" }
+  ]
+}

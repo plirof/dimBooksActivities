@@ -1,0 +1,43 @@
+{
+    "id": "dimE-les26-groupsort-zd3",
+    "title": "e-me assignments, SchoolPress, SchoolRadio - Ομαδοποίηση",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "groups": [
+            {
+                "name": "e-me",
+                "items": [
+                    "Assignments",
+                    "Εργασίες",
+                    "Παράδοση",
+                    "Αξιολόγηση"
+                ]
+            },
+            {
+                "name": "SchoolPress",
+                "items": [
+                    "Ιστολόγιο",
+                    "Άρθρα",
+                    "Σχόλια",
+                    "Δημοσίευση"
+                ]
+            },
+            {
+                "name": "School Radio",
+                "items": [
+                    "Εκπομπή",
+                    "Ήχος",
+                    "Μουσική",
+                    "Ραδιόφωνο"
+                ]
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les26",
+        "e-me"
+    ]
+}

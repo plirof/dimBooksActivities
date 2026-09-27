@@ -1,0 +1,21 @@
+{
+  "title": "Ταξινόμηση: Κείμενο, Εικόνα ή Ήχος;",
+  "subtitle": "Βάλε το αρχείο στη σωστή κατηγορία!",
+  "instructions": "Πάτα: Κείμενο, Εικόνα ή Ήχος;",
+  "categories": [
+    {"id": "keimeno", "name": "Κείμενο", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "eikona", "name": "Εικόνα", "color": "#f44336", "key": "ArrowUp"},
+    {"id": "ixos", "name": "Ήχος", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Μια ιστορία", "category": "keimeno"},
+    {"text": "Ζωγραφιά σκύλου", "category": "eikona"},
+    {"text": "Γάβγισμα", "category": "ixos"},
+    {"text": "Ένα γράμμα", "category": "keimeno"},
+    {"text": "Φωτογραφία γάτας", "category": "eikona"},
+    {"text": "Τραγούδι", "category": "ixos"},
+    {"text": "Ανακοίνωση", "category": "keimeno"},
+    {"text": "Σχεδιάκινημα", "category": "eikona"}
+  ],
+  "duration": 30
+}

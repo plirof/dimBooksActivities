@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Πληροφορική ΣΤ&#x27; Δημοτικού — Μάθημα 19: Ανάλυση δεδομένων με χρήση φίλτρων στο υπολογιστικό φύλλο ......................................................64</title>
+
+<title>Pliroforiki_ST-Dimotikou_pdf-web_v.7.0_PEDIO/index</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="pdftohtml 0.36"/>
+<meta name="date" content="2026-04-03T12:32:02+00:00"/>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+
+</head>
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<!-- Page 66 -->
+<a name="66"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page66-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index066.png" alt="background image"/>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft6623">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft6610">64</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft6630"><b>1</b></p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft6625">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft6610">64</p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft6625">Δεδομένα και ανάλυση δεδομένων</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft6630"><b>3&#160;</b></p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft6623">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:143px;left:346px;white-space:nowrap" class="ft6652">Ανάλυση δεδομένων με χρήση φίλτρων&#160;<br/>στο υπολογιστικό φύλλο</p>
+<p style="position:absolute;top:141px;left:116px;white-space:nowrap" class="ft6638"><b>&#160; &#160; &#160;Μάθημα 19ο</b></p>
+<p style="position:absolute;top:278px;left:203px;white-space:nowrap" class="ft6647">&#160;&#160;Να διαχειρίζεσαι δεδομένα για την επίλυση προβλημάτων.&#160;<br/>&#160;&#160;Να χρησιμοποιείς φίλτρα δεδομένων στο υπολογιστικό φύλλο.</p>
+<p style="position:absolute;top:226px;left:212px;white-space:nowrap" class="ft6613"><b>Στο μάθημα αυτό θα μάθεις:</b></p>
+<p style="position:absolute;top:400px;left:155px;white-space:nowrap" class="ft6610">Θυμάμαι ότι… Η&#160;Υπατία και ο Ήρωνας έχουν δημιουργήσει μία εργασία για τις καιρικές&#160;</p>
+<p style="position:absolute;top:421px;left:111px;white-space:nowrap" class="ft6626">συνθήκες της Ευρώπης. Έχουν συγκεντρώσει και αναλύουν δεδομένα στο υπολογιστικό φύλλο, τα&#160;<br/>οποία προέρχονται από τον δικτυακό τόπ<a href="https://meteo.gr/observations_Europe.cfm">ο «</a></p>
+<p style="position:absolute;top:442px;left:394px;white-space:nowrap" class="ft6666"><a href="https://meteo.gr/observations_Europe.cfm">Ο καιρός στην Ευρώπη».</a></p>
+<p style="position:absolute;top:561px;left:156px;white-space:nowrap" class="ft6610">Βοήθησε την&#160;Υπατία και τον Ήρωνα στην εργασία τους.&#160;Άνοιξε το αρχείο του υπολογιστικού&#160;</p>
+<p style="position:absolute;top:583px;left:111px;white-space:nowrap" class="ft6639">φύλλου που δημιούργησες και αποθήκευσες στο προηγούμενο μάθημα με όνομα&#160;<br/>«Μετεωρολογικές μετρήσεις». Στη στήλη F για κάθε πόλη καταγράφονται τα καιρικά φαινόμενα&#160;<br/>που επικρατούν, π.χ.&#160;ΑΡΚΕΤΑ&#160;ΣΥΝΝΕΦΑ, ΟΜΙΧΛΗ, ΒΡΟΧΗ κ.ά. Χρησιμοποίησε φίλτρα για να&#160;<br/>εντοπίσεις ποιες πόλεις έχουν στη στήλη F το ίδιο καιρικό φαινόμενο. Π.χ. ποιες πόλεις έχουν&#160;<br/>ΒΡΟΧΗ και ποιες πόλεις έχουν είτε ΒΡΟΧΗ είτε ΨΙΧΑΛΕΣ.</p>
+<p style="position:absolute;top:785px;left:171px;white-space:nowrap" class="ft6639">Με τη χρήση φίλτρου στο υπολογιστικό φύλλο έχουμε τη δυνατότητα να επιλέγουμε να&#160;<br/>εμφανίζονται μόνο οι γραμμές που έχουν μία ή περισσότερες συγκεκριμένες τιμές στη&#160;</p>
+<p style="position:absolute;top:830px;left:103px;white-space:nowrap" class="ft6610">στήλη που μας ενδιαφέρει.&#160;</p>
+<p style="position:absolute;top:875px;left:103px;white-space:nowrap" class="ft6610">Το φίλτρο είναι χρήσιμο όταν έχουμε πολλές γραμμές δεδομένων.&#160;</p>
+<p style="position:absolute;top:920px;left:110px;white-space:nowrap" class="ft6610">&#160;</p>
+<p style="position:absolute;top:920px;left:133px;white-space:nowrap" class="ft6610">Π.χ. με το φίλτρο ΒΡΟΧΗ στη στήλη F, θα εμφανιστούν μόνο οι γραμμές με τις πόλεις στις&#160;</p>
+<p style="position:absolute;top:942px;left:103px;white-space:nowrap" class="ft6610">&#160;</p>
+<p style="position:absolute;top:942px;left:133px;white-space:nowrap" class="ft6610">οποίες στη στήλη F καταγράφεται ΒΡΟΧΗ.</p>
+<p style="position:absolute;top:965px;left:110px;white-space:nowrap" class="ft6610">&#160;</p>
+<p style="position:absolute;top:965px;left:133px;white-space:nowrap" class="ft6610">Π.χ. με το φίλτρο ΒΡΟΧΗ, ΨΙΧΑΛΕΣ στη στήλη F, θα εμφανιστούν οι γραμμές με τις πόλεις&#160;&#160;</p>
+<p style="position:absolute;top:987px;left:103px;white-space:nowrap" class="ft6610">&#160;</p>
+<p style="position:absolute;top:987px;left:133px;white-space:nowrap" class="ft6610">στις οποίες στη στήλη F καταγράφεται ΒΡΟΧΗ, καθώς και οι γραμμές με τις πόλεις στις οποίες&#160;&#160;</p>
+<p style="position:absolute;top:1010px;left:103px;white-space:nowrap" class="ft6610">&#160;</p>
+<p style="position:absolute;top:1010px;left:133px;white-space:nowrap" class="ft6610">στη στήλη F καταγράφεται ΨΙΧΑΛΕΣ.</p>
+</div>
+
+<!-- Page 67 -->
+<a name="67"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft6768{font-size:14px;font-family:AKBSNX+IEPSans;color:#ffffff;}
+-->
+</style>
+<div id="page67-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index067.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft6710">65</p>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft6710">65</p>
+<p style="position:absolute;top:32px;left:211px;white-space:nowrap" class="ft6742">Μάθημα 19ο: Ανάλυση δεδομένων με χρήση φίλτρων στο υπολογιστικό φύλλο</p>
+<p style="position:absolute;top:125px;left:175px;white-space:nowrap" class="ft6757"><b>Βήματα για τη χρήση φίλτρου δεδομένων</b></p>
+<p style="position:absolute;top:147px;left:175px;white-space:nowrap" class="ft6755"><b>α.</b></p>
+<p style="position:absolute;top:148px;left:188px;white-space:nowrap" class="ft6710">&#160;Κάνε κλικ σε ένα κελί της πρώτης γραμμής των δεδομένων για τα οποία&#160;&#160;</p>
+<p style="position:absolute;top:170px;left:175px;white-space:nowrap" class="ft6739">θα εφαρμόσεις το φίλτρο.&#160;&#160;<br/>Π.χ. κάνε κλικ στο κελί F1. Συνήθως η πρώτη γραμμή περιέχει τις&#160;<br/>επικεφαλίδες των στηλών.</p>
+<p style="position:absolute;top:510px;left:85px;white-space:nowrap" class="ft6755"><b>β.</b></p>
+<p style="position:absolute;top:510px;left:98px;white-space:nowrap" class="ft6710">&#160;Από το μενού «Δεδομένα», επίλεξε «Αυτόματο φίλτρο».&#160;</p>
+<p style="position:absolute;top:811px;left:85px;white-space:nowrap" class="ft6755"><b>γ.</b></p>
+<p style="position:absolute;top:811px;left:97px;white-space:nowrap" class="ft6710">&#160;Παρατήρησε ότι στο δεξί μέρος των κελιών της πρώτης γραμμής εμφανίζεται ένα βελάκι (γ1).</p>
+<p style="position:absolute;top:984px;left:723px;white-space:nowrap" class="ft6768"><b>γ1</b></p>
+<p style="position:absolute;top:652px;left:690px;white-space:nowrap" class="ft6768"><b>β2</b></p>
+<p style="position:absolute;top:393px;left:761px;white-space:nowrap" class="ft6768"><b>α</b></p>
+<p style="position:absolute;top:566px;left:610px;white-space:nowrap" class="ft6768"><b>β1</b></p>
+</div>
+
+<!-- Page 68 -->
+<a name="68"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page68-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index068.png" alt="background image"/>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft6823">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft6810">66</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft6830"><b>1</b></p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft6825">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft6810">66</p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft6825">Δεδομένα και ανάλυση δεδομένων</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft6830"><b>3&#160;</b></p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft6823">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:125px;left:85px;white-space:nowrap" class="ft6839">Κάνε κλικ στο βελάκι φίλτρου του κελιού F1, δηλαδή στο βελάκι του κελιού επικεφαλίδας της στήλης με&#160;<br/>βάση την οποία θα φιλτράρεις τα δεδομένα.&#160;Αμέσως μετά θα εμφανιστεί ένα μενού (γ2), στο οποίο είναι&#160;<br/>επιλεγμένες όλες οι τιμές δεδομένων της ίδιας στήλης, δηλαδή όλα τα δεδομένα της στήλης. Χαμηλά στο&#160;<br/>μενού εμφανίζεται επιλεγμένη και η τιμή «Όλα», δηλαδή ότι έχει επιλεγεί να εμφανίζονται όλα τα&#160;<br/>δεδομένα της στήλης (γ3).&#160;</p>
+<p style="position:absolute;top:799px;left:85px;white-space:nowrap" class="ft6839">Κάνε κλικ στο τετράγωνο αριστερά από την&#160;<br/>επιλογή «Όλα» για να την απο-επιλέξεις (γ4).&#160;<br/>Παρατήρησε ότι τώρα δεν είναι τίποτα&#160;<br/>επιλεγμένο από τις παραπάνω τιμές στο&#160;<br/>μενού. Κάνε κλικ και επίλεξε την επιλογή&#160;<br/>«ΒΡΟΧΗ» (γ5). Στη συνέχεια οριστικοποίησε&#160;<br/>την επιλογή σου με κλικ στο κουμπί «Εντάξει»&#160;<br/>(γ6). Με τις ενέργειες αυτές, έχεις επιλέξει να&#160;<br/>εμφανίζονται μόνο οι γραμμές δεδομένων, οι&#160;<br/>οποίες στη στήλη F έχουν ως «Φαινόμενο» τη&#160;<br/>«ΒΡΟΧΗ».&#160;</p>
+<p style="position:absolute;top:1029px;left:489px;white-space:nowrap" class="ft6868"><b>γ4</b></p>
+<p style="position:absolute;top:701px;left:675px;white-space:nowrap" class="ft6868"><b>γ3</b></p>
+<p style="position:absolute;top:552px;left:746px;white-space:nowrap" class="ft6868"><b>γ2</b></p>
+<p style="position:absolute;top:958px;left:695px;white-space:nowrap" class="ft6868"><b>γ5</b></p>
+<p style="position:absolute;top:1085px;left:659px;white-space:nowrap" class="ft6868"><b>γ6</b></p>
+</div>
+
+<!-- Page 69 -->
+<a name="69"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page69-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index069.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft6910">67</p>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft6910">67</p>
+<p style="position:absolute;top:32px;left:211px;white-space:nowrap" class="ft6942">Μάθημα 19ο: Ανάλυση δεδομένων με χρήση φίλτρων στο υπολογιστικό φύλλο</p>
+<p style="position:absolute;top:125px;left:84px;white-space:nowrap" class="ft6939">Αυτό που θα συμβεί στο υπολογιστικό φύλλο μετά τις παραπάνω επιλογές απεικονίζεται παρακάτω (γ7).&#160;<br/>Κατά συνέπεια, μπορείς να απαντήσεις εύκολα στην ερώτηση: Σε ποιες πόλεις βρέχει, σύμφωνα με τα&#160;<br/>μετεωρολογικά δεδομένα;</p>
+<p style="position:absolute;top:367px;left:84px;white-space:nowrap" class="ft6955"><b>δ.</b></p>
+<p style="position:absolute;top:367px;left:98px;white-space:nowrap" class="ft6910">&#160;Κάνε τις αντίστοιχες ενέργειες για να εμφανιστούν οι γραμμές δεδομένων με τις πόλεις όπου είτε&#160;</p>
+<p style="position:absolute;top:390px;left:84px;white-space:nowrap" class="ft6910">βρέχει (δεδομένο «ΒΡΟΧΗ») είτε ψιχαλίζει (δεδομένο «ΨΙΧΑΛΕΣ»).</p>
+<p style="position:absolute;top:784px;left:84px;white-space:nowrap" class="ft6939">Θυμήσου να αποθηκεύσεις ξανά το αρχείο σου, αν θέλεις να παραμείνουν οι τελευταίες επεξεργασίες&#160;<br/>που έκανες.&#160;<br/>Μπορείς να αναλύσεις τα δεδομένα σου με χρήση φίλτρου και να απαντήσεις σε ερωτήσεις.</p>
+<p style="position:absolute;top:199px;left:417px;white-space:nowrap" class="ft6968"><b>γ7</b></p>
+<p style="position:absolute;top:417px;left:421px;white-space:nowrap" class="ft6968"><b>δ</b></p>
+<p style="position:absolute;top:664px;left:169px;white-space:nowrap" class="ft6939">Στο μενού επιλογών του φίλτρου εμφανίζονται μόνο οι τιμές των δεδομένων που&#160;<br/>υπάρχουν στην ίδια στήλη.&#160;Δηλαδή, αν σε καμία πόλη των δεδομένων δεν υπάρχει το&#160;</p>
+<p style="position:absolute;top:709px;left:101px;white-space:nowrap" class="ft6939">φαινόμενο «ΨΙΧΑΛΕΣ», αυτό σημαίνει ότι η λέξη «ΨΙΧΑΛΕΣ» δεν θα αναγράφεται καθόλου στο&#160;<br/>μενού επιλογών του αυτόματου φίλτρου της στήλης F.&#160;</p>
+<p style="position:absolute;top:864px;left:91px;white-space:nowrap" class="ft6941"><b>Μορφή ερώτησης</b></p>
+<p style="position:absolute;top:864px;left:441px;white-space:nowrap" class="ft6941"><b>Ερώτηση</b></p>
+<p style="position:absolute;top:893px;left:91px;white-space:nowrap" class="ft6910">Ποιες πόλεις έχουν συννεφιά;</p>
+<p style="position:absolute;top:893px;left:441px;white-space:nowrap" class="ft6949">Ποιες πόλεις έχουν στη στήλη F:<br/>•&#160;την τιμή&#160;ΛΙΓΑ&#160;ΣΥΝΝΕΦΑ; .....................................<br/>.................................................................................<br/>• την τιμή&#160;ΑΡΚΕΤΑ&#160;ΣΥΝΝΕΦΑ; ...............................<br/>.................................................................................<br/>• την τιμή ΣΥΝΝΕΦΙΑΣΜΕΝΟΣ; .............................<br/>.................................................................................</p>
+</div>
+
+<!-- Page 70 -->
+<a name="70"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page70-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index070.png" alt="background image"/>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft7023">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft7010">68</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft7030"><b>1</b></p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft7025">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft7010">68</p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft7025">Δεδομένα και ανάλυση δεδομένων</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft7030"><b>3&#160;</b></p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft7023">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:190px;left:154px;white-space:nowrap" class="ft7010">Βάλε σε κύκλο τη σωστή απάντηση.</p>
+<p style="position:absolute;top:213px;left:109px;white-space:nowrap" class="ft7010">Με τη χρήση φίλτρου, επιλέγουμε:</p>
+<p style="position:absolute;top:235px;left:109px;white-space:nowrap" class="ft7055"><b>α.</b></p>
+<p style="position:absolute;top:235px;left:123px;white-space:nowrap" class="ft7010">&#160;Να γίνουν αριθμητικές πράξεις στα δεδομένα.</p>
+<p style="position:absolute;top:258px;left:109px;white-space:nowrap" class="ft7055"><b>β.</b></p>
+<p style="position:absolute;top:258px;left:123px;white-space:nowrap" class="ft7010">&#160;Να αλλάξει η σειρά των γραμμών των δεδομένων σύμφωνα με κριτήριο της επιλογής μας.&#160;</p>
+<p style="position:absolute;top:280px;left:109px;white-space:nowrap" class="ft7055"><b>γ.</b></p>
+<p style="position:absolute;top:280px;left:122px;white-space:nowrap" class="ft7010">&#160;Να εμφανίζονται μόνο οι γραμμές που έχουν τη συγκεκριμένη τιμή ή τιμές της επιλογής μας.</p>
+<p style="position:absolute;top:514px;left:124px;white-space:nowrap" class="ft7029"><b>Διαλέγω πόσο καλά έμαθα:</b></p>
+<p style="position:absolute;top:483px;left:401px;white-space:nowrap" class="ft7010">Έχω&#160;</p>
+<p style="position:absolute;top:504px;left:372px;white-space:nowrap" class="ft7010">καταλάβει και&#160;</p>
+<p style="position:absolute;top:525px;left:383px;white-space:nowrap" class="ft7010">μπορώ να &#160;</p>
+<p style="position:absolute;top:546px;left:387px;white-space:nowrap" class="ft7010">εξηγήσω</p>
+<p style="position:absolute;top:494px;left:508px;white-space:nowrap" class="ft7010">Έχω&#160;</p>
+<p style="position:absolute;top:515px;left:491px;white-space:nowrap" class="ft7010">καταλάβει&#160;</p>
+<p style="position:absolute;top:536px;left:483px;white-space:nowrap" class="ft7010">αρκετά καλά</p>
+<p style="position:absolute;top:483px;left:614px;white-space:nowrap" class="ft7010">Έχω&#160;</p>
+<p style="position:absolute;top:504px;left:596px;white-space:nowrap" class="ft7010">καταλάβει&#160;</p>
+<p style="position:absolute;top:525px;left:597px;white-space:nowrap" class="ft7010">αλλά έχω&#160;</p>
+<p style="position:absolute;top:546px;left:602px;white-space:nowrap" class="ft7010">απορίες</p>
+<p style="position:absolute;top:504px;left:700px;white-space:nowrap" class="ft7010">Χρειάζομαι&#160;</p>
+<p style="position:absolute;top:525px;left:709px;white-space:nowrap" class="ft7010">βοήθεια</p>
+<p style="position:absolute;top:595px;left:104px;white-space:nowrap" class="ft7010">&#160;&#160;Να διαχειρίζομαι δεδομένα για την&#160;</p>
+<p style="position:absolute;top:616px;left:124px;white-space:nowrap" class="ft7010">επίλυση προβλημάτων.</p>
+<p style="position:absolute;top:677px;left:104px;white-space:nowrap" class="ft7010">&#160;&#160;Να χρησιμοποιώ φίλτρα&#160;</p>
+<p style="position:absolute;top:698px;left:123px;white-space:nowrap" class="ft7026">δεδομένων στο υπολογιστικό&#160;<br/>φύλλο.&#160;</p>
+<p style="position:absolute;top:357px;left:439px;white-space:nowrap" class="ft7046">Βίντεο.&#160;&#160;<br/>Φίλτρα&#160;&#160;<br/>δεδομένων</p>
+</div>
+
+</body>
+</html>

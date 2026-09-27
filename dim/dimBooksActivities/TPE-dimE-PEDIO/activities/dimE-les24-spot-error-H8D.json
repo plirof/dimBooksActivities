@@ -1,0 +1,54 @@
+{
+  "title": "Βρες τα Λάθη: Παρουσιάσεις",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Πατάμε", "error": false},
+        {"text": "F5", "error": false},
+        {"text": "για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σταματήσουμε", "error": true, "correct": "ξεκινήσουμε", "feedback": "Το F5 ΞΕΚΙΝΑΕΙ την προβολή, δεν τη σταματάει!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "εφέ", "error": false},
+        {"text": "εναλλαγής", "error": false},
+        {"text": "αφορούν", "error": false},
+        {"text": "τα", "error": false},
+        {"text": "στοιχεία", "error": true, "correct": "τις διαφάνειες", "feedback": "Τα εφέ εναλλαγής αφορούν τις ΔΙΑΦΑΝΕΙΕΣ, όχι τα στοιχεία!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "εφέ", "error": false},
+        {"text": "κίνησης", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "όλα", "error": true, "correct": "λίγα", "feedback": "Πρέπει να χρησιμοποιούμε ΛΙΓΑ εφέ κίνησης!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "μικρογραφίες", "error": false},
+        {"text": "βρίσκονται", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "δεξί", "error": true, "correct": "αριστερό", "feedback": "Οι μικρογραφίες βρίσκονται στο ΑΡΙΣΤΕΡΟ πάνελ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "διπλασιάσουμε", "error": false},
+        {"text": "διαφάνεια", "error": false},
+        {"text": "διαγράφουμε", "error": true, "correct": "δεξιό κλικ > διπλασιασμός", "feedback": "Ο διπλασιασμός ΔΕΝ είναι διαγραφή! Κάνουμε δεξιό κλικ!"}
+      ]
+    }
+  ]
+}

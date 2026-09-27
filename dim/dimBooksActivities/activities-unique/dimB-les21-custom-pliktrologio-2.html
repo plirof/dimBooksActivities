@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Πληκτρολόγιο 2 🎹</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #0c3483, #a2b6df);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(12,52,131,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #0c3483; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #fff9db; border: 2px dashed #f0c040; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #6b5900;
+  }
+  .question-card {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    padding: 28px 20px; margin-bottom: 18px; text-align: center;
+  }
+  .q-icon { font-size: 2.5rem; margin-bottom: 6px; }
+  .q-text { font-size: 1.2rem; font-weight: 700; color: #2d3436; }
+  .keys-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 12px; margin-bottom: 14px; }
+  .key-card {
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    border: 4px solid #bbb; border-radius: 14px;
+    padding: 24px 10px; text-align: center; cursor: pointer;
+    transition: all .2s ease; user-select: none; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 0 #999, 0 6px 12px rgba(0,0,0,.1);
+  }
+  .key-card:active { transform: translateY(3px); box-shadow: 0 1px 0 #999; }
+  .key-card .k-label {
+    font-size: 1.6rem; font-weight: 800; color: #2d3436;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  .key-card .k-sub {
+    font-size: .75rem; color: #636e72; margin-top: 4px; font-weight: 600;
+  }
+  .key-card.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .key-card.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .key-card.disabled { pointer-events: none; opacity: .7; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .feedback{text-align:center;padding:14px;border-radius:16px;font-size:1.1rem;font-weight:700;margin-bottom:12px;display:none}
+  .feedback.show{display:block}
+  .feedback.yay{background:#d4edda;color:#155724}
+  .feedback.nay{background:#f8d7da;color:#721c24}
+  .result-screen{background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(0,0,0,.1);padding:40px 24px;text-align:center;display:none}
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#0c3483,#a2b6df);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(12,52,131,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}.key-card{padding:18px 6px}.key-card .k-label{font-size:1.3rem}}
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎹 Πληκτρολόγιο 2</h1>
+    <p>Βρες το σωστό πλήκτρο!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/8</span>
+  </div>
+  <div class="instructions">
+    📖 Έμαθες καινούργια πλήκτρα! Μπορείς να τα βρεις;
+  </div>
+  <div id="gameArea">
+    <div class="question-card">
+      <div class="q-icon" id="qIcon">🔤</div>
+      <div class="q-text" id="qText">Ποιο πλήκτρο βάζει <b>τελεία</b>;</div>
+    </div>
+    <div class="keys-grid" id="keysGrid"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var qs = [
+    {icon:'🔤', q:'Ποιο πλήκτρο βάζει <b>τελεία</b>;', ans:0, keys:[{l:'.',s:'τελεία'},{l:',',s:'κόμμα'},{l:'↵',s:'Enter'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο βάζει <b>κόμμα</b>;', ans:1, keys:[{l:'.',s:'τελεία'},{l:',',s:'κόμμα'},{l:'space',s:'κενό'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο <b>αλλάζει παράγραφο</b>;', ans:2, keys:[{l:',',s:'κόμμα'},{l:'⌫',s:'Backspace'},{l:'↵',s:'Enter'}]},
+    {icon:'◌́', q:'Ποιο πλήκτρο βάζει <b>τόνο</b>;', ans:0, keys:[{l:'◌́',s:'τόνος'},{l:'.',s:'τελεία'},{l:'space',s:'κενό'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο γράφει το τελικό <b>ς</b>;', ans:2, keys:[{l:'σ',s:'σίγμα'},{l:'C',s:'C'},{l:'ς',s:'τελικό ς'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο <b>σβήνει</b> λάθος γράμμα;', ans:1, keys:[{l:'↵',s:'Enter'},{l:'⌫',s:'Backspace'},{l:'ς',s:'τελικό ς'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο κάνει <b>κεφαλαία</b> γράμματα;', ans:0, keys:[{l:'⇪',s:'Caps Lock'},{l:'.',s:'τελεία'},{l:'⌫',s:'Backspace'}]},
+    {icon:'🔤', q:'Ποιο πλήκτρο αφήνει <b>κενό</b> ανάμεσα σε λέξεις;', ans:2, keys:[{l:'↵',s:'Enter'},{l:'⇪',s:'Caps Lock'},{l:'␣',s:'Space'}]},
+  ];
+  var cur=0,score=0;
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){
+    shuffle(qs);cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    showQ();
+  }
+  function showQ(){
+    if(cur>=qs.length){showResult();return;}
+    var q=qs[cur];
+    document.getElementById('qIcon').textContent=q.icon;
+    document.getElementById('qText').innerHTML=q.q;
+    document.getElementById('roundDisplay').textContent=(cur+1)+'/'+qs.length;
+    document.getElementById('feedback').className='feedback';document.getElementById('feedback').style.display='none';
+    var g=document.getElementById('keysGrid');g.innerHTML='';
+    for(var i=0;i<q.keys.length;i++){
+      (function(idx){
+        var k=document.createElement('div');k.className='key-card';
+        k.innerHTML='<div class="k-label">'+q.keys[idx].l+'</div><div class="k-sub">'+q.keys[idx].s+'</div>';
+        k.addEventListener('click',function(){choose(this,q);});
+        g.appendChild(k);
+      })(i);
+    }
+  }
+  function choose(el,q){
+    var cards=document.querySelectorAll('.key-card');
+    for(var i=0;i<cards.length;i++)cards[i].classList.add('disabled');
+    var chosen=Array.from(cards).indexOf(el);
+    var correct=(chosen===q.ans);
+    var fb=document.getElementById('feedback');
+    if(correct){score++;document.getElementById('scoreDisplay').textContent='⭐ '+score;el.classList.add('correct');fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Σωστό πλήκτρο!';}
+    else{el.classList.add('wrong');cards[q.ans].classList.add('correct');fb.className='feedback show nay';fb.textContent='❌ Το σωστό πλήκτρο είναι: '+q.keys[q.ans].s+' ('+q.keys[q.ans].l+')';}
+    setTimeout(function(){cur++;showQ();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=qs.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Γνωρίζεις όλα τα πλήκτρα! Είσαι σούπερ!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Τα πήγες πολύ καλά!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Βρήκες '+score+' από '+total+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

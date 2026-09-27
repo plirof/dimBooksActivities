@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les26-missingword-6dt",
+    "title": "e-me assignments, SchoolPress, SchoolRadio - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Το ___ είναι πλατφόρμα σχολικών εργασιών.",
+                "options": [
+                    "e-me",
+                    "Word",
+                    "Excel",
+                    "Paint"
+                ],
+                "correct": "e-me"
+            },
+            {
+                "sentence": "Το ___ φτιάχνει σχολικά ιστολόγια.",
+                "options": [
+                    "SchoolPress",
+                    "SchoolRadio",
+                    "e-me",
+                    "Wikipedia"
+                ],
+                "correct": "SchoolPress"
+            },
+            {
+                "sentence": "Το School ___ δημιουργεί εκπομπές.",
+                "options": [
+                    "Radio",
+                    "TV",
+                    "Press",
+                    "News"
+                ],
+                "correct": "Radio"
+            },
+            {
+                "sentence": "Η ___ είναι καλή συμπεριφορά στο διαδίκτυο.",
+                "options": [
+                    "netiquette",
+                    "privacy",
+                    "security",
+                    "backup"
+                ],
+                "correct": "netiquette"
+            },
+            {
+                "sentence": "Αυτά ανήκουν στο ___ σύστημα.",
+                "options": [
+                    "ελληνικό",
+                    "αγγλικό",
+                    "αμερικανικό",
+                    "γαλλικό"
+                ],
+                "correct": "ελληνικό"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les26",
+        "e-me"
+    ]
+}

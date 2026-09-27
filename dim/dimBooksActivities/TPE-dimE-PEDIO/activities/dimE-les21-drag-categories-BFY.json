@@ -1,0 +1,48 @@
+{
+  "title": "Έγκυρη ή Αμφίβολη",
+  "subtitle": "Διάκρινε τις έγκυρες από τις αμφίβολες πηγές",
+  "categories": [
+    {
+      "id": "valid",
+      "name": "ΕΓΚΥΡΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "suspect",
+      "name": "ΑΜΦΙΒΟΛΗ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🏛️ gov.gr",
+      "category": "valid"
+    },
+    {
+      "id": "item2",
+      "text": "📰 Wikipedia (με πηγές)",
+      "category": "valid"
+    },
+    {
+      "id": "item3",
+      "text": "📢 Blog αγνώστου",
+      "category": "suspect"
+    },
+    {
+      "id": "item4",
+      "text": "🎓 .edu πηγή",
+      "category": "valid"
+    },
+    {
+      "id": "item5",
+      "text": "💬 Social media post",
+      "category": "suspect"
+    },
+    {
+      "id": "item6",
+      "text": "📧 Chain email",
+      "category": "suspect"
+    }
+  ]
+}

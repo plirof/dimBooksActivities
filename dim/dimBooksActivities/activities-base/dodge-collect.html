@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Συλλέκτης Αστεριών</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:15px;font-weight:400}
+.game-header{display:flex;justify-content:space-between;padding:10px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#302b63;font-size:1.1em}
+.canvas-wrap{display:flex;justify-content:center;margin-bottom:10px}
+canvas{border-radius:12px;border:2px solid #3f51b5;display:block}
+.start-screen,.end-screen{text-align:center;padding:30px 20px}
+.start-screen h2,.end-screen h2{color:#333;margin-bottom:10px}
+.start-screen p,.end-screen p{color:#666;margin-bottom:15px;line-height:1.5}
+.start-btn,.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#0f0c29,#302b63);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.final-score{font-size:3em;color:#302b63;font-weight:700}
+.message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const cW=Math.min(data.canvasWidth||600,window.innerWidth-60);
+const cH=Math.min(data.canvasHeight||400,Math.floor((window.innerHeight-200)*0.7));
+const maxLives=data.lives||3;
+const enemyCount=data.enemies||3;
+const starCount=data.stars||5;
+const enemySpeed=data.enemySpeed||1.5;
+const winStars=data.winStars||10;
+const playerSpeed=data.playerSpeed||4;
+const playerSize=20,starSize=12,enemySize=16;
+let player,enemies,stars,score,lives,gameRunning,animFrame,keysDown={},invincible=0;
+
+function showStart(){
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="start-screen">
+<h2>${esc(data.subtitle||'')}</h2>
+<p>${esc(data.instructions||'')}</p>
+<p>Μάζεψε ${winStars} ⭐ | Ζωές: ${maxLives}</p>
+<button class="start-btn" onclick="startGame()">▶ Ξεκίνα!</button>
+</div>`
+}
+
+function randPos(margin){return{x:margin+Math.random()*(cW-margin*2),y:margin+Math.random()*(cH-margin*2)}}
+
+function initEntities(){
+player={x:cW/2,y:cH/2};
+enemies=[];
+for(let i=0;i<enemyCount;i++){
+const p=randPos(enemySize);
+enemies.push({x:p.x,y:p.y,dx:(Math.random()-.5)*2*enemySpeed,dy:(Math.random()-.5)*2*enemySpeed})
+}
+stars=[];
+for(let i=0;i<starCount;i++){const p=randPos(starSize);stars.push({x:p.x,y:p.y})}
+}
+
+window.startGame=function(){
+score=0;lives=maxLives;gameRunning=true;invincible=0;keysDown={};
+initEntities();
+renderGame();
+if(typeof TouchControls!=='undefined'){
+TouchControls.create({
+container:app,
+directions:['up','down','left','right'],
+theme:{bg:'#e8eaf6',border:'#7986cb',active:'#c5cae9',text:'#303f9f'},
+onPress:function(dName){keysDown['Arrow'+dName.charAt(0).toUpperCase()+dName.slice(1)]=true},
+onRelease:function(dName){keysDown['Arrow'+dName.charAt(0).toUpperCase()+dName.slice(1)]=false}
+});
+}
+animFrame=requestAnimationFrame(gameLoop)
+};
+
+function renderGame(){
+const livesStr=Array(lives).fill('❤️').join('');
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="game-header">
+<div class="stat">⭐ <span id="scoreDisplay">${score}/${winStars}</span></div>
+<div class="stat">Ζωές: <span id="livesDisplay">${livesStr}</span></div>
+</div>
+<div class="canvas-wrap"><canvas id="gameCanvas" width="${cW}" height="${cH}"></canvas></div>
+`
+}
+
+function gameLoop(){
+if(!gameRunning)return;
+const canvas=document.getElementById('gameCanvas');
+if(!canvas){animFrame=requestAnimationFrame(gameLoop);return}
+const ctx=canvas.getContext('2d');
+if(keysDown['ArrowLeft'])player.x=Math.max(playerSize,player.x-playerSpeed);
+if(keysDown['ArrowRight'])player.x=Math.min(cW-playerSize,player.x+playerSpeed);
+if(keysDown['ArrowUp'])player.y=Math.max(playerSize,player.y-playerSpeed);
+if(keysDown['ArrowDown'])player.y=Math.min(cH-playerSize,player.y+playerSpeed);
+if(invincible>0)invincible--;
+ctx.clearRect(0,0,cW,cH);
+const bg=ctx.createRadialGradient(cW/2,cH/2,50,cW/2,cH/2,cW/2);
+bg.addColorStop(0,'#1a237e');bg.addColorStop(1,'#0d1137');
+ctx.fillStyle=bg;ctx.fillRect(0,0,cW,cH);
+for(let i=0;i<50;i++){
+ctx.fillStyle='rgba(255,255,255,'+(.2+Math.random()*.5)+')';
+ctx.fillRect((i*137+Math.random()*10)%cW,(i*97+Math.random()*10)%cH,1.5,1.5)
+}
+for(const s of stars){
+ctx.font=(starSize*2)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('⭐',s.x,s.y)
+}
+for(const e of enemies){
+e.x+=e.dx;e.y+=e.dy;
+if(e.x<=enemySize||e.x>=cW-enemySize)e.dx*=-1;
+if(e.y<=enemySize||e.y>=cH-enemySize)e.dy*=-1;
+ctx.font=(enemySize*2)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('💣',e.x,e.y)
+}
+ctx.font=(playerSize*2)+'px "EmojiFont", sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+if(invincible>0&&Math.floor(invincible/5)%2===0){ctx.globalAlpha=0.3}
+ctx.fillText('🚀',player.x,player.y);
+ctx.globalAlpha=1;
+for(let i=stars.length-1;i>=0;i--){
+const s=stars[i];
+const dx=player.x-s.x,dy=player.y-s.y;
+if(Math.sqrt(dx*dx+dy*dy)<playerSize+starSize){
+stars.splice(i,1);
+score++;
+const sEl=document.getElementById('scoreDisplay');if(sEl)sEl.textContent=score+'/'+winStars;
+const np=randPos(starSize);stars.push({x:np.x,y:np.y});
+if(score>=winStars){gameRunning=false;cancelAnimationFrame(animFrame);showEnd(true);return}
+}
+}
+if(invincible<=0){
+for(const e of enemies){
+const dx=player.x-e.x,dy=player.y-e.y;
+if(Math.sqrt(dx*dx+dy*dy)<playerSize+enemySize){
+lives--;
+invincible=90;
+const livesStr2=Array(Math.max(0,lives)).fill('❤️').join('');
+const lEl=document.getElementById('livesDisplay');if(lEl)lEl.innerHTML=livesStr2;
+if(lives<=0){gameRunning=false;cancelAnimationFrame(animFrame);showEnd(false);return}
+break
+}
+}
+}
+animFrame=requestAnimationFrame(gameLoop)
+}
+
+function showEnd(won){
+let msg=won?'Μπράβο! Μάζεψες όλα τα αστέρια!':'Έχασες! Δοκίμασε ξανά!';
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<div class="end-screen" style="display:block">
+<h2>${won?'Συγχαρητήρια!':'Τέλος!'}</h2>
+<div class="final-score">${score}</div>
+<div class="message">${msg}</div>
+<button class="restart-btn" onclick="location.reload()">Ξαναδοκίμασε!</button>
+</div>`
+}
+
+document.addEventListener('keydown',function(e){
+if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();keysDown[e.key]=true}
+});
+document.addEventListener('keyup',function(e){keysDown[e.key]=false});
+
+showStart()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+    "id": "dimST-les03-wheel-jua",
+    "title": "Είσοδος και έξοδος στο Scratch - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "ρώτησε",
+            "απάντηση",
+            "πες",
+            "ένωσε",
+            "είσοδος",
+            "έξοδος",
+            "μεταβλητή",
+            "τελεία"
+        ]
+    },
+    "tags": [
+        "dimST",
+        "les03",
+        "Scratch"
+    ]
+}

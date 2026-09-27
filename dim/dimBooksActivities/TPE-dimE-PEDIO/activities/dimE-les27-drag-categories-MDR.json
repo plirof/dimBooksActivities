@@ -1,0 +1,53 @@
+{
+  "title": "Πηγές σε περιγραφές",
+  "subtitle": "Ταίριαξε κάθε περιγραφή στη σωστή πηγή",
+  "categories": [
+    {
+      "id": "museum",
+      "name": "ΨΗΦΙΑΚΟ ΜΟΥΣΕΙΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "wiki",
+      "name": "ΒΙΚΙΠΑΙΔΕΙΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "dict",
+      "name": "ΛΕΞΙΚΟ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🏛️ Εκθέματα",
+      "category": "museum"
+    },
+    {
+      "id": "item2",
+      "text": "📖 Άρθρα",
+      "category": "wiki"
+    },
+    {
+      "id": "item3",
+      "text": "📕 Ορισμοί",
+      "category": "dict"
+    },
+    {
+      "id": "item4",
+      "text": "🖼️ Εικονική περιήγηση",
+      "category": "museum"
+    },
+    {
+      "id": "item5",
+      "text": "🔗 Σύνδεσμοι",
+      "category": "wiki"
+    },
+    {
+      "id": "item6",
+      "text": "🔤 Συνώνυμα",
+      "category": "dict"
+    }
+  ]
+}

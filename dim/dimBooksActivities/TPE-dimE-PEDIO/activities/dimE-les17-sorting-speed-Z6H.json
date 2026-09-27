@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Στήλες vs Γραμμές",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "column", "name": "Στήλη", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "row", "name": "Γραμμή", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κατακόρυφη", "category": "column"},
+    {"text": "Λατινικά γράμματα A, B, C", "category": "column"},
+    {"text": "Γράμμα + αριθμός (π.χ. B3)", "category": "column"},
+    {"text": "Διπλό κλικ σε κάθετη γραμμή", "category": "column"},
+    {"text": "Μπορεί να μεγαλώσει μήκος", "category": "column"},
+    {"text": "Οριζόντια", "category": "row"},
+    {"text": "Αριθμοί 1, 2, 3", "category": "row"},
+    {"text": "Δεξί κλικ = εισαγωγή νέας", "category": "row"},
+    {"text": "Επικεφαλίδα πάνω από δεδομένα", "category": "row"},
+    {"text": "Αριθμός στο όνομα κελιού", "category": "row"}
+  ],
+  "duration": 30
+}

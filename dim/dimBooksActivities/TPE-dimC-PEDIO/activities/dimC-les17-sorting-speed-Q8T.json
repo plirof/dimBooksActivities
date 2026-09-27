@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πλήκτρο & Λειτουργία",
+  "subtitle": "Ταίριαξε γρήγορα πλήκτρο με ενέργεια!",
+  "instructions": "Είναι σωστή ή λάθος η λειτουργία;",
+  "categories": [
+    {"id": "swsto", "name": "Σωστό", "color": "#4caf50", "key": "ArrowLeft"},
+    {"id": "lathos", "name": "Λάθος", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Shift = κεφαλαία", "category": "swsto"},
+    {"text": "Enter = σβήνει", "category": "lathos"},
+    {"text": "Tab = εσοχή", "category": "swsto"},
+    {"text": "Space = νέα παράγραφος", "category": "lathos"},
+    {"text": "Caps Lock = κλειδώνει κεφαλαία", "category": "swsto"},
+    {"text": "Backspace = κενό", "category": "lathos"},
+    {"text": "Alt+Shift = αλλαγή γλώσσας", "category": "swsto"},
+    {"text": "Tab = σβήνει γράμματα", "category": "lathos"},
+    {"text": "Enter = νέα παράγραφος", "category": "swsto"},
+    {"text": "Space = κενό ανάμεσα σε λέξεις", "category": "swsto"}
+  ],
+  "duration": 30
+}

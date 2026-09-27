@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ερωτηματολόγιο | Μάθημα 16</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:600px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.theme-box{background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;border-left:3px solid #6366f1}
+.theme-box .t-icon{font-size:1.2rem;display:block;margin-bottom:2px}
+.theme-box .t-text{color:#e2e8f0;font-size:.7rem;line-height:1.4}
+.question-area{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.q-builder{padding:10px;background:#1e293b;border-radius:10px;border:1px solid #334155}
+.q-builder .q-label{color:#94a3b8;font-size:.65rem;font-weight:600;margin-bottom:4px}
+.q-builder input[type=text]{width:100%;padding:6px 8px;background:#0f172a;border:1px solid #475569;border-radius:6px;color:#e2e8f0;font-size:.68rem}
+.q-builder input[type=text]:focus{border-color:#6366f1;outline:none}
+.q-builder .q-options{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.q-builder .q-opt-row{display:flex;align-items:center;gap:6px}
+.q-builder .q-opt-row input[type=text]{flex:1;font-size:.62rem;padding:4px 6px}
+.q-builder .q-add-opt{padding:3px 8px;border:1px dashed #475569;border-radius:6px;background:transparent;color:#64748b;font-size:.6rem;cursor:pointer}
+.q-builder .q-add-opt:hover{color:#a78bfa;border-color:#a78bfa}
+.q-preview{background:#0f172a;border-radius:10px;padding:10px;border:1px solid #334155;margin-top:6px}
+.q-preview .qp-title{color:#fbbf24;font-size:.7rem;font-weight:700;margin-bottom:6px}
+.q-preview .qp-opt{display:flex;align-items:center;gap:6px;padding:4px 0;color:#e2e8f0;font-size:.65rem}
+.q-preview .qp-opt input[type=radio]{accent-color:#6366f1}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .question-area > * + * { margin-top: 8px; }
+  .q-builder .q-options > * + * { margin-top: 4px; }
+  .q-builder .q-opt-row > * + * { margin-left: 6px; }
+  .q-preview .qp-opt > * + * { margin-left: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📝 Δημιουργία Ερωτηματολογίου</h1>
+<p class="subtitle">Σχεδίασε ερωτήσεις για έρευνα και δες την προεπισκόπηση!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Θέμα:</span> <span id="themeNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var themes=[
+{
+icon:'⚽',text:'Θέλεις να μάθεις το αγαπημένο άθλημα των συμμαθητών σου. Δημιούργησε μία ερώτηση με 4 επιλογές.',
+question:'Ποιο είναι το αγαπημένο σου άθλημα;',
+options:['Ποδόσφαιρο','Μπάσκετ','Βόλεϊ','Κολύμβηση'],
+hint:'Μία καλή ερώτηση έχει σαφείς επιλογές που καλύπτουν τις πιο πιθανές απαντήσεις.'
+},
+{
+icon:'🎵',text:'Θέλεις να μάθεις τι είδος μουσικής προτιμούν οι συμμαθητές σου. Φτιάξε μία ερώτηση!',
+question:'Τι είδος μουσικής προτιμάς;',
+options:['Pop','Rock','Κλασική','Ελληνική'],
+hint:'Οι επιλογές πρέπει να αντιπροσωπεύουν τις κύριες κατηγορίες που θέλεις να μελετήσεις.'
+},
+{
+icon:'📚',text:'Θέλεις να μάθεις πόση ώρα διαβάζουν οι συμμαθητές σου καθημερινά.',
+question:'Πόση ώρα διαβάζεις καθημερινά;',
+options:['Καθόλου','30 λεπτά','1 ώρα','Πάνω από 2 ώρες'],
+hint:'Οι απαντήσεις σε ερωτήσεις ποσοτικές πρέπει να έχουν διακριτές κλίμακες.'
+},
+{
+icon:'🍕',text:'Θέλεις να οργανώσεις πάρτι και να μάθεις τι φαγητό προτιμούν.',
+question:'Τι φαγητό προτιμάς για πάρτι;',
+options:['Πίτσα','Σουβλάκι','Μακαρόνια','Αλλεπάλληλες'],
+hint:'Σκέψου ποιες επιλογές είναι πιο σχετικές με το θέμα σου.'
+},
+{
+icon:'🎮',text:'Θέλεις να μάθεις πόσο χρόνο περνούν οι συμμαθητές σου στα ψηφιακά παιχνίδια.',
+question:'Πόση ώρα παίζεις ψηφιακά παιχνίδια καθημερινά;',
+options:['Καθόλου','Έως 1 ώρα','1-3 ώρες','Πάνω από 3 ώρες'],
+hint:'Για ευαίσθητα θέματα, οι ανώνυμες απαντήσεις βοηθούν στην ειλικρίνεια.'
+},
+{
+icon:'🐾',text:'Θέλεις να μάθεις πόσα παιδιά έχουν κατοικίδιο και τι είδος.',
+question:'Έχεις κατοικίδιο; Αν ναι, τι;',
+options:['Ναι, σκύλο','Ναι, γάτα','Ναι, άλλο','Όχι, δεν έχω'],
+hint:'Οι ερωτήσεις μπορούν να συνδυάζουν ναι/όχι με κατηγορίες για πλούσια δεδομένα.'
+}
+];
+var current=0;
+var pts=0;
+var userOptions=[];
+var checked=false;
+function render(){
+var t=themes[current];
+checked=false;
+document.getElementById('themeNum').textContent=current+1;
+userOptions=t.options.slice();
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">📋 Θέμα '+(current+1)+'</div>';
+h+='<div class="theme-box"><span class="t-icon">'+t.icon+'</span><div class="t-text">'+t.text+'</div></div>';
+h+='<div class="question-area">';
+h+='<div class="q-builder">';
+h+='<div class="q-label">📌 Ερώτηση</div>';
+h+='<input type="text" id="qInput" value="'+t.question+'" oninput="onQuestionChange()">';
+h+='<div class="q-label" style="margin-top:8px">📋 Επιλογές Απαντήσεων (πάτα σε μία για επεξεργασία)</div>';
+h+='<div class="q-options" id="optsContainer">';
+for(var i=0;i<userOptions.length;i++){
+h+='<div class="q-opt-row">';
+h+='<span style="color:#64748b;font-size:.6rem">'+(i+1)+'.</span>';
+h+='<input type="text" id="opt'+i+'" value="'+userOptions[i]+'" oninput="onOptChange('+i+',this.value)">';
+h+='</div>';
+}
+h+='<button class="q-add-opt" onclick="addOpt()">+ Προσθήκη επιλογής</button>';
+h+='</div>';
+h+='</div>';
+h+='<div class="q-preview">';
+h+='<div class="qp-title">👀 Προεπισκόπηση Ερωτηματολογίου</div>';
+h+='<div class="qp-title" style="font-size:.72rem;color:#e2e8f0;font-weight:400" id="previewQ">'+t.question+'</div>';
+h+='<div id="previewOpts">';
+for(var j=0;j<userOptions.length;j++){
+h+='<div class="qp-opt"><input type="radio" name="preview" disabled> '+userOptions[j]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+h+='</div>';
+h+='<div style="text-align:center"><button class="btn-check" id="checkBtn" onclick="checkQuestion()">✅ Ολοκλήρωση Ερώτησης</button></div>';
+h+='<div class="hint-box">💡 '+t.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevTheme()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextTheme()"'+(current===themes.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function onQuestionChange(){
+var val=document.getElementById('qInput').value;
+document.getElementById('previewQ').textContent=val||'[Η ερώτησή σου]';
+}
+function onOptChange(idx,val){
+userOptions[idx]=val;
+updatePreview();
+}
+function addOpt(){
+if(checked)return;
+var container=document.getElementById('optsContainer');
+var idx=userOptions.length;
+userOptions.push('Νέα επιλογή');
+var row=document.createElement('div');
+row.className='q-opt-row';
+row.innerHTML='<span style="color:#64748b;font-size:.6rem">'+(idx+1)+'.</span><input type="text" id="opt'+idx+'" value="Νέα επιλογή" oninput="onOptChange('+idx+',this.value)">';
+container.insertBefore(row,container.lastElementChild);
+updatePreview();
+}
+function updatePreview(){
+var container=document.getElementById('previewOpts');
+if(!container)return;
+var h='';
+for(var i=0;i<userOptions.length;i++){
+if(userOptions[i].trim()){
+h+='<div class="qp-opt"><input type="radio" name="preview" disabled> '+userOptions[i]+'</div>';
+}
+}
+container.innerHTML=h;
+}
+function checkQuestion(){
+var qVal=document.getElementById('qInput').value.trim();
+if(!qVal){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Η ερώτηση δεν μπορεί να είναι άδεια!';
+fb.className='feedback fail';
+return;
+}
+var validOpts=0;
+for(var i=0;i<userOptions.length;i++){
+if(userOptions[i].trim())validOpts++;
+}
+if(validOpts<2){
+var fb2=document.getElementById('feedback');
+fb2.textContent='⚠️ Χρειάζεσαι τουλάχιστον 2 έγκυρες επιλογές!';
+fb2.className='feedback fail';
+return;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+pts+=10;
+document.getElementById('pts').textContent=pts;
+var fb3=document.getElementById('feedback');
+fb3.textContent='🎉 Μπράβο! Δημιούργησες μία σωστή ερώτηση με '+validOpts+' επιλογές!';
+fb3.className='feedback ok';
+}
+function prevTheme(){if(current>0){current--;render();}}
+function nextTheme(){if(current<themes.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

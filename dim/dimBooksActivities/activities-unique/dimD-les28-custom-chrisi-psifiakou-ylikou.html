@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χρήση Ψηφιακού Υλικού</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.usage-card {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 20px;
+border: 2px solid #e0e0e0;
+}
+.usage-icon {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+.usage-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 10px;
+font-size: 1.1rem;
+}
+.usage-desc {
+color: #555;
+margin-bottom: 15px;
+line-height: 1.5;
+}
+.source-box {
+background: white;
+border-radius: 10px;
+padding: 12px;
+margin-bottom: 15px;
+}
+.source-label {
+font-weight: bold;
+color: #667eea;
+margin-bottom: 8px;
+}
+.source-input {
+width: 100%;
+padding: 10px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 0.9rem;
+}
+.btn {
+width: 100%;
+padding: 12px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 8px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 15px;
+margin-top: 15px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.correct {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.wrong {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+</style>
+</head>
+<body>
+<h1>📚 Χρήση Ψηφιακού Υλικού</h1>
+<p class="subtitle">Γράψτε την πηγή για κάθε χρήση</p>
+
+<div class="score">✅ Σωστά: <span id="score">0</span>/3</div>
+
+<div class="container">
+<div class="usage-card">
+<div class="usage-icon">🖼️</div>
+<div class="usage-title">Εικόνα για Εργασία</div>
+<div class="usage-desc">Βρίσκεις μια ωραία εικόνα στο διαδίκτυο και θέλεις να τη χρησιμοποιήσεις στην εργασία σου.</div>
+<div class="source-box">
+<div class="source-label">📍 Πηγή:</div>
+<input type="text" class="source-input" id="source1" placeholder="https://...">
+</div>
+<button class="btn" onclick="checkSource(1)">✓ Έλεγχος</button>
+<div class="result-box" id="result1"></div>
+</div>
+</div>
+
+<div class="usage-card">
+<div class="usage-icon">📄</div>
+<div class="usage-title">Κείμενο για Έγγραφο</div>
+<div class="usage-desc">Αντιγράφεις ένα κείμενο από μια ιστοσελίδα για την εργασία σου.</div>
+<div class="source-box">
+<div class="source-label">📍 Πηγή:</div>
+<input type="text" class="source-input" id="source2" placeholder="https://...">
+</div>
+<button class="btn" onclick="checkSource(2)">✓ Έλεγχος</button>
+<div class="result-box" id="result2"></div>
+</div>
+</div>
+
+<div class="usage-card">
+<div class="usage-icon">🎵</div>
+<div class="usage-title">Μουσική για Παρουσίαση</div>
+<div class="usage-desc">Θέλεις να χρησιμοποιήσεις ένα μουσικό κομμάτι στην παρουσίασή σου.</div>
+<div class="source-box">
+<div class="source-label">📍 Πηγή:</div>
+<input type="text" class="source-input" id="source3" placeholder="https://...">
+</div>
+<button class="btn" onclick="checkSource(3)">✓ Έλεγχος</button>
+<div class="result-box" id="result3"></div>
+</div>
+</div>
+</div>
+
+<div class="mascot">📝</div>
+
+<script>
+let score = 0;
+
+function checkSource(num) {
+const input = document.getElementById('source' + num);
+const resultBox = document.getElementById('result' + num);
+const value = input.value.trim();
+
+if (value.length > 5 && (value.startsWith('http://') || value.startsWith('https://'))) {
+resultBox.className = 'result-box show correct';
+score++;
+document.getElementById('score').textContent = score;
+resultBox.innerHTML = '✅ Σωστά! Πάντα αναφέρετε την πηγή όταν χρησιμοποιείτε ψηφιακό υλικό!';
+} else {
+resultBox.className = 'result-box show wrong';
+resultBox.innerHTML = '❌ Πρέπει να γράψετε τη διεύθυνση της πηγής (https://...)!';
+}
+}
+</script>
+</body>
+</html>

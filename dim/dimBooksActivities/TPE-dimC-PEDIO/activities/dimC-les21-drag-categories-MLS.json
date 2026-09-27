@@ -1,0 +1,58 @@
+{
+  "title": "Φιλτράρισμα κατηγοριών",
+  "subtitle": "Ταίριαξε κάθε υπηρεσία στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "maps",
+      "name": "ΧΑΡΤΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "img",
+      "name": "ΕΙΚΟΝΕΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "video",
+      "name": "ΒΙΝΤΕΟ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "news",
+      "name": "ΕΙΔΗΣΕΙΣ",
+      "color": "#9C27B0"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🗺️ Google Maps",
+      "category": "maps"
+    },
+    {
+      "id": "item2",
+      "text": "🖼️ Google Images",
+      "category": "img"
+    },
+    {
+      "id": "item3",
+      "text": "▶️ YouTube",
+      "category": "video"
+    },
+    {
+      "id": "item4",
+      "text": "📰 Google News",
+      "category": "news"
+    },
+    {
+      "id": "item5",
+      "text": "📍 OpenStreetMap",
+      "category": "maps"
+    },
+    {
+      "id": "item6",
+      "text": "📷 Flickr",
+      "category": "img"
+    }
+  ]
+}

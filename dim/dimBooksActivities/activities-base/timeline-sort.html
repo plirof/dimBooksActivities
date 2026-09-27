@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χρονολογική Σειρά</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:700px;width:100%;padding:40px;text-align:center}
+h1{color:#0099cc;font-size:2em;margin-bottom:10px}
+h2{color:#555;font-size:1.2em;margin-bottom:30px;font-weight:400}
+.cards-area{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.event-card{padding:14px 20px;background:linear-gradient(135deg,#e0f7fa,#b2ebf2);border:3px solid #4facfe;border-radius:12px;cursor:pointer;font-size:1em;transition:all 0.3s;user-select:none;-webkit-user-select:none}
+.event-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(79,172,254,0.3)}
+.event-card.selected{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;border-color:#0099cc}
+.event-card.placed{opacity:0.3;pointer-events:none}
+.timeline{display:flex;flex-direction:column;gap:8px;margin:20px 0;padding:15px;background:#f0f9ff;border-radius:15px}
+.slot{min-height:50px;border:3px dashed #b0d4e8;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:10px;transition:all 0.3s;font-size:0.95em;position:relative}
+.slot.filled{border-style:solid;border-color:#4facfe;background:#e0f7fa;cursor:pointer}
+.slot.filled:hover{background:#b2ebf2}
+.slot.correct-slot{border-color:#28a745;background:#d4edda}
+.slot.wrong-slot{border-color:#dc3545;background:#f8d7da}
+.slot-num{position:absolute;left:10px;font-weight:700;color:#0099cc;font-size:0.85em}
+.slot-year{color:#28a745;font-weight:600;margin-left:8px;font-size:0.85em}
+.btn{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;border:none;padding:15px 40px;font-size:1.1em;border-radius:12px;cursor:pointer;margin:10px 5px;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(79,172,254,0.4)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.score{font-size:1.4em;color:#0099cc;margin:15px 0}
+.feedback{font-size:1.1em;margin:15px 0;padding:12px;border-radius:10px}
+.feedback.correct{background:#d4edda;color:#155724}
+.feedback.wrong{background:#f8d7da;color:#721c24}
+.start-btn{font-size:1.3em;padding:18px 50px}
+.hidden{display:none}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div style="font-size:3em;margin-bottom:20px">📅</div>
+<h1 id="title">Χρονολογική Σειρά</h1>
+<h2 id="subtitle">Βάλε τα γεγονότα στη σωστή σειρά!</h2>
+<div id="startScreen">
+<button class="btn start-btn" onclick="startGame()">🎮 Ξεκίνα!</button>
+</div>
+<div id="gameScreen" class="hidden">
+<p style="color:#555;margin-bottom:15px">Κάνε κλικ σε ένα γεγονός και μετά στη σωστή θέση του χρονολογίου</p>
+<div class="cards-area" id="cardsArea"></div>
+<div class="timeline" id="timeline"></div>
+<button class="btn" id="checkBtn" onclick="checkOrder()" disabled>✓ Έλεγχος Σειράς</button>
+<div class="feedback hidden" id="feedback"></div>
+</div>
+<div id="endScreen" class="hidden">
+<div style="font-size:3em;margin-bottom:20px">🏆</div>
+<h1>Μπράβο!</h1>
+<div class="score" id="finalScore"></div>
+<p id="endMessage" style="color:#555;font-size:1.1em;margin:20px 0"></p>
+<button class="btn" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+let data=null,events=[],shuffled=[],slots=[],selectedCard=null;
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+if(dataFile){
+fetch(dataFile).then(r=>r.json()).then(d=>{data=d;document.getElementById('title').textContent=esc(data.title||'Χρονολογική Σειρά');document.getElementById('subtitle').textContent=esc(data.subtitle||'Βάλε τα γεγονότα στη σωστή σειρά!');}).catch(e=>{document.getElementById('subtitle').textContent='Σφάλμα φόρτωσης δεδομένων';});
+}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){
+if(!data)return;
+events=[...data.events].sort((a,b)=>a.year-b.year);
+shuffled=shuffle(events);
+slots=new Array(events.length).fill(null);
+selectedCard=null;
+document.getElementById('startScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+document.getElementById('feedback').classList.add('hidden');
+renderCards();renderTimeline();
+}
+function renderCards(){
+const area=document.getElementById('cardsArea');
+area.innerHTML='';
+shuffled.forEach((ev,i)=>{
+const card=document.createElement('div');
+card.className='event-card'+(slots.includes(i)?' placed':'')+(selectedCard===i?' selected':'');
+card.textContent=ev.text;
+card.onclick=function(){selectCard(i)};
+area.appendChild(card);
+});
+}
+function renderTimeline(){
+const tl=document.getElementById('timeline');
+tl.innerHTML='';
+for(let i=0;i<events.length;i++){
+const slot=document.createElement('div');
+slot.className='slot'+(slots[i]!==null?' filled':'');
+const num=document.createElement('span');
+num.className='slot-num';
+num.textContent=(i+1)+'.';
+slot.appendChild(num);
+if(slots[i]!==null){
+const txt=document.createTextNode(' '+shuffled[slots[i]].text);
+slot.appendChild(txt);
+}else{
+const txt=document.createTextNode(' Κάνε κλικ για τοποθέτηση');
+slot.style.color='#aaa';
+slot.appendChild(txt);
+}
+slot.onclick=function(){placeInSlot(i)};
+tl.appendChild(slot);
+}
+updateCheckBtn();
+}
+function selectCard(index){
+if(slots.includes(index))return;
+selectedCard=selectedCard===index?null:index;
+renderCards();
+}
+function placeInSlot(slotIndex){
+if(selectedCard===null){
+if(slots[slotIndex]!==null){
+const cardIndex=slots[slotIndex];
+slots[slotIndex]=null;
+selectedCard=cardIndex;
+renderCards();renderTimeline();
+}
+return;
+}
+if(slots[slotIndex]!==null){
+const old=slots[slotIndex];
+slots[slotIndex]=selectedCard;
+const oldSlot=slots.indexOf(selectedCard);
+if(oldSlot!==-1&&oldSlot!==slotIndex)slots[oldSlot]=null;
+}else{
+slots[slotIndex]=selectedCard;
+}
+selectedCard=null;
+renderCards();renderTimeline();
+}
+function updateCheckBtn(){
+const allFilled=slots.every(s=>s!==null);
+document.getElementById('checkBtn').disabled=!allFilled;
+}
+function checkOrder(){
+let correct=0;
+const tl=document.getElementById('timeline');
+const slotEls=tl.querySelectorAll('.slot');
+slotEls.forEach((el,i)=>{
+if(slots[i]!==null){
+const placedYear=shuffled[slots[i]].year;
+const expectedYear=events[i].year;
+if(placedYear===expectedYear){
+el.classList.add('correct-slot');
+correct++;
+const yr=document.createElement('span');
+yr.className='slot-year';
+yr.textContent=' ('+placedYear+')';
+el.appendChild(yr);
+}else{
+el.classList.add('wrong-slot');
+}
+}
+});
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden');
+if(correct===events.length){
+fb.className='feedback correct';
+fb.textContent='✓ Τέλειο! Όλα στη σωστή σειρά!';
+setTimeout(()=>{endGame(correct)},2000);
+}else{
+fb.className='feedback wrong';
+fb.textContent=`✗ Βρέθηκαν ${correct} από ${events.length} στη σωστή θέση. Δοκίμασε ξανά!`;
+fb.textContent+='';
+setTimeout(()=>{
+slotEls.forEach(el=>{el.classList.remove('correct-slot','wrong-slot');
+const yr=el.querySelector('.slot-year');
+if(yr)yr.remove()});
+fb.classList.add('hidden');
+},3000);
+}
+}
+function endGame(){
+document.getElementById('gameScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.remove('hidden');
+document.getElementById('finalScore').textContent='Τα τοποθέτησες σωστά!';
+document.getElementById('endMessage').textContent='Μπράβο! Ξέρεις την ιστορία της τεχνολογίας! 🌟';
+}
+</script>
+</body>
+</html>

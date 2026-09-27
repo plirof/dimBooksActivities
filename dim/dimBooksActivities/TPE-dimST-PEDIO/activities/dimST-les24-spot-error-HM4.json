@@ -1,0 +1,86 @@
+{
+  "title": "Βρες τα Λάθη: Ετικέτες",
+  "subtitle": "Βρες τις λανθασμένες λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {
+          "text": "Ετικέτα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ετιβέτα",
+          "error": true,
+          "correct": "Ετικέτα",
+          "feedback": "Το σωστό είναι 'Ετικέτα' με 'κ' και 'τ'"
+        },
+        {
+          "text": "Αναζήτηση",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κλειδί",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Κλειθή",
+          "error": true,
+          "correct": "Κλειδί",
+          "feedback": "Το σωστό είναι 'Κλειδί' με 'δ' και 'ι'"
+        },
+        {
+          "text": "Προσθήκη",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "text": "Ορθογραφία",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Άρθρο",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Ορθογραφίαα",
+          "error": true,
+          "correct": "Ορθογραφία",
+          "feedback": "Το σωστό είναι 'Ορθογραφία' με ένα 'α'"
+        },
+        {
+          "text": "Κόμμα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Σελίδα",
+          "error": false,
+          "correct": "",
+          "feedback": ""
+        },
+        {
+          "text": "Σελίδαδα",
+          "error": true,
+          "correct": "Σελίδα",
+          "feedback": "Το σωστό είναι 'Σελίδα' χωρίς διπλό 'δα'"
+        }
+      ]
+    }
+  ]
+}

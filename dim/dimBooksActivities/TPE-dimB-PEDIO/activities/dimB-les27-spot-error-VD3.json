@@ -1,0 +1,40 @@
+{
+  "title": "Βρες τα Λάθη: Ηλεκτρονικά Μηνύματα",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Για", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "στείλω", "error": false, "correct": "", "feedback": "" },
+        { "text": "μηνυμα", "error": true, "correct": "μήνυμα", "feedback": "Λείπει ο τόνος" },
+        { "text": "δεν", "error": false, "correct": "", "feedback": "" },
+        { "text": "χρειάζομαι", "error": false, "correct": "", "feedback": "" },
+        { "text": "διαδίκτυο", "error": false, "correct": "", "feedback": "" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "χαρτί", "error": true, "correct": "ψηφιακή συσκευή", "feedback": "Χρειάζομαι ψηφιακή συσκευή, όχι χαρτί" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ανοίγω", "error": false, "correct": "", "feedback": "" },
+        { "text": "πάντα", "error": true, "correct": "ποτέ δεν", "feedback": "Δεν ανοίγουμε ποτέ μηνύματα από αγνώστους" },
+        { "text": "μηνύματα", "error": false, "correct": "", "feedback": "" },
+        { "text": "από", "error": false, "correct": "", "feedback": "" },
+        { "text": "αγνωστους", "error": true, "correct": "αγνώστους", "feedback": "Λείπει ο τόνος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Γράφω", "error": false, "correct": "", "feedback": "" },
+        { "text": "το", "error": false, "correct": "", "feedback": "" },
+        { "text": "ονομα", "error": true, "correct": "όνομα", "feedback": "Λείπει ο τόνος" },
+        { "text": "του", "error": false, "correct": "", "feedback": "" },
+        { "text": "αποστολεα", "error": true, "correct": "παραλήπτη", "feedback": "Γράφω το όνομα του παραλήπτη, όχι αποστολέα" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "πατάω", "error": false, "correct": "", "feedback": "" },
+        { "text": "αποστολή", "error": false, "correct": "", "feedback": "" }
+      ]
+    }
+  ]
+}

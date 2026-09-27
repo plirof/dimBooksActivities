@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αισθητήρες Φωτός",
+  "subtitle": "Σπάσε μόνο τα στοιχεία των αισθητήρων",
+  "instruction": "Σπάσε τα μπαλόνια που σχετίζονται με τους αισθητήρες και το micro:bit",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Αισθητήρας φωτός",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φωτοδίοδος LED",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Κουζίνα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Micro:bit",
+      "correct": true,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Επίπεδο φωτισμού",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Ποδόσφαιρο",
+      "correct": false,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "MakeCode",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Μπάσκετ",
+      "correct": false,
+      "color": "#607D8B"
+    },
+    {
+      "text": "Εντολή εάν-αλλιώς",
+      "correct": true,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#795548"
+    }
+  ]
+}

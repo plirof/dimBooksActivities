@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Φιδάκι</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f7971e 0%,#ffd200 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;border-radius:20px;padding:20px;max-width:700px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:15px;font-weight:400}
+.game-header{display:flex;justify-content:space-between;padding:10px 15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px}
+.stat{font-size:.9em;color:#555}.stat span{font-weight:700;color:#f7971e;font-size:1.1em}
+.canvas-wrap{display:flex;justify-content:center;margin-bottom:10px}
+canvas{border-radius:12px;border:2px solid #f0e68c;display:block;background:#fffde7}
+.start-screen,.end-screen{text-align:center;padding:30px 20px}
+.start-screen h2,.end-screen h2{color:#333;margin-bottom:10px}
+.start-screen p,.end-screen p{color:#666;margin-bottom:15px;line-height:1.5}
+.start-btn,.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;font-weight:600}
+.start-btn:hover,.restart-btn:hover{transform:scale(1.05)}
+.final-score{font-size:3em;color:#f7971e;font-weight:700}
+.message{color:#666;margin:10px 0 20px;font-size:1.1em}
+.lives-display{display:flex;gap:4px;align-items:center}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+<script src="touch-controls.js"></script>
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+var params=new URLSearchParams(window.location.search);
+var dataFile=params.get('data');
+var app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">\u0394\u03b5\u03bd \u03b2\u03c1\u03ad\u03b8\u03b7\u03ba\u03b5 \u03c4\u03bf \u03b1\u03c1\u03c7\u03b5\u03af\u03bf \u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd\u03c9\u03bd.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(function(r){if(!r.ok)throw new Error('\u0394\u03b5\u03bd \u03b2\u03c1\u03ad\u03b8\u03b7\u03ba\u03b5: '+dataFile);return r.json()}).then(function(data){
+var gridSize=data.gridSize||15;
+var cellSize=data.cellSize||25;
+var speed=data.speed||180;
+var maxLives=data.lives||3;
+var foodItems=data.foodItems||[];
+var canvasSize=gridSize*cellSize;
+var snake,dir,nextDir,food,score,lives,gameRunning,gameLoop;
+var savedCanvas=null,savedCtx=null;
+
+function showStart(){
+  app.innerHTML='<h1>'+esc(data.title)+'</h1><div class="start-screen"><h2>'+esc(data.subtitle||'')+'</h2><p>'+esc(data.instructions||'')+'</p><p>\u0396\u03c9\u03ad\u03c2: '+maxLives+' | \u03a4\u03b1\u03c7\u03cd\u03c4\u03b7\u03c4\u03b1: '+speed+'ms</p><button class="start-btn" onclick="startGame()">\u25b6 \u039e\u03b5\u03ba\u03af\u03bd\u03b1!</button></div>';
+}
+
+function spawnFood(){
+  var correct=foodItems.filter(function(f){return f.correct});
+  var wrong=foodItems.filter(function(f){return !f.correct});
+  var pool=correct.concat(correct).concat(wrong);
+  var item=pool[Math.floor(Math.random()*pool.length)];
+  var r,c,attempts=0;
+  do{r=Math.floor(Math.random()*gridSize);c=Math.floor(Math.random()*gridSize);attempts++}while(snake.some(function(s){return s.r===r&&s.c===c})&&attempts<200);
+  food={r:r,c:c,label:item.label,correct:item.correct};
+}
+
+function resetSnake(){
+  snake=[{r:Math.floor(gridSize/2),c:Math.floor(gridSize/2)}];
+  for(var i=1;i<3;i++)snake.push({r:snake[0].r,c:snake[0].c-i});
+  dir={r:0,c:1};nextDir={r:0,c:1};
+}
+
+window.startGame=function(){
+  if(gameLoop)clearInterval(gameLoop);
+  resetSnake();
+  score=0;lives=maxLives;gameRunning=true;
+  spawnFood();
+  buildGameDOM();
+  gameLoop=setInterval(tick,speed);
+};
+
+function buildGameDOM(){
+  app.innerHTML='<h1>'+esc(data.title)+'</h1><div class="game-header"><div class="stat">\u03a3\u03ba\u03bf\u03c1: <span id="scoreVal">'+score+'</span></div><div class="stat">\u0396\u03c9\u03ad\u03c2: <span class="lives-display" id="livesVal"></span></div></div><div class="canvas-wrap"><canvas id="snakeCanvas" width="'+canvasSize+'" height="'+canvasSize+'"></canvas></div>';
+  savedCanvas=document.getElementById('snakeCanvas');
+  savedCtx=savedCanvas.getContext('2d');
+  if(typeof TouchControls!=='undefined'){
+    TouchControls.create({
+      container:app,
+      directions:['up','down','left','right'],
+      theme:{bg:'#fffde7',border:'#f0e68c',active:'#fff9c4',text:'#f7971e'},
+      onPress:function(dName){
+        if(!gameRunning)return;
+        var dMap={up:{r:-1,c:0},down:{r:1,c:0},left:{r:0,c:-1},right:{r:0,c:1}};
+        var d=dMap[dName];
+        if(!d)return;
+        if(d.r===-dir.r&&d.c===-dir.c)return;
+        nextDir={r:d.r,c:d.c};
+      }
+    });
+  }
+  updateUI();
+  draw();
+}
+
+function draw(){
+  if(!savedCanvas||!savedCtx)return;
+  var ctx=savedCtx;
+  ctx.clearRect(0,0,canvasSize,canvasSize);
+  ctx.fillStyle='#fffde7';
+  ctx.fillRect(0,0,canvasSize,canvasSize);
+  for(var r=0;r<gridSize;r++){for(var c=0;c<gridSize;c++){if((r+c)%2===0){ctx.fillStyle='#fff9c4';ctx.fillRect(c*cellSize,r*cellSize,cellSize,cellSize)}}}
+  if(food){
+    ctx.font=(cellSize-4)+'px "EmojiFont", sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillStyle=food.correct?'#e8f5e9':'#ffebee';
+    ctx.beginPath();
+    ctx.arc(food.c*cellSize+cellSize/2,food.r*cellSize+cellSize/2,cellSize/2-2,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#000';
+    ctx.fillText(food.label,food.c*cellSize+cellSize/2,food.r*cellSize+cellSize/2);
+  }
+  for(var i=snake.length-1;i>=0;i--){
+    var s=snake[i];
+    var x=s.c*cellSize,y=s.r*cellSize;
+    if(i===0){
+      ctx.fillStyle='#4CAF50';
+      ctx.beginPath();
+      ctx.arc(x+cellSize/2,y+cellSize/2,cellSize/2-1,0,Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle='#fff';
+      ctx.font=Math.floor(cellSize*0.4)+'px "EmojiFont", sans-serif';
+      var eyeSize=3;
+      ctx.beginPath();ctx.arc(x+cellSize*0.35,y+cellSize*0.35,eyeSize,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(x+cellSize*0.65,y+cellSize*0.35,eyeSize,0,Math.PI*2);ctx.fill();
+    }else{
+      ctx.fillStyle=i%2===0?'#66BB6A':'#81C784';
+      var pad=2;
+      ctx.fillRect(x+pad,y+pad,cellSize-pad*2,cellSize-pad*2);
+    }
+  }
+}
+
+function updateUI(){
+  var sv=document.getElementById('scoreVal');
+  if(sv)sv.textContent=score;
+  var lv=document.getElementById('livesVal');
+  if(lv){var s='';for(var i=0;i<lives;i++)s+='\u2764\ufe0f';lv.textContent=s}
+}
+
+function tick(){
+  if(!gameRunning)return;
+  dir={r:nextDir.r,c:nextDir.c};
+  var head={r:snake[0].r+dir.r,c:snake[0].c+dir.c};
+  if(head.r<0||head.r>=gridSize||head.c<0||head.c>=gridSize){loseLife();return}
+  if(snake.some(function(s){return s.r===head.r&&s.c===head.c})){loseLife();return}
+  snake.unshift(head);
+  if(head.r===food.r&&head.c===food.c){
+    if(food.correct){score+=10;spawnFood();updateUI()}
+    else{snake.shift();loseLife();return}
+  }else{snake.shift()}
+  draw();
+}
+
+function loseLife(){
+  lives--;
+  if(lives<=0){
+    gameRunning=false;
+    clearInterval(gameLoop);
+    draw();
+    setTimeout(showEnd,600);
+  }else{
+    resetSnake();
+    spawnFood();
+    updateUI();
+    draw();
+  }
+}
+
+function showEnd(){
+  savedCanvas=null;savedCtx=null;
+  var msg=score>=100?'\u0395\u03be\u03b1\u03b9\u03c1\u03b5\u03c4\u03b9\u03ba\u03ac! \u03a4\u03ad\u03bb\u03b5\u03b9\u03bf!':score>=50?'\u039c\u03c0\u03c1\u03ac\u03b2\u03bf! \u03a0\u03bf\u03bb\u03cd \u03ba\u03b1\u03bb\u03ac!':score>=20?'\u039a\u03b1\u03bb\u03ac! \u039c\u03c0\u03bf\u03c1\u03b5\u03af\u03c2 \u03ba\u03b1\u03bb\u03cd\u03c4\u03b5\u03c1\u03b1!':'\u0394\u03bf\u03ba\u03af\u03bc\u03b1\u03c3\u03b5 \u03be\u03b1\u03bd\u03ac!';
+  app.innerHTML='<h1>'+esc(data.title)+'</h1><div class="end-screen" style="display:block"><h2>\u03a4\u03ad\u03bb\u03bf\u03c2 \u03a0\u03b1\u03b9\u03c7\u03bd\u03b9\u03b4\u03b9\u03bf\u03cd!</h2><div class="final-score">'+score+'</div><div class="message">'+msg+'</div><button class="restart-btn" onclick="location.reload()">\u03a0\u03b1\u03af\u03be\u03b5 \u03be\u03b1\u03bd\u03ac!</button></div>';
+}
+
+document.addEventListener('keydown',function(e){
+  var dirs={'ArrowUp':{r:-1,c:0},'ArrowDown':{r:1,c:0},'ArrowLeft':{r:0,c:-1},'ArrowRight':{r:0,c:1}};
+  var d=dirs[e.key];
+  if(!d)return;
+  e.preventDefault();
+  if(d.r===-dir.r&&d.c===-dir.c)return;
+  nextDir={r:d.r,c:d.c};
+});
+
+showStart();
+}).catch(function(err){app.innerHTML='<div class="error">\u03a3\u03c6\u03ac\u03bb\u03bc\u03b1: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

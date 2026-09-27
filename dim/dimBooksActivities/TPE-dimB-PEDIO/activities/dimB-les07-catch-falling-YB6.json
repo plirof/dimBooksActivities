@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Πάρτι Χορού",
+  "subtitle": "Πιάσε μόνο στοιχεία πάρτι!",
+  "instructions": "Πιάσε μόνο ΣΤΟΙΧΕΙΑ ΠΑΡΤΙ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Χορός", "correct": true, "color": "#4CAF50"},
+    {"text": "Ύπνος", "correct": false, "color": "#f44336"},
+    {"text": "Μουσική", "correct": true, "color": "#2196F3"},
+    {"text": "Διάβασμα", "correct": false, "color": "#FF9800"},
+    {"text": "Πράσινη σημαία", "correct": true, "color": "#9C27B0"},
+    {"text": "Μαύρο πενάκι", "correct": false, "color": "#E91E63"},
+    {"text": "Μοτίβο κίνησης", "correct": true, "color": "#009688"},
+    {"text": "Καθάρισμα", "correct": false, "color": "#FFC107"},
+    {"text": "Χαρακτήρες", "correct": true, "color": "#795548"},
+    {"text": "Γραμμή", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ετικέτες",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με ετικέτες",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με τις ετικέτες ιστολογίου",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Ετικέτα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Λέξη-κλειδί",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αναζήτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Προσθήκη",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Άρθρο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ορθογραφία",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "QR Code",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φόρουμ",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

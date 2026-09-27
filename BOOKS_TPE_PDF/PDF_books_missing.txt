@@ -1,0 +1,11 @@
+allbooks_download_links.zip
+EPY
+PDF_books_missing.txt
+PEDIO
+Pliroforiki_A-Dimotikou_pdf-web_v6.0_PEDIO.pdf
+Pliroforiki_B-Dimotikou_pdf-web_v6.0_PEDIO.pdf
+Pliroforiki_C-Dimotikou_pdf-web_v.6.0_PEDIO.pdf
+Pliroforiki_D-dimotikou_light-web_v.5.0_PEDIO.pdf
+Pliroforiki_E-Dimotikou_vivlioMathiti-tetradioergasiwn_pdf-web_v6.0_PEDIO.pdf
+Pliroforiki_ST-Dimotikou_pdf-web_v.7.0_PEDIO.pdf
+ShowPDFPages

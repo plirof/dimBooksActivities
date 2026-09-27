@@ -1,0 +1,26 @@
+{
+    "id": "dimE-les14-wheel-5oz",
+    "title": "Το ταξίδι των δεδομένων σε ένα δίκτυο - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "segments": [
+            "Δίκτυο",
+            "LAN",
+            "WAN",
+            "Server",
+            "Client",
+            "IP διεύθυνση",
+            "Router",
+            "Πακέτο",
+            "Διαδίκτυο",
+            "Τοπικό δίκτυο"
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les14",
+        "δίκτυα"
+    ]
+}

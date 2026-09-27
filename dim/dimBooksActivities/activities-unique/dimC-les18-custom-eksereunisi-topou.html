@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εξερεύνηση Δικτυακού Τόπου</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#bfdbfe,#93c5fd);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;padding:16px 24px;text-align:center}
+.header h1{font-size:1.3em}
+.header p{font-size:.85em;opacity:.9;margin-top:4px}
+.area{display:flex;flex-direction:column;padding:12px}
+.browser-bar{background:#f1f5f9;border-radius:12px 12px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:2px solid #e2e8f0}
+.browser-dots{display:flex;gap:5px}
+.browser-dot{width:12px;height:12px;border-radius:50%}
+.browser-dot.r{background:#ef4444}
+.browser-dot.y{background:#eab308}
+.browser-dot.g{background:#22c55e}
+.url-bar{flex:1;background:#fff;border-radius:8px;padding:7px 12px;font-size:.85em;color:#64748b;border:1px solid #e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site-frame{border:2px solid #e2e8f0;border-radius:0 0 12px 12px;overflow:hidden;min-height:350px}
+.site-header{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+.site-header .logo{font-size:1.8em}
+.site-header h2{font-size:1.1em;flex:1}
+.site-nav{background:#dbeafe;padding:8px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.site-nav .nav-btn{padding:6px 14px;border:none;border-radius:8px;background:#fff;color:#1e40af;font-size:.85em;font-weight:600;cursor:pointer;transition:all .2s}
+.site-nav .nav-btn:hover{background:#bfdbfe;transform:scale(1.03)}
+.site-nav .nav-btn.active{background:#1e40af;color:#fff}
+.site-content{padding:20px;min-height:250px}
+.site-content h3{color:#1e40af;font-size:1.1em;margin-bottom:10px}
+.site-content p{color:#475569;line-height:1.7;font-size:.9em}
+.site-content ul{list-style:none;padding:0}
+.site-content ul li{padding:6px 0 6px 20px;position:relative;font-size:.88em;color:#475569}
+.site-content ul li::before{content:'• ';color:#3b82f6;font-weight:700;position:absolute;left:0}
+.task-box{background:#f0f9ff;border-radius:12px;border:2px solid #bae6fd;padding:14px;margin-top:12px}
+.task-box h3{color:#0369a1;font-size:.95em;margin-bottom:8px}
+.task-box .q{font-size:.88em;color:#0c4a6e;line-height:1.6;margin-bottom:8px}
+.task-options{display:flex;flex-direction:column;gap:6px}
+.task-opt{padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;font-size:.85em;transition:all .2s;background:#fff}
+.task-opt:hover{border-color:#3b82f6}
+.task-opt.selected{border-color:#1d4ed8;background:#dbeafe;font-weight:600}
+.task-opt.correct{border-color:#047857;background:#d1fae5}
+.task-opt.wrong{border-color:#dc2626;background:#fee2e2}
+.feedback{text-align:center;font-size:1em;font-weight:700;min-height:28px;margin-top:8px}
+.feedback.ok{color:#047857}
+.feedback.fail{color:#dc2626}
+.task-progress{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.tp-dot{width:24px;height:24px;border-radius:50%;font-size:.65em;display:flex;align-items:center;justify-content:center;border:2px solid #e2e8f0;color:#999}
+.tp-dot.done{border-color:#047857;background:#d1fae5;color:#047857}
+.tp-dot.wrong{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.tp-dot.active{border-color:#1d4ed8;background:#1d4ed8;color:#fff}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:10px}
+.btn{padding:10px 26px;border:none;border-radius:50px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-next{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.btn-next:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(29,78,216,.35)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+@media(max-width:600px){.site-header{flex-wrap:wrap}.site-nav{gap:4px}.nav-btn{font-size:.8em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .browser-bar > * + * { margin-left: 8px; }
+  .browser-dots > * + * { margin-left: 5px; }
+  .site-header > * + * { margin-left: 10px; }
+  .site-nav > * { margin: 3px; }
+  .task-options > * + * { margin-top: 6px; }
+  .task-progress > * { margin: 2.5px; }
+  .controls > * + * { margin-left: 12px; }
+  @media(max-width:600px){
+    .site-nav > * { margin: 2px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌐 Εξερεύνηση Δικτυακού Τόπου</h1>
+<p>Πλοηγήσου στον δικτυακό τόπο του σχολείου και απάντησε στις ερωτήσεις!</p>
+</div>
+<div class="area">
+<div class="browser-bar">
+<div class="browser-dots"><span class="browser-dot r"></span><span class="browser-dot y"></span><span class="browser-dot g"></span></div>
+<div class="url-bar" id="urlBar">https://dim-city-sch.gr</div>
+</div>
+<div class="site-frame">
+<div class="site-header">
+<span class="logo">🏫</span>
+<h2>Δικτυακός Τόπος Σχολείου</h2>
+</div>
+<div class="site-nav" id="siteNav"></div>
+<div class="site-content" id="siteContent"></div>
+</div>
+<div class="task-box" id="taskBox"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-next" id="nextBtn" onclick="nextTask()" disabled>⏭ Επόμενη</button>
+<button class="btn btn-reset" onclick="resetAll()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var pages={
+home:{title:'Αρχική',icon:'🏠',content:'<h3>Καλωσήρθατε!</h3><p>Αυτός είναι ο επίσημος δικτυακός τόπος του σχολείου μας. Εδώ μπορείτε να βρείτε πληροφορίες για το σχολείο, τις δράσεις μας, εκπαιδευτικό υλικό και ανακοινώσεις.</p><p>Ο δικτυακός τόπος περιέχει πολλές ιστοσελίδες συνδεδεμένες μεταξύ τους. Μπορείτε να πλοηγηθείτε χρησιμοποιώντας το μενού!</p>'},
+hours:{title:'Ώρες λειτουργίας',icon:'🕐',content:'<h3>Ώρες Λειτουργίας</h3><p>Το σχολείο λειτουργεί από Δευτέρα έως Παρασκευή.</p><ul><li>Πρωινή ζώνη: 08:00 - 13:15</li><li>Ολοήμερο: 13:15 - 16:00</li><li>Γραφείο: 08:00 - 14:00</li></ul>'},
+programs:{title:'Προγράμματα',icon:'📚',content:'<h3>Εκπαιδευτικά Προγράμματα</h3><p>Το σχολείο μας συμμετέχει σε διάφορα εκπαιδευτικά προγράμματα:</p><ul><li>Περιβαλλοντική Εκπαίδευση</li><li>Προγράμματα Αγωγής Υγείας</li><li>Πολιτιστικά Προγράμματα</li><li>Σχολικός Αθλητισμός</li><li>Erasmus+ Συνεργασίες</li></ul>'},
+activities:{title:'Δράσεις',icon:'🎭',content:'<h3>Δράσεις του Σχολείου</h3><p>Κατά τη διάρκεια της σχολικής χρονιάς πραγματοποιούνται πολλές δράσεις:</p><ul><li>Γιορτή 28ης Οκτωβρίου</li><li>Χριστουγεννιάτικη γιορτή</li><li>Εκδρομές και επισκέψεις</li><li>Αθλητικές δραστηριότητες</li><li>Σχολική γιορτή λήξης</li></ul>'},
+contact:{title:'Επικοινωνία',icon:'📞',content:'<h3>Επικοινωνία</h3><p>Μπορείτε να επικοινωνήσετε με το σχολείο μας:</p><ul><li>Διεύθυνση: Οδός Παιδείας 12</li><li>Τηλέφωνο: 210 1234567</li><li>Email: info@dim-city.sch.gr</li><li>Ώρες γραφείου: 08:00 - 14:00</li></ul>'},
+teachers:{title:'Εκπαιδευτικοί',icon:'👩‍🏫',content:'<h3>Εκπαιδευτικό Προσωπικό</h3><p>Το σχολείο μας έχει έμπειρους εκπαιδευτικούς:</p><ul><li>Διευθύντρια: κα. Παπαδοπούλου</li><li>Υποδιευθυντής: κ. Γεωργίου</li><li>Δάσκαλοι: 12 εκπαιδευτικοί</li><li>Ειδικότητες: Αγγλικά, Γαλλικά, Γυμναστική, Μουσική, Πληροφορική, Εικαστικά</li></ul>'},
+announcements:{title:'Ανακοινώσεις',icon:'📢',content:'<h3>Ανακοινώσεις</h3><div style="background:#f0f9ff;border-radius:8px;padding:10px;margin-bottom:10px"><b>📌 15/05:</b> Αυριανή σχολική γιορτή λήξης σχολικού έτους στις 10:00.</div><div style="background:#f0f9ff;border-radius:8px;padding:10px;margin-bottom:10px"><b>📌 10/05:</b> Παράταση εγγραφών για το ολοήμερο πρόγραμμα.</div><div style="background:#f0f9ff;border-radius:8px;padding:10px"><b>📌 05/05:</b> Εκδρομή της Γ\' τάξης στο Αρχαιολογικό Μουσείο.</div>'},
+material:{title:'Υλικό',icon:'📁',content:'<h3>Εκπαιδευτικό Υλικό Τάξεων</h3><p>Βρείτε υλικό για κάθε τάξη:</p><ul><li>Α\' Δημοτικού: Ασκήσεις γλώσσας</li><li>Β\' Δημοτικού: Μαθηματικά</li><li>Γ\' Δημοτικού: Πληροφορική</li><li>Δ\' Δημοτικού: Μελέτη</li><li>Ε\' Δημοτικού: Ιστορία</li><li>ΣΤ\' Δημοτικού: Γλώσσα - Έκθεση</li></ul>'}
+};
+
+var pageKeys=['home','hours','programs','activities','contact','teachers','announcements','material'];
+var currentPage='home';
+
+var tasks=[
+{q:'Πόσες ιστοσελίδες έχει ο δικτυακός τόπος του σχολείου; <small>(μέτρησέ τες από το μενού)</small>',options:['5','7','8','10'],correct:2,hint:'Μέτρησε τα κουμπιά στο μενού!'},
+{q:'Τι χρειάζεσαι για να δεις μια ιστοσελίδα;',options:['Μόνο υπολογιστή','Ψηφιακή συσκευή + σύνδεση + φυλλομετρητή','Μόνο σύνδεση στο διαδίκτυο','Μόνο φυλλομετρητή'],correct:1,hint:'Θυμήσου τι λέει το μάθημα 18!'},
+{q:'Ποια είναι η διαφορά ανάμεσα σε βιβλίο και δικτυακό τόπο;',options:['Είναι το ίδιο πράγμα','Στο βιβλίο διαβάζεις με σειρά, στον δικτυακό τόπο επιλέγεις όποια σελίδα θέλεις','Ο δικτυακός τόπος έχει λιγότερες σελίδες','Το βιβλίο δεν έχει σελίδες'],correct:1,hint:'Θυμήσου τη σύγκριση με το βιβλίο!'},
+{q:'Πλοηγήσου στην ιστοσελίδα "Επικοινωνία". Ποιο είναι το τηλέφωνο του σχολείου;',options:['210 1234567','210 7654321','210 9876543','210 1111111'],correct:0,hint:'Κάνε κλικ στο «Επικοινωνία» στο μενού!'},
+{q:'Πλοηγήσου στην ιστοσελίδα "Ανακοινώσεις". Ποια είναι η τελευταία ανακοίνωση;',options:['Εκδρομή Γ\' τάξης','Παράταση εγγραφών','Σχολική γιορτή λήξης','Έναρξη μαθημάτων'],correct:2,hint:'Κάνε κλικ στις «Ανακοινώσεις» στο μενού!'},
+{q:'Τι περιέχει ένας δικτυακός τόπος;',options:['Μία μόνο σελίδα','Πολλές ιστοσελίδες συνδεδεμένες μεταξύ τους','Μόνο εικόνες','Μόνο κείμενο'],correct:1,hint:'Ορισμός από το μάθημα 18.'}
+];
+
+var taskIdx=0;
+var taskResults=[];
+var answered=false;
+
+function renderNav(){
+var nav=document.getElementById('siteNav');
+nav.innerHTML='';
+for(var i=0;i<pageKeys.length;i++){
+var key=pageKeys[i];
+var p=pages[key];
+var btn=document.createElement('button');
+btn.className='nav-btn'+(key===currentPage?' active':'');
+btn.textContent=p.icon+' '+p.title;
+btn.onclick=function(k){return function(){navigateTo(k);}}(key);
+nav.appendChild(btn);
+}
+}
+
+function navigateTo(key){
+currentPage=key;
+renderNav();
+renderContent();
+}
+
+function renderContent(){
+var content=document.getElementById('siteContent');
+var p=pages[currentPage];
+content.innerHTML=p.content;
+document.getElementById('urlBar').textContent='https://dim-city-sch.gr/'+currentPage;
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var taskOrder=[];
+
+function renderTask(){
+var idx=taskOrder[taskIdx];
+var t=tasks[idx];
+renderProgress();
+var box=document.getElementById('taskBox');
+var html='<h3>📝 Ερώτηση '+(taskIdx+1)+'/'+tasks.length+'</h3><div class="q">'+t.q+'</div><div class="task-options">';
+for(var i=0;i<t.options.length;i++){
+html+='<div class="task-opt" data-opt="'+i+'" onclick="selectOpt(this,'+i+')">'+t.options[i]+'</div>';
+}
+html+='</div>';
+box.innerHTML=html;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+answered=false;
+document.getElementById('nextBtn').disabled=true;
+var isLast=taskIdx>=tasks.length-1;
+document.getElementById('nextBtn').textContent=isLast?'🏁 Τέλος':'⏭ Επόμενη';
+}
+
+function renderProgress(){
+var box=document.getElementById('taskBox');
+var ph=box.querySelector('.task-progress');
+if(!ph){
+ph=document.createElement('div');
+ph.className='task-progress';
+box.prepend(ph);
+}
+ph.innerHTML='';
+for(var i=0;i<tasks.length;i++){
+var dot=document.createElement('div');
+dot.className='tp-dot';
+if(taskResults[i]!==undefined)dot.classList.add(taskResults[i]?'done':'wrong');
+if(i===taskIdx)dot.classList.add('active');
+dot.textContent=i+1;
+ph.appendChild(dot);
+}
+}
+
+function selectOpt(el,idx){
+if(answered)return;
+var t=tasks[taskOrder[taskIdx]];
+var opts=document.querySelectorAll('.task-opt');
+for(var i=0;i<opts.length;i++)opts[i].classList.remove('selected');
+el.classList.add('selected');
+if(idx===t.correct){
+showFeedback('✅ Σωστά! '+t.hint,true);
+taskResults[taskIdx]=true;
+}else{
+showFeedback('❌ Λάθος. '+t.hint,false);
+taskResults[taskIdx]=false;
+}
+answered=true;
+document.getElementById('nextBtn').disabled=false;
+renderProgress();
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function nextTask(){
+if(taskIdx>=tasks.length-1){
+showFinal();
+return;
+}
+taskIdx++;
+renderTask();
+}
+
+function showFinal(){
+var correct=0;
+for(var i=0;i<taskResults.length;i++)if(taskResults[i])correct++;
+var pct=Math.round(correct/tasks.length*100);
+var msg='';
+if(pct===100)msg='🎉 Τέλεια! '+correct+'/'+tasks.length+' σωστές! Ξέρεις τι είναι οι δικτυακοί τόποι! 🌐✅';
+else if(pct>=65)msg='👏 Μπράβο! '+correct+'/'+tasks.length+' σωστές! Συνέχισε την εξερεύνηση!';
+else msg='💪 '+correct+'/'+tasks.length+' σωστές. Δοκίμασε ξανά!';
+document.getElementById('taskBox').innerHTML='<div style="text-align:center;padding:20px;font-size:1.3em;font-weight:700;color:#1d4ed8">'+msg+'</div>';
+document.getElementById('nextBtn').style.display='none';
+}
+
+function resetAll(){
+currentPage='home';
+taskIdx=0;
+taskResults=[];
+taskOrder=[];
+for(var i=0;i<tasks.length;i++)taskOrder.push(i);
+shuffle(taskOrder);
+renderNav();
+renderContent();
+renderTask();
+}
+
+resetAll();
+</script>
+</body>
+</html>

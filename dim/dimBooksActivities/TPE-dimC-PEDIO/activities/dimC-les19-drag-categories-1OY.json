@@ -1,0 +1,53 @@
+{
+  "title": "Μέρη URL",
+  "subtitle": "Ταίριαξε κάθε μέρος URL στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "protocol",
+      "name": "ΠΡΩΤΟΚΟΛΛΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "domain",
+      "name": "DOMAIN",
+      "color": "#2196F3"
+    },
+    {
+      "id": "path",
+      "name": "PATH",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "https://",
+      "category": "protocol"
+    },
+    {
+      "id": "item2",
+      "text": "www.example.com",
+      "category": "domain"
+    },
+    {
+      "id": "item3",
+      "text": "/page/about",
+      "category": "path"
+    },
+    {
+      "id": "item4",
+      "text": "http://",
+      "category": "protocol"
+    },
+    {
+      "id": "item5",
+      "text": "school.edu.gr",
+      "category": "domain"
+    },
+    {
+      "id": "item6",
+      "text": "/images/photo",
+      "category": "path"
+    }
+  ]
+}

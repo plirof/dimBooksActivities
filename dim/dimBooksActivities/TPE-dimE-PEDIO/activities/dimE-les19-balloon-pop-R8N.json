@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Διαγράμματα",
+  "subtitle": "Μόνο τους όρους των διαγραμμάτων!",
+  "instruction": "Σπάσε μόνο τις λέξεις που σχετίζονται με τα ΔΙΑΓΡΑΜΜΑΤΑ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Ραβδόγραμμα", "correct": true, "color": "#FF6B6B" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Υπόμνημα", "correct": true, "color": "#45B7D1" },
+    { "text": "Μπανάνα", "correct": false, "color": "#96CEB4" },
+    { "text": "Ετικέτα", "correct": true, "color": "#FFEAA7" },
+    { "text": "Καρέκλα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Πίτα", "correct": true, "color": "#98D8C8" },
+    { "text": "Γάτα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Οπτικοποίηση", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μήλο", "correct": false, "color": "#85C1E9" }
+  ]
+}

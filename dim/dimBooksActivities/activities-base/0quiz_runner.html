@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!--
+Versions/Changes:
+v003a 260515 - First working version
+
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Τρέξε & Απάντησε!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{width:100%;height:100%;position:relative;background:#333}
+
+.scene{width:100%;height:100%;position:relative;overflow:hidden}
+.sky{position:absolute;top:0;left:0;width:100%;height:58%;
+  background:linear-gradient(180deg,#4fc3f7 0%,#81d4fa 60%,#b3e5fc 100%)}
+.mountains{position:absolute;bottom:42%;left:0;width:200%;height:18%;z-index:1}
+.mountain{position:absolute;bottom:0;width:0;height:0;border-style:solid}
+.m1{left:5%;border-width:0 80px 90px 80px;border-color:transparent transparent #78909c transparent}
+.m2{left:18%;border-width:0 100px 110px 100px;border-color:transparent transparent #607d8b transparent}
+.m3{left:35%;border-width:0 70px 80px 70px;border-color:transparent transparent #78909c transparent}
+.m4{left:50%;border-width:0 90px 100px 90px;border-color:transparent transparent #607d8b transparent}
+.m5{left:68%;border-width:0 80px 85px 80px;border-color:transparent transparent #78909c transparent}
+.m6{left:82%;border-width:0 110px 120px 110px;border-color:transparent transparent #607d8b transparent}
+
+.ground-wrap{position:absolute;bottom:0;left:0;width:100%;height:42%;z-index:2}
+.ground-top{position:absolute;top:0;left:0;width:100%;height:8px;background:#66bb6a}
+.ground-body{position:absolute;top:8px;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(90deg,#8d6e63 0px,#8d6e63 30px,#795548 30px,#795548 60px)}
+.grass-row{position:absolute;top:-6px;left:0;width:100%;height:14px;overflow:hidden;z-index:3}
+.grass-blade{position:absolute;bottom:0;width:3px;height:12px;background:#43a047;border-radius:2px 2px 0 0;transform-origin:bottom center}
+
+.clouds{position:absolute;top:5%;left:0;width:200%;height:20%;z-index:1;pointer-events:none}
+.cloud{position:absolute;background:#fff;border-radius:50%;opacity:0.85}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.c1{width:60px;height:25px;top:10%;left:10%}.c1::before{width:30px;height:20px;top:-10px;left:10px}.c1::after{width:35px;height:18px;top:-6px;left:28px}
+.c2{width:80px;height:28px;top:25%;left:35%}.c2::before{width:40px;height:25px;top:-12px;left:15px}.c2::after{width:45px;height:22px;top:-8px;left:38px}
+.c3{width:55px;height:22px;top:8%;left:65%}.c3::before{width:28px;height:18px;top:-8px;left:8px}.c3::after{width:32px;height:16px;top:-5px;left:25px}
+.c4{width:70px;height:26px;top:30%;left:85%}.c4::before{width:35px;height:22px;top:-10px;left:12px}.c4::after{width:40px;height:20px;top:-7px;left:32px}
+.c5{width:50px;height:20px;top:15%;left:110%}.c5::before{width:25px;height:16px;top:-7px;left:8px}.c5::after{width:28px;height:14px;top:-4px;left:22px}
+.c6{width:65px;height:24px;top:22%;left:140%}.c6::before{width:32px;height:20px;top:-9px;left:10px}.c6::after{width:38px;height:18px;top:-6px;left=30px}
+
+.scoreboard{position:absolute;top:0;left:0;right:0;
+  background:rgba(0,0,0,0.65);color:#fff;padding:8px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;z-index:20}
+.scoreboard .sc{color:#FFD700;font-weight:700;font-size:17px}
+
+.runner-area{position:absolute;bottom:42%;left:0;width:100%;height:0;z-index:10}
+
+.runner{position:absolute;left:15%;bottom:0;width:40px;height:60px;z-index:10;
+  transition:transform .1s}
+.runner.running .r-leg-l{animation:legL .3s ease-in-out infinite}
+.runner.running .r-leg-r{animation:legR .3s ease-in-out infinite}
+.runner.running .r-arm-l{animation:armSwingL .3s ease-in-out infinite}
+.runner.running .r-arm-r{animation:armSwingR .3s ease-in-out infinite}
+.runner.jumping .r-leg-l,.runner.jumping .r-leg-r{transform:rotate(0deg)!important}
+.runner.jumping .r-arm-l{transform:rotate(-60deg)!important}
+.runner.jumping .r-arm-r{transform:rotate(60deg)!important}
+.runner.falling .r-body{animation:tumble .6s ease-in forwards}
+.runner.falling .r-head{animation:headSpin .6s ease-in forwards}
+.runner.celebrating .r-body{animation:celebrateJump .5s ease-out}
+
+.r-body{position:relative;width:100%;height:100%}
+.r-head{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(180deg,#ffcc80,#ffb74d);border:1px solid #f57c00}
+.r-hat{position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:20px;height:8px;background:#e53935;border-radius:4px 4px 0 0}
+.r-hat::after{content:'';position:absolute;bottom:0;left:-3px;width:26px;height:3px;
+  background:#c62828;border-radius:2px}
+.r-torso{position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  width:22px;height:20px;background:linear-gradient(180deg,#42a5f5,#1e88e5);
+  border-radius:3px}
+.r-arm-l,.r-arm-r{position:absolute;top:19px;width:8px;height:18px;
+  background:linear-gradient(180deg,#42a5f5,#1e88e5);border-radius:3px;
+  transform-origin:top center;transition:transform .15s}
+.r-arm-l{left:4px;transform:rotate(10deg)}
+.r-arm-r{right:4px;transform:rotate(-10deg)}
+.r-legs{position:absolute;top:37px;left:50%;transform:translateX(-50%);
+  width:22px;height:23px}
+.r-leg-l,.r-leg-r{position:absolute;top:0;width:9px;height:20px;
+  background:linear-gradient(180deg,#5d4037,#4e342e);border-radius:2px;
+  transform-origin:top center}
+.r-leg-l{left:0}
+.r-leg-r{right:0}
+.r-shoe-l,.r-shoe-r{position:absolute;bottom:0;left:-2px;width:13px;height:5px;
+  background:#e0e0e0;border-radius:1px 4px 3px 1px}
+.r-shoe-r{right:-2px;left:auto}
+
+.obstacle{position:absolute;bottom:0;right:-60px;z-index:8;opacity:0;transition:opacity .3s,right 1.8s ease-out}
+.obstacle.visible{opacity:1}
+.obstacle.jump-over{animation:obstaclePass .5s ease-out forwards}
+.obstacle.hit{animation:obstacleShake .3s ease-out}
+
+.obs-hurdle{width:40px;height:50px}
+.obs-hurdle .bar{position:absolute;top:0;left:0;width:100%;height:6px;
+  background:#ff9800;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,0.2)}
+.obs-hurdle .bar2{position:absolute;top:18px;left:0;width:100%;height:4px;
+  background:rgba(255,152,0,0.6);border-radius:1px}
+.obs-hurdle .pole{position:absolute;top:6px;left:4px;width:4px;height:44px;
+  background:#795548;border-radius:1px}
+.obs-hurdle .pole2{position:absolute;top:6px;right:4px;width:4px;height:44px;
+  background:#795548;border-radius:1px}
+
+.obs-crate{width:44px;height:44px;background:linear-gradient(135deg,#a1887f,#8d6e63);
+  border:3px solid #6d4c41;border-radius:3px;position:relative}
+.obs-crate::before{content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);width:60%;height:2px;background:#5d4037}
+.obs-crate::after{content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);width:2px;height:60%;background:#5d4037}
+
+.obs-spike{width:40px;height:40px}
+.obs-spike .sp{position:absolute;bottom:0;width:0;height:0;
+  border-left:8px solid transparent;border-right:8px solid transparent;
+  border-bottom:36px solid #e53935}
+.obs-spike .sp:nth-child(1){left:0}.obs-spike .sp:nth-child(2){left:12px}
+.obs-spike .sp:nth-child(3){left:24px}
+
+.obs-rock{width:48px;height:36px;background:linear-gradient(135deg,#6d4c41,#4e342e);
+  border-radius:50% 50% 40% 40%;border:2px solid #3e2723;
+  box-shadow:inset -3px -3px 6px rgba(0,0,0,0.2)}
+
+.dust-container{position:absolute;bottom:0;left:0;width:100%;height:20px;z-index:9;pointer-events:none}
+.dust{position:absolute;bottom:0;width:6px;height:6px;border-radius:50%;
+  background:rgba(141,110,99,0.6);opacity:0;pointer-events:none}
+
+.sparkle{position:absolute;width:8px;height:8px;pointer-events:none;z-index:15}
+.sparkle::before,.sparkle::after{content:'';position:absolute;background:#FFD700}
+.sparkle::before{top:50%;left:0;width:100%;height:2px;transform:translateY(-50%)}
+.sparkle::after{left:50%;top:0;width:2px;height:100%;transform:translateX(-50%)}
+
+.stars-fall{position:absolute;z-index:15;pointer-events:none;font-size:14px;
+  animation:starOrbit .8s ease-out forwards}
+
+.result{position:absolute;top:20%;left:50%;
+  transform:translate(-50%,-50%) scale(0);font-size:36px;font-weight:900;
+  z-index:25;pointer-events:none;opacity:0;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.6);transition:transform .25s ease-out,opacity .25s}
+.result.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.result.ok{color:#4CAF50}.result.fail{color:#FF5252}
+
+@keyframes legL{
+  0%,100%{transform:rotate(-25deg)}
+  50%{transform:rotate(25deg)}
+}
+@keyframes legR{
+  0%,100%{transform:rotate(25deg)}
+  50%{transform:rotate(-25deg)}
+}
+@keyframes armSwingL{
+  0%,100%{transform:rotate(25deg)}
+  50%{transform:rotate(-25deg)}
+}
+@keyframes armSwingR{
+  0%,100%{transform:rotate(-25deg)}
+  50%{transform:rotate(25deg)}
+}
+@keyframes tumble{
+  0%{transform:rotate(0deg) translateY(0)}
+  30%{transform:rotate(90deg) translateY(-20px)}
+  60%{transform:rotate(200deg) translateY(10px)}
+  100%{transform:rotate(360deg) translateY(5px)}
+}
+@keyframes headSpin{
+  0%{transform:translateX(-50%) rotate(0deg)}
+  100%{transform:translateX(-50%) rotate(720deg)}
+}
+@keyframes celebrateJump{
+  0%{transform:translateY(0)}
+  40%{transform:translateY(-30px)}
+  70%{transform:translateY(-10px)}
+  100%{transform:translateY(0)}
+}
+@keyframes obstaclePass{
+  0%{opacity:1}
+  50%{opacity:1}
+  100%{opacity:0}
+}
+@keyframes obstacleShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
+@keyframes dustPuff{
+  0%{opacity:0.7;transform:scale(1) translateX(0)}
+  100%{opacity:0;transform:scale(2) translateX(-15px)}
+}
+@keyframes sparkleBurst{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(0)}
+}
+@keyframes starOrbit{
+  0%{opacity:1;transform:rotate(0deg) translateX(0)}
+  100%{opacity:0;transform:rotate(360deg) translateX(20px)}
+}
+@keyframes cloudDrift{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@keyframes scrollGround{
+  0%{background-position:0 0}
+  100%{background-position:-60px 0}
+}
+
+.clouds.moving{animation:cloudDrift 30s linear infinite}
+.ground-body.scroll{animation:scrollGround .5s linear infinite}
+
+.qarea{position:absolute;top:62%;left:50%;transform:translateX(-50%);
+  width:94%;max-width:520px;z-index:20;text-align:center;
+  background:rgba(0,0,0,0.7);color:#fff;padding:10px 14px;border-radius:12px;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.qarea .qt{font-size:14px;line-height:1.3;margin-bottom:8px;font-weight:600}
+.qarea .opts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px}
+.opt-btn{flex:1 1 45%;min-width:45%;max-width:48%;padding:8px 6px;
+  background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.3);
+  border-radius:8px;color:#fff;font-size:12px;font-weight:600;
+  cursor:pointer;touch-action:manipulation;text-align:center;
+  transition:background .12s,border-color .12s;line-height:1.2}
+.opt-btn:active{background:rgba(255,255,255,0.3)}
+.opt-btn.off{pointer-events:none;opacity:.35}
+.opt-btn.ok{border-color:#4CAF50;background:rgba(76,175,80,0.45);pointer-events:none}
+.opt-btn.no{border-color:#f44336;background:rgba(244,67,54,0.35);pointer-events:none}
+.qarea .ctrls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.qarea .fb{font-size:12px;flex:1;display:none;text-align:left}
+.qarea .fb.ok{color:#8BC34A;display:block}
+.qarea .fb.no{color:#FF5252;display:block}
+.nbtn{display:none;padding:7px 18px;background:linear-gradient(135deg,#43a047,#66bb6a);
+  color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;
+  touch-action:manipulation;white-space:nowrap;font-weight:600}
+.nbtn:active{opacity:.85}
+
+.loading,.error-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#fff;font-size:1.1em;text-align:center;text-shadow:1px 1px 4px rgba(0,0,0,0.5)}
+
+.final{position:absolute;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.88);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;z-index:50;text-align:center;padding:20px}
+.final h2{font-size:1.5em;margin-bottom:6px}
+.final .bs{font-size:3em;font-weight:900;color:#FFD700;margin:6px 0}
+.final .fm{font-size:1em;margin-bottom:14px;color:#ccc}
+.rbtn{padding:11px 32px;background:linear-gradient(135deg,#43a047,#66bb6a);
+  color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;
+  touch-action:manipulation;font-weight:600}
+
+@media(min-width:500px){
+  .qarea .qt{font-size:16px}
+  .opt-btn{font-size:13px;padding:10px 8px}
+  .scoreboard{font-size:15px}.scoreboard .sc{font-size:20px}
+  .result{font-size:48px}
+  .runner{width:50px;height:75px}
+  .r-head{width:22px;height:22px}.r-hat{width:24px;height:10px;top:-8px}
+  .r-torso{width:28px;height:24px;top:22px}
+  .r-arm-l,.r-arm-r{top:23px;width:10px;height:22px}
+  .r-arm-l{left:4px}.r-arm-r{right:4px}
+  .r-legs{top:45px;width:28px;height:28px}
+  .r-leg-l,.r-leg-r{width:11px;height:24px}
+  .r-shoe-l,.r-shoe-r{width:15px;height:6px}
+}
+@media(max-height:480px){
+  .scoreboard{padding:4px 8px;font-size:11px}.scoreboard .sc{font-size:14px}
+  .qarea{top:58%;padding:6px 10px}
+  .qarea .qt{font-size:11px}
+  .opt-btn{padding:5px 4px;font-size:10px}
+  .result{font-size:28px;top:15%}
+  .runner{width:32px;height:48px}
+  .r-head{width:15px;height:15px}.r-hat{width:17px;height:7px;top:-5px}
+  .r-torso{width:18px;height:16px;top:15px}
+  .r-arm-l,.r-arm-r{top:16px;width:6px;height:14px}
+  .r-legs{top:30px;width:18px;height:18px}
+  .r-leg-l,.r-leg-r{width:7px;height:16px}
+  .sky{height:50%}.ground-wrap{height:50%}.runner-area{bottom:50%}
+}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div id="app"><div class="loading">Φόρτωση...</div></div>
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+var params=new URLSearchParams(window.location.search);
+var dataFile=params.get('data');
+var app=document.getElementById('app');
+
+if(!dataFile){
+  app.innerHTML='<div class="error-msg">Δεν βρέθηκε αρχείο δεδομένων.<br>?data=αρχείο.json</div>';
+  throw new Error('No data');
+}
+
+fetch(dataFile).then(function(r){if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(function(data){
+
+var questions=data.questions.slice();
+for(var i=questions.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=questions[i];questions[i]=questions[j];questions[j]=t}
+
+var cur=0,score=0,answered=false;
+var obsTypes=['hurdle','crate','spike','rock'];
+var runnerX=15;
+var dustTimer=null;
+var animFrame=null;
+var phase='idle';
+
+function pickObs(){
+  return obsTypes[Math.floor(Math.random()*obsTypes.length)];
+}
+
+function buildObsHTML(type){
+  if(type==='hurdle') return '<div class="obs-hurdle"><div class="bar"></div><div class="bar2"></div><div class="pole"></div><div class="pole2"></div></div>';
+  if(type==='crate') return '<div class="obs-crate"></div>';
+  if(type==='spike') return '<div class="obs-spike"><div class="sp"></div><div class="sp"></div><div class="sp"></div></div>';
+  return '<div class="obs-rock"></div>';
+}
+
+function render(){
+  answered=false;
+  phase='running';
+  var q=questions[cur];
+  var obsType=pickObs();
+
+  var optsHTML='';
+  var isTF=q.type==='tf';
+
+  if(isTF){
+    var cv=(q.answer!==undefined?q.answer:q.correct).toString();
+    var items=[{label:'✓ ΑΛΗΘΕΙΑ',val:'true'},{label:'✗ ΨΕΜΑΤΑ',val:'false'}];
+    items.sort(function(){return Math.random()-.5});
+    for(var i=0;i<2;i++){
+      var ok=items[i].val===cv;
+      optsHTML+='<div class="opt-btn" data-ok="'+ok+'" onclick="pick(this)">'+items[i].label+'</div>';
+    }
+  }else{
+    var opts=q.options.map(function(o,idx){return{text:o,i:idx}});
+    opts.sort(function(){return Math.random()-.5});
+    var n=Math.min(opts.length,6);
+    for(var i=0;i<n;i++){
+      var ok=opts[i].i===q.correctIndex;
+      optsHTML+='<div class="opt-btn" data-ok="'+ok+'" onclick="pick(this)">'+esc(opts[i].text)+'</div>';
+    }
+  }
+
+  var sceneBg=cur>=questions.length*0.75?
+    'background:linear-gradient(180deg,#ff8a65 0%,#ffab91 40%,#b3e5fc 100%)':
+    cur>=questions.length*0.5?
+    'background:linear-gradient(180deg,#ffcc80 0%,#ffe0b2 40%,#b3e5fc 100%)':
+    'background:linear-gradient(180deg,#4fc3f7 0%,#81d4fa 60%,#b3e5fc 100%)';
+
+  app.innerHTML=
+    '<div class="scene" id="scene">'+
+      '<div class="sky" id="sky" style="'+sceneBg+'"></div>'+
+      '<div class="clouds moving" id="clouds">'+
+        '<div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>'+
+        '<div class="cloud c4"></div><div class="cloud c5"></div><div class="cloud c6"></div>'+
+      '</div>'+
+      '<div class="mountains"><div class="mountain m1"></div><div class="mountain m2"></div><div class="mountain m3"></div><div class="mountain m4"></div><div class="mountain m5"></div><div class="mountain m6"></div></div>'+
+      '<div class="ground-wrap"><div class="ground-top"></div><div class="ground-body scroll" id="groundBody"></div><div class="grass-row" id="grassRow"></div></div>'+
+      '<div class="runner-area" id="runnerArea">'+
+        '<div class="runner running" id="runner" style="left:'+runnerX+'%">'+
+          '<div class="r-body">'+
+            '<div class="r-head"><div class="r-hat"></div></div>'+
+            '<div class="r-torso"></div>'+
+            '<div class="r-arm-l"></div><div class="r-arm-r"></div>'+
+            '<div class="r-legs"><div class="r-leg-l"><div class="r-shoe-l"></div></div><div class="r-leg-r"><div class="r-shoe-r"></div></div></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="obstacle" id="obstacle" style="right:-60px">'+buildObsHTML(obsType)+'</div>'+
+        '<div class="dust-container" id="dustC"></div>'+
+      '</div>'+
+      '<div class="result" id="res"></div>'+
+      '<div class="scoreboard"><span>Έρωτηση '+(cur+1)+'/'+questions.length+'</span><span class="sc">Σκορ: '+score+'</span></div>'+
+    '</div>'+
+    '<div class="qarea" id="qarea">'+
+      '<div class="qt">'+esc(q.text)+'</div>'+
+      '<div class="opts" id="optsWrap">'+optsHTML+'</div>'+
+      '<div class="ctrls"><div class="fb" id="fb"></div>'+
+      '<button class="nbtn" id="nbtn">'+(cur<questions.length-1?'Επόμενο Άλμα →':'Αποτέλεσμα')+'</button></div>'+
+    '</div>';
+
+  var grassRow=document.getElementById('grassRow');
+  var grassHTML='';
+  for(var g=0;g<80;g++){
+    var h=6+Math.random()*8;
+    var angle=-15+Math.random()*30;
+    grassHTML+='<div class="grass-blade" style="left:'+g*1.3+'%;height:'+h+'px;transform:rotate('+angle+'deg);background:hsl('+(110+Math.random()*20)+',60%,'+(35+Math.random()*15)+'%)"></div>';
+  }
+  grassRow.innerHTML=grassHTML;
+
+  startDust();
+  animateObstacleIn();
+  document.getElementById('nbtn').onclick=function(){cur++;cur<questions.length?render():showFinal()};
+}
+
+function startDust(){
+  var dustC=document.getElementById('dustC');
+  if(!dustC)return;
+  clearInterval(dustTimer);
+  dustTimer=setInterval(function(){
+    if(phase!=='running')return;
+    var d=document.createElement('div');
+    d.className='dust';
+    d.style.left=(runnerX+3)+'%';
+    d.style.bottom=Math.random()*4+'px';
+    var sz=4+Math.random()*5;
+    d.style.width=sz+'px';d.style.height=sz+'px';
+    d.style.animation='dustPuff .4s ease-out forwards';
+    dustC.appendChild(d);
+    setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},450);
+  },120);
+}
+
+function animateObstacleIn(){
+  var obs=document.getElementById('obstacle');
+  if(!obs)return;
+  obs.classList.remove('visible','jump-over','hit');
+  obs.style.transition='none';
+  obs.style.right='-60px';
+  void obs.offsetWidth;
+  setTimeout(function(){
+    obs.style.transition='opacity .3s,right 1.8s ease-out';
+    obs.classList.add('visible');
+    obs.style.right='78%';
+  },150);
+}
+
+function spawnSparkles(){
+  var scene=document.getElementById('scene');
+  if(!scene)return;
+  for(var i=0;i<8;i++){
+    var s=document.createElement('div');
+    s.className='sparkle';
+    var x=runnerX+2+Math.random()*6;
+    var y=10+Math.random()*20;
+    s.style.left=x+'%';s.style.top=y+'%';
+    s.style.animation='sparkleBurst '+(0.3+Math.random()*0.4)+'s ease-out forwards';
+    var ang=Math.random()*360;
+    var dist=20+Math.random()*30;
+    var dx=Math.cos(ang*Math.PI/180)*dist;
+    var dy=Math.sin(ang*Math.PI/180)*dist;
+    s.style.marginLeft=dx+'px';s.style.marginTop=dy+'px';
+    scene.appendChild(s);
+    (function(el){setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},800)})(s);
+  }
+}
+
+function spawnStars(){
+  var scene=document.getElementById('scene');
+  if(!scene)return;
+  for(var i=0;i<3;i++){
+    var s=document.createElement('div');
+    s.className='stars-fall';
+    s.textContent='⭐';
+    s.style.left=(runnerX+Math.random()*8)+'%';
+    s.style.top=(5+Math.random()*10)+'%';
+    scene.appendChild(s);
+    (function(el){setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},900)})(s);
+  }
+}
+
+window.pick=function(el){
+  if(answered)return;
+  answered=true;
+  var q=questions[cur];
+  var isOk=el.dataset.ok==='true';
+
+  clearInterval(dustTimer);
+  if(animFrame)cancelAnimationFrame(animFrame);
+
+  var obs=document.getElementById('obstacle');
+  var res=document.getElementById('res');
+  var fb=document.getElementById('fb');
+  var runner=document.getElementById('runner');
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++)btns[i].classList.add('off');
+  el.classList.remove('off');
+
+  runner.classList.remove('running');
+  if(isOk)runner.classList.add('jumping');else runner.classList.add('falling');
+  phase=isOk?'jumping':'falling';
+
+  var obsStart=78;
+  var obsEnd=isOk?100:83;
+  var dur=1000;
+  var peakY=-95;
+  var startT=null;
+
+  obs.style.transition='none';
+  void obs.offsetWidth;
+
+  function anim(ts){
+    if(!startT)startT=ts;
+    var prog=Math.min((ts-startT)/dur,1);
+
+    var obsProg;
+    if(isOk){
+      obsProg=prog*prog;
+    }else{
+      obsProg=1-Math.pow(1-prog,2);
+    }
+    var obsRight=obsStart+(obsEnd-obsStart)*obsProg;
+    obs.style.right=obsRight+'%';
+
+    if(isOk){
+      var jumpY;
+      if(prog<0.5){
+        jumpY=peakY*(1-Math.pow(1-prog*2,2));
+      }else{
+        jumpY=peakY*(1-Math.pow((prog-0.5)*2,2));
+      }
+      runner.style.transform='translateY('+jumpY+'px)';
+    }else{
+      var fallProg=Math.max(0,(prog-0.2)/0.8);
+      var fallY=Math.pow(fallProg,2)*40;
+      var rot=fallProg*360;
+      runner.style.transform='translateY('+fallY+'px) rotate('+rot+'deg)';
+    }
+
+    if(prog<1){
+      animFrame=requestAnimationFrame(anim);
+    }else{
+      runner.style.transform=isOk?'':'translateY(5px) rotate(360deg)';
+      obs.style.right=obsEnd+'%';
+
+      if(isOk){
+        score++;
+        runner.classList.remove('jumping');
+        runner.classList.add('running');
+        phase='running';
+        spawnSparkles();
+        res.textContent='Μπράβο!';
+        res.className='result ok show';
+        fb.textContent=q.explanation||'Σωστό! Μπράβο!';
+        fb.className='fb ok';
+        el.classList.add('ok');
+        var scEl=document.querySelector('.scoreboard .sc');
+        if(scEl)scEl.textContent='Σκορ: '+score;
+        startDust();
+      }else{
+        obs.classList.add('hit');
+        spawnStars();
+        res.textContent='Ούπς!';
+        res.className='result fail show';
+        fb.textContent=q.explanation||'Δεν είναι σωστό.';
+        fb.className='fb no';
+        el.classList.add('no');
+        var cz=document.querySelector('.opt-btn[data-ok="true"]');
+        if(cz){cz.classList.remove('off');cz.classList.add('ok')}
+      }
+      document.getElementById('nbtn').style.display='inline-block';
+    }
+  }
+  animFrame=requestAnimationFrame(anim);
+};
+
+function showFinal(){
+  clearInterval(dustTimer);
+  if(animFrame)cancelAnimationFrame(animFrame);
+  var pct=Math.round(score/questions.length*100);
+  var msg=pct>=90?'Εξαιρετικά! Τρέξες πολύ!':pct>=70?'Μπράβο! Καλός δρόμος!':pct>=50?'Καλά! Μπορείς καλύτερα!':'Δοκίμασε ξανά!';
+  app.innerHTML='<div class="final"><h2>Τέλος Δρόμου!</h2><div class="bs">'+score+' / '+questions.length+'</div><div class="fm">'+msg+'</div><button class="rbtn" onclick="location.reload()">Ξανατρέξε!</button></div>';
+}
+
+render();
+
+}).catch(function(err){
+  app.innerHTML='<div class="error-msg">Σφάλμα: '+esc(err.message)+'</div>';
+});
+</script>
+</body>
+</html>

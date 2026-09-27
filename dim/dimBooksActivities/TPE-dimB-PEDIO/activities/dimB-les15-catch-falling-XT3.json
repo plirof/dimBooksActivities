@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Είσοδος Δεδομένων",
+  "subtitle": "Πιάσε μόνο συσκευές εισόδου!",
+  "instructions": "Πιάσε μόνο ΣΥΣΚΕΥΕΣ ΕΙΣΟΔΟΥ για αρχεία! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Σαρωτής", "correct": true, "color": "#4CAF50"},
+    {"text": "Εκτυπωτής", "correct": false, "color": "#f44336"},
+    {"text": "Κάμερα", "correct": true, "color": "#2196F3"},
+    {"text": "Ηχεία", "correct": false, "color": "#FF9800"},
+    {"text": "Μικρόφωνο", "correct": true, "color": "#9C27B0"},
+    {"text": "Οθόνη", "correct": false, "color": "#E91E63"},
+    {"text": "Πληκτρολόγιο", "correct": true, "color": "#009688"},
+    {"text": "Ακουστικά", "correct": false, "color": "#FFC107"},
+    {"text": "Ποντίκι", "correct": true, "color": "#795548"},
+    {"text": "Μνήμη φλας", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Βρες τα Λάθη: Αναζήτηση Άρθρων",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "άρθρα", "error": false},
+        {"text": "εμφανίζονται", "error": false},
+        {"text": "από", "error": false},
+        {"text": "παλιό", "error": true, "correct": "νεότερο", "feedback": "Τα άρθρα εμφανίζονται από το ΝΕΟΤΕΡΟ προς το παλαιότερο!"},
+        {"text": "σε", "error": false},
+        {"text": "νέο.", "error": true, "correct": "παλαιότερο", "feedback": "Νεότερο → παλαιότερο, όχι το αντίστροφο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σχολιάσω", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "χρειάζεται", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είμαι", "error": false},
+        {"text": "συνδεδεμένος.", "error": true, "correct": "πρέπει να είμαι συνδεδεμένος", "feedback": "Πρέπει να είσαι ΣΥΝΔΕΔΕΜΕΝΟΣ με τα στοιχεία ΠΣΔ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "πλευρικό", "error": false},
+        {"text": "μενού", "error": false},
+        {"text": "εξαφανίζεται", "error": true, "correct": "παραμένει ορατό", "feedback": "Το πλευρικό μενού ΠΑΡΑΜΕΝΕΙ ΟΡΑΤΟ σε όλη την περιήγηση!"},
+        {"text": "όταν", "error": false},
+        {"text": "πλοηγούμαι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "σχολιάσω", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Μπορώ να σχολιάσω ΚΑΙ σε ιστολόγια που ΔΕΝ συμμετέχω!"},
+        {"text": "στα", "error": false},
+        {"text": "δικά", "error": false},
+        {"text": "μου", "error": false},
+        {"text": "ιστολόγια.", "error": true, "correct": "οποιοδήποτε", "feedback": "Μπορώ να σχολιάσω ΚΑΙ σε ιστολόγια άλλων!"}
+      ]
+    }
+  ]
+}

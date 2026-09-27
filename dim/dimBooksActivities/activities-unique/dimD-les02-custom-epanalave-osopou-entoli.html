@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="el">
+<!--
+v260924 - διορθώθηκε το σενάριο ταξινόμησης καρτών: η «Οι κάρτες είναι ταξινομημένες» ήταν εξίσου έγκυρη συνθήκη λήξης με τη σωστή απάντηση
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Επανάλαβε ώσπου — Βρες τη Συνθήκη</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#ccfbf1,#5eead4);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:850px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#f0fdfa;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#0f766e;text-align:center;line-height:1.5}
+.score-bar{text-align:center;margin-bottom:10px;font-size:.9em;color:#777}
+.round-title{text-align:center;font-weight:700;color:#0f766e;font-size:1.05em;margin-bottom:14px}
+.scenario-card{background:#f8fafc;border-radius:16px;border:2px solid #e2e8f0;padding:18px;margin-bottom:14px}
+.scenario-desc{font-size:.92em;color:#334155;text-align:center;line-height:1.5;margin-bottom:14px}
+.loop-visual{background:#1e293b;border-radius:14px;padding:16px;font-family:'Courier New',monospace;color:#e2e8f0;font-size:.88em;line-height:2}
+.loop-visual .kw{color:#5eead4;font-weight:700}
+.loop-visual .val{color:#fbbf24}
+.loop-visual .act{color:#a78bfa}
+.loop-slot{display:inline-block;min-width:160px;padding:4px 12px;border-radius:8px;background:#334155;text-align:center;cursor:pointer;transition:all .2s;border:2px dashed #64748b;font-size:.88em;color:#94a3b8}
+.loop-slot:hover{border-color:#14b8a6;background:#1a3a37}
+.loop-slot.filled{border-style:solid;border-color:#14b8a6;color:#fff;background:#0f766e}
+.cond-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.cond-card{padding:10px 16px;background:#f0fdfa;border:2px solid #99f6e4;border-radius:14px;cursor:pointer;font-size:.86em;transition:all .2s;font-weight:600;color:#0f766e;user-select:none}
+.cond-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(15,118,110,.15)}
+.cond-card.selected{background:#14b8a6;color:#fff;border-color:#0f766e}
+.controls{display:flex;justify-content:center;gap:15px;margin-top:15px}
+.btn{padding:12px 30px;border:none;border-radius:50px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-check{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(15,118,110,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.feedback{text-align:center;font-size:1.1em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+@media(max-width:600px){.loop-visual{font-size:.78em;padding:12px}.loop-slot{min-width:100px;font-size:.8em}.cond-card{font-size:.8em;padding:8px 12px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .cond-pool > * { margin: 5px; }
+  .controls > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🔁 Επανάλαβε ώσπου — Βρες τη Συνθήκη Λήξης</h1>
+<p>Διάλεξε τη σωστή συνθήκη που θα σταματήσει την επανάληψη!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Η εντολή <b>Επανάλαβε ώσπου</b> εκτελεί βήματα ξανά και ξανά μέχρι να γίνει αληθής μια συνθήκη. Ποια είναι η σωστή συνθήκη λήξης;</div>
+<div class="score-bar">Σενάριο <span id="roundNum">1</span>/<span id="roundTotal">6</span> — <span id="scoreStr">0</span> σωστά</div>
+<div id="gameArea"></div>
+<div class="feedback" id="feedback"></div>
+<div class="controls">
+<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetGame()">🔄 Αρχή</button>
+</div>
+</div>
+</div>
+<script>
+var puzzles=[
+{
+desc:'🃏 Ταξινομώ τράπουλες: Παίρνω κάρτες και τις βάζω σε σωρούς ανάλογα με το σχήμα.',
+action:'Παίρνω κάρτα και την ταξινομώ',
+condition:'Δεν υπάρχουν άλλες κάρτες',
+options:['Δεν υπάρχουν άλλες κάρτες','Έχω 10 κάρτες','Έχω βάλει 5 κάρτες σε σωρούς','Κουράστηκα']
+},
+{
+desc:'🏃 Τρέχω στον αγώνα: Κάνω βήματα μέχρι να φτάσω στο τέρμα.',
+action:'Κάνω ένα βήμα μπροστά',
+condition:'Έφτασα στη γραμμή τερματισμού',
+options:['Έφτασα στη γραμμή τερματισμού','Έκανα 100 βήματα','Κουράστηκα','Πέρασαν 10 λεπτά']
+},
+{
+desc:'📖 Διαβάζω βιβλίο: Γυρίζω σελίδες μία-μία.',
+action:'Γυρίζω την επόμενη σελίδα',
+condition:'Έφτασα στην τελευταία σελίδα',
+options:['Έφτασα στην τελευταία σελίδα','Διάβασα 50 σελίδες','Πέρασε μία ώρα','Βαρέθηκα']
+},
+{
+desc:'🧹 Σκουπίζω το τραπέζι: Περνάω το σφουγγάρι μέχρι να καθαρίσει.',
+action:'Περνάω το σφουγγάρι πάνω-κάτω',
+condition:'Το τραπέζι είναι καθαρό',
+options:['Το τραπέζι είναι καθαρό','Πέρασα το σφουγγάρι 5 φορές','Το σφουγγάρι είναι βρεγμένο','Πέρασαν 2 λεπτά']
+},
+{
+desc:'💧 Γεμίζω μπανιέρα: Ρίχνω νερό μέχρι να γεμίσει.',
+action:'Ρίχνω έναν κουβά νερό',
+condition:'Η μπανιέρα γέμισε',
+options:['Η μπανιέρα γέμισε','Ρίχνω 5 κουβάδες','Πέρασαν 10 λεπτά','Το νερό είναι ζεστό']
+},
+{
+desc:'📧 Στέλνω προσκλήσεις: Γράφω email σε κάθε φίλο.',
+action:'Γράφω και στέλνω πρόσκληση στον επόμενο φίλο',
+condition:'Έχω στείλει σε όλους τους φίλους',
+options:['Έχω στείλει σε όλους τους φίλους','Έστειλα 10 emails','Πέρασε μία ώρα','Έχω και άλλη δουλειά']
+}
+];
+
+var currentRound=0;
+var score=0;
+var selectedCond=null;
+
+function renderRound(){
+var p=puzzles[currentRound];
+document.getElementById('roundNum').textContent=currentRound+1;
+document.getElementById('roundTotal').textContent=puzzles.length;
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('checkBtn').disabled=true;
+selectedCond=null;
+var area=document.getElementById('gameArea');
+var html='<div class="scenario-card">';
+html+='<div class="scenario-desc">'+p.desc+'</div>';
+html+='<div class="loop-visual">';
+html+='<div><span class="kw">Επανάλαβε ώσπου</span> ( <span class="loop-slot" id="condSlot" onclick="clearSlot()">??? Συνθήκη ???</span> )</div>';
+html+='<div style="padding-left:20px"><span class="act">'+p.action+'</span></div>';
+html+='<div><span class="kw">Τέλος_Επανάλαβε</span></div>';
+html+='</div>';
+html+='</div>';
+html+='<div class="cond-pool">';
+for(var i=0;i<p.options.length;i++){
+html+='<div class="cond-card" onclick="selectCond(this)">'+p.options[i]+'</div>';
+}
+html+='</div>';
+area.innerHTML=html;
+}
+
+function selectCond(el){
+document.querySelectorAll('.cond-card').forEach(function(c){c.classList.remove('selected');});
+el.classList.add('selected');
+selectedCond=el.textContent;
+var slot=document.getElementById('condSlot');
+slot.textContent=selectedCond;
+slot.classList.add('filled');
+document.getElementById('checkBtn').disabled=false;
+}
+
+function clearSlot(){
+if(!selectedCond)return;
+selectedCond=null;
+var slot=document.getElementById('condSlot');
+slot.textContent='??? Συνθήκη ???';
+slot.classList.remove('filled');
+document.getElementById('checkBtn').disabled=true;
+document.querySelectorAll('.cond-card').forEach(function(c){c.classList.remove('selected');});
+}
+
+function checkAnswer(){
+var p=puzzles[currentRound];
+if(selectedCond===p.condition){
+score++;
+showFeedback('🎉 Σωστά! Η επανάληψη σταματά όταν: «'+p.condition+'»',true);
+document.getElementById('scoreStr').textContent=score;
+document.getElementById('checkBtn').disabled=true;
+setTimeout(function(){
+if(currentRound<puzzles.length-1){currentRound++;renderRound();}
+else showFinal();
+},1800);
+}else{
+showFeedback('❌ Λάθος συνθήκη. Σκέψου: πότε πρέπει να ΣΤΑΜΑΤΗΣΕΙ η επανάληψη;',false);
+}
+}
+
+function showFinal(){
+var pct=Math.round(score/puzzles.length*100);
+var msg='';
+if(pct===100)msg='🏆 Τέλεια! Κατανοείς πλήρως την εντολή «Επανάλαβε ώσπου»!';
+else if(pct>=50)msg='👏 Μπράβο! '+score+'/'+puzzles.length+' σωστά!';
+else msg='💪 '+score+'/'+puzzles.length+' σωστά. Δοκίμασε ξανά!';
+document.getElementById('feedback').textContent=msg;
+document.getElementById('feedback').className='feedback '+(pct>=50?'ok':'fail');
+document.getElementById('gameArea').innerHTML='<div style="text-align:center;padding:30px;font-size:1.1em;font-weight:700;color:#0f766e">'+msg+'</div>';
+document.getElementById('checkBtn').disabled=true;
+}
+
+function showFeedback(msg,isOk){
+var el=document.getElementById('feedback');
+el.textContent=msg;
+el.className='feedback '+(isOk?'ok':'fail');
+}
+
+function resetGame(){
+currentRound=0;
+score=0;
+renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>

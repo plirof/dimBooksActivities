@@ -1,0 +1,34 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Δεδομένα και Φόρμες",
+  "subtitle": "Ταξινόμησε τις λέξεις στις σωστές κατηγορίες",
+  "instructions": "Πάτα αριστερά ή δεξιά για να ταξινομήσεις κάθε λέξη",
+  "categories": [
+    {
+      "id": "tools",
+      "name": "Εργαλεία Συλλογής",
+      "color": "#2196F3",
+      "key": "ArrowLeft"
+    },
+    {
+      "id": "analysis",
+      "name": "Ανάλυση Δεδομένων",
+      "color": "#FF9800",
+      "key": "ArrowRight"
+    }
+  ],
+  "items": [
+    { "text": "Ερωτηματολόγιο", "category": "tools" },
+    { "text": "Ψηφιακή φόρμα", "category": "tools" },
+    { "text": "Δημοσκόπηση", "category": "tools" },
+    { "text": "e-me", "category": "tools" },
+    { "text": "Κυψέλη", "category": "tools" },
+    { "text": "Υπολογιστικό φύλλο", "category": "analysis" },
+    { "text": "Πίνακας", "category": "analysis" },
+    { "text": "Διάγραμμα", "category": "analysis" },
+    { "text": "Ανάλυση δεδομένων", "category": "analysis" },
+    { "text": "Υπολογισμοί", "category": "analysis" },
+    { "text": "Ερώτημα", "category": "analysis" },
+    { "text": "Ερώτηση", "category": "tools" }
+  ],
+  "duration": 45
+}

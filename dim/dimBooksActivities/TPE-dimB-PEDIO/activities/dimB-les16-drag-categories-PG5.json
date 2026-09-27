@@ -1,0 +1,48 @@
+{
+  "title": "Αρχεία σε φακέλους",
+  "subtitle": "Ταίριαξε κάθε αρχείο στον σωστό φάκελο",
+  "categories": [
+    {
+      "id": "pics",
+      "name": "ΦΩΤΟΓΡΑΦΙΕΣ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "work",
+      "name": "ΕΡΓΑΣΙΕΣ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "🖼️ Διακοπές.jpg",
+      "category": "pics"
+    },
+    {
+      "id": "item2",
+      "text": "📝 Μαθηματικά.doc",
+      "category": "work"
+    },
+    {
+      "id": "item3",
+      "text": "🖼️ Σχολείο.png",
+      "category": "pics"
+    },
+    {
+      "id": "item4",
+      "text": "📝 Έκθεση.doc",
+      "category": "work"
+    },
+    {
+      "id": "item5",
+      "text": "🖼️ Κατοικίδιο.jpg",
+      "category": "pics"
+    },
+    {
+      "id": "item6",
+      "text": "📝 Ιστορία.doc",
+      "category": "work"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+    "id": "dimA-les25-missingword-u7u",
+    "title": "Γράφω τις πρώτες μου λέξεις με το πληκτρολόγιο - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Για να βάλω κενό ανάμεσα στις λέξεις πατάω το ___.",
+                "options": [
+                    "Space",
+                    "Backspace",
+                    "Caps Lock",
+                    "Enter"
+                ],
+                "correct": "Space"
+            },
+            {
+                "sentence": "Για να σβήσω ένα γράμμα πατάω το ___.",
+                "options": [
+                    "Backspace",
+                    "Space",
+                    "Caps Lock",
+                    "Enter"
+                ],
+                "correct": "Backspace"
+            },
+            {
+                "sentence": "Γράφω λέξεις πατώντας τα γράμματα ένα-ένα ___.",
+                "options": [
+                    "στη σειρά",
+                    "ανάποδα",
+                    "τυχαία",
+                    "όλα μαζί"
+                ],
+                "correct": "στη σειρά"
+            },
+            {
+                "sentence": "Για κεφαλαία γράμματα ενεργοποιώ το ___.",
+                "options": [
+                    "Caps Lock",
+                    "Backspace",
+                    "Space",
+                    "Delete"
+                ],
+                "correct": "Caps Lock"
+            },
+            {
+                "sentence": "Ανάμεσα στις λέξεις αφήνω ένα ___.",
+                "options": [
+                    "κενό",
+                    "σημείο",
+                    "κόμμα",
+                    "αστερίσκο"
+                ],
+                "correct": "κενό"
+            }
+        ]
+    },
+    "tags": [
+        "dimA",
+        "les25",
+        "πληκτρολόγιο"
+    ]
+}

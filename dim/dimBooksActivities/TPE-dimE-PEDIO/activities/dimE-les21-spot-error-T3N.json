@@ -1,0 +1,60 @@
+{
+  "title": "Βρες τα Λάθη: Διαδίκτυο",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "κατάληξη", "error": false},
+        {"text": ".com", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "κυβέρνηση.", "error": true, "correct": "εταιρεία", "feedback": "Η κατάληξη .com σημαίνει εταιρεία, όχι κυβέρνηση!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "διεύθυνση", "error": false},
+        {"text": "αρχίζει", "error": false},
+        {"text": "πάντα", "error": false},
+        {"text": "με", "error": false},
+        {"text": "www.", "error": true, "correct": "https://", "feedback": "Η διεύθυνση αρχίζει με https://, όχι με www.!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "κατάληξη", "error": false},
+        {"text": ".gov", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "εταιρεία.", "error": true, "correct": "κυβέρνηση", "feedback": "Η κατάληξη .gov σημαίνει κυβέρνηση, όχι εταιρεία!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όλες", "error": false},
+        {"text": "οι", "error": false},
+        {"text": "πληροφορίες", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "πάντα", "error": true, "correct": "", "feedback": "Οι πληροφορίες στο διαδίκτυο ΔΕΝ είναι πάντα αληθινές!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "κατάληξη", "error": false},
+        {"text": ".gr", "error": false},
+        {"text": "σημαίνει", "error": false},
+        {"text": "ότι", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "γερμανικός", "error": true, "correct": "ελληνικός", "feedback": "Η κατάληξη .gr σημαίνει ελληνικός ιστότοπος!"}
+      ]
+    }
+  ]
+}

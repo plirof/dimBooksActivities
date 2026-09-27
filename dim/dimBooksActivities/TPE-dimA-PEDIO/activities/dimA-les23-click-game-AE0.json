@@ -1,0 +1,19 @@
+{
+  "title": "Βρες τα Γράμματα!",
+  "subtitle": "Βρες τα γράμματα της λέξης ΥΠΟΛΟΓΙΣΤΗΣ",
+  "instructions": "Κάνε κλικ στα γράμματα Υ, Π, Ο, Λ, Ο, Γ, Ι, Σ, Τ, Η, Σ όταν εμφανίζονται!",
+  "duration": 35,
+  "maxTargets": 3,
+  "targetLife": 2000,
+  "targets": [
+    { "label": "Υ", "color": "#E3F2FD" },
+    { "label": "Π", "color": "#E8F5E9" },
+    { "label": "Ο", "color": "#FFF3E0" },
+    { "label": "Λ", "color": "#FCE4EC" },
+    { "label": "Γ", "color": "#F3E5F5" },
+    { "label": "Ι", "color": "#E0F7FA" },
+    { "label": "Σ", "color": "#FFF9C4" },
+    { "label": "Τ", "color": "#FFCDD2" },
+    { "label": "Ε", "color": "#C8E6C9" }
+  ]
+}

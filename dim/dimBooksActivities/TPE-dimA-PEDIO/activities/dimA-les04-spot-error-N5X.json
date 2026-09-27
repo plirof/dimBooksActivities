@@ -1,0 +1,46 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ζωάκι", "error": false},
+        {"text": "ακολουθεί", "error": false},
+        {"text": "το", "error": true, "correct": "τις", "feedback": "Το ζωάκι ακολουθεί ΤΙΣ εντολές!"},
+        {"text": "εντολές", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Πάω", "error": false},
+        {"text": "ένα", "error": false},
+        {"text": "βήμα", "error": false},
+        {"text": "αριστερά", "error": true, "correct": "δεξιά", "feedback": "Το πρόγραμμα λέει δεξιά, όχι αριστερά!"},
+        {"text": "στο", "error": false},
+        {"text": "μονοπάτι.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Διαβάζω", "error": false},
+        {"text": "το", "error": false},
+        {"text": "βιβλίο", "error": true, "correct": "πρόγραμμα", "feedback": "Διαβάζω το πρόγραμμα, όχι το βιβλίο!"},
+        {"text": "και", "error": false},
+        {"text": "κάνω", "error": false},
+        {"text": "κίνηση.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "οδηγία", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ένα", "error": true, "correct": "ένα", "feedback": "Σωστά! Κάθε οδηγία είναι ένα βήμα στο μονοπάτι!"},
+        {"text": "βήμα", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "μονοπάτι.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Βρες τα Λάθη: Ρομπότ",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Φόρτωσε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "πατώντας", "error": false},
+        {"text": "το", "error": false},
+        {"text": "τρίγωνο", "error": true, "correct": "στρογγυλό", "feedback": "Φορτώνουμε με το ΣΤΡΟΓΓΥΛΟ κουμπί, όχι το τρίγωνο!"},
+        {"text": "κουμπί.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Εκτέλεσε", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "πατώντας", "error": false},
+        {"text": "το", "error": false},
+        {"text": "τετράγωνο", "error": true, "correct": "τρίγωνο", "feedback": "Εκτελούμε με το ΤΡΙΓΩΝΟ κουμπί, όχι το τετράγωνο!"},
+        {"text": "κουμπί.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Σταμάτα", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "πατώντας", "error": false},
+        {"text": "το", "error": false},
+        {"text": "στρογγυλό", "error": true, "correct": "τετράγωνο", "feedback": "Σταματάμε με το ΤΕΤΡΑΓΩΝΟ κουμπί, όχι το στρογγυλό!"},
+        {"text": "κουμπί.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εντολές", "error": false},
+        {"text": "που", "error": false},
+        {"text": "δεν", "error": false},
+        {"text": "χρειάζεσαι", "error": false},
+        {"text": "τις", "error": false},
+        {"text": "κρύβεις.", "error": true, "correct": "διαγράφεις", "feedback": "Διαγράφεις τις εντολές που δεν χρειάζεσαι, τραβώντας τες προς τα πάνω!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "ρομπότ", "error": false},
+        {"text": "συνδέεται", "error": false},
+        {"text": "με", "error": false},
+        {"text": "ασύρματο", "error": true, "correct": "καλώδιο", "feedback": "Το ρομπότ συνδέεται με ΚΑΛΩΔΙΟ στην κατάλληλη θύρα!"},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Ασφαλές Προφίλ",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΑΣΦΑΛΕΙΣ ΕΝΕΡΓΕΙΕΣ για το προφίλ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Βάζω avatar", "correct": true, "color": "#4CAF50"},
+    {"text": "Δίνω κωδικό", "correct": false, "color": "#f44336"},
+    {"text": "Γράφω περιγραφή", "correct": true, "color": "#2196F3"},
+    {"text": "Βάζω τηλέφωνο", "correct": false, "color": "#FF9800"},
+    {"text": "Βάζω μότο", "correct": true, "color": "#9C27B0"},
+    {"text": "Βάζω διεύθυνση", "correct": false, "color": "#E91E63"},
+    {"text": "Ζωγραφίζω εικόνα", "correct": true, "color": "#00BCD4"},
+    {"text": "Δίνω ΑΦΜ", "correct": false, "color": "#FFC107"},
+    {"text": "Επεξεργάζομαι προφίλ", "correct": true, "color": "#795548"},
+    {"text": "Μοιράζω κωδικό", "correct": false, "color": "#607D8B"}
+  ]
+}

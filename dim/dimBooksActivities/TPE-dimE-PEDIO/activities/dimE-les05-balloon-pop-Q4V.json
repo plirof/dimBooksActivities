@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Μεταβλητές",
+  "subtitle": "Μόνο έννοιες μεταβλητών!",
+  "instruction": "Σπάσε μόνο λέξεις σχετικές με τις ΜΕΤΑΒΛΗΤΕΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Αρχικοποίηση", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Ενημέρωση", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Πόντοι", "correct": true, "color": "#FFEAA7" },
+    { "text": "Καρέκλα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Ζωές", "correct": true, "color": "#98D8C8" },
+    { "text": "Μήλο", "correct": false, "color": "#F7DC6F" },
+    { "text": "Τιμή", "correct": true, "color": "#BB8FCE" },
+    { "text": "Γάτα", "correct": false, "color": "#85C1E9" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Διάγραμμα Ροής: Δημιουργία Παιχνιδιού",
+  "subtitle": "Βάλε τα βήματα στη σωστή σειρά",
+  "processTitle": "Δημιουργία παιχνιδιού στο Scratch",
+  "blocks": [
+    {"id": 1, "type": "action", "text": "Μπαίνεις στο scratch.mit.edu"},
+    {"id": 2, "type": "action", "text": "Σκέφτεσαι την ιδέα του παιχνιδιού"},
+    {"id": 3, "type": "action", "text": "Δημιουργείς τους χαρακτήρες (sprites)"},
+    {"id": 4, "type": "action", "text": "Προσθέτεις τον κώδικα με blocks"},
+    {"id": 5, "type": "action", "text": "Δοκιμάζεις το παιχνίδι"},
+    {"id": 6, "type": "decision", "text": "Δουλεύει σωστά;"},
+    {"id": 7, "type": "action", "text": "Το μοιράζεσαι με την κοινότητα"}
+  ],
+  "correctOrder": [1, 2, 3, 4, 5, 6, 7]
+}

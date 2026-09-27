@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Σύνδεση στην e-me 🔑</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 12px; color: #333; touch-action: manipulation;
+  }
+  .app-container { max-width: 560px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 18px 16px 12px;
+    background: linear-gradient(135deg, #43a047, #66bb6a);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(67,160,71,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,.2); }
+  .header p { font-size: .9rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 10px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.2rem; font-weight: 700; color: #43a047; }
+  .round { font-size: 1rem; color: #888; }
+  .instructions {
+    background: #e8f5e9; border: 2px dashed #66bb6a; border-radius: 16px;
+    padding: 14px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; color: #2e7d32;
+  }
+  .browser-box {
+    background: #fff; border-radius: 24px; padding: 16px;
+    margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    text-align: center;
+  }
+  .browser-frame {
+    background: #f5f5f5; border-radius: 12px; padding: 14px;
+    border: 2px solid #ddd;
+  }
+  .browser-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    background: #fff; border-radius: 20px; padding: 8px 14px;
+    border: 1px solid #e0e0e0;
+  }
+  .bb-icon { font-size: 1.2rem; }
+  .bb-url {
+    flex: 1; text-align: left; font-size: .85rem; color: #1565c0;
+    font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .browser-content {
+    background: #e3f2fd; border-radius: 8px; padding: 20px 14px;
+    text-align: center;
+  }
+  .bc-title { font-size: 1.2rem; font-weight: 700; color: #1565c0; margin-bottom: 6px; }
+  .bc-sub { font-size: .8rem; color: #666; margin-bottom: 12px; }
+  .bc-btn {
+    background: linear-gradient(135deg, #1565c0, #1976d2); color: #fff;
+    border: none; border-radius: 20px; padding: 10px 36px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .task-area { margin-bottom: 14px; }
+  .steps-container {
+    background: #fff; border-radius: 20px; padding: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  }
+  .step-q {
+    font-size: 1.1rem; font-weight: 700; color: #2d3436;
+    text-align: center; margin-bottom: 12px;
+  }
+  .step-options { display: grid; grid-template-columns: 1fr; grid-gap: 10px; }
+  .step-opt {
+    background: #fff; border: 3px solid #e0e0e0; border-radius: 14px;
+    padding: 14px 16px; cursor: pointer; transition: all .2s;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .step-opt:active { transform: scale(.98); }
+  .step-opt .so-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #e8f5e9; color: #43a047; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-opt .so-text { font-size: .95rem; font-weight: 600; color: #2d3436; }
+  .step-opt .so-emoji { font-size: 1.5rem; flex-shrink: 0; }
+  .step-opt.correct { border-color: #28a745; background: #d4edda; animation: pop .4s ease; }
+  .step-opt.wrong { border-color: #dc3545; background: #f8d7da; animation: shake .4s ease; }
+  .step-opt.disabled { pointer-events: none; }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .feedback { text-align:center; padding:14px; border-radius:16px; font-size:1.1rem; font-weight:700; margin-bottom:12px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.yay { background:#d4edda; color:#155724; }
+  .feedback.nay { background:#f8d7da; color:#721c24; }
+  .result-screen { background:#fff; border-radius:24px; box-shadow:0 8px 28px rgba(0,0,0,.1); padding:40px 24px; text-align:center; display:none; }
+  .result-screen .big-emoji{font-size:5rem;margin-bottom:12px}
+  .result-screen h2{font-size:1.6rem;color:#2d3436;margin-bottom:8px}
+  .result-screen p{font-size:1.1rem;color:#666;margin-bottom:20px}
+  .btn-restart{background:linear-gradient(135deg,#43a047,#66bb6a);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(67,160,71,.35)}
+  .btn-restart:active{transform:scale(.95)}
+  @media(max-width:480px){body{padding:8px}.header h1{font-size:1.2rem}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .browser-bar > * + * { margin-left: 8px; }
+  .step-opt > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🔑 Σύνδεση στην e-me</h1>
+    <p>Ακολούθησε τα βήματα για να συνδεθείς!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/6</span>
+  </div>
+  <div class="instructions">🌐 Βοήθησε τον μαθητή να συνδεθεί στην e-me βήμα-βήμα!</div>
+  <div id="gameArea">
+    <div class="browser-box">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <span class="bb-icon">🔒</span>
+          <span class="bb-url" id="urlDisplay">e-me.edu.gr</span>
+        </div>
+        <div class="browser-content" id="browserContent">
+          <div class="bc-title">🐝 e-me</div>
+          <div class="bc-sub">Ψηφιακή Εκπαιδευτική Πλατφόρμα</div>
+          <div class="bc-btn">ΕΙΣΟΔΟΣ</div>
+        </div>
+      </div>
+    </div>
+    <div class="task-area">
+      <div class="steps-container">
+        <div class="step-q" id="stepQ">🔹 Τι κάνεις πρώτα;</div>
+        <div class="step-options" id="stepOptions"></div>
+      </div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg"></p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var steps = [
+    {q:'🔹 Τι κάνεις ΠΡΩΤΑ για να μπεις στην e-me;', icon:'🌐',
+     opts:[{e:'🌐',t:'Ανοίγω έναν φυλλομετρητή (browser)',ans:true},
+           {e:'🔑',t:'Βάζω κατευθείαν κωδικό',ans:false},
+           {e:'📱',t:'Κλείνω τον υπολογιστή',ans:false},
+           {e:'✉️',t:'Στέλνω email',ans:false}]},
+    {q:'🔹 Μετά τι πληκτρολογείς στη γραμμή διεύθυνσης;', icon:'🔗',
+     opts:[{e:'📧',t:'e-me@gmail.com',ans:false},
+           {e:'🌐',t:'e-me.edu.gr',ans:true},
+           {e:'🏫',t:'e-me.school.edu',ans:false},
+           {e:'🐝',t:'e-me.cypseli.gr',ans:false}]},
+    {q:'🔹 Τι πατάς όταν ανοίξει η σελίδα;', icon:'🚪',
+     opts:[{e:'🔙',t:'Πίσω',ans:false},
+           {e:'🚪',t:'ΕΙΣΟΔΟΣ',ans:true},
+           {e:'📝',t:'Εγγραφή',ans:false},
+           {e:'❌',t:'Κλείσιμο',ans:false}]},
+    {q:'🔹 Τι βάζεις στην πρώτη γραμμή;', icon:'👤',
+     opts:[{e:'👤',t:'Όνομα χρήστη (username)',ans:true},
+           {e:'🔑',t:'Κωδικό (password)',ans:false},
+           {e:'📧',t:'Διεύθυνση email',ans:false},
+           {e:'🏠',t:'Διεύθυνση σπιτιού',ans:false}]},
+    {q:'🔹 Τι βάζεις στη δεύτερη γραμμή;', icon:'🔑',
+     opts:[{e:'👤',t:'Όνομα χρήστη',ans:false},
+           {e:'🔑',t:'Κωδικό πρόσβασης (password)',ans:true},
+           {e:'📧',t:'Email',ans:false},
+           {e:'📅',t:'Ημερομηνία γέννησης',ans:false}]},
+    {q:'🔹 Τι πατάς ΤΕΛΕΥΤΑΙΟ για να μπεις;', icon:'✅',
+     opts:[{e:'✅',t:'Πατάω Σύνδεση / Είσοδος',ans:true},
+           {e:'🔙',t:'Πατάω Πίσω',ans:false},
+           {e:'❌',t:'Κλείνω τη σελίδα',ans:false},
+           {e:'📝',t:'Γράφω ξανά τα στοιχεία',ans:false}]}
+  ];
+  var cur=0,score=0;
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){
+    shuffle(steps);cur=0;score=0;
+    document.getElementById('scoreDisplay').textContent='⭐ 0';
+    document.getElementById('gameArea').style.display='block';
+    document.getElementById('resultScreen').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('urlDisplay').textContent='e-me.edu.gr';
+    loadStep();
+  }
+  function loadStep(){
+    if(cur>=steps.length){showResult();return;}
+    var s=steps[cur];
+    document.getElementById('roundDisplay').textContent=(cur+1)+'/'+steps.length;
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('stepQ').textContent=s.q;
+    var g=document.getElementById('stepOptions');g.innerHTML='';
+    for(var i=0;i<s.opts.length;i++){
+      (function(idx){
+        var o=document.createElement('div');o.className='step-opt';
+        o.innerHTML='<span class="so-emoji">'+s.opts[idx].e+'</span><span class="so-text">'+s.opts[idx].t+'</span>';
+        o.addEventListener('click',function(){choose(idx);});
+        g.appendChild(o);
+      })(i);
+    }
+  }
+  function choose(idx){
+    var s=steps[cur];var fb=document.getElementById('feedback');
+    var opts=document.querySelectorAll('#stepOptions .step-opt');
+    for(var i=0;i<opts.length;i++)opts[i].classList.add('disabled');
+    if(s.opts[idx].ans){score++;
+      document.getElementById('scoreDisplay').textContent='⭐ '+score;
+      opts[idx].classList.add('correct');
+      fb.className='feedback show yay';fb.textContent='✅ Μπράβο! Προχωράμε στο επόμενο βήμα!';
+    }else{
+      opts[idx].classList.add('wrong');
+      for(var i=0;i<s.opts.length;i++){if(s.opts[i].ans){opts[i].classList.add('correct');break;}}
+      fb.className='feedback show nay';fb.textContent='❌ Δεν είναι αυτό το βήμα! Προσπάθησε ξανά!';
+    }
+    setTimeout(function(){cur++;loadStep();},1800);
+  }
+  function showResult(){
+    document.getElementById('gameArea').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    var total=steps.length,pct=score/total;
+    var e,t,m;
+    if(pct===1){e='🏆';t='Τέλεια!';m='Μπράβο! Μπορείς να συνδεθείς στην e-me μόνος σου!';}
+    else if(pct>=0.75){e='🎉';t='Μπράβο!';m='Τα πήγες πολύ καλά! Λίγο ακόμα!';}
+    else if(pct>=0.5){e='👍';t='Ωραία!';m='Καλή προσπάθεια! Συνέχισε να μαθαίνεις!';}
+    else{e='💪';t='Καλή αρχή!';m='Προσπάθησε ξανά! Θα τα καταφέρεις!';}
+    document.getElementById('resultEmoji').textContent=e;
+    document.getElementById('resultTitle').textContent=t;
+    document.getElementById('resultMsg').textContent='Βρήκες '+score+' από '+total+' σωστά! '+m;
+  }
+  startGame();
+</script>
+</body>
+</html>

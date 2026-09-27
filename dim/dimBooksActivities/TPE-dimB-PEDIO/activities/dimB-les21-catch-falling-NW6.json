@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Πλήκτρα Πληκτρολογίου",
+  "subtitle": "Πιάσε μόνο τα πραγματικά πλήκτρα",
+  "instructions": "Πιάστε τα πλήκτρα του πληκτρολογίου. Απόφυγε τα άλλα.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Enter", "correct": true, "color": "#4CAF50" },
+    { "text": "Σφυρί", "correct": false, "color": "#f44336" },
+    { "text": "Shift", "correct": true, "color": "#4CAF50" },
+    { "text": "Καρφί", "correct": false, "color": "#f44336" },
+    { "text": "Space", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουπί", "correct": false, "color": "#f44336" },
+    { "text": "Delete", "correct": true, "color": "#4CAF50" },
+    { "text": "Πριόνι", "correct": false, "color": "#f44336" },
+    { "text": "Caps Lock", "correct": true, "color": "#4CAF50" },
+    { "text": "Τέντες", "correct": false, "color": "#f44336" }
+  ]
+}

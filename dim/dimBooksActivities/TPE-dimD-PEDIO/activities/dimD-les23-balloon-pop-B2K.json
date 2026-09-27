@@ -1,0 +1,61 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ενέργειες Email",
+  "subtitle": "Σπάσε τα μπαλόνια με πραγματικές ενέργειες email!",
+  "instruction": "Σπάσε τα μπαλόνια που δείχνουν ενέργειες που πραγματικά κάνεις στο email.",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    {
+      "text": "Νέο μήνυμα",
+      "correct": true,
+      "color": "#4caf50"
+    },
+    {
+      "text": "Αποστολή",
+      "correct": true,
+      "color": "#2196f3"
+    },
+    {
+      "text": "Απάντηση",
+      "correct": true,
+      "color": "#ff9800"
+    },
+    {
+      "text": "Προώθηση",
+      "correct": true,
+      "color": "#9c27b0"
+    },
+    {
+      "text": "Διαγραφή",
+      "correct": true,
+      "color": "#00bcd4"
+    },
+    {
+      "text": "Ζωγραφική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Προσθήκη συνημμένου",
+      "correct": true,
+      "color": "#8bc34a"
+    },
+    {
+      "text": "Μουσική",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Εισερχόμενα",
+      "correct": true,
+      "color": "#e91e63"
+    },
+    {
+      "text": "Πλοήγηση",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μετεωρολογικά Δεδομένα | Μάθημα 18</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:800px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.city-select{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:8px}
+.city-btn{padding:6px 10px;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:.6rem;font-weight:600;cursor:pointer;transition:all .2s;min-width:60px;text-align:center}
+.city-btn:hover{border-color:#6366f1;transform:translateY(-2px)}
+.city-btn.active{background:#6366f1;color:#fff;border-color:#6366f1;transform:translateY(-2px)}
+.city-btn.used{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.weather-display{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.weather-card{background:#0f172a;border-radius:10px;padding:8px 12px;text-align:center;border:1px solid #334155;min-width:80px;flex:1}
+.weather-card .wc-label{color:#64748b;font-size:.55rem;font-weight:600}
+.weather-card .wc-value{color:#e2e8f0;font-size:.85rem;font-weight:700}
+.weather-card .wc-unit{color:#64748b;font-size:.55rem}
+.city-data-table{overflow-x:auto;border-radius:10px;border:1px solid #334155;margin-top:8px}
+.city-data-table table{width:100%;border-collapse:collapse;font-size:.62rem}
+.city-data-table th{background:#1e293b;padding:4px 6px;border:1px solid #334155;color:#fbbf24;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.city-data-table th:hover{background:#334155}
+.city-data-table th .sarrow{font-size:.5rem;color:#64748b}
+.city-data-table td{padding:3px 6px;border:1px solid #1e293b;color:#e2e8f0;text-align:center}
+.city-data-table tr:nth-child(even) td{background:#0f172a44}
+.analysis-area{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.analysis-q{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px;flex-wrap:wrap}
+.analysis-q .aq-text{color:#e2e8f0;font-size:.65rem;flex:1;min-width:120px}
+.analysis-q .aq-opts{display:flex;gap:3px}
+.analysis-q .aq-btn{padding:3px 8px;border:1px solid #475569;border-radius:6px;background:#0f172a;color:#94a3b8;font-size:.56rem;cursor:pointer}
+.analysis-q .aq-btn.selected{background:#6366f1;color:#fff;border-color:#6366f1}
+.analysis-q .aq-btn.correct{background:#22c55e11;color:#4ade80;border-color:#22c55e}
+.analysis-q .aq-btn.wrong{background:#ef444422;color:#f87171;border-color:#ef4444}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .city-select > * { margin: 2px; }
+  .weather-display > * { margin: 4px; }
+  .analysis-area > * + * { margin-top: 6px; }
+  .analysis-q > * { margin: 3px; }
+  .analysis-q .aq-opts > * + * { margin-left: 3px; }
+  .nav-btns > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🌤️ Μετεωρολογικά Δεδομένα</h1>
+<p class="subtitle">Εξερεύνησε και ανάλυσε καιρικά δεδομένα ευρωπαϊκών πόλεων!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σετ:</span> <span id="setNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var datasets=[
+{
+title:'🌡️ Θερμοκρασίες Ευρώπης',
+desc:'Εξερεύνησε τις θερμοκρασίες ευρωπαϊκών πόλεων και απάντησε στις ερωτήσεις.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:1,
+questions:[
+{q:'Ποια πόλη έχει την υψηλότερη θερμοκρασία;',opts:['Αθήνα','Μαδρίτη','Ρώμη','Βιέννη'],correct:1},
+{q:'Ποια πόλη έχει τη χαμηλότερη θερμοκρασία;',opts:['Λονδίνο','Βερολίνο','Όσλο','Παρίσι'],correct:2},
+{q:'Πόσες πόλεις έχουν θερμοκρασία πάνω από 25°C;',opts:['2','3','4','5'],correct:1}
+],
+hint:'Πάτα στις επικεφαλίδες του πίνακα για ταξινόμηση. Αύξουσα/φθίνουσα εναλλάσσονται.'
+},
+{
+title:'💨 Άνεμοι Ευρώπης',
+desc:'Ανάλυσε τα δεδομένα ανέμου και βρες τις πιο αερώδεις πόλεις.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:2,
+questions:[
+{q:'Ποια πόλη έχει τον ισχυρότερο άνεμο;',opts:['Βερολίνο','Λονδίνο','Παρίσι','Όσλο'],correct:1},
+{q:'Ποια πόλη έχει τον ασθενέστερο άνεμο;',opts:['Αθήνα','Μαδρίτη','Ρώμη','Βιέννη'],correct:1},
+{q:'Φθίνουσα ανέμου: ποια πόλη είναι 3η;',opts:['Βερολίνο','Παρίσι','Λονδίνο','Όσλο'],correct:0}
+],
+hint:'Η φθίνουσα ταξινόμηση (▼) δείχνει πρώτη την πόλη με τον ισχυρότερο άνεμο.'
+},
+{
+title:'🔽 Πίεση & Υγρασία',
+desc:'Σύγκρινε την ατμοσφαιρική πίεση και υγρασία των πόλεων.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:3,
+questions:[
+{q:'Ποια πόλη έχει την υψηλότερη πίεση;',opts:['Ρώμη','Όσλο','Μαδρίτη','Αθήνα'],correct:1},
+{q:'Ποια πόλη έχει την υψηλότερη υγρασία;',opts:['Λονδίνο','Όσλο','Παρίσι','Βερολίνο'],correct:1},
+{q:'Υπάρχει σχέση υγρασίας-βροχής; Ποια πόλη έχει βροχερό καιρό;',opts:['Μαδρίτη','Αθήνα','Λονδίνο','Ρώμη'],correct:2}
+],
+hint:'Η υγρασία εκφράζεται σε %. Υψηλή υγρασία (>60%) συνήθως σημαίνει βροχή ή συννεφιά.'
+},
+{
+title:'☀️ Καιρικά Φαινόμενα',
+desc:'Ταξινόμησε κατά καιρικό φαινόμενο και βρες μοτίβα.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:4,
+questions:[
+{q:'Πόσες πόλεις έχουν ήλιο (☀️);',opts:['2','3','4','5'],correct:1},
+{q:'Πόσες πόλεις έχουν συννεφιά (☁️);',opts:['1','2','3','4'],correct:1},
+{q:'Παρατήρησε: οι ηλιόλουστες πόλεις έχουν γενικά...',opts:['Υψηλότερη υγρασία','Χαμηλότερη υγρασία','Περισσότερο άνεμο','Χαμηλότερη θερμοκρασία'],correct:1}
+],
+hint:'Οι ηλιόλουστες πόλεις (Αθήνα, Ρώμη, Μαδρίτη) έχουν χαμηλότερη υγρασία από τις συννεφιασμένες.'
+},
+{
+title:'🧮 Ανάλυση Δεδομένων',
+desc:'Χρησιμοποίησε πολλαπλές ταξινομήσεις για σύνθετες ερωτήσεις.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:0,
+questions:[
+{q:'Ποια πόλη έχει την πιο ακραία χαμηλή θερμοκρασία και υψηλή υγρασία;',opts:['Λονδίνο','Όσλο','Βερολίνο','Παρίσι'],correct:1},
+{q:'Ποια μεσογειακή πόλη έχει την υψηλότερη θερμοκρασία;',opts:['Αθήνα','Ρώμη','Μαδρίτη','Βιέννη'],correct:2},
+{q:'Πόσες πόλεις έχουν άνεμο >15 km/h;',opts:['2','3','4','5'],correct:2}
+],
+hint:'Ο συνδυασμός ταξινόμησης και παρατήρησης πολλών στηλών βοηθά στην εξαγωγή συμπερασμάτων.'
+},
+{
+title:'📝 Εξαγωγή Συμπερασμάτων',
+desc:'Βγάλε συμπεράσματα από τα δεδομένα που ανέλυσες.',
+cities:[
+{name:'Αθήνα',temp:28,wind:12,pressure:1013,humidity:45,weather:'☀️'},
+{name:'Παρίσι',temp:22,wind:18,pressure:1015,humidity:55,weather:'⛅'},
+{name:'Λονδίνο',temp:19,wind:22,pressure:1010,humidity:65,weather:'☁️'},
+{name:'Ρώμη',temp:26,wind:10,pressure:1016,humidity:50,weather:'☀️'},
+{name:'Βερολίνο',temp:21,wind:20,pressure:1012,humidity:58,weather:'⛅'},
+{name:'Μαδρίτη',temp:30,wind:8,pressure:1014,humidity:35,weather:'☀️'},
+{name:'Όσλο',temp:16,wind:15,pressure:1018,humidity:70,weather:'☁️'},
+{name:'Βιέννη',temp:23,wind:14,pressure:1011,humidity:52,weather:'⛅'}
+],
+sortCol:1,
+questions:[
+{q:'Ποια είναι η μέση θερμοκρασία όλων των πόλεων; (περίπου)',opts:['21°C','23°C','25°C','27°C'],correct:1},
+{q:'Ποιες πόλεις έχουν θερμοκρασία >25°C;',opts:['Αθήνα, Ρώμη','Αθήνα, Μαδρίτη','Αθήνα, Ρώμη, Μαδρίτη','Μαδρίτη, Ρώμη'],correct:2},
+{q:'Τι συμπέρασμα βγάζεις για τον βόρειο ευρωπαϊκό καιρό;',opts:['Πιο ζεστός','Πιο κρύος και υγρός','Πιο ξηρός','Ίδιος με νότο'],correct:1}
+],
+hint:'Ο μέσος όρος υπολογίζεται αθροίζοντας όλες τις τιμές και διαιρώντας με το πλήθος.'
+}
+];
+var current=0;
+var pts=0;
+var sortOrder={};
+var selectedQs={};
+var checked=false;
+function render(){
+var ds=datasets[current];
+checked=false;
+selectedQs={};
+sortOrder={};
+document.getElementById('setNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+ds.title+'</div>';
+h+='<div style="color:#64748b;font-size:.68rem;margin-bottom:8px">'+ds.desc+'</div>';
+h+='<div class="city-data-table">';
+h+='<table><thead><tr>';
+var headers=['Πόλη','🌡️ Θερμοκρασία','💨 Άνεμος','🔽 Πίεση','💧 Υγρασία','🌤️ Καιρός'];
+for(var hd=0;hd<headers.length;hd++){
+var isSort=sortOrder[hd];
+var arrow=isSort!==undefined?(isSort===1?' ▲':' ▼'):'';
+h+='<th onclick="sortTable('+hd+')">'+headers[hd]+'<span class="sarrow">'+arrow+'</span></th>';
+}
+h+='</tr></thead><tbody id="tBody">';
+var sorted=getSortedCities();
+for(var r=0;r<sorted.length;r++){
+var c=sorted[r];
+h+='<tr><td>'+c.name+'</td><td>'+c.temp+'°C</td><td>'+c.wind+' km/h</td><td>'+c.pressure+' hPa</td><td>'+c.humidity+'%</td><td>'+c.weather+'</td></tr>';
+}
+h+='</tbody></table>';
+h+='</div>';
+h+='<div class="analysis-area">';
+for(var q=0;q<ds.questions.length;q++){
+var qq=ds.questions[q];
+h+='<div class="analysis-q">';
+h+='<span class="aq-text">'+(q+1)+'. '+qq.q+'</span>';
+h+='<div class="aq-opts">';
+for(var o=0;o<qq.opts.length;o++){
+var sel=(selectedQs[q]===o?' selected':'');
+h+='<div class="aq-btn'+sel+'" id="qbtn_'+q+'_'+o+'" onclick="selectAQ('+q+','+o+')">'+qq.opts[o]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkAQ()">✅ Έλεγχος Απαντήσεων</button></div>';
+h+='<div class="hint-box">💡 '+ds.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function getSortedCities(){
+var ds=datasets[current];
+var cities=ds.cities.slice();
+var keys=['name','temp','wind','pressure','humidity','weather'];
+var sortCols=Object.keys(sortOrder);
+if(sortCols.length>0){
+var col=parseInt(sortCols[0]);
+var dir=sortOrder[col];
+cities.sort(function(a,b){
+var ka=keys[col],kb=keys[col];
+var va=a[ka],vb=b[kb];
+if(typeof va==='string'&&typeof vb==='string'){return dir*va.localeCompare(vb);}
+return dir*(va-vb);
+});
+}
+return cities;
+}
+function sortTable(col){
+if(checked)return;
+if(sortOrder[col]!==undefined){sortOrder[col]=sortOrder[col]===1?-1:1;}
+else{var sk=Object.keys(sortOrder);for(var i=0;i<sk.length;i++)delete sortOrder[sk[i]];sortOrder[col]=1;}
+render();
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevSet()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextSet()"'+(current===datasets.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectAQ(qIdx,optIdx){
+if(checked)return;
+selectedQs[qIdx]=optIdx;
+var ds=datasets[current];
+for(var o=0;o<ds.questions[qIdx].opts.length;o++){
+var el=document.getElementById('qbtn_'+qIdx+'_'+o);
+if(el)el.classList.toggle('selected',o===optIdx);
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkAQ(){
+var ds=datasets[current];
+var allAnswered=true;
+for(var q=0;q<ds.questions.length;q++){if(selectedQs[q]===undefined){allAnswered=false;break;}}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Απάντησε σε όλες τις ερωτήσεις!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var q2=0;q2<ds.questions.length;q2++){
+var correct=ds.questions[q2].correct;
+var btn=document.getElementById('qbtn_'+q2+'_'+selectedQs[q2]);
+if(btn){btn.classList.remove('selected');btn.classList.add(selectedQs[q2]===correct?'correct':'wrong');btn.style.pointerEvents='none';}
+var correctBtn=document.getElementById('qbtn_'+q2+'_'+correct);
+if(correctBtn)correctBtn.classList.add('correct');
+if(selectedQs[q2]!==correct)allCorrect=false;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι απαντήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες απαντήσεις είναι λάθος. Τα πράσινα είναι σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevSet(){if(current>0){current--;render();}}
+function nextSet(){if(current<datasets.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

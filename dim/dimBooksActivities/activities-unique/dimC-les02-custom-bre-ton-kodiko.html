@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βρες τον κωδικό! - dimC les02</title>
+<style>
+@font-face {
+    font-family: 'NotoColorEmoji';
+    src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+1F300-1F9FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'NotoColorEmoji';
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #0a6640;
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+h1 .emoji-title {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    color: #27ae60;
+    font-size: 1rem;
+    margin-bottom: 14px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 22px;
+    background: #d5f5e3;
+    border-radius: 11px;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f39c12, #e74c3c);
+    border-radius: 11px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.round-label {
+    text-align: center;
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.clue-card {
+    background: linear-gradient(135deg, #fff9c4, #fff176);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 3px solid #fbc02d;
+    text-align: center;
+}
+
+.clue-card .clue-title {
+    font-size: 1rem;
+    color: #e67e22;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.clue-card .clue-text {
+    font-size: 1.2rem;
+    color: #2d3436;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.clue-card .clue-text .highlight-and {
+    color: #2980b9;
+    font-weight: 800;
+}
+
+.clue-card .clue-text .highlight-not {
+    color: #c0392b;
+    font-weight: 800;
+}
+
+.characters-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 12px;
+    margin-bottom: 14px;
+}
+
+.char-option {
+    background: #f0f4ff;
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 3px solid #c8d6e5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.char-option:hover {
+    border-color: #74b9ff;
+    background: #e8f0ff;
+}
+
+.char-option:active {
+    transform: scale(0.96);
+}
+
+.char-option .char-svg {
+    width: 100%;
+    max-width: 112px;
+    height: auto;
+    display: block;
+    margin: 0 auto 4px;
+}
+
+.char-option .item-emoji {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.char-option .char-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 6px;
+}
+
+.char-option .char-traits {
+    font-size: 0.85rem;
+    color: #636e72;
+    line-height: 1.5;
+}
+
+.char-option.selected-correct {
+    border-color: #00b894;
+    background: #e6fff9;
+}
+
+.char-option.selected-wrong {
+    border-color: #e17055;
+    background: #fff0ec;
+}
+
+.char-option.reveal-correct {
+    border-color: #00b894;
+    background: #e6fff9;
+    animation: pulse 0.6s ease infinite alternate;
+}
+
+.char-option.disabled-opt {
+    pointer-events: none;
+}
+
+.feedback {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+    min-height: 30px;
+}
+
+.feedback.correct-fb {
+    color: #00b894;
+}
+
+.feedback.wrong-fb {
+    color: #d63031;
+}
+
+.btn-next {
+    display: block;
+    margin: 0 auto;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.btn-next:active {
+    transform: scale(0.95);
+}
+
+.completion-screen {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.completion-screen .stars {
+    font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.completion-screen h2 {
+    color: #0a6640;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.completion-screen .score-text {
+    color: #27ae60;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+.completion-screen .score-detail {
+    color: #2ecc71;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+.btn-restart {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-restart:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+}
+
+.btn-restart:active {
+    transform: scale(0.95);
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.04); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.char-option {
+    animation: popIn 0.3s ease;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Βρες τον κωδικό! <span class="emoji-title">🔐</span></h1>
+    <p class="subtitle">Διάβασε την περιγραφή και βρες ποιος κρύβεται!</p>
+
+    <div id="game-area">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%">0 / 0</div>
+        </div>
+        <div class="round-label" id="round-label"></div>
+        <div class="clue-card" id="clue-card"></div>
+        <div class="characters-grid" id="characters-grid"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-next hidden" id="btn-next">Επόμενος Γύρος ➡️</button>
+    </div>
+
+    <div class="completion-screen hidden" id="completion-screen">
+        <div class="stars" id="stars"></div>
+        <h2>Μπράβο! Τέλειωσες! 🎉</h2>
+        <p class="score-text" id="score-text"></p>
+        <p class="score-detail" id="score-detail"></p>
+        <button class="btn-restart" id="btn-restart">Παίξε Ξανά! 🔄</button>
+    </div>
+</div>
+
+<script>
+var rounds = [
+    {
+        clue: { text: 'Έχει <b>κόκκινο καπέλο</b> ΚΑΙ φοράει <b>μπλε μπλούζα</b>', answerIndex: 0 },
+        characters: [
+            { name: 'Αλέξανδρος', look: { gender: 'boy', hair: 'brown', hat: 'red', top: { type: 'shirt', color: 'blue' }, bottom: { type: 'pants', color: 'gray' } }, traits: '🔴 Καπέλο, 🔵 Μπλούζα' },
+            { name: 'Σοφία', look: { gender: 'girl', hair: 'black', hat: 'yellow', top: { type: 'shirt', color: 'blue' }, bottom: { type: 'pants', color: 'gray' } }, traits: '🟡 Καπέλο, 🔵 Μπλούζα' },
+            { name: 'Δημήτρης', look: { gender: 'boy', hair: 'black', hat: 'red', top: { type: 'shirt', color: 'green' }, bottom: { type: 'pants', color: 'gray' } }, traits: '🔴 Καπέλο, 🟢 Μπλούζα' },
+            { name: 'Κατερίνα', look: { gender: 'girl', hair: 'blond', hat: 'yellow', top: { type: 'shirt', color: 'green' }, bottom: { type: 'pants', color: 'gray' } }, traits: '🟡 Καπέλο, 🟢 Μπλούζα' }
+        ]
+    },
+    {
+        clue: { text: 'Φοράει <b>πράσινο φόρεμα</b> ΚΑΙ <b>ΔΕΝ</b> φοράει καπέλο', answerIndex: 1 },
+        characters: [
+            { name: 'Ελένη', look: { gender: 'girl', hair: 'brown', hat: 'green', top: { type: 'dress', color: 'green' } }, traits: '🟢 Φόρεμα, 🟢 Καπέλο' },
+            { name: 'Μαρία', look: { gender: 'girl', hair: 'black', top: { type: 'dress', color: 'green' } }, traits: '🟢 Φόρεμα, ✖️ Καπέλο' },
+            { name: 'Άννα', look: { gender: 'girl', hair: 'blond', top: { type: 'dress', color: 'red' } }, traits: '🔴 Φόρεμα, ✖️ Καπέλο' },
+            { name: 'Νίκη', look: { gender: 'girl', hair: 'brown', hat: 'yellow', top: { type: 'dress', color: 'red' } }, traits: '🔴 Φόρεμα, 🟡 Καπέλο' }
+        ]
+    },
+    {
+        clue: { text: 'Κρατάει <b>μπάλα</b> ΚΑΙ φοράει <b>κίτρινα παπούτσια</b> ΚΑΙ <b>ΔΕΝ</b> φοράει γυαλιά', answerIndex: 2 },
+        characters: [
+            { name: 'Κώστας', look: { gender: 'boy', hair: 'black', glasses: true, top: { type: 'tshirt', color: '#8e44ad' }, bottom: { type: 'pants', color: 'gray' }, shoes: { type: 'shoes', color: 'yellow' }, item: '🏀' }, traits: '🏀 Μπάλα, 🟡 Παπούτσια, 🤓 Γυαλιά' },
+            { name: 'Γιάννης', look: { gender: 'boy', hair: 'brown', top: { type: 'tshirt', color: '#e67e22' }, bottom: { type: 'pants', color: 'gray' }, shoes: { type: 'shoes', color: 'yellow' }, item: '📚' }, traits: '📚 Βιβλίο, 🟡 Παπούτσια, ✖️ Γυαλιά' },
+            { name: 'Πέτρος', look: { gender: 'boy', hair: 'black', top: { type: 'tshirt', color: '#16a085' }, bottom: { type: 'pants', color: 'gray' }, shoes: { type: 'shoes', color: 'yellow' }, item: '🏀' }, traits: '🏀 Μπάλα, 🟡 Παπούτσια, ✖️ Γυαλιά' },
+            { name: 'Νίκος', look: { gender: 'boy', hair: 'brown', top: { type: 'tshirt', color: '#c0392b' }, bottom: { type: 'pants', color: 'gray' }, shoes: { type: 'shoes', color: 'red' }, item: '🏀' }, traits: '🏀 Μπάλα, 🔴 Παπούτσια, ✖️ Γυαλιά' }
+        ]
+    },
+    {
+        clue: { text: 'Έχει <b>μαύρα μαλλιά</b> ΚΑΙ κρατάει <b>λουλούδι</b> ΚΑΙ <b>ΔΕΝ</b> φοράει μπλούζα', answerIndex: 3 },
+        characters: [
+            { name: 'Δάφνη', look: { gender: 'girl', hair: 'brown', top: { type: 'shirt', color: 'blue' }, bottom: { type: 'skirt', color: '#8e44ad' }, item: '🌸' }, traits: '🟤 Μαλλιά, 🌸 Λουλούδι, 🔵 Μπλούζα' },
+            { name: 'Χρύσα', look: { gender: 'girl', hair: 'black', top: { type: 'tank', color: '#b2bec3' }, bottom: { type: 'skirt', color: 'gray' }, item: '📖' }, traits: '⬛ Μαλλιά, 📖 Βιβλίο, ✖️ Μπλούζα' },
+            { name: 'Λίζα', look: { gender: 'girl', hair: 'blond', top: { type: 'tank', color: '#b2bec3' }, bottom: { type: 'skirt', color: 'gray' }, item: '🌸' }, traits: '🟡 Μαλλιά, 🌸 Λουλούδι, ✖️ Μπλούζα' },
+            { name: 'Ρόζα', look: { gender: 'girl', hair: 'black', top: { type: 'tank', color: '#b2bec3' }, bottom: { type: 'skirt', color: 'gray' }, item: '🌸' }, traits: '⬛ Μαλλιά, 🌸 Λουλούδι, ✖️ Μπλούζα' }
+        ]
+    },
+    {
+        clue: { text: 'Φοράει <b>μπλε παντελόνι</b> ΚΑΙ <b>κόκκινη ζακέτα</b> ΚΑΙ κρατάει <b>μολύβι</b> ΚΑΙ <b>ΔΕΝ</b> έχει μούσι', answerIndex: 0 },
+        characters: [
+            { name: 'Θοδωρής', look: { gender: 'boy', hair: 'brown', top: { type: 'jacket', color: 'red' }, bottom: { type: 'pants', color: 'blue' }, item: '✏️' }, traits: '🔵 Παντελόνι, 🔴 Ζακέτα, ✏️ Μολύβι, ✖️ Μούσι' },
+            { name: 'Βαγγέλης', look: { gender: 'boy', hair: 'black', beard: true, top: { type: 'jacket', color: 'red' }, bottom: { type: 'pants', color: 'blue' }, item: '✏️' }, traits: '🔵 Παντελόνι, 🔴 Ζακέτα, ✏️ Μολύβι, 🧔 Μούσι' },
+            { name: 'Σταύρος', look: { gender: 'boy', hair: 'brown', top: { type: 'jacket', color: 'red' }, bottom: { type: 'pants', color: 'green' }, item: '✏️' }, traits: '🟢 Παντελόνι, 🔴 Ζακέτα, ✏️ Μολύβι, ✖️ Μούσι' },
+            { name: 'Μιχάλης', look: { gender: 'boy', hair: 'black', top: { type: 'jacket', color: 'yellow' }, bottom: { type: 'pants', color: 'blue' }, item: '✏️' }, traits: '🔵 Παντελόνι, 🟡 Ζακέτα, ✏️ Μολύβι, ✖️ Μούσι' }
+        ]
+    },
+    {
+        clue: { text: 'Έχει <b>γαλανά μάτια</b> ΚΑΙ φοράει <b>κίτρινο καπέλο</b> ΚΑΙ <b>ΔΕΝ</b> κρατάει ομπρέλα ΚΑΙ φοράει <b>μποτάκια</b>', answerIndex: 1 },
+        characters: [
+            { name: 'Λουίζα', look: { gender: 'girl', hair: 'brown', eyes: 'blue', hat: 'yellow', top: { type: 'dress', color: '#8e44ad' }, shoes: { type: 'boots', color: 'brown' }, item: '☂️' }, traits: '👁️ Γαλανά, 🟡 Καπέλο, ☂️ Ομπρέλα, 👢 Μποτάκια' },
+            { name: 'Ιωάννα', look: { gender: 'girl', hair: 'black', eyes: 'blue', hat: 'yellow', top: { type: 'dress', color: '#16a085' }, shoes: { type: 'boots', color: 'brown' } }, traits: '👁️ Γαλανά, 🟡 Καπέλο, ✖️ Ομπρέλα, 👢 Μποτάκια' },
+            { name: 'Ζωή', look: { gender: 'girl', hair: 'brown', eyes: 'blue', hat: 'red', top: { type: 'dress', color: '#e67e22' }, shoes: { type: 'boots', color: 'brown' } }, traits: '👁️ Γαλανά, 🔴 Καπέλο, ✖️ Ομπρέλα, 👢 Μποτάκια' },
+            { name: 'Αγγελική', look: { gender: 'girl', hair: 'blond', eyes: 'blue', hat: 'yellow', top: { type: 'dress', color: 'pink' }, shoes: { type: 'sneakers', color: 'red' } }, traits: '👁️ Γαλανά, 🟡 Καπέλο, ✖️ Ομπρέλα, 👟 Παπούτσια' }
+        ]
+    },
+    {
+        clue: { text: 'Φοράει <b>ροζ φούστα</b> ΚΑΙ <b>ΔΕΝ</b> φοράει γυαλιά ΚΑΙ κρατάει <b>γάτα</b> ΚΑΙ έχει <b>ξανθά μαλλιά</b>', answerIndex: 2 },
+        characters: [
+            { name: 'Μελίνα', look: { gender: 'girl', hair: 'blond', glasses: true, top: { type: 'tshirt', color: '#8e44ad' }, bottom: { type: 'skirt', color: 'pink' }, item: '🐱' }, traits: '🩷 Φούστα, 🤓 Γυαλιά, 🐱 Γάτα, 🟡 Ξανθά' },
+            { name: 'Αριάδνη', look: { gender: 'girl', hair: 'blond', top: { type: 'tshirt', color: '#16a085' }, bottom: { type: 'skirt', color: 'pink' }, item: '🐶' }, traits: '🩷 Φούστα, ✖️ Γυαλιά, 🐶 Σκύλο, 🟡 Ξανθά' },
+            { name: 'Φοίβη', look: { gender: 'girl', hair: 'blond', top: { type: 'tshirt', color: '#e67e22' }, bottom: { type: 'skirt', color: 'pink' }, item: '🐱' }, traits: '🩷 Φούστα, ✖️ Γυαλιά, 🐱 Γάτα, 🟡 Ξανθά' },
+            { name: 'Δανάη', look: { gender: 'girl', hair: 'brown', top: { type: 'tshirt', color: '#c0392b' }, bottom: { type: 'skirt', color: 'pink' }, item: '🐱' }, traits: '🩷 Φούστα, ✖️ Γυαλιά, 🐱 Γάτα, 🟤 Καστανά' }
+        ]
+    },
+    {
+        clue: { text: 'Κρατάει <b>κιθάρα</b> ΚΑΙ φοράει <b>πράσινο μπλουζάκι</b> ΚΑΙ <b>ΔΕΝ</b> φοράει καπέλο ΚΑΙ έχει <b>πραγματικές μύτες</b> ΚΑΙ φοράει <b>μπλε τζιν</b>', answerIndex: 3 },
+        characters: [
+            { name: 'Ορφέας', look: { gender: 'boy', hair: 'black', hat: 'red', top: { type: 'tshirt', color: 'green' }, bottom: { type: 'jeans', color: 'blue' }, item: '🎸' }, traits: '🎸 Κιθάρα, 🟢 Μπλουζάκι, 🔴 Καπέλο, 👖 Μπλε τζιν' },
+            { name: 'Απόστολος', look: { gender: 'boy', hair: 'brown', top: { type: 'tshirt', color: 'green' }, bottom: { type: 'pants', color: 'brown' }, item: '🎸' }, traits: '🎸 Κιθάρα, 🟢 Μπλουζάκι, ✖️ Καπέλο, 🟤 Παντελόνι' },
+            { name: 'Λεωνίδας', look: { gender: 'boy', hair: 'black', top: { type: 'tshirt', color: 'green' }, bottom: { type: 'jeans', color: 'blue' }, item: '🎻' }, traits: '🎻 Βιολί, 🟢 Μπλουζάκι, ✖️ Καπέλο, 👖 Μπλε τζιν' },
+            { name: 'Χρήστος', look: { gender: 'boy', hair: 'brown', top: { type: 'tshirt', color: 'green' }, bottom: { type: 'jeans', color: 'blue' }, item: '🎸' }, traits: '🎸 Κιθάρα, 🟢 Μπλουζάκι, ✖️ Καπέλο, 👖 Μπλε τζιν' }
+        ]
+    }
+];
+
+var currentRound = 0;
+var score = 0;
+var answered = false;
+var totalRounds = rounds.length;
+
+var PAL = {
+    red: '#e74c3c', blue: '#3498db', green: '#27ae60', yellow: '#f4c20d',
+    pink: '#fd79a8', brown: '#8d6e63', black: '#2d3436', gray: '#5f6c7d'
+};
+var HAIR_COLORS = { black: '#2d3436', brown: '#6d4c41', blond: '#e6b410' };
+var SKIN = '#f8c9a0';
+var SKIN_DARK = '#dfa070';
+
+function col(c) { return PAL[c] || c; }
+
+function charSVG(l) {
+    var girl = l.gender === 'girl';
+    var hairC = HAIR_COLORS[l.hair] || l.hair;
+    var eyeC = l.eyes === 'blue' ? '#3d9be9' : '#4e342e';
+    var topC = l.top ? col(l.top.color) : '';
+    var ttype = l.top ? l.top.type : '';
+    var botC = l.bottom ? col(l.bottom.color) : '#5f6c7d';
+    var btype = l.bottom ? l.bottom.type : '';
+    var shoes = l.shoes || { type: 'shoes', color: 'black' };
+    var shoeC = col(shoes.color);
+    var hatC = l.hat ? col(l.hat) : '';
+
+    var legEnd = (btype === 'skirt') ? 128 : (ttype === 'dress' ? 130 : 126);
+    var footL = 51.5, footR = 68.5;
+    var p = '<svg class="char-svg" viewBox="0 0 120 142" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+
+    if (btype === 'skirt') {
+        p += '<path d="M44,88 L76,88 L85,114 L35,114 Z" fill="' + botC + '"/>';
+        p += '<rect x="48" y="114" width="9" height="14" fill="' + SKIN + '"/>';
+        p += '<rect x="63" y="114" width="9" height="14" fill="' + SKIN + '"/>';
+    } else if (ttype === 'dress') {
+        p += '<rect x="49" y="118" width="9" height="12" fill="' + SKIN + '"/>';
+        p += '<rect x="62" y="118" width="9" height="12" fill="' + SKIN + '"/>';
+    } else {
+        p += '<rect x="42" y="86" width="36" height="14" rx="4" fill="' + botC + '"/>';
+        p += '<rect x="45" y="96" width="13" height="30" rx="3" fill="' + botC + '"/>';
+        p += '<rect x="62" y="96" width="13" height="30" rx="3" fill="' + botC + '"/>';
+        if (btype === 'jeans') {
+            p += '<line x1="51.5" y1="100" x2="51.5" y2="122" stroke="rgba(255,255,255,0.45)" stroke-width="1.4"/>';
+            p += '<line x1="68.5" y1="100" x2="68.5" y2="122" stroke="rgba(255,255,255,0.45)" stroke-width="1.4"/>';
+        }
+    }
+
+    if (shoes.type === 'boots') {
+        p += '<rect x="' + (footL - 6.5) + '" y="' + (legEnd - 9) + '" width="13" height="11" fill="' + shoeC + '"/>';
+        p += '<rect x="' + (footR - 6.5) + '" y="' + (legEnd - 9) + '" width="13" height="11" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+    } else if (shoes.type === 'sneakers') {
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<rect x="' + (footL - 8.5) + '" y="' + (legEnd + 3) + '" width="17" height="3" rx="1.5" fill="#ecf0f1"/>';
+        p += '<rect x="' + (footR - 8.5) + '" y="' + (legEnd + 3) + '" width="17" height="3" rx="1.5" fill="#ecf0f1"/>';
+    } else {
+        p += '<ellipse cx="' + footL + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+        p += '<ellipse cx="' + footR + '" cy="' + (legEnd + 1) + '" rx="8.5" ry="5" fill="' + shoeC + '"/>';
+    }
+
+    p += '<line x1="40" y1="66" x2="34" y2="88" stroke="' + SKIN + '" stroke-width="6" stroke-linecap="round"/>';
+    p += '<line x1="80" y1="66" x2="86" y2="88" stroke="' + SKIN + '" stroke-width="6" stroke-linecap="round"/>';
+
+    if (ttype === 'dress') {
+        p += '<path d="M42,84 L78,84 L88,120 L32,120 Z" fill="' + topC + '"/>';
+        p += '<rect x="38" y="62" width="44" height="26" rx="9" fill="' + topC + '"/>';
+    } else if (topC) {
+        p += '<rect x="38" y="62" width="44" height="34" rx="9" fill="' + topC + '"/>';
+        if (ttype === 'jacket') {
+            p += '<line x1="60" y1="68" x2="60" y2="96" stroke="rgba(0,0,0,0.25)" stroke-width="2"/>';
+            p += '<circle cx="55" cy="78" r="1.6" fill="#ffffff" opacity="0.9"/>';
+            p += '<circle cx="55" cy="88" r="1.6" fill="#ffffff" opacity="0.9"/>';
+            p += '<path d="M54,62 L60,70 L66,62 Z" fill="rgba(255,255,255,0.4)"/>';
+        }
+    }
+
+    if (ttype === 'shirt' || ttype === 'jacket') {
+        p += '<line x1="40" y1="66" x2="35" y2="84" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+        p += '<line x1="80" y1="66" x2="85" y2="84" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+    } else if (ttype === 'tshirt') {
+        p += '<line x1="40" y1="66" x2="36" y2="74" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+        p += '<line x1="80" y1="66" x2="84" y2="74" stroke="' + topC + '" stroke-width="9" stroke-linecap="round"/>';
+    }
+
+    p += '<rect x="56" y="54" width="8" height="10" fill="' + SKIN + '"/>';
+    p += '<circle cx="41" cy="44" r="3.5" fill="' + SKIN + '"/>';
+    p += '<circle cx="79" cy="44" r="3.5" fill="' + SKIN + '"/>';
+    p += '<circle cx="60" cy="42" r="19" fill="' + SKIN + '"/>';
+
+    p += '<circle cx="53" cy="43" r="3" fill="#ffffff"/>';
+    p += '<circle cx="67" cy="43" r="3" fill="#ffffff"/>';
+    p += '<circle cx="53" cy="43" r="1.8" fill="' + eyeC + '"/>';
+    p += '<circle cx="67" cy="43" r="1.8" fill="' + eyeC + '"/>';
+    p += '<circle cx="53.5" cy="42.5" r="0.7" fill="#2d3436"/>';
+    p += '<circle cx="67.5" cy="42.5" r="0.7" fill="#2d3436"/>';
+
+    p += '<path d="M59,45 Q61,48 59,49" stroke="' + SKIN_DARK + '" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    p += '<path d="M54,51 Q60,56 66,51" stroke="#c0623b" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+
+    if (l.beard) {
+        p += '<path d="M44,44 Q45,60 60,61 Q75,60 76,44 L76,49 Q73,57 60,58 Q47,57 44,49 Z" fill="#5d4037"/>';
+        p += '<ellipse cx="56" cy="49.5" rx="3.2" ry="1.6" fill="#5d4037"/>';
+        p += '<ellipse cx="64" cy="49.5" rx="3.2" ry="1.6" fill="#5d4037"/>';
+    }
+
+    if (l.glasses) {
+        p += '<circle cx="53" cy="43" r="6.5" fill="rgba(255,255,255,0.2)" stroke="#2d3436" stroke-width="1.8"/>';
+        p += '<circle cx="67" cy="43" r="6.5" fill="rgba(255,255,255,0.2)" stroke="#2d3436" stroke-width="1.8"/>';
+        p += '<path d="M59.5,42 Q60,41 60.5,42" stroke="#2d3436" stroke-width="1.8" fill="none"/>';
+        p += '<line x1="46.5" y1="42" x2="41.5" y2="40" stroke="#2d3436" stroke-width="1.6"/>';
+        p += '<line x1="73.5" y1="42" x2="78.5" y2="40" stroke="#2d3436" stroke-width="1.6"/>';
+    }
+
+    p += '<path d="M41.4,38 A19,19 0 0 1 78.6,38 Z" fill="' + hairC + '"/>';
+    if (girl) {
+        p += '<path d="M41.4,38 Q37.5,54 42,66 L50,62 Q46,50 47.5,38 Z" fill="' + hairC + '"/>';
+        p += '<path d="M78.6,38 Q82.5,54 78,66 L70,62 Q74,50 72.5,38 Z" fill="' + hairC + '"/>';
+    }
+
+    if (hatC) {
+        p += '<path d="M48,29 L48,15 Q48,10 53,10 L67,10 Q72,10 72,15 L72,29 Z" fill="' + hatC + '"/>';
+        p += '<ellipse cx="60" cy="29" rx="23" ry="4.5" fill="' + hatC + '"/>';
+    }
+
+    if (l.item) {
+        p += '<text class="item-emoji" x="101" y="88" font-size="27" text-anchor="middle">' + l.item + '</text>';
+    }
+
+    p += '</svg>';
+    return p;
+}
+
+function init() {
+    currentRound = 0;
+    score = 0;
+    answered = false;
+    document.getElementById('completion-screen').classList.add('hidden');
+    document.getElementById('game-area').classList.remove('hidden');
+    renderRound();
+}
+
+function renderRound() {
+    answered = false;
+    var round = rounds[currentRound];
+
+    document.getElementById('round-label').textContent = 'Γύρος ' + (currentRound + 1) + ' από ' + totalRounds;
+    updateProgress();
+
+    var clueHtml = '<div class="clue-title">🔍 Υπόδειξη:</div>';
+    clueHtml += '<div class="clue-text">' + round.clue.text + '</div>';
+    document.getElementById('clue-card').innerHTML = clueHtml;
+
+    var gridHtml = '';
+    for (var i = 0; i < round.characters.length; i++) {
+        var ch = round.characters[i];
+        gridHtml += '<div class="char-option" data-index="' + i + '" onclick="handleSelect(' + i + ')">';
+        gridHtml += charSVG(ch.look);
+        gridHtml += '<div class="char-name">' + ch.name + '</div>';
+        gridHtml += '<div class="char-traits">' + ch.traits + '</div>';
+        gridHtml += '</div>';
+    }
+    document.getElementById('characters-grid').innerHTML = gridHtml;
+
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('btn-next').classList.add('hidden');
+}
+
+function handleSelect(index) {
+    if (answered) return;
+    answered = true;
+
+    var round = rounds[currentRound];
+    var correct = index === round.clue.answerIndex;
+    if (correct) score++;
+
+    var options = document.querySelectorAll('.char-option');
+    for (var i = 0; i < options.length; i++) {
+        options[i].classList.add('disabled-opt');
+    }
+
+    var fb = document.getElementById('feedback');
+    if (correct) {
+        options[index].classList.add('selected-correct');
+        fb.textContent = '🎉 Σωστό! Βρήκες τον κωδικό!';
+        fb.className = 'feedback correct-fb';
+    } else {
+        options[index].classList.add('selected-wrong');
+        options[round.clue.answerIndex].classList.add('reveal-correct');
+        fb.textContent = '😢 Λάθος! Η σωστή απάντηση είναι ο/η ' + round.characters[round.clue.answerIndex].name;
+        fb.className = 'feedback wrong-fb';
+    }
+
+    if (currentRound < totalRounds - 1) {
+        document.getElementById('btn-next').classList.remove('hidden');
+    } else {
+        var btnNext = document.getElementById('btn-next');
+        btnNext.textContent = 'Δες το σκορ σου! 🏆';
+        btnNext.classList.remove('hidden');
+    }
+}
+
+function nextRound() {
+    currentRound++;
+    if (currentRound < totalRounds) {
+        renderRound();
+    } else {
+        showCompletion();
+    }
+}
+
+function updateProgress() {
+    var done = currentRound;
+    var pct = (done / totalRounds) * 100;
+    var bar = document.getElementById('progress-fill');
+    bar.style.width = pct + '%';
+    bar.textContent = done + ' / ' + totalRounds;
+}
+
+function showCompletion() {
+    document.getElementById('game-area').classList.add('hidden');
+    var cs = document.getElementById('completion-screen');
+    cs.classList.remove('hidden');
+
+    var pct = score / totalRounds;
+    var starCount = pct >= 0.9 ? 3 : (pct >= 0.6 ? 2 : 1);
+    var starsHtml = '';
+    for (var i = 0; i < 3; i++) {
+        starsHtml += (i < starCount) ? '⭐' : '☆';
+    }
+    document.getElementById('stars').textContent = starsHtml;
+    document.getElementById('score-text').textContent = 'Σκορ: ' + score + ' / ' + totalRounds;
+
+    var msg = '';
+    if (pct === 1) msg = 'Τέλειο! Είσαι ντετέκτιβ! 🕵️';
+    else if (pct >= 0.8) msg = 'Πολύ καλό! Μπράβο! 🌟';
+    else if (pct >= 0.6) msg = 'Καλό! Συνέχισε έτσι! 💪';
+    else msg = 'Προσπάθησε ξανά! Μπορείς! 🤗';
+    document.getElementById('score-detail').textContent = msg;
+}
+
+document.getElementById('btn-next').addEventListener('click', nextRound);
+document.getElementById('btn-restart').addEventListener('click', init);
+
+init();
+</script>
+</body>
+</html>

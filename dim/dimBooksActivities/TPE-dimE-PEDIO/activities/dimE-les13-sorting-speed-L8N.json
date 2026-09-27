@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υλικό Υπολογιστή",
+  "subtitle": "Ταξινόμησε γρήγορα!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "input", "name": "Συσκευή Εισόδου", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "output", "name": "Συσκευή Εξόδου", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πληκτρολόγιο", "category": "input"},
+    {"text": "Ποντίκι", "category": "input"},
+    {"text": "Κάμερα", "category": "input"},
+    {"text": "Μικρόφωνο", "category": "input"},
+    {"text": "Οθόνη", "category": "output"},
+    {"text": "Ηχεία", "category": "output"},
+    {"text": "Εκτυπωτής", "category": "output"},
+    {"text": "Προβολέας", "category": "output"},
+    {"text": "Σαρωτής", "category": "input"},
+    {"text": "Ακουστικά", "category": "output"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Προσωπικά Δεδομένα;",
+  "subtitle": "Τι μοιράζομαι και τι ΟΧΙ;",
+  "instruction": "Σπάσε μόνο ΣΤΟΙΧΕΙΑ ΠΟΥ ΜΠΟΡΕΙΣ ΝΑ ΒΑΛΕΙΣ ΣΤΟ ΠΡΟΦΙΛ ΣΟΥ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Μότο", "correct": true, "color": "#FF6B6B" },
+    { "text": "Τηλέφωνο", "correct": false, "color": "#4ECDC4" },
+    { "text": "Avatar", "correct": true, "color": "#45B7D1" },
+    { "text": "Διεύθυνση σπιτιού", "correct": false, "color": "#96CEB4" },
+    { "text": "Περιγραφή", "correct": true, "color": "#FFEAA7" },
+    { "text": "Κωδικός", "correct": false, "color": "#DDA0DD" },
+    { "text": "Όνομα χρήστη", "correct": true, "color": "#98D8C8" },
+    { "text": "ΑΦΜ", "correct": false, "color": "#F7DC6F" },
+    { "text": "Εικόνα προφίλ", "correct": true, "color": "#BB8FCE" },
+    { "text": "Σχολείο διεύθυνση", "correct": false, "color": "#85C1E9" }
+  ]
+}

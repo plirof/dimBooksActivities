@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Σωστές Εντολές Αλγορίθμων",
+  "subtitle": "Πιάσε μόνο τις σωστές εντολές αλγορίθμου",
+  "instructions": "Χρησιμοποίησε τα βελάκια για να πιάσεις τις σωστές εντολές!",
+  "speed": 1.5,
+  "lives": 3,
+  "spawnInterval": 1800,
+  "winScore": 8,
+  "items": [
+    {
+      "text": "Διάβασε",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Γράψε",
+      "correct": true,
+      "color": "#2196F3"
+    },
+    {
+      "text": "Ζωγράφισε",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Όρισε",
+      "correct": true,
+      "color": "#00BCD4"
+    },
+    {
+      "text": "Σβήσε",
+      "correct": false,
+      "color": "#FF9800"
+    },
+    {
+      "text": "Επανάλαβε",
+      "correct": true,
+      "color": "#9C27B0"
+    },
+    {
+      "text": "Τραγούδησε",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αν...τότε",
+      "correct": true,
+      "color": "#8BC34A"
+    },
+    {
+      "text": "Κοιμήσου",
+      "correct": false,
+      "color": "#FF5722"
+    },
+    {
+      "text": "Σχόλιο //",
+      "correct": true,
+      "color": "#3F51B5"
+    }
+  ]
+}

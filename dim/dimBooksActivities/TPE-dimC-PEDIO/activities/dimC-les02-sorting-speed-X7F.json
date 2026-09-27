@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Αλήθεια ή Ψέματα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "alitheia", "name": "Αλήθεια", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "psema", "name": "Ψέμα", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ο ουρανός είναι γαλάζιος", "category": "alitheia"},
+    {"text": "Τα ψάρια πετάνε", "category": "psema"},
+    {"text": "Το νερό βράζει στους 100°C", "category": "alitheia"},
+    {"text": "Η γη είναι επίπεδη", "category": "psema"},
+    {"text": "Ο ήλιος φωτίζει τη γη", "category": "alitheia"},
+    {"text": "Το χιόνι είναι ζεστό", "category": "psema"},
+    {"text": "Η Υπατία φοράει γυαλιά", "category": "alitheia"},
+    {"text": "Ο Ήρωνας κρατάει ακουστικά", "category": "psema"},
+    {"text": "Ο Ήρωνας έχει μπλε παντελόνι", "category": "alitheia"},
+    {"text": "Η Υπατία έχει κόκκινα μαλλιά", "category": "alitheia"}
+  ],
+  "duration": 30
+}

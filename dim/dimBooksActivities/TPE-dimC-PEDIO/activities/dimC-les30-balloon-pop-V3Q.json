@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Κανόνες & Όρια",
+  "subtitle": "Μόνο τις λέξεις σχετικές με τους κανόνες!",
+  "instruction": "Σπάσε μόνο τις λέξεις σχετικές με τους ΚΑΝΟΝΕΣ και τα ΟΡΙΑ χρήσης!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Κανόνας", "correct": true, "color": "#FF6B6B" },
+    { "text": "Μπανάνα", "correct": false, "color": "#4ECDC4" },
+    { "text": "Όριο", "correct": true, "color": "#45B7D1" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#96CEB4" },
+    { "text": "Ανάρτηση", "correct": true, "color": "#FFEAA7" },
+    { "text": "Γάτα", "correct": false, "color": "#DDA0DD" },
+    { "text": "Διάλειμμα", "correct": true, "color": "#98D8C8" },
+    { "text": "Κουτάλα", "correct": false, "color": "#F7DC6F" },
+    { "text": "Ισορροπία", "correct": true, "color": "#BB8FCE" },
+    { "text": "Μήλο", "correct": false, "color": "#85C1E9" }
+  ]
+}

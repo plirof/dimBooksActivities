@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Λαχανικά, Κρέας ή Δημητριακά;",
+  "subtitle": "Ταξινόμησε τις τροφές στις σωστές κατηγορίες",
+  "instructions": "Βάλε κάθε τροφή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "laxanika", "name": "Λαχανικά", "color": "#4CAF50", "key": "A" },
+    { "id": "kreas", "name": "Κρέας", "color": "#f44336", "key": "L" },
+    { "id": "dimhtriaka", "name": "Δημητριακά", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Ντομάτα", "category": "laxanika" },
+    { "text": "Μοσχάρι", "category": "kreas" },
+    { "text": "Ψωμί", "category": "dimhtriaka" },
+    { "text": "Μπρόκολο", "category": "laxanika" },
+    { "text": "Κοτόπουλο", "category": "kreas" },
+    { "text": "Ρύζι", "category": "dimhtriaka" },
+    { "text": "Αγγούρι", "category": "laxanika" },
+    { "text": "Χοιρινό", "category": "kreas" },
+    { "text": "Μακαρόνια", "category": "dimhtriaka" },
+    { "text": "Πιπεριά", "category": "laxanika" }
+  ],
+  "duration": 30
+}

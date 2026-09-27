@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Λεξικό | Μάθημα 27</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.app{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:600px;width:100%;overflow:hidden;}
+.app-header{background:linear-gradient(90deg,#1565c0,#0d47a1);color:#fff;padding:14px 16px;text-align:center;}
+.app-header h2{font-size:1.1rem;margin-bottom:8px;}
+.search-bar{display:flex;gap:6px;padding:12px 16px;background:#e3f2fd;border-bottom:2px solid #bbdefb;}
+.search-bar input{flex:1;padding:10px 14px;border:2px solid #bbdefb;border-radius:10px;font-size:1rem;outline:none;background:#fff;}
+.search-bar input:focus{border-color:#1565c0;}
+.search-bar button{padding:10px 18px;border:none;border-radius:10px;background:#1565c0;color:#fff;font-weight:700;cursor:pointer;font-size:.9rem;}
+.suggestions{background:#fff;border:2px solid #e0e0e0;border-radius:10px;margin:0 16px;max-height:150px;overflow-y:auto;display:none;position:relative;z-index:10;}
+.suggestions.show{display:block;}
+.sug-item{padding:8px 14px;cursor:pointer;font-size:.9rem;border-bottom:1px solid #f5f5f5;}
+.sug-item:hover{background:#e3f2fd;}
+.content{padding:16px;min-height:300px;}
+.welcome{text-align:center;padding:40px 20px;color:#999;}
+.welcome .emoji{font-size:3rem;margin-bottom:10px;}
+.entry{display:none;}
+.entry.show{display:block;}
+.entry .word{font-size:1.6rem;font-weight:800;color:#1565c0;margin-bottom:4px;}
+.entry .pos{font-size:.85rem;color:#f57c00;font-weight:700;margin-bottom:8px;}
+.entry .def{font-size:1rem;color:#333;line-height:1.5;margin-bottom:12px;padding:10px;background:#f5f5f5;border-radius:10px;}
+.entry .synonyms{margin-bottom:10px;}
+.entry .synonyms span{display:inline-block;padding:4px 10px;background:#e3f2fd;border-radius:6px;font-size:.8rem;font-weight:600;color:#1565c0;margin:2px;}
+.history{margin-top:16px;padding-top:12px;border-top:2px solid #e0e0e0;}
+.history h4{font-size:.85rem;color:#888;margin-bottom:6px;}
+.history-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.history-tag{padding:4px 10px;background:#f3e5f5;border-radius:6px;font-size:.75rem;font-weight:600;color:#7b1fa2;cursor:pointer;}
+.no-result{text-align:center;padding:30px;color:#e53935;font-weight:700;display:none;}
+.no-result.show{display:block;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .search-bar > * + * { margin-left: 6px; }
+  .history-tags > * { margin: 2px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📖 Simulated Λεξικό</h1>
+<p class="subtitle">Αναζήτησε λέξεις και δες σημασίες, συνώνυμα και παραδείγματα!</p>
+<div class="app">
+<div class="app-header">
+<h2>📖 Ψηφιακό Λεξικό</h2>
+</div>
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="Γράψε μια λέξη..." oninput="onSearch()" onkeydown="if(event.key==='Enter')doSearch()">
+<button onclick="doSearch()">🔍 Αναζήτηση</button>
+</div>
+<div class="suggestions" id="suggestions"></div>
+<div class="content">
+<div class="welcome" id="welcome">
+<div class="emoji">📖</div>
+<p>Ψάξε μια λέξη στο λεξικό!<br><small style="color:#bbb;">Δοκίμασε: υπολογιστής, διαδίκτυο, κώδικας, αλγόριθμος...</small></p>
+</div>
+<div class="entry" id="entry">
+<div class="word" id="eWord"></div>
+<div class="pos" id="ePos"></div>
+<div class="def" id="eDef"></div>
+<div class="synonyms" id="eSyn"></div>
+<div class="synonyms" id="eAnt"></div>
+</div>
+<div class="no-result" id="noResult">😕 Η λέξη δεν βρέθηκε. Δοκίμασε άλλη!</div>
+<div class="history" id="history" style="display:none;">
+<h4>📜 Ιστορικό αναζητήσεων:</h4>
+<div class="history-tags" id="histTags"></div>
+</div>
+</div>
+</div>
+<script>
+var dict={
+'υπολογιστής':{pos:'ουσιαστικό, αρσενικό',def:'Ηλεκτρονική συσκευή που δέχεται δεδομένα, τα επεξεργάζεται και παράγει πληροφορίες. Χρησιμοποιείται σε几乎所有uuid𐄿국가이다.',syn:['ηλεκτρονικός υπολογιστής','μηχανή'],ant:[],
+real_def:'Ηλεκτρονική συσκευή επεξεργασίας δεδομένων.'},
+'διαδίκτυο':{pos:'ουσιαστικό, ουδέτερο',def:'Παγκόσμιο σύστημα διασυνδεδεμένων δικτύων υπολογιστών που επιτρέπει την ανταλλαγή πληροφοριών.',syn:['ίντερνετ','δίκτυο'],ant:[],real_def:'Παγκόσμιο δίκτυο δικτύων για ανταλλαγή πληροφοριών.'},
+'αλγόριθμος':{pos:'ουσιαστικό, αρσενικό',def:'Σειρά καθορισμένων βημάτων που οδηγούν στη λύση ενός προβλήματος.',syn:['διαδικασία','μέθοδος'],ant:[],real_def:'Προσδιορισμένη σειρά βημάτων επίλυσης προβλήματος.'},
+'κώδικας':{pos:'ουσιαστικό, αρσενικό',def:'Σύνολο κανόνων ή συμβόλων για την αναπαράσταση πληροφοριών. Στην πληροφορική, ονομάζεται και πηγαίος κώδικας.',syn:['γραμμένος κώδικας','πρόγραμμα'],ant:[],real_def:'Σύνολο συμβόλων για αναπαράσταση πληροφοριών.'},
+'κρυπτογράφηση':{pos:'ουσιαστικό, θηλυκό',def:'Η διαδικασία μετατροπής πληροφοριών σε μορφή που δεν μπορεί να διαβαστεί χωρίς το σωστό κλειδί.',syn:['κωδικοποίηση','κρυπτογράφημα'],ant:['αποκρυπτογράφηση'],real_def:'Μετατροπή πληροφοριών σε μυστική μορφή.'},
+'πρόγραμμα':{pos:'ουσιαστικό, ουδέτερο',def:'Σύνολο εντολών που δίνει ο χρήστης στον υπολογιστή για να εκτελέσει μια εργασία.',syn:['λογισμικό','εφαρμογή'],ant:[],real_def:'Σύνολο εντολών για εκτέλεση εργασίας.'},
+'δεδομένα':{pos:'ουσιαστικό, ουδέτερο (πλ.)',def:'Πληροφορίες σε ψηφιακή μορφή που μπορούν να επεξεργαστούν από τον υπολογιστή.',syn:['πληροφορίες','στοιχεία'],ant:[],real_def:'Ψηφιακές πληροφορίες προς επεξεργασία.'},
+'ασφάλεια':{pos:'ουσιαστικό, θηλυκό',def:'Η προστασία δεδομένων, συστημάτων και χρηστών από κινδύνους στο διαδίκτυο.',syn:['προστασία','φρούρηση'],ant:['κίνδυνος'],real_def:'Προστασία από ψηφιακούς κινδύνους.'},
+'φάκελος':{pos:'ουσιαστικό, αρσενικό',def:'Τόπος αποθήκευσης αρχείων στον υπολογιστή. Περιέχει αρχεία ή άλλους υποφακέλους.',syn:['κατάλογος','dir'],ant:[],real_def:'Τόπος οργάνωσης αρχείων.'},
+'αρχείο':{pos:'ουσιαστικό, ουδέτερο',def:'Μονάδα αποθήκευσης πληροφοριών σε υπολογιστή. Κάθε αρχείο έχει όνομα και κατάληξη (π.χ. .txt, .jpg).',syn:['έγγραφο','file'],ant:[],real_def:'Μονάδα αποθήκευσης ψηφιακών πληροφοριών.'}
+};
+Object.keys(dict).forEach(function(k){dict[k].def=dict[k].real_def;});
+var history=[];
+function onSearch(){
+var v=document.getElementById('searchInput').value.toLowerCase().trim();
+var sug=document.getElementById('suggestions');
+if(v.length<1){sug.classList.remove('show');return;}
+var matches=Object.keys(dict).filter(function(w){return w.startsWith(v);});
+if(matches.length>0){
+sug.innerHTML=matches.map(function(m){return'<div class="sug-item" onclick="selectWord(\''+m+'\')">'+m+'</div>';}).join('');
+sug.classList.add('show');
+}else{sug.classList.remove('show');}
+}
+function selectWord(w){
+document.getElementById('searchInput').value=w;
+document.getElementById('suggestions').classList.remove('show');
+showEntry(w);
+}
+function doSearch(){
+var v=document.getElementById('searchInput').value.toLowerCase().trim();
+document.getElementById('suggestions').classList.remove('show');
+showEntry(v);
+}
+function showEntry(w){
+document.getElementById('welcome').style.display='none';
+document.getElementById('noResult').classList.remove('show');
+document.getElementById('entry').classList.remove('show');
+var entry=dict[w];
+if(!entry){
+var partial=Object.keys(dict).filter(function(k){return k.includes(w);});
+if(partial.length>0){entry=dict[partial[0]];w=partial[0];}
+}
+if(!entry){document.getElementById('noResult').classList.add('show');return;}
+document.getElementById('eWord').textContent=w.charAt(0).toUpperCase()+w.slice(1);
+document.getElementById('ePos').textContent=entry.pos;
+document.getElementById('eDef').textContent=entry.def;
+var synHtml='';if(entry.syn.length>0){synHtml='<b>Συνώνυμα:</b> ';entry.syn.forEach(function(s){synHtml+='<span>'+s+'</span>';});}
+document.getElementById('eSyn').innerHTML=synHtml;
+var antHtml='';if(entry.ant.length>0){antHtml='<b>Αντώνυμα:</b> ';entry.ant.forEach(function(s){antHtml+='<span>'+s+'</span>';});}
+document.getElementById('eAnt').innerHTML=antHtml;
+document.getElementById('entry').classList.add('show');
+if(history.indexOf(w)===-1)history.push(w);
+renderHistory();
+}
+function renderHistory(){
+if(history.length===0)return;
+document.getElementById('history').style.display='block';
+var html='';history.forEach(function(w){html+='<span class="history-tag" onclick="selectWord(\''+w+'\')">'+w+'</span>';});
+document.getElementById('histTags').innerHTML=html;
+}
+document.addEventListener('click',function(e){
+if(!e.target.closest('.search-bar')&&!e.target.closest('.suggestions')){document.getElementById('suggestions').classList.remove('show');}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Υλικό Υπολογιστή",
+  "subtitle": "Σπάσε μόνο τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με στοιχεία υλικού υπολογιστή!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Επεξεργαστής", "correct": true, "color": "#4CAF50" },
+    { "text": "Μνήμη", "correct": true, "color": "#2196F3" },
+    { "text": "Δίσκος αποθήκευσης", "correct": true, "color": "#FF9800" },
+    { "text": "Οθόνη", "correct": true, "color": "#9C27B0" },
+    { "text": "Πληκτρολόγιο", "correct": true, "color": "#00BCD4" },
+    { "text": "Ποντίκι", "correct": true, "color": "#E91E63" },
+    { "text": "Βιβλίο", "correct": false, "color": "#F44336" },
+    { "text": "Μολύβι", "correct": false, "color": "#795548" },
+    { "text": "Ψυγείο", "correct": false, "color": "#607D8B" },
+    { "text": "Τηλεόραση", "correct": false, "color": "#FF5722" }
+  ]
+}

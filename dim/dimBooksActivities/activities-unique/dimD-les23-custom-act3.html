@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μηνύματα - Απάντηση, Προώθηση, Διαγραφή</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:20px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:800px;width:100%;padding:25px;position:relative;}
+h1{text-align:center;color:#4a3f9f;margin-bottom:5px;font-size:1.4rem;}
+.subtitle{text-align:center;color:#888;margin-bottom:15px;font-size:.9rem;}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:22px;margin-bottom:18px;overflow:hidden;position:relative;}
+.progress-fill{background:linear-gradient(90deg,#43e97b,#38f9d7);height:100%;border-radius:10px;transition:width .5s ease;}
+.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.75rem;font-weight:bold;color:#333;}
+.tasks-box{background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);border-radius:12px;padding:12px 15px;margin-bottom:15px;}
+.tasks-box h3{font-size:.95rem;margin-bottom:8px;color:#c0392b;}
+.task-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.85rem;}
+.task-item .icon{font-size:1.1rem;}
+.task-item.done{color:#27ae60;text-decoration:line-through;}
+.task-item.done .icon::after{content:' ✅';}
+.inbox-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.inbox-header h2{font-size:1.1rem;color:#4a3f9f;}
+.email-list{display:flex;flex-direction:column;gap:6px;margin-bottom:15px;}
+.email-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8f9fa;border-radius:10px;cursor:pointer;transition:all .2s;border:2px solid transparent;}
+.email-row:hover{background:#e8f0fe;border-color:#4a3f9f;}
+.email-row.deleted{opacity:.4;text-decoration:line-through;pointer-events:none;}
+.email-row.read{background:#fff;}
+.email-sender{font-weight:bold;min-width:120px;font-size:.9rem;color:#2c3e50;}
+.email-subject{font-size:.85rem;color:#555;flex:1;}
+.email-preview{font-size:.75rem;color:#999;}
+.email-avatar{font-size:1.5rem;}
+.trash-section{margin-top:15px;}
+.trash-section h3{font-size:.95rem;color:#888;margin-bottom:8px;}
+.trash-item{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#f0f0f0;border-radius:8px;margin-bottom:4px;opacity:.6;font-size:.85rem;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;justify-content:center;align-items:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#fff;border-radius:20px;max-width:600px;width:100%;padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto;}
+.modal h2{color:#4a3f9f;margin-bottom:5px;font-size:1.2rem;}
+.modal .email-from{color:#888;font-size:.85rem;margin-bottom:3px;}
+.modal .email-to{color:#888;font-size:.85rem;margin-bottom:10px;}
+.modal .email-body{background:#f8f9fa;padding:15px;border-radius:10px;margin-bottom:15px;line-height:1.6;font-size:.9rem;}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{padding:10px 18px;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:bold;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-reply{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.btn-forward{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
+.btn-delete{background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;}
+.btn-close{background:#e0e0e0;color:#333;}
+.btn-send{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#333;}
+.compose-area{margin-top:12px;}
+.compose-area label{display:block;font-size:.85rem;font-weight:bold;color:#555;margin-bottom:4px;}
+.compose-area input,.compose-area textarea{width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:.85rem;font-family:inherit;margin-bottom:8px;}
+.compose-area textarea{min-height:80px;resize:vertical;}
+.congrats{display:none;text-align:center;padding:40px 20px;}
+.congrats h2{color:#27ae60;font-size:1.8rem;margin-bottom:10px;}
+.congrats p{color:#555;font-size:1rem;}
+.congrats .emoji{font-size:4rem;margin-bottom:15px;}
+@media(max-width:600px){
+.container{padding:15px;}
+.email-row{flex-direction:column;align-items:flex-start;gap:4px;}
+.email-sender{min-width:auto;}
+.modal-actions{flex-direction:column;}
+.btn{width:100%;justify-content:center;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .task-item > * + * { margin-left: 8px; }
+  .email-list > * + * { margin-top: 6px; }
+  .email-row > * + * { margin-left: 10px; }
+  .trash-item > * + * { margin-left: 10px; }
+  .modal-actions > * { margin: 4px; }
+  .btn > * + * { margin-left: 5px; }
+  @media(max-width:600px){
+    .email-row > * + * { margin-top: 4px; }
+  }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📧 Τα Μηνύματά μου</h1>
+<p class="subtitle">Απάντησε → Προώθησε → Διαγραφή</p>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<span class="progress-text" id="progressText">0/3 εργασίες</span>
+</div>
+
+<div class="tasks-box" id="tasksBox">
+<h3>📋 Εργασίες:</h3>
+<div class="task-item" id="task1"><span class="icon">📧</span> Απάντησε στο μήνυμα της κυρίας Μαρίας</div>
+<div class="task-item" id="task2"><span class="icon">📧</span> Προώθησε το μήνυμα του Γιάννη</div>
+<div class="task-item" id="task3"><span class="icon">📧</span> Διαγράψε το μήνυμα από το Portal</div>
+</div>
+
+<div id="mainArea">
+<div class="inbox-header">
+<h2>📥 Εισερχόμενα</h2>
+</div>
+<div class="email-list" id="emailList"></div>
+<div class="trash-section" id="trashSection" style="display:none;">
+<h3>🗑️ Διαγραμμένα</h3>
+<div id="trashList"></div>
+</div>
+</div>
+
+<div class="congrats" id="congrats">
+<div class="emoji">🎉</div>
+<h2>Μπράβο!</h2>
+<p>Ολοκλήρωσες όλες τις εργασίες!<br>Έμαθες να απαντάς, να προωθείς και να διαγράφεις μηνύματα!</p>
+</div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+(function(){
+var emails=[
+{id:1,sender:'κυρία Μαρία',subject:'Εργασία για αύριο',body:'Γεια σου!\n\nΜην ξεχάσεις να φτιάξεις τον εννοιολογικό χάρτη.\n\nΥπενθύμιση: η εργασία πρέπει να παραδοθεί αύριο.\n\nΚαλή δουλειά!\nκυρία Μαρία',avatar:'👩‍🏫',deleted:false},
+{id:2,sender:'Γιάννης',subject:'Συσκευές',body:'Γεια!\n\nΠοιες συσκευές είναι είσοδος και ποιες έξοδος;\n\nΔεν θυμάμαι κανένα παράδειγμα...\n\nΜπορείς να με βοηθήσεις;\nΓιάννης',avatar:'👦',deleted:false},
+{id:3,sender:'Εκπαιδευτικό Portal',subject:'Νέο υλικό',body:'Αγαπητέ μαθητή/τρια,\n\nΝέα διαδραστικά βιβλία διαθέσιμα!\n\nΕπισκέψου την πλατφόρμα για να τα δεις.\n\nΕκπαιδευτικό Portal',avatar:'🌐',deleted:false}
+];
+var trash=[];
+var tasks={reply:false,forward:false,del:false};
+var completed=0;
+
+function render(){
+var list=document.getElementById('emailList');
+list.innerHTML='';
+emails.forEach(function(e){
+if(e.deleted)return;
+var row=document.createElement('div');
+row.className='email-row';
+row.innerHTML='<span class="email-avatar">'+e.avatar+'</span><span class="email-sender">'+esc(e.sender)+'</span><span class="email-subject">'+esc(e.subject)+'</span>';
+row.onclick=function(){openEmail(e);};
+list.appendChild(row);
+});
+updateProgress();
+}
+
+function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+function updateProgress(){
+completed=(tasks.reply?1:0)+(tasks.forward?1:0)+(tasks.del?1:0);
+var pct=Math.round(completed/3*100);
+document.getElementById('progressFill').style.width=pct+'%';
+document.getElementById('progressText').textContent=completed+'/3 εργασίες';
+if(tasks.reply)document.getElementById('task1').classList.add('done');
+if(tasks.forward)document.getElementById('task2').classList.add('done');
+if(tasks.del)document.getElementById('task3').classList.add('done');
+if(completed===3){
+document.getElementById('mainArea').style.display='none';
+document.getElementById('tasksBox').style.display='none';
+document.getElementById('congrats').style.display='block';
+}
+}
+
+function openEmail(e){
+var m=document.getElementById('modalContent');
+var html='<h2>'+e.avatar+' '+esc(e.subject)+'</h2>';
+html+='<p class="email-from">Από: <strong>'+esc(e.sender)+'</strong></p>';
+html+='<p class="email-to">Προς: Εμένα</p>';
+html+='<div class="email-body">'+esc(e.body).replace(/\n/g,'<br>')+'</div>';
+html+='<div class="modal-actions">';
+if(e.id===1&&!tasks.reply){
+html+='<button class="btn btn-reply" onclick="window._app.reply('+e.id+')">↩️ Απάντηση</button>';
+}
+if(e.id===2&&!tasks.forward){
+html+='<button class="btn btn-forward" onclick="window._app.forward('+e.id+')">↪️ Προώθηση</button>';
+}
+if(e.id===3&&!tasks.del){
+html+='<button class="btn btn-delete" onclick="window._app.deleteEmail('+e.id+')">🗑️ Διαγραφή</button>';
+}
+html+='<button class="btn btn-close" onclick="window._app.closeModal()">✕ Κλείσιμο</button>';
+html+='</div>';
+m.innerHTML=html;
+document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal(){
+document.getElementById('modalOverlay').classList.remove('active');
+}
+
+function showReply(e){
+var m=document.getElementById('modalContent');
+var html='<h2>↩️ Απάντηση σε: '+esc(e.sender)+'</h2>';
+html+='<div class="compose-area">';
+html+='<label>Προς:</label>';
+html+='<input type="text" value="'+esc(e.sender)+'" readonly>';
+html+='<label>Θέμα:</label>';
+html+='<input type="text" id="replySubject" value="Re: '+esc(e.subject)+'" readonly>';
+html+='<label>Μήνυμα:</label>';
+html+='<textarea id="replyBody" placeholder="Γράψε την απάντησή σου εδώ..."></textarea>';
+html+='</div>';
+html+='<div class="modal-actions">';
+html+='<button class="btn btn-send" onclick="window._app.sendReply()">📤 Αποστολή</button>';
+html+='<button class="btn btn-close" onclick="window._app.closeModal()">✕ Ακύρωση</button>';
+html+='</div>';
+m.innerHTML=html;
+}
+
+function showForward(e){
+var m=document.getElementById('modalContent');
+var html='<h2>↪️ Προώθηση μηνύματος</h2>';
+html+='<div class="compose-area">';
+html+='<label>Προς:</label>';
+html+='<input type="text" id="fwdTo" placeholder="Όνομα παραλήπτη...">';
+html+='<label>Θέμα:</label>';
+html+='<input type="text" value="Fwd: '+esc(e.subject)+'" readonly>';
+html+='<label>Πρωτότυπο μήνυμα:</label>';
+html+='<div class="email-body" style="margin-bottom:8px">'+esc(e.body).replace(/\n/g,'<br>')+'</div>';
+html+='</div>';
+html+='<div class="modal-actions">';
+html+='<button class="btn btn-send" onclick="window._app.sendForward()">📤 Αποστολή</button>';
+html+='<button class="btn btn-close" onclick="window._app.closeModal()">✕ Ακύρωση</button>';
+html+='</div>';
+m.innerHTML=html;
+}
+
+function sendReply(){
+var body=document.getElementById('replyBody').value.trim();
+if(!body){alert('Γράψε κάτι στην απάντηση!');return;}
+tasks.reply=true;
+closeModal();
+updateProgress();
+showNotice('✅ Η απάντηση στάλθηκε!');
+}
+
+function sendForward(){
+var to=document.getElementById('fwdTo').value.trim();
+if(!to){alert('Γράψε το όνομα του παραλήπτη!');return;}
+tasks.forward=true;
+closeModal();
+updateProgress();
+showNotice('✅ Το μήνυμα προωθήθηκε!');
+}
+
+function deleteEmail(id){
+if(!confirm('Θέλεις σίγουρα να διαγράψεις αυτό το μήνυμα;'))return;
+var e=emails.find(function(x){return x.id===id;});
+if(e){
+e.deleted=true;
+trash.push(e);
+tasks.del=true;
+closeModal();
+render();
+showTrash();
+updateProgress();
+showNotice('🗑️ Το μήνυμα διαγράφηκε!');
+}
+}
+
+function showTrash(){
+if(trash.length===0)return;
+var sec=document.getElementById('trashSection');
+sec.style.display='block';
+var list=document.getElementById('trashList');
+list.innerHTML='';
+trash.forEach(function(e){
+var item=document.createElement('div');
+item.className='trash-item';
+item.innerHTML='<span>'+e.avatar+'</span><span>'+esc(e.sender)+'</span>-<span>'+esc(e.subject)+'</span>';
+list.appendChild(item);
+});
+}
+
+function showNotice(msg){
+var n=document.createElement('div');
+n.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#27ae60;color:#fff;padding:12px 24px;border-radius:12px;font-weight:bold;z-index:200;box-shadow:0 4px 15px rgba(0,0,0,.2);font-size:.95rem;';
+n.textContent=msg;
+document.body.appendChild(n);
+setTimeout(function(){n.remove();},2500);
+}
+
+window._app={reply:function(id){var e=emails.find(function(x){return x.id===id;});if(e)showReply(e);},
+forward:function(id){var e=emails.find(function(x){return x.id===id;});if(e)showForward(e);},
+deleteEmail:deleteEmail,closeModal:closeModal,sendReply:sendReply,sendForward:sendForward};
+
+document.getElementById('modalOverlay').addEventListener('click',function(ev){if(ev.target===this)closeModal();});
+render();
+})();
+</script>
+</body>
+</html>

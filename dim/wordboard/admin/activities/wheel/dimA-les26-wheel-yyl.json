@@ -1,0 +1,23 @@
+{
+    "id": "dimA-les26-wheel-yyl",
+    "title": "Ιστοσελίδες και ιστότοποι - Τροχός",
+    "type": "wheel",
+    "created_by": "admin",
+    "created_date": "2026-04-23",
+    "data": {
+        "segments": [
+            "Ιστοσελίδα",
+            "Ιστότοπος",
+            "Υπερσύνδεσμος",
+            "Hyperlink",
+            "Website",
+            "Webpage",
+            "Βέλος πίσω"
+        ]
+    },
+    "tags": [
+        "dimA",
+        "les26",
+        "διαδίκτυο"
+    ]
+}

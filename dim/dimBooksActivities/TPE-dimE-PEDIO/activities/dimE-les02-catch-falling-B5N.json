@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Συνέχεια Καίσαρα",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο τις λέξεις σχετικές με τη ΒΕΛΤΙΩΣΗ ΑΛΓΟΡΙΘΜΩΝ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Γενίκευση", "correct": true, "color": "#4CAF50"},
+    {"text": "Μολύβι", "correct": false, "color": "#f44336"},
+    {"text": "Συνθήκη", "correct": true, "color": "#2196F3"},
+    {"text": "Τραπέζι", "correct": false, "color": "#FF9800"},
+    {"text": "Είσοδος", "correct": true, "color": "#9C27B0"},
+    {"text": "Καρέκλα", "correct": false, "color": "#E91E63"},
+    {"text": "Επανάληψη", "correct": true, "color": "#009688"},
+    {"text": "Γάλα", "correct": false, "color": "#FFC107"},
+    {"text": "Έξοδος", "correct": true, "color": "#795548"},
+    {"text": "Πορτοκάλι", "correct": false, "color": "#607D8B"}
+  ]
+}

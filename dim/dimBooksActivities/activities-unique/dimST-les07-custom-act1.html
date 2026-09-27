@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 Επίπεδα Δυσκολίας</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;padding:15px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:700px;width:100%;padding:25px;}
+h1{text-align:center;color:#5b3ea8;font-size:1.5rem;margin-bottom:5px;}
+.subtitle{text-align:center;color:#888;font-size:.9rem;margin-bottom:20px;}
+.score-bar{display:flex;justify-content:center;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+.score-item{background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:10px 18px;border-radius:12px;text-align:center;font-weight:bold;color:#5b3ea8;font-size:.95rem;border:2px solid #c4b5fd;}
+.score-item span{color:#764ba2;font-size:1.3rem;}
+.level-buttons{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;}
+.level-btn{padding:14px 24px;border:none;border-radius:14px;cursor:pointer;font-size:1rem;font-weight:bold;transition:all .2s;color:#fff;min-width:140px;}
+.level-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.2);}
+.level-btn:active{transform:scale(.97);}
+.level-btn.l1{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#166534;}
+.level-btn.l2{background:linear-gradient(135deg,#f7971e,#ffd200);color:#7c2d12;}
+.level-btn.l3{background:linear-gradient(135deg,#f43f5e,#ec4899);color:#fff;}
+.level-btn.active{box-shadow:0 0 0 3px #5b3ea8,0 5px 15px rgba(0,0,0,.2);transform:scale(1.05);}
+.level-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.game-area{text-align:center;display:none;}
+.game-area.active{display:block;}
+.game-box{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid #e2e8f0;border-radius:16px;padding:25px;margin-bottom:15px;}
+.game-box h2{color:#5b3ea8;font-size:1.2rem;margin-bottom:10px;}
+.guess-prompt{font-size:1.1rem;color:#555;margin-bottom:15px;}
+.input-row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.input-row input{width:120px;padding:12px;border:2px solid #c4b5fd;border-radius:12px;font-size:1.2rem;text-align:center;outline:none;font-family:inherit;}
+.input-row input:focus{border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.2);}
+.btn{padding:12px 24px;border:none;border-radius:12px;cursor:pointer;font-size:1rem;font-weight:bold;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.feedback{margin-top:15px;padding:15px;border-radius:12px;font-size:1.2rem;font-weight:bold;min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.feedback.hot{background:linear-gradient(135deg,#fef2f2,#fecaca);color:#dc2626;border:2px solid #f87171;}
+.feedback.warm{background:linear-gradient(135deg,#fff7ed,#fed7aa);color:#ea580c;border:2px solid #fb923c;}
+.feedback.cold{background:linear-gradient(135deg,#eff6ff,#bfdbfe);color:#2563eb;border:2px solid #60a5fa;}
+.feedback.win{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#16a34a;border:2px solid #86efac;}
+.attempts-display{margin-top:10px;font-size:.9rem;color:#888;}
+.progress-bar{display:flex;gap:8px;justify-content:center;margin-top:15px;}
+.progress-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:bold;border:2px solid #e2e8f0;color:#aaa;background:#f8fafc;}
+.progress-dot.done{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#166534;border-color:#86efac;}
+.progress-dot.current{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:#667eea;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(102,126,234,.4)}50%{box-shadow:0 0 0 8px rgba(102,126,234,0)}}
+.complete{text-align:center;padding:20px;}
+.complete .emoji{font-size:3rem;margin-bottom:10px;}
+.complete h2{color:#16a34a;font-size:1.4rem;margin-bottom:8px;}
+.complete p{color:#666;font-size:1rem;}
+@media(max-width:600px){.container{padding:15px;}h1{font-size:1.2rem;}.level-btn{min-width:100px;padding:10px 16px;font-size:.85rem;}.input-row input{width:90px;}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 10px; }
+  .level-buttons > * { margin: 5px; }
+  .input-row > * { margin: 5px; }
+  .feedback > * + * { margin-left: 10px; }
+  .progress-bar > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎯 3 Επίπεδα Δυσκολίας</h1>
+<p class="subtitle">Μάντεψε τον αριθμό! Κάθε επίπεδο γίνεται δυσκολότερο.</p>
+
+<div class="score-bar">
+<div class="score-item">🏆 Προσπάθειες: <span id="totalAttempts">0</span></div>
+<div class="score-item">⭐ Επίπεδο: <span id="currentLevel">-</span></div>
+</div>
+
+<div class="progress-bar">
+<div class="progress-dot" id="prog1">1</div>
+<div class="progress-dot" id="prog2">2</div>
+<div class="progress-dot" id="prog3">3</div>
+</div>
+
+<div style="margin-top:15px;" id="levelSelect">
+<div class="level-buttons">
+<button class="level-btn l1" onclick="startLevel(1)">🌱 Επίπεδο 1 (1-10)</button>
+<button class="level-btn l2" onclick="startLevel(2)">🔥 Επίπεδο 2 (1-20)</button>
+<button class="level-btn l3" onclick="startLevel(3)">💎 Επίπεδο 3 (1-30)</button>
+</div>
+</div>
+
+<div class="game-area" id="gameArea">
+<div class="game-box">
+<h2 id="levelTitle"></h2>
+<p class="guess-prompt" id="guessPrompt"></p>
+<div class="input-row">
+<input type="number" id="guessInput" placeholder="?" onkeydown="if(event.key==='Enter')makeGuess()">
+<button class="btn btn-primary" onclick="makeGuess()">🚀 Μάντεψε!</button>
+</div>
+<div class="feedback" id="feedback"></div>
+<p class="attempts-display" id="attemptsInfo"></p>
+</div>
+</div>
+
+<div class="complete" id="completeArea" style="display:none;">
+<div class="emoji">🏆🎉🎊</div>
+<h2>Μπράβο! Ολοκλήρωσες όλα τα επίπεδα!</h2>
+<p id="finalMsg"></p>
+<button class="btn btn-primary" onclick="resetGame()" style="margin-top:15px;">🔄 Παίξε Ξανά</button>
+</div>
+</div>
+
+<script>
+(function(){
+var levels=[
+{name:'Επίπεδο 1',min:1,max:10,emoji:'🌱',hotEmoji:'🔥',winEmoji:'🌟'},
+{name:'Επίπεδο 2',min:1,max:20,emoji:'🔥',hotEmoji:'💥',winEmoji:'⭐'},
+{name:'Επίπεδο 3',min:1,max:30,emoji:'💎',hotEmoji:'⚡',winEmoji:'👑'}
+];
+var current=null;
+var secretNumber=0;
+var attempts=0;
+var totalAttempts=0;
+var completedLevels=new Set();
+var autoAdvance=false;
+
+window.startLevel=function(lvl){
+current=lvl-1;
+var level=levels[current];
+secretNumber=Math.floor(Math.random()*(level.max-level.min+1))+level.min;
+attempts=0;
+autoAdvance=false;
+
+document.getElementById('levelSelect').style.display='none';
+document.getElementById('gameArea').classList.add('active');
+document.getElementById('completeArea').style.display='none';
+
+document.getElementById('levelTitle').textContent=level.emoji+' '+level.name;
+document.getElementById('guessPrompt').textContent='Μάντεψε έναν αριθμό από '+level.min+' έως '+level.max+':';
+document.getElementById('currentLevel').textContent=lvl+'/3';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+document.getElementById('attemptsInfo').textContent='';
+document.getElementById('guessInput').value='';
+document.getElementById('guessInput').min=level.min;
+document.getElementById('guessInput').max=level.max;
+document.getElementById('guessInput').focus();
+
+updateProgress();
+};
+
+function updateProgress(){
+for(var i=1;i<=3;i++){
+var dot=document.getElementById('prog'+i);
+dot.className='progress-dot';
+if(completedLevels.has(i))dot.classList.add('done');
+else if(current===i-1)dot.classList.add('current');
+}
+}
+
+window.makeGuess=function(){
+if(current===null||autoAdvance)return;
+var level=levels[current];
+var input=document.getElementById('guessInput');
+var guess=parseInt(input.value);
+var fb=document.getElementById('feedback');
+
+if(isNaN(guess)||guess<level.min||guess>level.max){
+fb.className='feedback warm';
+fb.textContent='⚠️ Γράψε αριθμό από '+level.min+' έως '+level.max+'!';
+return;
+}
+
+attempts++;
+totalAttempts++;
+document.getElementById('totalAttempts').textContent=totalAttempts;
+
+if(guess===secretNumber){
+fb.className='feedback win';
+fb.textContent=level.winEmoji+' ΒΡΗΚΕΣ ΤΟΝ ΑΡΙΘΜΟ! Ήταν το '+secretNumber+'!';
+fb.textContent+=' ('+attempts+' προσπάθειες)';
+document.getElementById('attemptsInfo').textContent='🎉 Συγχαρητήρια!';
+completedLevels.add(current+1);
+updateProgress();
+autoAdvance=true;
+
+if(completedLevels.size<3){
+setTimeout(function(){
+if(completedLevels.size<3){
+var next=-1;
+for(var i=0;i<3;i++){
+if(!completedLevels.has(i+1)){next=i+1;break;}
+}
+if(next>0)startLevel(next);
+}
+},2000);
+}else{
+setTimeout(showComplete,1500);
+}
+}else{
+var diff=Math.abs(guess-secretNumber);
+if(diff<=2){
+fb.className='feedback hot';
+fb.textContent=level.hotEmoji+' ΚΑΙΟΜΑΙ! Πολύ κοντά!';
+}else if(diff<=Math.floor((level.max-level.min)/4)){
+fb.className='feedback warm';
+fb.textContent='🌡️ Ζεστά... Δοκίμασε '+((guess<secretNumber)?'μεγαλύτερο':'μικρότερο')+'!';
+}else{
+fb.className='feedback cold';
+fb.textContent='❄️ Κρύο! Δοκίμασε '+((guess<secretNumber)?'μεγαλύτερο':'μικρότερο')+'!';
+}
+document.getElementById('attemptsInfo').textContent='Προσπάθεια: '+attempts;
+input.value='';
+input.focus();
+}
+};
+
+function showComplete(){
+document.getElementById('gameArea').classList.remove('active');
+document.getElementById('levelSelect').style.display='none';
+document.getElementById('completeArea').style.display='block';
+document.getElementById('finalMsg').textContent='Συνολικές προσπάθειες: '+totalAttempts+' | Επίπεδα: 3/3';
+}
+
+window.resetGame=function(){
+current=null;
+totalAttempts=0;
+completedLevels.clear();
+autoAdvance=false;
+document.getElementById('totalAttempts').textContent='0';
+document.getElementById('currentLevel').textContent='-';
+document.getElementById('completeArea').style.display='none';
+document.getElementById('gameArea').classList.remove('active');
+document.getElementById('levelSelect').style.display='block';
+document.getElementById('feedback').textContent='';
+document.getElementById('feedback').className='feedback';
+updateProgress();
+};
+})();
+</script>
+</body>
+</html>

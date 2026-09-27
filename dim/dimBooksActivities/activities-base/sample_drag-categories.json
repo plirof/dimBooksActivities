@@ -1,0 +1,19 @@
+{
+  "title": "Είσοδος ή Έξοδος;",
+  "subtitle": "Σύρε κάθε συσκευή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "input", "name": "Είσοδος", "color": "#4CAF50" },
+    { "id": "output", "name": "Έξοδος", "color": "#2196F3" }
+  ],
+  "items": [
+    { "id": "kb", "text": "⌨️ Πληκτρολόγιο", "category": "input" },
+    { "id": "ms", "text": "🖱️ Ποντίκι", "category": "input" },
+    { "id": "mic", "text": "🎤 Μικρόφωνο", "category": "input" },
+    { "id": "cam", "text": "📷 Κάμερα", "category": "input" },
+    { "id": "scan", "text": "📠 Σαρωτής", "category": "input" },
+    { "id": "mon", "text": "🖥️ Οθόνη", "category": "output" },
+    { "id": "prt", "text": "🖨️ Εκτυπωτής", "category": "output" },
+    { "id": "spk", "text": "🔊 Ηχεία", "category": "output" },
+    { "id": "head", "text": "🎧 Ακουστικά", "category": "output" }
+  ]
+}

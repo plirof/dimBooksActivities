@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Το Όριο της Σκηνής</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+min-height: 100vh;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 5px;
+font-size: 1.8rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.subtitle {
+color: #d4f5e9;
+text-align: center;
+margin-bottom: 15px;
+font-size: 1rem;
+max-width: 700px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 25px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.progress-bar {
+background: #eee;
+border-radius: 10px;
+height: 24px;
+margin-bottom: 20px;
+overflow: hidden;
+position: relative;
+}
+.progress-fill {
+background: linear-gradient(90deg, #43cea2, #8BC34A);
+height: 100%;
+border-radius: 10px;
+transition: width 0.5s ease;
+}
+.progress-text {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 0.75rem;
+font-weight: bold;
+color: #333;
+}
+.question-card {
+display: none;
+}
+.question-card.active {
+display: block;
+}
+.q-number {
+background: linear-gradient(135deg, #43cea2, #2e8b6e);
+color: white;
+display: inline-block;
+padding: 4px 14px;
+border-radius: 20px;
+font-size: 0.85rem;
+font-weight: bold;
+margin-bottom: 12px;
+}
+.q-text {
+font-size: 1.1rem;
+color: #333;
+margin-bottom: 16px;
+line-height: 1.5;
+font-weight: 600;
+}
+.mini-stage {
+background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 60%, #81c784 60%, #66bb6a 100%);
+border: 3px solid #bdbdbd;
+border-radius: 10px;
+width: 100%;
+max-width: 420px;
+height: 160px;
+margin: 0 auto 18px;
+position: relative;
+overflow: hidden;
+}
+.mini-stage-label {
+position: absolute;
+top: 4px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 0.7rem;
+color: #666;
+font-weight: bold;
+background: rgba(255,255,255,0.7);
+padding: 2px 8px;
+border-radius: 4px;
+}
+.mini-cat {
+position: absolute;
+font-size: 2rem;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+transition: all 0.6s ease;
+}
+.mini-house {
+position: absolute;
+font-size: 1.6rem;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.edge-marker {
+position: absolute;
+background: rgba(244, 67, 54, 0.25);
+border: 2px dashed #f44336;
+border-radius: 4px;
+}
+.edge-label {
+position: absolute;
+font-size: 0.6rem;
+color: #d32f2f;
+font-weight: bold;
+}
+.arrow-indicator {
+position: absolute;
+font-size: 1.2rem;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.options-grid {
+display: grid;
+grid-template-columns: 1fr;
+grid-gap: 10px;
+margin-bottom: 18px;
+}
+.option-btn {
+background: white;
+border: 3px solid #e0e0e0;
+border-radius: 12px;
+padding: 12px 16px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+text-align: left;
+display: flex;
+align-items: center;
+gap: 10px;
+color: #333;
+touch-action: manipulation;
+}
+.option-btn:hover {
+border-color: #43cea2;
+background: #f0fdf4;
+transform: translateY(-1px);
+}
+.option-btn.selected {
+border-color: #43cea2;
+background: #e8f5e9;
+}
+.option-btn.correct-answer {
+border-color: #4CAF50;
+background: #E8F5E9;
+color: #2E7D32;
+}
+.option-btn.wrong-answer {
+border-color: #EF5350;
+background: #FFEBEE;
+color: #C62828;
+}
+.option-letter {
+background: #f5f5f5;
+color: #555;
+width: 32px;
+height: 32px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+font-size: 0.9rem;
+flex-shrink: 0;
+}
+.option-btn.selected .option-letter {
+background: #43cea2;
+color: white;
+}
+.option-btn.correct-answer .option-letter {
+background: #4CAF50;
+color: white;
+}
+.option-btn.wrong-answer .option-letter {
+background: #EF5350;
+color: white;
+}
+.btn {
+padding: 14px 30px;
+border: none;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.2s ease;
+display: block;
+margin: 0 auto;
+}
+.btn-check {
+background: linear-gradient(135deg, #43cea2, #2e8b6e);
+color: white;
+}
+.btn-check:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.btn-check:disabled {
+opacity: 0.5;
+cursor: default;
+transform: none;
+box-shadow: none;
+}
+.btn-retry {
+background: linear-gradient(135deg, #FF9800, #F57C00);
+color: white;
+margin-top: 10px;
+}
+.feedback {
+text-align: center;
+padding: 12px;
+border-radius: 12px;
+margin-bottom: 15px;
+font-size: 1rem;
+font-weight: bold;
+display: none;
+}
+.feedback.correct {
+background: #E8F5E9;
+color: #2E7D32;
+border: 2px solid #4CAF50;
+display: block;
+}
+.feedback.wrong {
+background: #FFEBEE;
+color: #C62828;
+border: 2px solid #EF5350;
+display: block;
+}
+.completion-screen {
+display: none;
+text-align: center;
+padding: 30px 20px;
+}
+.completion-screen h2 {
+font-size: 1.8rem;
+color: #333;
+margin-bottom: 10px;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.stars {
+font-size: 3rem;
+margin: 15px 0;
+font-family: 'NotoColorEmoji', 'Segoe UI Emoji', sans-serif;
+}
+.score-text {
+font-size: 1.3rem;
+color: #555;
+margin-bottom: 20px;
+}
+.block-preview {
+display: inline-block;
+border-radius: 6px;
+padding: 4px 10px;
+color: white;
+font-weight: bold;
+font-size: 0.85rem;
+margin: 2px;
+}
+.bp-events { background: #FFBF00; color: #333; }
+.bp-control { background: #FFAB19; }
+.bp-sensing { background: #5CB1D6; }
+.bp-motion { background: #4C97FF; }
+.demo-area {
+background: #fafafa;
+border: 2px solid #e0e0e0;
+border-radius: 12px;
+padding: 12px;
+margin-bottom: 14px;
+text-align: center;
+}
+.demo-label {
+font-size: 0.8rem;
+color: #888;
+margin-bottom: 6px;
+font-weight: bold;
+}
+.cat-path {
+font-size: 0.85rem;
+color: #555;
+margin-top: 6px;
+line-height: 1.4;
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .option-btn > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🎭 Το Όριο της Σκηνής</h1>
+<p class="subtitle">Απάντησε στις ερωτήσεις και μάθε τα πάντα για το όριο!</p>
+<div class="container">
+<div id="gameArea">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<span class="progress-text" id="progressText">0 / 7</span>
+</div>
+<div id="questionArea"></div>
+<div class="feedback" id="feedback"></div>
+</div>
+<div class="completion-screen" id="completionScreen">
+<h2>🎉 Μπράβο! Τέλεια!</h2>
+<div class="stars" id="stars"></div>
+<div class="score-text" id="scoreText"></div>
+<button class="btn btn-retry" onclick="restartGame()">Παίξε ξανά! 🔄</button>
+</div>
+</div>
+<script>
+var questions = [
+{
+text: "Τι είναι το όριο της σκηνής στο Scratch;",
+visual: "edges",
+options: [
+"Τα χρώματα της σκηνής",
+"Τα άκρα (πάνω, κάτω, δεξιά, αριστερά) του παραθύρου",
+"Η μέση της σκηνής",
+"Το φόντο της σκηνής"
+],
+correct: 1,
+explain: "Το όριο σκηνής είναι τα άκρα: πάνω, κάτω, δεξιά και αριστερά!"
+},
+{
+text: "Ποιο μπλοκ ελέγχει αν η γάτα αγγίζει το όριο;",
+visual: null,
+options: [
+'<span class="block-preview bp-control">αν τότε</span>',
+'<span class="block-preview bp-motion">πήγαινε σε x:0 y:0</span>',
+'<span class="block-preview bp-sensing">αγγίζει όριο σκηνής;</span>',
+'<span class="block-preview bp-events">όταν πατηθεί πράσινη σημαία</span>'
+],
+correct: 2,
+explain: "Το μπλοκ «αγγίζει όριο σκηνής;» (γαλάζιο) ελέγχει αν το αντικείμενο είναι στο όριο!"
+},
+{
+text: "Η γάτα είναι στο ΔΕΞΙ όριο. Τι θα κάνει το πρόγραμμα αν έχουμε το μπλοκ «αν αγγίζει όριο σκηνής τότε πήγαινε σε Σπιτάκι»;",
+visual: "right-edge",
+options: [
+"Η γάτα θα συνεχίσει να κινείται δεξιά",
+"Η γάτα θα γυρίσει στο Σπιτάκι",
+"Η γάτα θα εξαφανιστεί",
+"Τίποτα δεν θα γίνει"
+],
+correct: 1,
+explain: "Επειδή η γάτα αγγίζει το όριο, η συνθήκη ισχύει, οπότε πάει στο Σπιτάκι!"
+},
+{
+text: "Σε ποια κατηγορία μπλοκ βρίσκεται το «πήγαινε σε Σπιτάκι»;",
+visual: null,
+options: [
+"Συμβάντα (κίτρινα)",
+"Έλεγχος (πορτοκαλί)",
+"Αισθήσεις (γαλάζια)",
+"Κίνηση (μπλε)"
+],
+correct: 3,
+explain: "Το «πήγαινε σε...» είναι μπλοκ Κίνησης (μπλε χρώμα)!"
+},
+{
+text: "Η γάτα είναι στο ΚΕΝΤΡΟ της σκηνής. Τι θα γίνει αν ελέγξουμε «αγγίζει όριο σκηνής;»;",
+visual: "center",
+options: [
+"Θα επιστρέψει Αληθές (ναι)",
+"Θα επιστρέψει Ψευδές (όχι)",
+"Θα μετακινηθεί μόνη της",
+"Θα εμφανιστεί μήνυμα"
+],
+correct: 1,
+explain: "Στο κέντρο η γάτα ΔΕΝ αγγίζει το όριο, οπότε η απάντηση είναι Ψευδές (όχι)!"
+},
+{
+text: "Θέλουμε η γάτα να ξεκινάει από το Σπιτάκι. Ποιο μπλοκ χρειαζόμαστε;",
+visual: null,
+options: [
+'<span class="block-preview bp-control">αν τότε</span>',
+'<span class="block-preview bp-sensing">αγγίζει όριο σκηνής;</span>',
+'<span class="block-preview bp-motion">πήγαινε σε Σπιτάκι</span>',
+'<span class="block-preview bp-events">όταν πατηθεί πράσινη σημαία</span>'
+],
+correct: 2,
+explain: "Το «πήγαινε σε Σπιτάκι» μετακινεί απευθείας τη γάτα στη θέση του Σπιτακιού!"
+},
+{
+text: "Αν θέλουμε το πρόγραμμα να τρέχει συνεχώς και να ελέγχει το όριο, τι πρέπει να προσθέσουμε;",
+visual: null,
+options: [
+"Μόνο το μπλοκ «πήγαινε σε Σπιτάκι»",
+"Το μπλοκ «για πάντα» μαζί με το «αν αγγίζει όριο σκηνής»",
+"Το μπλοκ «σταμάτησε όλα»",
+"Το μπλοκ «πες Γεια!»"
+],
+correct: 1,
+explain: "Με το «για πάντα» το πρόγραμμα ελέγχει διαρκώς αν η γάτα αγγίζει το όριο!"
+}
+];
+
+var currentQuestion = 0;
+var score = 0;
+var selectedOption = -1;
+var answered = false;
+
+function loadQuestion() {
+var q = questions[currentQuestion];
+var area = document.getElementById("questionArea");
+selectedOption = -1;
+answered = false;
+
+var html = '<div class="question-card active">';
+html += '<span class="q-number">Ερώτηση ' + (currentQuestion + 1) + " / " + questions.length + "</span>";
+html += '<div class="q-text">' + q.text + "</div>";
+
+if (q.visual) {
+html += buildVisual(q.visual);
+}
+
+html += '<div class="options-grid">';
+var letters = ["Α", "Β", "Γ", "Δ"];
+for (var i = 0; i < q.options.length; i++) {
+html +=
+'<button class="option-btn" data-idx="' +
+i +
+'" onclick="selectOption(' +
+i +
+')">' +
+'<span class="option-letter">' +
+letters[i] +
+"</span>" +
+'<span class="option-text">' +
+q.options[i] +
+"</span></button>";
+}
+html += "</div>";
+
+html += '<button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>✔ Έλεγξε!</button>';
+html += "</div>";
+
+area.innerHTML = html;
+document.getElementById("feedback").className = "feedback";
+document.getElementById("feedback").style.display = "none";
+}
+
+function buildVisual(type) {
+var html = '<div class="mini-stage">';
+html += '<span class="mini-stage-label">Σκηνή Scratch</span>';
+
+if (type === "edges") {
+html += '<span class="mini-cat" style="left:50%;bottom:50px;transform:translateX(-50%)">🐱</span>';
+html += '<div class="edge-marker" style="top:0;left:0;right:0;height:8px"></div>';
+html += '<div class="edge-marker" style="bottom:0;left:0;right:0;height:8px"></div>';
+html += '<div class="edge-marker" style="top:0;left:0;width:8px;bottom:0"></div>';
+html += '<div class="edge-marker" style="top:0;right:0;width:8px;bottom:0"></div>';
+html += '<span class="edge-label" style="top:12px;left:12px">Πάνω</span>';
+html += '<span class="edge-label" style="bottom:12px;left:12px">Κάτω</span>';
+html += '<span class="edge-label" style="top:50%;left:14px;transform:translateY(-50%)">Αριστ.</span>';
+html += '<span class="edge-label" style="top:50%;right:14px;transform:translateY(-50%)">Δεξιά</span>';
+}
+
+if (type === "right-edge") {
+html += '<span class="mini-house" style="left:25px;bottom:40px">🏠</span>';
+html += '<span class="mini-cat" style="right:12px;bottom:50px">🐱</span>';
+html += '<div class="edge-marker" style="top:0;right:0;width:12px;bottom:0"></div>';
+html += '<span class="edge-label" style="top:12px;right:16px">Όριο!</span>';
+html += '<span class="arrow-indicator" style="left:42%;top:55%">➡️</span>';
+}
+
+if (type === "center") {
+html += '<span class="mini-cat" style="left:50%;bottom:50px;transform:translateX(-50%)">🐱</span>';
+html += '<span style="position:absolute;top:50%;left:50%;width:8px;height:8px;background:#e53935;border-radius:50%;transform:translate(-50%,-50%)"></span>';
+html += '<span class="edge-label" style="bottom:34px;left:50%;transform:translateX(-50%);color:#388E3C">Κέντρο ✓</span>';
+}
+
+html += "</div>";
+return html;
+}
+
+function selectOption(idx) {
+if (answered) return;
+selectedOption = idx;
+var btns = document.querySelectorAll(".option-btn");
+for (var i = 0; i < btns.length; i++) {
+btns[i].classList.remove("selected");
+}
+btns[idx].classList.add("selected");
+document.getElementById("checkBtn").disabled = false;
+}
+
+function checkAnswer() {
+if (selectedOption < 0 || answered) return;
+answered = true;
+
+var q = questions[currentQuestion];
+var fb = document.getElementById("feedback");
+var btns = document.querySelectorAll(".option-btn");
+
+if (selectedOption === q.correct) {
+score++;
+btns[selectedOption].classList.add("correct-answer");
+fb.className = "feedback correct";
+fb.style.display = "block";
+fb.textContent = "🎉 Σωστό! " + q.explain;
+} else {
+btns[selectedOption].classList.add("wrong-answer");
+btns[q.correct].classList.add("correct-answer");
+fb.className = "feedback wrong";
+fb.style.display = "block";
+fb.textContent = "❌ " + q.explain;
+}
+
+document.getElementById("checkBtn").disabled = true;
+
+setTimeout(function () {
+currentQuestion++;
+updateProgress();
+if (currentQuestion < questions.length) {
+loadQuestion();
+} else {
+showCompletion();
+}
+}, 2200);
+}
+
+function updateProgress() {
+var pct = Math.round((currentQuestion / questions.length) * 100);
+document.getElementById("progressFill").style.width = pct + "%";
+document.getElementById("progressText").textContent =
+currentQuestion + " / " + questions.length;
+}
+
+function showCompletion() {
+document.getElementById("gameArea").style.display = "none";
+document.getElementById("completionScreen").style.display = "block";
+
+var starCount = score >= 7 ? 3 : score >= 5 ? 2 : 1;
+var starsHtml = "";
+for (var i = 0; i < 3; i++) {
+starsHtml += i < starCount ? "⭐" : "☆";
+}
+document.getElementById("stars").textContent = starsHtml;
+document.getElementById("scoreText").textContent =
+"Βαθμολογία: " + score + " / " + questions.length;
+}
+
+function restartGame() {
+currentQuestion = 0;
+score = 0;
+updateProgress();
+document.getElementById("gameArea").style.display = "block";
+document.getElementById("completionScreen").style.display = "none";
+loadQuestion();
+}
+
+updateProgress();
+loadQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Στοιχεία Κυψέλης",
+  "subtitle": "Σπάσε μόνο στοιχεία μιας κυψέλης",
+  "instruction": "Σπάσε μόνο τι υπάρχει σε μια κυψέλη της e-me",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Τοίχος", "correct": true, "color": "#4CAF50" },
+    { "text": "Πατίνι", "correct": false, "color": "#f44336" },
+    { "text": "Μέλη", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπάλα", "correct": false, "color": "#f44336" },
+    { "text": "Αναρτήσεις", "correct": true, "color": "#4CAF50" },
+    { "text": "Κουζίνα", "correct": false, "color": "#f44336" },
+    { "text": "Σχόλια", "correct": true, "color": "#4CAF50" },
+    { "text": "Βάτραχος", "correct": false, "color": "#f44336" },
+    { "text": "Υπεύθυνος", "correct": true, "color": "#4CAF50" },
+    { "text": "Κούνια", "correct": false, "color": "#f44336" }
+  ]
+}

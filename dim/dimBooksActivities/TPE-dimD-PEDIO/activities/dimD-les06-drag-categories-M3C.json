@@ -1,0 +1,20 @@
+{
+  "title": "Εντολές για Animation",
+  "subtitle": "Σύρε κάθε εντολή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "costume", "name": "Εντολή ενδυμασίας", "color": "#9C27B0" },
+    { "id": "timing", "name": "Εντολή ελέγχου χρόνου", "color": "#FF9800" },
+    { "id": "motion", "name": "Εντολή κίνησης", "color": "#4CAF50" }
+  ],
+  "items": [
+    { "id": "i1", "text": "Επόμενη ενδυμασία", "category": "costume" },
+    { "id": "i2", "text": "Περίμενε 1 δευτερόλεπτο", "category": "timing" },
+    { "id": "i3", "text": "Κίνηση 10 βημάτων", "category": "motion" },
+    { "id": "i4", "text": "Άλλαξε σε ενδυμασία1", "category": "costume" },
+    { "id": "i5", "text": "Περίμενε 1 ÷ 10 δευτερόλεπτα", "category": "timing" },
+    { "id": "i6", "text": "Κίνηση 5 βημάτων", "category": "motion" },
+    { "id": "i7", "text": "Περίμενε 0,05 δευτερόλεπτα", "category": "timing" },
+    { "id": "i8", "text": "Γύρνα δεξιά 15 μοίρες", "category": "motion" },
+    { "id": "i9", "text": "Άλλαξε σε ενδυμασία2", "category": "costume" }
+  ]
+}

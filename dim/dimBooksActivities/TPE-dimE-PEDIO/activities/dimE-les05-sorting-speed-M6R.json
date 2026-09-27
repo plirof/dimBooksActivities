@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Πόντοι ή Ζωές",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα Αριστερά για ΠΟΝΤΟΥΣ, Δεξιά για ΖΩΕΣ!",
+  "categories": [
+    {"id": "points", "name": "Πόντοι", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "lives", "name": "Ζωές", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Αρχική τιμή: 0", "category": "points"},
+    {"text": "Αρχική τιμή: 3", "category": "lives"},
+    {"text": "Αυξάνονται κατά 1", "category": "points"},
+    {"text": "Μειώνονται κατά 1", "category": "lives"},
+    {"text": "Αγγίζοντας αστερία", "category": "points"},
+    {"text": "Αγγίζοντας ψάρι", "category": "lives"},
+    {"text": "Κερδίζεις όταν φτάσει 10", "category": "points"},
+    {"text": "Χάνεις όταν φτάσει 0", "category": "lives"},
+    {"text": "Είναι μεταβλητή στο Scratch", "category": "points"},
+    {"text": "Είναι μεταβλητή στο Scratch", "category": "lives"}
+  ],
+  "duration": 30
+}

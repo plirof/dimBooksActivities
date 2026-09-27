@@ -1,0 +1,70 @@
+{
+  "title": "Βρες τα Λάθη: Κανόνες & Όρια",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "χρησιμοποιώ", "error": false},
+        {"text": "το", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "απεριόριστα", "error": true, "correct": "με μέτρο", "feedback": "Δεν μπορώ να χρησιμοποιώ το διαδίκτυο απεριόριστα!"},
+        {"text": "χωρίς", "error": false},
+        {"text": "κανένα", "error": false},
+        {"text": "όριο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ό,τι", "error": false},
+        {"text": "αναρτάω", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ιδιωτικό", "error": true, "correct": "δημόσιο", "feedback": "Ό,τι αναρτάς γίνεται δημόσιο αυτόματα!"},
+        {"text": "και", "error": false},
+        {"text": "το", "error": false},
+        {"text": "ελέγχω.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Αν", "error": false},
+        {"text": "διαγράψω", "error": false},
+        {"text": "κάτι", "error": false},
+        {"text": "από", "error": false},
+        {"text": "το", "error": false},
+        {"text": "διαδίκτυο,", "error": false},
+        {"text": "εξαφανίζεται", "error": true, "correct": "μένει", "feedback": "Ό,τι μπαίνει στο διαδίκτυο μένει για πάντα!"},
+        {"text": "για", "error": false},
+        {"text": "πάντα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Όλα", "error": false},
+        {"text": "όσα", "error": false},
+        {"text": "διαβάζω", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "είναι", "error": true, "correct": "δεν είναι απαραίτητα", "feedback": "Δεν είναι όλα σωστά ή αξιόπιστα!"},
+        {"text": "σωστά", "error": false},
+        {"text": "και", "error": false},
+        {"text": "αξιόπιστα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "συνιστώμενος", "error": false},
+        {"text": "χρόνος", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "δέκα", "error": true, "correct": "δύο", "feedback": "Ο στόχος είναι δύο ώρες την ημέρα!"},
+        {"text": "ώρες", "error": false},
+        {"text": "την", "error": false},
+        {"text": "ημέρα.", "error": false}
+      ]
+    }
+  ]
+}

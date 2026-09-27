@@ -1,0 +1,22 @@
+{
+  "title": "Ταξινόμηση: Μονό ή Διπλό Κλικ;",
+  "subtitle": "Τι κάνω με το καθένα;",
+  "instructions": "Πάτα: ΜΟΝΟ ΚΛΙΚ ή ΔΙΠΛΟ ΚΛΙΚ",
+  "categories": [
+    {"id": "mono", "name": "Μονό Κλικ", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "diplo", "name": "Διπλό Κλικ", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Επιλέγω εικονίδιο", "category": "mono"},
+    {"text": "Ανοίγω παιχνίδι", "category": "diplo"},
+    {"text": "Επιλέγω χρώμα", "category": "mono"},
+    {"text": "Ανοίγω ζωγραφική", "category": "diplo"},
+    {"text": "Επιλέγω αρχείο", "category": "mono"},
+    {"text": "Ανοίγω εφαρμογή", "category": "diplo"},
+    {"text": "Επιλέγω φάκελο", "category": "mono"},
+    {"text": "Ανοίγω πρόγραμμα", "category": "diplo"},
+    {"text": "Επιλέγω εικόνα", "category": "mono"},
+    {"text": "Ανοίγω έγγραφο", "category": "diplo"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ακολουθία Ενδυμασιών - Scratch</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#d97706,#fbbf24);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fef3c7;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#92400e;text-align:center;line-height:1.5}
+.animation-preview{background:#f0fdf4;border-radius:16px;border:2px solid #86efac;padding:16px;margin-bottom:14px;text-align:center;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.preview-emoji{font-size:4em}
+.preview-label{margin-top:8px;font-weight:700;color:#d97706;font-size:.95em}
+.costume-timeline{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px}
+.timeline-label{font-weight:700;color:#475569;margin-bottom:10px;font-size:.95em}
+.timeline-slots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:60px;padding:10px;border:2px dashed #cbd5e1;border-radius:10px}
+.costume-slot{width:60px;height:60px;background:#fff;border:2px solid #e2e8f0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2em;cursor:pointer;transition:all .2s}
+.costume-slot:hover{border-color:#fbbf24;background:#fef9c3}
+.costume-slot.filled{border-color:#86efac;background:#f0fdf4}
+.costume-pool{background:#fff7ed;border-radius:12px;padding:14px;margin-bottom:14px}
+.pool-label{font-weight:700;color:#c2410c;margin-bottom:10px;font-size:.95em}
+.pool-costumes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pool-item{width:55px;height:55px;background:#fff;border:2px solid #fdba74;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2em;cursor:pointer;transition:all .2s}
+.pool-item:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.pool-item.used{opacity:.3;cursor:not-allowed}
+.animation-controls{display:flex;gap:12px;justify-content:center;margin-bottom:14px}
+.btn{border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-play{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-reset{background:#f0f0f0;color:#555}
+.btn-reset:hover{background:#e0e0e0}
+.btn-check{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(59,130,246,.4)}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.level-info{background:#e0f2fe;border-radius:12px;padding:10px 14px;margin-bottom:12px;text-align:center;font-size:.9em;color:#0369a1}
+@media(max-width:550px){.costume-slot,.pool-item{width:50px;height:50px;font-size:1.7em}.preview-emoji{font-size:3em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .timeline-slots > * { margin: 4px; }
+  .pool-costumes > * { margin: 5px; }
+  .animation-controls > * + * { margin-left: 12px; }
+  .btn > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎭 Ακολουθία Ενδυμασιών</h1>
+<p>Ταξινόμησε τις ενδυμασίες για να δημιουργήσεις animation!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Στο Scratch, οι ενδυμασίες αλλάζουν με την εντολή «επόμενη ενδυμασία». Η σειρά που βρίσκονται στην καρτέλα «Ενδυμασίες» είναι η σειρά που θα ακολουθήσει!</div>
+
+<div class="level-info" id="levelInfo">
+📍 Επίπεδο 1: Φτιάξε ένα χαμόγελο! (4 ενδυμασίες)
+</div>
+
+<div class="animation-preview">
+<div class="preview-emoji" id="previewEmoji">😐</div>
+<div class="preview-label" id="previewLabel">Προεπισκόπηση</div>
+</div>
+
+<div class="costume-timeline">
+<div class="timeline-label">📋 Η σειρά των ενδυμασιών σου:</div>
+<div class="timeline-slots" id="timelineSlots"></div>
+</div>
+
+<div class="costume-pool">
+<div class="pool-label">🎨 Διαθέσιμες ενδυμασίες (πάτησε για να προσθέσεις):</div>
+<div class="pool-costumes" id="poolCostumes"></div>
+</div>
+
+<div class="animation-controls">
+<button class="btn btn-play" id="playBtn" onclick="playAnimation()">▶️ Δες το Animation</button>
+<button class="btn btn-check" onclick="checkSequence()">✅ Έλεγχος</button>
+<button class="btn btn-reset" onclick="resetLevel()">🔄 Επαναφορά</button>
+</div>
+
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var currentLevel=0;
+var userSequence=[];
+var selectedSlot=null;
+
+var levels=[
+{
+  name:'Φτιάξε ένα χαμόγελο!',
+  description:'4 ενδυμασίες',
+  costumes:['😐','🙂','😊','😄'],
+  correct:['😐','🙂','😊','😄']
+},
+{
+  name:'Σκυτάκι τρέχει!',
+  description:'5 ενδυμασίες',
+  costumes:['🐕','🐕‍🦺','🏃','🐾','💨'],
+  correct:['🐕','🏃','🐾','💨','🐾']
+},
+{
+  name:'Ζάρι κυλάει!',
+  description:'6 ενδυμασίες',
+  costumes:['⚀','⚁','⚂','⚃','⚄','⚅'],
+  correct:['⚀','⚁','⚂','⚃','⚄','⚅']
+}
+];
+
+function initLevel(){
+  var level=levels[currentLevel];
+  document.getElementById('levelInfo').innerHTML='📍 Επίπεδο '+(currentLevel+1)+': '+level.name+' ('+level.description+')';
+  userSequence=[];
+  selectedSlot=null;
+  buildTimeline();
+  buildPool();
+  updatePreview();
+}
+
+function buildTimeline(){
+  var level=levels[currentLevel];
+  var container=document.getElementById('timelineSlots');
+  container.innerHTML='';
+  for(var i=0;i<level.correct.length;i++){
+    var slot=document.createElement('div');
+    slot.className='costume-slot';
+    slot.id='slot-'+i;
+    slot.onclick=function(){
+      selectSlot(this);
+    };
+    container.appendChild(slot);
+  }
+}
+
+function buildPool(){
+  var level=levels[currentLevel];
+  var container=document.getElementById('poolCostumes');
+  container.innerHTML='';
+  for(var i=0;i<level.costumes.length;i++){
+    var item=document.createElement('div');
+    item.className='pool-item';
+    item.textContent=level.costumes[i];
+    item.onclick=function(){
+      addToTimeline(this);
+    };
+    container.appendChild(item);
+  }
+}
+
+function selectSlot(slot){
+  if(selectedSlot){
+    selectedSlot.style.borderColor='#e2e8f0';
+  }
+  selectedSlot=slot;
+  slot.style.borderColor='#fbbf24';
+}
+
+function addToTimeline(poolItem){
+  if(!selectedSlot)return;
+  var slotIndex=parseInt(selectedSlot.id.split('-')[1]);
+  var emoji=poolItem.textContent;
+  
+  var level=levels[currentLevel];
+  var alreadyUsed=false;
+  for(var i=0;i<userSequence.length;i++){
+    if(userSequence[i]===emoji){
+      alreadyUsed=true;
+      break;
+    }
+  }
+  
+  if(alreadyUsed){
+    showFeedback('❌ Αυτή η ενδυμασία χρησιμοποιείται ήδη!',false);
+    return;
+  }
+  
+  userSequence[slotIndex]=emoji;
+  selectedSlot.textContent=emoji;
+  selectedSlot.classList.add('filled');
+  poolItem.classList.add('used');
+  
+  var nextSlot=selectedSlot.nextElementSibling;
+  if(nextSlot){
+    selectSlot(nextSlot);
+  }else{
+    selectedSlot.style.borderColor='#e2e8f0';
+    selectedSlot=null;
+  }
+  
+  updatePreview();
+}
+
+function updatePreview(){
+  if(userSequence.length>0&&userSequence[0]){
+    document.getElementById('previewEmoji').textContent=userSequence[0];
+  }else{
+    document.getElementById('previewEmoji').textContent='😐';
+  }
+}
+
+function playAnimation(){
+  if(userSequence.filter(function(v){return v}).length!==levels[currentLevel].correct.length){
+    showFeedback('❌ Συμπλήρωσε πρώτα όλες τις ενδυμασίες!',false);
+    return;
+  }
+  
+  var index=0;
+  var playBtn=document.getElementById('playBtn');
+  playBtn.disabled=true;
+  playBtn.textContent='⏳ Παίζει...';
+  
+  function showNext(){
+    if(index<userSequence.length){
+      document.getElementById('previewEmoji').textContent=userSequence[index];
+      document.getElementById('previewLabel').textContent='Ενδυμασία '+(index+1)+' από '+userSequence.length;
+      index++;
+      setTimeout(showNext,800);
+    }else{
+      playBtn.disabled=false;
+      playBtn.textContent='▶️ Δες το Animation';
+    }
+  }
+  
+  showNext();
+}
+
+function checkSequence(){
+  var level=levels[currentLevel];
+  var allFilled=userSequence.filter(function(v){return v}).length===level.correct.length;
+  
+  if(!allFilled){
+    showFeedback('❌ Συμπλήρωσε πρώτα όλες τις ενδυμασίες!',false);
+    return;
+  }
+  
+  var isCorrect=true;
+  for(var i=0;i<level.correct.length;i++){
+    if(userSequence[i]!==level.correct[i]){
+      isCorrect=false;
+      break;
+    }
+  }
+  
+  if(isCorrect){
+    if(currentLevel<levels.length-1){
+      showFeedback('🎉 Σωστά! Πάμε στο επόμενο επίπεδο!',true);
+      setTimeout(function(){
+        currentLevel++;
+        initLevel();
+        document.getElementById('feedback').textContent='';
+      },2000);
+    }else{
+      showFeedback('🏆 Μπράβο! Ολοκληρώσες όλα τα επίπεδα!',true);
+    }
+  }else{
+    showFeedback('❌ Η σειρά δεν είναι σωστή. Προσπάθησε ξανά!',false);
+  }
+}
+
+function resetLevel(){
+  var level=levels[currentLevel];
+  userSequence=[];
+  selectedSlot=null;
+  
+  var slots=document.querySelectorAll('.costume-slot');
+  for(var i=0;i<slots.length;i++){
+    slots[i].textContent='';
+    slots[i].classList.remove('filled');
+    slots[i].style.borderColor='#e2e8f0';
+  }
+  
+  var poolItems=document.querySelectorAll('.pool-item');
+  for(var i=0;i<poolItems.length;i++){
+    poolItems[i].classList.remove('used');
+  }
+  
+  updatePreview();
+  document.getElementById('feedback').textContent='';
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+
+initLevel();
+</script>
+</body>
+</html>

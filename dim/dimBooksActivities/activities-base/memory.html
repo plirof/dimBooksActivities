@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);min-height:100vh;padding:20px}
+.container{background:#fff;border-radius:20px;padding:30px;max-width:800px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{color:#333;text-align:center;margin-bottom:5px;font-size:1.5em}
+h2{color:#666;text-align:center;font-size:.95em;margin-bottom:15px;font-weight:400}
+.stats{display:flex;justify-content:center;gap:30px;margin-bottom:20px;font-size:1em;color:#555}
+.stats span{font-weight:700;color:#fa709a}
+.grid{display:grid;gap:10px;justify-content:center;margin:0 auto;padding:10px}
+.card{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;cursor:pointer;font-size:.9em;text-align:center;padding:8px;user-select:none;transition:transform .3s;perspective:600px}
+.card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:6px}
+.card-front{background:linear-gradient(135deg,#fa709a,#fee140);color:#fff;font-size:1.8em}
+.card-back{background:#f0f0f0;transform:rotateY(180deg);color:#333;border:2px solid #e0e0e0;font-size:.85em;line-height:1.3}
+.card.matched .card-back{background:#e8f5e9;border-color:#4CAF50}
+.card.matched{pointer-events:none}
+.card{pointer-events:auto}
+@supports not (aspect-ratio:1){
+.stats{gap:0}
+.stats span{margin:0 10px}
+.card{position:relative;display:block;padding:0}
+.card::after{content:'';display:block;padding-top:100%}
+.card-inner{position:absolute;top:0;left:0;width:100%;height:100%}
+}
+.score-area{display:none;text-align:center;padding:20px;margin-top:15px}
+.score-area h2{font-size:1.4em;color:#333;margin-bottom:8px}
+.score-area .stats-final{font-size:1.1em;color:#666;margin-bottom:15px}
+.restart-btn{padding:12px 40px;background:linear-gradient(135deg,#fa709a,#fee140);color:#fff;border:none;border-radius:12px;font-size:1.1em;cursor:pointer}
+.restart-btn:hover{transform:scale(1.05)}
+.error{color:#f44336;text-align:center;padding:40px;font-size:1.2em}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app"><div class="error">Φόρτωση...</div></div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+const app=document.getElementById('app');
+
+if(!dataFile){app.innerHTML='<div class="error">Δεν βρέθηκε το αρχείο δεδομένων.</div>';throw new Error('No data')}
+
+fetch(dataFile).then(r=>{if(!r.ok)throw new Error('Δεν βρέθηκε: '+dataFile);return r.json()}).then(data=>{
+const pairs=data.pairs;
+const cols=data.columns||4;
+let cards=[];
+pairs.forEach((p,i)=>{
+cards.push({id:'a'+i,pairId:i,text:p.cardA,type:'A'});
+cards.push({id:'b'+i,pairId:i,text:p.cardB,type:'B'})
+});
+cards=cards.sort(()=>Math.random()-.5);
+let flipped=[],matched=[],moves=0,checking=false;
+const totalPairs=pairs.length;
+
+function render(){
+const gridCols=cols;
+app.innerHTML=`
+<h1>${esc(data.title)}</h1>
+<h2>${esc(data.subtitle||'Βρες τα ζευγάρια!')}</h2>
+<div class="stats">Κινήσεις: <span id="moves">0</span> | Ζευγάρια: <span id="matched">0</span>/${totalPairs}</div>
+<div class="grid" style="grid-template-columns:repeat(${gridCols},minmax(80px,120px))" id="grid">
+${cards.map(c=>{
+const isMatched=matched.includes(c.pairId);
+const isFlipped=flipped.includes(c.id);
+return`<div class="card ${isFlipped?'flipped':''} ${isMatched?'matched':''}" data-id="${c.id}" data-pair="${c.pairId}">
+<div class="card-inner">
+<div class="card-front">?</div>
+<div class="card-back">${esc(c.text)}</div>
+</div>
+</div>`
+}).join('')}
+</div>`;
+document.querySelectorAll('.card').forEach(card=>{
+card.addEventListener('click',()=>handleClick(card))
+})
+}
+
+function handleClick(card){
+if(checking)return;
+const id=card.dataset.id;
+const pairId=parseInt(card.dataset.pair);
+if(matched.includes(pairId))return;
+if(flipped.includes(id))return;
+if(flipped.length>=2)return;
+flipped.push(id);
+card.classList.add('flipped');
+if(flipped.length===2){
+moves++;
+document.getElementById('moves').textContent=moves;
+const first=cards.find(c=>c.id===flipped[0]);
+const second=cards.find(c=>c.id===flipped[1]);
+if(first.pairId===second.pairId){
+matched.push(first.pairId);
+document.getElementById('matched').textContent=matched.length;
+flipped=[];
+document.querySelectorAll(`.card[data-pair="${first.pairId}"]`).forEach(c=>c.classList.add('matched'));
+if(matched.length===totalPairs)showWin()
+}else{
+checking=true;
+setTimeout(()=>{
+document.querySelectorAll('.card.flipped').forEach(c=>{if(!c.classList.contains('matched'))c.classList.remove('flipped')});
+flipped=[];
+checking=false
+},1000)
+}
+}
+}
+
+function showWin(){
+let msg=moves<=totalPairs+2?'Εξαιρετική μνήμη!':moves<=totalPairs*2?'Μπράβο! Πολύ καλά!':'Καλά! Δοκίμασε με λιγότερες κινήσεις!';
+const scoreArea=document.createElement('div');
+scoreArea.className='score-area';
+scoreArea.style.display='block';
+scoreArea.innerHTML=`<h2>🎉 Μπράβο!</h2><div class="stats-final">Βρήκες όλα τα ζευγάρια σε ${moves} κινήσεις!<br>${msg}</div><button class="restart-btn" onclick="location.reload()">Παίξε ξανά!</button>`;
+app.appendChild(scoreArea)
+}
+
+render()
+}).catch(err=>{app.innerHTML='<div class="error">Σφάλμα: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

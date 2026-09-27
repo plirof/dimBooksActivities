@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Συνθήκες και αποφάσεις - Πληροφορική Γ' Δημοτικού</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        .slideshow-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .slide {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4a90e2;
+        }
+        .slide-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .slide-subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .example-box {
+            background-color: #e8f4ff;
+            border-left: 4px solid #4a90e2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        .weather-decision {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .weather-item {
+            text-align: center;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px;
+            width: 200px;
+        }
+        .weather-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .decision-flow {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .flow-box {
+            padding: 15px;
+            background-color: #e8f4ff;
+            border: 2px solid #4a90e2;
+            border-radius: 8px;
+            margin: 0 10px;
+            text-align: center;
+        }
+        .flow-arrow {
+            font-size: 2em;
+            color: #4a90e2;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .nav-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .nav-btn:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Slide 1: Introduction -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">1. Συνθήκες και αποφάσεις</h1>
+                <p class="slide-subtitle">Μάθημα 1ο - Πληροφορική Γ' Δημοτικού</p>
+            </div>
+            <div class="content">
+                <p>Πολλές φορές, όταν πρέπει να πάρουμε μία απόφαση, χρειάζεται πρώτα να κάνουμε έναν έλεγχο για το αν κάτι είναι αλήθεια ή όχι.</p>
+                <div class="example-box">
+                    <p class="example-title">Παράδειγμα:</p>
+                    <p>«Βρέχει;» - Αυτή είναι μία συνθήκη. Κάποιες φορές μπορεί να βρέχει και κάποιες άλλες όχι.</p>
+                </div>
+                <p>Η απόφαση που παίρνουμε εξαρτάται από το αν η συνθήκη είναι αληθής ή όχι.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Weather Decisions -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Συνθήκες και αποφάσεις</h1>
+                <p class="slide-subtitle">Παραδείγματα με τον καιρό</p>
+            </div>
+            <div class="content">
+                <div class="weather-decision">
+                    <div class="weather-item">
+                        <div class="weather-icon">🌧️</div>
+                        <p><strong>Αν βρέχει,</strong></p>
+                        <p>τότε πάρε ομπρέλα ή αδιάβροχο.</p>
+                    </div>
+                    <div class="weather-item">
+                        <div class="weather-icon">❄️</div>
+                        <p><strong>Αν κάνει κρύο,</strong></p>
+                        <p>τότε φόρεσε κασκόλ και σκούφο.</p>
+                    </div>
+                    <div class="weather-item">
+                        <div class="weather-icon">💨</div>
+                        <p><strong>Αν έχει αέρα,</strong></p>
+                        <p>τότε φόρεσε αντιανεμικό.</p>
+                    </div>
+                    <div class="weather-item">
+                        <div class="weather-icon">☀️</div>
+                        <p><strong>Αν έχει ήλιο,</strong></p>
+                        <p>τότε βάλε γυαλιά ηλίου.</p>
+                    </div>
+                </div>
+                <p class="example-title">Μπορούμε να κάνουμε και συνδυασμούς:</p>
+                <p><strong>Αν βρέχει και κάνει κρύο,</strong> τότε πάρε ομπρέλα, κασκόλ και σκούφο.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Decision Structure -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Η δομή της απόφασης</h1>
+                <p class="slide-subtitle">"Αν... τότε" - Η λογική της επιλογής</p>
+            </div>
+            <div class="content">
+                <div class="decision-flow">
+                    <div class="flow-box">
+                        <p><strong>Συνθήκη</strong></p>
+                        <p>Αν βρέξει...</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <p><strong>Απόφαση</strong></p>
+                        <p>...τότε πάρε ομπρέλα</p>
+                    </div>
+                </div>
+                <p class="example-title">Παραδείγματα αποφάσεων:</p>
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li>• <strong>Αν</strong> συναντήσεις κάποιον φίλο σου την Κυριακή, <strong>τότε</strong> θα τον/την καλέσεις στο σπίτι.</li>
+                    <li>• <strong>Αν</strong> τελειώσεις νωρίς τα μαθήματά σου, <strong>τότε</strong> θα παίξεις το αγαπημένο σου παιχνίδι.</li>
+                    <li>• <strong>Αν</strong> δείξει την αγαπημένη σου σειρά στην τηλεόραση, <strong>τότε</strong> θα παρακολουθήσεις άλλο ένα επεισόδιο.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: Exercises -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Ασκήσεις και δραστηριότητες</h1>
+                <p class="slide-subtitle">Εφαρμογή των γνώσεων</p>
+            </div>
+            <div class="content">
+                <div class="example-box">
+                    <p class="example-title">1. Γράψε κάτι που χρειάζεται να αποφασίσεις μέσα στην επόμενη εβδομάδα:</p>
+                    <p><strong>Αν</strong> __________________________________________________________________________________________________________________________</p>
+                    <p><strong>τότε</strong> __________________________________________________________________________________________________________________________</p>
+                </div>
+                <div class="example-box">
+                    <p class="example-title">2. Παίξε το παιχνίδι "Βρες ποιος είναι":</p>
+                    <p>Σκέψου κάποιο ή κάποια χαρακτηριστικά ενός παιδιού της τάξης σου που το κάνουν μοναδικό.</p>
+                    <p>Πες την περιγραφή του παιδιού που έχεις σκεφτεί, χωρίς να αποκαλύψεις το όνομά του.</p>
+                    <p>Τα υπόλοιπα μέλη της ομάδας σου πρέπει να μαντέψουν ποιο παιδί περιέγραψες.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Τι έμαθα σε αυτό το μάθημα</h1>
+                <p class="slide-subtitle">Βασικά σημεία</p>
+            </div>
+            <div class="content">
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li>• <strong>Να βρίσκω τις συνθήκες</strong> μέσα σε κανόνες ή οδηγίες.</li>
+                    <li>• <strong>Να διατυπώνω αποφάσεις</strong> με τη δομή "Αν... τότε".</li>
+                    <li>• <strong>Να χρησιμοποιώ συνθήκες</strong> για να παίρνω τις σωστές αποφάσεις.</li>
+                    <li>• <strong>Να καταλαβαίνω</strong> ότι οι συνθήκες μπορεί να είναι αληθής ή ψευδείς.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="font-size: 1.5em; color: #2980b9;">"Οι συνθήκες των αποφάσεων είναι λογικές εκφράσεις - μπορεί να είναι ΑΛΗΘΕΙΑ ή ΨΕΜΑΤΑ"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="changeSlide(-1)">Προηγούμενο</button>
+            <button class="nav-btn" onclick="changeSlide(1)">Επόμενο</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Πληροφορική Γ' Δημοτικού - Αλγοριθμική - Προγραμματισμός - Ρομποτική</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+        }
+        
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            }
+            showSlide(currentSlide);
+        }
+        
+        // Auto-advance slides every 30 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 30000);
+    </script>
+</body>
+</html>

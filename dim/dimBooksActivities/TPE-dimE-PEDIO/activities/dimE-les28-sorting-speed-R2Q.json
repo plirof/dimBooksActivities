@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ψηφιακά Έγγραφα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "citizen", "name": "Ψηφιακή Υπογραφή", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "institution", "name": "Ηλεκτρονικό Χάραγμα", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Χρησιμοποιείται από ιδιώτες", "category": "citizen"},
+    {"text": "Χρησιμοποιείται από φορείς", "category": "institution"},
+    {"text": "Αποδεικνύει βούληση υπογράφοντα", "category": "citizen"},
+    {"text": "Αποδεικνύει προέλευση εγγράφου", "category": "institution"},
+    {"text": "Απαιτεί ψηφιακό πιστοποιητικό", "category": "citizen"},
+    {"text": "Ισοδύναμο με σφραγίδα", "category": "institution"},
+    {"text": "Ισχύς ίδια με χειρόγραφη", "category": "citizen"},
+    {"text": "Επαγγελματική χρήση", "category": "institution"},
+    {"text": "Ο πολίτης την υποβάλλει", "category": "citizen"},
+    {"text": "Ο φορέας την εκδίδει", "category": "institution"}
+  ],
+  "duration": 30
+}

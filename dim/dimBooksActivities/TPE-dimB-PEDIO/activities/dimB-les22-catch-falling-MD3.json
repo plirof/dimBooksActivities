@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Τι γράφω στον υπολογιστή;",
+  "subtitle": "Πιάσε μόνο κείμενα",
+  "instructions": "Πιάσε πράγματα που γράφω ως κείμενο. Απόφυγε τις δραστηριότητες.",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 8,
+  "items": [
+    { "text": "Πρόσκληση", "correct": true, "color": "#4CAF50" },
+    { "text": "Τρέξιμο", "correct": false, "color": "#f44336" },
+    { "text": "Λίστα αγορών", "correct": true, "color": "#4CAF50" },
+    { "text": "Κολύμπι", "correct": false, "color": "#f44336" },
+    { "text": "Στίχοι τραγουδιού", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποδήλατο", "correct": false, "color": "#f44336" },
+    { "text": "Για το σχολείο", "correct": true, "color": "#4CAF50" },
+    { "text": "Μπάσκετ", "correct": false, "color": "#f44336" },
+    { "text": "Λόγια για μένα", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποδόσφαιρο", "correct": false, "color": "#f44336" }
+  ]
+}

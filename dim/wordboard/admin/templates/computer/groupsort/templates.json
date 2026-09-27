@@ -1,0 +1,130 @@
+{
+  "templates": [
+    {
+      "id": "computer_groupsort_parts_001",
+      "name": "Μέρη του υπολογιστή",
+      "description": "Χώρισε τα μέρη του υπολογιστή",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "parts", "greek", "elementary"],
+      "groups": ["Βασικά μέρη", "Περιφερειακά"],
+      "items": [
+        {"text": "Οθόνη", "group": "Βασικά μέρη"},
+        {"text": "Πληκτρολόγιο", "group": "Βασικά μέρη"},
+        {"text": "Ποντίκι", "group": "Βασικά μέρη"},
+        {"text": "Κουτί (System Unit)", "group": "Βασικά μέρη"},
+        {"text": "Εκτυπωτής", "group": "Περιφερειακά"},
+        {"text": "Scanner", "group": "Περιφερειακά"},
+        {"text": "Ηχεία", "group": "Περιφερειακά"},
+        {"text": "Μικρόφωνο", "group": "Περιφερειακά"},
+        {"text": "Webcam", "group": "Περιφερειακά"},
+        {"text": "Gamepad", "group": "Περιφερειακά"}
+      ]
+    },
+    {
+      "id": "computer_groupsort_programs_001",
+      "name": "Είδη προγραμμάτων",
+      "description": "Χώρισε τα προγράμματα",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "programs", "greek", "elementary"],
+      "groups": ["Για γράψιμο", "Για ψυχαγωγία", "Για μάθηση"],
+      "items": [
+        {"text": "Word", "group": "Για γράψιμο"},
+        {"text": "Notepad", "group": "Για γράψιμο"},
+        {"text": "Paint", "group": "Για ψυχαγωγία"},
+        {"text": "Solitaire", "group": "Για ψυχαγωγία"},
+        {"text": "Minecraft", "group": "Για ψυχαγωγία"},
+        {"text": "Calculator", "group": "Για μάθηση"},
+        {"text": "Google Earth", "group": "Για μάθηση"},
+        {"text": "Khan Academy", "group": "Για μάθηση"},
+        {"text": "Excel", "group": "Για γράψιμο"},
+        {"text": "Educational Games", "group": "Για μάθηση"}
+      ]
+    },
+    {
+      "id": "computer_groupsort_internet_001",
+      "name": "Ίντερνετ δραστηριότητες",
+      "description": "Χώρισε τις δραστηριότητες",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "internet", "greek", "elementary"],
+      "groups": ["Ασφαλή", "Επικίνδυνα"],
+      "items": [
+        {"text": "Παίζω εκπαιδευτικά παιχνίδια", "group": "Ασφαλή"},
+        {"text": "Βλέπω βίντεο στο YouTube", "group": "Ασφαλή"},
+        {"text": "Κάνω αναζήτηση για σχολείο", "group": "Ασφαλή"},
+        {"text": "Στέλνω email σε φίλο", "group": "Ασφαλή"},
+        {"text": "Μιλάω σε άγνωστο", "group": "Επικίνδυνα"},
+        {"text": "Δίνω τη διεύθυνσή μου", "group": "Επικίνδυνα"},
+        {"text": "Ανοίγω άγνωστα link", "group": "Επικίνδυνα"},
+        {"text": "Κατεβάζω παράνομα", "group": "Επικίνδυνα"},
+        {"text": "Βλέπω εκπαιδευτικά βίντεο", "group": "Ασφαλή"},
+        {"text": "Μοιράζομαι κωδικούς", "group": "Επικίνδυνα"}
+      ]
+    },
+    {
+      "id": "computer_groupsort_devices_001",
+      "name": "Συσκευές",
+      "description": "Χώρισε τις συσκευές",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "devices", "greek", "elementary"],
+      "groups": ["Υπολογιστές", "Κινητά", "Άλλες συσκευές"],
+      "items": [
+        {"text": "Desktop PC", "group": "Υπολογιστές"},
+        {"text": "Laptop", "group": "Υπολογιστές"},
+        {"text": "Tablet", "group": "Υπολογιστές"},
+        {"text": "Smartphone", "group": "Κινητά"},
+        {"text": "iPhone", "group": "Κινητά"},
+        {"text": "Android", "group": "Κινητά"},
+        {"text": "Smart TV", "group": "Άλλες συσκευές"},
+        {"text": "USB Stick", "group": "Άλλες συσκευές"},
+        {"text": "Router", "group": "Άλλες συσκευές"},
+        {"text": "Smartwatch", "group": "Άλλες συσκευές"}
+      ]
+    },
+    {
+      "id": "computer_groupsort_safety_001",
+      "name": "Κανόνες ασφαλείας",
+      "description": "Χώρισε τους κανόνες",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "safety", "greek", "elementary"],
+      "groups": ["Πρέπει να κάνω", "Δεν πρέπει να κάνω"],
+      "items": [
+        {"text": "Πλένω χέρια πριν", "group": "Πρέπει να κάνω"},
+        {"text": "Κάνω διαλείμματα", "group": "Πρέπει να κάνω"},
+        {"text": "Λέω στους γονείς μου", "group": "Πρέπει να κάνω"},
+        {"text": "Κάθομαι σωστά", "group": "Πρέπει να κάνω"},
+        {"text": "Δίνω κωδικούς σε φίλους", "group": "Δεν πρέπει να κάνω"},
+        {"text": "Ανοίγω άγνωστα emails", "group": "Δεν πρέπει να κάνω"},
+        {"text": "Μιλάω σε ξένους", "group": "Δεν πρέπει να κάνω"},
+        {"text": "Τρώω δίπλα στον υπολογιστή", "group": "Δεν πρέπει να κάνω"},
+        {"text": "Χρησιμοποιώ δικούς μου κωδικούς", "group": "Πρέπει να κάνω"},
+        {"text": "Κατεβάζω άγνωστα αρχεία", "group": "Δεν πρέπει να κάνω"}
+      ]
+    },
+    {
+      "id": "computer_groupsort_keyboard_001",
+      "name": "Πλήκτρα",
+      "description": "Χώρισε τα πλήκτρα",
+      "category": "computer_groupsort",
+      "difficulty": "easy",
+      "tags": ["computer", "keyboard", "greek", "elementary"],
+      "groups": ["Για γράψιμο", "Για ενέργειες", "Για κίνηση"],
+      "items": [
+        {"text": "A-Z", "group": "Για γράψιμο"},
+        {"text": "0-9", "group": "Για γράψιμο"},
+        {"text": "Enter", "group": "Για ενέργειες"},
+        {"text": "Escape", "group": "Για ενέργειες"},
+        {"text": "Space", "group": "Για γράψιμο"},
+        {"text": "Delete", "group": "Για ενέργειες"},
+        {"text": "Backspace", "group": "Για ενέργειες"},
+        {"text": "Tab", "group": "Για ενέργειες"},
+        {"text": "Arrow Keys", "group": "Για κίνηση"},
+        {"text": "Shift", "group": "Για ενέργειες"}
+      ]
+    }
+  ]
+}

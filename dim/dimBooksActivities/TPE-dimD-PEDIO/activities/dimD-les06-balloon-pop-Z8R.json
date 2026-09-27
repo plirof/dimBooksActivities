@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ενδυμασίες",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις για τις ενδυμασίες",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "3 καρτέλες ανά χαρακτήρα", "correct": true, "color": "#4caf50" },
+    { "text": "1 καρτέλα ανά χαρακτήρα", "correct": false, "color": "#f44336" },
+    { "text": "Επόμενη ενδυμασία = εναλλαγή", "correct": true, "color": "#2196f3" },
+    { "text": "Επόμενη ενδυμασία = διαγραφή", "correct": false, "color": "#ff9800" },
+    { "text": "1÷10 = 0.1 δευτερόλεπτο", "correct": true, "color": "#8bc34a" },
+    { "text": "1÷10 = 10 δευτερόλεπτα", "correct": false, "color": "#9c27b0" },
+    { "text": "Μεγαλύτερος διαιρέτης = πιο γρήγορα", "correct": true, "color": "#00bcd4" },
+    { "text": "Μεγαλύτερος διαιρέτης = πιο αργά", "correct": false, "color": "#ff5722" },
+    { "text": "Flip book = αρχή κινηματογράφου", "correct": true, "color": "#607d8b" },
+    { "text": "Περίμενε δεν χρησιμοποιεί χρόνο", "correct": false, "color": "#e91e63" }
+  ]
+}

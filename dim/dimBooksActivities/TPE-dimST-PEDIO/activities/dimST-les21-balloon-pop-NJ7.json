@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εναλλακτική Αναζήτηση",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις σχετικές με την αναζήτηση",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με εναλλακτικούς τρόπους αναζήτησης",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Αντίστροφη αναζήτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Φωνητική αναζήτηση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "QR Code",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μικρόφωνο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μεταφόρτωση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Σάρωση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Υπολογιστικό φύλλο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

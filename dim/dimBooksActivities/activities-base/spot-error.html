@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Βρες τα Λάθη!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:700px;width:100%;padding:40px;text-align:center}
+h1{color:#f5576c;font-size:2em;margin-bottom:10px}
+h2{color:#555;font-size:1.2em;margin-bottom:30px;font-weight:400}
+.words-area{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:25px 0;padding:20px;background:#fef5f8;border-radius:15px;min-height:60px}
+.word-btn{padding:12px 18px;font-size:1.2em;border:3px solid #ddd;border-radius:12px;background:#fff;cursor:pointer;transition:all 0.3s;font-family:inherit}
+.word-btn:hover{border-color:#f5576c;transform:translateY(-2px)}
+.word-btn.error-found{background:#f8d7da;border-color:#f5576c;color:#721c24;text-decoration:line-through;cursor:default}
+.word-btn.correct-word{background:#d4edda;border-color:#28a745;color:#155724;cursor:default}
+.word-btn.disabled{pointer-events:none;opacity:0.7}
+.feedback-box{margin:15px 0;padding:15px;border-radius:12px;font-size:1.1em;min-height:20px}
+.feedback-box.correct-fb{background:#d4edda;color:#155724}
+.feedback-box.error-fb{background:#f8d7da;color:#721c24}
+.btn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border:none;padding:15px 40px;font-size:1.1em;border-radius:12px;cursor:pointer;margin:10px 5px;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(245,87,108,0.4)}
+.btn:active{transform:translateY(0)}
+.score{font-size:1.4em;color:#f5576c;margin:15px 0}
+.progress{font-size:0.9em;color:#888;margin-bottom:10px}
+.start-btn{font-size:1.3em;padding:18px 50px}
+.hidden{display:none}
+.round-info{font-size:1em;color:#888;margin-bottom:5px}
+.errors-left{font-size:0.95em;color:#f5576c;font-weight:600;margin:10px 0}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container" id="app">
+<div style="font-size:3em;margin-bottom:20px">🔍</div>
+<h1 id="title">Βρες τα Λάθη!</h1>
+<h2 id="subtitle">Κάνε κλικ στις λάθος λέξεις</h2>
+<div id="startScreen">
+<button class="btn start-btn" onclick="startGame()">🎮 Ξεκίνα!</button>
+</div>
+<div id="gameScreen" class="hidden">
+<div class="progress" id="progress"></div>
+<div class="round-info" id="roundInfo"></div>
+<div class="errors-left" id="errorsLeft"></div>
+<div class="words-area" id="wordsArea"></div>
+<div class="feedback-box hidden" id="feedback"></div>
+<div class="score">Λάθη που βρέθηκαν: <span id="score">0</span> / <span id="totalErrors">0</span></div>
+</div>
+<div id="endScreen" class="hidden">
+<div style="font-size:3em;margin-bottom:20px">🏆</div>
+<h1>Μπράβο!</h1>
+<div class="score" id="finalScore"></div>
+<p id="endMessage" style="color:#555;font-size:1.1em;margin:20px 0"></p>
+<button class="btn" onclick="startGame()">🔄 Ξαναπαίξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+let data=null,rounds=[],currentRound=0,score=0,totalErrors=0,foundInRound=0,errorsInRound=0;
+const params=new URLSearchParams(window.location.search);
+const dataFile=params.get('data');
+if(dataFile){
+fetch(dataFile).then(r=>r.json()).then(d=>{data=d;document.getElementById('title').textContent=esc(data.title||'Βρες τα Λάθη!');document.getElementById('subtitle').textContent=esc(data.subtitle||'Κάνε κλικ στις λάθος λέξεις');}).catch(e=>{document.getElementById('subtitle').textContent='Σφάλμα φόρτωσης δεδομένων';});
+}
+function startGame(){
+if(!data)return;
+rounds=[...data.rounds];
+currentRound=0;score=0;totalErrors=0;
+rounds.forEach(r=>{r.words.forEach(w=>{if(w.error)totalErrors++})});
+document.getElementById('totalErrors').textContent=totalErrors;
+document.getElementById('score').textContent='0';
+document.getElementById('startScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+showRound();
+}
+function showRound(){
+if(currentRound>=rounds.length){endGame();return;}
+const round=rounds[currentRound];
+foundInRound=0;errorsInRound=0;
+round.words.forEach(w=>{if(w.error)errorsInRound++});
+document.getElementById('progress').textContent=`Γύρος ${currentRound+1} από ${rounds.length}`;
+document.getElementById('roundInfo').textContent=`Βρες ${errorsInRound} λάθη σε αυτή την πρόταση:`;
+updateErrorsLeft();
+const area=document.getElementById('wordsArea');
+area.innerHTML='';
+round.words.forEach((w,i)=>{
+const btn=document.createElement('button');
+btn.className='word-btn';
+btn.textContent=w.text;
+btn.dataset.index=i;
+btn.onclick=function(){handleWordClick(i,this)};
+area.appendChild(btn);
+});
+document.getElementById('feedback').classList.add('hidden');
+}
+function updateErrorsLeft(){
+document.getElementById('errorsLeft').textContent=`Απομένουν ${errorsInRound-foundInRound} λάθη`;
+}
+function handleWordClick(index,btn){
+const word=rounds[currentRound].words[index];
+if(btn.classList.contains('error-found')||btn.classList.contains('correct-word'))return;
+if(word.error){
+btn.classList.add('error-found');
+foundInRound++;score++;
+document.getElementById('score').textContent=score;
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden','correct-fb');
+fb.className='feedback-box error-fb';
+fb.textContent=`✗ ${word.feedback} Σωστό: ${esc(word.correct)}`;
+updateErrorsLeft();
+if(foundInRound>=errorsInRound){
+const allBtns=document.querySelectorAll('.word-btn');
+allBtns.forEach(b=>{if(!b.classList.contains('error-found'))b.classList.add('correct-word')});
+setTimeout(()=>{currentRound++;showRound()},2000);
+}
+}else{
+btn.classList.add('correct-word');
+const fb=document.getElementById('feedback');
+fb.classList.remove('hidden','error-fb');
+fb.className='feedback-box correct-fb';
+fb.textContent='✓ Αυτή η λέξη είναι σωστή!';
+}
+}
+function endGame(){
+document.getElementById('gameScreen').classList.add('hidden');
+document.getElementById('endScreen').classList.remove('hidden');
+document.getElementById('finalScore').textContent=`Βρήκες ${score} από ${totalErrors} λάθη`;
+const pct=score/totalErrors;
+let msg='';
+if(pct===1)msg='Τέλειο! Έχεις οξύ μάτι! 🌟';
+else if(pct>=0.7)msg='Πολύ καλά! Σχεδόν τα βρήκες όλα! 😊';
+else msg='Προσπάθησε ξανά! 💪';
+document.getElementById('endMessage').textContent=msg;
+}
+</script>
+</body>
+</html>

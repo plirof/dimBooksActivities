@@ -1,0 +1,48 @@
+{
+  "title": "Καλή ή Κακή αναζήτηση",
+  "subtitle": "Διάκρινε τις καλές από τις κακές αναζητήσεις",
+  "categories": [
+    {
+      "id": "good",
+      "name": "ΚΑΛΗ ΑΝΑΖΗΤΗΣΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "bad",
+      "name": "ΚΑΚΗ ΑΝΑΖΗΤΗΣΗ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "«Ακρόπολη Αθήνα ιστορία»",
+      "category": "good"
+    },
+    {
+      "id": "item2",
+      "text": "«πράγμα»",
+      "category": "bad"
+    },
+    {
+      "id": "item3",
+      "text": "«ελληνικοί μύθοι θεοί»",
+      "category": "good"
+    },
+    {
+      "id": "item4",
+      "text": "「」",
+      "category": "bad"
+    },
+    {
+      "id": "item5",
+      "text": "«Ηράκλειο 12 άθλοι»",
+      "category": "good"
+    },
+    {
+      "id": "item6",
+      "text": "«asdf»",
+      "category": "bad"
+    }
+  ]
+}

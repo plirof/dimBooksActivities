@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Ρυθμίσεις e-me",
+  "subtitle": "Μόνο ρυθμίσεις περιβάλλοντος!",
+  "instruction": "Σπάσε μόνο ΤΙ ΜΠΟΡΩ ΝΑ ΑΛΛΑΞΩ ΣΤΙΣ ΡΥΘΜΙΣΕΙΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Θέμα εμφάνισης", "correct": true, "color": "#FF6B6B" },
+    { "text": "Κουτάλι", "correct": false, "color": "#4ECDC4" },
+    { "text": "Εικόνα φόντου", "correct": true, "color": "#45B7D1" },
+    { "text": "Γλάστρα", "correct": false, "color": "#96CEB4" },
+    { "text": "Γραμματοσειρά", "correct": true, "color": "#FFEAA7" },
+    { "text": "Σφυρί", "correct": false, "color": "#DDA0DD" },
+    { "text": "Θέση εφαρμογών", "correct": true, "color": "#98D8C8" },
+    { "text": "Μπογιά", "correct": false, "color": "#F7DC6F" },
+    { "text": "Εικόνα προφίλ", "correct": true, "color": "#BB8FCE" },
+    { "text": "Κάβουρας", "correct": false, "color": "#85C1E9" }
+  ]
+}

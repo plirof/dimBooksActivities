@@ -1,0 +1,9 @@
+{
+  "title": "Μάντεψε τον Αριθμό (1-10)",
+  "subtitle": "Ο υπολογιστής διαλέγει έναν αριθμό. Μάντεψέ τον!",
+  "range": 10,
+  "rounds": 5,
+  "showTable": true,
+  "showAverage": true,
+  "showStars": false
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 27 - Αποστολή μηνύματος e-me</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);min-height:100vh;padding:20px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:12px}
+.header h1{font-size:1.3em}
+.header .logo{font-size:1.6em}
+.app{display:flex;height:460px}
+.contacts{width:200px;background:#f0f2f5;border-right:1px solid #ddd;overflow-y:auto;flex-shrink:0}
+.contacts h3{padding:14px;color:#555;font-size:.85em;text-transform:uppercase;letter-spacing:1px}
+.contact{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .2s;border-left:4px solid transparent}
+.contact:hover{background:#e2e6ea}
+.contact.active{background:#dde4ff;border-left-color:#667eea}
+.contact .pic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3em;flex-shrink:0}
+.contact .pic.teacher{background:#dbeafe}
+.contact .pic.boy{background:#d1fae5}
+.contact .pic.girl{background:#fce7f3}
+.contact .info .cname{font-weight:700;font-size:.95em;color:#333}
+.contact .info .last{font-size:.8em;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.chat-area{flex:1;display:flex;flex-direction:column}
+.chat-header{padding:14px 18px;background:#fafbff;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px}
+.chat-header .ch-name{font-weight:700;color:#4a3f9f}
+.chat-header .ch-emoji{font-size:1.3em}
+.messages{flex:1;overflow-y:auto;padding:14px;background:#fafbff;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:75%;padding:10px 14px;border-radius:16px;font-size:.95em;line-height:1.4;word-wrap:break-word}
+.msg.them{background:#e8eaff;align-self:flex-start;border-bottom-left-radius:4px}
+.msg.me{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg .sender{font-size:.75em;opacity:.7;margin-bottom:3px}
+.msg .attachment{background:rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;margin-top:6px;font-size:.9em;display:inline-flex;align-items:center;gap:5px}
+.msg.them .attachment{background:rgba(0,0,0,.06)}
+.input-area{padding:12px;background:#fff;border-top:1px solid #eee;display:flex;gap:8px;align-items:flex-end}
+.input-area textarea{flex:1;border:2px solid #ddd;border-radius:12px;padding:10px;font-size:.95em;font-family:inherit;resize:none;height:44px;max-height:80px}
+.input-area textarea:focus{outline:none;border-color:#667eea}
+.btn-file{background:#e0e7ff;color:#4a3f9f;border:none;border-radius:10px;padding:10px 14px;font-size:1.1em;cursor:pointer;transition:background .2s;flex-shrink:0}
+.btn-file:hover{background:#c7d2fe}
+.btn-send{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:1.1em;cursor:pointer;transition:transform .2s;flex-shrink:0}
+.btn-send:hover{transform:scale(1.05)}
+.attached-bar{display:none;padding:8px 12px;background:#ede9fe;font-size:.9em;color:#4a3f9f;border-top:1px solid #ddd;align-items:center;gap:8px}
+.attached-bar.show{display:flex}
+.attached-bar .remove{cursor:pointer;margin-left:auto;font-weight:700;color:#e53e3e}
+.modal-overlay{display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.45);z-index:100;justify-content:center;align-items:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:18px;padding:24px;max-width:380px;width:90%;box-shadow:0 15px 50px rgba(0,0,0,.3)}
+.modal h3{color:#4a3f9f;margin-bottom:14px;font-size:1.1em}
+.file-item{padding:12px;border:2px solid #e5e7eb;border-radius:12px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .2s}
+.file-item:hover{border-color:#667eea;background:#f0f0ff}
+.file-item .ficon{font-size:1.5em}
+.file-item .fname{font-size:.95em;color:#333}
+.modal .close-modal{display:block;margin-top:12px;width:100%;padding:10px;background:#eee;border:none;border-radius:10px;cursor:pointer;font-size:1em;color:#555}
+.progress-box{text-align:center;padding:16px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-radius:14px;margin:0 24px 16px}
+.progress-box .ptext{font-size:1em;color:#065f46;font-weight:700}
+.progress-box .pbar{height:10px;background:#e5e7eb;border-radius:5px;margin-top:8px;overflow:hidden}
+.progress-box .pbar .pfill{height:100%;background:linear-gradient(90deg,#10b981,#059669);border-radius:5px;transition:width .5s}
+.congrats{display:none;text-align:center;padding:20px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:14px;margin:0 24px 16px}
+.congrats h3{color:#92400e;font-size:1.2em;margin-bottom:6px}
+.congrats p{color:#78350f;font-size:.95em}
+@media(max-width:600px){.app{flex-direction:column;height:auto;min-height:460px}.contacts{width:100%;border-right:none;border-bottom:1px solid #ddd;max-height:120px;display:flex;overflow-x:auto}.contacts h3{display:none}.contact{flex-direction:column;text-align:center;min-width:90px;border-left:none;border-bottom:3px solid transparent;padding:10px}.contact.active{border-bottom-color:#667eea}.contact .info .last{display:none}.header h1{font-size:1.1em}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .header > * + * { margin-left: 12px; }
+  .contact > * + * { margin-left: 10px; }
+  .chat-header > * + * { margin-left: 10px; }
+  .messages > * + * { margin-top: 10px; }
+  .msg .attachment > * + * { margin-left: 5px; }
+  .input-area > * + * { margin-left: 8px; }
+  .attached-bar > * + * { margin-left: 8px; }
+  .file-item > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<span class="logo">📧</span>
+<h1>e-me: Αποστολή μηνυμάτων</h1>
+</div>
+
+<div class="progress-box">
+<div class="ptext">📨 Ανταλλαγές μηνυμάτων: <span id="exchangeCount">0</span> / 2</div>
+<div class="pbar"><div class="pfill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div id="congratsBox" class="congrats">
+<h3>🎉 Μπράβο! Τα κατάφερες!</h3>
+<p>Έστειλες 2 μηνύματα και έλαβες απαντήσεις. Μπράβο για την επικοινωνία!</p>
+</div>
+
+<div class="app">
+<div class="contacts">
+<h3>Επαφές</h3>
+<div class="contact active" onclick="selectContact(0)">
+<div class="pic teacher">👩‍🏫</div>
+<div class="info"><div class="cname">κυρία Μαρία</div><div class="last">Γεια σας παιδιά!</div></div>
+</div>
+<div class="contact" onclick="selectContact(1)">
+<div class="pic boy">👦</div>
+<div class="info"><div class="cname">Γιάννης</div><div class="last">Θα παίξουμε;</div></div>
+</div>
+<div class="contact" onclick="selectContact(2)">
+<div class="pic girl">👧</div>
+<div class="info"><div class="cname">Ελένη</div><div class="last">Ευχαριστώ!</div></div>
+</div>
+</div>
+
+<div class="chat-area">
+<div class="chat-header">
+<span class="ch-emoji" id="chEmoji">👩‍🏫</span>
+<span class="ch-name" id="chName">κυρία Μαρία</span>
+</div>
+<div class="messages" id="messagesArea"></div>
+<div class="attached-bar" id="attachedBar">
+<span>📎 <span id="attachedName"></span></span>
+<span class="remove" onclick="removeAttachment()">✕</span>
+</div>
+<div class="input-area">
+<textarea id="msgInput" placeholder="Γράψε μήνυμα..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+<button class="btn-file" onclick="openFileModal()" title="Επισύναψη αρχείου">📎</button>
+<button class="btn-send" onclick="sendMessage()">📤</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="fileModal">
+<div class="modal">
+<h3>📎 Επίλεξε αρχείο για επισύναψη:</h3>
+<div class="file-item" onclick="attachFile('Εργασία.txt')"><span class="ficon">📄</span><span class="fname">Εργασία.txt</span></div>
+<div class="file-item" onclick="attachFile('Ζωγραφιά.png')"><span class="ficon">🖼️</span><span class="fname">Ζωγραφιά.png</span></div>
+<div class="file-item" onclick="attachFile('Φωτογραφία.jpg')"><span class="ficon">📷</span><span class="fname">Φωτογραφία.jpg</span></div>
+<div class="file-item" onclick="attachFile('Μουσική.mp3')"><span class="ficon">🎵</span><span class="fname">Μουσική.mp3</span></div>
+<button class="close-modal" onclick="closeFileModal()">Ακύρωση</button>
+</div>
+</div>
+
+<script>
+var contacts=[
+{name:'κυρία Μαρία',emoji:'👩‍🏫',messages:[
+{from:'them',text:'Γεια σας παιδιά! Πώς είστε;'},
+{from:'them',text:'Μην ξεχάσετε την εργασία για αύριο! 📚'}
+]},
+{name:'Γιάννης',emoji:'👦',messages:[
+{from:'them',text:'Γεια! Θέλεις να παίξουμε στο διάλειμμα;'},
+{from:'them',text:'Πείτε και στην Ελένη! 😄'}
+]},
+{name:'Ελένη',emoji:'👧',messages:[
+{from:'them',text:'Ευχαριστώ για τη βοήθεια στο μάθημα! 🌟'},
+{from:'them',text:'Θα φτιάξω και μια ζωγραφιά! 🎨'}
+]}
+];
+
+var replies=[
+['Πολύ ωραία! 👍','Σε ευχαριστώ! 😊','Εξαιρετικά! 🌟','Θα το δούμε αύριο! 📖','Τέλεια απάντηση! 🎉','Μπράβο σου! 👏'],
+['Εντάξει! 🎮','Ωραία ιδέα! 😄','Ας πάμε! 🏃','Φυσικά! 👍','Έρχομαι! 😎','Τέλεια! 🎉'],
+['Υπέροχα! 🎨','Σε ευχαριστώ! 💖','Θα τα πούμε αύριο! 😊','Ωραία δουλειά! 🌟','Μπράβο σου! 👏','Και εγώ χαίρομαι! 🥰']
+];
+
+var currentContact=0;
+var attachedFile=null;
+var exchanges=0;
+var exchangeDone=false;
+
+var msgArea=document.getElementById('messagesArea');
+var msgInput=document.getElementById('msgInput');
+var attachedBar=document.getElementById('attachedBar');
+var attachedName=document.getElementById('attachedName');
+var chName=document.getElementById('chName');
+var chEmoji=document.getElementById('chEmoji');
+var exchangeCountEl=document.getElementById('exchangeCount');
+var progressFill=document.getElementById('progressFill');
+var congratsBox=document.getElementById('congratsBox');
+
+function renderMessages(){
+msgArea.innerHTML='';
+var msgs=contacts[currentContact].messages;
+for(var i=0;i<msgs.length;i++){
+var m=msgs[i];
+var div=document.createElement('div');
+div.className='msg '+(m.from==='me'?'me':'them');
+var html='';
+if(m.from!=='me'){
+html+='<div class="sender">'+contacts[currentContact].name+'</div>';
+}
+html+=escapeHtml(m.text);
+if(m.attachment){
+html+='<div class="attachment">📎 '+escapeHtml(m.attachment)+'</div>';
+}
+div.innerHTML=html;
+msgArea.appendChild(div);
+}
+msgArea.scrollTop=msgArea.scrollHeight;
+}
+
+function escapeHtml(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+function selectContact(idx){
+currentContact=idx;
+var els=document.querySelectorAll('.contact');
+for(var i=0;i<els.length;i++) els[i].classList.remove('active');
+els[idx].classList.add('active');
+chName.textContent=contacts[idx].name;
+chEmoji.textContent=contacts[idx].emoji;
+removeAttachment();
+renderMessages();
+}
+
+function sendMessage(){
+var text=msgInput.value.trim();
+if(!text&&!attachedFile) return;
+
+var msgObj={from:'me',text:text||''};
+if(attachedFile) msgObj.attachment=attachedFile;
+contacts[currentContact].messages.push(msgObj);
+msgInput.value='';
+removeAttachment();
+renderMessages();
+
+setTimeout(function(){
+var replyList=replies[currentContact];
+var reply=replyList[Math.floor(Math.random()*replyList.length)];
+contacts[currentContact].messages.push({from:'them',text:reply});
+renderMessages();
+exchanges++;
+updateProgress();
+},800);
+}
+
+function updateProgress(){
+exchangeCountEl.textContent=exchanges;
+var pct=Math.min(exchanges/2*100,100);
+progressFill.style.width=pct+'%';
+if(exchanges>=2&&!exchangeDone){
+exchangeDone=true;
+congratsBox.style.display='block';
+}
+}
+
+function openFileModal(){document.getElementById('fileModal').classList.add('show')}
+function closeFileModal(){document.getElementById('fileModal').classList.remove('show')}
+
+function attachFile(name){
+attachedFile=name;
+attachedName.textContent=name;
+attachedBar.classList.add('show');
+closeFileModal();
+}
+
+function removeAttachment(){
+attachedFile=null;
+attachedBar.classList.remove('show');
+}
+
+renderMessages();
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+    "id": "gen-000-groupsort-9gq",
+    "title": "Animal Groups",
+    "type": "groupsort",
+    "created_by": "admin",
+    "created_date": "2026-02-03",
+    "data": {
+        "groups": [
+            {
+                "name": "Farm Animals",
+                "items": [
+                    "Cow",
+                    "Pig",
+                    "Chicken",
+                    "Sheep",
+                    "Horse"
+                ]
+            },
+            {
+                "name": "Wild Animals",
+                "items": [
+                    "Lion",
+                    "Tiger",
+                    "Elephant",
+                    "Zebra",
+                    "Giraffe"
+                ]
+            },
+            {
+                "name": "Pets",
+                "items": [
+                    "Dog",
+                    "Cat",
+                    "Hamster",
+                    "Rabbit",
+                    "Fish"
+                ]
+            }
+        ]
+    }
+}

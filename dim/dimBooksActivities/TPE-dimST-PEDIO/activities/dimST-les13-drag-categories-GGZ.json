@@ -1,0 +1,53 @@
+{
+  "title": "Πρόβλημα → λύση",
+  "subtitle": "Ταίριαξε κάθε πρόβλημα στη σωστή λύση",
+  "categories": [
+    {
+      "id": "cable",
+      "name": "ΚΑΛΩΔΙΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "virus",
+      "name": "ΙΟΙ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "router",
+      "name": "ROUTER",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Δεν ανοίγει",
+      "category": "cable"
+    },
+    {
+      "id": "item2",
+      "text": "Αργός υπολογιστής",
+      "category": "virus"
+    },
+    {
+      "id": "item3",
+      "text": "Δεν έχει ίντερνετ",
+      "category": "router"
+    },
+    {
+      "id": "item4",
+      "text": "Μαύρη οθόνη",
+      "category": "cable"
+    },
+    {
+      "id": "item5",
+      "text": "Pop-ups",
+      "category": "virus"
+    },
+    {
+      "id": "item6",
+      "text": "No signal",
+      "category": "router"
+    }
+  ]
+}

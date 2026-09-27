@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Στρίψε 90 μοίρες!</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);min-height:100vh;display:flex;justify-content:center;padding:20px}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.25);max-width:800px;width:100%;padding:30px}
+h1{text-align:center;color:#c0392b;font-size:1.5em;margin-bottom:20px}
+.canvas-wrap{position:relative;background:#2d3436;border-radius:16px;overflow:hidden;margin:15px 0}
+canvas{display:block;width:100%;height:auto}
+.controls{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin:15px 0}
+.slider-group{display:flex;align-items:center;gap:8px;background:#f8f9fa;padding:10px 16px;border-radius:12px}
+.slider-group label{font-weight:600;color:#333;font-size:.95em}
+.slider-group input[type=range]{width:150px;accent-color:#e17055}
+.slider-group .val{font-weight:700;color:#e17055;min-width:40px;text-align:center}
+button{padding:12px 24px;border:none;border-radius:14px;font-size:1em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .15s}
+button:active{transform:scale(.96)}
+.btn-right{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff}
+.btn-left{background:linear-gradient(135deg,#00b894,#55efc4);color:#fff}
+.btn-fwd{background:linear-gradient(135deg,#fdcb6e,#e17055);color:#fff}
+.btn-reset{background:linear-gradient(135deg,#636e72,#b2bec3);color:#fff}
+.btn-protractor{background:linear-gradient(135deg,#a29bfe,#6c5ce7);color:#fff}
+.feedback{text-align:center;font-size:1.3em;font-weight:700;min-height:40px;margin:10px 0}
+.feedback .ok{color:#00b894}
+.feedback .warn{color:#e17055}
+.angle-info{text-align:center;font-size:1em;color:#636e72;margin:6px 0}
+.target-info{background:linear-gradient(135deg,#dfe6e9,#b2bec3);border-radius:12px;padding:12px;text-align:center;margin:10px 0;font-weight:600;color:#2d3436}
+.challenge-box{background:linear-gradient(135deg,#ffeaa7,#fdcb6e);border-radius:14px;padding:16px;margin:15px 0;text-align:center}
+.challenge-box h3{color:#d35400;margin-bottom:8px}
+.challenge-box .path-desc{font-size:1em;color:#333}
+.challenge-box .step{display:inline-block;margin:4px;padding:4px 10px;border-radius:8px;font-weight:600}
+.step-fwd{background:#fdcb6e;color:#d35400}
+.step-right{background:#74b9ff;color:#0984e3}
+.step-left{background:#55efc4;color:#00b894}
+.step-done{background:#00b894;color:#fff;text-decoration:line-through}
+.completed{text-align:center;font-size:1.2em;font-weight:700;color:#00b894;margin:10px 0;display:none}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .controls > * { margin: 6px; }
+  .slider-group > * + * { margin-left: 8px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🤖 Στρίψε 90 μοίρες!</h1>
+
+<div class="target-info">
+🎯 Χρησιμοποίησε τον χρόνο στροφής για να στρίψεις ακριβώς 90°!
+</div>
+
+<div class="canvas-wrap">
+<canvas id="cvs" width="700" height="500"></canvas>
+</div>
+
+<div class="angle-info" id="angleInfo">Γωνία ρομπότ: 0°</div>
+<div class="feedback" id="feedback"></div>
+
+<div class="controls">
+<div class="slider-group">
+<label>⏱️ Χρόνος στροφής:</label>
+<input type="range" id="turnTime" min="1" max="20" value="5">
+<span class="val" id="turnVal">0.5s</span>
+</div>
+</div>
+
+<div class="controls">
+<button class="btn-left" onclick="turnLeft()">↺ Αριστερά 90°</button>
+<button class="btn-right" onclick="turnRight()">↻ Δεξιά 90°</button>
+<button class="btn-fwd" onclick="moveForward()">⬆️ Μπρος 1 βήμα</button>
+<button class="btn-protractor" onclick="toggleProtractor()">📐 Μοιρογνώμων</button>
+<button class="btn-reset" onclick="resetAll()">↺ Επαναφορά</button>
+</div>
+
+<div class="challenge-box">
+<h3>🏆 Πρόκληση</h3>
+<div class="path-desc" id="challengeDesc">
+<span class="step step-fwd" id="s0">Μπρος</span>
+<span class="step step-right" id="s1">Δεξιά 90°</span>
+<span class="step step-fwd" id="s2">Μπρος</span>
+<span class="step step-right" id="s3">Δεξιά 90°</span>
+<span class="step step-fwd" id="s4">Μπρος</span>
+<span class="step step-left" id="s5">Αριστερά 90°</span>
+<span class="step step-fwd" id="s6">Μπρος</span>
+</div>
+<div class="completed" id="completedMsg">🎉 Μπράβο! Ολοκλήρωσες τη διαδρομή!</div>
+</div>
+</div>
+
+<script>
+var cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+var GRID=50,CENTER_X=350,CENTER_Y=250;
+var robotAngle=0,robotX=1,robotY=3;
+var showProtractor=false;
+var targetAngle=0;
+var animating=false;
+var challengeStep=0;
+
+var challengeMoves=['fwd','right','fwd','right','fwd','left','fwd'];
+
+function toCanvas(gx,gy){return{x:gx*GRID+GRID/2,y:gy*GRID+GRID/2}}
+
+function drawGrid(){
+ctx.clearRect(0,0,cvs.width,cvs.height);
+ctx.fillStyle='#ecf0f1';ctx.fillRect(0,0,cvs.width,cvs.height);
+ctx.strokeStyle='#bdc3c7';ctx.lineWidth=1;
+var cols=Math.floor(cvs.width/GRID),rows=Math.floor(cvs.height/GRID);
+for(var c=0;c<=cols;c++){ctx.beginPath();ctx.moveTo(c*GRID,0);ctx.lineTo(c*GRID,cvs.height);ctx.stroke()}
+for(var r=0;r<=rows;r++){ctx.beginPath();ctx.moveTo(0,r*GRID);ctx.lineTo(cvs.width,r*GRID);ctx.stroke()}
+}
+
+function drawTargetLine(){
+if(targetAngle===0&&robotAngle===0) return;
+var pos=toCanvas(robotX,robotY);
+ctx.save();ctx.translate(pos.x,pos.y);
+ctx.rotate(targetAngle*Math.PI/180);
+ctx.strokeStyle='rgba(46,204,113,0.5)';ctx.lineWidth=3;ctx.setLineDash([8,6]);
+ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(GRID*1.5,0);ctx.stroke();
+ctx.setLineDash([]);
+ctx.restore();
+}
+
+function drawRobot(){
+var pos=toCanvas(robotX,robotY);
+ctx.save();ctx.translate(pos.x,pos.y);
+ctx.rotate(robotAngle*Math.PI/180);
+
+ctx.fillStyle='#e17055';ctx.strokeStyle='#d63031';ctx.lineWidth=2;
+ctx.beginPath();
+ctx.moveTo(18,0);ctx.lineTo(-12,-12);ctx.lineTo(-6,0);ctx.lineTo(-12,12);
+ctx.closePath();ctx.fill();ctx.stroke();
+
+ctx.fillStyle='#2d3436';
+ctx.beginPath();ctx.arc(0,0,5,0,Math.PI*2);ctx.fill();
+
+ctx.restore();
+}
+
+function drawProtractorOverlay(){
+if(!showProtractor) return;
+var pos=toCanvas(robotX,robotY);
+ctx.save();ctx.translate(pos.x,pos.y);
+
+ctx.strokeStyle='rgba(108,92,231,0.4)';ctx.lineWidth=1;
+for(var a=0;a<360;a+=10){
+var rad=a*Math.PI/180;
+ctx.beginPath();ctx.moveTo(0,0);
+ctx.lineTo(Math.cos(rad)*70,Math.sin(rad)*70);ctx.stroke();
+}
+ctx.strokeStyle='rgba(108,92,231,0.7)';ctx.lineWidth=2;
+for(var a=0;a<360;a+=90){
+var rad=a*Math.PI/180;
+ctx.beginPath();ctx.moveTo(0,0);
+ctx.lineTo(Math.cos(rad)*75,Math.sin(rad)*75);ctx.stroke();
+}
+ctx.fillStyle='rgba(108,92,231,0.8)';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+for(var a=0;a<360;a+=30){
+var rad=a*Math.PI/180;
+ctx.fillText(a+'°',Math.cos(rad)*85,Math.sin(rad)*85+3);
+}
+ctx.strokeStyle='rgba(108,92,231,0.6)';ctx.lineWidth=2;
+ctx.beginPath();ctx.arc(0,0,70,0,Math.PI*2);ctx.stroke();
+
+ctx.restore();
+}
+
+function drawChallengePath(){
+var moves=[
+{x:1,y:3},{x:2,y:3},
+{x:2,y:3},{x:2,y:2},
+{x:2,y:2},{x:3,y:2},
+{x:3,y:2},{x:3,y:1}
+];
+ctx.strokeStyle='rgba(225,112,85,0.3)';ctx.lineWidth=4;ctx.setLineDash([6,4]);
+for(var i=0;i<moves.length;i+=2){
+var from=toCanvas(moves[i].x,moves[i].y);
+var to=toCanvas(moves[i+1].x,moves[i+1].y);
+ctx.beginPath();ctx.moveTo(from.x,from.y);ctx.lineTo(to.x,to.y);ctx.stroke();
+}
+ctx.setLineDash([]);
+}
+
+function render(){
+drawGrid();
+drawChallengePath();
+drawTargetLine();
+drawProtractorOverlay();
+drawRobot();
+document.getElementById('angleInfo').textContent='Γωνία ρομπότ: '+robotAngle+'°';
+}
+
+function getActualTurn(){
+var t=parseFloat(document.getElementById('turnTime').value)/10;
+return Math.round(t*180);
+}
+
+document.getElementById('turnTime').addEventListener('input',function(){
+var t=(parseFloat(this.value)/10).toFixed(1);
+document.getElementById('turnVal').textContent=t+'s';
+});
+
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+async function animateTurn(direction){
+if(animating) return;
+animating=true;
+var timeVal=parseFloat(document.getElementById('turnTime').value);
+var actualAngle=getActualTurn();
+var target=direction==='right'?robotAngle+actualAngle:robotAngle-actualAngle;
+var steps=20;
+var step=actualAngle/steps;
+for(var i=0;i<steps;i++){
+robotAngle+=direction==='right'?step:-step;
+robotAngle=Math.round(robotAngle);
+if(robotAngle<0) robotAngle+=360;
+robotAngle=robotAngle%360;
+render();
+await sleep(30);
+}
+robotAngle=Math.round(robotAngle)%360;
+if(robotAngle<0) robotAngle+=360;
+checkAngle();
+animating=false;
+}
+
+function turnRight(){
+if(animating) return;
+targetAngle=(robotAngle+90)%360;
+animateTurn('right');
+advanceChallenge('right');
+}
+
+function turnLeft(){
+if(animating) return;
+targetAngle=(robotAngle-90+360)%360;
+animateTurn('left');
+advanceChallenge('left');
+}
+
+function moveForward(){
+if(animating) return;
+var rad=robotAngle*Math.PI/180;
+var nx=Math.round(robotX+Math.cos(rad));
+var ny=Math.round(robotY+Math.sin(rad));
+if(nx>=0&&nx<cvs.width/GRID&&ny>=0&&ny<cvs.height/GRID){
+robotX=nx;robotY=ny;
+}
+render();
+advanceChallenge('fwd');
+}
+
+function checkAngle(){
+var fb=document.getElementById('feedback');
+var diff=Math.abs(robotAngle-targetAngle)%360;
+if(diff>180) diff=360-diff;
+if(diff<=2){
+fb.innerHTML='<span class="ok">✅ Τέλεια στροφή!</span>';
+}else{
+fb.innerHTML='<span class="warn">⚠️ Διαφορά: '+Math.round(diff)+'° — Προσπάθησε ξανά!</span>';
+}
+}
+
+function toggleProtractor(){
+showProtractor=!showProtractor;
+render();
+}
+
+function resetAll(){
+robotAngle=0;robotX=1;robotY=3;targetAngle=0;challengeStep=0;
+showProtractor=false;
+document.getElementById('feedback').innerHTML='';
+document.getElementById('completedMsg').style.display='none';
+for(var i=0;i<7;i++){
+var el=document.getElementById('s'+i);
+if(el){el.className='step '+el.className.split(' ').filter(function(c){return c.startsWith('step-')&&c!=='step-done'}).join(' ').replace('step-','step-');}
+}
+updateChallengeUI();
+render();
+}
+
+function advanceChallenge(move){
+if(challengeStep>=challengeMoves.length) return;
+var expected=challengeMoves[challengeStep];
+if(move===expected){
+var el=document.getElementById('s'+challengeStep);
+if(el) el.classList.add('step-done');
+challengeStep++;
+updateChallengeUI();
+if(challengeStep>=challengeMoves.length){
+document.getElementById('completedMsg').style.display='block';
+}
+}
+}
+
+function updateChallengeUI(){
+for(var i=0;i<challengeMoves.length;i++){
+var el=document.getElementById('s'+i);
+if(!el) continue;
+if(i<challengeStep){
+el.classList.add('step-done');
+}else{
+el.classList.remove('step-done');
+}
+}
+}
+
+render();
+</script>
+</body>
+</html>

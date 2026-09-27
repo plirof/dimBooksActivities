@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Οδήγησε το Ρομπότ!</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+min-height: 100vh;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h1 {
+color: white;
+text-align: center;
+font-size: 1.8rem;
+margin-bottom: 5px;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #dfe6e9;
+text-align: center;
+margin-bottom: 15px;
+font-size: 1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 20px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.level-info {
+text-align: center;
+font-size: 1.1rem;
+font-weight: bold;
+color: #00b894;
+margin-bottom: 10px;
+}
+.progress-bar {
+width: 100%;
+height: 8px;
+background: #dfe6e9;
+border-radius: 4px;
+margin-bottom: 15px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, #00b894, #00cec9);
+border-radius: 4px;
+transition: width 0.5s ease;
+}
+.grid-area {
+display: flex;
+justify-content: center;
+margin-bottom: 15px;
+}
+.grid {
+display: grid;
+grid-gap: 3px;
+background: #b2bec3;
+padding: 3px;
+border-radius: 10px;
+}
+.cell {
+width: 55px;
+height: 55px;
+background: #ffeaa7;
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+font-family: 'NotoColorEmoji', 'Segoe UI', sans-serif;
+transition: background 0.3s;
+}
+.cell.wall { background: #636e72; }
+.cell.robot { background: #74b9ff; }
+.cell.target { background: #55efc4; }
+.cell.visited { background: #81ecec; }
+.cell.path { background: #a29bfe; }
+.commands-area {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+.cmd-buttons {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+justify-content: center;
+}
+.cmd-btn {
+padding: 10px 16px;
+border: none;
+border-radius: 10px;
+font-size: 0.95rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.2s;
+color: white;
+}
+.cmd-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.cmd-btn:active { transform: translateY(0); }
+.cmd-btn.forward { background: #0984e3; }
+.cmd-btn.backward { background: #6c5ce7; }
+.cmd-btn.left { background: #e17055; }
+.cmd-btn.right { background: #fdcb6e; color: #2d3436; }
+.cmd-btn.stop { background: #d63031; }
+.sequence-area {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 12px;
+min-height: 50px;
+border: 2px dashed #b2bec3;
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+align-items: center;
+}
+.seq-tag {
+padding: 6px 12px;
+border-radius: 8px;
+font-size: 0.85rem;
+font-weight: bold;
+color: white;
+cursor: pointer;
+transition: all 0.2s;
+}
+.seq-tag:hover { opacity: 0.7; }
+.seq-tag.forward { background: #0984e3; }
+.seq-tag.backward { background: #6c5ce7; }
+.seq-tag.left { background: #e17055; }
+.seq-tag.right { background: #e4a817; color: #2d3436; }
+.seq-tag.stop { background: #d63031; }
+.action-btns {
+display: flex;
+gap: 10px;
+justify-content: center;
+flex-wrap: wrap;
+}
+.action-btn {
+padding: 12px 24px;
+border: none;
+border-radius: 12px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s;
+}
+.run-btn { background: #00b894; color: white; }
+.run-btn:hover { background: #00a381; }
+.run-btn:disabled { background: #b2bec3; cursor: not-allowed; }
+.clear-btn { background: #dfe6e9; color: #2d3436; }
+.clear-btn:hover { background: #b2bec3; }
+.hint {
+text-align: center;
+color: #636e72;
+font-size: 0.9rem;
+margin-top: 8px;
+min-height: 20px;
+}
+.feedback {
+text-align: center;
+padding: 15px;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: bold;
+margin-top: 10px;
+display: none;
+}
+.feedback.success { display: block; background: #55efc4; color: #00695c; }
+.feedback.fail { display: block; background: #fab1a0; color: #c0392b; }
+.completion {
+display: none;
+text-align: center;
+padding: 30px;
+}
+.completion h2 { color: #00b894; font-size: 1.6rem; margin-bottom: 10px; }
+.stars { font-size: 2.5rem; font-family: 'NotoColorEmoji', 'Segoe UI', sans-serif; margin: 15px 0; }
+.restart-btn {
+padding: 12px 30px;
+background: #00b894;
+color: white;
+border: none;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+margin-top: 15px;
+}
+.restart-btn:hover { background: #00a381; }
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .commands-area > * + * { margin-top: 10px; }
+  .cmd-buttons > * { margin: 4px; }
+  .sequence-area > * { margin: 3px; }
+  .action-btns > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🤖 Οδήγησε το Ρομπότ!</h1>
+<p class="subtitle">Δώσε εντολές στο ρομπότ για να φτάσει στον στόχο ⭐</p>
+<div class="container" id="gameContainer">
+<div class="level-info" id="levelInfo">Επίπεδο 1 / 5</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="grid-area"><div class="grid" id="grid"></div></div>
+<div class="commands-area">
+<div class="cmd-buttons">
+<button class="cmd-btn forward" onclick="addCmd('forward')">⬆️ Μπροστά</button>
+<button class="cmd-btn backward" onclick="addCmd('backward')">⬇️ Πίσω</button>
+<button class="cmd-btn left" onclick="addCmd('left')">⬅️ Αριστερά</button>
+<button class="cmd-btn right" onclick="addCmd('right')">➡️ Δεξιά</button>
+</div>
+<div class="sequence-area" id="sequence"><span style="color:#b2bec3;font-size:0.9rem">Πρόσθεσε εντολές...</span></div>
+<div class="action-btns">
+<button class="action-btn clear-btn" onclick="clearSeq()">🗑️ Καθαρισμός</button>
+<button class="action-btn run-btn" id="runBtn" onclick="runProgram()">▶️ Εκτέλεση</button>
+</div>
+<div class="hint" id="hint"></div>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<div class="container completion" id="completion">
+<h2>🎉 Μπράβο!</h2>
+<p>Οδήγησες το ρομπότι σε όλους τους στόχους!</p>
+<div class="stars" id="stars"></div>
+<p id="scoreText"></p>
+<button class="restart-btn" onclick="restartGame()">🔄 Ξαναπαίξε</button>
+</div>
+<script>
+var levels = [
+{grid:5,start:{r:2,c:0},target:{r:2,c:4},walls:[]},
+{grid:5,start:{r:0,c:0},target:{r:4,c:4},walls:[{r:1,c:1},{r:1,c:2},{r:1,c:3},{r:3,c:1},{r:3,c:2},{r:3,c:3}]},
+{grid:5,start:{r:4,c:0},target:{r:0,c:4},walls:[{r:1,c:0},{r:1,c:1},{r:1,c:2},{r:3,c:2},{r:3,c:3},{r:3,c:4}]},
+{grid:6,start:{r:0,c:0},target:{r:5,c:5},walls:[{r:1,c:0},{r:1,c:1},{r:1,c:3},{r:2,c:3},{r:2,c:4},{r:4,c:1},{r:4,c:2},{r:4,c:4}]},
+{grid:6,start:{r:5,c:0},target:{r:0,c:5},walls:[{r:0,c:1},{r:1,c:1},{r:1,c:3},{r:2,c:3},{r:3,c:0},{r:3,c:1},{r:3,c:3},{r:4,c:3},{r:4,c:5},{r:5,c:3}]}
+];
+var currentLevel = 0;
+var sequence = [];
+var running = false;
+var totalAttempts = 0;
+function renderGrid() {
+var lv = levels[currentLevel];
+var g = document.getElementById('grid');
+g.innerHTML = '';
+g.style.gridTemplateColumns = 'repeat(' + lv.grid + ', 55px)';
+for (var r = 0; r < lv.grid; r++) {
+for (var c = 0; c < lv.grid; c++) {
+var cell = document.createElement('div');
+cell.className = 'cell';
+cell.id = 'cell-' + r + '-' + c;
+var isWall = lv.walls.some(function(w) { return w.r === r && w.c === c; });
+if (isWall) { cell.classList.add('wall'); cell.textContent = '🧱'; }
+else if (lv.start.r === r && lv.start.c === c) { cell.classList.add('robot'); cell.textContent = '🤖'; }
+else if (lv.target.r === r && lv.target.c === c) { cell.classList.add('target'); cell.textContent = '⭐'; }
+g.appendChild(cell);
+}
+}
+}
+function addCmd(type) {
+if (running) return;
+sequence.push(type);
+renderSequence();
+}
+function removeCmd(index) {
+if (running) return;
+sequence.splice(index, 1);
+renderSequence();
+}
+function renderSequence() {
+var area = document.getElementById('sequence');
+if (sequence.length === 0) {
+area.innerHTML = '<span style="color:#b2bec3;font-size:0.9rem">Πρόσθεσε εντολές...</span>';
+return;
+}
+var labels = {forward:'⬆️ Μπροστά',backward:'⬇️ Πίσω',left:'⬅️ Αριστερά',right:'➡️ Δεξιά'};
+var html = '';
+for (var i = 0; i < sequence.length; i++) {
+html += '<span class="seq-tag ' + sequence[i] + '" onclick="removeCmd(' + i + ')">' + labels[sequence[i]] + '</span>';
+}
+area.innerHTML = html;
+}
+function clearSeq() {
+if (running) return;
+sequence = [];
+renderSequence();
+document.getElementById('feedback').style.display = 'none';
+}
+function runProgram() {
+if (running || sequence.length === 0) return;
+running = true;
+document.getElementById('runBtn').disabled = true;
+document.getElementById('feedback').style.display = 'none';
+var lv = levels[currentLevel];
+var pos = {r: lv.start.r, c: lv.start.c};
+var facing = 0;
+var dirs = [{dr:-1,dc:0},{dr:0,dc:1},{dr:1,dc:0},{dr:0,dc:-1}];
+var step = 0;
+var path = [{r:pos.r,c:pos.c}];
+function executeStep() {
+if (step >= sequence.length) {
+checkResult(pos, path);
+return;
+}
+var cmd = sequence[step];
+var moved = false;
+if (cmd === 'forward') {
+var nr = pos.r + dirs[facing].dr;
+var nc = pos.c + dirs[facing].dc;
+if (isValid(nr, nc)) { pos.r = nr; pos.c = nc; moved = true; }
+} else if (cmd === 'backward') {
+var nr2 = pos.r - dirs[facing].dr;
+var nc2 = pos.c - dirs[facing].dc;
+if (isValid(nr2, nc2)) { pos.r = nr2; pos.c = nc2; moved = true; }
+} else if (cmd === 'left') {
+facing = (facing + 3) % 4;
+} else if (cmd === 'right') {
+facing = (facing + 1) % 4;
+}
+path.push({r:pos.r,c:pos.c});
+updateGrid(pos, path);
+step++;
+setTimeout(executeStep, 500);
+}
+executeStep();
+}
+function isValid(r, c) {
+var lv = levels[currentLevel];
+if (r < 0 || r >= lv.grid || c < 0 || c >= lv.grid) return false;
+return !lv.walls.some(function(w) { return w.r === r && w.c === c; });
+}
+function updateGrid(robotPos, path) {
+var lv = levels[currentLevel];
+for (var r = 0; r < lv.grid; r++) {
+for (var c = 0; c < lv.grid; c++) {
+var cell = document.getElementById('cell-' + r + '-' + c);
+var isWall = lv.walls.some(function(w) { return w.r === r && w.c === c; });
+cell.className = 'cell';
+cell.textContent = '';
+if (isWall) { cell.classList.add('wall'); cell.textContent = '🧱'; }
+else if (robotPos.r === r && robotPos.c === c) { cell.classList.add('robot'); cell.textContent = '🤖'; }
+else if (lv.target.r === r && lv.target.c === c) { cell.classList.add('target'); cell.textContent = '⭐'; }
+else if (path.some(function(p) { return p.r === r && p.c === c; })) { cell.classList.add('visited'); }
+}
+}
+}
+function checkResult(pos, path) {
+var lv = levels[currentLevel];
+var fb = document.getElementById('feedback');
+if (pos.r === lv.target.r && pos.c === lv.target.c) {
+fb.className = 'feedback success';
+fb.textContent = '🎉 Συγχαρητήρια! Το ρομπότ έφτασε στον στόχο!';
+totalAttempts++;
+setTimeout(function() {
+currentLevel++;
+if (currentLevel >= levels.length) { showCompletion(); }
+else { loadLevel(); }
+}, 1500);
+} else {
+fb.className = 'feedback fail';
+fb.textContent = '😅 Το ρομπότι δεν έφτασε στον στόχο. Ξαναπροσπάθησε!';
+totalAttempts++;
+running = false;
+document.getElementById('runBtn').disabled = false;
+}
+fb.style.display = 'block';
+}
+function loadLevel() {
+sequence = [];
+running = false;
+document.getElementById('runBtn').disabled = false;
+document.getElementById('levelInfo').textContent = 'Επίπεδο ' + (currentLevel + 1) + ' / ' + levels.length;
+document.getElementById('progressFill').style.width = (currentLevel / levels.length * 100) + '%';
+document.getElementById('feedback').style.display = 'none';
+document.getElementById('hint').textContent = '';
+renderGrid();
+renderSequence();
+}
+function showCompletion() {
+document.getElementById('gameContainer').style.display = 'none';
+var comp = document.getElementById('completion');
+comp.style.display = 'block';
+var stars = totalAttempts <= 7 ? '⭐⭐⭐' : totalAttempts <= 12 ? '⭐⭐' : '⭐';
+document.getElementById('stars').textContent = stars;
+document.getElementById('scoreText').textContent = 'Προσπάθειες: ' + totalAttempts + ' στα ' + levels.length + ' επίπεδα';
+}
+function restartGame() {
+currentLevel = 0;
+totalAttempts = 0;
+document.getElementById('gameContainer').style.display = 'block';
+document.getElementById('completion').style.display = 'none';
+loadLevel();
+}
+loadLevel();
+</script>
+</body>
+</html>

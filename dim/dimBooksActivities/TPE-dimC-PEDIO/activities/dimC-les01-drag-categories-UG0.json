@@ -1,0 +1,58 @@
+{
+  "title": "Συνθήκες σε Συνθήκη / Ενέργεια",
+  "subtitle": "Διάκρινε τι είναι συνθήκη και τι ενέργεια",
+  "categories": [
+    {
+      "id": "condition",
+      "name": "ΣΥΝΘΗΚΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "action",
+      "name": "ΕΝΕΡΓΕΙΑ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Αν βρέχει",
+      "category": "condition"
+    },
+    {
+      "id": "item2",
+      "text": "Πάρε ομπρέλα",
+      "category": "action"
+    },
+    {
+      "id": "item3",
+      "text": "Αν κάνει κρύο",
+      "category": "condition"
+    },
+    {
+      "id": "item4",
+      "text": "Φόρεσε κασκόλ",
+      "category": "action"
+    },
+    {
+      "id": "item5",
+      "text": "Αν έχει ήλιο",
+      "category": "condition"
+    },
+    {
+      "id": "item6",
+      "text": "Βάλε γυαλιά",
+      "category": "action"
+    },
+    {
+      "id": "item7",
+      "text": "Αν πεινάσεις",
+      "category": "condition"
+    },
+    {
+      "id": "item8",
+      "text": "Φάε μήλο",
+      "category": "action"
+    }
+  ]
+}

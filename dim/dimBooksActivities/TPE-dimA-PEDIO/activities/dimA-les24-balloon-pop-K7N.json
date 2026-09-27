@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Κεφαλαία και Αριθμοί",
+  "subtitle": "Μόνο πλήκτρα!",
+  "instruction": "Σπάσε μόνο ΜΕΓΑΛΑ ΓΡΑΜΜΑΤΑ ή ΑΡΙΘΜΟΥΣ!",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1500,
+  "balloons": [
+    { "text": "Α", "correct": true, "color": "#4CAF50" },
+    { "text": "α", "correct": false, "color": "#f44336" },
+    { "text": "3", "correct": true, "color": "#2196F3" },
+    { "text": "μ", "correct": false, "color": "#FF9800" },
+    { "text": "Κ", "correct": true, "color": "#9C27B0" },
+    { "text": "κ", "correct": false, "color": "#E91E63" },
+    { "text": "7", "correct": true, "color": "#FFC107" },
+    { "text": "τ", "correct": false, "color": "#00BCD4" },
+    { "text": "Ω", "correct": true, "color": "#3F51B5" },
+    { "text": "ω", "correct": false, "color": "#795548" },
+    { "text": "9", "correct": true, "color": "#FF9800" },
+    { "text": "ε", "correct": false, "color": "#607D8B" }
+  ]
+}

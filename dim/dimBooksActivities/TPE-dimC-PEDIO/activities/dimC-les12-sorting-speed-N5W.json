@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ενσύρματα ή Ασύρματα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε τεχνολογία!",
+  "categories": [
+    {"id": "ensimata", "name": "Ενσύρματη Σύνδεση", "color": "#e91e63", "key": "ArrowLeft"},
+    {"id": "asirmata", "name": "Ασύρματη Σύνδεση", "color": "#4caf50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Καλώδιο δικτύου", "category": "ensimata"},
+    {"text": "Wi-Fi", "category": "asirmata"},
+    {"text": "Τηλεφωνικό δίκτυο", "category": "ensimata"},
+    {"text": "Bluetooth", "category": "asirmata"},
+    {"text": "Θύρα USB με καλώδιο", "category": "ensimata"},
+    {"text": "5G", "category": "asirmata"},
+    {"text": "Καλώδιο μεταξύ δύο Η/Υ", "category": "ensimata"},
+    {"text": "Σύνδεση tablet στο διαδίκτυο", "category": "asirmata"},
+    {"text": "Καλώδιο εκτυπωτή", "category": "ensimata"},
+    {"text": "Ασύρματος εκτυπωτής", "category": "asirmata"}
+  ],
+  "duration": 30
+}

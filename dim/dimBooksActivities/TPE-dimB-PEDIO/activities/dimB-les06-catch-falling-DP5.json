@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: ScratchJr Εντολές",
+  "subtitle": "Πιάσε μόνο εντολές ScratchJr!",
+  "instructions": "Πιάσε μόνο ΕΝΤΟΛΕΣ ScratchJr! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Κίνηση", "correct": true, "color": "#4CAF50"},
+    {"text": "Κούραση", "correct": false, "color": "#f44336"},
+    {"text": "Πήδημα", "correct": true, "color": "#2196F3"},
+    {"text": "Πείνα", "correct": false, "color": "#FF9800"},
+    {"text": "Ταχύτητα", "correct": true, "color": "#9C27B0"},
+    {"text": "Ύπνος", "correct": false, "color": "#E91E63"},
+    {"text": "Επανάληψη", "correct": true, "color": "#009688"},
+    {"text": "Θυμός", "correct": false, "color": "#FFC107"},
+    {"text": "Αρχή", "correct": true, "color": "#795548"},
+    {"text": "Βαρεμάρα", "correct": false, "color": "#607D8B"}
+  ]
+}

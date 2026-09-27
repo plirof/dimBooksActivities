@@ -1,0 +1,25 @@
+{
+  "title": "Ταξινόμηση: Τι κάνει το πλήκτρο;",
+  "subtitle": "Space, Caps Lock ή Backspace;",
+  "instructions": "Πάτα: SPACE, CAPS LOCK ή BACKSPACE",
+  "categories": [
+    {"id": "space", "name": "Space (Κενό)", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "caps", "name": "Caps Lock", "color": "#FF9800", "key": "ArrowUp"},
+    {"id": "back", "name": "Backspace", "color": "#f44336", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Βάζω κενό ανάμεσα σε λέξεις", "category": "space"},
+    {"text": "Γράφω κεφαλαία", "category": "caps"},
+    {"text": "Σβήνω ένα γράμμα", "category": "back"},
+    {"text": "Χωρίζω δύο λέξεις", "category": "space"},
+    {"text": "Ανάβει λαμπάκι", "category": "caps"},
+    {"text": "Κέρσορας πάει πίσω", "category": "back"},
+    {"text": "Μακριά μπάρα κάτω", "category": "space"},
+    {"text": "Κλειδώνει τα γράμματα", "category": "caps"},
+    {"text": "Διορθώνω λάθος", "category": "back"},
+    {"text": "Βάζω διάστημα", "category": "space"},
+    {"text": "Μεγάλα γράμματα ΑΒΓ", "category": "caps"},
+    {"text": "Σβήνω τελευταίο γράμμα", "category": "back"}
+  ],
+  "duration": 30
+}

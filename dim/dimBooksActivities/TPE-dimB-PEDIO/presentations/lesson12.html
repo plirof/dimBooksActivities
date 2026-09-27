@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+  slide_TTS_template.html — minimal template for a TPE-dim lesson presentation.
+
+  Shared CSS + runtime JS live OUTSIDE this file (loaded at the bottom); each
+  lesson file holds ONLY its own data (LESSON + slideTexts) plus this skeleton.
+
+  To create lesson NN:
+
+    1. Copy this file to  TPE-dimX-PEDIO/presentations/lessonNN.html
+    2. Edit LESSON below (number, unit, slides[]).
+       First slide MUST be type:"title", last slide MUST be type:"assessment".
+    3. Keep slideTexts[] in sync with LESSON.slides — pregen.AppImage reads it.
+       Entries mirror getSlideText() in tts/scripts/presentation.js:
+         title       -> unit + ". " + title (+ ". " + sub if present)
+         text        -> text
+         steps       -> (title? title+". ":"") + steps.join(". ")
+         list        -> (title? title+". ":"") + items.join(". ")
+         concept     -> text
+         practice    -> (title||"Συζητήστε") + ". " + items.join(". ")
+         assessment  -> check + ". " + end   (✦/✧ stripped; ". Τέλος" if no end)
+   4. Generate MP3s:
+   **IMPORTANT: If updating an existing presentation, delete old MP3s first:**
+   rm TPE-dimX-PEDIO/presentations/audio/lessonNN/*.mp3
+
+   ./tts/pregen.AppImage TPE-dimX-PEDIO/presentations/lessonNN.html \
+                                 TPE-dimX-PEDIO/presentations/audio/lessonNN
+   5. Open lessonNN.html in a browser. URL params: ?speed=0.7  ?mode=manual
+
+  Do NOT re-inline CSS or runtime JS here — edit tts/scripts/presentation.css
+  or tts/scripts/presentation.js instead (changes apply to every lesson).
+-->
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Παρουσίαση</title>
+<link rel="stylesheet" href="../../tts/scripts/presentation.css">
+</head>
+<body>
+
+<!-- ===== BEGIN EDIT THIS SECTION ===== -->
+<script>
+var LESSON = {
+  number: 12,
+  unit: "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα",
+  slides: [
+    { type:"title", title:"Μάθημα 12ο: Οι συσκευές του υπολογιστή" },
+    { type:"concept", text:"Ο υπολογιστής γραφείου έχει ως βασική συσκευή την κεντρική μονάδα. Εκεί επεξεργάζεται και αποθηκεύει τα δεδομένα." },
+    { type:"concept", text:"Με την κεντρική μονάδα συνδέονται οι συσκευές για είσοδο: πληκτρολόγιο, ποντίκι, μικρόφωνο, κάμερα, σαρωτής." },
+    { type:"concept", text:"Με την κεντρική μονάδα συνδέονται οι συσκευές για έξοδο: οθόνη, εκτυπωτής, ηχεία, ακουστικά." },
+    { type:"list", title:"Συσκευές για είσοδο", items:["Πληκτρολόγιο: πατάω τα πλήκτρα και γράφω κείμενο","Ποντίκι: εμφανίζει δείκτη στην οθόνη","Μικρόφωνο: περνάει ήχους στον υπολογιστή","Κάμερα: περνάει εικόνες ή βίντεο","Σαρωτής: περνάει εικόνες τυπωμένες σε χαρτί"] },
+    { type:"list", title:"Συσκευές για έξοδο", items:["Οθόνη: εμφανίζει κείμενο και εικόνες","Εκτυπωτής: γράφει στο χαρτί κείμενο και εικόνες","Ηχεία και ακουστικά: αναπαράγουν ήχους"] },
+    { type:"concept", text:"Μέσα στον υπολογιστή βρίσκεται ο δίσκος αποθήκευσης. Αποθηκεύει τα δεδομένα και τις πληροφορίες για να τα βρω όταν ξανανοίξω τον υπολογιστή." },
+    { type:"concept", text:"Συνδέω στον υπολογιστή τη μνήμη φλας. Αποθηκεύει δεδομένα και πληροφορίες για να τα μεταφέρω εύκολα σε άλλον υπολογιστή." },
+    { type:"concept", text:"Υπάρχει οθόνη που κάνει είσοδο και έξοδο: η οθόνη αφής. Έξοδος: ο υπολογιστής εμφανίζει κείμενο και εικόνες. Είσοδος: λειτουργεί σαν πληκτρολόγιο, πατάω τα πλήκτρα με το δάχτυλο." },
+    { type:"concept", text:"Ο φορητός υπολογιστής έχει ενσωματωμένες πολλές συσκευές για είσοδο και για έξοδο: πληκτρολόγιο, οθόνη, χειριστήριο, μικρόφωνο, κάμερα, ηχεία." },
+    { type:"practice", title:"Συζητήστε", items:["Ποια συσκευές για είσοδο γνωρίζετε;","Ποια συσκευές για έξοδο γνωρίζετε;","Πού αποθηκεύει ο υπολογιστής τα αρχεία;"] },
+    { type:"assessment", check:"Μπορώ να περιγράφω τις συσκευές του υπολογιστή και πού αποθηκεύει δεδομένα", end:"Μπράβο! ✦ Τέλος ✦" }
+  ]
+};
+
+// Static array read by pregen.AppImage. Keep in sync with LESSON.slides above.
+var slideTexts = [
+  "Ενότητα 2: Υπολογιστικά συστήματα - Ψηφιακές συσκευές - Δίκτυα. Μάθημα 12ο: Οι συσκευές του υπολογιστή",
+  "Ο υπολογιστής γραφείου έχει ως βασική συσκευή την κεντρική μονάδα. Εκεί επεξεργάζεται και αποθηκεύει τα δεδομένα.",
+  "Με την κεντρική μονάδα συνδέονται οι συσκευές για είσοδο: πληκτρολόγιο, ποντίκι, μικρόφωνο, κάμερα, σαρωτής.",
+  "Με την κεντρική μονάδα συνδέονται οι συσκευές για έξοδο: οθόνη, εκτυπωτής, ηχεία, ακουστικά.",
+  "Συσκευές για είσοδο. Πληκτρολόγιο: πατάω τα πλήκτρα και γράφω κείμενο. Ποντίκι: εμφανίζει δείκτη στην οθόνη. Μικρόφωνο: περνάει ήχους στον υπολογιστή. Κάμερα: περνάει εικόνες ή βίντεο. Σαρωτής: περνάει εικόνες τυπωμένες σε χαρτί",
+  "Συσκευές για έξοδο. Οθόνη: εμφανίζει κείμενο και εικόνες. Εκτυπωτής: γράφει στο χαρτί κείμενο και εικόνες. Ηχεία και ακουστικά: αναπαράγουν ήχους",
+  "Μέσα στον υπολογιστή βρίσκεται ο δίσκος αποθήκευσης. Αποθηκεύει τα δεδομένα και τις πληροφορίες για να τα βρω όταν ξανανοίξω τον υπολογιστή.",
+  "Συνδέω στον υπολογιστή τη μνήμη φλας. Αποθηκεύει δεδομένα και πληροφορίες για να τα μεταφέρω εύκολα σε άλλον υπολογιστή.",
+  "Υπάρχει οθόνη που κάνει είσοδο και έξοδο: η οθόνη αφής. Έξοδος: ο υπολογιστής εμφανίζει κείμενο και εικόνες. Είσοδος: λειτουργεί σαν πληκτρολόγιο, πατάω τα πλήκτρα με το δάχτυλο.",
+  "Ο φορητός υπολογιστής έχει ενσωματωμένες πολλές συσκευές για είσοδο και για έξοδο: πληκτρολόγιο, οθόνη, χειριστήριο, μικρόφωνο, κάμερα, ηχεία.",
+  "Συζητήστε. Ποια συσκευές για είσοδο γνωρίζετε; Ποια συσκευές για έξοδο γνωρίζετε; Πού αποθηκεύει ο υπολογιστής τα αρχεία;",
+  "Μπορώ να περιγράφω τις συσκευές του υπολογιστή και πού αποθηκεύει δεδομένα. Μπράβο! Τέλος"
+];
+</script>
+<!-- ===== END EDIT SECTION ===== -->
+
+<div id="slides"></div>
+<div id="speedBadge"></div>
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="prevBtn" onclick="navigate(-1)">◀</button>
+  <span id="counter"></span>
+  <button id="nextBtn" onclick="navigate(1)">▶</button>
+  <button id="playBtn" onclick="togglePlay()">⏸</button>
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+</div>
+
+<script src="../../tts/scripts/tts.js"></script>
+<script src="../../tts/scripts/presentation.js"></script>
+</body>
+</html>

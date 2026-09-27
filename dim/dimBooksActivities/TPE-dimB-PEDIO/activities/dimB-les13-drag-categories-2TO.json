@@ -1,0 +1,53 @@
+{
+  "title": "Ενέργειες παραθύρων",
+  "subtitle": "Ταίριαξε κάθε ενέργεια στο σωστό κουμπί παραθύρου",
+  "categories": [
+    {
+      "id": "max",
+      "name": "ΜΕΓΙΣΤΟΠΟΙΗΣΗ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "min",
+      "name": "ΕΛΑΧΙΣΤΟΠΟΙΗΣΗ",
+      "color": "#FF9800"
+    },
+    {
+      "id": "close",
+      "name": "ΚΛΕΙΣΙΜΟ",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "□ Πλήρης οθόνη",
+      "category": "max"
+    },
+    {
+      "id": "item2",
+      "text": "— Γραμμή εργασιών",
+      "category": "min"
+    },
+    {
+      "id": "item3",
+      "text": "✕ Τερματισμός",
+      "category": "close"
+    },
+    {
+      "id": "item4",
+      "text": "📐 Μεγάλο παράθυρο",
+      "category": "max"
+    },
+    {
+      "id": "item5",
+      "text": "📏 Μικρό κουμπί",
+      "category": "min"
+    },
+    {
+      "id": "item6",
+      "text": "❌ Διακοπή",
+      "category": "close"
+    }
+  ]
+}

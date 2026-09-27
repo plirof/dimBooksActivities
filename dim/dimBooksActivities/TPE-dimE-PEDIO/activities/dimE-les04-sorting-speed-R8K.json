@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Scratch Εντολές",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα Αριστερά για Εντολές Κίνησης, Δεξιά για Εντολές Εμφάνισης!",
+  "categories": [
+    {"id": "move", "name": "Κίνηση", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "appear", "name": "Εμφάνιση", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Ακολούθησε ποντίκι", "category": "move"},
+    {"text": "Εμφανίσου", "category": "appear"},
+    {"text": "Πήγαινε σε θέση", "category": "move"},
+    {"text": "Εξαφανίσου", "category": "appear"},
+    {"text": "Κολύμπησε", "category": "move"},
+    {"text": "Δείξε", "category": "appear"},
+    {"text": "Μετακινήσου", "category": "move"},
+    {"text": "Κρύψου", "category": "appear"},
+    {"text": "Περίπατα", "category": "move"},
+    {"text": "Αλλάξτε ενδυμασία", "category": "appear"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Βρες τα Λάθη: Ενδυμασίες Scratch",
+  "subtitle": "Βρες τις λάθος λέξεις!",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Ενδυμασία", "error": false, "correct": "Ενδυμασία", "feedback": "" },
+        { "text": "Ενθυμασία", "error": true, "correct": "Ενδυμασία", "feedback": "Γράφεται Ενδυμασία με δ" },
+        { "text": "Καρτέλα", "error": false, "correct": "Καρτέλα", "feedback": "" },
+        { "text": "Καρτελα", "error": true, "correct": "Καρτέλα", "feedback": "Χρειάζεται τόνος" },
+        { "text": "Κώδικας", "error": false, "correct": "Κώδικας", "feedback": "" },
+        { "text": "Κωδικας", "error": true, "correct": "Κώδικας", "feedback": "Χρειάζεται τόνος" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ανίματιον", "error": true, "correct": "Animation", "feedback": "Γράφεται Animation" },
+        { "text": "Animation", "error": false, "correct": "Animation", "feedback": "" },
+        { "text": "Εμφάνιση", "error": false, "correct": "Εμφάνιση", "feedback": "" },
+        { "text": "Εμφάνιση", "error": false, "correct": "Εμφάνιση", "feedback": "" },
+        { "text": "Δευτερόλεπτο", "error": false, "correct": "Δευτερόλεπτο", "feedback": "" },
+        { "text": "Δευτερολέπτο", "error": true, "correct": "Δευτερόλεπτο", "feedback": "Γράφεται Δευτερόλεπτο" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Κινήσεις Ρομπότ",
+  "subtitle": "Ταξινόμησε!",
+  "instructions": "Βάλε κάθε κίνηση στη σωστή κατηγορία",
+  "categories": [
+    { "id": "mprost", "name": "Κίνηση", "color": "#4caf50", "key": "1" },
+    { "id": "strovh", "name": "Στροφή", "color": "#2196f3", "key": "2" },
+    { "id": "stop", "name": "Διακοπή", "color": "#f44336", "key": "3" }
+  ],
+  "items": [
+    { "text": "Προχώρα μπροστά", "category": "mprost" },
+    { "text": "Στρίψε δεξιά", "category": "strovh" },
+    { "text": "Σταμάτα", "category": "stop" },
+    { "text": "Προχώρα πίσω", "category": "mprost" },
+    { "text": "Στρίψε αριστερά", "category": "strovh" },
+    { "text": "Τέλος προγράμματος", "category": "stop" },
+    { "text": "Προχώρα μπροστά 0.4 δευτ.", "category": "mprost" },
+    { "text": "Ορθή γωνία δεξιά", "category": "strovh" },
+    { "text": "Μπλοκάρουμε κινητήρες", "category": "stop" },
+    { "text": "Προχώρα μπροστά 0.5 δευτ.", "category": "mprost" }
+  ],
+  "duration": 45
+}

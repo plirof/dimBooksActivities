@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Θυμήσου την Ακολουθία</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:10px}
+.container{max-width:700px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#333;margin-bottom:5px;font-size:1.8em}
+h2{text-align:center;color:#666;margin-bottom:15px;font-size:1.1em;font-weight:400}
+.instructions{text-align:center;color:#888;margin-bottom:20px;font-size:0.95em;line-height:1.5}
+.display-area{width:200px;height:200px;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:5em;background:#f5f5f5;border-radius:20px;border:3px solid #43e97b;transition:all 0.3s}
+.display-area.show{border-color:#38f9d7;transform:scale(1.1);background:#e8fdf5}
+.display-area.hidden{font-size:3em;color:#ccc}
+.item-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0}
+.item-btn{width:70px;height:70px;font-size:2em;border:3px solid #ddd;border-radius:12px;background:#fff;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.item-btn:hover{transform:scale(1.1);border-color:#43e97b}
+.item-btn.selected{background:#43e97b;color:#fff;border-color:#38f9d7;transform:scale(0.9)}
+.item-btn.correct{background:#4CAF50;color:#fff;border-color:#388E3C}
+.item-btn.wrong{background:#f44336;color:#fff;border-color:#c62828}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px}
+.score-text{font-size:1.2em;font-weight:bold;color:#333}
+.round-text{font-size:1em;color:#666}
+.phase-label{text-align:center;font-size:1.2em;color:#43e97b;margin:10px 0;font-weight:bold}
+.btn{display:block;margin:10px auto;padding:12px 40px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;font-weight:bold;transition:transform 0.1s}
+.btn:hover{transform:scale(1.05)}
+.start-screen{text-align:center}
+.end-screen{text-align:center;display:none}
+.game-screen{display:none}
+.final-score{font-size:3em;color:#43e97b;margin:15px 0}
+</style>
+<link rel="stylesheet" href="fonts/emoji-font.css">
+</head>
+<body>
+<div class="container">
+<div class="start-screen" id="startScreen">
+<h1 id="gameTitle"></h1>
+<h2 id="gameSubtitle"></h2>
+<p class="instructions" id="gameInstructions"></p>
+<button class="btn" id="startBtn">Έναρξη!</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="hud">
+<span class="score-text">Γύρος: <span id="roundVal">1</span></span>
+<span class="round-text">Σκορ: <span id="scoreVal">0</span></span>
+</div>
+<div class="phase-label" id="phaseLabel"></div>
+<div class="display-area hidden" id="displayArea">?</div>
+<div class="item-grid" id="itemGrid"></div>
+</div>
+<div class="end-screen" id="endScreen">
+<h1>Τέλος Παιχνιδιού!</h1>
+<div class="final-score" id="finalScore"></div>
+<p class="instructions" id="endMsg"></p>
+<button class="btn" id="restartBtn">Ξαναπάιξε!</button>
+</div>
+</div>
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+const params=new URLSearchParams(window.location.search);const dataFile=params.get('data');
+let G=null,currentRound=0,sequence=[],userSequence=[],phase='',score=0;
+const defaults={title:'Θυμήσου την Ακολουθία!',subtitle:'Τι σειρά εμφανίστηκαν;',instructions:'Θα δεις αντικείμενα να εμφανίζονται ένα-ένα. Θυμήσου τη σειρά!',items:['⌨️','🖱️','🖥️','🖨️','💾','🔌','📷','🎮','🔋','💿'],startLength:3,maxRounds:8,showTime:800,pauseTime:300};
+function loadJSON(file){
+fetch(file).then(r=>r.json()).then(data=>{
+G=Object.assign({},defaults,data);
+document.getElementById('gameTitle').textContent=G.title;
+document.getElementById('gameSubtitle').textContent=G.subtitle;
+document.getElementById('gameInstructions').textContent=G.instructions;
+}).catch(()=>{G=Object.assign({},defaults);document.getElementById('gameTitle').textContent=G.title;document.getElementById('gameSubtitle').textContent=G.subtitle;document.getElementById('gameInstructions').textContent='Σφάλμα φόρτωσης.'})
+}
+if(dataFile)loadJSON(dataFile);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{
+document.getElementById('endScreen').style.display='none';startGame();
+});
+function startGame(){
+if(!G)G=Object.assign({},defaults);
+currentRound=1;score=0;
+document.getElementById('startScreen').style.display='none';
+document.getElementById('gameScreen').style.display='block';
+document.getElementById('endScreen').style.display='none';
+document.getElementById('scoreVal').textContent='0';
+startRound();
+}
+function startRound(){
+const seqLen=G.startLength+currentRound-1;
+sequence=[];
+const pool=[...G.items];
+for(let i=0;i<seqLen;i++){
+const idx=Math.floor(Math.random()*pool.length);
+sequence.push(pool[idx]);
+}
+document.getElementById('roundVal').textContent=currentRound;
+phase='show';
+document.getElementById('phaseLabel').textContent='Πρόσεχε...';
+document.getElementById('itemGrid').innerHTML='';
+const da=document.getElementById('displayArea');
+da.className='display-area hidden';da.textContent='?';
+showSequence(0);
+}
+function showSequence(index){
+if(index>=sequence.length){
+phase='recall';startRecall();return;
+}
+const da=document.getElementById('displayArea');
+da.className='display-area show';da.textContent=sequence[index];
+setTimeout(()=>{
+da.className='display-area hidden';da.textContent='?';
+setTimeout(()=>showSequence(index+1),G.pauseTime);
+},G.showTime);
+}
+function startRecall(){
+document.getElementById('phaseLabel').textContent='Τι σειρά εμφανίστηκαν; πάτα τα με τη σωστή σειρά!';
+userSequence=[];
+const grid=document.getElementById('itemGrid');grid.innerHTML='';
+const shuffled=[...sequence];
+for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]}
+shuffled.forEach((item,idx)=>{
+const btn=document.createElement('button');
+btn.className='item-btn';btn.textContent=item;
+btn.addEventListener('click',()=>onItemClick(item,btn));
+grid.appendChild(btn);
+});
+}
+function onItemClick(item,btn){
+if(phase!=='recall')return;
+const pos=userSequence.length;
+userSequence.push(item);
+if(item===sequence[pos]){
+btn.classList.add('correct');btn.disabled=true;
+if(userSequence.length===sequence.length){
+score=currentRound;
+document.getElementById('scoreVal').textContent=score;
+currentRound++;
+if(currentRound>G.maxRounds){endGame(true)}
+else{setTimeout(()=>startRound(),800)}
+}
+}else{
+btn.classList.add('wrong');
+const allBtns=document.querySelectorAll('.item-btn');
+allBtns.forEach(b=>{
+if(!b.classList.contains('correct')){b.disabled=true}
+});
+setTimeout(()=>endGame(false),1200);
+}
+}
+function endGame(won){
+phase='end';
+document.getElementById('gameScreen').style.display='none';
+document.getElementById('endScreen').style.display='block';
+document.getElementById('finalScore').textContent=score+' πόντοι';
+document.getElementById('endMsg').textContent=won?'Τέλεια μνήμη! Ολοκλήρωσες όλους τους γύρους!':'Έφτασες μέχρι τον γύρο '+score+'! Δοκίμασε ξανά!';
+}
+</script>
+</body>
+</html>

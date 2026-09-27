@@ -1,0 +1,65 @@
+{
+  "title": "Βρες τα Λάθη: Εννοιολογικοί Χάρτες",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "ιεραρχικός", "error": false},
+        {"text": "χάρτης", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "την", "error": false},
+        {"text": "κεντρική", "error": false},
+        {"text": "έννοια", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "κέντρο.", "error": true, "correct": "στην κορυφή", "feedback": "Στον ΙΕΡΑΡΧΙΚΟ χάρτη η κεντρική έννοια είναι στην ΚΟΡΥΦΗ, όχι στο κέντρο!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "χάρτης", "error": false},
+        {"text": "ιστού", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "επίπεδα", "error": true, "correct": "ακτίνες", "feedback": "Ο χάρτης ιστού έχει ΑΚΤΙΝΕΣ γύρω από το κέντρο, όχι επίπεδα!"},
+        {"text": "γύρω", "error": false},
+        {"text": "από", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κέντρο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "έννοιες", "error": false},
+        {"text": "στα", "error": false},
+        {"text": "χαρτ", "error": false},
+        {"text": "εγράφονται", "error": false},
+        {"text": "χωρίς", "error": true, "correct": "μέσα σε", "feedback": "Οι έννοιες γράφονται ΜΕΣΑ ΣΕ ΣΧΗΜΑΤΑ, όχι χωρίς σχήματα!"},
+        {"text": "σχήματα.", "error": true, "correct": "σχήματα.", "feedback": "Οι έννοιες μπαίνουν ΜΕΣΑ ΣΕ ΣΧΗΜΑΤΑ!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στον", "error": false},
+        {"text": "χάρτη", "error": false},
+        {"text": "ιστού", "error": false},
+        {"text": "οι", "error": false},
+        {"text": "έννοιες", "error": false},
+        {"text":"είναι", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "μορφή", "error": false},
+        {"text": "ιεραρχίας.", "error": true, "correct": "ακτινωτή.", "feedback": "Στον χάρτη ιστού οι έννοιες είναι σε ΑΚΤΙΝΩΤΗ μορφή, όχι ιεραρχίας!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "σχήματα", "error": false},
+        {"text": "συνδέονται", "error": false},
+        {"text": "με", "error": false},
+        {"text": "βέλη.", "error": true, "correct": "γραμμές", "feedback": "Τα σχήματα συνδέονται με ΓΡΑΜΜΕΣ, όχι με βέλη!"}
+      ]
+    }
+  ]
+}

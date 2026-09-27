@@ -1,0 +1,66 @@
+{
+    "id": "dimE-les30-missingword-cx7",
+    "title": "Creative Commons - Άδειες χρήσης - Κενά",
+    "type": "missingword",
+    "created_by": "admin",
+    "created_date": "2026-04-22",
+    "data": {
+        "sentences": [
+            {
+                "sentence": "Τα ___ Commons είναι άδειες χρήσης.",
+                "options": [
+                    "Creative",
+                    "Computer",
+                    "Common",
+                    "Classic"
+                ],
+                "correct": "Creative"
+            },
+            {
+                "sentence": "Το CC-___ σημαίνει αναφορά δημιουργού.",
+                "options": [
+                    "BY",
+                    "NC",
+                    "ND",
+                    "SA"
+                ],
+                "correct": "BY"
+            },
+            {
+                "sentence": "Το NC σημαίνει ___ χρήση.",
+                "options": [
+                    "μη εμπορική",
+                    "εμπορική",
+                    "δωρεάν",
+                    "επί πληρωμή"
+                ],
+                "correct": "μη εμπορική"
+            },
+            {
+                "sentence": "Το ND σημαίνει όχι ___.",
+                "options": [
+                    "παράγωγα",
+                    "αναφορά",
+                    "χρήση",
+                    "αντιγραφή"
+                ],
+                "correct": "παράγωγα"
+            },
+            {
+                "sentence": "Πρέπει πάντα να ___ την πηγή.",
+                "options": [
+                    "αναφέρουμε",
+                    "κρύβουμε",
+                    "αλλάζουμε",
+                    "διαγράφουμε"
+                ],
+                "correct": "αναφέρουμε"
+            }
+        ]
+    },
+    "tags": [
+        "dimE",
+        "les30",
+        "creativecommons"
+    ]
+}

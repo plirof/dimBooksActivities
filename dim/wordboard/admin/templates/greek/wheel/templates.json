@@ -1,0 +1,124 @@
+{
+  "templates": [
+    {
+      "id": "greek_wheel_animals_001",
+      "name": "Ζώα (Animals)",
+      "description": "Πες το όνομα του ζώου",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "animals", "elementary"],
+      "segments": [
+        "Σκύλος",
+        "Γάτα",
+        "Πουλί",
+        "Ψάρι",
+        "Κουνέλι",
+        "Χάμστερ",
+        "Παπάκι",
+        "Χελώνα",
+        "Ιγκουάνα",
+        "Καναρίνι"
+      ]
+    },
+    {
+      "id": "greek_wheel_fruits_001",
+      "name": "Φρούτα (Fruits)",
+      "description": "Πες το όνομα του φρούτου",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "fruits", "food", "elementary"],
+      "segments": [
+        "Μήλο",
+        "Μπανάνα",
+        "Πορτοκάλι",
+        "Σταφύλι",
+        "Φράουλα",
+        "Κεράσι",
+        "Ροδάκινο",
+        "Αχλάδι",
+        "Καρπούζι",
+        "Πεπόνι"
+      ]
+    },
+    {
+      "id": "greek_wheel_colors_001",
+      "name": "Χρώματα (Colors)",
+      "description": "Πες το χρώμα",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "colors", "elementary"],
+      "segments": [
+        "Κόκκινο",
+        "Μπλε",
+        "Πράσινο",
+        "Κίτρινο",
+        "Πορτοκαλί",
+        "Μωβ",
+        "Ροζ",
+        "Καφέ",
+        "Μαύρο",
+        "Λευκό"
+      ]
+    },
+    {
+      "id": "greek_wheel_numbers_001",
+      "name": "Αριθμοί (Numbers)",
+      "description": "Πες τον αριθμό στα ελληνικά",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "numbers", "math", "elementary"],
+      "segments": [
+        "Ένα",
+        "Δύο",
+        "Τρία",
+        "Τέσσερα",
+        "Πέντε",
+        "Έξι",
+        "Επτά",
+        "Οκτώ",
+        "Εννέα",
+        "Δέκα"
+      ]
+    },
+    {
+      "id": "greek_wheel_school_001",
+      "name": "Σχολείο (School)",
+      "description": "Αντικείμενα του σχολείου",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "school", "elementary"],
+      "segments": [
+        "Βιβλίο",
+        "Τετράδιο",
+        "Μολύβι",
+        "Στυλό",
+        "Γόμα",
+        "Χάρακας",
+        "Τσάντα",
+        "Κιμωλία",
+        "Παχιέ",
+        "Μαρκαδόρος"
+      ]
+    },
+    {
+      "id": "greek_wheel_family_001",
+      "name": "Οικογένεια (Family)",
+      "description": "Μέλη της οικογένειας",
+      "category": "wheel",
+      "difficulty": "easy",
+      "tags": ["greek", "family", "elementary"],
+      "segments": [
+        "Μαμά",
+        "Μπαμπάς",
+        "Γιαγιά",
+        "Παππούς",
+        "Αδερφή",
+        "Αδερφός",
+        "Θείος",
+        "Θεία",
+        "Εξάδερφος",
+        "Γονείς"
+      ]
+    }
+  ]
+}

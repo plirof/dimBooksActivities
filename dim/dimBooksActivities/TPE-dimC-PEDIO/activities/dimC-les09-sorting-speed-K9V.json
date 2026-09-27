@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μονάδες Μέτρησης",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε μονάδα!",
+  "categories": [
+    {"id": "small", "name": "Bit / Byte", "color": "#2196F3", "key": "ArrowLeft"},
+    {"id": "big", "name": "KB / MB / GB", "color": "#4CAF50", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "1 δυαδικό ψηφίο", "category": "small"},
+    {"text": "1 KB = 1000 B", "category": "big"},
+    {"text": "8 bits", "category": "small"},
+    {"text": "1 MB = 1000 KB", "category": "big"},
+    {"text": "0 ή 1", "category": "small"},
+    {"text": "1 GB = 1000 MB", "category": "big"},
+    {"text": "1 B (ψηφιολέξη)", "category": "small"},
+    {"text": "Κείμενο = λίγα KB", "category": "big"},
+    {"text": "1 bit ανά pixel (ασπρόμαυρη)", "category": "small"},
+    {"text": "Εικόνα = λίγα MB", "category": "big"}
+  ],
+  "duration": 30
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Υπολογισμός: Τύποι στο Φύλλο | Μάθημα 18</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);padding:12px;display:flex;flex-direction:column;align-items:center;}
+h1{color:#fff;font-size:1.3rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.85rem;text-align:center;margin-bottom:12px;}
+.container{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.22);max-width:750px;width:100%;padding:16px;}
+.toolbar{display:flex;gap:6px;align-items:center;padding:8px;background:#e8eaf6;border-radius:10px;margin-bottom:10px;flex-wrap:wrap;}
+.toolbar .fn{font-weight:700;color:#4527a0;font-size:.9rem;margin-right:auto;}
+.toolbar button{padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;background:#667eea;color:#fff;}
+.formula-bar{display:flex;gap:6px;align-items:center;padding:6px 10px;border:2px solid #c5cae9;border-radius:8px;margin-bottom:8px;}
+.formula-bar .ref{font-weight:700;color:#4527a0;min-width:40px;}
+.formula-bar input{flex:1;border:none;outline:none;font-size:.9rem;font-family:'Courier New',monospace;}
+.ss{border:2px solid #c5cae9;border-radius:10px;overflow:auto;max-height:360px;}
+table{border-collapse:collapse;width:100%;font-size:.85rem;}
+th{background:#667eea;color:#fff;padding:6px;position:sticky;top:0;min-width:65px;font-size:.8rem;}
+th:first-child{min-width:35px;background:#4527a0;}
+td{border:1px solid #e0e0e0;padding:4px 6px;}
+td:first-child{background:#e8eaf6;font-weight:700;text-align:center;color:#4527a0;}
+td.editable{cursor:pointer;}
+td.editable:hover{background:#f5f5f5;}
+td.selected{outline:2px solid #667eea;background:#f3e5f5 !important;}
+.calc-result{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:12px;padding:12px;text-align:center;margin-top:10px;font-weight:700;color:#166534;}
+.step-box{background:#fff3e0;border:2px solid #ffb74d;border-radius:10px;padding:10px;margin:8px 0;text-align:center;font-size:.85rem;}
+.step-box b{color:#e65100;}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .toolbar > * { margin: 3px; }
+  .formula-bar > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔢 Υπολογισμοί: Κελιά + Τύποι</h1>
+<p class="subtitle">Γράψε τύπους (=A1+B1, =SUM) και δες τα αποτελέσματα!</p>
+<div class="container">
+<div class="step-box">
+<b>Τύποι:</b> <code>=A1+B1</code> (πρόσθεση), <code>=A1*B1</code> (πολλαπλασιασμός), <code>=SUM(A1:A5)</code> (άθροισμα)
+</div>
+<div class="toolbar">
+<span class="fn">📄 Βαθμοί_Μαθητών.ods</span>
+<button onclick="loadExample()">📋 Παράδειγμα</button>
+<button onclick="clearSheet()">🗑️ Καθαρισμός</button>
+</div>
+<div class="formula-bar">
+<span class="ref" id="cr">A1</span><span style="color:#999">fx</span>
+<input type="text" id="fi" placeholder="Γράψε τύπο, π.χ. =B2+C2" oninput="applyF()">
+</div>
+<div class="ss"><table id="sh"></table></div>
+<div class="calc-result" id="calcRes">Επίλεξε ένα κελί και γράψε τύπο!</div>
+</div>
+<script>
+var COLS=7,ROWS=8,CL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';var data=[],sr=0,sc=0;
+var lastTapR=-1,lastTapC=-1,justSelected=false,editInput=null;
+for(var r=0;r<ROWS;r++){data[r]=[];for(var c=0;c<COLS;c++)data[r][c]='';}
+function ev(f){
+if(!f||typeof f!=='string'||!f.startsWith('='))return f;
+var ex=f.substring(1);
+ex=ex.replace(/SUM\(([A-Z])(\d+):([A-Z])(\d+)\)/gi,function(_,c1,r1,c2,r2){
+var col=CL.indexOf(c1.toUpperCase()),rS=parseInt(r1)-1,rE=parseInt(r2)-1;
+var s=0;for(var r=rS;r<=rE;r++){var v=getNum(r,col);s+=v;}return s;
+});
+ex=ex.replace(/([A-Z])(\d+)/gi,function(_,c,r){
+var col=CL.indexOf(c.toUpperCase()),row=parseInt(r)-1;
+if(row>=0&&row<ROWS&&col>=0&&col<COLS){var v=getNum(row,col);return v;}
+return 0;
+});
+try{var res=Function('"use strict";return ('+ex+')')();return isNaN(res)?f:Math.round(res*100)/100;}
+catch(e){return f;}
+}
+function getNum(r,c){var v=parseFloat(data[r][c]);return isNaN(v)?0:v;}
+function dv(r,c){return ev(data[r][c]);}
+function render(){
+var t=document.getElementById('sh');var h='<tr><th></th>';
+for(var c=0;c<COLS;c++)h+='<th>'+CL[c]+'</th>';h+='</tr>';
+for(var r=0;r<ROWS;r++){
+h+='<tr><td>'+(r+1)+'</td>';
+for(var c=0;c<COLS;c++){
+var v=dv(r,c);var cl=r===sr&&c===sc?'editable selected':'editable';
+h+='<td class="'+cl+'" data-r="'+r+'" data-c="'+c+'" onclick="sel('+r+','+c+')">'+v+'</td>';
+}
+h+='</tr>';
+}t.innerHTML=h;
+}
+function sel(r,c){
+  if(editInput){
+    finishEdit();
+    sr=r;sc=c;lastTapR=r;lastTapC=c;
+    var ref=CL[c]+(r+1);
+    document.getElementById('cr').textContent=ref;
+    document.getElementById('fi').value=data[r][c];
+    document.getElementById('calcRes').textContent='Κελί '+ref+': '+(data[r][c].startsWith('=')?'Τύπος: '+data[r][c]+' = '+dv(r,c):data[r][c]);
+    render();
+    return;
+  }
+  if(lastTapR===r&&lastTapC===c&&!justSelected){
+    editCell(r,c);return;
+  }
+  lastTapR=r;lastTapC=c;justSelected=true;
+  setTimeout(function(){justSelected=false;},300);
+  sr=r;sc=c;var ref=CL[c]+(r+1);
+  document.getElementById('cr').textContent=ref;
+  document.getElementById('fi').value=data[r][c];
+  document.getElementById('calcRes').textContent='Κελί '+ref+': '+(data[r][c].startsWith('=')?'Τύπος: '+data[r][c]+' = '+dv(r,c):data[r][c]);
+  render();
+}
+function applyF(){
+  data[sr][sc]=document.getElementById('fi').value;
+  document.getElementById('calcRes').textContent='Κελί '+CL[sc]+(sr+1)+': '+(data[sr][sc].startsWith('=')?'Τύπος: '+data[sr][sc]+' = '+dv(sr,sc):data[sr][sc]);
+  render();
+}
+function editCell(r,c){
+  var td=document.querySelector('td[data-r="'+r+'"][data-c="'+c+'"]');
+  if(!td)return;
+  var val=data[r][c]||'';
+  editInput=document.createElement('input');
+  editInput.type='text';
+  editInput.value=val;
+  editInput.style.cssText='width:100%;height:100%;border:2px solid #667eea;font-size:inherit;font-family:inherit;padding:2px 4px;outline:none;';
+  editInput.onkeydown=function(e){
+    if(e.key==='Enter'){finishEdit();sel(r,c);}
+    if(e.key==='Escape'){cancelEdit();}
+  };
+  editInput.onblur=function(){finishEdit();};
+  td.innerHTML='';
+  td.appendChild(editInput);
+  editInput.focus();
+  editInput.select();
+}
+function finishEdit(){
+  if(!editInput)return;
+  var val=editInput.value;
+  var r=sr,c=sc;
+  data[r][c]=val;
+  editInput=null;
+  document.getElementById('calcRes').textContent='Κελί '+CL[c]+(r+1)+': '+(val.startsWith('=')?'Τύπος: '+val+' = '+dv(r,c):val);
+  render();
+}
+function cancelEdit(){
+  editInput=null;
+  render();
+}
+function loadExample(){
+data[0]=['Μάθημα','Τεστ 1','Τεστ 2','Τεστ 3','Μέσος','Σύνολο'];
+data[1]=['Μαθηματικά','8','9','7','=AVERAGE(B2:D2)','=SUM(B2:D2)'];
+data[2]=['Γλώσσα','7','8','9','=AVERAGE(B3:D3)','=SUM(B3:D3)'];
+data[3]=['Ιστορία','9','7','8','=AVERAGE(B4:D4)','=SUM(B4:D4)'];
+data[4]=['Φυσική','6','8','9','=AVERAGE(B5:D5)','=SUM(B5:D5)'];
+data[5]=['Μέσος Όρος','=AVERAGE(B2:B5)','=AVERAGE(C2:C5)','=AVERAGE(D2:D5)','','=AVERAGE(F2:F5)'];
+render();sel(0,0);
+}
+function clearSheet(){for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)data[r][c]='';render();}
+document.getElementById('fi').addEventListener('keydown',function(e){
+if(e.key==='Enter'){var n=sr+1;if(n<ROWS)sel(n,sc);}
+if(e.key==='Tab'){e.preventDefault();var nc=sc+(e.shiftKey?-1:1);if(nc>=0&&nc<COLS)sel(sr,nc);}
+});
+render();sel(0,0);
+</script>
+</body>
+</html>

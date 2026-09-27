@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Εργαλεία Ζωγραφικής",
+  "subtitle": "Ταξινόμησε: τι κάνει το κάθε εργαλείο;",
+  "instructions": "Βάλε κάθε λειτουργία στη σωστή κατηγορία",
+  "categories": [
+    { "id": "zografisma", "name": "Ζωγράφισμα", "color": "#2196F3", "key": "A" },
+    { "id": "diorthosi", "name": "Διόρθωση", "color": "#f44336", "key": "L" },
+    { "id": "grafia", "name": "Γραφή", "color": "#FF9800", "key": "D" }
+  ],
+  "items": [
+    { "text": "Πινέλο", "category": "zografisma" },
+    { "text": "Σβήστρα", "category": "diorthosi" },
+    { "text": "Κείμενο", "category": "grafia" },
+    { "text": "Σχήματα", "category": "zografisma" },
+    { "text": "Αναίρεση", "category": "diorthosi" },
+    { "text": "Γράμματα στη ζωγραφική", "category": "grafia" },
+    { "text": "Γραμμές", "category": "zografisma" },
+    { "text": "Undo", "category": "diorthosi" },
+    { "text": "Όνομα στο ρομπότ", "category": "grafia" },
+    { "text": "Χρώματα", "category": "zografisma" }
+  ],
+  "duration": 30
+}

@@ -1,0 +1,67 @@
+{
+  "title": "Βρες τα Λάθη: Επίλυση Προβλημάτων",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Όταν", "error": false},
+        {"text": "η", "error": false},
+        {"text": "γάτα", "error": false},
+        {"text": "φτάνει", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "αριστερό", "error": true, "correct": "δεξιό", "feedback": "Η γάτα εξαφανίζεται στο ΔΕΞΙΟ όριο, όχι το αριστερό!"},
+        {"text": "όριο", "error": false},
+        {"text": "της", "error": false},
+        {"text": "σκηνής.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "διπλασιασμός", "error": false},
+        {"text": "κάνει", "error": false},
+        {"text": "διαγραφή", "error": true, "correct": "αντιγραφή", "feedback": "Ο διπλασιασμός κάνει ΑΝΤΙΓΡΑΦΗ, όχι διαγραφή!"},
+        {"text": "μιας", "error": false},
+        {"text": "εντολής.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "πρόγραμμα", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "ένα", "error": true, "correct": "δύο", "feedback": "Το τελικό πρόγραμμα έχει ΔΥΟ σενάρια, ένα για κάθε συμβάν!"},
+        {"text": "σενάριο", "error": false},
+        {"text": "για", "error": false},
+        {"text": "ένα", "error": true, "correct": "δύο", "feedback": "Έχουμε ΔΥΟ συμβάντα: πράσινη σημαία και δεξί βελάκι!"},
+        {"text": "συμβάν.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Η", "error": false},
+        {"text": "συνθήκη", "error": false},
+        {"text": "«ακουμπάει", "error": false},
+        {"text": "όριο", "error": false},
+        {"text": "σκηνής»", "error": false},
+        {"text": "βρίσκεται", "error": false},
+        {"text": "στην", "error": false},
+        {"text": "πορτοκαλί", "error": true, "correct": "μπλε", "feedback": "Οι συνθήκες βρίσκονται στην ΜΠΛΕ κατηγορία (κίνηση)!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "σπιτάκι", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "ακουμπάει", "error": false},
+        {"text": "στο", "error": false},
+        {"text": "κάτω", "error": true, "correct": "", "feedback": "Το σπιτάκι ΔΕΝ πρέπει να ακουμπάει στο αριστερό ή κάτω άκρο της σκηνής!"},
+        {"text": "όριο", "error": false},
+        {"text": "της", "error": false},
+        {"text": "σκηνής.", "error": false}
+      ]
+    }
+  ]
+}

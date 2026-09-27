@@ -1,0 +1,71 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Οργάνωση Δεδομένων",
+  "subtitle": "Σπάσε τα μπαλόνια με λέξεις του υπολογιστικού φύλλου",
+  "instruction": "Σπάσε τα μπαλόνια που περιέχουν λέξεις σχετικές με το υπολογιστικό φύλλο",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 1800,
+  "balloons": [
+    {
+      "text": "Κελί",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Στήλη",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Γραμμή",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Διάγραμμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Πίνακας",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ερώτημα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Αλγόριθμος",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ρομπότ",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Πρόγραμμα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Λούπα",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Σένσορας",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Bluetooth",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

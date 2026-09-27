@@ -1,0 +1,20 @@
+{
+  "title": "Ταξινόμηση: Πάνω/Κάτω ή Δεξιά/Αριστερά;",
+  "subtitle": "Πού ανήκει;",
+  "instructions": "Πάτα: Πάνω/Κάτω ή Δεξιά/Αριστερά;",
+  "categories": [
+    {"id": "panwkatw", "name": "Πάνω/Κάτω", "color": "#FF9800", "key": "ArrowLeft"},
+    {"id": "dexiaaristera", "name": "Δεξιά/Αριστερά", "color": "#9C27B0", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Πάνω", "category": "panwkatw"},
+    {"text": "Δεξιά", "category": "dexiaaristera"},
+    {"text": "Κάτω", "category": "panwkatw"},
+    {"text": "Αριστερά", "category": "dexiaaristera"},
+    {"text": "Ανεβαίνω", "category": "panwkatw"},
+    {"text": "Στρίβω", "category": "dexiaaristera"},
+    {"text": "Κατεβαίνω", "category": "panwkatw"},
+    {"text": "Πλάγια", "category": "dexiaaristera"}
+  ],
+  "duration": 30
+}

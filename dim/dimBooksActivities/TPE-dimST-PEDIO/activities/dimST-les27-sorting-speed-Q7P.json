@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μενού Βίντεο",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "menu", "name": "Μενού Πλατφόρμας", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "actions", "name": "Ενέργειες Χρήστη", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Κατηγορίες", "category": "menu"},
+    {"text": "Σχολιασμός", "category": "actions"},
+    {"text": "Μεταδόσεις", "category": "menu"},
+    {"text": "Βαθμολόγηση", "category": "actions"},
+    {"text": "Θεματικά κανάλια", "category": "menu"},
+    {"text": "Αγαπημένα", "category": "actions"},
+    {"text": "Ομάδες", "category": "menu"},
+    {"text": "Κοινοποίηση", "category": "actions"},
+    {"text": "Παρουσιάσεις", "category": "menu"},
+    {"text": "Ενσωμάτωση", "category": "actions"}
+  ],
+  "duration": 30
+}

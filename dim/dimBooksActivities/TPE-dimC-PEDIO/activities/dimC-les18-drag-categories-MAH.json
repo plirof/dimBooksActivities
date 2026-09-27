@@ -1,0 +1,48 @@
+{
+  "title": "Ιστοσελίδα ή Δικτυακός Τόπος",
+  "subtitle": "Διάκρινε ιστοσελίδα από δικτυακό τόπο",
+  "categories": [
+    {
+      "id": "page",
+      "name": "ΙΣΤΟΣΕΛΙΔΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "site",
+      "name": "ΔΙΚΤΥΑΚΟΣ ΤΟΠΟΣ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Μία σελίδα",
+      "category": "page"
+    },
+    {
+      "id": "item2",
+      "text": "Πολλές σελίδες",
+      "category": "site"
+    },
+    {
+      "id": "item3",
+      "text": "Ένα URL",
+      "category": "page"
+    },
+    {
+      "id": "item4",
+      "text": "Πολλά URL",
+      "category": "site"
+    },
+    {
+      "id": "item5",
+      "text": "Αρχική σελίδα",
+      "category": "page"
+    },
+    {
+      "id": "item6",
+      "text": "Ολόκληρη η πλοήγηση",
+      "category": "site"
+    }
+  ]
+}

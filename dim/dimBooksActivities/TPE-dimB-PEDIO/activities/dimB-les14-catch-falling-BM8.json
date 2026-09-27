@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα: Διαδίκτυο",
+  "subtitle": "Πιάσε μόνο υπηρεσίες διαδικτύου!",
+  "instructions": "Πιάσε μόνο ΥΠΗΡΕΣΙΕΣ ΔΙΑΔΙΚΤΥΟΥ! ← → βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 12,
+  "items": [
+    {"text": "Email", "correct": true, "color": "#4CAF50"},
+    {"text": "Βιβλίο", "correct": false, "color": "#f44336"},
+    {"text": "Chat", "correct": true, "color": "#2196F3"},
+    {"text": "Μολύβι", "correct": false, "color": "#FF9800"},
+    {"text": "Βιντεοκλήση", "correct": true, "color": "#9C27B0"},
+    {"text": "Ψυγείο", "correct": false, "color": "#E91E63"},
+    {"text": "Ιστοσελίδα", "correct": true, "color": "#009688"},
+    {"text": "Τηλεόραση", "correct": false, "color": "#FFC107"},
+    {"text": "Τηλεδιάσκεψη", "correct": true, "color": "#795548"},
+    {"text": "Καρέκλα", "correct": false, "color": "#607D8B"}
+  ]
+}

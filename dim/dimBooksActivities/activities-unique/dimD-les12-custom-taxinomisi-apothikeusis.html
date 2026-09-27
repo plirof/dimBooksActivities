@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξινόμηση Αποθήκευσης - Storage</title>
+<style>
+@font-face {
+    font-family: 'EmojiFont';
+    src: local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');
+    unicode-range: U+200D, U+2190-21FF, U+2300-23FF, U+25A0-25FF, U+2600-27BF, U+2900-297F, U+2B00-2BFF, U+FE0F, U+1F000-1FFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#fef9c3,#fde047);min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start}
+.container{background:#fff;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.15);max-width:780px;width:100%;overflow:hidden}
+.header{background:linear-gradient(135deg,#ca8a04,#fde047);color:#fff;padding:18px 24px;text-align:center}
+.header h1{font-size:1.4em}
+.header p{font-size:.9em;opacity:.9;margin-top:4px}
+.area{padding:20px}
+.info-box{background:#fef9c3;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88em;color:#854d0e;text-align:center;line-height:1.5}
+.storage-items{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px}
+.items-label{font-weight:700;color:#475569;margin-bottom:10px;font-size:.95em;text-align:center}
+.storage-grid{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.storage-item{background:#fff;border:2px solid #cbd5e1;border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all .2s}
+.storage-item:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.storage-item.selected{border-color:#ca8a04;background:#fef9c3}
+.storage-item.disabled{opacity:.3;cursor:not-allowed}
+.item-emoji{font-size:2.5em}
+.item-name{font-weight:700;color:#475569;font-size:.9em;text-align:center}
+.item-size{font-size:.8em;color:#64748b;text-align:center}
+.capacity-bar{background:#e0f2fe;border-radius:12px;padding:14px;margin-bottom:14px}
+.capacity-label{font-weight:700;color:#0369a1;margin-bottom:8px;font-size:.95em;text-align:center}
+.capacity-display{background:#fff;border:2px solid #38bdf8;border-radius:10px;padding:10px;text-align:center;font-size:1.1em;font-weight:700;color:#0369a1}
+.capacity-scale{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.scale-item{background:#fff;border:1px solid #38bdf8;border-radius:6px;padding:4px 10px;font-size:.85em;color:#0369a1}
+.btn-check{background:linear-gradient(135deg,#16a34a,#4ade80);color:#fff;border:none;border-radius:50px;padding:12px 30px;font-size:1em;font-weight:700;cursor:pointer;display:block;margin:10px auto;transition:all .2s}
+.btn-check:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(22,163,74,.4)}
+.btn-check:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{text-align:center;font-size:1.15em;font-weight:700;margin-top:12px;min-height:36px}
+.feedback.ok{color:#16a34a}
+.feedback.fail{color:#dc2626}
+.score-display{text-align:center;font-size:1.1em;font-weight:700;color:#ca8a04;margin-bottom:12px}
+.progress-dots{text-align:center;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.dot.done-ok{background:#4ade80}
+.dot.done-wrong{background:#f87171}
+.dot.current{background:#ca8a04;transform:scale(1.3)}
+@media(max-width:550px){.item-emoji{font-size:2em}.storage-item{padding:10px 14px}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .storage-grid > * { margin: 6px; }
+  .storage-item > * + * { margin-top: 8px; }
+  .capacity-scale > * + * { margin-left: 8px; }
+  .progress-dots > * { margin: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>💾 Ταξινόμηση Αποθήκευσης</h1>
+<p>Ταξινόμησε τα μέσα αποθήκευσης κατά χωρητικότητα!</p>
+</div>
+<div class="area">
+<div class="info-box">💡 Κάθε μέσο αποθήκευσης έχει διαφορετική χωρητικότητα! Η κάρτα μνήμης έχει μερικά GB, ο σκληρός δίσκος έχει εκατοντάδες GB!</div>
+
+<div class="score-display" id="scoreDisplay">Βαθμολογία: 0 / 4</div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="capacity-bar">
+<div class="capacity-label">📊 Χρησιμοποιούμενη χωρητικότητα:</div>
+<div class="capacity-display" id="capacityDisplay">Πρόσθεσε τα μέσα αποθήκευσης...</div>
+<div class="capacity-scale">
+<div class="scale-item">KB</div>
+<div class="scale-item">MB</div>
+<div class="scale-item">GB</div>
+<div class="scale-item">TB</div>
+</div>
+</div>
+
+<div class="storage-items">
+<div class="items-label">🎯 Μέσα αποθήκευσης (πάτησε για να προσθέσεις):</div>
+<div class="storage-grid" id="storageGrid">
+<div class="storage-item" data-size="8" data-unit="GB" onclick="selectStorage(this)">
+<div class="item-emoji">💾</div>
+<div class="item-name">Σκληρός δίσκος</div>
+<div class="item-size">~500 GB</div>
+</div>
+<div class="storage-item" data-size="128" data-unit="GB" onclick="selectStorage(this)">
+<div class="item-emoji">🖴</div>
+<div class="item-name">SSD</div>
+<div class="item-size">~128 GB</div>
+</div>
+<div class="storage-item" data-size="16" data-unit="GB" onclick="selectStorage(this)">
+<div class="item-emoji">📱</div>
+<div class="item-name">Κάρτα μνήμης</div>
+<div class="item-size">~16 GB</div>
+</div>
+<div class="storage-item" data-size="4" data-unit="GB" onclick="selectStorage(this)">
+<div class="item-emoji">💿</div>
+<div class="item-name">Μνήμη φλας</div>
+<div class="item-size">~4 GB</div>
+</div>
+</div>
+</div>
+
+<button class="btn-check" id="checkBtn" onclick="checkOrder()">✅ Έλεγχος Ταξινόμησης</button>
+<div class="feedback" id="feedback"></div>
+</div>
+</div>
+<script>
+var score=0;
+var selectedStorages=[];
+var isChecking=false;
+
+function selectStorage(item){
+  if(isChecking||item.classList.contains('disabled'))return;
+  
+  var size=parseInt(item.dataset.size);
+  var unit=item.dataset.unit;
+  var name=item.querySelector('.item-name').textContent;
+  
+  selectedStorages.push({size:size,unit:unit,name:name,element:item});
+  item.classList.add('disabled');
+  
+  updateCapacityDisplay();
+}
+
+function updateCapacityDisplay(){
+  var display=document.getElementById('capacityDisplay');
+  
+  if(selectedStorages.length===0){
+    display.textContent='Πρόσθεσε τα μέσα αποθήκευσης...';
+    return;
+  }
+  
+  var totalSize=0;
+  var lastUnit='';
+  
+  for(var i=0;i<selectedStorages.length;i++){
+    totalSize+=selectedStorages[i].size;
+    lastUnit=selectedStorages[i].unit;
+  }
+  
+  display.textContent='Συνολικά: '+totalSize+' '+lastUnit;
+}
+
+function checkOrder(){
+  if(selectedStorages.length!==4){
+    showFeedback('❌ Πρόσθεσε και τα 4 μέσα αποθήκευσης!',false);
+    return;
+  }
+  
+  isChecking=true;
+  document.getElementById('checkBtn').disabled=true;
+  
+  var isCorrect=true;
+  var previousSize=Infinity;
+  
+  for(var i=0;i<selectedStorages.length;i++){
+    if(selectedStorages[i].size>=previousSize){
+      isCorrect=false;
+      break;
+    }
+    previousSize=selectedStorages[i].size;
+  }
+  
+  if(isCorrect){
+    score++;
+    showFeedback('🎉 Σωστά! Ταξινόμησες σωστά από το μεγαλύτερο στο μικρότερο!',true);
+    
+    setTimeout(function(){
+      resetSelection();
+    },2000);
+  }else{
+    showFeedback('❌ Η ταξινόμηση δεν είναι σωστή. Το μεγαλύτερο πριν!',false);
+    
+    setTimeout(function(){
+      resetSelection();
+    },2000);
+  }
+  
+  updateScore();
+}
+
+function resetSelection(){
+  selectedStorages=[];
+  isChecking=false;
+  
+  var items=document.querySelectorAll('.storage-item');
+  for(var i=0;i<items.length;i++){
+    items[i].classList.remove('disabled');
+  }
+  
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  updateCapacityDisplay();
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent='Βαθμολογία: '+score+' / 1';
+}
+
+function showFeedback(msg,isOk){
+  var el=document.getElementById('feedback');
+  el.textContent=msg;
+  el.className='feedback '+(isOk?'ok':'fail');
+}
+</script>
+</body>
+</html>

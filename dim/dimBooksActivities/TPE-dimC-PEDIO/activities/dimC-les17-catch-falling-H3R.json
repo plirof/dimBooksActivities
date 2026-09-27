@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Πλήκτρα",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΟΝΟΜΑΤΑ ΠΛΗΚΤΡΩΝ ΠΛΗΚΤΡΟΛΟΓΙΟΥ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Shift", "correct": true, "color": "#4CAF50"},
+    {"text": "Καρέκλα", "correct": false, "color": "#f44336"},
+    {"text": "Space", "correct": true, "color": "#2196F3"},
+    {"text": "Μπανάνα", "correct": false, "color": "#FF9800"},
+    {"text": "Enter", "correct": true, "color": "#9C27B0"},
+    {"text": "Γάτα", "correct": false, "color": "#E91E63"},
+    {"text": "Tab", "correct": true, "color": "#00BCD4"},
+    {"text": "Μήλο", "correct": false, "color": "#FFC107"},
+    {"text": "Backspace", "correct": true, "color": "#795548"},
+    {"text": "Ποδήλατο", "correct": false, "color": "#607D8B"}
+  ]
+}

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Κρυπτογράφηση με Δυαδικό Κώδικα | Μάθημα 11</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);
+  padding:12px;display:flex;flex-direction:column;align-items:center;
+}
+h1{color:#fff;font-size:1.6rem;text-align:center;text-shadow:2px 2px 6px rgba(0,0,0,.3);margin:8px 0 4px;}
+.subtitle{color:#fffde7;font-size:.95rem;text-align:center;margin-bottom:12px;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.container{
+  background:#fff;border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22);
+  max-width:800px;width:100%;padding:20px 18px 24px;
+}
+.mode-tabs{display:flex;gap:8px;margin-bottom:16px;justify-content:center;}
+.mode-btn{
+  padding:10px 24px;border-radius:12px;border:2px solid #ddd;
+  background:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .2s;color:#555;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 12px rgba(102,126,234,.4);
+}
+.mode-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.12);}
+.section{
+  background:#f8f9ff;border-radius:16px;padding:18px;margin-bottom:16px;
+  border:2px solid #e8eaf6;
+}
+.section-title{
+  font-size:1.1rem;font-weight:700;color:#4527a0;
+  margin-bottom:12px;text-align:center;
+}
+.encode-input-row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.encode-input-row label{font-weight:700;color:#555;font-size:.95rem;}
+.encode-input-row input{
+  width:50px;height:50px;text-align:center;font-size:1.4rem;font-weight:700;
+  border:3px solid #667eea;border-radius:12px;outline:none;
+  text-transform:uppercase;
+}
+.encode-input-row input:focus{border-color:#764ba2;box-shadow:0 0 12px rgba(118,75,162,.3);}
+.converter-chain{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin:12px 0;
+}
+.chain-step{
+  background:#fff;border-radius:12px;padding:10px 16px;
+  text-align:center;min-width:70px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);border:2px solid #e0e0e0;
+}
+.chain-step .label{font-size:.75rem;color:#888;margin-bottom:4px;font-weight:600;}
+.chain-step .value{font-size:1.5rem;font-weight:800;color:#4527a0;}
+.chain-arrow{font-size:1.5rem;color:#764ba2;font-weight:700;}
+.bit-row{display:flex;gap:8px;justify-content:center;margin:12px 0;flex-wrap:wrap;}
+.bit-toggle{
+  width:52px;height:68px;border-radius:12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:3px solid #ddd;background:#fff;transition:all .25s;
+  user-select:none;position:relative;
+}
+.bit-toggle.on{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  border-color:#4527a0;
+  box-shadow:0 4px 14px rgba(102,126,234,.45);
+}
+.bit-toggle .bit-pos{font-size:.65rem;color:#999;font-weight:600;margin-bottom:2px;}
+.bit-toggle.on .bit-pos{color:#e0d0ff;}
+.bit-toggle .bit-val{font-size:1.5rem;font-weight:800;color:#bbb;}
+.bit-toggle.on .bit-val{color:#fff;}
+.bit-toggle{animation:none;}
+@keyframes bitFlip{
+  0%{transform:scaleY(1);}
+  50%{transform:scaleY(0);}
+  100%{transform:scaleY(1);}
+}
+.bit-toggle.flipping{animation:bitFlip .3s ease;}
+.ref-table-wrap{max-height:260px;overflow-y:auto;border-radius:12px;border:2px solid #e8eaf6;}
+.ref-table{width:100%;border-collapse:collapse;font-size:.85rem;}
+.ref-table th{background:#667eea;color:#fff;padding:8px 6px;position:sticky;top:0;font-size:.8rem;}
+.ref-table td{padding:6px;text-align:center;border-bottom:1px solid #eee;}
+.ref-table tr:hover td{background:#f3e5f5;}
+.ref-table .active-letter td{background:#e8eaf6;font-weight:700;}
+.challenge-section{background:linear-gradient(135deg,#fff9c4,#fff59d);border-color:#f9a825;}
+.challenge-section .section-title{color:#e65100;}
+.challenge-slots{display:flex;gap:10px;justify-content:center;margin:10px 0;flex-wrap:wrap;}
+.challenge-slot{
+  width:90px;background:#fff;border-radius:14px;padding:10px;
+  text-align:center;border:3px dashed #f9a825;
+  box-shadow:0 2px 8px rgba(249,168,37,.2);
+}
+.challenge-slot .slot-letter{font-size:1.3rem;font-weight:800;color:#e65100;min-height:30px;}
+.challenge-slot .slot-binary{font-size:.85rem;color:#555;font-family:monospace;min-height:18px;}
+.challenge-input{
+  width:120px;height:48px;text-align:center;font-size:1.2rem;font-weight:700;
+  border:3px solid #f9a825;border-radius:12px;outline:none;text-transform:uppercase;
+}
+.challenge-input:focus{border-color:#e65100;box-shadow:0 0 12px rgba(230,81,0,.25);}
+.challenge-hint{font-size:.85rem;color:#795548;text-align:center;margin-top:6px;font-style:italic;}
+.success-msg{
+  text-align:center;padding:12px;border-radius:12px;
+  background:linear-gradient(135deg,#43a047,#66bb6a);color:#fff;
+  font-weight:700;font-size:1rem;display:none;margin-top:10px;
+}
+.btn{
+  padding:10px 20px;border-radius:12px;border:none;
+  font-size:.95rem;font-weight:700;cursor:pointer;
+  transition:all .2s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;
+  box-shadow:0 4px 12px rgba(102,126,234,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.5);}
+.decode-result{text-align:center;margin-top:10px;}
+.decode-letter{font-size:3rem;font-weight:800;color:#4527a0;}
+@media(max-width:500px){
+  .chain-step{min-width:55px;padding:8px 10px;}
+  .chain-step .value{font-size:1.2rem;}
+  .bit-toggle{width:44px;height:58px;}
+  .bit-toggle .bit-val{font-size:1.2rem;}
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .mode-tabs > * + * { margin-left: 8px; }
+  .encode-input-row > * { margin: 5px; }
+  .converter-chain > * { margin: 5px; }
+  .bit-row > * { margin: 4px; }
+  .challenge-slots > * { margin: 5px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔐 Κρυπτογράφηση με Δυαδικό Κώδικα!</h1>
+<p class="subtitle">Μάθε πώς οι υπολογιστές κωδικοποιούν γράμματα!</p>
+<div class="container">
+
+<div class="mode-tabs">
+  <button class="mode-btn active" onclick="setMode('encode')">🔄 Κωδικοποίηση</button>
+  <button class="mode-btn" onclick="setMode('decode')">🔓 Αποκωδικοποίηση</button>
+</div>
+
+<div id="encode-section" class="section">
+  <div class="section-title">🔤 Γράψε ένα γράμμα</div>
+  <div class="encode-input-row">
+    <label>Γράμμα:</label>
+    <input type="text" id="encodeInput" maxlength="1" placeholder="Α" oninput="encodeLetter()">
+  </div>
+  <div class="converter-chain" id="encodeChain">
+    <div class="chain-step"><div class="label">Γράμμα</div><div class="value" id="encLetter">-</div></div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><div class="label">Θέση</div><div class="value" id="encPos">-</div></div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><div class="label">Δυαδικό</div><div class="value" id="encBin" style="font-family:monospace;font-size:1.2rem;">-</div></div>
+  </div>
+  <div class="bit-row" id="encBits"></div>
+</div>
+
+<div id="decode-section" class="section" style="display:none;">
+  <div class="section-title">🔢 Άλλαξε τους διακόπτες (bits)</div>
+  <div class="bit-row" id="decBits"></div>
+  <div class="converter-chain" id="decodeChain">
+    <div class="chain-step"><div class="label">Δυαδικό</div><div class="value" id="decBin" style="font-family:monospace;font-size:1.2rem;">00000</div></div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><div class="label">Θέση</div><div class="value" id="decPos">0</div></div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><div class="label">Γράμμα</div><div class="value" id="decLetter">-</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📋 Πίνακας Αναφοράς</div>
+  <div class="ref-table-wrap">
+    <table class="ref-table" id="refTable">
+      <tr><th>#</th><th>Γράμμα</th><th>Δυαδικό</th><th>#</th><th>Γράμμα</th><th>Δυαδικό</th></tr>
+    </table>
+  </div>
+</div>
+
+<div class="section challenge-section">
+  <div class="section-title">🏆 Μυστικό μήνυμα!</div>
+  <p style="text-align:center;color:#795548;margin-bottom:10px;font-weight:600;">Κωδικοποίησε τη λέξη <span id="challengeWord" style="color:#e65100;font-size:1.2rem;"></span></p>
+  <div style="text-align:center;margin-bottom:10px;">
+    <input type="text" class="challenge-input" id="challengeInput" maxlength="1" placeholder="Γράμμα" oninput="checkChallenge()">
+  </div>
+  <div class="challenge-slots" id="challengeSlots"></div>
+  <div class="challenge-hint" id="challengeHint">Γράψε ένα γράμμα παραπάνω για να δεις τον κώδικα!</div>
+  <div class="success-msg" id="challengeSuccess">🎉 Μπράβο! Κωδικοποίησες όλη τη λέξη!</div>
+</div>
+
+</div>
+
+<script>
+var greekLetters = ['Α','Β','Γ','Δ','Ε','Ζ','Η','Θ','Ι','Κ','Λ','Μ','Ν','Ξ','Ο','Π','Ρ','Σ','Τ','Υ','Φ','Χ','Ψ','Ω'];
+var currentMode = 'encode';
+var decBits = [0,0,0,0,0];
+var challengeLetters = [];
+var challengeProgress = [];
+
+function toBin5(n){
+  var s = '';
+  for(var i=4;i>=0;i--) s += ((n>>i)&1);
+  return s;
+}
+
+function binToDec(bits){
+  var v=0;
+  for(var i=0;i<5;i++) v = v*2 + bits[i];
+  return v;
+}
+
+function letterToIndex(ch){
+  if(!ch) return -1;
+  ch = ch.toUpperCase().replace(/Ά/,'Α').replace(/Έ/,'Ε').replace(/Ή/,'Η').replace(/Ί/,'Ι').replace(/Ό/,'Ο').replace(/Ύ/,'Υ').replace(/Ώ/,'Ω');
+  var idx = greekLetters.indexOf(ch);
+  return idx;
+}
+
+function buildRefTable(){
+  var table = document.getElementById('refTable');
+  var html = '<tr><th>#</th><th>Γράμμα</th><th>Δυαδικό</th><th>#</th><th>Γράμμα</th><th>Δυαδικό</th></tr>';
+  for(var i=0;i<12;i++){
+    var j=i+12;
+    html += '<tr>';
+    html += '<td>'+(i+1)+'</td><td>'+greekLetters[i]+'</td><td style="font-family:monospace;">'+toBin5(i+1)+'</td>';
+    html += '<td>'+(j+1)+'</td><td>'+greekLetters[j]+'</td><td style="font-family:monospace;">'+toBin5(j+1)+'</td>';
+    html += '</tr>';
+  }
+  table.innerHTML = html;
+}
+
+function setMode(m){
+  currentMode = m;
+  var btns = document.querySelectorAll('.mode-btn');
+  btns[0].classList.toggle('active', m==='encode');
+  btns[1].classList.toggle('active', m==='decode');
+  document.getElementById('encode-section').style.display = m==='encode'?'block':'none';
+  document.getElementById('decode-section').style.display = m==='decode'?'block':'none';
+}
+
+function buildBitToggles(containerId, bits, onChange){
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  for(var i=0;i<5;i++){
+    (function(idx){
+      var toggle = document.createElement('div');
+      toggle.className = 'bit-toggle' + (bits[idx]?' on':'');
+      var posLabel = document.createElement('div');
+      posLabel.className = 'bit-pos';
+      posLabel.textContent = 'Bit '+(5-idx);
+      var valLabel = document.createElement('div');
+      valLabel.className = 'bit-val';
+      valLabel.textContent = bits[idx];
+      toggle.appendChild(posLabel);
+      toggle.appendChild(valLabel);
+      toggle.addEventListener('click', function(){
+        bits[idx] = bits[idx]?0:1;
+        toggle.classList.add('flipping');
+        setTimeout(function(){toggle.classList.remove('flipping');},300);
+        toggle.className = 'bit-toggle' + (bits[idx]?' on':'');
+        valLabel.textContent = bits[idx];
+        if(onChange) onChange();
+      });
+      container.appendChild(toggle);
+    })(i);
+  }
+}
+
+function setEncodeBits(bits){
+  var container = document.getElementById('encBits');
+  var toggles = container.querySelectorAll('.bit-toggle');
+  for(var i=0;i<5;i++){
+    var t = toggles[i];
+    if(!t) continue;
+    var val = t.querySelector('.bit-val');
+    if(bits[i] && !t.classList.contains('on')){
+      t.classList.add('flipping');
+      setTimeout((function(el){return function(){el.classList.remove('flipping');};})(t),300);
+    }
+    t.className = 'bit-toggle' + (bits[i]?' on':'');
+    if(val) val.textContent = bits[i];
+  }
+}
+
+function encodeLetter(){
+  var input = document.getElementById('encodeInput');
+  var ch = input.value.trim();
+  var idx = letterToIndex(ch);
+  var letterEl = document.getElementById('encLetter');
+  var posEl = document.getElementById('encPos');
+  var binEl = document.getElementById('encBin');
+
+  if(idx>=0){
+    var pos = idx+1;
+    var bin = toBin5(pos);
+    var bits = [];
+    for(var i=0;i<5;i++) bits.push(parseInt(bin[i]));
+    letterEl.textContent = greekLetters[idx];
+    posEl.textContent = pos;
+    binEl.textContent = bin;
+    setEncodeBits(bits);
+    highlightRefRow(idx);
+  } else {
+    letterEl.textContent = '-';
+    posEl.textContent = '-';
+    binEl.textContent = '-';
+    setEncodeBits([0,0,0,0,0]);
+    highlightRefRow(-1);
+  }
+}
+
+function highlightRefRow(idx){
+  var rows = document.querySelectorAll('#refTable tr');
+  rows.forEach(function(r){r.classList.remove('active-letter');});
+  if(idx>=0 && idx<12){
+    if(rows[idx+1]) rows[idx+1].classList.add('active-letter');
+  } else if(idx>=12){
+    if(rows[idx-11]) rows[idx-11].classList.add('active-letter');
+  }
+}
+
+function updateDecode(){
+  var binStr = decBits.join('');
+  var pos = binToDec(decBits);
+  document.getElementById('decBin').textContent = binStr;
+  document.getElementById('decPos').textContent = pos;
+  var letterEl = document.getElementById('decLetter');
+  if(pos>=1 && pos<=24){
+    letterEl.textContent = greekLetters[pos-1];
+    letterEl.style.color = '#4527a0';
+  } else {
+    letterEl.textContent = '?';
+    letterEl.style.color = '#ccc';
+  }
+}
+
+function initChallenge(){
+  var words = [['Ν','Α','Ι'],['Κ','Α','Λ'],['Σ','Κ','Υ'],['Μ','Ι','Α'],['Η','Λ','Ι'],['Τ','Ε','Λ']];
+  var pick = words[Math.floor(Math.random()*words.length)];
+  challengeLetters = pick.slice();
+  challengeProgress = [];
+  document.getElementById('challengeWord').textContent = challengeLetters.join('');
+  var slots = document.getElementById('challengeSlots');
+  slots.innerHTML = '';
+  for(var i=0;i<challengeLetters.length;i++){
+    var slot = document.createElement('div');
+    slot.className = 'challenge-slot';
+    slot.innerHTML = '<div class="slot-letter" id="slotL'+i+'">?</div><div class="slot-binary" id="slotB'+i+'">?????</div>';
+    slots.appendChild(slot);
+    challengeProgress.push({done:false,letter:'',binary:''});
+  }
+  document.getElementById('challengeSuccess').style.display = 'none';
+  document.getElementById('challengeInput').value = '';
+}
+
+function checkChallenge(){
+  var input = document.getElementById('challengeInput');
+  var ch = input.value.trim().toUpperCase();
+  if(!ch) return;
+  var idx = letterToIndex(ch);
+  if(idx<0) return;
+  var currentSlot = -1;
+  for(var i=0;i<challengeProgress.length;i++){
+    if(!challengeProgress[i].done){currentSlot=i;break;}
+  }
+  if(currentSlot<0) return;
+  var expected = challengeLetters[currentSlot];
+  if(ch === expected){
+    var pos = idx+1;
+    var bin = toBin5(pos);
+    challengeProgress[currentSlot].done = true;
+    challengeProgress[currentSlot].letter = ch;
+    challengeProgress[currentSlot].binary = bin;
+    var slotL = document.getElementById('slotL'+currentSlot);
+    var slotB = document.getElementById('slotB'+currentSlot);
+    slotL.textContent = ch;
+    slotB.textContent = bin;
+    input.value = '';
+    var allDone = challengeProgress.every(function(p){return p.done;});
+    if(allDone){
+      document.getElementById('challengeSuccess').style.display = 'block';
+      document.getElementById('challengeHint').style.display = 'none';
+    }
+  }
+}
+
+buildRefTable();
+var encBits = [0,0,0,0,0];
+buildBitToggles('encBits', encBits, function(){});
+buildBitToggles('decBits', decBits, updateDecode);
+updateDecode();
+initChallenge();
+</script>
+</body>
+</html>

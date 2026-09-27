@@ -1,0 +1,23 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Είδη Υπολογιστών",
+  "subtitle": "Ταξινόμησε τις συσκευές στις σωστές κατηγορίες!",
+  "instructions": "Βάλε κάθε συσκευή στη σωστή κατηγορία",
+  "categories": [
+    { "id": "desktop", "name": "Υπολογιστής Γραφείου", "color": "#2196f3", "key": "1" },
+    { "id": "mobile", "name": "Κινητή Συσκευή", "color": "#ff9800", "key": "2" },
+    { "id": "wearable", "name": "Φορετή Συσκευή", "color": "#4caf50", "key": "3" }
+  ],
+  "items": [
+    { "text": "Μεγάλη οθόνη 24 ιντσών", "category": "desktop" },
+    { "text": "Οθόνη αφής 10 ιντσών", "category": "mobile" },
+    { "text": "Έξυπνο ρολόι καρπού", "category": "wearable" },
+    { "text": "Πληκτρολόγιο και ποντίκι", "category": "desktop" },
+    { "text": "Ενσωματωμένη κάμερα", "category": "mobile" },
+    { "text": "Έξυπνα γυαλιά", "category": "wearable" },
+    { "text": "Wi-Fi και 4G σύνδεση", "category": "mobile" },
+    { "text": "Σταθερό γραφείο", "category": "desktop" },
+    { "text": "Έξυπνο βραχιόλι", "category": "wearable" },
+    { "text": "Αιχμητή οθόνη HD", "category": "desktop" }
+  ],
+  "duration": 45
+}

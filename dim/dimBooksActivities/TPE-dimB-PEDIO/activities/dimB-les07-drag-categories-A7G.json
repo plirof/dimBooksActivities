@@ -1,0 +1,29 @@
+{
+  "title": "Εντολές ScratchJr κατά Χρώμα",
+  "subtitle": "Σύρε κάθε εντολή στη σωστή κατηγορία",
+  "categories": [
+    {
+      "id": "blue",
+      "name": "Μπλε — Κίνηση",
+      "color": "#2196F3"
+    },
+    {
+      "id": "yellow",
+      "name": "Κίτρινες — Εκκίνηση",
+      "color": "#FFC107"
+    },
+    {
+      "id": "red",
+      "name": "Κόκκινες — Επανάληψη",
+      "color": "#F44336"
+    }
+  ],
+  "items": [
+    { "id": "item1", "text": "ΣΤΡΙΨΕ ΔΕΞΙΑ", "category": "blue" },
+    { "id": "item2", "text": "ΣΤΡΙΨΕ ΑΡΙΣΤΕΡΑ", "category": "blue" },
+    { "id": "item3", "text": "ΠΗΔΑ", "category": "blue" },
+    { "id": "item4", "text": "ΞΕΚΙΝΑ ΜΕ ΤΗΝ ΠΡΑΣΙΝΗ ΣΗΜΑΙΑ", "category": "yellow" },
+    { "id": "item5", "text": "ΕΠΑΝΑΛΑΒΕ ΓΙΑ ΠΑΝΤΑ", "category": "red" },
+    { "id": "item6", "text": "ΕΠΑΝΑΛΑΒΕ", "category": "red" }
+  ]
+}

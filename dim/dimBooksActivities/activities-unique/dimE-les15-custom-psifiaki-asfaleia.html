@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ψηφιακή Ασπίδα | Μάθημα 15</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:3px 10px;font-size:.72rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}.sc .sv{color:#fbbf24}
+.game-area{max-width:650px;width:100%}
+.shield-area{background:#0f172a;border-radius:16px;border:2px solid #1e293b;padding:12px;margin-bottom:8px;position:relative;min-height:160px}
+.computer{position:relative;text-align:center;padding:10px}
+.computer-screen{display:inline-block;background:#1e293b;border:3px solid #334155;border-radius:14px;padding:16px 24px;min-width:280px;position:relative}
+.screen-content{color:#e2e8f0;font-size:.75rem;text-align:left;min-height:60px}
+.screen-topbar{display:flex;gap:4px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #334155}
+.screen-dot{width:8px;height:8px;border-radius:50%}
+.shield-status{position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:2px solid #334155;background:#0f172a}
+.shield-status.safe{border-color:#22c55e;box-shadow:0 0 10px #22c55e44}
+.shield-status.danger{border-color:#ef4444;box-shadow:0 0 10px #ef444444;animation:shake .5s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.threat-approaching{position:absolute;animation:approach 2s forwards}
+@keyframes approach{0%{opacity:0;transform:translateY(-60px) scale(.5)}50%{opacity:1}100%{opacity:1;transform:translateY(0) scale(1)}}
+.threat-bubble{display:inline-flex;align-items:center;gap:6px;background:#ef444422;border:2px solid #ef4444;border-radius:12px;padding:8px 14px;margin:6px}
+.threat-bubble .t-icon{font-size:1.4rem}
+.threat-bubble .t-text{color:#f87171;font-size:.72rem;font-weight:700}
+.threat-bubble .t-desc{color:#fca5a5;font-size:.6rem;line-height:1.3}
+.defense-panel{background:#0f172a;border-radius:14px;border:2px solid #334155;padding:10px;margin-bottom:6px}
+.defense-title{color:#fbbf24;font-size:.75rem;font-weight:700;text-align:center;margin-bottom:8px}
+.defense-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:6px}
+.def-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;background:#1e293b;border-radius:12px;border:2px solid #334155;cursor:pointer;transition:all .2s}
+.def-btn:hover{border-color:#6366f1;transform:translateY(-2px)}
+.def-btn .d-icon{font-size:1.5rem}
+.def-btn .d-name{color:#e2e8f0;font-size:.65rem;font-weight:700;text-align:center}
+.def-btn .d-desc{color:#64748b;font-size:.55rem;text-align:center;line-height:1.2}
+.result-panel{display:none;background:#1e293b;border-radius:14px;padding:12px;margin-top:6px;border:2px solid #334155}
+.result-panel.show{display:block}
+.result-icon{text-align:center;font-size:2rem;margin-bottom:4px}
+.result-title{text-align:center;font-size:.85rem;font-weight:700;margin-bottom:4px}
+.result-title.ok{color:#4ade80}
+.result-title.fail{color:#f87171}
+.result-text{color:#94a3b8;font-size:.7rem;line-height:1.4;text-align:center}
+.level-nav{display:flex;gap:6px;justify-content:center;margin-bottom:6px}
+.lv-btn{width:30px;height:30px;border-radius:50%;border:2px solid #334155;background:#0f172a;color:#94a3b8;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.lv-btn.active{background:#6366f1;color:#fff;border-color:#818cf8}
+.lv-btn.done{background:#22c55e;color:#fff;border-color:#4ade80}
+@media(max-width:400px){.defense-grid{grid-template-columns:1fr}}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .screen-topbar > * + * { margin-left: 4px; }
+  .threat-bubble > * + * { margin-left: 6px; }
+  .def-btn > * + * { margin-top: 4px; }
+  .level-nav > * + * { margin-left: 6px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🛡️ Ψηφιακή Ασπίδα</h1>
+<p class="subtitle">Προστάτευσε τον υπολογιστή σου! Επίλεξε τη σωστή άμυνα για κάθε απειλή.</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span class="sv" id="pts">0</span></span>
+<span class="sc"><span class="sl">Απειλές αναχαιτίστηκαν:</span> <span class="sv" id="blocked">0</span></span>
+</div>
+<div class="level-nav" id="levelNav"></div>
+<div class="game-area" id="gameArea"></div>
+<script>
+var levels=[
+{
+id:0,
+threat:{icon:'🦠',name:'Ιός (Virus)',desc:'Ένα κακόβουλο πρόγραμμα θέλει να μπει στον υπολογιστή σου μέσω email!',
+screen:'📧 Νέο email: «Κέρδησες iPhone! Κάνε κλικ εδώ!»\n📎 επισυναπτόμενο: prize.exe'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'password',icon:'🔑',name:'Ισχυρός κωδικός',desc:'Κωδικός με γράμματα, αριθμούς, σύμβολα'},
+{id:'update',icon:'🔄',name:'Ενημέρωση',desc:'Τελευταία έκδοση λογισμικού'},
+{id:'backup',icon:'💾',name:'Αντίγραφο ασφαλείας',desc:'Διατήρησε αντίγραφα αρχείων'}
+],
+correct:'antivirus',
+explain:'Ο ιός κρύβεται στο .exe αρχείο. Το antivirus θα τον εντοπίσει πριν ανοίξεις το αρχείο!'
+},
+{
+id:1,
+threat:{icon:'🎣',name:'Phishing',desc:'Κάιος προσποιείται ότι είναι γνωστή ιστοσελίδα και ζητά τον κωδικό σου!',
+screen:'⚠️ Οθόνη: «Ο λογαριασμός σου θα κλείσει!\nΔώσε τον κωδικό σου ΕΔΩ:\n[login-secure.bank-update.com]»'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'urlcheck',icon:'🔍',name:'Έλεγχος URL',desc:'Ελέγξε αν η διεύθυνση είναι πραγματική'},
+{id:'update',icon:'🔄',name:'Ενημέρωση',desc:'Τελευταία έκδοση λογισμικού'},
+{id:'2fa',icon:'📱',name:'Διπλή επαλήθευση (2FA)',desc:'Επιπλέον κωδικός στο κινητό'}
+],
+correct:'urlcheck',
+explain:'Το URL login-secure.bank-update.com ΔΕΝ είναι η πραγματική τράπεζα. Είναι phishing! Πρέπει πάντα να ελέγχεις το URL.'
+},
+{
+id:2,
+threat:{icon:'👀',name:'Spyware',desc:'Πρόγραμμα που καταγράφει τι πληκτρολογείς κρυφά!',
+screen:'⬇️ «Δωρεάν οθόνη ψύχους για τον υπολογιστή σου!\n Κατέβασε τώρα! (cool-screensaver.scr)»'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'password',icon:'🔑',name:'Ισχυρός κωδικός',desc:'Κωδικός με γράμματα, αριθμούς, σύμβολα'},
+{id:'trusted',icon:'✅',name:'Μόνο αξιόπιστες πηγές',desc:'Κατέβασε μόνο από επίσημες ιστοσελίδες'},
+{id:'backup',icon:'💾',name:'Αντίγραφο ασφαλείας',desc:'Διατήρησε αντίγραφα αρχείων'}
+],
+correct:'trusted',
+explain:'Ποτέ μην κατεβάζεις λογισμικό από άγνωστες πηγές! Μόνο από επίσημες ιστοσελίδες και καταστήματα εφαρμογών.'
+},
+{
+id:3,
+threat:{icon:'🔓',name:'Αδύναμος κωδικός',desc:'Κάιος προσπαθεί να μπει στον λογαριασμό σου με κωδικό «12345»!',
+screen:'🔑 Σύνδεση στο email...\nΧρήστης: maria@gmail.com\nΚωδικός: 12345\n❌ Λάθος! Δοκιμή: password\n❌ Λάθος! Δοκιμή: 123456\n✅ Μπήκε!'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'password',icon:'🔑',name:'Ισχυρός κωδικός',desc:'Κωδικός με γράμματα, αριθμούς, σύμβολα'},
+{id:'backup',icon:'💾',name:'Αντόγραφο ασφαλείας',desc:'Διατήρησε αντίγραφα αρχείων'},
+{id:'firewall',icon:'🧱',name:'Firewall',desc:'Μπλοκάρει μη εξουσιοδοτημένη πρόσβαση'}
+],
+correct:'password',
+explain:'Ο κωδικός πρέπει να είναι ισχυρός: τουλάχιστον 8 χαρακτήρες, με κεφαλαία, μικρά, αριθμούς και σύμβολα!'
+},
+{
+id:4,
+threat:{icon:'📱',name:'Κλοπή λογαριασμού',desc:'Κάιος ξέρει τον κωδικό σου! Τι μπορείς να κάνεις για επιπλέον προστασία;',
+screen:'⚠️ Ειδοποίηση:\n«Νέα σύνδεση στον λογαριασμό σου από άλλη συσκευή!»\nΠώς να προστατευτείς;'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'2fa',icon:'📱',name:'Διπλή επαλήθευση (2FA)',desc:'Επιπλέον επιβεβαίωση στο κινητό'},
+{id:'update',icon:'🔄',name:'Ενημέρωση',desc:'Τελευταία έκδοση λογισμικού'},
+{id:'trusted',icon:'✅',name:'Μόνο αξιόπιστες πηγές',desc:'Κατέβασε μόνο από επίσημες ιστοσελίδες'}
+],
+correct:'2fa',
+explain:'Η διπλή επαλήθευση (2FA) σημαίνει ότι ακόμα κι αν κάποιος βρει τον κωδικό σου, χρειάζεται και το κινητό σου για να μπει!'
+},
+{
+id:5,
+threat:{icon:'🐛',name:'Outdated Software',desc:'Ο υπολογιστής σου δεν έχει ενημερωθεί μήνες. Είναι ευάλωτος!',
+screen:'⚠️ Υπάρχουν 23 νέες ενημερώσεις ασφαλείας.\nΤι κάνεις;\n[Αγνόησε] [Υπενθύμιση αύριο] [Εγκατάσταση]'},
+defenses:[
+{id:'antivirus',icon:'🛡️',name:'Antivirus',desc:'Σαρώνει και μπλοκάρει κακόβουλα αρχεία'},
+{id:'update',icon:'🔄',name:'Ενημέρωση λογισμικού',desc:'Εγκατάσταση ενημερώσεων ασφαλείας'},
+{id:'password',icon:'🔑',name:'Ισχυρός κωδικός',desc:'Κωδικός με γράμματα, αριθμούς, σύμβολα'},
+{id:'backup',icon:'💾',name:'Αντίγραφο ασφαλείας',desc:'Διατήρησε αντίγραφα αρχείων'}
+],
+correct:'update',
+explain:'Οι ενημερώσεις κλείνουν «τρύπες» ασφαλείας. Πρέπει πάντα να ενημερώνεις το λογισμικό σου!'
+}
+];
+var currentLv=0;
+var pts=0;
+var blocked=0;
+var completed={};
+function init(){
+buildLevelNav();
+renderLevel(0);
+}
+function buildLevelNav(){
+var nav=document.getElementById('levelNav');
+nav.innerHTML='';
+for(var i=0;i<levels.length;i++){
+var btn=document.createElement('button');
+btn.className='lv-btn'+(i===currentLv?' active':'')+(completed[i]?' done':'');
+btn.textContent=i+1;
+btn.onclick=(function(idx){return function(){renderLevel(idx);};})(i);
+nav.appendChild(btn);
+}
+}
+function renderLevel(idx){
+currentLv=idx;
+var lv=levels[idx];
+var area=document.getElementById('gameArea');
+var h='';
+h+='<div class="shield-area">';
+h+='<div class="computer">';
+h+='<div class="computer-screen">';
+h+='<div class="screen-topbar"><div class="screen-dot" style="background:#ef4444"></div><div class="screen-dot" style="background:#fbbf24"></div><div class="screen-dot" style="background:#22c55e"></div></div>';
+h+='<div class="screen-content" style="white-space:pre-line">'+lv.threat.screen+'</div>';
+h+='<div class="shield-status" id="shieldStat">'+(completed[idx]?'🛡️':'⚠️')+'</div>';
+h+='</div></div></div>';
+h+='<div class="threat-bubble" style="display:flex;justify-content:center;margin-bottom:6px"><span class="t-icon">'+lv.threat.icon+'</span><div><div class="t-text">'+lv.threat.name+'</div><div class="t-desc">'+lv.threat.desc+'</div></div></div>';
+h+='<div class="defense-panel">';
+h+='<div class="defense-title">🛡️ Επίλεξε την κατάλληλη άμυνα:</div>';
+h+='<div class="defense-grid">';
+for(var i=0;i<lv.defenses.length;i++){
+var d=lv.defenses[i];
+h+='<div class="def-btn" onclick="choose(\''+d.id+'\')" id="def'+d.id+'"><span class="d-icon">'+d.icon+'</span><span class="d-name">'+d.name+'</span><span class="d-desc">'+d.desc+'</span></div>';
+}
+h+='</div></div>';
+h+='<div class="result-panel" id="resultPanel"><div class="result-icon" id="resIcon"></div><div class="result-title" id="resTitle"></div><div class="result-text" id="resText"></div></div>';
+area.innerHTML=h;
+buildLevelNav();
+}
+function choose(defId){
+if(completed[currentLv])return;
+var lv=levels[currentLv];
+var isCorrect=defId===lv.correct;
+completed[currentLv]=true;
+var el=document.getElementById('def'+defId);
+if(isCorrect){
+el.style.borderColor='#22c55e';
+el.style.background='#22c55e22';
+pts+=10;
+blocked++;
+document.getElementById('pts').textContent=pts;
+document.getElementById('blocked').textContent=blocked;
+var stat=document.getElementById('shieldStat');
+stat.textContent='🛡️';
+stat.className='shield-status safe';
+}else{
+el.style.borderColor='#ef4444';
+el.style.background='#ef444422';
+var stat=document.getElementById('shieldStat');
+stat.className='shield-status danger';
+var correctEl=document.getElementById('def'+lv.correct);
+if(correctEl){correctEl.style.borderColor='#22c55e';correctEl.style.background='#22c55e22';}
+}
+var panel=document.getElementById('resultPanel');
+var icon=document.getElementById('resIcon');
+var title=document.getElementById('resTitle');
+var text=document.getElementById('resText');
+icon.textContent=isCorrect?'✅':'❌';
+title.textContent=isCorrect?'Αποκρούστηκε!':'Λάθος άμυνα!';
+title.className='result-title '+(isCorrect?'ok':'fail');
+text.textContent=lv.explain;
+panel.className='result-panel show';
+buildLevelNav();
+if(currentLv<levels.length-1){
+setTimeout(function(){renderLevel(currentLv+1);},3000);
+}
+}
+init();
+</script>
+</body>
+</html>

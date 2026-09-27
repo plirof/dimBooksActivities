@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Ουσιαστικό ή Ρήμα",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Έννοια (ουσιαστικό) ή Σύνδεση (ρήμα);",
+  "categories": [
+    {"id": "ennoia", "name": "Έννοια (ουσιαστικό)", "color": "#2196f3", "key": "ArrowLeft"},
+    {"id": "sindesi", "name": "Σύνδεση (ρήμα)", "color": "#ff9800", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Υπολογιστής", "category": "ennoia"},
+    {"text": "συνεργάζεται", "category": "sindesi"},
+    {"text": "Επεξεργαστής", "category": "ennoia"},
+    {"text": "αποθηκεύει", "category": "sindesi"},
+    {"text": "Λογισμικό", "category": "ennoia"},
+    {"text": "ονομάζεται", "category": "sindesi"},
+    {"text": "Μνήμη", "category": "ennoia"},
+    {"text": "περιέχει", "category": "sindesi"},
+    {"text": "Δίκτυο", "category": "ennoia"},
+    {"text": "συνδέεται", "category": "sindesi"}
+  ],
+  "duration": 30
+}

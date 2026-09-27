@@ -1,0 +1,21 @@
+{
+  "title": "Πιάσε τα Σωστά: Είδη Blog",
+  "subtitle": "Μετακίνησε το καλάθι!",
+  "instructions": "Πιάσε μόνο ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΙΣΤΟΛΟΓΙΩΝ! Αριστερά/Δεξιά βελάκια.",
+  "speed": 2.5,
+  "lives": 3,
+  "spawnInterval": 1200,
+  "winScore": 15,
+  "items": [
+    {"text": "Άρθρα", "correct": true, "color": "#4CAF50"},
+    {"text": "Κουτάλι", "correct": false, "color": "#f44336"},
+    {"text": "Ημερομηνία", "correct": true, "color": "#2196F3"},
+    {"text": "Γλάστρα", "correct": false, "color": "#FF9800"},
+    {"text": "Εικόνες", "correct": true, "color": "#9C27B0"},
+    {"text": "Σφυρί", "correct": false, "color": "#E91E63"},
+    {"text": "Σκέψεις", "correct": true, "color": "#00BCD4"},
+    {"text": "Κάβουρας", "correct": false, "color": "#FFC107"},
+    {"text": "Εμπειρίες", "correct": true, "color": "#795548"},
+    {"text": "Μπογιά", "correct": false, "color": "#607D8B"}
+  ]
+}

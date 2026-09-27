@@ -1,0 +1,61 @@
+{
+  "title": "Πιάσε τα!: Συζητήσεις",
+  "subtitle": "Πιάσε τις σωστές λέξεις των διαδικτυακών συζητήσεων",
+  "instructions": "Πιάσε τις λέξεις σχετικές με τις συζητήσεις",
+  "speed": 2,
+  "lives": 3,
+  "spawnInterval": 1500,
+  "winScore": 6,
+  "items": [
+    {
+      "text": "Φόρουμ",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Ιστολόγιο",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Καταχώριση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Νήμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Δημοσίευση",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "Μήνυμα",
+      "correct": true,
+      "color": "#4CAF50"
+    },
+    {
+      "text": "QR Code",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Φίλτρο",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Ταξινόμηση",
+      "correct": false,
+      "color": "#f44336"
+    },
+    {
+      "text": "Scratch",
+      "correct": false,
+      "color": "#f44336"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Χαρακτηριστικά ανά είδος υπολογιστή",
+  "subtitle": "Ταίριαξε κάθε χαρακτηριστικό στο σωστό είδος",
+  "categories": [
+    {
+      "id": "desktop",
+      "name": "ΓΡΑΦΕΙΟΥ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "laptop",
+      "name": "ΦΟΡΗΤΟΣ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "tablet",
+      "name": "TABLET",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Μεγάλη οθόνη",
+      "category": "desktop"
+    },
+    {
+      "id": "item2",
+      "text": "Πληκτρολόγιο ενσωματωμένο",
+      "category": "laptop"
+    },
+    {
+      "id": "item3",
+      "text": "Αφής οθόνη",
+      "category": "tablet"
+    },
+    {
+      "id": "item4",
+      "text": "Σταθερό βάρος",
+      "category": "desktop"
+    },
+    {
+      "id": "item5",
+      "text": "Διπλώνει",
+      "category": "laptop"
+    },
+    {
+      "id": "item6",
+      "text": "Στυλό",
+      "category": "tablet"
+    }
+  ]
+}

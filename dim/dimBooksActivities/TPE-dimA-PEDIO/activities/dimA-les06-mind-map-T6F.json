@@ -1,0 +1,31 @@
+{
+  "title": "Νοητικός Χάρτης: ScratchJr",
+  "subtitle": "Βάλε τις λέξεις στη σωστή θέση",
+  "centralTopic": "ScratchJr",
+  "branches": [
+    {
+      "id": "oramas",
+      "label": "Βλέπω",
+      "color": "#e91e63",
+      "keywords": ["Ήρωας", "Σκηνικό", "Τετραγωνάκια"]
+    },
+    {
+      "id": "entoles",
+      "label": "Εντολές",
+      "color": "#2196f3",
+      "keywords": ["Κίνηση", "Βήμα", "Πράσινη Σημαία"]
+    },
+    {
+      "id": "programma",
+      "label": "Πρόγραμμα",
+      "color": "#4caf50",
+      "keywords": ["Εντολές", "Βήματα", "Σειρά"]
+    },
+    {
+      "id": "ergo",
+      "label": "Έργο",
+      "color": "#ff9800",
+      "keywords": ["Τίτλος", "Παίζω", "Αποθηκεύω"]
+    }
+  ]
+}

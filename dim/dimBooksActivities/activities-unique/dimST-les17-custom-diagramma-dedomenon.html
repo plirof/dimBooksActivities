@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Διάγραμμα Δεδομένων | Μάθημα 17</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#e0e7ff;font-size:1.1rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#94a3b8;font-size:.72rem;text-align:center;margin-bottom:8px}
+.main{max-width:700px;width:100%}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#1e293b;border-radius:8px;padding:4px 10px;color:#fbbf24;font-size:.75rem;font-weight:700;border:1px solid #334155}
+.sc .sl{color:#64748b}
+.card{background:#0f172a;border-radius:16px;border:2px solid #334155;padding:14px;margin-bottom:10px}
+.card-title{color:#fbbf24;font-size:.8rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.data-area{display:flex;gap:10px;flex-wrap:wrap}
+.table-wrap{flex:1;min-width:200px;overflow-x:auto;border-radius:10px;border:1px solid #334155}
+.data-table{width:100%;border-collapse:collapse;font-size:.65rem}
+.data-table th{background:#1e293b;color:#fbbf24;padding:5px 8px;text-align:left;font-weight:700;border-bottom:2px solid #334155}
+.data-table td{padding:4px 8px;color:#e2e8f0;border-bottom:1px solid #1e293b}
+.data-table tr:hover td{background:#1e293b}
+.chart-area{flex:1;min-width:200px;background:#0f172a;border-radius:10px;border:1px solid #334155;padding:12px;min-height:200px}
+.chart-title{color:#94a3b8;font-size:.6rem;font-weight:700;text-align:center;margin-bottom:6px}
+.chart-type-bar{display:flex;gap:4px;justify-content:center;margin-bottom:6px}
+.chart-type-btn{padding:3px 10px;border:1px solid #475569;border-radius:6px;background:#1e293b;color:#94a3b8;font-size:.6rem;cursor:pointer}
+.chart-type-btn.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.bar-chart{display:flex;align-items:flex-end;justify-content:space-around;height:120px;padding:6px 0;gap:4px}
+.bar-item{display:flex;flex-direction:column;align-items:center;flex:1;min-width:30px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .5s;min-height:4px}
+.bar-label{font-size:.55rem;color:#64748b;margin-top:3px;text-align:center;word-wrap:break-word;max-width:50px}
+.bar-count{font-size:.6rem;color:#94a3b8;font-weight:700}
+.pie-chart{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.pie-slice{display:flex;align-items:center;gap:4px;font-size:.55rem;color:#e2e8f0}
+.pie-color{width:10px;height:10px;border-radius:2px}
+.questions-area{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.q-row{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#1e293b;border-radius:8px}
+.q-row .q-icon{font-size:1rem}
+.q-row .q-text{color:#e2e8f0;font-size:.65rem;flex:1}
+.q-row .q-btn{padding:3px 10px;border:1px solid #475569;border-radius:6px;background:#0f172a;color:#94a3b8;font-size:.6rem;cursor:pointer}
+.q-row .q-btn.selected{background:#6366f1;color:#fff;border-color:#6366f1}
+.nav-btns{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.nav-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:translateY(-1px)}
+.nav-prev{background:#334155;color:#e2e8f0}
+.nav-next{background:#6366f1;color:#fff}
+.btn-check{padding:8px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#22c55e,#4ade80);color:#064e3b;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-check:disabled{opacity:.4;cursor:default}
+.feedback{text-align:center;font-size:.8rem;font-weight:700;min-height:20px;margin-top:4px}
+.feedback.ok{color:#4ade80}
+.feedback.fail{color:#f87171}
+.hint-box{font-size:.65rem;color:#64748b;background:#0f172a;border-radius:8px;padding:8px;line-height:1.4;margin-top:6px}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .card-title > * + * { margin-left: 6px; }
+  .data-area > * { margin: 5px; }
+  .chart-type-bar > * + * { margin-left: 4px; }
+  .bar-chart > * + * { margin-left: 4px; }
+  .pie-chart > * { margin: 2px; }
+  .pie-slice > * + * { margin-left: 4px; }
+  .questions-area > * + * { margin-top: 6px; }
+  .q-row > * + * { margin-left: 6px; }
+  .nav-btns > * + * { margin-left: 6px; }
+  .g61f3_0 > * + * { margin-left: 3px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>📊 Διαγράμματα Δεδομένων</h1>
+<p class="subtitle">Ανάλυσε τα δεδομένα και απάντησε στις ερωτήσεις!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Σετ:</span> <span id="dsNum">1</span>/6</span>
+</div>
+<div class="main" id="main"></div>
+<div class="feedback" id="feedback"></div>
+<script>
+var datasets=[
+{
+icon:'⚽',title:'Αγαπημένο Άθλημα',
+labels:['Ποδόσφαιρο','Μπάσκετ','Βόλεϊ','Κολύμβηση'],
+data:[8,5,3,4],
+color:['#22c55e','#3b82f6','#f59e0b','#ef4444'],
+questions:[
+{q:'Ποιο άθλημα έχει τις περισσότερες προτιμήσεις;',opts:['Ποδόσφαιρο','Μπάσκετ','Βόλεϊ','Κολύμβηση'],correct:0},
+{q:'Πόσα παιδιά προτιμούν Μπάσκετ;',opts:['3','4','5','8'],correct:2},
+{q:'Ποια είναι η λιγότερο δημοφιλής επιλογή;',opts:['Ποδόσφαιρο','Βόλεϊ','Κολύμβηση','Μπάσκετ'],correct:2}
+],
+hint:'Το διάγραμμα πίτα δείχνει το μερίδιο κάθε κατηγορίας. Το ραβδόγραμμα δείχνει ύψος ανάλογο με τον αριθμό.'
+},
+{
+icon:'🎵',title:'Αγαπημένο Είδος Μουσικής',
+labels:['Pop','Rock','Κλασική','Ελληνική'],
+data:[7,4,2,6],
+color:['#ec4899','#ef4444','#8b5cf6','#f59e0b'],
+questions:[
+{q:'Ποιο είδος μουσικής έχει τις περισσότερες προτιμήσεις;',opts:['Rock','Ελληνική','Pop','Κλασική'],correct:2},
+{q:'Πόσα παιδιά προτιμούν Κλασική;',opts:['2','4','6','7'],correct:0},
+{q:'Ποια είδη έχουν κοντινό αριθμό προτιμήσεων;',opts:['Pop & Rock','Rock & Ελληνική','Pop & Ελληνική','Κλασική & Pop'],correct:1}
+],
+hint:'Διάβασε σωστά τις τιμές στο διάγραμμα. Η Pop έχει 7, η Rock 4, η Κλασική 2, η Ελληνική 6.'
+},
+{
+icon:'📚',title:'Χρόνος Διαβάσματος',
+labels:['Καθόλου','30 λεπτά','1 ώρα','2+ ώρες'],
+data:[2,6,8,4],
+color:['#ef4444','#f59e0b','#22c55e','#3b82f6'],
+questions:[
+{q:'Πόσα παιδιά διαβάζουν 1 ώρα;',opts:['4','6','8','2'],correct:2},
+{q:'Πόσα παιδιά διαβάζουν έστω λίγο (όχι «καθόλου»);',opts:['16','18','14','20'],correct:1},
+{q:'Πόσα παιδιά διαβάζουν πάνω από 1 ώρα;',opts:['8','4','12','6'],correct:1}
+],
+hint:'Το «έστω λίγο» σημαίνει όλες τις κατηγορίες εκτός από «Καθόλου». Πρόσθεσε 6+8+4=18.'
+},
+{
+icon:'🍕',title:'Φαγητό για Πάρτι',
+labels:['Πίτσα','Σουβλάκι','Μακαρόνια','Αλλεπάλληλες'],
+data:[9,6,3,2],
+color:['#ef4444','#f59e0b','#22c55e','#64748b'],
+questions:[
+{q:'Ποιο φαγητό είναι το αγαπημένο;',opts:['Σουβλάκι','Πίτσα','Μακαρόνια','Αλλεπάλληλες'],correct:1},
+{q:'Πόσα παιδιά προτίμησαν σουβλάκι ή μακαρόνια;',opts:['6','9','3','2'],correct:0},
+{q:'Ποιο φαγητό έχει τις λιγότερες προτιμήσεις;',opts:['Πίτσα','Σουβλάκι','Μακαρόνια','Αλλεπάλληλες'],correct:3}
+],
+hint:'Για να βρεις το άθροισμα δύο κατηγοριών, πρόσθεσε τις τιμές τους.'
+},
+{
+icon:'🎮',title:'Χρόνος σε Παιχνίδια',
+labels:['Καθόλου','Έως 1 ώρα','1-3 ώρες','3+ ώρες'],
+data:[1,5,9,5],
+color:['#ef4444','#3b82f6','#22c55e','#ef4444'],
+questions:[
+{q:'Πόσα παιδιά παίζουν 1-3 ώρες;',opts:['5','9','1','14'],correct:1},
+{q:'Πόσα παιδιά παίζουν λιγότερο από 1 ώρα;',opts:['1','5','6','14'],correct:2},
+{q:'Ποια είναι η πιο συνηθισμένη κατηγορία;',opts:['Καθόλου','Έως 1 ώρα','1-3 ώρες','3+ ώρες'],correct:2}
+],
+hint:'«Λιγότερο από 1 ώρα» = Καθόλου + Έως 1 ώρα = 1+5 = 6.'
+},
+{
+icon:'🐾',title:'Κατοικίδια',
+labels:['Σκύλο','Γάτα','Άλλο','Δεν έχω'],
+data:[7,4,3,6],
+color:['#f59e0b','#ef4444','#8b5cf6','#64748b'],
+questions:[
+{q:'Πόσα παιδιά έχουν σκύλο;',opts:['7','4','3','6'],correct:0},
+{q:'Πόσα παιδιά έχουν κατοικίδιο;',opts:['7','14','10','13'],correct:1},
+{q:'Ποια κατηγορία είναι η μικρότερη;',opts:['Σκύλο','Γάτα','Άλλο','Δεν έχω'],correct:2}
+],
+hint:'«Έχουν κατοικίδιο» = όλα εκτός από «Δεν έχω» = 7+4+3 = 14.'
+}
+];
+var current=0;
+var pts=0;
+var chartType='bar';
+var selectedQs={};
+var checked=false;
+function render(){
+var ds=datasets[current];
+checked=false;
+selectedQs={};
+document.getElementById('dsNum').textContent=current+1;
+var main=document.getElementById('main');
+var h='';
+h+='<div class="card">';
+h+='<div class="card-title">'+ds.icon+' '+ds.title+'</div>';
+h+='<div class="data-area">';
+h+='<div class="table-wrap"><table class="data-table"><thead><tr><th>Κατηγορία</th><th>Αριθμός</th></tr></thead><tbody>';
+for(var i=0;i<ds.labels.length;i++){
+h+='<tr><td>'+ds.labels[i]+'</td><td>'+ds.data[i]+'</td></tr>';
+}
+h+='</tbody></table></div>';
+h+='<div class="chart-area">';
+h+='<div class="chart-title">'+ds.title+'</div>';
+h+='<div class="chart-type-bar"><button class="chart-type-btn '+(chartType==='bar'?'active':'')+'" onclick="setChart(\'bar\')">📊 Ραβδόγραμμα</button><button class="chart-type-btn '+(chartType==='pie'?'active':'')+'" onclick="setChart(\'pie\')">🥧 Διάγραμμα Πίτα</button></div>';
+h+='<div id="chartDisplay">'+renderChart()+'</div>';
+h+='</div>';
+h+='</div>';
+h+='<div class="questions-area" id="qArea">';
+for(var q=0;q<ds.questions.length;q++){
+var qq=ds.questions[q];
+h+='<div class="q-row">';
+h+='<span class="q-icon">❓</span>';
+h+='<span class="q-text">'+qq.q+'</span>';
+h+='<div class="g61f3_0" style="display:flex;gap:3px">';
+for(var o=0;o<qq.opts.length;o++){
+var sel=(selectedQs[q]===o?' selected':'');
+h+='<div class="q-btn'+sel+'" id="qbtn_'+q+'_'+o+'" onclick="selectAnswer('+q+','+o+')">'+qq.opts[o]+'</div>';
+}
+h+='</div>';
+h+='</div>';
+}
+h+='</div>';
+h+='<div style="text-align:center;margin-top:6px"><button class="btn-check" id="checkBtn" onclick="checkQs()">✅ Έλεγχος Απαντήσεων</button></div>';
+h+='<div class="hint-box">💡 '+ds.hint+'</div>';
+h+='</div>';
+h+=navButtons();
+main.innerHTML=h;
+}
+function renderChart(){
+var ds=datasets[current];
+var maxVal=Math.max.apply(null,ds.data);
+if(chartType==='bar'){
+var h='<div class="bar-chart">';
+for(var i=0;i<ds.data.length;i++){
+var pct=Math.max(4,(ds.data[i]/maxVal)*100);
+h+='<div class="bar-item"><div class="bar-fill" style="height:'+pct+'px;background:'+ds.color[i]+'"></div><div class="bar-count">'+ds.data[i]+'</div><div class="bar-label">'+ds.labels[i]+'</div></div>';
+}
+h+='</div>';
+return h;
+}else{
+var total=0;
+for(var j=0;j<ds.data.length;j++)total+=ds.data[j];
+var h2='<div class="pie-chart">';
+for(var k=0;k<ds.data.length;k++){
+var pct=Math.round((ds.data[k]/total)*100);
+h2+='<div class="pie-slice"><span class="pie-color" style="background:'+ds.color[k]+'"></span>'+ds.labels[k]+' ('+ds.data[k]+', '+pct+'%)</div>';
+}
+h2+='</div>';
+return h2;
+}
+}
+function setChart(type){
+chartType=type;
+var el=document.getElementById('chartDisplay');
+if(el)el.innerHTML=renderChart();
+var btns=document.querySelectorAll('.chart-type-btn');
+for(var i=0;i<btns.length;i++){
+btns[i].classList.toggle('active',btns[i].textContent.includes(type==='bar'?'Ραβδόγραμμα':'Πίτα'));
+}
+}
+function navButtons(){
+var h='<div class="nav-btns">';
+h+='<button class="nav-btn nav-prev" onclick="prevDs()"'+(current===0?' disabled':'')+'>◀ Προηγούμενο</button>';
+h+='<button class="nav-btn nav-next" onclick="nextDs()"'+(current===datasets.length-1?' disabled':'')+'>Επόμενο ▶</button>';
+h+='</div>';
+return h;
+}
+function selectAnswer(qIdx,optIdx){
+if(checked)return;
+selectedQs[qIdx]=optIdx;
+for(var o=0;o<datasets[current].questions[qIdx].opts.length;o++){
+var el=document.getElementById('qbtn_'+qIdx+'_'+o);
+if(el)el.classList.toggle('selected',o===optIdx);
+}
+var fb=document.getElementById('feedback');
+if(fb){fb.textContent='';fb.className='feedback';}
+}
+function checkQs(){
+var ds=datasets[current];
+var allAnswered=true;
+for(var q=0;q<ds.questions.length;q++){
+if(selectedQs[q]===undefined){allAnswered=false;break;}
+}
+if(!allAnswered){
+var fb=document.getElementById('feedback');
+fb.textContent='⚠️ Απάντησε σε όλες τις ερωτήσεις!';
+fb.className='feedback fail';
+return;
+}
+var allCorrect=true;
+for(var q2=0;q2<ds.questions.length;q2++){
+var correct=ds.questions[q2].correct;
+var userAns=selectedQs[q2];
+var btn=document.getElementById('qbtn_'+q2+'_'+userAns);
+if(btn){btn.classList.remove('selected');btn.classList.add(userAns===correct?'correct':'wrong');btn.style.pointerEvents='none';}
+var correctBtn=document.getElementById('qbtn_'+q2+'_'+correct);
+if(correctBtn){correctBtn.classList.add('correct');}
+if(userAns!==correct)allCorrect=false;
+}
+checked=true;
+document.getElementById('checkBtn').disabled=true;
+var fb2=document.getElementById('feedback');
+if(allCorrect){
+pts+=10;
+document.getElementById('pts').textContent=pts;
+fb2.textContent='🎉 Μπράβο! Όλες οι απαντήσεις σωστές!';
+fb2.className='feedback ok';
+}else{
+fb2.textContent='⚠️ Κάποιες απαντήσεις είναι λάθος. Τα πράσινα είναι σωστά.';
+fb2.className='feedback fail';
+}
+}
+function prevDs(){if(current>0){current--;render();}}
+function nextDs(){if(current<datasets.length-1){current++;render();}}
+render();
+</script>
+</body>
+</html>

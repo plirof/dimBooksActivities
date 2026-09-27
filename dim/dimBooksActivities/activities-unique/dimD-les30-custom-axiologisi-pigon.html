@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Αξιολόγηση Πηγών</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.website-card {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border: 2px solid #e0e0e0;
+}
+.website-header {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 15px;
+}
+.website-icon {
+font-size: 2.5rem;
+}
+.website-info h3 {
+color: #333;
+font-size: 1.2rem;
+}
+.website-url {
+color: #666;
+font-size: 0.9rem;
+margin-top: 5px;
+}
+.criteria-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+grid-gap: 10px;
+margin-bottom: 15px;
+}
+.criterion-btn {
+padding: 10px 5px;
+background: white;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 0.8rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+text-align: center;
+}
+.criterion-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.criterion-btn.selected {
+background: #667eea;
+color: white;
+border-color: #667eea;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.score {
+position: fixed;
+top: 20px;
+right: 20px;
+background: white;
+padding: 15px 25px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+font-weight: bold;
+font-size: 1.1rem;
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.success {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.error {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .website-header > * + * { margin-left: 15px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>🔍 Αξιολόγηση Πηγών</h1>
+<p class="subtitle">Αξιολογήστε τις ιστοσελίδες με τα 5 κριτήρια</p>
+
+<div class="score">✅ Αξιολογημένες: <span id="score">0</span>/3</div>
+
+<div class="container">
+<div class="website-card" id="site1">
+<div class="website-header">
+<div class="website-icon">🏛️</div>
+<div class="website-info">
+<h3>gov.gr</h3>
+<div class="website-url">https://www.gov.gr/</div>
+</div>
+</div>
+<div class="criteria-grid">
+<button class="criterion-btn" data-crit="1" onclick="toggleCrit(this, 1)">Πατρότητα</button>
+<button class="criterion-btn" data-crit="2" onclick="toggleCrit(this, 2)">Επικαιρότητα</button>
+<button class="criterion-btn" data-crit="3" onclick="toggleCrit(this, 3)">Ακρίβεια</button>
+<button class="criterion-btn" data-crit="4" onclick="toggleCrit(this, 4)">Αντικειμενικότητα</button>
+<button class="criterion-btn" data-crit="5" onclick="toggleCrit(this, 5)">Αξιοπιστία</button>
+</div>
+<button class="btn" onclick="checkSite(1)">Αξιολόγηση</button>
+<div class="result-box" id="result1"></div>
+</div>
+
+<div class="website-card" id="site2">
+<div class="website-header">
+<div class="website-icon">🎮</div>
+<div class="website-info">
+<h3>GameInfoBlog.net</h3>
+<div class="website-url">https://gameinfoblog.net/</div>
+</div>
+</div>
+<div class="criteria-grid">
+<button class="criterion-btn" data-crit="1" onclick="toggleCrit(this, 1)">Πατρότητα</button>
+<button class="criterion-btn" data-crit="2" onclick="toggleCrit(this, 2)">Επικαιρότητα</button>
+<button class="criterion-btn" data-crit="3" onclick="toggleCrit(this, 3)">Ακρίβεια</button>
+<button class="criterion-btn" data-crit="4" onclick="toggleCrit(this, 4)">Αντικειμενικότητα</button>
+<button class="criterion-btn" data-crit="5" onclick="toggleCrit(this, 5)">Αξιοπιστία</button>
+</div>
+<button class="btn" onclick="checkSite(2)">Αξιολόγηση</button>
+<div class="result-box" id="result2"></div>
+</div>
+
+<div class="website-card" id="site3">
+<div class="website-header">
+<div class="website-icon">🏫</div>
+<div class="website-info">
+<h3>sch.gr</h3>
+<div class="website-url">https://www.sch.gr/</div>
+</div>
+</div>
+<div class="criteria-grid">
+<button class="criterion-btn" data-crit="1" onclick="toggleCrit(this, 1)">Πατρότητα</button>
+<button class="criterion-btn" data-crit="2" onclick="toggleCrit(this, 2)">Επικαιρότητα</button>
+<button class="criterion-btn" data-crit="3" onclick="toggleCrit(this, 3)">Ακρίβεια</button>
+<button class="criterion-btn" data-crit="4" onclick="toggleCrit(this, 4)">Αντικειμενικότητα</button>
+<button class="criterion-btn" data-crit="5" onclick="toggleCrit(this, 5)">Αξιοπιστία</button>
+</div>
+<button class="btn" onclick="checkSite(3)">Αξιολόγηση</button>
+<div class="result-box" id="result3"></div>
+</div>
+</div>
+
+<div class="mascot">🔎</div>
+
+<script>
+const siteRequirements = {
+1: { criteria: [1,2,3,4,5], minRequired: 5 },
+2: { criteria: [], minRequired: 0 },
+3: { criteria: [1,2,3,4,5], minRequired: 5 }
+};
+
+let selectedSites = {};
+let score = 0;
+
+function toggleCrit(btn, crit) {
+if (btn.classList.contains('selected')) {
+btn.classList.remove('selected');
+} else {
+btn.classList.add('selected');
+}
+}
+
+function checkSite(siteNum) {
+const site = document.getElementById('site' + siteNum);
+if (site.classList.contains('evaluated')) return;
+
+const btns = site.querySelectorAll('.criterion-btn');
+let selectedCriteria = [];
+
+btns.forEach(btn => {
+if (btn.classList.contains('selected')) {
+selectedCriteria.push(parseInt(btn.dataset.crit));
+}
+});
+
+const req = siteRequirements[siteNum];
+const metCount = selectedCriteria.filter(c => req.criteria.includes(c)).length;
+const isReliable = metCount >= req.minRequired;
+
+site.classList.add('evaluated');
+
+const resultBox = document.getElementById('result' + siteNum);
+resultBox.className = 'result-box show ' + (isReliable ? 'success' : 'error');
+
+if (isReliable) {
+score++;
+document.getElementById('score').textContent = score;
+resultBox.innerHTML = '✅ Σωστά! Αυτή η ιστοσελίδα είναι αξιόπιστη πηγή πληροφοριών!';
+} else {
+resultBox.innerHTML = '❌ Λάθος! Αυτή η ιστοσελίδα δεν πληροί τα κριτήρια αξιοπιστίας.';
+}
+
+btns.forEach(btn => {
+btn.disabled = true;
+if (req.criteria.includes(parseInt(btn.dataset.crit))) {
+btn.classList.add('selected');
+btn.style.background = '#27ae60';
+btn.style.borderColor = '#27ae60';
+btn.style.color = 'white';
+}
+});
+}
+</script>
+</body>
+</html>

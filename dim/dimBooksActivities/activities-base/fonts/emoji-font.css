@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'EmojiFont';
+    src: url('NotoColorEmoji.ttf') format('truetype');
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}

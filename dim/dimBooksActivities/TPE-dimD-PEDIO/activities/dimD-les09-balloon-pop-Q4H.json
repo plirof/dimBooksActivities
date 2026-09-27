@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Αναγνώριση Γραμμών",
+  "subtitle": "Σπάσε τα σωστά!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστές προτάσεις",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Κινείται σε άσπρη επιφάνεια", "correct": true, "color": "#4caf50" },
+    { "text": "Κινείται σε μαύρη επιφάνεια", "correct": false, "color": "#f44336" },
+    { "text": "Σταματάει σε μαύρη γραμμή", "correct": true, "color": "#2196f3" },
+    { "text": "Σταματάει σε άσπρη γραμμή", "correct": false, "color": "#ff9800" },
+    { "text": "Πάει πίσω πριν στρίψει", "correct": true, "color": "#8bc34a" },
+    { "text": "Στρίφει απευθείας", "correct": false, "color": "#9c27b0" },
+    { "text": "Δεν χρειάζεται ακριβής χρόνος", "correct": true, "color": "#00bcd4" },
+    { "text": "Χρειάζεται πάντα ακριβής χρόνος", "correct": false, "color": "#ff5722" },
+    { "text": "Χρησιμοποιεί αισθητήρα", "correct": true, "color": "#607d8b" },
+    { "text": "Δεν έχει αισθητήρα", "correct": false, "color": "#e91e63" }
+  ]
+}

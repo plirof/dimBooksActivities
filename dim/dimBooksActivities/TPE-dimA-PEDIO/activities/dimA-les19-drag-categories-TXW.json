@@ -1,0 +1,58 @@
+{
+  "title": "Χρώματα πλήκτρα ποντικιού",
+  "subtitle": "Ταίριαξε κάθε ενέργεια στο σωστό πλήκτρο",
+  "categories": [
+    {
+      "id": "left",
+      "name": "ΑΡΙΣΤΕΡΟ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "right",
+      "name": "ΔΕΞΙΟ",
+      "color": "#F44336"
+    },
+    {
+      "id": "wheel",
+      "name": "ΡΟΔΕΛΑ",
+      "color": "#2196F3"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "Επιλογή",
+      "category": "left"
+    },
+    {
+      "id": "item2",
+      "text": "Μενού",
+      "category": "right"
+    },
+    {
+      "id": "item3",
+      "text": "Κύλιση",
+      "category": "wheel"
+    },
+    {
+      "id": "item4",
+      "text": "Κλικ",
+      "category": "left"
+    },
+    {
+      "id": "item5",
+      "text": "Διπλό κλικ",
+      "category": "left"
+    },
+    {
+      "id": "item6",
+      "text": "Μεγέθυνση",
+      "category": "wheel"
+    },
+    {
+      "id": "item7",
+      "text": "Ιδιότητες",
+      "category": "right"
+    }
+  ]
+}

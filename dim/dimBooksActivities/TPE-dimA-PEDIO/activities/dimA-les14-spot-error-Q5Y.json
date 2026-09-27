@@ -1,0 +1,49 @@
+{
+  "title": "Βρες τα Λάθη",
+  "subtitle": "Κάνε κλικ στη λάθος λέξη",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "email", "error": false},
+        {"text": "πηγαίνει", "error": false},
+        {"text": "αργά", "error": true, "correct": "γρήγορα", "feedback": "Το email πάει γρήγορα, όχι αργά!"},
+        {"text": "στον", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στο", "error": false},
+        {"text": "ταχυδρομείο", "error": false},
+        {"text": "χρειαζόμαστε", "error": false},
+        {"text": "μπαλόνι", "error": true, "correct": "γραμματόσημο", "feedback": "Χρειαζόμαστε γραμματόσημο, όχι μπαλόνι!"},
+        {"text": "για", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "φάκελο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "διαδίκτυο", "error": false},
+        {"text": "μας", "error": false},
+        {"text": "χωρίζει", "error": true, "correct": "συνδέει", "feedback": "Το διαδίκτυο μας συνδέει, δεν μας χωρίζει!"},
+        {"text": "με", "error": false},
+        {"text": "όλον", "error": false},
+        {"text": "τον", "error": false},
+        {"text": "κόσμο.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "να", "error": false},
+        {"text": "στείλω", "error": false},
+        {"text": "email", "error": false},
+        {"text": "χρειάζομαι", "error": true, "correct": "παντόφλες", "feedback": "Χρειάζομαι υπολογιστή, όχι παντόφλες!"},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    }
+  ]
+}

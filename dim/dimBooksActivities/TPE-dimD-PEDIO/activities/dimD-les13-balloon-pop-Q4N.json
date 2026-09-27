@@ -1,0 +1,23 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Κατηγορίες Εφαρμογών",
+  "subtitle": "Σπάσε τα σωστά μπαλόνια!",
+  "instruction": "Σπάσε τα μπαλόνια με σωστά παραδείγματα κατηγοριών εφαρμογών",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 40,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Chrome = Φυλλομετρητής", "correct": true, "color": "#4caf50" },
+    { "text": "Word = Παιχνίδι", "correct": false, "color": "#f44336" },
+    { "text": "Scratch = Προγραμματισμός", "correct": true, "color": "#2196f3" },
+    { "text": "TuxPaint = Ζωγραφική", "correct": true, "color": "#ff9800" },
+    { "text": "Excel = Επεξεργασία κειμένου", "correct": false, "color": "#9c27b0" },
+    { "text": "Impress = Παρουσιάσεις", "correct": true, "color": "#00bcd4" },
+    { "text": "Calc = Υπολογιστικό φύλλο", "correct": true, "color": "#8bc34a" },
+    { "text": "Firefox = Επεξεργασία εικόνας", "correct": false, "color": "#ff5722" },
+    { "text": "Writer = Επεξεργασία κειμένου", "correct": true, "color": "#607d8b" },
+    { "text": "PowerPoint = Παρουσιάσεις", "correct": true, "color": "#3f51b5" },
+    { "text": "MakeCode = Προγραμματισμός", "correct": true, "color": "#009688" },
+    { "text": "Edge = Ζωγραφική", "correct": false, "color": "#e91e63" }
+  ]
+}

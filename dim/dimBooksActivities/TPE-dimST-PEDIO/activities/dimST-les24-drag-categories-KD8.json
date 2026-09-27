@@ -1,0 +1,53 @@
+{
+  "title": "Ετικέτες σε αναρτήσεις",
+  "subtitle": "Ταίριαξε κάθε ανάρτηση στη σωστή ετικέτα",
+  "categories": [
+    {
+      "id": "math",
+      "name": "ΜΑΘΗΜΑΤΙΚΑ",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "games",
+      "name": "ΠΑΙΧΝΙΔΙΑ",
+      "color": "#2196F3"
+    },
+    {
+      "id": "school",
+      "name": "ΣΧΟΛΕΙΟ",
+      "color": "#FF9800"
+    }
+  ],
+  "items": [
+    {
+      "id": "item1",
+      "text": "«Κλάσμα 3/4»",
+      "category": "math"
+    },
+    {
+      "id": "item2",
+      "text": "«Scratch παιχνίδι»",
+      "category": "games"
+    },
+    {
+      "id": "item3",
+      "text": "«Ωράριο μαθημάτων»",
+      "category": "school"
+    },
+    {
+      "id": "item4",
+      "text": "«Αλγόριθμος»",
+      "category": "math"
+    },
+    {
+      "id": "item5",
+      "text": "«Κουίζ γνώσεων»",
+      "category": "games"
+    },
+    {
+      "id": "item6",
+      "text": "«Εκδρομή»",
+      "category": "school"
+    }
+  ]
+}

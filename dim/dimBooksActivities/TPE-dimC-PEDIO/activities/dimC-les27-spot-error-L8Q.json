@@ -1,0 +1,50 @@
+{
+  "title": "Βρες τα Λάθη: e-me Επικοινωνία",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Μπορώ", "error": false},
+        {"text": "να", "error": false},
+        {"text": "στειλω", "error": false},
+        {"text": "μήνυμα", "error": false},
+        {"text": "σε", "error": false},
+        {"text": "οποιονδήποτε.", "error": true, "correct": "επαφές", "feedback": "Μπορώ να στείλω μήνυμα ΜΟΝΟ σε άτομα στις ΕΠΑΦΕΣ μου!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "κλήση", "error": false},
+        {"text": "βίντεο", "error": false},
+        {"text": "αρκεί", "error": false},
+        {"text": "η", "error": false},
+        {"text": "επαφή", "error": false},
+        {"text": "να", "error": false},
+        {"text": "μην", "error": true, "correct": "να", "feedback": "Η επαφή πρέπει ΝΑ ΕΙΝΑΙ ενεργή/συνδεδεμένη!"},
+        {"text": "είναι", "error": false},
+        {"text": "συνδεδεμένη.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ο", "error": false},
+        {"text": "τοίχος", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ιδιωτικός", "error": true, "correct": "χώρος επικοινωνίας", "feedback": "Ο τοίχος είναι ΧΩΡΟΣ ΕΠΙΚΟΙΝΩΝΙΑΣ με μέλη κυψέλης!"},
+        {"text": "χώρος.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Στις", "error": false},
+        {"text": "ρυθμίσεις", "error": false},
+        {"text": "δεν", "error": true, "correct": "", "feedback": "Μπορώ ΝΑ ΑΛΛΑΞΩ εμφάνιση, γραμματοσειρά, φόντο ΚΑΙ θέση εφαρμογών!"},
+        {"text": "μπορώ", "error": true, "correct": "μπορώ", "feedback": "Μπορώ ΝΑ ΑΛΛΑΞΩ πολλές ρυθμίσεις!"},
+        {"text": "να", "error": false},
+        {"text": "αλλάξω", "error": false},
+        {"text": "τίποτα.", "error": true, "correct": "πολλά", "feedback": "Μπορώ να αλλάξω ΘΕΜΑ, ΦΟΝΤΟ, ΓΡΑΜΜΑΤΟΣΕΙΡΑ ΚΑΙ ΘΕΣΗ ΕΦΑΡΜΟΓΩΝ!"}
+      ]
+    }
+  ]
+}

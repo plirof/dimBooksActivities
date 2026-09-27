@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Χαρακτηριστικά CC | Μάθημα 30</title>
+<style>
+@font-face{font-family:'EmojiFont';src:local('Noto Color Emoji'),local('Segoe UI Emoji'),local('Apple Color Emoji'),local('Twemoji Mozilla'),url('../fonts/NotoColorEmoji.ttf') format('truetype');unicode-range:U+200D,U+2190-21FF,U+2300-23FF,U+25A0-25FF,U+2600-27BF,U+2900-297F,U+2B00-2BFF,U+FE0F,U+1F000-1FFFF;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EmojiFont','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;min-height:100vh;background:linear-gradient(135deg,#f0fdfa,#2dd4bf);padding:10px;display:flex;flex-direction:column;align-items:center}
+h1{color:#134e4a;font-size:1.05rem;text-align:center;margin:4px 0 2px}
+.subtitle{color:#0d9488;font-size:.7rem;text-align:center;margin-bottom:6px}
+.score-bar{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.sc{background:#fff;border-radius:8px;padding:4px 10px;color:#134e4a;font-size:.75rem;font-weight:700;border:1px solid #2dd4bf;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sc .sl{color:#64748b}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:14px;margin-bottom:8px;max-width:600px;width:100%}
+.stmt{background:#f0fdfa;border:2px solid #99f6e4;border-radius:12px;padding:10px;margin:6px 0;text-align:center}
+.stmt-text{font-size:.78rem;font-weight:700;color:#134e4a}
+.judge-row{display:flex;gap:10px;justify-content:center;margin:10px 0}
+.judge-btn{padding:10px 20px;border:2px solid #e2e8f0;border-radius:10px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;min-width:100px;text-align:center}
+.judge-btn:hover{transform:scale(1.05)}
+.judge-btn.jyes{border-color:#22c55e;color:#14532d}
+.judge-btn.jyes:hover{background:#dcfce7}
+.judge-btn.jno{border-color:#ef4444;color:#dc2626}
+.judge-btn.jno:hover{background:#fef2f2}
+.judge-btn.selected{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.judge-btn.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.judge-btn.wrong{background:#fef2f2;border-color:#ef4444;color:#dc2626}
+.judge-btn.disabled{pointer-events:none;opacity:.7}
+.result-msg{text-align:center;padding:10px;border-radius:10px;font-size:.78rem;font-weight:700;margin:6px 0}
+.result-msg.ok{background:#dcfce7;color:#14532d}
+.result-msg.bad{background:#fef2f2;color:#dc2626}
+.check-btn{display:block;margin:8px auto;padding:10px 24px;border:none;border-radius:10px;background:#0d9488;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer}
+.check-btn:hover{background:#0f766e}
+.next-btn{display:block;margin:6px auto;padding:8px 20px;border:2px solid #0d9488;border-radius:10px;background:transparent;color:#0d9488;font-size:.75rem;font-weight:700;cursor:pointer}
+.next-btn:hover{background:#f0fdfa}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .score-bar > * { margin: 4px; }
+  .judge-row > * + * { margin-left: 10px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>⚖️ Χαρακτηριστικά CC</h1>
+<p class="subtitle">Σωστό ή Λάθος; Κρίνε κάθε πρόταση για τις άδειες Creative Commons!</p>
+<div class="score-bar">
+<span class="sc"><span class="sl">Πόντοι:</span> <span id="pts">0</span></span>
+<span class="sc"><span class="sl">Πρόταση:</span> <span id="qNum">1</span>/<span id="qTotal">8</span></span>
+</div>
+<div class="card" id="main"></div>
+<script>
+var stmts=[
+{
+text:'Οι άδειες CC προσφέρονται δωρεάν μέσω του διαδικτύου.',
+correct:'yes',
+explain:'Σωστό! Οι άδειες CC είναι εντελώς δωρεάν.'
+},
+{
+text:'Οι άδειες CC είναι αποκλειστικές (μόνο για έναν χρήστη).',
+correct:'no',
+explain:'Λάθος! Οι άδειες CC ΔΕΝ είναι αποκλειστικές — όλοι μπορούν να τις χρησιμοποιήσουν.'
+},
+{
+text:'Η άδεια BY σημαίνει ότι πρέπει να αναφέρεται ο δημιουργός.',
+correct:'yes',
+explain:'Σωστό! BY = Attribution = Αναφορά στον δημιουργό.'
+},
+{
+text:'Με την άδεια NC επιτρέπεται η εμπορική χρήση του έργου.',
+correct:'no',
+explain:'Λάθος! NC = Non-Commercial = ΑΠΑΓΟΡΕΥΕΤΑΙ η εμπορική χρήση.'
+},
+{
+text:'Η άδεια SA σημαίνει ότι το τροποποιημένο έργο πρέπει να διανέμεται με τους ίδιους όρους.',
+correct:'yes',
+explain:'Σωστό! SA = Share-Alike = Παρόμοια Διανομή.'
+},
+{
+text:'Με την άδεια ND μπορείς να τροποποιήσεις το έργο.',
+correct:'no',
+explain:'Λάθος! ND = No Derivatives = Δεν επιτρέπονται παράγωγα έργα.'
+},
+{
+text:'Οι άδειες CC επιτρέπουν την ανταλλαγή έργων μέσω διαδικτύου.',
+correct:'yes',
+explain:'Σωστό! Η ανταλλαγή έργων είναι βασικός σκοπός των CC.'
+},
+{
+text:'Οι άδειες CC απαγορεύουν κάθε χρήση του έργου.',
+correct:'no',
+explain:'Λάθος! Οι CC ΟΡΙΖΟΥΝ πώς μπορείς να χρησιμοποιήσεις το έργο — δεν το απαγορεύουν!'
+}
+];
+var curQ=0,pts=0,selected='',checked=false;
+function initQ(){selected='';checked=false;}
+function render(){
+document.getElementById('qNum').textContent=curQ+1;
+document.getElementById('pts').textContent=pts;
+var s=stmts[curQ];
+var main=document.getElementById('main');
+var h='';
+h+='<div class="stmt"><div class="stmt-text">'+s.text+'</div></div>';
+h+='<p style="font-size:.72rem;font-weight:700;color:#134e4a;text-align:center;margin:4px 0">Αυτή η πρόταση είναι:</p>';
+h+='<div class="judge-row">';
+var opts=[{val:'yes',label:'✅ Σωστό',cls:'jyes'},{val:'no',label:'❌ Λάθος',cls:'jno'}];
+for(var i=0;i<opts.length;i++){
+var o=opts[i];
+var cls='judge-btn '+o.cls;
+if(!checked&&selected===o.val)cls+=' selected';
+if(checked){
+if(o.val===s.correct)cls+=' correct';
+else if(selected===o.val)cls+=' wrong';
+cls+=' disabled';
+}
+h+='<div class="'+cls+'" onclick="selectAns(\''+o.val+'\')">'+o.label+'</div>';
+}
+h+='</div>';
+if(!checked&&selected!==''){
+h+='<button class="check-btn" onclick="checkAnswer()">✓ Έλεγχος</button>';
+}
+if(checked){
+var correct=selected===s.correct;
+if(correct)pts+=10;
+document.getElementById('pts').textContent=pts;
+h+='<div class="result-msg '+(correct?'ok':'bad')+'">'+(correct?'✅ '+s.explain:'❌ '+s.explain)+'</div>';
+if(curQ<stmts.length-1){
+h+='<button class="next-btn" onclick="nextQ()">Επόμενη Πρόταση ▶</button>';
+}
+}
+main.innerHTML=h;
+}
+function selectAns(val){if(!checked){selected=val;render();}}
+function checkAnswer(){if(selected!==''){checked=true;render();}}
+function nextQ(){if(curQ<stmts.length-1){curQ++;initQ();render();}}
+initQ();render();
+</script>
+</body>
+</html>

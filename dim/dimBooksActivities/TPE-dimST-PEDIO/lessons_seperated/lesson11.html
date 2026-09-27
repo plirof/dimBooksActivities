@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Πληροφορική ΣΤ&#x27; Δημοτικού — Μάθημα 11: Καταγραφή δεδομένων και εκτέλεση πειραμάτων ...............................................................................37</title>
+
+<title>Pliroforiki_ST-Dimotikou_pdf-web_v.7.0_PEDIO/index</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="pdftohtml 0.36"/>
+<meta name="date" content="2026-04-03T12:32:02+00:00"/>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+
+</head>
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<!-- Page 39 -->
+<a name="39"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page39-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index039.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft3910">37</p>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft3910">37</p>
+<p style="position:absolute;top:32px;left:442px;white-space:nowrap" class="ft3925">Αλγοριθμική – Προγραμματισμός &#160;– Ρομποτική</p>
+<p style="position:absolute;top:140px;left:349px;white-space:nowrap" class="ft3952">Καταγραφή δεδομένων και εκτέλεση&#160;<br/>πειραμάτων</p>
+<p style="position:absolute;top:141px;left:116px;white-space:nowrap" class="ft3938"><b>&#160; &#160; &#160;Μάθημα 11ο</b></p>
+<p style="position:absolute;top:268px;left:202px;white-space:nowrap" class="ft3919">&#160;&#160;Πώς να καταγράφεις δεδομένα από τους αισθητήρες του micro:bit σε&#160;</p>
+<p style="position:absolute;top:291px;left:213px;white-space:nowrap" class="ft3919">ένα αρχείο του υπολογιστή σου.</p>
+<p style="position:absolute;top:313px;left:202px;white-space:nowrap" class="ft3919">&#160;&#160;Πώς να επεξεργάζεσαι τα δεδομένα των αισθητήρων για να βγάζεις&#160;</p>
+<p style="position:absolute;top:336px;left:213px;white-space:nowrap" class="ft3919">κάποια συμπεράσματα.</p>
+<p style="position:absolute;top:228px;left:210px;white-space:nowrap" class="ft3913"><b>Στο μάθημα αυτό θα μάθεις:</b></p>
+<p style="position:absolute;top:389px;left:85px;white-space:nowrap" class="ft3939">Στο μάθημα αυτό θα μάθεις πώς να καταγράφεις τις μετρήσεις των αισθητήρων του micro:bit σε ένα&#160;<br/>αρχείο του υπολογιστή σου ώστε στη συνέχεια να μπορείς να τις επεξεργαστείς με κάποιο πρόγραμμα.&#160;<br/>Η διαδικασία αυτή της καταγραφής δεδομένων (data logging) είναι πολύ χρήσιμη όταν π.χ. κάνεις ένα&#160;<br/>πείραμα και χρειάζεται να καταγράψεις τις μετρήσεις σου.&#160;</p>
+<p style="position:absolute;top:501px;left:85px;white-space:nowrap" class="ft3939">Πριν ξεκινήσεις την καταγραφή, πρέπει να αποφασίσεις τι θα μετρήσεις, πόσο συχνά και για ποιον λόγο&#160;<br/>χρειάζεσαι τις μετρήσεις αυτές.&#160;Το παρακάτω παράδειγμα θα σε βοηθήσει να καταλάβεις πώς μπορεί το&#160;<br/>micro:bit με τους αισθητήρες του να σε βοηθήσει να πραγματοποιήσεις διάφορα πειράματα και να&#160;<br/>καταγράψεις τις μετρήσεις σου.&#160;</p>
+<p style="position:absolute;top:614px;left:85px;white-space:nowrap" class="ft3939">Στο 8ο μάθημα είδες πώς με τη βοήθεια των αισθητήρων φωτός του micro:bit μπορούσες να μετρήσεις&#160;<br/>πόσο φως υπήρχε σε έναν χώρο.&#160;Ας υποθέσουμε ότι θέλεις να κάνεις ένα πείραμα για να βρεις τον μέσο&#160;<br/>όρο της φωτεινότητας του χώρου (τάξη, δωμάτιο, εργαστήριο κ.λπ.) στον οποίο βρίσκεσαι.&#160;<br/>Ξεκίνα φτιάχνοντας ένα νέο έργο. Όπως πάντα, θα εμφανισθούν οι δύο εντολές «κατά την έναρξη» και&#160;<br/>«για πάντα» στον χώρο του προγραμματισμού. Σε αυτό το έργο δεν θα χρειαστείς την εντολή «για&#160;<br/>πάντα», οπότε μπορείς να την πετάξεις στον σκουπιδοτενεκέ.</p>
+<p style="position:absolute;top:771px;left:85px;white-space:nowrap" class="ft3939">Το micro:bit διαθέτει έναν μηχανισμό καταγραφής δεδομένων σε πίνακα, τον οποίο θα βρεις πατώντας&#160;<br/>πάνω στο κουμπί&#160;</p>
+<p style="position:absolute;top:794px;left:284px;white-space:nowrap" class="ft3910">από τον χώρο των κατηγοριών. Πατώντας στις επεκτάσεις&#160;&#160;</p>
+<p style="position:absolute;top:816px;left:85px;white-space:nowrap" class="ft3939">θα&#160;εμφανισθεί&#160;ένα νέο παράθυρο από το οποίο επιλέγουμε την επέκταση της καταγραφής<br/>δεδομένων (datalogger).&#160;<br/>Επιστρέφοντας στον προγραμματιστικό χώρο του micro:bit θα δούμε ότι έχει προστεθεί&#160;&#160;<br/>η κατηγορία&#160;</p>
+<p style="position:absolute;top:884px;left:272px;white-space:nowrap" class="ft3910">στον χώρο των κατηγοριών.</p>
+<p style="position:absolute;top:929px;left:85px;white-space:nowrap" class="ft3939">Θα χρησιμοποιήσεις την εντολή &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; από αυτή τη νέα&#160;<br/>κατηγορία για να φτιάξεις μία νέα στήλη για τον πίνακα όπου θα&#160;<br/>αποθηκεύονται οι μετρήσεις σου.&#160;Δώσε ένα όνομα χρησιμοποιώντας&#160;<br/>γράμματα του λατινικού αλφαβήτου στη στήλη του πίνακά σου, π.χ.&#160;<br/>«fws». Χρησιμοποίησε λατινικούς χαρακτήρες για τα ονόματα των&#160;<br/>στηλών σου, γιατί το micro:bit δεν μπορεί να διαχειριστεί για την ώρα&#160;</p>
+</div>
+
+<!-- Page 40 -->
+<a name="40"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page40-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index040.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft4010">38</p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4023">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft4010">38</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft4030"><b>1</b></p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft4025">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft4030"><b>1</b></p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4023">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft4025">Αλγοριθμική – Προγραμματισμός - Ρομποτική</p>
+<p style="position:absolute;top:125px;left:85px;white-space:nowrap" class="ft4039">τους ελληνικούς χαρακτήρες. Βάλε αυτή την εντολή μέσα στην εντολή «κατά την έναρξη», μιας και ο&#160;<br/>πίνακας των μετρήσεων θα φτιαχτεί μία φορά μόνο κατά την έναρξη του προγράμματος.</p>
+<p style="position:absolute;top:193px;left:85px;white-space:nowrap" class="ft4039">Στη συνέχεια, πρέπει να γράψεις πρόγραμμα για να παίρνεις και να καταγράφεις τις μετρήσεις. Πάρε την&#160;<br/>εντολή «όταν πιεστεί το πλήκτρο button&#160;A» και την εντολή «εμφάνισε αριθμό» για να εμφανίσεις την&#160;<br/>ένδειξη του φωτισμού με το πάτημα του κουμπιού&#160;Α:&#160;</p>
+<p style="position:absolute;top:350px;left:85px;white-space:nowrap" class="ft4039">Μπορείς, όπως πάντα, στο σημείο αυτό να δοκιμάσεις το πρόγραμμα στον προσομοιωτή σου πιέζοντας&#160;<br/>το&#160;κουμπί Α.&#160;</p>
+<p style="position:absolute;top:418px;left:85px;white-space:nowrap" class="ft4039">Για την καταγραφή των μετρήσεων θα χρησιμοποιήσεις την εντολή &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;που θα βρεις&#160;<br/>μέσα στην κατηγορία .&#160;&#160;</p>
+<p style="position:absolute;top:485px;left:85px;white-space:nowrap" class="ft4039">Η εντολή αυτή κάνει την καταγραφή των δεδομένων σε ένα αρχείο του υπολογιστή σου. Βάλε στο πρώτο&#160;<br/>κυκλάκι (column) της εντολής το όνομα της στήλης «fws» που χρησιμοποίησες και στην προηγούμενη&#160;<br/>εντολή, για να ξέρει το πρόγραμμά σου σε ποια στήλη του πίνακα πρέπει να καταγράψει τα δεδομένα.&#160;<br/>Στο δεύτερο κυκλάκι (value) βάλε την τιμή που πρέπει να καταγράφει, δηλαδή το «επίπεδο φωτισμού».&#160;</p>
+<p style="position:absolute;top:598px;left:85px;white-space:nowrap" class="ft4039">Βάλε την εντολή που έφτιαξες μέσα στην εντολή «όταν πιεστεί το πλήκτρο button&#160;A», γιατί θέλουμε και η&#160;<br/>καταγραφή του επιπέδου του φωτός να γίνεται με το πάτημα του κουμπιού&#160;Α.&#160;Το πρόγραμμά σου πρέπει&#160;<br/>να μοιάζει με το παρακάτω:</p>
+<p style="position:absolute;top:795px;left:85px;white-space:nowrap" class="ft4039">Για να μπορέσεις να δεις τις μετρήσεις σου να καταγράφονται, σύνδεσε το micro:bit σου και «κατέβασε»&#160;<br/>το πρόγραμμα που έφτιαξες. Στη συνέχεια αποσύνδεσε το micro:bit, μετακινήσου σε διάφορα σημεία του&#160;<br/>χώρου με διαφορετικό φωτισμό και κατάγραψε το φως που υπάρχει πατώντας το κουμπί&#160;Α. Θα δεις την&#160;<br/>ένδειξη να εμφανίζεται στην οθόνη.&#160;</p>
+<p style="position:absolute;top:907px;left:259px;white-space:nowrap" class="ft4039">Επίστρεψε τώρα στον υπολογιστή σου, σύνδεσε ξανά το&#160;<br/>micro:bit.&#160;To micro:bit όταν συνδεθεί εμφανίζεται ως εξωτερικός&#160;<br/>αποθηκευτικός χώρος για τον υπολογιστή σου στον εξερευνητή&#160;<br/>αρχείων με το όνομα MICROBIT.&#160;Άνοιξε το αρχείο MY_DATA.HTM που θα&#160;<br/>βρεις μέσα στο MICROBIT&#160;για να δεις την καταγραφή των δεδομένων σου στον&#160;<br/>πίνακα με τη στήλη «fws». Η πρώτη στήλη του πίνακα είναι η χρονική στιγμή&#160;<br/>που πάρθηκε η μέτρηση.&#160;</p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4023">Πληροφορική ΣΤ΄ Δημοτικού</p>
+</div>
+
+<!-- Page 41 -->
+<a name="41"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page41-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index041.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft4110">39</p>
+<p style="position:absolute;top:1107px;left:770px;white-space:nowrap" class="ft4110">39</p>
+<p style="position:absolute;top:32px;left:322px;white-space:nowrap" class="ft4142">Μάθημα 11ο: Καταγραφή δεδομένων και εκτέλεση πειραμάτων</p>
+<p style="position:absolute;top:124px;left:85px;white-space:nowrap" class="ft4139">Μπορείς να κλείσεις και να ξανανοίξεις το micro:bit σου για να συνεχίσεις αργότερα τις μετρήσεις σου.&#160;<br/>Ξανασυνδέοντάς το στον υπολογιστή σου, οι μετρήσεις σου αποθηκεύονται στο ίδιο αρχείο και ο πίνακάς&#160;<br/>σου μεγαλώνει.</p>
+<p style="position:absolute;top:534px;left:85px;white-space:nowrap" class="ft4139">Μπορείς να σβήσεις τα δεδομένα που κατέγραψες με προγραμματιστικό&#160;<br/>τρόπο χρησιμοποιώντας την εντολή &#160; &#160; &#160; &#160; &#160; &#160; &#160; , π.χ.</p>
+<p style="position:absolute;top:624px;left:85px;white-space:nowrap" class="ft4110">Μπορείς επίσης να πατήσεις στο κουμπί&#160;</p>
+<p style="position:absolute;top:624px;left:443px;white-space:nowrap" class="ft4110">για να πάρεις το&#160;</p>
+<p style="position:absolute;top:646px;left:85px;white-space:nowrap" class="ft4139">αρχείο των δεδομένων στον υπολογιστή σου και στη συνέχεια να το&#160;<br/>εισαγάγεις και να το επεξεργαστείς σε ένα πρόγραμμα υπολογιστικών&#160;<br/>φύλλων, για να βρεις π.χ. τον μέσο όρο του επιπέδου φωτισμού στην&#160;<br/>αίθουσά σου, όπως είπαμε και στην αρχή.</p>
+<p style="position:absolute;top:759px;left:85px;white-space:nowrap" class="ft4139">Θα μπορούσες να επαναλάβεις το πείραμά σου και σε άλλες αίθουσες του&#160;<br/>σχολείου ή του σπιτιού σου για να βγάλεις ένα συμπέρασμα σχετικά με το&#160;<br/>ποια είναι πιο φωτεινή ή πιο σκοτεινή.</p>
+<p style="position:absolute;top:929px;left:154px;white-space:nowrap" class="ft4110">Ο μηχανισμός καταγραφής των δεδομένων προβλέπει πολλαπλές στήλες στον πίνακα&#160;</p>
+<p style="position:absolute;top:952px;left:109px;white-space:nowrap" class="ft4139">καταγραφής. Έτσι μπορείς, για παράδειγμα, εκτός από το επίπεδο φωτισμού, να καταγράφεις&#160;<br/>μετρήσεις και για το επίπεδο του ήχου, αλλά και για τη θερμοκρασία του χώρου στον οποίο&#160;<br/>βρίσκεσαι, προσθέτοντας τις αντίστοιχες στήλες στον πίνακά σου. Συμπλήρωσε στήλες στον&#160;<br/>πίνακα καταγραφής ως εξής:</p>
+<p style="position:absolute;top:553px;left:714px;white-space:nowrap" class="ft4146">Βίντεο.&#160;<br/>Καταγραφή&#160;<br/>δεδομένων</p>
+<p style="position:absolute;top:663px;left:714px;white-space:nowrap" class="ft4146">Ερωτήσεις&#160;<br/>πολλαπλής&#160;<br/>επιλογής</p>
+<p style="position:absolute;top:774px;left:714px;white-space:nowrap" class="ft4146">Ερωτήσεις&#160;<br/>Σωστού&#160;<br/>- Λάθους</p>
+</div>
+
+<!-- Page 42 -->
+<a name="42"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page42-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index042.png" alt="background image"/>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft4210">40</p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4223">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:1107px;left:85px;white-space:nowrap" class="ft4210">40</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft4230"><b>1</b></p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft4225">Αλγοριθμική – Προγραμματισμός – Ρομποτική</p>
+<p style="position:absolute;top:13px;left:21px;white-space:nowrap" class="ft4230"><b>1</b></p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4223">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:32px;left:98px;white-space:nowrap" class="ft4225">Αλγοριθμική – Προγραμματισμός - Ρομποτική</p>
+<p style="position:absolute;top:18px;left:98px;white-space:nowrap" class="ft4223">Πληροφορική ΣΤ΄ Δημοτικού</p>
+<p style="position:absolute;top:125px;left:83px;white-space:nowrap" class="ft4239">Κατάγραψε τις μετρήσεις των αισθητήρων&#160;&#160;<br/>στον πίνακα με τον παρακάτω κώδικα:</p>
+<p style="position:absolute;top:384px;left:83px;white-space:nowrap" class="ft4210">Μπορείς επίσης να πατήσεις το κουμπί&#160;</p>
+<p style="position:absolute;top:384px;left:455px;white-space:nowrap" class="ft4210">για να δεις τα δεδομένα που&#160;</p>
+<p style="position:absolute;top:407px;left:83px;white-space:nowrap" class="ft4210">συγκέντρωσες σε γραφική αναπαράσταση:</p>
+<p style="position:absolute;top:125px;left:444px;white-space:nowrap" class="ft4239">Το αρχείο των μετρήσεων που θα πάρεις θα είναι&#160;<br/>κάπως έτσι:</p>
+<p style="position:absolute;top:607px;left:178px;white-space:nowrap" class="ft4210">Χωριστείτε σε ομάδες των 2 ή 3 ατόμων. Επισκεφθείτε τις τάξεις του σχολείου σας για να&#160;</p>
+<p style="position:absolute;top:629px;left:99px;white-space:nowrap" class="ft4239">συλλέξετε δεδομένα για το φως, τον ήχο και τη θερμοκρασία. Στη συνέχεια μπορείτε να επεξεργαστείτε&#160;<br/>τα δεδομένα αυτά και να βγάλετε συμπεράσματα σχετικά με το ποια είναι η πιο φωτεινή, η πιο ζεστή ή&#160;<br/>έχει τον περισσότερο θόρυβο. Φτιάξτε έναν πίνακα με τις μετρήσεις και παρουσιάστε τον στην τάξη μαζί&#160;<br/>με τα συμπεράσματά σας.</p>
+<p style="position:absolute;top:782px;left:122px;white-space:nowrap" class="ft4229"><b>Διαλέγω πόσο καλά έμαθα:</b></p>
+<p style="position:absolute;top:751px;left:399px;white-space:nowrap" class="ft4210">Έχω&#160;</p>
+<p style="position:absolute;top:772px;left:370px;white-space:nowrap" class="ft4210">καταλάβει και&#160;</p>
+<p style="position:absolute;top:793px;left:380px;white-space:nowrap" class="ft4210">μπορώ να &#160;</p>
+<p style="position:absolute;top:814px;left:385px;white-space:nowrap" class="ft4210">εξηγήσω</p>
+<p style="position:absolute;top:761px;left:506px;white-space:nowrap" class="ft4210">Έχω&#160;</p>
+<p style="position:absolute;top:782px;left:489px;white-space:nowrap" class="ft4210">καταλάβει&#160;</p>
+<p style="position:absolute;top:803px;left:481px;white-space:nowrap" class="ft4210">αρκετά καλά</p>
+<p style="position:absolute;top:751px;left:611px;white-space:nowrap" class="ft4210">Έχω&#160;</p>
+<p style="position:absolute;top:772px;left:594px;white-space:nowrap" class="ft4210">καταλάβει&#160;</p>
+<p style="position:absolute;top:793px;left:595px;white-space:nowrap" class="ft4210">αλλά έχω&#160;</p>
+<p style="position:absolute;top:814px;left:600px;white-space:nowrap" class="ft4210">απορίες</p>
+<p style="position:absolute;top:772px;left:697px;white-space:nowrap" class="ft4210">Χρειάζομαι&#160;</p>
+<p style="position:absolute;top:793px;left:707px;white-space:nowrap" class="ft4210">βοήθεια</p>
+<p style="position:absolute;top:858px;left:102px;white-space:nowrap" class="ft4210">&#160;&#160;Να καταγράφω δεδομένα των&#160;</p>
+<p style="position:absolute;top:879px;left:122px;white-space:nowrap" class="ft4210">αισθητήρων του micro:bit.</p>
+<p style="position:absolute;top:923px;left:102px;white-space:nowrap" class="ft4210">&#160;&#160;Να βρίσκω το αρχείο όπου&#160;</p>
+<p style="position:absolute;top:944px;left:121px;white-space:nowrap" class="ft4226">αποθηκεύονται τα δεδομένα αυτά&#160;<br/>στον υπολογιστή μου.</p>
+<p style="position:absolute;top:998px;left:102px;white-space:nowrap" class="ft4210">&#160;&#160;Να χρησιμοποιώ τα δεδομένα για&#160;</p>
+<p style="position:absolute;top:1019px;left:121px;white-space:nowrap" class="ft4226">επεξεργασία και να βγάζω&#160;<br/>συμπεράσματα.</p>
+<p style="position:absolute;top:474px;left:721px;white-space:nowrap" class="ft4246">Άσκηση&#160;<br/>συμπλήρωσης&#160;<br/>κενών</p>
+</div>
+
+<!-- Page 43 -->
+<a name="43"></a>
+<style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}-->
+</style>
+<div id="page43-div" style="position:relative;width:871px;height:1169px;">
+<img width="871" height="1169" src="../img/index043.png" alt="background image"/>
+<p style="position:absolute;top:236px;left:213px;white-space:nowrap" class="ft4331">Υπολογιστικά συστήματα –&#160;&#160;</p>
+<p style="position:absolute;top:293px;left:194px;white-space:nowrap" class="ft4331">Ψηφιακές συσκευές – Δίκτυα</p>
+<p style="position:absolute;top:153px;left:365px;white-space:nowrap" class="ft4318">Ενότητα 2</p>
+<p style="position:absolute;top:414px;left:132px;white-space:nowrap" class="ft4313"><b>Στην ενότητα αυτή θα μάθεις:</b></p>
+<p style="position:absolute;top:478px;left:142px;white-space:nowrap" class="ft4319">&#160;&#160;Ποια είναι τα βασικά στοιχεία του υλικού του&#160;</p>
+<p style="position:absolute;top:499px;left:153px;white-space:nowrap" class="ft4319">υπολογιστή και τα χαρακτηριστικά τους.&#160;</p>
+<p style="position:absolute;top:520px;left:142px;white-space:nowrap" class="ft4321">&#160;&#160;Να ρυθμίζεις το υλικό του υπολογιστή.&#160;<br/>&#160;&#160;Να εγκαθιστάς και να απεγκαθιστάς&#160;</p>
+<p style="position:absolute;top:562px;left:153px;white-space:nowrap" class="ft4319">εφαρμογές του υπολογιστή.</p>
+<p style="position:absolute;top:583px;left:142px;white-space:nowrap" class="ft4319">&#160;&#160;Να αντιμετωπίζεις προβλήματα λειτουργίας&#160;</p>
+<p style="position:absolute;top:604px;left:153px;white-space:nowrap" class="ft4319">του υπολογιστή.&#160;</p>
+<p style="position:absolute;top:625px;left:142px;white-space:nowrap" class="ft4319">&#160;&#160;Να αναγνωρίζεις ότι η διασύνδεση των&#160;</p>
+<p style="position:absolute;top:646px;left:153px;white-space:nowrap" class="ft4321">συσκευών στο διαδίκτυο επιτυγχάνεται&#160;<br/>μέσω διαφορετικών παρόχων.</p>
+<p style="position:absolute;top:688px;left:142px;white-space:nowrap" class="ft4319">&#160;&#160;Να διακρίνεις τα χαρακτηριστικά σύνδεσης&#160;</p>
+<p style="position:absolute;top:709px;left:153px;white-space:nowrap" class="ft4321">στο διαδίκτυο (πάροχος, ταχύτητα, μονάδες&#160;<br/>μέτρησης).</p>
+<p style="position:absolute;top:751px;left:142px;white-space:nowrap" class="ft4319">&#160;&#160;Να περιγράφεις την έννοια και τη συμβολή&#160;</p>
+<p style="position:absolute;top:772px;left:153px;white-space:nowrap" class="ft4321">των πρωτοκόλλων επικοινωνίας στη&#160;<br/>δικτύωση υπολογιστικών συσκευών.</p>
+<p style="position:absolute;top:478px;left:479px;white-space:nowrap" class="ft4319">&#160;&#160;Να περιγράφεις με απλό τρόπο τη φυσική&#160;</p>
+<p style="position:absolute;top:499px;left:490px;white-space:nowrap" class="ft4322">διεύθυνση μίας συσκευής σε δίκτυο&#160;<br/>υπολογιστών (IP, MAC address).</p>
+<p style="position:absolute;top:541px;left:479px;white-space:nowrap" class="ft4319">&#160;&#160;Να αναγνωρίζεις τις αρνητικές επιπτώσεις&#160;</p>
+<p style="position:absolute;top:562px;left:490px;white-space:nowrap" class="ft4321">και τους κινδύνους από τη χρήση του&#160;<br/>διαδικτύου (π.χ. Hacking, Phishing κ.ά.) και&#160;<br/>να λαμβάνεις απλά μέτρα πρόληψης.</p>
+<p style="position:absolute;top:625px;left:479px;white-space:nowrap" class="ft4319">&#160;&#160;Να περιγράφεις την έννοια του&#160;Διαδικτύου&#160;</p>
+<p style="position:absolute;top:646px;left:490px;white-space:nowrap" class="ft4321">των Πραγμάτων (IoT) και τις μελλοντικές του&#160;<br/>εφαρμογές.</p>
+<p style="position:absolute;top:876px;left:357px;white-space:nowrap" class="ft4332">Λ</p>
+<p style="position:absolute;top:882px;left:371px;white-space:nowrap" class="ft4333">έξέις</p>
+<p style="position:absolute;top:876px;left:415px;white-space:nowrap" class="ft4332">-Κ</p>
+<p style="position:absolute;top:882px;left:435px;white-space:nowrap" class="ft4333">Λέιδιά</p>
+<p style="position:absolute;top:912px;left:171px;white-space:nowrap" class="ft4335">υπολογιστής, υπολογιστικό σύστημα, υλικό, λογισμικό, εφαρμογή, επεξεργαστής, μνήμη,&#160;<br/>δίσκος αποθήκευσης, μητρική πλακέτα, οθόνη, κάρτα γραφικών, πληκτρολόγιο, ποντίκι,&#160;<br/>κάμερα, μικρόφωνο, ηχεία, μπαταρία, θύρες σύνδεσης, λειτουργικό σύστημα, ρυθμίσεις,&#160;</p>
+<p style="position:absolute;top:975px;left:172px;white-space:nowrap" class="ft4335">κέντρο ελέγχου, αποθετήριο λογισμικού, εγκατάσταση εφαρμογής, απεγκατάσταση&#160;<br/>εφαρμογής, ρυθμίσεις υλικού, διαχειριστής ημερομηνίας και ώρας, συντήρηση&#160;<br/>υπολογιστή, πρόβλημα λειτουργίας, πάροχος (provider), πρωτόκολλο επικοινωνίας,&#160;</p>
+<p style="position:absolute;top:1038px;left:172px;white-space:nowrap" class="ft4334">φυσική διεύθυνση, διαδίκτυο, το&#160;Διαδίκτυο των Πραγμάτων (IoT)</p>
+</div>
+
+</body>
+</html>

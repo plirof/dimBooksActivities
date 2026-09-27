@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Υπηρεσίες gov.gr",
+  "subtitle": "Βάλε γρήγορα στη σωστή κατηγορία!",
+  "instructions": "Πάτα το κουμπί της σωστής κατηγορίας για κάθε λέξη!",
+  "categories": [
+    {"id": "docs", "name": "Έγγραφα", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "tools", "name": "Εργαλεία / Τεχνολογία", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Υπεύθυνη δήλωση", "category": "docs"},
+    {"text": "Chatbot mAIgov", "category": "tools"},
+    {"text": "Εξουσιοδότηση", "category": "docs"},
+    {"text": "Τεχνητή νοημοσύνη", "category": "tools"},
+    {"text": "Ψηφιακή βεβαίωση", "category": "docs"},
+    {"text": "Ψηφιακός βοηθός", "category": "tools"},
+    {"text": "Θυρίδα πολίτη", "category": "docs"},
+    {"text": "Gov.gr Wallet", "category": "tools"},
+    {"text": "Ιδιωτικό συμφωνητικό", "category": "docs"},
+    {"text": "Ηλεκτρονικό ραντεβού", "category": "tools"}
+  ],
+  "duration": 30
+}

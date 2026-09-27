@@ -1,0 +1,21 @@
+{
+  "title": "Σπάσε τα Μπαλόνια: Εργαλεία TuxPaint",
+  "subtitle": "Σπάσε μόνο τα εργαλεία της ζωγραφικής",
+  "instruction": "Σπάσε μόνο εργαλεία που υπάρχουν στο TuxPaint",
+  "speed": 1.2,
+  "lives": 3,
+  "duration": 30,
+  "spawnInterval": 2000,
+  "balloons": [
+    { "text": "Πινέλο", "correct": true, "color": "#4CAF50" },
+    { "text": "Πληκτρολόγιο", "correct": false, "color": "#f44336" },
+    { "text": "Σβήστρα", "correct": true, "color": "#4CAF50" },
+    { "text": "Εκτυπωτής", "correct": false, "color": "#f44336" },
+    { "text": "Σχήματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Ποντίκι", "correct": false, "color": "#f44336" },
+    { "text": "Γραμμές", "correct": true, "color": "#4CAF50" },
+    { "text": "Οθόνη", "correct": false, "color": "#f44336" },
+    { "text": "Χρώματα", "correct": true, "color": "#4CAF50" },
+    { "text": "Καλώδιο", "correct": false, "color": "#f44336" }
+  ]
+}

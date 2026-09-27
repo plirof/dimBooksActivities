@@ -1,0 +1,37 @@
+{
+  "title": "Βρες τα Λάθη: Πόροι Ιστοσελίδας",
+  "subtitle": "Βρες ποιες προτάσεις έχουν λάθος",
+  "rounds": [
+    {
+      "words": [
+        { "text": "Μια", "error": false, "correct": "", "feedback": "" },
+        { "text": "ιστοσελιδα", "error": true, "correct": "ιστοσελίδα", "feedback": "Λείπει ο τόνος" },
+        { "text": "μπορεί", "error": false, "correct": "", "feedback": "" },
+        { "text": "να", "error": false, "correct": "", "feedback": "" },
+        { "text": "περιέχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "ζωγραφική", "error": true, "correct": "βίντεο", "feedback": "Η ιστοσελίδα περιέχει βίντεο, όχι ζωντανή ζωγραφική" },
+        { "text": "και", "error": false, "correct": "", "feedback": "" },
+        { "text": "ήχους", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Το", "error": false, "correct": "", "feedback": "" },
+        { "text": "βιντεο", "error": true, "correct": "βίντεο", "feedback": "Λείπει ο τόνος" },
+        { "text": "δεν", "error": true, "correct": "", "feedback": "Το βίντεο ΕΧΕΙ εικόνα προεπισκόπησης" },
+        { "text": "έχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "εικόνα", "error": false, "correct": "", "feedback": "" },
+        { "text": "προεπισκόπησης", "error": false, "correct": "", "feedback": "" }
+      ]
+    },
+    {
+      "words": [
+        { "text": "Ο", "error": false, "correct": "", "feedback": "" },
+        { "text": "ηχος", "error": true, "correct": "ήχος", "feedback": "Λείπει ο τόνος" },
+        { "text": "έχει", "error": false, "correct": "", "feedback": "" },
+        { "text": "κουμπί", "error": false, "correct": "", "feedback": "" },
+        { "text": "σταμάτησης", "error": true, "correct": "αναπαραγωγή", "feedback": "Το κουμπί λέγεται αναπαραγωγή (play)" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "title": "Βρες τα Λάθη: Εφαρμογές",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εφαρμογές", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "το", "error": true, "correct": "το", "feedback": "Οι εφαρμογές είναι το ΛΟΓΙΣΜΙΚΟ, όχι το υλικό!"},
+        {"text": "υλικό", "error": true, "correct": "λογισμικό", "feedback": "Οι εφαρμογές είναι το ΛΟΓΙΣΜΙΚΟ (software)!"},
+        {"text": "του", "error": false},
+        {"text": "υπολογιστή.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "λογισμικό", "error": false},
+        {"text": "μπορούμε", "error": false},
+        {"text": "να", "error": false},
+        {"text": "το", "error": false},
+        {"text": "πιάσουμε.", "error": true, "correct": "δεν μπορούμε να το πιάσουμε", "feedback": "Το λογισμικό ΔΕΝ μπορούμε να το πιάσουμε, είναι κώδικας!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Ανοίγω", "error": false},
+        {"text": "την", "error": false},
+        {"text": "εφαρμογή", "error": false},
+        {"text": "με", "error": false},
+        {"text": "το", "error": false},
+        {"text": "κουμπί", "error": true, "correct": "εικονίδιο", "feedback": "Ανοίγουμε την εφαρμογή με το ΕΙΚΟΝΙΔΙΟ, όχι με κουμπί!"},
+        {"text": "της.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Κάθε", "error": false},
+        {"text": "ψηφιακή", "error": false},
+        {"text": "συσκευή", "error": false},
+        {"text": "έχει", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Κάθε ψηφιακή συσκευή έχει ΚΑΙ υλικό ΚΑΙ λογισμικό!"},
+        {"text": "υλικό.", "error": true, "correct": "υλικό και λογισμικό", "feedback": "Κάθε ψηφιακή συσκευή έχει ΚΑΙ υλικό ΚΑΙ λογισμικό!"}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "υπολογιστικό", "error": false},
+        {"text": "σύστημα", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Το υπολογιστικό σύστημα περιλαμβάνει υλικό ΚΑΙ λογισμικό ΚΑΙ περιφερειακές συσκευές!"},
+        {"text": "το", "error": false},
+        {"text": "υλικό.", "error": true, "correct": "το υλικό, το λογισμικό και τις περιφερειακές συσκευές.", "feedback": "Το υπολογιστικό σύστημα = κεντρική μονάδα + περιφερειακές συσκευές + εφαρμογές!"}
+      ]
+    }
+  ]
+}

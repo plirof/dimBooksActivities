@@ -1,0 +1,22 @@
+{
+  "title": "Ταχύτατη Ταξινόμηση: Μηνύματα",
+  "subtitle": "Ταξινόμησε γρήγορα τις εντολές!",
+  "instructions": "Βάλε κάθε λέξη στη σωστή κατηγορία!",
+  "categories": [
+    {"id": "send", "name": "Αποστολή Μηνύματος", "color": "#4CAF50", "key": "ArrowLeft"},
+    {"id": "recv", "name": "Παραλαβή Μηνύματος", "color": "#2196F3", "key": "ArrowRight"}
+  ],
+  "items": [
+    {"text": "Εντολή στείλε", "category": "send"},
+    {"text": "Νέο μήνυμα", "category": "send"},
+    {"text": "Ο Αντρέας στέλνει", "category": "send"},
+    {"text": "Δημιουργία μηνύματος", "category": "send"},
+    {"text": "Εντολή όταν λάβω", "category": "recv"},
+    {"text": "Η Μπάλα εκτελεί εντολές", "category": "recv"},
+    {"text": "Συμβάν παραλαβής", "category": "recv"},
+    {"text": "Εκτέλεση σεναρίου", "category": "recv"},
+    {"text": "Ορίζω όνομα μηνύματος", "category": "send"},
+    {"text": "Ξεκινάει σενάριο", "category": "recv"}
+  ],
+  "duration": 30
+}

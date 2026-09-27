@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ψηφιακό Αποτύπωμα</title>
+<style>
+@font-face {
+font-family: 'NotoColorEmoji';
+src: url('../fonts/NotoColorEmoji.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+1F300-1F9FF;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+h1 {
+color: white;
+text-align: center;
+margin-bottom: 10px;
+font-size: 2rem;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.subtitle {
+color: #e0e0ff;
+text-align: center;
+margin-bottom: 30px;
+font-size: 1.1rem;
+max-width: 600px;
+}
+.container {
+background: white;
+border-radius: 20px;
+padding: 30px;
+width: 100%;
+max-width: 700px;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.activity {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+}
+.activity-title {
+font-weight: bold;
+color: #333;
+margin-bottom: 15px;
+font-size: 1.1rem;
+}
+.digital-trail {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-bottom: 20px;
+}
+.trail-item {
+background: white;
+padding: 12px 15px;
+border-radius: 10px;
+display: flex;
+align-items: center;
+gap: 12px;
+border-left: 4px solid #ddd;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.trail-item:hover {
+transform: translateX(5px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.trail-item.positive {
+border-left-color: #27ae60;
+background: rgba(39, 174, 96, 0.1);
+}
+.trail-item.negative {
+border-left-color: #e74c3c;
+background: rgba(231, 76, 60, 0.1);
+}
+.trail-icon {
+font-size: 1.5rem;
+}
+.trail-text {
+flex: 1;
+color: #333;
+}
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #667eea, #764ba2);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1.1rem;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.result-box {
+background: #f8f9fa;
+border-radius: 15px;
+padding: 20px;
+margin-top: 20px;
+display: none;
+text-align: center;
+}
+.result-box.show {
+display: block;
+}
+.result-box.good {
+background: #d4edda;
+color: #155724;
+border: 2px solid #28a745;
+}
+.result-box.bad {
+background: #f8d7da;
+color: #721c24;
+border: 2px solid #dc3545;
+}
+.mascot {
+font-size: 3rem;
+position: fixed;
+bottom: 20px;
+right: 20px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+/* iron61-gap-fallback:start */
+@supports not (gap:1px){
+  .digital-trail > * + * { margin-top: 12px; }
+  .trail-item > * + * { margin-left: 12px; }
+}
+/* iron61-gap-fallback:end */
+</style>
+</head>
+<body>
+<h1>👣 Ψηφιακό Αποτύπωμα</h1>
+<p class="subtitle">Επιλέξτε ποια δραστηριότητες αφήνουν θετικό ή αρνητικό αποτύπωμα</p>
+
+<div class="container">
+<div class="activity">
+<div class="activity-title">📱 Σχολικά / Εκπαιδευτικές Δραστηριότητες</div>
+<div class="digital-trail">
+<div class="trail-item positive" onclick="selectItem(this)">
+<div class="trail-icon">✓</div>
+<div class="trail-text">Ανάρτηση εργασίας με πηγές</div>
+</div>
+<div class="trail-item positive" onclick="selectItem(this)">
+<div class="trail-icon">✓</div>
+<div class="trail-text">Σχόλια σε μαθητικά βίντεο</div>
+</div>
+<div class="trail-item negative" onclick="selectItem(this)">
+<div class="trail-icon">✗</div>
+<div class="trail-text">Δημοσίευση φωτογραφίας συμμαθητών χωρίς άδεια</div>
+</div>
+<div class="trail-item positive" onclick="selectItem(this)">
+<div class="trail-icon">✓</div>
+<div class="trail-text">Δημιουργία παρουσίασης για τάξη</div>
+</div>
+</div>
+</div>
+
+<button class="btn" onclick="evaluateTrail()">Αξιολόγηση Αποτυπώματος</button>
+
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<div class="mascot">🔍</div>
+
+<script>
+let selectedPositive = 0;
+let selectedNegative = 0;
+
+function selectItem(item) {
+if (item.classList.contains('positive')) {
+item.classList.toggle('selected');
+selectedPositive = document.querySelectorAll('.trail-item.positive.selected').length;
+} else {
+item.classList.toggle('selected');
+selectedNegative = document.querySelectorAll('.trail-item.negative.selected').length;
+}
+}
+
+function evaluateTrail() {
+const resultBox = document.getElementById('resultBox');
+
+if (selectedPositive > 0 && selectedNegative === 0) {
+resultBox.className = 'result-box show good';
+resultBox.innerHTML = '🎉 Εξαιρετικό! Δημιουργείτε θετικό ψηφιακό αποτύπωμα με τις εκπαιδευτικές σας δραστηριότητες!';
+} else if (selectedNegative > 0) {
+resultBox.className = 'result-box show bad';
+resultBox.innerHTML = '⚠️ Προσοχή! Οι αρνητικές δραστηριότητες μπορούν να βλάψουν τη διαδικτυακή σας φήμη!';
+} else {
+resultBox.className = 'result-box show';
+resultBox.style.background = '#fff3cd';
+resultBox.style.color = '#856404';
+resultBox.style.border = '2px solid #ffc107';
+resultBox.innerHTML = '📝 Επιλέξτε δραστηριότητες για αξιολόγηση!';
+}
+}
+</script>
+</body>
+</html>

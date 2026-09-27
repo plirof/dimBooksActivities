@@ -1,0 +1,47 @@
+{
+  "title": "Βρες τα Λάθη: Animation",
+  "subtitle": "Κάνε κλικ στις λάθος λέξεις",
+  "rounds": [
+    {
+      "words": [
+        {"text": "Τα", "error": false},
+        {"text": "κινούμενα", "error": false},
+        {"text": "σχέδια", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "μία", "error": true, "correct": "", "feedback": "Χρειάζονται ΠΟΛΛΕΣ εικόνες, όχι μία!"},
+        {"text": "μόνο", "error": true, "correct": "", "feedback": "Χρειάζονται ΠΟΛΛΕΣ εικόνες!"},
+        {"text": "εικόνα.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Οι", "error": false},
+        {"text": "εικόνες", "error": false},
+        {"text": "πρέπει", "error": false},
+        {"text": "να", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": " εντελώς", "error": true, "correct": "ελάχιστα", "feedback": "Οι εικόνες διαφέρουν ΕΛΑΧΙΣΤΑ μεταξύ τους!"},
+        {"text": "διαφορετικές.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Για", "error": false},
+        {"text": "animation", "error": false},
+        {"text": "χρειάζομαι", "error": false},
+        {"text": "αργή", "error": true, "correct": "γρήγορη", "feedback": "Χρειάζεται ΓΡΗΓΟΡΗ εναλλαγή εικόνων για κίνηση!"},
+        {"text": "εναλλαγή", "error": false},
+        {"text": "εικόνων.", "error": false}
+      ]
+    },
+    {
+      "words": [
+        {"text": "Το", "error": false},
+        {"text": "GIF", "error": false},
+        {"text": "είναι", "error": false},
+        {"text": "ακίνητη", "error": true, "correct": "κινούμενη", "feedback": "Το GIF είναι ΚΙΝΟΥΜΕΝΗ εικόνα!"},
+        {"text": "εικόνα.", "error": false}
+      ]
+    }
+  ]
+}
