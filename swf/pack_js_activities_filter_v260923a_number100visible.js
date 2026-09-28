@@ -1,12 +1,6 @@
 // pack_js_activities_filter.js - 
 /*
 version/changes:
-- v260928b - Badges are FIXED numbers pinned by pack_Book.php (each top-level
-              <li> carries data-num + an inline counter-reset): buildMap()
-              now reads data-num instead of counting top-level <li> - fixed
-              numbering leaves holes where a category is absent from the
-              lesson, and counting would mislabel every token. Counting
-              fallback kept for pages without pinning.
 - v260928 - The EXTRAS section (div7, badges 100+) is NEVER filtered away:
               every entry with badge number >= 100 stays visible regardless of
               the CSV row or the shown= URL parameter (and keeps its original
@@ -121,14 +115,11 @@ version/changes:
     }
 
     //---------------- NUMBERING MAP (mirrors the CSS counters) --------------
-    // v260928b: badges are PHP-pinned fixed numbers - each top-level <li>
-    // carries data-num, which is authoritative (holes are expected where a
-    // category is absent from the lesson).
-    // entries: one per top-level <li> of div1..div6 (the italic "Δεν
-    // υπάρχουν..." placeholders count too, they burn a number), plus one per
-    // EXTRAS <li> of div7 (badges 100,101... via #div7 ol). A group wrapper
-    // (ul.meli-sub / ul.uniq-sub / ul.tag-sub) counts as ONE number and
-    // registers its children as lettered tokens "9a","9b","9c"...
+    // entries: one per top-level <li> of div1..div6 (badges 1,2,3... - the
+    // italic "Δεν υπάρχουν..." placeholders count too, they burn a number),
+    // plus one per EXTRAS <li> of div7 (badges 100,101... via #div7 ol).
+    // A group wrapper (ul.meli-sub / ul.uniq-sub / ul.tag-sub) counts as ONE
+    // number and registers its children as lettered tokens "9a","9b","9c"...
     var entries = [];
     var byToken = {};
 
@@ -162,10 +153,7 @@ version/changes:
             if (!div) continue;
             for (i = 0; i < div.children.length; i++) {
                 if (div.children[i].tagName !== "LI") continue;
-                // v260928b - read the pinned badge number (fixed numbering
-                // with holes); counting is only a fallback for unpinned pages
-                var dn = parseInt(div.children[i].getAttribute("data-num"), 10);
-                n = isNaN(dn) ? n + 1 : dn;
+                n++;
                 registerEntry(String(n), div.children[i]);
             }
         }

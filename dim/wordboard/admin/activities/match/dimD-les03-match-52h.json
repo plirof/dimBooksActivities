@@ -1,13 +1,9 @@
 {
     "id": "dimD-les03-match-52h",
     "title": "Ξανά και ξανά… - Αντιστοίχιση",
+    "type": "match",
     "created_by": "admin",
     "created_date": "2026-04-22",
-    "tags": [
-        "dimD",
-        "les03",
-        "επανάληψη"
-    ],
     "data": {
         "pairs": [
             {
@@ -35,5 +31,10 @@
                 "right": "Προεπιλεγμένος χαρακτήρας στο Scratch"
             }
         ]
-    }
+    },
+    "tags": [
+        "dimD",
+        "les03",
+        "επανάληψη"
+    ]
 }

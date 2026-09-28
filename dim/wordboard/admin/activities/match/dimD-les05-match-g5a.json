@@ -1,14 +1,9 @@
 {
     "id": "dimD-les05-match-g5a",
-    "type": "match",
     "title": "Επανάλαβε ώσπου - Αντιστοίχιση",
+    "type": "match",
     "created_by": "admin",
     "created_date": "2026-04-22",
-    "tags": [
-        "dimD",
-        "les05",
-        "ώσπου"
-    ],
     "data": {
         "pairs": [
             {
@@ -36,5 +31,10 @@
                 "right": "Ερώτηση αληθούς ή ψευδούς"
             }
         ]
-    }
+    },
+    "tags": [
+        "dimD",
+        "les05",
+        "ώσπου"
+    ]
 }

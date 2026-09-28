@@ -1,6 +1,16 @@
 // pack_js_activities_filter.js - 
 /*
 version/changes:
+- v260928b - Badges are FIXED numbers pinned by pack_Book.php (each top-level
+              <li> carries data-num + an inline counter-reset): buildMap()
+              now reads data-num instead of counting top-level <li> - fixed
+              numbering leaves holes where a category is absent from the
+              lesson, and counting would mislabel every token. Counting
+              fallback kept for pages without pinning.
+- v260928 - The EXTRAS section (div7, badges 100+) is NEVER filtered away:
+              every entry with badge number >= 100 stays visible regardless of
+              the CSV row or the shown= URL parameter (and keeps its original
+              number stamp). Rows/tokens only decide badges 1..99.
 - v260924 - While filtered, the children of a FULLY shown group (token "9" or
               "9a") kept the plain CSS counter label - and hidden <li> no
               longer increment that counter, so counter(list) counted only the
@@ -111,11 +121,14 @@ version/changes:
     }
 
     //---------------- NUMBERING MAP (mirrors the CSS counters) --------------
-    // entries: one per top-level <li> of div1..div6 (badges 1,2,3... - the
-    // italic "Δεν υπάρχουν..." placeholders count too, they burn a number),
-    // plus one per EXTRAS <li> of div7 (badges 100,101... via #div7 ol).
-    // A group wrapper (ul.meli-sub / ul.uniq-sub / ul.tag-sub) counts as ONE
-    // number and registers its children as lettered tokens "9a","9b","9c"...
+    // v260928b: badges are PHP-pinned fixed numbers - each top-level <li>
+    // carries data-num, which is authoritative (holes are expected where a
+    // category is absent from the lesson).
+    // entries: one per top-level <li> of div1..div6 (the italic "Δεν
+    // υπάρχουν..." placeholders count too, they burn a number), plus one per
+    // EXTRAS <li> of div7 (badges 100,101... via #div7 ol). A group wrapper
+    // (ul.meli-sub / ul.uniq-sub / ul.tag-sub) counts as ONE number and
+    // registers its children as lettered tokens "9a","9b","9c"...
     var entries = [];
     var byToken = {};
 
@@ -149,7 +162,10 @@ version/changes:
             if (!div) continue;
             for (i = 0; i < div.children.length; i++) {
                 if (div.children[i].tagName !== "LI") continue;
-                n++;
+                // v260928b - read the pinned badge number (fixed numbering
+                // with holes); counting is only a fallback for unpinned pages
+                var dn = parseInt(div.children[i].getAttribute("data-num"), 10);
+                n = isNaN(dn) ? n + 1 : dn;
                 registerEntry(String(n), div.children[i]);
             }
         }
@@ -290,7 +306,9 @@ version/changes:
         restoreAll();                        // start clean, then mark the subset
         for (i = 0; i < entries.length; i++) {
             var en = entries[i];
-            var all = !!wantAll[en.num];
+            // v260928: EXTRAS (badges 100+, #div7 ol) are ALWAYS shown, whatever
+            // the CSV row or shown= lists - parseInt(num) >= 100 counts as "all".
+            var all = !!wantAll[en.num] || parseInt(en.num, 10) >= 100;
             var subsWanted = 0, s;
             for (s = 0; s < en.subs.length; s++)
                 if (wantSub[en.num + en.subs[s].letter]) subsWanted++;

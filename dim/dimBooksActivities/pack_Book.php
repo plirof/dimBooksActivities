@@ -4,6 +4,14 @@
  *
  *
  *VERSION HISTORY:
+ *v260928b - FIXED badge numbers: every category (Μελίσπη, quiz, 0quiz*,
+ *             unique, base types, wordboard, chess) shows the SAME number on
+ *             every class/lesson page. Each top-level <li> is pinned by PHP
+ *             (inline counter-reset + class fxnum + data-num) from the
+ *             $fixedNumbers map; tags missing from the map take the lowest
+ *             free number 1..99 (gap filling - absent categories leave
+ *             holes; 100+ stays EXTRAS-only). ?debug=1 prints a numbering
+ *             audit. pack_js_activities_filter.js buildMap() reads data-num.
  *v260923c - SRWare Iron 61 (Chromium 61) fix: :has() is not supported there,
  *             so the wrapper <li> now gets class="subwrap" in the PHP
  *             (groupTaggedItems + melispi group) and the bare number is
@@ -424,25 +432,103 @@ function detectType($data) {
 // renders as ONE numbered <li> holding a nested <ul class="$subClass"> whose
 // children are lettered a., b., c. by CSS (same scheme as meli-sub/uniq-sub).
 // A tag with a single item stays a plain <li> - no subcategory, its number is
-// the plain badge number. $items: list of ['tag'=>tag, 'html'=>'<li>...</li>'].
+// the plain badge number. $items: list of
+// ['tag'=>tag, 'title'=>..., 'html'=>'<li>...</li>', 'num'=>badge number]
+// (num stamped by the v260928b numbering step before the call).
 // Tags keep first-appearance order; "19a" resolves to "19" in the filter JS.
 function groupTaggedItems(array $items, $subClass) {
     $byTag = array();
     $order = array();
     foreach ($items as $it) {
         if (!isset($byTag[$it['tag']])) { $byTag[$it['tag']] = array(); $order[] = $it['tag']; }
-        $byTag[$it['tag']][] = $it['html'];
+        $byTag[$it['tag']][] = $it;
     }
     $out = array();
     foreach ($order as $tag) {
         $lis = $byTag[$tag];
-        if (count($lis) === 1) { $out[] = $lis[0]; continue; }
+        // v260928b - every emitted <li> is pinned to its (fixed) badge number
+        if (count($lis) === 1) { $out[] = liPin($lis[0]['html'], $lis[0]['num']); continue; }
         // v260923c - class="subwrap" lets CSS hide the wrapper's bare number
         // (li.subwrap::before) without :has(), which old engines like
         // SRWare Iron 61 (Chromium 61) do not support.
-        $out[] = '<li class="subwrap"><ul class="' . $subClass . '">' . "\n" . implode("\n", $lis) . "\n</ul></li>";
+        $subs = array();
+        foreach ($lis as $it) $subs[] = $it['html'];
+        $out[] = pinnedWrap($subClass, $lis[0]['num'], implode("\n", $subs));
     }
     return $out;
+}
+
+// v260928b - pin a top-level <li> to badge number $n: the inline counter-reset
+// opens a fresh "list" counter scope for the item and its children (on the
+// same element the order is reset -> increment -> use, so the badge reads
+// exactly $n and sub-lists inherit it for their "Na." labels). data-num feeds
+// the pack_js_activities_filter.js token map; class fxnum switches the badge
+// content to the innermost counter only (counters(list,".") would join the
+// page <ol>'s outer 0 and render "0.$n" - same reason #div7 overrides it).
+function liPin($liHtml, $n) {
+    $n = (int)$n;
+    return preg_replace('/^<li(?=[\s>])/i',
+        '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . '"',
+        $liHtml, 1);
+}
+
+// v260928b - pinned group wrapper: ONE number, children lettered Na., Nb. ...
+function pinnedWrap($subClass, $n, $innerHtml) {
+    $n = (int)$n;
+    return '<li class="subwrap fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . '">'
+         . '<ul class="' . $subClass . '">' . "\n" . $innerHtml . "\n</ul></li>";
+}
+
+// v260928b - one numbering unit per tag in first-appearance order (the order
+// groupTaggedItems emits), labeled with the tag's first item title.
+function unitsFromItems(array $items, $section) {
+    $seen = array();
+    $out = array();
+    foreach ($items as $it) {
+        if (isset($seen[$it['tag']])) continue;
+        $seen[$it['tag']] = true;
+        $out[] = array('section' => $section, 'tag' => $it['tag'],
+                       'label' => isset($it['title']) ? $it['title'] : $it['tag']);
+    }
+    return $out;
+}
+
+// v260928b - badge number for every top-level <li>, in DOM order. Units whose
+// tag is in $fixedNumbers claim their fixed number (first claim wins);
+// everything else - and the "Δεν υπάρχουν..." placeholders - takes the lowest
+// free number 1..99, INCLUDING numbers of fixed categories absent from this
+// lesson (gap filling). 100+ is never assigned (EXTRAS zone). Returns
+// units (with num + src), nums keyed "section|tag" and audit rows for ?debug=1.
+function assignNumbers(array $units, array $fixedNumbers) {
+    $claimed = array(); // fixed num => unit index that keeps it
+    foreach ($units as $i => $u) {
+        $fixed = null;
+        if ($u['section'] === 'melispi' || $u['section'] === 'chess') {
+            $fixed = $fixedNumbers[$u['section']];
+        } elseif (isset($fixedNumbers[$u['section']][$u['tag']])) {
+            $fixed = $fixedNumbers[$u['section']][$u['tag']];
+        }
+        $units[$i]['fixed'] = $fixed;
+        if ($fixed !== null && !isset($claimed[$fixed])) $claimed[$fixed] = $i;
+    }
+    $pool = array();
+    for ($n = 1; $n <= 99; $n++) if (!isset($claimed[$n])) $pool[] = $n;
+    $pi = 0;
+    foreach ($units as $i => $u) {
+        if ($u['fixed'] !== null && $claimed[$u['fixed']] === $i) {
+            $units[$i]['num'] = $u['fixed'];
+            $units[$i]['src'] = 'fixed';
+        } else {
+            $units[$i]['num'] = ($pi < count($pool)) ? $pool[$pi++] : 99;
+            $units[$i]['src'] = ($u['fixed'] !== null) ? 'FIXED-CONFLICT' : 'fallback';
+        }
+    }
+    $nums = array();
+    foreach ($units as $u) {
+        $key = $u['section'] . '|' . $u['tag'];
+        if (!isset($nums[$key])) $nums[$key] = $u['num'];
+    }
+    return array('units' => $units, 'nums' => $nums, 'audit' => $units);
 }
 
 $uniqueActs = [];
@@ -551,7 +637,124 @@ foreach ($wordboardTypes as $type) {
     }
 }
 
+// v260928b - FIXED badge numbers per section. Every category shows the SAME
+// number on every class/lesson page; a category absent from a lesson leaves
+// a hole (gaps are fine). Tags missing here fall back to the lowest free
+// number 1..99 (100+ stays EXTRAS-only, see #div7 ol). Keys must match real
+// tags: div1 quiz = $a['type'] ('quiz' + basename of activities-base/0quiz*.
+// html), div2 = 'unique', div3/4 = base type from the JSON filename, div5 =
+// wordboard type (lowercase, displayed uppercase). 'quiz' exists in TWO
+// sections on purpose: base quiz = 2, wordboard QUIZ = 26.
+$fixedNumbers = array(
+    'melispi' => 1,
+    'quiz' => array(
+        'quiz' => 2,
+        '0quiz_basket_game' => 3, '0quiz_basket' => 4, '0quiz_duel_basket' => 5,
+        '0quiz_penalty' => 6, '0quiz_runner' => 7, '0quiz_soccer_game' => 8,
+    ),
+    'unique' => array('unique' => 9),
+    'base' => array(
+        'balloon-pop' => 10, 'catch-falling' => 11, 'drag-categories' => 12,
+        'flowchart' => 13, 'hangman' => 14, 'matching-lines' => 15,
+        'maze' => 16, 'memory' => 17, 'mind-map' => 18, 'sentence-build' => 19,
+        'sorting-speed' => 20, 'speed-type' => 21, 'spot-error' => 22,
+        'typing-race' => 23, 'venn-diagram' => 24, 'word-scramble' => 25,
+    ),
+    'ww' => array(
+        'quiz' => 26, 'match' => 27, 'missingword' => 28, 'wheel' => 29,
+        'crossword' => 30, 'groupsort' => 31, 'wordsearch' => 32,
+    ),
+    'chess' => 33,
+);
+
 $divs = [1 => '', 2 => '', 3 => '', 4 => '', 5 => '', 6 => '', 7 => ''];
+
+// v260928b - all item arrays are built FIRST; badge numbers are assigned once
+// every section is collected (gap filling needs every fixed claim known),
+// then each emission block pins its <li> via liPin()/pinnedWrap().
+
+// div1 items = quiz (+ the 0quiz variants), grouped per tag at emission
+$quizItems = [];
+foreach ($quizActs as $a) {
+    $label = htmlspecialchars($a['title']);
+    if ($a['subtitle']) $label .= ' <small>(' . htmlspecialchars($a['subtitle']) . ')</small>';
+    $quizItems[] = array(
+        'tag' => $a['type'],
+        'title' => $a['title'],
+        'html' => '<li><span style="color:#2e7d32;font-size:.7rem">[' . htmlspecialchars($a['type']) . ']</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . $label . '</a></li>',
+    );
+}
+
+// div2 items = all unique activities (old act* + new custom*), tag "unique"
+$uniqueItems = [];
+foreach ($uniqueActs as $a) {
+    $uniqueItems[] = array(
+        'tag' => 'unique',
+        'title' => $a['title'],
+        'html' => '<li><span style="color:#880e4f;font-size:.7rem">[unique]</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . htmlspecialchars($a['title']) . '</a></li>',
+    );
+}
+
+// div3+div4 items = remaining base activities, grouped per tag at emission
+$baseItems = [];
+foreach ($baseActs as $a) {
+    $label = htmlspecialchars($a['title']);
+    if ($a['subtitle']) $label .= ' <small>(' . htmlspecialchars($a['subtitle']) . ')</small>';
+    $baseItems[] = array(
+        'tag' => $a['type'],
+        'title' => $a['title'],
+        'html' => '<li><span style="color:#0d47a1;font-size:.7rem">[' . htmlspecialchars($a['type']) . ']</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . $label . '</a></li>',
+    );
+}
+
+// div5 items = wordboard games, grouped per type at emission
+$wwItems = [];
+foreach ($wordboardGames as $wg) {
+    $typeLabel = strtoupper($wg['type']);
+    $wwItems[] = array(
+        'tag' => $wg['type'],
+        'title' => $wg['title'],
+        'html' => '<li><span style="color:#bf360c;font-size:.7rem">[' . $typeLabel . ']</span> <a href="' . htmlspecialchars($wg['href']) . '" target="sideframe1">' . htmlspecialchars($wg['title']) . '</a></li>',
+    );
+}
+
+// --- v260928b numbering: units in DOM order (div1..div6), then assign ------
+$units = array();
+if (!empty($melispiLinks)) {
+    $units[] = array('section' => 'melispi', 'tag' => 'melispi',
+                     'label' => '[Μελίσπη] x' . count($melispiLinks));
+}
+$units = array_merge($units, unitsFromItems($quizItems, 'quiz'));
+if (empty($quizItems) && empty($melispiLinks)) {
+    $units[] = array('section' => 'quiz', 'tag' => 'placeholder', 'label' => 'Δεν υπάρχουν δραστηριότητες κουίζ');
+}
+$units = array_merge($units, unitsFromItems($uniqueItems, 'unique'));
+if (empty($uniqueItems)) {
+    $units[] = array('section' => 'unique', 'tag' => 'placeholder', 'label' => 'Δεν υπάρχουν μοναδικές δραστηριότητες');
+}
+$units = array_merge($units, unitsFromItems($baseItems, 'base'));
+if (empty($baseItems)) {
+    $units[] = array('section' => 'base', 'tag' => 'placeholder', 'label' => 'Δεν υπάρχουν βασικές δραστηριότητες');
+}
+$units = array_merge($units, unitsFromItems($wwItems, 'ww'));
+if (empty($wwItems)) {
+    $units[] = array('section' => 'ww', 'tag' => 'placeholder', 'label' => 'Δεν υπάρχουν wordboard δραστηριότητες');
+}
+$units[] = array('section' => 'chess', 'tag' => 'chess', 'label' => 'chess--great-mate-master');
+
+$_numbered = assignNumbers($units, $fixedNumbers);
+$units    = $_numbered['units'];
+$unitNums = $_numbered['nums'];
+$numAudit = $_numbered['audit'];
+unset($_numbered);
+$numOf = function ($section, $tag) use ($unitNums) {
+    return $unitNums[$section . '|' . $tag];
+};
+// stamp the badge number onto every item (groupTaggedItems pins from these)
+foreach ($quizItems as &$it)   { $it['num'] = $numOf('quiz', $it['tag']); }   unset($it);
+foreach ($uniqueItems as &$it) { $it['num'] = $numOf('unique', $it['tag']); } unset($it);
+foreach ($baseItems as &$it)   { $it['num'] = $numOf('base', $it['tag']); }   unset($it);
+foreach ($wwItems as &$it)     { $it['num'] = $numOf('ww', $it['tag']); }     unset($it);
 
 // div1 = "Μελίσπη" section FIRST (melispi_links.csv, v260906), then the
 // "Κουίζ" section (the Κουίζ heading belongs to the quiz links only).
@@ -559,32 +762,22 @@ $divs = [1 => '', 2 => '', 3 => '', 4 => '', 5 => '', 6 => '', 7 => ''];
 // v260923 - quiz items are grouped per tag via groupTaggedItems(): same-tag
 // items ([quiz], [0quiz_penalty], ...) share ONE number with a., b., c.
 // children; a single-item tag stays a plain number.
-$quizItems = [];
-foreach ($quizActs as $a) {
-    $label = htmlspecialchars($a['title']);
-    if ($a['subtitle']) $label .= ' <small>(' . htmlspecialchars($a['subtitle']) . ')</small>';
-    $quizItems[] = array(
-        'tag' => $a['type'],
-        'html' => '<li><span style="color:#2e7d32;font-size:.7rem">[' . htmlspecialchars($a['type']) . ']</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . $label . '</a></li>',
-    );
-}
-
 $div1Parts = [];
 if (!empty($melispiLinks)) {
     // v260916 - whole Μελίσπη group = ONE <ol> number: a single wrapper <li>
-    // with a nested <ul class="meli-sub"> (sub-items labelled 1a, 1b via CSS),
-    // so quiz items continue from 2 automatically.
+    // with a nested <ul class="meli-sub"> (sub-items labelled 1a, 1b via CSS).
     // v260923 - a single melispi link renders as a plain <li> (no subletter).
+    // v260928b - pinned to fixed number 1.
+    $nMel = $numOf('melispi', 'melispi');
     $meliSubs = [];
     foreach ($melispiLinks as $m) {
         $meliSubs[] = '<li><span style="color:#4a148c;font-size:.7rem">[ΜΕΛΙΣΠΗ]</span> <a href="' . htmlspecialchars($m['href']) . '" target="sideframe1">' . htmlspecialchars($m['title']) . '</a></li>';
     }
     $div1Parts[] = '<hr><b>Μελίσπη</b>';
     if (count($meliSubs) === 1) {
-        $div1Parts[] = $meliSubs[0];
+        $div1Parts[] = liPin($meliSubs[0], $nMel);
     } else {
-        // v260923c - wrapper gets class="subwrap" too (see groupTaggedItems)
-    $div1Parts[] = '<li class="subwrap"><ul class="meli-sub">' . "\n" . implode("\n", $meliSubs) . "\n" . '</ul></li>';
+        $div1Parts[] = pinnedWrap('meli-sub', $nMel, implode("\n", $meliSubs));
     }
 }
 if (!empty($quizItems)) {
@@ -593,21 +786,17 @@ if (!empty($quizItems)) {
 }
 $divs[1] = implode("\n", $div1Parts);
 if ($divs[1] === '') {
-    $divs[1] = '<li style="color:#999;font-style:italic">Δεν υπάρχουν δραστηριότητες κουίζ</li>';
+    // v260928b - placeholders burn a number too (pinned like real activities)
+    $n = $numOf('quiz', 'placeholder');
+    $divs[1] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν δραστηριότητες κουίζ</li>';
 }
 
 // div2 = all unique activities (old act* + new custom*)
 // v260923 - all unique items share the tag "unique": >1 item -> ONE number
 // with a., b., c. children (as before); exactly 1 item -> plain number.
-$uniqueItems = [];
-foreach ($uniqueActs as $a) {
-    $uniqueItems[] = array(
-        'tag' => 'unique',
-        'html' => '<li><span style="color:#880e4f;font-size:.7rem">[unique]</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . htmlspecialchars($a['title']) . '</a></li>',
-    );
-}
 if (empty($uniqueItems)) {
-    $divs[2] = '<li style="color:#999;font-style:italic">Δεν υπάρχουν μοναδικές δραστηριότητες</li>';
+    $n = $numOf('unique', 'placeholder');
+    $divs[2] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν μοναδικές δραστηριότητες</li>';
 } else {
     $divs[2] = implode("\n", groupTaggedItems($uniqueItems, 'uniq-sub'));
 }
@@ -615,17 +804,9 @@ if (empty($uniqueItems)) {
 // div3 + div4 = split remaining base activities
 // v260923 - grouped per tag first ([drag-categories], [matching-lines], ...);
 // the div3/div4 split now cuts between whole tag-groups.
-$baseItems = [];
-foreach ($baseActs as $a) {
-    $label = htmlspecialchars($a['title']);
-    if ($a['subtitle']) $label .= ' <small>(' . htmlspecialchars($a['subtitle']) . ')</small>';
-    $baseItems[] = array(
-        'tag' => $a['type'],
-        'html' => '<li><span style="color:#0d47a1;font-size:.7rem">[' . htmlspecialchars($a['type']) . ']</span> <a href="' . htmlspecialchars($a['href']) . '" target="sideframe1">' . $label . '</a></li>',
-    );
-}
 if (empty($baseItems)) {
-    $divs[3] = '<li style="color:#999;font-style:italic">Δεν υπάρχουν βασικές δραστηριότητες</li>';
+    $n = $numOf('base', 'placeholder');
+    $divs[3] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν βασικές δραστηριότητες</li>';
     $divs[4] = '';
 } else {
     $baseUnits = groupTaggedItems($baseItems, 'tag-sub');
@@ -634,22 +815,16 @@ if (empty($baseItems)) {
     $divs[4] = implode("\n", array_slice($baseUnits, $mid));
 }
 
-// v260923 - wordboard items grouped per type as well ([QUIZ], [MATCH], ...).
-$wwItems = [];
-foreach ($wordboardGames as $wg) {
-    $typeLabel = strtoupper($wg['type']);
-    $wwItems[] = array(
-        'tag' => $wg['type'],
-        'html' => '<li><span style="color:#bf360c;font-size:.7rem">[' . $typeLabel . ']</span> <a href="' . htmlspecialchars($wg['href']) . '" target="sideframe1">' . htmlspecialchars($wg['title']) . '</a></li>',
-    );
-}
+// div5 = wordboard items grouped per type ([QUIZ], [MATCH], ...).
 if (empty($wwItems)) {
-    $divs[5] = '<li style="color:#999;font-style:italic">Δεν υπάρχουν wordboard δραστηριότητες</li>';
+    $n = $numOf('ww', 'placeholder');
+    $divs[5] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν wordboard δραστηριότητες</li>';
 } else {
     $divs[5] = implode("\n", groupTaggedItems($wwItems, 'tag-sub'));
 }
 
-$divs[6] = '<li><a href="./chess--great-mate-master__chess_problems_GREEK02_NoNavUrl.swf" target="sideframe1">chess--great-mate-master<BR> chess_exercises <BR>GREEK02</a></li>';
+// div6 = fun activities (chess), pinned to fixed number 33 (v260928b)
+$divs[6] = liPin('<li><a href="./chess--great-mate-master__chess_problems_GREEK02_NoNavUrl.swf" target="sideframe1">chess--great-mate-master<BR> chess_exercises <BR>GREEK02</a></li>', $numOf('chess', 'chess'));
 
 
 if($debug)$debugUrl = '?' . http_build_query(array_merge($_GET, ['debug' => '1']));
@@ -672,6 +847,21 @@ if (!empty($extraLinks)) {
 if (isset($_GET['debug'])) {
     header('Content-Type: text/html; charset=UTF-8');
     echo '<pre>';
+    // v260928b - numbering audit, printed at the END of the pipeline: which
+    // badge number every top-level <li> got and where it came from, so a
+    // category that took a wrong number is easy to spot and remap above.
+    echo "=== numbering audit v260928b (div1..div6, DOM order) ===\n";
+    echo str_pad('num', 6) . str_pad('section', 9) . str_pad('source', 16) . str_pad('tag', 24) . "label\n";
+    foreach ($numAudit as $u) {
+        echo str_pad($u['num'], 6) . str_pad($u['section'], 9) . str_pad($u['src'], 16) . str_pad($u['tag'], 24) . $u['label'] . "\n";
+    }
+    foreach ($numAudit as $u) {
+        if ($u['src'] === 'fallback')
+            echo "NOTE  [{$u['tag']}] ({$u['section']}) took fallback number {$u['num']} - add it to \$fixedNumbers to pin it.\n";
+        if ($u['src'] === 'FIXED-CONFLICT')
+            echo "WARN  [{$u['tag']}] ({$u['section']}) lost fixed number {$u['fixed']} to an earlier tag - fix \$fixedNumbers.\n";
+    }
+    echo "\n";
     for ($d = 1; $d <= 7; $d++) {
         echo htmlspecialchars('<div id="div' . $d . '">') . "\n";
         echo htmlspecialchars($divs[$d]) . "\n";
@@ -716,6 +906,10 @@ function buildUrl($c, $l) {
    selector (no :has()) so old Chromium engines apply it too - SRWare Iron 61
    dropped the previous li:has(> ul.*-sub)::before rule entirely. */
 li.subwrap::before{display:none;}
+/* v260928b - pinned top-level items (class fxnum + inline counter-reset from
+   the PHP): show ONLY the innermost "list" counter - counters(list,".") would
+   join the page <ol>'s outer 0 and render "0.9". Same idiom as #div7 below. */
+li.fxnum::before{content:counter(list) " ";}
 /* EXTRAS (v260917): pack_js_header.js badges every <li> with counters(list,"."),
    and the main <ol>'s counter scope reaches div7 (later sibling), so extras
    badges render as "33.1", "33.2"… Override inside div7: restart the counter
@@ -825,8 +1019,10 @@ ignore activity filters
 <script src="pack_js_footer.js" type="text/javascript"></script>
 <!-- v260921 - optional per-class activity list filter (pack_refresh_activities_per_class.csv,
      active only with &probeserver). If the file below is missing the page works as before.
-     v260924 - ?v260924 busts browser cache so the fixed sub-numbering JS loads. -->
-<script src="pack_js_activities_filter.js?v260924" type="text/javascript"></script>
+     v260924 - ?v260924 busts browser cache so the fixed sub-numbering JS loads.
+     v260928 - ?v260928 busts cache: EXTRAS (badges >= 100) are never filtered away.
+     v260928b - ?v260928b busts cache: buildMap() reads the PHP-pinned data-num badges. -->
+<script src="pack_js_activities_filter.js?v260928b" type="text/javascript"></script>
 <script>
     if(typeof(first_click) === 'undefined') {
     document.write('<script src="https://cdn.jsdelivr.net/gh/plirof/dim-lesson-pack-planner/lesson_packs/pack_js_footer.js"><\/script>')
