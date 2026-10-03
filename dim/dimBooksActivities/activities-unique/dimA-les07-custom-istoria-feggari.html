@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Η Ιστορία μου στο Φεγγάρι 🌙</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(102,126,234,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #764ba2; }
+  .round { font-size: .9rem; color: #888; }
+  .hint {
+    text-align: center; font-size: .95rem; font-weight: 700; color: #4527a0;
+    background: #fff; border-radius: 14px; padding: 8px 12px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  }
+  .moon-scene {
+    position: relative;
+    height: 90px;
+    background: #37474f;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,.5);
+  }
+  .star { position: absolute; color: #fff64f; font-size: .8rem; }
+  .rocket-actor {
+    position: absolute; top: 26px;
+    font-size: 2.4rem;
+  }
+  .astro {
+    position: absolute; bottom: 8px;
+    font-size: 2.4rem;
+    opacity: 0;
+    transition: left .8s, opacity .5s;
+  }
+  .astro.pop { animation: pop .45s; }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  .program-area {
+    background: #fff; border-radius: 16px;
+    padding: 12px; margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  }
+  .program-area h3 {
+    font-size: 1rem; color: #666; margin-bottom: 8px; text-align: center;
+  }
+  .slots-row {
+    display: flex; justify-content: center; flex-wrap: wrap;
+  }
+  .slot {
+    width: 74px; min-height: 74px;
+    border: 3px dashed #bbb; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+    margin: 4px;
+    background: #fafafa;
+    padding: 4px 2px;
+  }
+  .slot .empty-mark { color: #ccc; font-size: 1.2rem; }
+  .slot .b-icon { font-size: 1.5rem; }
+  .slot .b-label { font-size: .66rem; font-weight: 700; color: #555; text-align: center; margin-top: 2px; }
+  .slot .b-num {
+    background: #1976d2; color: #fff; border-radius: 6px;
+    font-size: .78rem; font-weight: 700; padding: 0 8px; margin-top: 2px;
+  }
+  .slot.filled-pink { background: #fce4ec; border-color: #ec407a; border-style: solid; }
+  .slot.filled-orange { background: #fff3e0; border-color: #ff9800; border-style: solid; }
+  .palette-label {
+    text-align: center; font-size: .9rem; font-weight: 700; color: #555;
+    margin-bottom: 6px;
+  }
+  .palette {
+    display: flex; justify-content: center; flex-wrap: wrap;
+  }
+  .pal-block {
+    width: 74px; min-height: 74px;
+    border: 3px solid #999; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s;
+    margin: 4px;
+    padding: 4px 2px;
+  }
+  .pal-block:active { transform: scale(.9); }
+  .pal-pink { background: #fce4ec; border-color: #ec407a; }
+  .pal-orange { background: #fff3e0; border-color: #ff9800; }
+  .pal-blue { background: #e3f2fd; border-color: #1976d2; }
+  .pal-block .b-icon { font-size: 1.5rem; }
+  .pal-block .b-label { font-size: .66rem; font-weight: 700; color: #555; text-align: center; margin-top: 2px; }
+  .pal-block .b-num {
+    background: #1976d2; color: #fff; border-radius: 6px;
+    font-size: .78rem; font-weight: 700; padding: 0 8px; margin-top: 2px;
+  }
+  .action-buttons {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-action {
+    border: none; border-radius: 14px; padding: 12px 26px;
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+    margin: 0 6px;
+  }
+  .btn-action:active { transform: scale(.95); }
+  .btn-action:disabled { opacity: .4; cursor: default; transform: none; }
+  .btn-clear { background: #ffcdd2; color: #c62828; }
+  .btn-go { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #fff; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.25); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(118,75,162,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🌙 Η Ιστορία μου στο Φεγγάρι</h1>
+    <p>Φτιάξε το πρόγραμμα του 👨‍🚀 για να φτάσει στον 🚀!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/3</span>
+  </div>
+  <div id="gameArea">
+    <div class="hint" id="hintBar">🎬 Η ιστορία: ο αστροναύτης εμφανίζεται, περπατά, εξαφανίζεται στον πυραύλο!</div>
+    <div class="moon-scene" id="moonScene">
+      <span class="star" style="top:12px;left:15%;">✦</span>
+      <span class="star" style="top:44px;left:30%;">✦</span>
+      <span class="star" style="top:10px;left:48%;">✦</span>
+      <span class="star" style="top:40px;left:62%;">✦</span>
+      <span class="star" style="top:14px;left:80%;">✦</span>
+      <span class="rocket-actor" id="rocketActor">🚀</span>
+      <span class="astro" id="astro">👨‍🚀</span>
+    </div>
+    <div class="program-area">
+      <h3>📋 Το πρόγραμμα του αστροναύτη</h3>
+      <div class="slots-row" id="slotsRow"></div>
+    </div>
+    <div class="palette-label">Παλέτα — πάτα ένα μπλοκ για να μπει στο πρόγραμμα:</div>
+    <div class="palette" id="palette"></div>
+    <div class="action-buttons">
+      <button class="btn-action btn-clear" onclick="clearProgram()">🗑️ Καθαρισμός</button>
+      <button class="btn-action btn-go" id="btnGo" onclick="playStory()">▶️ Ζήσε την ιστορία!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var BLOCK_DEFS = {
+    show:  { icon: '✨', label: 'ΕΜΦΑΝΙΣΟΥ', kind: 'show', cls: 'pink' },
+    hide:  { icon: '💫', label: 'ΕΞΑΦΑΝΙΣΟΥ', kind: 'hide', cls: 'pink' },
+    r1:    { icon: '➡️', label: 'ΚΙΝΗΣΟΥ ΔΕΞΙΑ', num: 1, kind: 'move', dir: 1, cls: 'orange' },
+    r2:    { icon: '➡️', label: 'ΚΙΝΗΣΟΥ ΔΕΞΙΑ', num: 2, kind: 'move', dir: 1, cls: 'orange' },
+    r3:    { icon: '➡️', label: 'ΚΙΝΗΣΟΥ ΔΕΞΙΑ', num: 3, kind: 'move', dir: 1, cls: 'orange' },
+    l3:    { icon: '⬅️', label: 'ΚΙΝΗΣΟΥ ΑΡΙΣΤΕΡΑ', num: 3, kind: 'move', dir: -1, cls: 'orange' },
+    d2:    { icon: '⬇️', label: 'ΚΙΝΗΣΟΥ ΚΑΤΩ', num: 2, kind: 'move', dir: 0, cls: 'blue' }
+  };
+  var levels = [
+    {
+      rocketLeft: false,
+      astroStart: 10, rocketPos: 85,
+      palette: ['show', 'r1', 'r3', 'd2', 'hide'],
+      answer: ['show', 'r3', 'hide'],
+      slots: 3,
+      title: 'Ο αστροναύτης επισκέπτεται τον πυραύλο!'
+    },
+    {
+      rocketLeft: false,
+      astroStart: 0, rocketPos: 75,
+      palette: ['show', 'r1', 'r2', 'd2', 'hide'],
+      answer: ['show', 'r2', 'r1', 'hide'],
+      slots: 4,
+      title: 'Ο αστροναύτης κάνει βόλτα και επιστρέφει!'
+    },
+    {
+      rocketLeft: true,
+      astroStart: 90, rocketPos: 15,
+      palette: ['show', 'r3', 'l3', 'd2', 'hide'],
+      answer: ['show', 'l3', 'hide'],
+      slots: 3,
+      title: 'Ο αστροναύτης βγαίνει από τον πυραύλο!'
+    }
+  ];
+  var STEP_PCT = 25;
+
+  var currentLevel = 0, score = 0, playing = false;
+  var slots = [];
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    playing = false;
+    var lv = levels[currentLevel];
+    slots = [];
+    for (var i = 0; i < lv.slots; i++) slots.push(null);
+    document.getElementById('roundDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    var scene = document.getElementById('moonScene');
+    var rocket = document.getElementById('rocketActor');
+    var astro = document.getElementById('astro');
+    rocket.style.left = lv.rocketPos + '%';
+    astro.style.left = lv.astroStart + '%';
+    astro.style.opacity = '0';
+    renderSlots();
+    renderPalette();
+    document.getElementById('btnGo').disabled = false;
+  }
+
+  function renderSlots() {
+    var row = document.getElementById('slotsRow');
+    row.innerHTML = '';
+    for (var i = 0; i < slots.length; i++) {
+      (function(idx) {
+        var slot = document.createElement('div');
+        slot.className = 'slot';
+        var key = slots[idx];
+        if (key) {
+          var b = BLOCK_DEFS[key];
+          slot.classList.add('filled-' + b.cls);
+          var html = '<span class="b-icon">' + b.icon + '</span>' +
+                     '<span class="b-label">' + b.label + '</span>';
+          if (b.num) html += '<span class="b-num">' + b.num + '</span>';
+          slot.innerHTML = html;
+          slot.onclick = function() {
+            if (playing) return;
+            slots[idx] = null;
+            renderSlots();
+          };
+        } else {
+          slot.innerHTML = '<span class="empty-mark">❔</span>';
+        }
+        row.appendChild(slot);
+      })(i);
+    }
+  }
+
+  function renderPalette() {
+    var lv = levels[currentLevel];
+    var pal = document.getElementById('palette');
+    pal.innerHTML = '';
+    for (var i = 0; i < lv.palette.length; i++) {
+      (function(key) {
+        var b = BLOCK_DEFS[key];
+        var el = document.createElement('div');
+        el.className = 'pal-block pal-' + b.cls;
+        var html = '<span class="b-icon">' + b.icon + '</span>' +
+                   '<span class="b-label">' + b.label + '</span>';
+        if (b.num) html += '<span class="b-num">' + b.num + '</span>';
+        el.innerHTML = html;
+        el.onclick = function() {
+          if (playing) return;
+          for (var s = 0; s < slots.length; s++) {
+            if (slots[s] === null) {
+              slots[s] = key;
+              renderSlots();
+              return;
+            }
+          }
+          setFeedback('wrong', 'Το πρόγραμμα είναι γεμάτο! Πάτα ένα μπλοκ για να το βγάλεις.');
+        };
+        pal.appendChild(el);
+      })(lv.palette[i]);
+    }
+  }
+
+  function clearProgram() {
+    if (playing) return;
+    for (var i = 0; i < slots.length; i++) slots[i] = null;
+    renderSlots();
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+  }
+
+  function setFeedback(type, text) {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + type;
+    fb.style.display = '';
+    fb.textContent = text;
+  }
+
+  function resetAstro() {
+    var lv = levels[currentLevel];
+    var astro = document.getElementById('astro');
+    astro.style.left = lv.astroStart + '%';
+    astro.style.opacity = '0';
+  }
+
+  function playStory() {
+    if (playing) return;
+    for (var s = 0; s < slots.length; s++) {
+      if (slots[s] === null) {
+        setFeedback('wrong', 'Γέμισε πρώτα όλα τα κουτάκια!');
+        return;
+      }
+    }
+    playing = true;
+    document.getElementById('btnGo').disabled = true;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var lv = levels[currentLevel];
+    var astro = document.getElementById('astro');
+    var pos = lv.astroStart;
+    resetAstro();
+
+    var i = 0;
+    var visible = false;
+    function next() {
+      if (i >= slots.length) {
+        setTimeout(function() { finish(pos, visible); }, 500);
+        return;
+      }
+      var b = BLOCK_DEFS[slots[i]];
+      if (b.kind === 'show') {
+        visible = true;
+        astro.style.opacity = '1';
+        astro.classList.remove('pop');
+        void astro.offsetWidth;
+        astro.classList.add('pop');
+      } else if (b.kind === 'hide') {
+        visible = false;
+        astro.style.opacity = '0';
+      } else {
+        if (b.dir !== 0) {
+          pos = pos + b.dir * b.num * STEP_PCT;
+          if (pos < 0) pos = 0;
+          if (pos > 90) pos = 90;
+          astro.style.left = pos + '%';
+        }
+      }
+      i++;
+      setTimeout(next, 1100);
+    }
+    setTimeout(next, 400);
+
+    function finish(finalPos, wasVisible) {
+      var answerOk = true;
+      for (var a = 0; a < lv.answer.length; a++) {
+        if (slots[a] !== lv.answer[a]) { answerOk = false; break; }
+      }
+      var nearRocket = Math.abs(finalPos - lv.rocketPos) <= 12;
+      if (answerOk) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        setFeedback('correct', '🎬 Μπράβο! Η ιστορία ολοκληρώθηκε: ' + lv.title);
+        setTimeout(function() {
+          currentLevel++;
+          loadLevel();
+        }, 2400);
+      } else {
+        var msg;
+        if (slots[0] !== 'show') {
+          msg = 'Κάνε ΕΜΦΑΝΙΣΟΥ πρώτα, αλλιώς δεν βλέπουμε τον αστροναύτη!';
+        } else if (slots[slots.length-1] !== 'hide') {
+          msg = 'Βάζε ΕΞΑΦΑΝΙΣΟΥ τελευταίο για να κλείσει η ιστορία!';
+        } else if (!nearRocket) {
+          msg = 'Δεν έφτασε στον 🚀! Μέτρα τα βήματα.';
+        } else {
+          msg = 'Κάτι δεν πήγε καλά! Σκέψου ξανά τη σειρά.';
+        }
+        setFeedback('wrong', '❌ Ωχ! ' + msg);
+        setTimeout(function() {
+          playing = false;
+          document.getElementById('btnGo').disabled = false;
+          resetAstro();
+        }, 1900);
+      }
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Έφτιαξες υπέροχες ιστορίες με προγράμματα!'; }
+    else if (score >= 2) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Είσαι σπουδαίος σεναριογράφος!'; }
+    else if (score >= 1) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'ΕΜΦΑΝΙΣΟΥ αρχή, περπάτημα, ΕΞΑΦΑΝΙΣΟΥ τέλος!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

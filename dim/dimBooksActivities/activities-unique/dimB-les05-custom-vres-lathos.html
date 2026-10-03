@@ -50,7 +50,7 @@
   }
   .path-arrow { font-size: 1.2rem; color: #aaa; }
   .program-compare {
-    display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px; margin-bottom: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
   }
   .program-box {
     background: #fff; border-radius: 16px;
@@ -119,14 +119,6 @@
     .header h1 { font-size: 1.2rem; }
     .program-compare { grid-template-columns: 1fr; }
   }
-/* iron61-gap-fallback:start */
-@supports not (gap:1px){
-  .path-visual > * { margin: 2px; }
-  .program-box .pb-code > * + * { margin-top: 4px; }
-  .program-box .pb-repeat > * + * { margin-left: 4px; }
-  .program-box .pb-cmds > * { margin: 2px; }
-}
-/* iron61-gap-fallback:end */
 </style>
 </head>
 <body>
@@ -159,29 +151,29 @@
     { path: ['➡️','➡️','➡️'], progs: [
       { repeat: 3, cmds: ['➡️'] }, { repeat: 2, cmds: ['➡️','➡️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 3, cmds: ['➡️','➡️'] }
     ], answer: 0 },
-    { path: ['➡️','⬅️','➡️','⬅️','➡️','⬅️','➡️','⬅️'], progs: [
-      { repeat: 4, cmds: ['➡️','⬅️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️'] }
-    ], answer: 0 },
+    { path: ['➡️','⬅️','➡️','⬅️'], progs: [
+      { repeat: 4, cmds: ['➡️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️','➡️','⬅️'] }, { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️'] }
+    ], answer: 3 },
     { path: ['⬆️','⬆️','⬆️','⬆️','⬆️','⬆️'], progs: [
-      { repeat: 6, cmds: ['⬆️'] }, { repeat: 3, cmds: ['⬆️'] }, { repeat: 2, cmds: ['⬆️'] }, { repeat: 5, cmds: ['⬆️'] }
+      { repeat: 6, cmds: ['⬆️'] }, { repeat: 2, cmds: ['⬆️','⬆️'] }, { repeat: 3, cmds: ['⬆️'] }, { repeat: 5, cmds: ['⬆️'] }
     ], answer: 0 },
     { path: ['➡️','➡️','⬅️','➡️','➡️','⬅️'], progs: [
       { repeat: 2, cmds: ['➡️','➡️','⬅️'] }, { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️','➡️'] }, { repeat: 3, cmds: ['➡️','➡️','⬅️'] }
     ], answer: 0 },
     { path: ['➡️','⬆️','➡️','⬆️','➡️','⬆️','➡️','⬆️'], progs: [
-      { repeat: 4, cmds: ['➡️','⬆️'] }, { repeat: 2, cmds: ['➡️','⬆️'] }, { repeat: 3, cmds: ['➡️','⬆️'] }, { repeat: 8, cmds: ['➡️','⬆️'] }
+      { repeat: 4, cmds: ['➡️','⬆️'] }, { repeat: 2, cmds: ['➡️','➡️','⬆️','⬆️'] }, { repeat: 3, cmds: ['➡️','⬆️'] }, { repeat: 8, cmds: ['➡️','⬆️'] }
     ], answer: 0 },
     { path: ['➡️','➡️','➡️','➡️','➡️'], progs: [
       { repeat: 5, cmds: ['➡️'] }, { repeat: 3, cmds: ['➡️','➡️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 5, cmds: ['➡️','➡️'] }
     ], answer: 0 },
     { path: ['⬅️','➡️','⬅️','➡️','⬅️','➡️'], progs: [
-      { repeat: 3, cmds: ['⬅️','➡️'] }, { repeat: 6, cmds: ['⬅️','➡️'] }, { repeat: 2, cmds: ['⬅️','➡️','⬅️','➡️'] }, { repeat: 3, cmds: ['➡️','⬅️'] }
+      { repeat: 3, cmds: ['⬅️','➡️'] }, { repeat: 6, cmds: ['⬅️','➡️'] }, { repeat: 2, cmds: ['⬅️','⬅️','➡️','➡️'] }, { repeat: 3, cmds: ['➡️','⬅️'] }
     ], answer: 0 },
     { path: ['⬆️','⬆️','⬆️','⬆️'], progs: [
       { repeat: 4, cmds: ['⬆️'] }, { repeat: 2, cmds: ['⬆️'] }, { repeat: 3, cmds: ['⬆️'] }, { repeat: 4, cmds: ['⬆️','⬆️'] }
     ], answer: 0 }
   ];
-  var cur = 0, score = 0;
+  var cur = 0, score = 0, curOpts = [], curAns = 0;
   function shuffle(a) { for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a; }
   function startGame() { shuffle(levels); cur=0; score=0;
     document.getElementById('scoreDisplay').textContent='⭐ 0';
@@ -198,30 +190,33 @@
     var pv=document.getElementById('pathVisual'); pv.innerHTML='';
     for(var i=0;i<lv.path.length;i++){if(i>0)pv.innerHTML+='<span class="path-arrow">→</span>';pv.innerHTML+='<span class="path-step">'+lv.path[i]+'</span>';}
     var pc=document.getElementById('progCompare'); pc.innerHTML='';
-    for(var j=0;j<lv.progs.length;j++){
+    curOpts=[]; for(var j=0;j<lv.progs.length;j++) curOpts.push(lv.progs[j]);
+    shuffle(curOpts);
+    curAns=curOpts.indexOf(lv.progs[lv.answer]);
+    for(var j=0;j<curOpts.length;j++){
       (function(idx){
         var box=document.createElement('div'); box.className='program-box';
         var cmdhtml='';
-        for(var k=0;k<lv.progs[idx].cmds.length;k++) cmdhtml+='<span class="pb-cmd">'+lv.progs[idx].cmds[k]+'</span>';
-        box.innerHTML='<div class="pb-label">Πρόγραμμα '+(idx+1)+'</div><div class="pb-code"><div class="pb-repeat">🔁 <span class="pn">'+lv.progs[idx].repeat+'</span></div><div class="pb-cmds">'+cmdhtml+'</div></div>';
+        for(var k=0;k<curOpts[idx].cmds.length;k++) cmdhtml+='<span class="pb-cmd">'+curOpts[idx].cmds[k]+'</span>';
+        box.innerHTML='<div class="pb-label">Πρόγραμμα '+(idx+1)+'</div><div class="pb-code"><div class="pb-repeat">🔁 <span class="pn">'+curOpts[idx].repeat+'</span></div><div class="pb-cmds">'+cmdhtml+'</div></div>';
         box.addEventListener('click',function(){choose(idx);});
         pc.appendChild(box);
       })(j);
     }
   }
   function choose(idx){
-    var lv=levels[cur]; var fb=document.getElementById('feedback');
+    var fb=document.getElementById('feedback');
     var boxes=document.querySelectorAll('.program-box');
     for(var i=0;i<boxes.length;i++) boxes[i].style.pointerEvents='none';
-    if(idx===lv.answer){score++;
+    if(idx===curAns){score++;
       document.getElementById('scoreDisplay').textContent='⭐ '+score;
       boxes[idx].classList.add('correct');
       fb.className='feedback show yay';
       fb.textContent='✅ Μπράβο! Αυτό είναι το σωστό πρόγραμμα!';
     }else{
-      boxes[idx].classList.add('wrong'); boxes[lv.answer].classList.add('correct');
+      boxes[idx].classList.add('wrong'); boxes[curAns].classList.add('correct');
       fb.className='feedback show nay';
-      fb.textContent='❌ Λάθος! Το σωστό είναι το '+(lv.answer+1)+'!';
+      fb.textContent='❌ Λάθος! Το σωστό είναι το '+(curAns+1)+'!';
     }
     setTimeout(function(){cur++;loadLevel();},1800);
   }

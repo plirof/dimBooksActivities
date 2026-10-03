@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Το Ρομπότ-Βοηθός μου 🤖</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(17,153,142,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #11998e; }
+  .round { font-size: .9rem; color: #888; }
+  .robot-says {
+    background: #fff; border-radius: 16px;
+    padding: 12px; margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    text-align: center;
+  }
+  .robot-says .r-emoji { font-size: 2.6rem; display: block; margin-bottom: 4px; }
+  .robot-says .r-msg { font-size: 1.05rem; font-weight: 700; color: #0b6e4f; }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 440px) {
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .job-card {
+    background: #fff; border: 3px solid #e0e0e0;
+    border-radius: 14px; padding: 10px 4px;
+    text-align: center; cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+  }
+  .job-card:active { transform: scale(.93); }
+  .job-card .j-emoji { font-size: 1.9rem; display: block; margin-bottom: 2px; }
+  .job-card .j-label { font-size: .78rem; font-weight: 700; color: #444; display: block; }
+  .job-card.selected { border-color: #11998e; background: #e0f2f1; }
+  .job-card.wrong-card { border-color: #e53935; background: #ffebee; }
+  .job-card.good-card { border-color: #43a047; background: #e8f5e9; }
+  .action-buttons {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-check {
+    border: none; border-radius: 14px; padding: 12px 34px;
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(17,153,142,.35);
+    transition: transform .15s;
+  }
+  .btn-check:active { transform: scale(.95); }
+  .btn-check:disabled { opacity: .4; cursor: default; transform: none; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(17,153,142,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🤖 Το Ρομπότ-Βοηθός μου</h1>
+    <p>Δώσε του 3 δουλειές: δύσκολες, επικίνδυνες ή κουραστικές!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/3</span>
+  </div>
+  <div id="gameArea">
+    <div class="robot-says">
+      <span class="r-emoji" id="robotEmoji">🤖</span>
+      <span class="r-msg">«Γεια! Ποιες 3 δουλειές θα μου δώσεις;»</span>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="action-buttons">
+      <button class="btn-check" id="btnCheck" onclick="checkJobs()">✅ Ορίστε, 3 δουλειές!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var missions = [
+    {
+      cards: [
+        { e: '💨', l: 'Σκουπίζει τη σκόνη', robot: true },
+        { e: '📦', l: 'Κουβαλά βαριά κούτια', robot: true },
+        { e: '🏠', l: 'Χτίζει ψηλά σπίτια', robot: true },
+        { e: '🌊', l: 'Εξερευνά τον βυθό', robot: true },
+        { e: '⚙️', l: 'Συναρμολογεί αμάξια', robot: true },
+        { e: '🤗', l: 'Αγκαλιάζει τον φίλο του', robot: false },
+        { e: '🎨', l: 'Ζωγραφίζει για διασκέδαση', robot: false },
+        { e: '🍦', l: 'Τρώει παγωτό', robot: false },
+        { e: '⚽', l: 'Παίζει ποδόσφαιρο', robot: false }
+      ]
+    },
+    {
+      cards: [
+        { e: '🌋', l: 'Εξερευνά ηφαίσιο', robot: true },
+        { e: '🔥', l: 'Σβήνει φωτιές', robot: true },
+        { e: '🚀', l: 'Πηγαίνει στο διάστημα', robot: true },
+        { e: '🍂', l: 'Μαζεύει φύλλα', robot: true },
+        { e: '🌧️', l: 'Δουλεύει στη βροχή', robot: true },
+        { e: '🎂', l: 'Τρώει τούρτα', robot: false },
+        { e: '🎵', l: 'Χορεύει για διασκέδαση', robot: false },
+        { e: '😴', l: 'Κοιμάται', robot: false },
+        { e: '🐶', l: 'Παίζει με τον σκύλο', robot: false }
+      ]
+    },
+    {
+      cards: [
+        { e: '💊', l: 'Μεταφέρει φάρμακα', robot: true },
+        { e: '🍇', l: 'Μαζεύει σταφύλια', robot: true },
+        { e: '🌨️', l: 'Καθαρίζει το χιόνι', robot: true },
+        { e: '🕳️', l: 'Ψάχνει σε σκοτεινές σπηλιές', robot: true },
+        { e: '💧', l: 'Κουβαλά νερό', robot: true },
+        { e: '🍕', l: 'Φτιάχνει πίτσα με αγάπη', robot: false },
+        { e: '🎭', l: 'Παίζει θέατρο', robot: false },
+        { e: '📖', l: 'Διαβάζει παραμύθια', robot: false },
+        { e: '🙈', l: 'Παίζει κρυφτό', robot: false }
+      ]
+    }
+  ];
+
+  var currentMission = 0, score = 0, resolved = false;
+  var selected = [];
+
+  function startGame() {
+    currentMission = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadMission();
+  }
+
+  function loadMission() {
+    if (currentMission >= missions.length) { showResult(); return; }
+    resolved = false;
+    selected = [];
+    var m = missions[currentMission];
+    var cardIdx = [];
+    for (var i = 0; i < m.cards.length; i++) cardIdx.push(i);
+    for (var k = cardIdx.length - 1; k > 0; k--) {
+      var j = Math.floor(Math.random() * (k + 1));
+      var tmp = cardIdx[k]; cardIdx[k] = cardIdx[j]; cardIdx[j] = tmp;
+    }
+    document.getElementById('roundDisplay').textContent = (currentMission + 1) + '/' + missions.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('robotEmoji').textContent = '🤖';
+
+    var grid = document.getElementById('cardsGrid');
+    grid.innerHTML = '';
+    for (var p = 0; p < cardIdx.length; p++) {
+      (function(idx) {
+        var data = m.cards[idx];
+        var card = document.createElement('div');
+        card.className = 'job-card';
+        card.setAttribute('data-idx', idx);
+        card.innerHTML = '<span class="j-emoji">' + data.e + '</span>' +
+                         '<span class="j-label">' + data.l + '</span>';
+        card.onclick = function() { toggleCard(card, idx); };
+        grid.appendChild(card);
+      })(cardIdx[p]);
+    }
+    document.getElementById('btnCheck').disabled = false;
+  }
+
+  function toggleCard(card, idx) {
+    if (resolved) return;
+    var pos = selected.indexOf(idx);
+    if (pos !== -1) {
+      selected.splice(pos, 1);
+      card.classList.remove('selected');
+    } else {
+      if (selected.length >= 3) {
+        var fb = document.getElementById('feedback');
+        fb.style.display = '';
+    fb.className = 'feedback wrong';
+        fb.textContent = 'Έχεις ήδη 3 δουλειές! Πάτα μία για να τη βγάλεις.';
+        return;
+      }
+      selected.push(idx);
+      card.classList.add('selected');
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('feedback').style.display = 'none';
+    }
+  }
+
+  function checkJobs() {
+    if (resolved) return;
+    if (selected.length < 3) {
+      var fb0 = document.getElementById('feedback');
+      fb0.style.display = '';
+    fb0.className = 'feedback wrong';
+      fb0.textContent = 'Διάλεξε πρώτα 3 δουλειές!';
+      return;
+    }
+    var m = missions[currentMission];
+    var badOnes = [];
+    for (var i = 0; i < selected.length; i++) {
+      if (!m.cards[selected[i]].robot) badOnes.push(selected[i]);
+    }
+    if (badOnes.length > 0) {
+      var cards = document.querySelectorAll('.job-card');
+      for (var c = 0; c < cards.length; c++) {
+        var idx = parseInt(cards[c].getAttribute('data-idx'));
+        if (badOnes.indexOf(idx) !== -1) {
+          cards[c].classList.remove('selected');
+          cards[c].classList.add('wrong-card');
+        }
+      }
+      var label = m.cards[badOnes[0]].l;
+      for (var b = 0; b < badOnes.length; b++) {
+        var sPos = selected.indexOf(badOnes[b]);
+        if (sPos !== -1) selected.splice(sPos, 1);
+      }
+      var fb = document.getElementById('feedback');
+      fb.style.display = '';
+    fb.className = 'feedback wrong';
+      fb.textContent = '❌ «' + label + '» είναι για να τη χαίρεται ο άνθρωπος! Διάλεξε δύσκολη, επικίνδυνη ή κουραστική δουλειά.';
+      setTimeout(function() {
+        var cards2 = document.querySelectorAll('.job-card');
+        for (var x = 0; x < cards2.length; x++) cards2[x].classList.remove('wrong-card');
+      }, 1600);
+      return;
+    }
+    resolved = true;
+    document.getElementById('btnCheck').disabled = true;
+    var cards3 = document.querySelectorAll('.job-card');
+    for (var g = 0; g < cards3.length; g++) {
+      if (cards3[g].classList.contains('selected')) cards3[g].classList.add('good-card');
+    }
+    document.getElementById('robotEmoji').textContent = '🤖⚙️💡🔧';
+    var job1 = m.cards[selected[0]].l;
+    var job2 = m.cards[selected[1]].l;
+    var job3 = m.cards[selected[2]].l;
+    var fb2 = document.getElementById('feedback');
+    fb2.style.display = '';
+    fb2.className = 'feedback correct';
+    fb2.textContent = '🎉 Ευχαριστώ! Θα κάνω: ' + job1 + ', ' + job2 + ' και ' + job3 + '! Είναι δουλειές για ρομπότ!';
+    score++;
+    document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+    setTimeout(function() {
+      currentMission++;
+      loadMission();
+    }, 3200);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = missions.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις ποιες δουλειές ταιριάζουν στα ρομπότ!'; }
+    else if (score >= 2) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Έφτιαξες υπέροχους βοηθούς!'; }
+    else if (score >= 1) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Σκέψου: δύσκολες, επικίνδυνες, κουραστικές δουλειές!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

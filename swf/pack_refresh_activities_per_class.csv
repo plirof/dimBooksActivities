@@ -1,4 +1,4 @@
-# pack_refresh_activities_per_class.csv  (v260921)
+# pack_refresh_activities_per_class.csv  (v261002)
 # Controls which activities pack_Book.php shows, per class and lesson.
 # The page re-reads this file every 30 seconds (only with &probeserver in the URL).
 #
@@ -11,6 +11,11 @@
 #   activities : badge numbers as shown on screen, '-' separated, e.g. 4-7-5-9b-45
 #                (lettered tokens like 9b show that single sub-activity;
 #                 empty | ALL | ShowAll  ->  show everything)
+#                random*5 (v261002a): also show 5 RANDOM categories picked from
+#                the ones the row does NOT list (bare "random" = 1, [random*5]
+#                bracketed works too). Seeded with the week of year, so the
+#                whole week shows the SAME random selection (changes on Monday).
+#                e.g. dimB,3,[unique]-[0quiz_penalty]-random*5
 #
 # The LAST matching row for the open class+lesson wins, so you can append a
 # corrected row at the bottom without deleting the old one.
@@ -22,10 +27,10 @@
 # dimA,5,1-2b-9
 # dimC,12,ALL
 dimA,1,
-dimA,2,9a-9b-9c-6-4-14-45
-dimA,3,9a-9b-6-4-14-[wordsearch]
-dimA,4,
-dimA,5,
+dimA,2,[unique]-9c-[0quiz_penalty]-[0quiz_basket]-[hangman]-45
+dimA,3,[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[wordsearch]
+dimA,4,[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[wordsearch]
+dimA,5,[unique]-[0quiz_penalty]-[0quiz_basket]-
 dimA,6,
 dimA,7,
 dimA,8,
@@ -51,10 +56,10 @@ dimA,27,
 dimA,28,
 dimA,29,
 dimA,30,
-dimB,1,4-6-17
-dimB,2,9a-9b-6-4-16
-dimB,3,9a-9b-26-6-4-16-[wordsearch]-39
-dimB,4,
+dimB,1,[0quiz_penalty]-[0quiz_basket]-[memory]
+dimB,2,[unique]-[0quiz_penalty]-[0quiz_basket]-[maze]
+dimB,3,[unique]-[grid-game]-[0quiz_penalty]-[0quiz_basket]-[maze]-[wordsearch]-39
+dimB,4,[unique]-[balloon-pop]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[maze]
 dimB,5,
 dimB,6,
 dimB,7,
@@ -82,10 +87,10 @@ dimB,28,
 dimB,29,
 dimB,30,
 dimC,1,4-6-9b-17-10-11-18-19
-dimC,2,9a-9b-12-6-4-16-18
-dimC,3,9a-9b-9c-6-4-14-[groupsort]
-dimC,4,
-dimC,5,
+dimC,2,[unique]-12-[0quiz_penalty]-[0quiz_basket]-16-18
+dimC,3,[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[groupsort]
+dimC,4,[unique]-[0quiz_penalty]-[0quiz_basket]-
+dimC,5,[unique]-[0quiz_penalty]-[0quiz_basket]-
 dimC,6,
 dimC,7,
 dimC,8,
@@ -112,9 +117,9 @@ dimC,28,
 dimC,29,
 dimC,30,
 dimD,1,6-4-9a-10-19
-dimD,2,9a-9b-6-4-14-12
-dimD,3,1a-9a-9b-9c-6-4-14-[wordsearch]
-dimD,4,
+dimD,2,[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-12
+dimD,3,1a-[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[wordsearch]
+dimD,4,[unique]-[0quiz_penalty]-[0quiz_basket]-
 dimD,5,
 dimD,6,
 dimD,7,
@@ -141,10 +146,10 @@ dimD,27,
 dimD,28,
 dimD,29,
 dimD,30,
-dimE,1,6-9a-9b-17
-dimE,2,9b-9a-6-4-41-[wordsearch]-22
-dimE,3,1a-9a-9b-9c-6-4-14-[wordsearch]
-dimE,4,
+dimE,1,6-[unique]-17
+dimE,2,9b-9a-[0quiz_penalty]-[0quiz_basket]-41-[wordsearch]-22
+dimE,3,1a-[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[wordsearch]
+dimE,4,[unique]-[0quiz_penalty]-[0quiz_basket]-
 dimE,5,
 dimE,6,
 dimE,7,
@@ -172,8 +177,8 @@ dimE,28,
 dimE,29,
 dimE,30,
 dimST,1,
-dimST,2,4-6-14-15-[wordsearch]-25
-dimST,3,
+dimST,2,[0quiz_penalty]-[0quiz_basket]-[hangman]-[matching-lines]-[wordsearch]-[word-scramble]
+dimST,3,1a-[unique]-[0quiz_penalty]-[0quiz_basket]-[hangman]-[WORDSEARCH]
 dimST,4,
 dimST,5,
 dimST,6,

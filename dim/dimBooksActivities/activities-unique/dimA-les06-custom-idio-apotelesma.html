@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ίδιο Αποτέλεσμα 🟰</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 480px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(74,0,224,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #4a00e0; }
+  .round { font-size: .9rem; color: #888; }
+  .hint {
+    text-align: center; font-size: .95rem; font-weight: 700; color: #4a00e0;
+    background: #fff; border-radius: 14px; padding: 8px 12px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  }
+  .target-panel {
+    background: #fff; border-radius: 16px;
+    padding: 10px; margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+  .target-panel h3 { font-size: .95rem; color: #666; margin-bottom: 6px; text-align: center; }
+  .target-prog {
+    display: flex; justify-content: center; flex-wrap: wrap;
+  }
+  .tblock {
+    display: flex; flex-direction: column; align-items: center;
+    background: #ede7f6; border: 2px solid #7e57c2;
+    border-radius: 10px; padding: 2px 8px;
+    margin: 3px;
+  }
+  .tblock .tb-arrow { font-size: 1.3rem; }
+  .tblock .tb-num {
+    background: #1976d2; color: #fff; border-radius: 6px;
+    font-size: .8rem; font-weight: 700; padding: 0 8px;
+    min-width: 18px; text-align: center;
+  }
+  .grid-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+  .grid {
+    display: inline-grid;
+    grid-gap: 3px;
+    background: #4527a0;
+    padding: 4px;
+    border-radius: 10px;
+  }
+  .cell {
+    width: 52px; height: 52px;
+    background: #f3e5f5;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    user-select: none; -webkit-user-select: none;
+    transition: background .2s;
+  }
+  .cell.startcell { background: #ffe0b2; }
+  .cell.flagcell { background: #c8e6c9; }
+  .cell.hop { animation: hop .3s; }
+  @keyframes hop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  @media (max-width: 440px) {
+    .cell { width: 42px; height: 42px; font-size: 1.2rem; }
+  }
+  .program-area {
+    background: #fff; border-radius: 16px;
+    padding: 12px; margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+  .program-area h3 {
+    font-size: .95rem; color: #666; margin-bottom: 8px; text-align: center;
+  }
+  .command-slots {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    background: #f5f5f5; border-radius: 10px; padding: 8px 4px;
+  }
+  .slot {
+    width: 44px; height: 44px;
+    border: 2px dashed #bbb; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+    margin: 3px;
+    background: #fff;
+  }
+  .slot.filled { border-style: solid; border-color: #4a00e0; background: #ede7f6; }
+  .available-commands {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .cmd-btn {
+    width: 56px; height: 56px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    color: #fff; font-size: 1.8rem; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(74,0,224,.3);
+    transition: transform .15s;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0 5px;
+  }
+  .cmd-btn:active { transform: scale(.9); }
+  .cmd-btn:disabled { opacity: .4; cursor: default; transform: none; }
+  .action-buttons {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-action {
+    border: none; border-radius: 14px; padding: 10px 24px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    margin: 0 6px;
+  }
+  .btn-action:active { transform: scale(.95); }
+  .btn-action:disabled { opacity: .4; cursor: default; transform: none; }
+  .btn-clear { background: #ffcdd2; color: #c62828; }
+  .btn-go { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #fff; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(74,0,224,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🟰 Ίδιο Αποτέλεσμα</h1>
+    <p>Φτιάξε ΔΙΚΟ σου πρόγραμμα που φτάνει στην 🚩!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="hint">👻 Δες πού πηγαίνει το πρόγραμμα-στόχος. Υπάρχουν κι άλλοι δρόμοι!</div>
+    <div class="target-panel">
+      <h3>🎯 Το πρόγραμμα-στόχος</h3>
+      <div class="target-prog" id="targetProg"></div>
+    </div>
+    <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+    <div class="program-area">
+      <h3>📋 Το πρόγραμμά σου</h3>
+      <div class="command-slots" id="commandSlots"></div>
+    </div>
+    <div class="available-commands">
+      <button class="cmd-btn" onclick="addCommand('up')">⬆️</button>
+      <button class="cmd-btn" onclick="addCommand('down')">⬇️</button>
+      <button class="cmd-btn" onclick="addCommand('left')">⬅️</button>
+      <button class="cmd-btn" onclick="addCommand('right')">➡️</button>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-action btn-clear" onclick="clearCommands()">🗑️ Καθαρισμός</button>
+      <button class="btn-action btn-go" id="btnGo" onclick="runProgram()">▶️ Τρέξε!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var levels = [
+    { start: [3,0], prog: [ {d:'right', n:2}, {d:'up', n:2} ], flag: [1,2] },
+    { start: [0,0], prog: [ {d:'right', n:3}, {d:'down', n:2} ], flag: [2,3] },
+    { start: [3,3], prog: [ {d:'up', n:1}, {d:'left', n:2}, {d:'up', n:1} ], flag: [1,1] },
+    { start: [0,3], prog: [ {d:'down', n:2}, {d:'left', n:1}, {d:'down', n:1} ], flag: [3,2] }
+  ];
+  var VEC = { up: [-1,0], down: [1,0], left: [0,-1], right: [0,1] };
+  var ARROW = { up: '⬆️', down: '⬇️', left: '⬅️', right: '➡️' };
+  var ROWS = 4, COLS = 5;
+  var STEP_MS = 340;
+
+  var currentLevel = 0, score = 0, running = false;
+  var commands = [];
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    running = false;
+    commands = [];
+    document.getElementById('roundDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    renderTargetProg();
+    renderGrid();
+    renderSlots();
+    setButtons(true);
+  }
+
+  function renderTargetProg() {
+    var lv = levels[currentLevel];
+    var el = document.getElementById('targetProg');
+    el.innerHTML = '';
+    for (var i = 0; i < lv.prog.length; i++) {
+      var b = document.createElement('div');
+      b.className = 'tblock';
+      b.innerHTML = '<span class="tb-arrow">' + ARROW[lv.prog[i].d] + '</span>' +
+                    '<span class="tb-num">' + lv.prog[i].n + '</span>';
+      el.appendChild(b);
+    }
+  }
+
+  function renderGrid() {
+    var lv = levels[currentLevel];
+    var grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + COLS + ', 52px)';
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.setAttribute('data-r', r);
+        cell.setAttribute('data-c', c);
+        if (r === lv.start[0] && c === lv.start[1]) {
+          cell.classList.add('startcell');
+          cell.textContent = '🐥';
+        } else if (r === lv.flag[0] && c === lv.flag[1]) {
+          cell.classList.add('flagcell');
+          cell.textContent = '🚩';
+        }
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function cellAt(r, c) {
+    var cells = document.querySelectorAll('.cell');
+    for (var i = 0; i < cells.length; i++) {
+      if (parseInt(cells[i].getAttribute('data-r')) === r &&
+          parseInt(cells[i].getAttribute('data-c')) === c) return cells[i];
+    }
+    return null;
+  }
+
+  function renderSlots() {
+    var area = document.getElementById('commandSlots');
+    area.innerHTML = '';
+    for (var i = 0; i < 6; i++) {
+      var slot = document.createElement('div');
+      slot.className = 'slot';
+      slot.setAttribute('data-idx', i);
+      if (i < commands.length) {
+        slot.textContent = ARROW[commands[i]];
+        slot.classList.add('filled');
+      }
+      slot.onclick = (function(idx) {
+        return function() {
+          if (running) return;
+          if (idx < commands.length) {
+            commands.splice(idx, 1);
+            renderSlots();
+          }
+        };
+      })(i);
+      area.appendChild(slot);
+    }
+  }
+
+  function addCommand(dir) {
+    if (running) return;
+    if (commands.length >= 6) return;
+    commands.push(dir);
+    renderSlots();
+  }
+
+  function clearCommands() {
+    if (running) return;
+    commands = [];
+    renderSlots();
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+  }
+
+  function setButtons(enabled) {
+    var btns = document.querySelectorAll('.cmd-btn, #btnGo, .btn-clear');
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = !enabled;
+  }
+
+  function setFeedback(type, text) {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + type;
+    fb.style.display = '';
+    fb.textContent = text;
+  }
+
+  function sameAsTarget() {
+    var lv = levels[currentLevel];
+    var flat = [];
+    for (var i = 0; i < lv.prog.length; i++) {
+      for (var k = 0; k < lv.prog[i].n; k++) flat.push(lv.prog[i].d);
+    }
+    if (flat.length !== commands.length) return false;
+    for (var j = 0; j < flat.length; j++) {
+      if (flat[j] !== commands[j]) return false;
+    }
+    return true;
+  }
+
+  function runProgram() {
+    if (running) return;
+    if (commands.length === 0) {
+      setFeedback('wrong', 'Βάλε πρώτα μερικά βέλη στο πρόγραμμά σου!');
+      return;
+    }
+    running = true;
+    setButtons(false);
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var lv = levels[currentLevel];
+    var pos = { r: lv.start[0], c: lv.start[1] };
+    var i = 0;
+    var offGrid = false;
+
+    var timer = setInterval(function() {
+      var mv = VEC[commands[i]];
+      var nr = pos.r + mv[0], nc = pos.c + mv[1];
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) {
+        offGrid = true;
+        clearInterval(timer);
+        setFeedback('wrong', '💥 Ωχ! Βγήκε από την οθόνη! Δοκίμασε άλλο δρόμο.');
+        endRun();
+        return;
+      }
+      var oldCell = cellAt(pos.r, pos.c);
+      oldCell.textContent = '';
+      pos = { r: nr, c: nc };
+      var newCell = cellAt(nr, nc);
+      if (!(nr === lv.flag[0] && nc === lv.flag[1])) {
+        newCell.textContent = '🐥';
+      } else {
+        newCell.textContent = '🐥🚩';
+      }
+      newCell.classList.remove('hop');
+      void newCell.offsetWidth;
+      newCell.classList.add('hop');
+      i++;
+      if (i >= commands.length) {
+        clearInterval(timer);
+        setTimeout(function() { finishRun(pos); }, 350);
+      }
+    }, STEP_MS);
+
+    function finishRun(finalPos) {
+      if (finalPos.r === lv.flag[0] && finalPos.c === lv.flag[1]) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        var msg = sameAsTarget()
+          ? '✅ Βρήκες το ίδιο πρόγραμμα! Υπάρχουν και άλλοι δρόμοι!'
+          : '✅ Μπράβο! Διαφορετικό πρόγραμμα, ίδιο αποτέλεσμα!';
+        setFeedback('correct', msg);
+        setTimeout(function() {
+          currentLevel++;
+          loadLevel();
+        }, 2200);
+      } else {
+        setFeedback('wrong', '❌ Δεν έφτασε στην 🚩! Σκέψου άλλο δρόμο.');
+        endRun();
+      }
+    }
+
+    function endRun() {
+      setTimeout(function() {
+        running = false;
+        setButtons(true);
+        renderGrid();
+        commands = [];
+        renderSlots();
+      }, 1400);
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις ότι πολλά προγράμματα κάνουν το ίδιο!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Βρίσκεις πολλούς δρόμους!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

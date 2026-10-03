@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ζωγράφισε το Μονοπάτι 🎨</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 480px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(67,233,123,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #27ae60; }
+  .round { font-size: .9rem; color: #888; }
+  .hint {
+    text-align: center; font-size: .95rem; font-weight: 700; color: #1e7e50;
+    background: #fff; border-radius: 14px; padding: 8px 12px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  }
+  .grid-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+  .grid {
+    display: inline-grid;
+    grid-gap: 4px;
+    background: #2e7d32;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .cell {
+    width: 56px; height: 56px;
+    background: #f1f8e9;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem; cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .2s, transform .1s;
+  }
+  .cell:active { transform: scale(.92); }
+  .cell.startcell { background: #ffe0b2; }
+  .cell.goalcell { background: #fff3cd; }
+  .cell.obstacle { background: #c8e6c9; cursor: default; }
+  .cell.painted { background: #aed581; }
+  .cell.shake { animation: shake .4s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  @media (max-width: 420px) {
+    .cell { width: 46px; height: 46px; font-size: 1.3rem; }
+  }
+  .buttons-row {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-action {
+    border: none; border-radius: 14px; padding: 10px 22px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    margin: 0 6px;
+    background: #fff3cd; color: #b8860b;
+  }
+  .btn-action:active { transform: scale(.95); }
+  .btn-action:disabled { opacity: .4; cursor: default; transform: none; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(67,233,123,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🎨 Ζωγράφισε το Μονοπάτι</h1>
+    <p>Βάψε τα τετράγωνα και φτιάξε τον δρόμο της 🐰!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="hint" id="hintBar">👉 Πάτα τετράγωνα ΔΙΠΛΑ στο τελευταίο σου βήμα, μέχρι το 🥕!</div>
+    <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+    <div class="buttons-row">
+      <button class="btn-action" id="btnUndo" onclick="undoLast()">↩️ Ξανακόκα</button>
+      <button class="btn-action" id="btnClear" onclick="clearAll()">🗑️ Σβήσε όλα</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var levels = [
+    { grid: [
+      ['🐰', '', '', ''],
+      ['', '', '🌵', ''],
+      ['', '🌵', '', ''],
+      ['', '', '', '🥕']
+    ]},
+    { grid: [
+      ['🐰', '🌵', '', ''],
+      ['', '', '', ''],
+      ['', '🌵', '', '🌵'],
+      ['', '', '', '🥕']
+    ]},
+    { grid: [
+      ['', '', '', '🥕'],
+      ['', '🌵', '', ''],
+      ['🌵', '', '🌵', ''],
+      ['🐰', '', '', '']
+    ]},
+    { grid: [
+      ['🐰', '', '', ''],
+      ['🌵', '', '', '🌵'],
+      ['', '', '🌵', ''],
+      ['', '', '', '🥕']
+    ]}
+  ];
+
+  var currentLevel = 0, score = 0, busy = false;
+  var painted = [];
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function findChar(ch) {
+    var g = levels[currentLevel].grid;
+    for (var r = 0; r < g.length; r++) {
+      for (var c = 0; c < g[r].length; c++) {
+        if (g[r][c] === ch) return { r: r, c: c };
+      }
+    }
+    return null;
+  }
+
+  function lastPos() {
+    if (painted.length > 0) return painted[painted.length - 1];
+    return findChar('🐰');
+  }
+
+  function isPainted(r, c) {
+    for (var i = 0; i < painted.length; i++) {
+      if (painted[i].r === r && painted[i].c === c) return true;
+    }
+    return false;
+  }
+
+  function isAdjacent(r, c, pos) {
+    if (!pos) return false;
+    var dr = Math.abs(r - pos.r), dc = Math.abs(c - pos.c);
+    return (dr + dc) === 1;
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    busy = false;
+    painted = [];
+    document.getElementById('roundDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('hintBar').style.display = 'block';
+    renderGrid();
+    setButtons(true);
+  }
+
+  function renderGrid() {
+    var g = levels[currentLevel].grid;
+    var grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + g[0].length + ', 56px)';
+    for (var r = 0; r < g.length; r++) {
+      for (var c = 0; c < g[r].length; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.setAttribute('data-r', r);
+        cell.setAttribute('data-c', c);
+        var v = g[r][c];
+        if (v === '🐰') cell.classList.add('startcell');
+        else if (v === '🥕') cell.classList.add('goalcell');
+        else if (v === '🌵') cell.classList.add('obstacle');
+        cell.textContent = v;
+        cell.onclick = (function(rr, cc) {
+          return function() { onCell(rr, cc); };
+        })(r, c);
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function cellEl(r, c) {
+    var cells = document.querySelectorAll('.cell');
+    for (var i = 0; i < cells.length; i++) {
+      if (parseInt(cells[i].getAttribute('data-r')) === r &&
+          parseInt(cells[i].getAttribute('data-c')) === c) return cells[i];
+    }
+    return null;
+  }
+
+  function setFeedback(type, text) {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + type;
+    fb.style.display = '';
+    fb.textContent = text;
+  }
+
+  function hideFeedback() {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback';
+    fb.style.display = 'none';
+  }
+
+  function onCell(r, c) {
+    if (busy) return;
+    var g = levels[currentLevel].grid;
+    var v = g[r][c];
+    hideFeedback();
+
+    if (v === '🐰') return;
+
+    if (v === '🌵') {
+      var el = cellEl(r, c);
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+      setFeedback('wrong', '🌵 Ωχ! Κάκτος! Περνάμε από αλλού!');
+      return;
+    }
+
+    if (v === '🥕') {
+      if (isAdjacent(r, c, lastPos())) {
+        painted.push({ r: r, c: c });
+        cellEl(r, c).classList.add('painted');
+        walkPath();
+      } else {
+        setFeedback('wrong', 'Πρώτα βάψε τετράγωνα πιο κοντά στο 🥕!');
+      }
+      return;
+    }
+
+    if (isPainted(r, c)) {
+      var lp = lastPos();
+      if (lp && lp.r === r && lp.c === c) { undoLast(); }
+      else { setFeedback('wrong', 'Βάφεις με τη σειρά! Πάτα το τελευταίο βαμμένο για να το σβήσεις.'); }
+      return;
+    }
+
+    if (isAdjacent(r, c, lastPos())) {
+      painted.push({ r: r, c: c });
+      cellEl(r, c).classList.add('painted');
+    } else {
+      setFeedback('wrong', 'Πάτα τετράγωνο ΔΙΠΛΑ στο τελευταίο σου βήμα! 👉');
+    }
+  }
+
+  function undoLast() {
+    if (busy || painted.length === 0) return;
+    var last = painted.pop();
+    var el = cellEl(last.r, last.c);
+    if (levels[currentLevel].grid[last.r][last.c] !== '🥕') {
+      el.classList.remove('painted');
+    }
+    hideFeedback();
+  }
+
+  function clearAll() {
+    if (busy) return;
+    for (var i = 0; i < painted.length; i++) {
+      var p = painted[i];
+      if (levels[currentLevel].grid[p.r][p.c] !== '🥕') {
+        cellEl(p.r, p.c).classList.remove('painted');
+      }
+    }
+    painted = [];
+    hideFeedback();
+  }
+
+  function setButtons(enabled) {
+    document.getElementById('btnUndo').disabled = !enabled;
+    document.getElementById('btnClear').disabled = !enabled;
+  }
+
+  function walkPath() {
+    busy = true;
+    setButtons(false);
+    document.getElementById('hintBar').style.display = 'none';
+    var g = levels[currentLevel].grid;
+    var start = findChar('🐰');
+    var steps = [{ r: start.r, c: start.c }].concat(painted);
+    var i = 0;
+
+    function step() {
+      if (i > 0) {
+        var prev = steps[i - 1];
+        var prevEl = cellEl(prev.r, prev.c);
+        if (g[prev.r][prev.c] === '🥕') {
+          prevEl.textContent = '🥕';
+        } else {
+          prevEl.textContent = '';
+        }
+      }
+      var cur = steps[i];
+      var curEl = cellEl(cur.r, cur.c);
+      if (g[cur.r][cur.c] === '🥕') {
+        curEl.textContent = '🐰🥕';
+      } else {
+        curEl.textContent = '🐰';
+      }
+      i++;
+      if (i < steps.length) {
+        setTimeout(step, 380);
+      } else {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        setFeedback('correct', '✅ Μπράβο! Η 🐰 έφτασε στο 🥕 από τον δικό της δρόμο!');
+        setTimeout(function() {
+          currentLevel++;
+          loadLevel();
+        }, 2000);
+      }
+    }
+    setTimeout(step, 300);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Σχεδιάζεις υπέροχα μονοπάτια!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Είσαι σπουδαία σχεδιάστρια μονοπατιών!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μην σταματάς! Θα τα καταφέρεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

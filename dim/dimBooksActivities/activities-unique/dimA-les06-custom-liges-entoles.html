@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λίγες Εντολές, Ίδιο Αποτέλεσμα 🤏</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 480px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #ff9966, #ff5e62);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(255,94,98,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.25rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #ff5e62; }
+  .round { font-size: .9rem; color: #888; }
+  .panel {
+    background: #fff; border-radius: 16px;
+    padding: 12px; margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+  .panel h3 {
+    font-size: .95rem; color: #666; margin-bottom: 8px; text-align: center;
+  }
+  .arrow-chain {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .achain {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: #fff3e0; border: 2px solid #ffab91;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    margin: 2px;
+  }
+  .track {
+    display: flex; justify-content: center;
+  }
+  .tcell {
+    width: 34px; height: 40px;
+    background: #f1f1f1;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35rem;
+    margin: 0 1px;
+  }
+  .tcell.earth { background: #b2dfdb; }
+  .myblock-row {
+    display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .myblock {
+    display: flex; flex-direction: column; align-items: center;
+    background: #ffe0b2; border: 3px solid #ff9800;
+    border-radius: 12px; padding: 6px 10px;
+    margin-right: 10px;
+  }
+  .myblock .b-arrow { font-size: 1.7rem; }
+  .myblock .b-num {
+    background: #1976d2; color: #fff; border-radius: 8px;
+    font-size: 1rem; font-weight: 700; padding: 1px 10px; margin-top: 2px;
+  }
+  .palette {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .pal-btn {
+    width: 46px; height: 46px; border: none; border-radius: 10px;
+    background: #fff; border: 2px solid #ff9800;
+    font-size: 1.4rem; cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s;
+    margin: 4px;
+  }
+  .pal-btn.selected { background: #fff3e0; border-width: 3px; transform: scale(1.1); }
+  .pal-btn:active { transform: scale(.9); }
+  .keypad {
+    display: flex; justify-content: center; flex-wrap: wrap;
+  }
+  .key {
+    width: 44px; height: 44px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #42a5f5, #1976d2);
+    color: #fff; font-size: 1.25rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 3px 8px rgba(25,118,210,.3);
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s;
+    margin: 4px;
+  }
+  .key.selected { transform: scale(1.15); box-shadow: 0 0 0 3px #ffb74d; }
+  .key:active { transform: scale(.9); }
+  .action-buttons {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-go {
+    border: none; border-radius: 14px; padding: 12px 34px;
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    transition: transform .15s;
+  }
+  .btn-go:active { transform: scale(.95); }
+  .btn-go:disabled { opacity: .4; cursor: default; transform: none; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #ff9966, #ff5e62);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(255,94,98,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🤏 Λίγες Εντολές, Ίδιο Αποτέλεσμα</h1>
+    <p>Γράψε το μεγάλο πρόγραμμα με ΜΙΑ εντολή!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/5</span>
+  </div>
+  <div id="gameArea">
+    <div class="panel">
+      <h3>1️⃣ Το μεγάλο πρόγραμμα της 🐤</h3>
+      <div class="arrow-chain" id="arrowChain"></div>
+      <div class="track" id="trackA"></div>
+    </div>
+    <div class="panel">
+      <h3>2️⃣ Το δικό σου πρόγραμμα της 🐣</h3>
+      <div class="myblock-row">
+        <div class="myblock">
+          <span class="b-arrow" id="myArrow">❔</span>
+          <span class="b-num" id="myNum">?</span>
+        </div>
+      </div>
+      <div class="palette" id="palette"></div>
+      <div class="keypad" id="keypad"></div>
+      <div class="track" id="trackB" style="margin-top:8px;"></div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-go" id="btnGo" onclick="runRace()">▶️ Τρέξε!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var rounds = [
+    { dir: 'right', n: 4 },
+    { dir: 'right', n: 3 },
+    { dir: 'left', n: 5 },
+    { dir: 'right', n: 6 },
+    { dir: 'right', n: 7 }
+  ];
+  var ARROW = { right: '➡️', left: '⬅️', up: '⬆️', down: '⬇️' };
+  var STEP_MS = 300;
+
+  var currentRound = 0, score = 0, running = false;
+  var chosenArrow = null, chosenNum = 0;
+
+  function startGame() {
+    currentRound = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadRound();
+  }
+
+  function loadRound() {
+    if (currentRound >= rounds.length) { showResult(); return; }
+    running = false;
+    chosenArrow = null; chosenNum = 0;
+    var rd = rounds[currentRound];
+    document.getElementById('roundDisplay').textContent = (currentRound + 1) + '/' + rounds.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('myArrow').textContent = '❔';
+    document.getElementById('myNum').textContent = '?';
+
+    var chain = document.getElementById('arrowChain');
+    chain.innerHTML = '';
+    for (var i = 0; i < rd.n; i++) {
+      var a = document.createElement('div');
+      a.className = 'achain';
+      a.textContent = ARROW[rd.dir];
+      chain.appendChild(a);
+    }
+    buildTrack('trackA');
+    buildTrack('trackB');
+    placeBird('trackA', rd.dir === 'left' ? rd.n : 0, '🐤');
+    placeBird('trackB', 0, '🐣');
+    buildPalette();
+    buildKeypad();
+    document.getElementById('btnGo').disabled = false;
+  }
+
+  function buildTrack(trackId) {
+    var rd = rounds[currentRound];
+    var track = document.getElementById(trackId);
+    track.innerHTML = '';
+    for (var i = 0; i <= rd.n; i++) {
+      var t = document.createElement('div');
+      t.className = 'tcell' + (i === rd.n ? ' earth' : '');
+      t.setAttribute('data-i', i);
+      track.appendChild(t);
+    }
+  }
+
+  function placeBird(trackId, cellIdx, bird) {
+    var track = document.getElementById(trackId);
+    var cells = track.querySelectorAll('.tcell');
+    for (var i = 0; i < cells.length; i++) {
+      if (cells[i].textContent === '🐤' || cells[i].textContent === '🐣') cells[i].textContent = '';
+    }
+    cells[cellIdx].textContent = bird;
+  }
+
+  function buildPalette() {
+    var pal = document.getElementById('palette');
+    pal.innerHTML = '';
+    var dirs = ['right', 'left', 'up', 'down'];
+    for (var i = 0; i < dirs.length; i++) {
+      (function(d) {
+        var b = document.createElement('button');
+        b.className = 'pal-btn';
+        b.textContent = ARROW[d];
+        b.onclick = function() {
+          if (running) return;
+          chosenArrow = d;
+          document.getElementById('myArrow').textContent = ARROW[d];
+          var btns = pal.querySelectorAll('.pal-btn');
+          for (var j = 0; j < btns.length; j++) btns[j].classList.remove('selected');
+          this.classList.add('selected');
+        };
+        pal.appendChild(b);
+      })(dirs[i]);
+    }
+  }
+
+  function buildKeypad() {
+    var pad = document.getElementById('keypad');
+    pad.innerHTML = '';
+    for (var n = 1; n <= 7; n++) {
+      (function(num) {
+        var k = document.createElement('button');
+        k.className = 'key';
+        k.textContent = num;
+        k.onclick = function() {
+          if (running) return;
+          chosenNum = num;
+          document.getElementById('myNum').textContent = num;
+          var keys = pad.querySelectorAll('.key');
+          for (var j = 0; j < keys.length; j++) keys[j].classList.remove('selected');
+          this.classList.add('selected');
+        };
+        pad.appendChild(k);
+      })(n);
+    }
+  }
+
+  function setFeedback(type, text) {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + type;
+    fb.style.display = '';
+    fb.textContent = text;
+  }
+
+  function runRace() {
+    if (running) return;
+    if (!chosenArrow || chosenNum === 0) {
+      setFeedback('wrong', 'Διάλεξε πρώτα βέλος ⬅️➡️⬆️⬇️ και νούμερο 1-7!');
+      return;
+    }
+    running = true;
+    document.getElementById('btnGo').disabled = true;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var rd = rounds[currentRound];
+    var aStart = (rd.dir === 'left') ? rd.n : 0;
+    var bStart = (chosenArrow === 'left') ? rd.n : 0;
+    placeBird('trackA', aStart, '🐤');
+    placeBird('trackB', bStart, '🐣');
+
+    var total = Math.max(rd.n, chosenNum);
+    var i = 0;
+
+    var timer = setInterval(function() {
+      i++;
+      if (i <= rd.n) {
+        var aPos = (rd.dir === 'right') ? (aStart + i) : (aStart - i);
+        placeBird('trackA', aPos, '🐤');
+      }
+      if (i <= chosenNum) {
+        var bPos = bStart;
+        if (chosenArrow === 'right') bPos = bStart + i;
+        else if (chosenArrow === 'left') bPos = bStart - i;
+        if (bPos < 0) bPos = 0;
+        if (bPos > rd.n) bPos = rd.n;
+        placeBird('trackB', bPos, '🐣');
+      }
+      if (i >= total) {
+        clearInterval(timer);
+        setTimeout(finishRace, 400);
+      }
+    }, STEP_MS);
+
+    function finishRace() {
+      if (chosenArrow === rd.dir && chosenNum === rd.n) {
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        setFeedback('correct', '🎉 Μπράβο! ' + rd.n + ' εντολές έγιναν 1! Ίδιο αποτέλεσμα!');
+        setTimeout(function() {
+          currentRound++;
+          loadRound();
+        }, 2200);
+      } else {
+        setFeedback('wrong', 'Ωχ! Τα πουλιά δεν βρέθηκαν ίδιο σημείο! Δοκίμασε ξανά!');
+        setTimeout(function() {
+          running = false;
+          document.getElementById('btnGo').disabled = false;
+          placeBird('trackA', rd.dir === 'left' ? rd.n : 0, '🐤');
+          placeBird('trackB', 0, '🐣');
+        }, 1600);
+      }
+    }
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = rounds.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Γράφεις προγράμματα σαν αληθινός προγραμματιστής!'; }
+    else if (score >= 4) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Καταλαβαίνεις τα νούμερα στις εντολές!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Μέτρα προσεκτικά τα βήματα!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

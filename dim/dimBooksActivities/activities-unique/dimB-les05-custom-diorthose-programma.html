@@ -37,6 +37,11 @@
     font-weight: 700; color: #2d3436;
     box-shadow: 0 4px 14px rgba(0,0,0,.08); line-height: 1.5;
   }
+  .goal-banner {
+    background: #fff8e1; border: 2px dashed #ffb300; border-radius: 16px;
+    padding: 10px 16px; margin-bottom: 14px; text-align: center;
+    font-size: 1rem; font-weight: 700; color: #b26a00; line-height: 1.5;
+  }
   .program-show {
     background: #fff; border-radius: 24px;
     box-shadow: 0 8px 28px rgba(0,0,0,.1);
@@ -70,7 +75,7 @@
   }
   .code-cmd.wrong-cmd { border-color: #f5576c; background: #fce4ec; color: #c2185b; text-decoration: line-through; }
   .options-grid {
-    display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px; margin-bottom: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
   }
   .opt-card {
     background: #fff; border: 3px solid #e8e8e8;
@@ -135,16 +140,6 @@
     body { padding: 8px; }
     .header h1 { font-size: 1.2rem; }
   }
-/* iron61-gap-fallback:start */
-@supports not (gap:1px){
-  .code-visual > * + * { margin-top: 4px; }
-  .code-repeat > * + * { margin-left: 6px; }
-  .code-cmds > * { margin: 3px; }
-  .opt-card .opt-code > * + * { margin-top: 4px; }
-  .opt-card .opt-repeat > * + * { margin-left: 4px; }
-  .opt-card .opt-cmds > * { margin: 2px; }
-}
-/* iron61-gap-fallback:end */
 </style>
 </head>
 <body>
@@ -163,6 +158,7 @@
       <div class="ps-label">⚠️ Κάτι έχει λάθος εδώ:</div>
       <div class="code-visual" id="wrongProgram"></div>
     </div>
+    <div class="goal-banner" id="goalBanner"></div>
     <div class="options-grid" id="optionsGrid"></div>
     <div class="feedback" id="feedback"></div>
   </div>
@@ -175,32 +171,32 @@
 </div>
 <script>
   var levels = [
-    { wrong: { repeat: 2, cmds: ['➡️','➡️','➡️'] }, correct: { repeat: 3, cmds: ['➡️','➡️','➡️'] }, options: [
+    { goal: '🏠 Στόχος: 9 βήματα ➡️!', wrong: { repeat: 2, cmds: ['➡️','➡️','➡️'] }, options: [
       { repeat: 3, cmds: ['➡️','➡️','➡️'] }, { repeat: 2, cmds: ['➡️','➡️'] }, { repeat: 4, cmds: ['➡️','➡️','➡️'] }, { repeat: 2, cmds: ['➡️','➡️','➡️','➡️'] }
     ], answer: 0 },
-    { wrong: { repeat: 4, cmds: ['➡️','⬅️'] }, correct: { repeat: 3, cmds: ['➡️','⬅️'] }, options: [
-      { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 4, cmds: ['➡️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️'] }, { repeat: 5, cmds: ['➡️','⬅️'] }
+    { goal: '🏠 Στόχος: γύρνα ακριβώς πίσω στην αρχή!', wrong: { repeat: 3, cmds: ['➡️'] }, options: [
+      { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 3, cmds: ['⬅️','⬅️'] }, { repeat: 2, cmds: ['➡️','⬅️','➡️'] }
     ], answer: 0 },
-    { wrong: { repeat: 3, cmds: ['➡️'] }, correct: { repeat: 5, cmds: ['➡️'] }, options: [
+    { goal: '🏠 Στόχος: 5 βήματα ➡️!', wrong: { repeat: 3, cmds: ['➡️'] }, options: [
       { repeat: 5, cmds: ['➡️'] }, { repeat: 3, cmds: ['➡️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 6, cmds: ['➡️'] }
     ], answer: 0 },
-    { wrong: { repeat: 2, cmds: ['➡️','⬆️'] }, correct: { repeat: 4, cmds: ['➡️','⬆️'] }, options: [
+    { goal: '🏠 Στόχος: 4 βήματα ➡️ και 4 βήματα ⬆️!', wrong: { repeat: 2, cmds: ['➡️','⬆️'] }, options: [
       { repeat: 4, cmds: ['➡️','⬆️'] }, { repeat: 2, cmds: ['➡️','⬆️'] }, { repeat: 3, cmds: ['➡️','⬆️'] }, { repeat: 5, cmds: ['➡️','⬆️'] }
     ], answer: 0 },
-    { wrong: { repeat: 3, cmds: ['⬅️','⬅️'] }, correct: { repeat: 3, cmds: ['⬅️','⬅️','⬅️'] }, options: [
+    { goal: '🏠 Στόχος: 9 βήματα ⬅️!', wrong: { repeat: 3, cmds: ['⬅️','⬅️'] }, options: [
       { repeat: 3, cmds: ['⬅️','⬅️','⬅️'] }, { repeat: 3, cmds: ['⬅️','⬅️'] }, { repeat: 4, cmds: ['⬅️','⬅️'] }, { repeat: 2, cmds: ['⬅️','⬅️','⬅️'] }
     ], answer: 0 },
-    { wrong: { repeat: 6, cmds: ['➡️','➡️'] }, correct: { repeat: 3, cmds: ['➡️','➡️'] }, options: [
+    { goal: '🏠 Στόχος: 6 βήματα ➡️!', wrong: { repeat: 6, cmds: ['➡️','➡️'] }, options: [
       { repeat: 3, cmds: ['➡️','➡️'] }, { repeat: 6, cmds: ['➡️','➡️'] }, { repeat: 4, cmds: ['➡️','➡️'] }, { repeat: 2, cmds: ['➡️','➡️'] }
     ], answer: 0 },
-    { wrong: { repeat: 1, cmds: ['⬆️','⬆️','⬆️'] }, correct: { repeat: 3, cmds: ['⬆️','⬆️','⬆️'] }, options: [
+    { goal: '🏠 Στόχος: 9 βήματα ⬆️!', wrong: { repeat: 1, cmds: ['⬆️','⬆️','⬆️'] }, options: [
       { repeat: 3, cmds: ['⬆️','⬆️','⬆️'] }, { repeat: 1, cmds: ['⬆️','⬆️','⬆️'] }, { repeat: 2, cmds: ['⬆️','⬆️','⬆️'] }, { repeat: 4, cmds: ['⬆️','⬆️','⬆️'] }
     ], answer: 0 },
-    { wrong: { repeat: 3, cmds: ['➡️','⬅️','➡️'] }, correct: { repeat: 3, cmds: ['➡️','⬅️'] }, options: [
-      { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 3, cmds: ['➡️','⬅️','➡️'] }, { repeat: 2, cmds: ['➡️','⬅️'] }, { repeat: 4, cmds: ['➡️','⬅️'] }
+    { goal: '🏠 Στόχος: γύρνα ακριβώς πίσω στην αρχή!', wrong: { repeat: 3, cmds: ['➡️','⬅️','➡️'] }, options: [
+      { repeat: 3, cmds: ['➡️','⬅️'] }, { repeat: 3, cmds: ['➡️','⬅️','➡️'] }, { repeat: 4, cmds: ['➡️'] }, { repeat: 2, cmds: ['⬅️','⬅️'] }
     ], answer: 0 }
   ];
-  var cur = 0, score = 0;
+  var cur = 0, score = 0, curOpts = [], curAns = 0;
   function shuffle(a) { for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a; }
   function startGame() { shuffle(levels); cur=0; score=0;
     document.getElementById('scoreDisplay').textContent='⭐ 0';
@@ -219,32 +215,36 @@
     document.getElementById('levelDisplay').textContent=(cur+1)+'/'+levels.length;
     document.getElementById('feedback').className='feedback';
     document.getElementById('feedback').style.display='none';
+    document.getElementById('goalBanner').textContent=lv.goal;
     renderProg(lv.wrong, document.getElementById('wrongProgram'));
+    curOpts=[]; for(var j=0;j<lv.options.length;j++) curOpts.push(lv.options[j]);
+    shuffle(curOpts);
+    curAns=curOpts.indexOf(lv.options[lv.answer]);
     var grid=document.getElementById('optionsGrid'); grid.innerHTML='';
-    for(var j=0;j<lv.options.length;j++){
+    for(var j=0;j<curOpts.length;j++){
       (function(idx){
         var card=document.createElement('div'); card.className='opt-card';
         var cmdsHtml='';
-        for(var k=0;k<lv.options[idx].cmds.length;k++) cmdsHtml+='<span class="opt-cmd">'+lv.options[idx].cmds[k]+'</span>';
-        card.innerHTML='<div class="opt-code"><div class="opt-repeat">🔁 <span class="or-num">'+lv.options[idx].repeat+'</span></div><div class="opt-cmds">'+cmdsHtml+'</div></div><div class="opt-label">Επιλογή '+(idx+1)+'</div>';
+        for(var k=0;k<curOpts[idx].cmds.length;k++) cmdsHtml+='<span class="opt-cmd">'+curOpts[idx].cmds[k]+'</span>';
+        card.innerHTML='<div class="opt-code"><div class="opt-repeat">🔁 <span class="or-num">'+curOpts[idx].repeat+'</span></div><div class="opt-cmds">'+cmdsHtml+'</div></div><div class="opt-label">Επιλογή '+(idx+1)+'</div>';
         card.addEventListener('click',function(){choose(idx);});
         grid.appendChild(card);
       })(j);
     }
   }
   function choose(idx){
-    var lv=levels[cur]; var fb=document.getElementById('feedback');
+    var fb=document.getElementById('feedback');
     var cards=document.querySelectorAll('.opt-card');
     for(var i=0;i<cards.length;i++) cards[i].classList.add('disabled');
-    if(idx===lv.answer){score++;
+    if(idx===curAns){score++;
       document.getElementById('scoreDisplay').textContent='⭐ '+score;
       cards[idx].classList.add('correct');
       fb.className='feedback show yay';
       fb.textContent='✅ Μπράβο! Διόρθωσες το πρόγραμμα! Ο Κοντορεβιθούλης γύρισε σπίτι!';
     }else{
-      cards[idx].classList.add('wrong'); cards[lv.answer].classList.add('correct');
+      cards[idx].classList.add('wrong'); cards[curAns].classList.add('correct');
       fb.className='feedback show nay';
-      fb.textContent='❌ Λάθος! Η σωστή επιλογή είναι η '+(lv.answer+1)+'!';
+      fb.textContent='❌ Λάθος! Η σωστή επιλογή είναι η '+(curAns+1)+'!';
     }
     setTimeout(function(){cur++;loadLevel();},1800);
   }

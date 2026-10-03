@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ρομπότ ή Όχι; 🤖</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 480px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #36d1dc, #5b86e5);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(54,209,220,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #5b86e5; }
+  .round { font-size: .9rem; color: #888; }
+  .item-card {
+    background: #fff; border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 24px 16px;
+    text-align: center; margin-bottom: 14px;
+  }
+  .item-card .i-emoji { font-size: 5rem; display: block; margin-bottom: 8px; }
+  .item-card .i-name { font-size: 1.3rem; font-weight: 700; color: #2d3436; }
+  .answers-row {
+    display: flex; justify-content: center; margin-bottom: 14px;
+  }
+  .btn-answer {
+    flex: 1; max-width: 200px;
+    border: none; border-radius: 16px; padding: 16px 10px;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    transition: transform .15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+    margin: 0 6px;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-answer:active { transform: scale(.94); }
+  .btn-answer:disabled { opacity: .4; cursor: default; transform: none; }
+  .btn-yes { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #fff; }
+  .btn-no { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: #fff; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #36d1dc, #5b86e5);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(54,209,220,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🤖 Ρομπότ ή Όχι;</h1>
+    <p>Το ρομπότ είναι μηχανή που βοηθά τους ανθρώπους!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/8</span>
+  </div>
+  <div id="gameArea">
+    <div class="item-card">
+      <span class="i-emoji" id="itemEmoji">🤖</span>
+      <span class="i-name" id="itemName">—</span>
+    </div>
+    <div class="answers-row">
+      <button class="btn-answer btn-yes" id="btnYes" onclick="answer(true)">🤖 Ναι, ρομπότ!</button>
+      <button class="btn-answer btn-no" id="btnNo" onclick="answer(false)">🚫 Όχι, όχι!</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var items = [
+    { e: '🚁', name: 'drone-ρόμποτ', isRobot: true,
+      why: 'Είναι μηχανή που πετάει και τραβάει φωτογραφίες για τους ανθρώπους!' },
+    { e: '🐻', name: 'αρκουδάκι', isRobot: false,
+      why: 'Είναι παιχνίδι για αγκαλιές — δεν κάνει καμιά δουλειά μόνο του.' },
+    { e: '📦', name: 'ρομπότ-ταχυδρόμος', isRobot: true,
+      why: 'Είναι μηχανή που κουβαλάει και παραδίδει δέματα!' },
+    { e: '🚲', name: 'ποδήλατο', isRobot: false,
+      why: 'Το ποδήλατο θέλει εσένα να το κουνήσεις — δεν κάνει τίποτα μόνο του!' },
+    { e: '🍽️', name: 'πλυντήριο πιάτων', isRobot: true,
+      why: 'Είναι μηχανή που πλένει μόνο του τα πιάτα — μια μεγάλη βοήθεια!' },
+    { e: '🎈', name: 'μπαλόνι', isRobot: false,
+      why: 'Το μπαλόνι είναι απλά διασκέδαση — δεν βοηθά σε δουλειές!' },
+    { e: '⚙️', name: 'ρομπότ-μηχανικός', isRobot: true,
+      why: 'Είναι μηχανή που συναρμολογεί αμάξια — δύσκολη δουλειά!' },
+    { e: '🎎', name: 'κούκλα', isRobot: false,
+      why: 'Η κούκλα είναι παιχνίδι — δεν κουνιέται και δεν εργάζεται μόνη της.' }
+  ];
+
+  var order = [];
+  var current = 0, score = 0, answered = false;
+
+  function startGame() {
+    score = 0; current = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    order = [];
+    for (var i = 0; i < items.length; i++) order.push(i);
+    for (var k = order.length - 1; k > 0; k--) {
+      var j = Math.floor(Math.random() * (k + 1));
+      var tmp = order[k]; order[k] = order[j]; order[j] = tmp;
+    }
+    loadItem();
+  }
+
+  function loadItem() {
+    if (current >= order.length) { showResult(); return; }
+    answered = false;
+    var item = items[order[current]];
+    document.getElementById('roundDisplay').textContent = (current + 1) + '/' + order.length;
+    document.getElementById('itemEmoji').textContent = item.e;
+    document.getElementById('itemName').textContent = item.name;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('btnYes').disabled = false;
+    document.getElementById('btnNo').disabled = false;
+  }
+
+  function answer(saidRobot) {
+    if (answered) return;
+    answered = true;
+    var item = items[order[current]];
+    var fb = document.getElementById('feedback');
+    document.getElementById('btnYes').disabled = true;
+    document.getElementById('btnNo').disabled = true;
+
+    if (saidRobot === item.isRobot) {
+      score++;
+      document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+      fb.style.display = '';
+      fb.className = 'feedback correct';
+      fb.textContent = '✅ Σωστά! ' + item.why;
+    } else {
+      fb.style.display = '';
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ Ωχ! ' + item.why;
+    }
+
+    setTimeout(function() {
+      current++;
+      loadItem();
+    }, 2200);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = order.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Ξέρεις πια είναι ρομπότ και πια όχι!'; }
+    else if (score >= 6) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Καταλαβαίνεις πολύ καλά τα ρομπότ!'; }
+    else if (score >= 4) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Το ρομπότ είναι μηχανή που βοηθά! Θα το πιάσεις!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ταξίδι με Στάσεις 🌼</title>
+<link rel="stylesheet" href="../fonts/emoji-font.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EmojiFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c9f0c9 0%, #a8e6cf 100%);
+    padding: 12px; color: #333;
+  }
+  .app-container { max-width: 520px; margin: 0 auto; }
+  .header {
+    text-align: center; padding: 16px 14px 10px;
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+    border-radius: 20px; color: #fff;
+    box-shadow: 0 6px 20px rgba(86,171,47,.4); margin-bottom: 14px;
+  }
+  .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .header p { font-size: .95rem; opacity: .95; }
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; border-radius: 16px; padding: 8px 16px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .score { font-size: 1.1rem; font-weight: 700; color: #56ab2f; }
+  .round { font-size: .9rem; color: #888; }
+  .goal-bar {
+    text-align: center; font-size: .95rem; font-weight: 700; color: #2e7d32;
+    background: #fff; border-radius: 14px; padding: 8px 12px;
+    margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  }
+  .grid-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+  .grid {
+    display: inline-grid;
+    grid-gap: 4px;
+    background: #2e7d32;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .cell {
+    width: 52px; height: 52px;
+    background: #e8f5e9;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    position: relative;
+    user-select: none; -webkit-user-select: none;
+    transition: background .2s;
+  }
+  .cell.startcell { background: #fff9c4; }
+  .cell.flowercell { background: #f1f8e9; }
+  .cell.flowerdone { background: #dcedc8; }
+  .bugwrap {
+    position: relative;
+    display: inline-block;
+    transition: transform .3s;
+  }
+  .bugwrap .nose {
+    position: absolute; top: -9px; left: 50%;
+    margin-left: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid #d63031;
+  }
+  @media (max-width: 440px) {
+    .cell { width: 43px; height: 43px; font-size: 1.25rem; }
+  }
+  .cmdHistory-label {
+    text-align: center; font-size: .85rem; font-weight: 700; color: #555;
+    margin-bottom: 4px;
+  }
+  .cmdHistory-strip {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    background: #fff; border-radius: 12px; padding: 6px 4px;
+    min-height: 44px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .hcmd {
+    width: 38px; height: 38px;
+    background: #f1f8e9; border: 2px solid #81c784;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin: 2px;
+  }
+  .cmd-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 12px;
+  }
+  .cmd-btn {
+    border: none; border-radius: 16px; padding: 12px 6px;
+    background: #fff; border: 3px solid #56ab2f;
+    cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .12s;
+    font-family: inherit;
+  }
+  .cmd-btn:active { transform: scale(.92); }
+  .cmd-btn:disabled { opacity: .45; cursor: default; transform: none; }
+  .cmd-btn .cb-icon { font-size: 1.7rem; display: block; }
+  .cmd-btn .cb-label { font-size: .82rem; font-weight: 700; color: #444; display: block; }
+  .cmd-btn.turn { border-color: #ff9800; }
+  .util-buttons {
+    display: flex; justify-content: center; margin-bottom: 12px;
+  }
+  .btn-util {
+    border: none; border-radius: 14px; padding: 10px 22px;
+    font-size: .95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: transform .15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    margin: 0 6px;
+  }
+  .btn-util:active { transform: scale(.95); }
+  .btn-util:disabled { opacity: .4; cursor: default; transform: none; }
+  .btn-undo { background: #fff3cd; color: #b8860b; }
+  .btn-reset { background: #ffcdd2; color: #c62828; }
+  .btn-skip3 { background: #eceff1; color: #607d8b; }
+  .feedback {
+    text-align: center; padding: 12px; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: none;
+  }
+  .feedback.correct { display: block; background: #d4edda; color: #155724; }
+  .feedback.wrong { display: block; background: #f8d7da; color: #721c24; }
+  .result-screen {
+    background: #fff; border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.1); padding: 40px 24px;
+    text-align: center; display: none;
+  }
+  .result-screen .big-emoji { font-size: 5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.6rem; color: #2d3436; margin-bottom: 8px; }
+  .result-screen p { font-size: 1.1rem; color: #666; margin-bottom: 20px; }
+  .btn-restart {
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+    color: #fff; border: none; border-radius: 16px;
+    padding: 14px 36px; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 14px rgba(86,171,47,.35);
+    transition: transform .15s;
+  }
+  .btn-restart:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header">
+    <h1>🌼 Ταξίδι με Στάσεις</h1>
+    <p>Κάθε εντολή εκτελείται αμέσως! Πρώτα η 🌼, μετά η 🌺!</p>
+  </div>
+  <div class="info-bar">
+    <span class="score" id="scoreDisplay">⭐ 0</span>
+    <span class="round" id="roundDisplay">1/4</span>
+  </div>
+  <div id="gameArea">
+    <div class="goal-bar" id="goalBar">🎯 Στόχος</div>
+    <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+    <div class="cmdHistory-label">📜 Οι εντολές σου μέχρι τώρα:</div>
+    <div class="cmdHistory-strip" id="historyStrip"></div>
+    <div class="cmd-buttons">
+      <button class="cmd-btn" id="btnF" onclick="doCommand('f')"><span class="cb-icon">⬆️</span><span class="cb-label">Μπροστά</span></button>
+      <button class="cmd-btn" id="btnB" onclick="doCommand('b')"><span class="cb-icon">⬇️</span><span class="cb-label">Πίσω</span></button>
+      <button class="cmd-btn turn" id="btnTL" onclick="doCommand('tl')"><span class="cb-icon">↩️</span><span class="cb-label">Αριστερά</span></button>
+      <button class="cmd-btn turn" id="btnTR" onclick="doCommand('tr')"><span class="cb-icon">↪️</span><span class="cb-label">Δεξιά</span></button>
+    </div>
+    <div class="util-buttons">
+      <button class="btn-util btn-undo" id="btnUndo" onclick="undoCommand()">↩️ Ξανακόκα</button>
+      <button class="btn-util btn-reset" onclick="loadLevel()">🔄 Από την αρχή</button>
+      <button class="btn-util btn-skip3" onclick="skipLevel()">⏭️ Παράλειψη</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Μπράβο!</h2>
+    <p id="resultMsg">Τα κατάφερες τέλεια!</p>
+    <button class="btn-restart" onclick="startGame()">🔄 Ξανά!</button>
+  </div>
+</div>
+<script>
+  var VEC = [ [-1,0], [0,1], [1,0], [0,-1] ];
+  var DEG = [0, 90, 180, 270];
+  var CMD_ICON = { f: '⬆️', b: '⬇️', tl: '↩️', tr: '↪️' };
+  var ROWS = 5, COLS = 5;
+  var levels = [
+    { start: [4,0], ori: 0, stops: [[0,0]], goal: 'Πήγαινε στην 🌸!' },
+    { start: [4,0], ori: 0, stops: [[1,3]], goal: 'Πήγαινε στην 🌸! Θα χρειαστεί και στροφή!' },
+    { start: [0,0], ori: 1, stops: [[0,3],[4,3]], goal: 'Πρώτα στάση στην 🌼, μετά στην 🌺!' },
+    { start: [4,4], ori: 3, stops: [[4,1],[0,0]], goal: 'Πρώτα στάση στην 🌼, μετά στην 🌺!' }
+  ];
+
+  var currentLevel = 0, score = 0;
+  var pos = null, ori = 0, cmdHistory = [], busy = false, resolved = false;
+  var announced = false;
+
+  function startGame() {
+    currentLevel = 0; score = 0;
+    document.getElementById('scoreDisplay').textContent = '⭐ 0';
+    document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    loadLevel();
+  }
+
+  function loadLevel() {
+    if (currentLevel >= levels.length) { showResult(); return; }
+    var lv = levels[currentLevel];
+    pos = { r: lv.start[0], c: lv.start[1] };
+    ori = lv.ori;
+    cmdHistory = [];
+    busy = false;
+    resolved = false;
+    announced = false;
+    document.getElementById('roundDisplay').textContent = (currentLevel + 1) + '/' + levels.length;
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('goalBar').textContent = '🎯 ' + lv.goal;
+    renderGrid();
+    renderHistory();
+    setButtons(true);
+  }
+
+  function renderGrid() {
+    var lv = levels[currentLevel];
+    var grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + COLS + ', 52px)';
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.setAttribute('data-r', r);
+        cell.setAttribute('data-c', c);
+        var isStop = false;
+        for (var s = 0; s < lv.stops.length; s++) {
+          if (lv.stops[s][0] === r && lv.stops[s][1] === c) isStop = true;
+        }
+        if (r === lv.start[0] && c === lv.start[1]) {
+          cell.classList.add('startcell');
+        } else if (isStop) {
+          cell.classList.add('flowercell');
+        }
+        grid.appendChild(cell);
+      }
+    }
+    renderFlowers();
+    placeBug(lv.start[0], lv.start[1], lv.ori);
+  }
+
+  function renderFlowers() {
+    var lv = levels[currentLevel];
+    var visited = getVisitedStops();
+    var bug = document.getElementById('theBug');
+    for (var s = 0; s < lv.stops.length; s++) {
+      var cell = cellAt(lv.stops[s][0], lv.stops[s][1]);
+      var flower;
+      if (lv.stops.length === 1) flower = '🌸';
+      else flower = (s === 0) ? '🌼' : '🌺';
+      var hasBug = (bug && cell.contains(bug));
+      if (s < visited) {
+        cell.classList.add('flowerdone');
+        cell.textContent = flower + '✔️';
+      } else {
+        cell.classList.remove('flowerdone');
+        cell.textContent = flower;
+      }
+      if (hasBug) cell.appendChild(bug);
+    }
+  }
+
+  function getVisitedStops() {
+    var lv = levels[currentLevel];
+    var path = [{ r: lv.start[0], c: lv.start[1] }];
+    for (var h = 0; h < cmdHistory.length; h++) path.push(cmdHistory[h].posAfter);
+    var count = 0;
+    for (var s = 0; s < lv.stops.length - 1; s++) {
+      var hit = false;
+      for (var p = 0; p < path.length; p++) {
+        if (path[p].r === lv.stops[s][0] && path[p].c === lv.stops[s][1]) { hit = true; break; }
+      }
+      if (hit) count++;
+    }
+    return count;
+  }
+
+  function cellAt(r, c) {
+    var cells = document.querySelectorAll('.cell');
+    for (var i = 0; i < cells.length; i++) {
+      if (parseInt(cells[i].getAttribute('data-r')) === r &&
+          parseInt(cells[i].getAttribute('data-c')) === c) return cells[i];
+    }
+    return null;
+  }
+
+  function placeBug(r, c, orientation) {
+    var cell = cellAt(r, c);
+    var wrap = document.createElement('span');
+    wrap.className = 'bugwrap';
+    wrap.id = 'theBug';
+    wrap.innerHTML = '<span class="nose"></span>🐞';
+    wrap.style.transform = 'rotate(' + DEG[orientation] + 'deg)';
+    cell.appendChild(wrap);
+  }
+
+  function moveBug(nr, nc, orientation) {
+    var bug = document.getElementById('theBug');
+    var parent = bug.parentNode;
+    parent.removeChild(bug);
+    bug.style.transform = 'rotate(' + DEG[orientation] + 'deg)';
+    cellAt(nr, nc).appendChild(bug);
+  }
+
+  function rotateBug(orientation) {
+    document.getElementById('theBug').style.transform = 'rotate(' + DEG[orientation] + 'deg)';
+  }
+
+  function renderHistory() {
+    var strip = document.getElementById('historyStrip');
+    strip.innerHTML = '';
+    if (cmdHistory.length === 0) {
+      strip.innerHTML = '<span class="hcmd">❔</span>';
+      return;
+    }
+    for (var i = 0; i < cmdHistory.length; i++) {
+      var el = document.createElement('span');
+      el.className = 'hcmd';
+      el.textContent = CMD_ICON[cmdHistory[i].cmd];
+      strip.appendChild(el);
+    }
+  }
+
+  function setButtons(enabled) {
+    document.getElementById('btnF').disabled = !enabled;
+    document.getElementById('btnB').disabled = !enabled;
+    document.getElementById('btnTL').disabled = !enabled;
+    document.getElementById('btnTR').disabled = !enabled;
+    document.getElementById('btnUndo').disabled = !enabled;
+  }
+
+  function setFeedback(type, text) {
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + type;
+    fb.style.display = '';
+    fb.textContent = text;
+  }
+
+  function doCommand(cmd) {
+    if (busy || resolved) return;
+    var lv = levels[currentLevel];
+    busy = true;
+    setButtons(false);
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+
+    var posBefore = { r: pos.r, c: pos.c };
+    var oriBefore = ori;
+    var posAfter = null;
+
+    if (cmd === 'tl') {
+      ori = (ori + 3) % 4;
+      rotateBug(ori);
+      posAfter = { r: pos.r, c: pos.c };
+      setTimeout(function() { afterAction(cmd, posBefore, oriBefore, posAfter); }, 320);
+    } else if (cmd === 'tr') {
+      ori = (ori + 1) % 4;
+      rotateBug(ori);
+      posAfter = { r: pos.r, c: pos.c };
+      setTimeout(function() { afterAction(cmd, posBefore, oriBefore, posAfter); }, 320);
+    } else {
+      var v = VEC[ori];
+      var dr = v[0], dc = v[1];
+      if (cmd === 'b') { dr = -dr; dc = -dc; }
+      var nr = pos.r + dr, nc = pos.c + dc;
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) {
+        setFeedback('wrong', '💥 Φράχτης! Η πασχαλίτσα δεν βγαίνει από τον κήπο!');
+        busy = false;
+        setButtons(true);
+        return;
+      }
+      pos = { r: nr, c: nc };
+      moveBug(nr, nc, ori);
+      posAfter = { r: nr, c: nc };
+      setTimeout(function() { afterAction(cmd, posBefore, oriBefore, posAfter); }, 360);
+    }
+  }
+
+  function afterAction(cmd, posBefore, oriBefore, posAfter) {
+    cmdHistory.push({ cmd: cmd, posBefore: posBefore, oriBefore: oriBefore, posAfter: posAfter });
+    renderHistory();
+    checkStops();
+  }
+
+  function undoCommand() {
+    if (busy || resolved) return;
+    if (cmdHistory.length === 0) {
+      setFeedback('wrong', 'Δεν έχεις κάνει καμία εντολή ακόμα!');
+      return;
+    }
+    var last = cmdHistory.pop();
+    pos = { r: last.posBefore.r, c: last.posBefore.c };
+    ori = last.oriBefore;
+    moveBug(pos.r, pos.c, ori);
+    renderHistory();
+    renderFlowers();
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('feedback').style.display = 'none';
+  }
+
+  function skipLevel() {
+    if (busy) return;
+    currentLevel++;
+    loadLevel();
+  }
+
+  function checkStops() {
+    var lv = levels[currentLevel];
+    var lastStop = lv.stops[lv.stops.length - 1];
+    var flowerCell = cellAt(lastStop[0], lastStop[1]);
+
+    if (pos.r === lastStop[0] && pos.c === lastStop[1]) {
+      var visited = getVisitedStops();
+      if (visited === lv.stops.length - 1) {
+        renderFlowers();
+        resolved = true;
+        var bug = document.getElementById('theBug');
+        if (bug) {
+          flowerCell.appendChild(bug);
+          bug.style.transform = bug.style.transform + ' scale(1.25)';
+        }
+        score++;
+        document.getElementById('scoreDisplay').textContent = '⭐ ' + score;
+        if (lv.stops.length === 1) {
+          setFeedback('correct', '✅ Μπράβο! Έφτασες στο λουλούδι!');
+        } else {
+          setFeedback('correct', '✅ Μπράβο! Κάνατε και τις δύο στάσεις: 🌼 και 🌺!');
+        }
+        setTimeout(function() {
+          currentLevel++;
+          loadLevel();
+        }, 2200);
+        return;
+      }
+    }
+    var visitedNow = getVisitedStops();
+    renderFlowers();
+    if (!announced && visitedNow === lv.stops.length - 1 && lv.stops.length > 1) {
+      announced = true;
+      setFeedback('correct', '🌼 Πρώτη στάση ✔️! Τώρα πάμε στην 🌺!');
+    }
+    busy = false;
+    setButtons(true);
+  }
+
+  function showResult() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    var total = levels.length;
+    var emoji, title, msg;
+    if (score === total) { emoji = '🏆'; title = 'Τέλεια!'; msg = 'Οδηγείς το ρομπότ με σωστές στάσεις!'; }
+    else if (score >= 3) { emoji = '🎉'; title = 'Μπράβο!'; msg = 'Ξέρεις τις εντολές της πασχαλίτσας!'; }
+    else if (score >= 2) { emoji = '👍'; title = 'Ωραία!'; msg = 'Καλή προσπάθεια! Δοκίμασε ξανά!'; }
+    else { emoji = '💪'; title = 'Καλή αρχή!'; msg = 'Η στροφή γυρνάει τη πασχαλίτσα, δεν την προχωράει!'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMsg').textContent = 'Βρήκες ' + score + ' από ' + total + ' σωστά! ' + msg;
+  }
+
+  startGame();
+</script>
+</body>
+</html>
