@@ -129,7 +129,7 @@ usort($publisherActivities, function($a, $b) {
     
     <script src="../js/auth.js"></script>
     <script>
-        var allActivities = <?php echo json_encode($publisherActivities); ?>;
+        var allActivities = <?php echo json_encode($publisherActivities, JSON_UNESCAPED_UNICODE); ?>;
         var currentFilter = 'all';
         
         function renderActivities() {

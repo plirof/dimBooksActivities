@@ -155,3 +155,11 @@ function findActivityFile($id, $activitiesDir = 'admin/activities/') {
     }
     return null;
 }
+
+function findActivityById($activityId, $activitiesDir = 'admin/activities/') {
+    $filePath = findActivityFile($activityId, $activitiesDir);
+    if ($filePath === null) {
+        return null;
+    }
+    return readJSONFile($filePath);
+}

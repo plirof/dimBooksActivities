@@ -80,7 +80,7 @@ if ($results === null) {
     
     <script src="../js/auth.js"></script>
     <script>
-        var allActivities = <?php echo json_encode($activities); ?>;
+        var allActivities = <?php echo json_encode($activities, JSON_UNESCAPED_UNICODE); ?>;
         var userResults = <?php echo json_encode($results); ?>;
         var username = <?php echo json_encode($username); ?>;
         

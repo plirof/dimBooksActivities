@@ -4,6 +4,34 @@
  *
  *
  *VERSION HISTORY:
+ *v260930f - the class tabs + lesson numbers show ONLY while the
+ *             activity filter is disabled (no_act_filter checked); unchecked hides
+ *     		   them. The checkbox reloads the page on toggle, so this server-side
+ *             style is enough - no extra JS
+ *v260930e - wordboard quiz -> wbquiz (renamed)
+ *v260930d - Category NAMES in the activity filter: pack_js_activities_filter.js
+ *             now also accepts a bracketed category name instead of the badge
+ *             number, e.g. ['spot-error'] or [spot-error] == 22, in the CSV
+ *             (pack_refresh_activities_per_class.csv) AND the shown= URL
+ *             parameter. To make the names available to the JS, every pinned
+ *             top-level <li> now also carries data-tag (the $fixedNumbers key:
+ *             quiz/0quiz*, unique, base type, wordboard type, melispi, chess)
+ *             next to data-num. ?v260930d busts the JS cache.
+ *v260930c - TWO numbering zones. Zone 1 = fixed categories + placeholders
+ *             (placeholders gap-fill lowest free 1..49). Zone 2 = every tag
+ *             WITHOUT a fixed number: sequential 50, 51, 52... AND rendered
+ *             as a "Λοιπές Δραστηριότητες" section at the END of the list
+ *             (div6, after chess) - so auto-numbered tags always appear after
+ *             the largest fixed number, never between smaller ones (the old
+ *             "13, 34, 14" problem is structurally impossible now). Debug
+ *             audit: src = fixed / fallback(placeholder) / auto50 / WARN.
+ *v260930b - Sections now render in ASCENDING badge-number order: after the
+ *             numbering step each section's items (quiz/unique/base/ww) are
+ *             sorted by their pinned number (stable sort - same-tag groups
+ *             stay together, a.,b.,c. children unaffected). Fixes a fallback
+ *             (auto-numbered, e.g. 34) tag rendering between smaller fixed
+ *             numbers (13, 34, 14) because it stayed at its DOM position.
+ *             Fixed taxonomy untouched; numbers still 1..33 fixed, gaps ok.
  *v260928b - FIXED badge numbers: every category (Μελίσπη, quiz, 0quiz*,
  *             unique, base types, wordboard, chess) shows the SAME number on
  *             every class/lesson page. Each top-level <li> is pinned by PHP
@@ -83,8 +111,8 @@
  *   pack_Book.php?c=ST&l=15&timer3      Class ST, Lesson 15, timed mode (5-min intervals)
  *   pack_Book.php?c=A&l=10&showdiv2     Class A, Lesson 10, show only div2
  *   pack_Book.php?c=D&l=20&probeserver  Class D, Lesson 20, with probeserver enabled
- *   pack_BookE.php?l=05                 Shortcut: same as ?c=E&l=05
- *
+ *   pack_Book.php?l=05                 Shortcut: same as ?c=E&l=05
+ *   pack_Book.php?c=El=05&shown=4-5-7-9b-32  (requires extension : pack_js_activities_filter.js )
  * ACTIVITY SOURCES (auto-discovered per lesson):
  *   1. activities-unique/  → Custom self-contained HTML per class/lesson (highest priority)
  *   2. activities-base/    → Generic HTML skeletons loaded with per-lesson JSON data
@@ -447,13 +475,14 @@ function groupTaggedItems(array $items, $subClass) {
     foreach ($order as $tag) {
         $lis = $byTag[$tag];
         // v260928b - every emitted <li> is pinned to its (fixed) badge number
-        if (count($lis) === 1) { $out[] = liPin($lis[0]['html'], $lis[0]['num']); continue; }
+        // v260930d - ...and stamped with its category name (data-tag)
+        if (count($lis) === 1) { $out[] = liPin($lis[0]['html'], $lis[0]['num'], $lis[0]['tag']); continue; }
         // v260923c - class="subwrap" lets CSS hide the wrapper's bare number
         // (li.subwrap::before) without :has(), which old engines like
         // SRWare Iron 61 (Chromium 61) do not support.
         $subs = array();
         foreach ($lis as $it) $subs[] = $it['html'];
-        $out[] = pinnedWrap($subClass, $lis[0]['num'], implode("\n", $subs));
+        $out[] = pinnedWrap($subClass, $lis[0]['num'], implode("\n", $subs), $lis[0]['tag']);
     }
     return $out;
 }
@@ -465,17 +494,22 @@ function groupTaggedItems(array $items, $subClass) {
 // the pack_js_activities_filter.js token map; class fxnum switches the badge
 // content to the innermost counter only (counters(list,".") would join the
 // page <ol>'s outer 0 and render "0.$n" - same reason #div7 overrides it).
-function liPin($liHtml, $n) {
+// v260930d - $tag (the category name / $fixedNumbers key) is stamped as
+// data-tag next to data-num, so the filter JS accepts "['spot-error']"
+// instead of 22 in the CSV / shown= parameter.
+function liPin($liHtml, $n, $tag = '') {
     $n = (int)$n;
+    $tagAttr = ($tag !== '') ? ' data-tag="' . htmlspecialchars($tag) . '"' : '';
     return preg_replace('/^<li(?=[\s>])/i',
-        '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . '"',
+        '<li class="fxnum" data-num="' . $n . '"' . $tagAttr . ' style="counter-reset: list ' . ($n - 1) . '"',
         $liHtml, 1);
 }
 
 // v260928b - pinned group wrapper: ONE number, children lettered Na., Nb. ...
-function pinnedWrap($subClass, $n, $innerHtml) {
+function pinnedWrap($subClass, $n, $innerHtml, $tag = '') {
     $n = (int)$n;
-    return '<li class="subwrap fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . '">'
+    $tagAttr = ($tag !== '') ? ' data-tag="' . htmlspecialchars($tag) . '"' : '';
+    return '<li class="subwrap fxnum" data-num="' . $n . '"' . $tagAttr . ' style="counter-reset: list ' . ($n - 1) . '">'
          . '<ul class="' . $subClass . '">' . "\n" . $innerHtml . "\n</ul></li>";
 }
 
@@ -494,11 +528,17 @@ function unitsFromItems(array $items, $section) {
 }
 
 // v260928b - badge number for every top-level <li>, in DOM order. Units whose
-// tag is in $fixedNumbers claim their fixed number (first claim wins);
-// everything else - and the "Δεν υπάρχουν..." placeholders - takes the lowest
-// free number 1..99, INCLUDING numbers of fixed categories absent from this
-// lesson (gap filling). 100+ is never assigned (EXTRAS zone). Returns
-// units (with num + src), nums keyed "section|tag" and audit rows for ?debug=1.
+// tag is in $fixedNumbers claim their fixed number (first claim wins).
+// v260930c - TWO numbering zones:
+//   zone 1 = fixed categories + the "Δεν υπάρχουν..." placeholders
+//            (placeholders gap-fill the lowest free number 1..49);
+//   zone 2 = every OTHER tag without a fixed number (auto tags): sequential
+//            50, 51, 52... (skipping any fixed number > 49 if one exists).
+//            Zone-2 items are also RENDERED at the end of the list (after
+//            chess, see the div6 emission below). 100+ stays EXTRAS-only.
+// Returns units (with num + src), nums keyed "section|tag" and audit rows
+// for ?debug=1.
+define('PACKBOOK_ZONE2_START', 50);
 function assignNumbers(array $units, array $fixedNumbers) {
     $claimed = array(); // fixed num => unit index that keeps it
     foreach ($units as $i => $u) {
@@ -509,18 +549,32 @@ function assignNumbers(array $units, array $fixedNumbers) {
             $fixed = $fixedNumbers[$u['section']][$u['tag']];
         }
         $units[$i]['fixed'] = $fixed;
+        $units[$i]['placeholder'] = ($u['tag'] === 'placeholder');
         if ($fixed !== null && !isset($claimed[$fixed])) $claimed[$fixed] = $i;
     }
+    // zone 1 pool for placeholders: lowest free 1..(ZONE2_START-1)
     $pool = array();
-    for ($n = 1; $n <= 99; $n++) if (!isset($claimed[$n])) $pool[] = $n;
+    for ($n = 1; $n < PACKBOOK_ZONE2_START; $n++) if (!isset($claimed[$n])) $pool[] = $n;
     $pi = 0;
+    // zone 2 next free number for auto tags
+    $nextAuto = PACKBOOK_ZONE2_START;
+    while (isset($claimed[$nextAuto])) $nextAuto++;
     foreach ($units as $i => $u) {
         if ($u['fixed'] !== null && $claimed[$u['fixed']] === $i) {
             $units[$i]['num'] = $u['fixed'];
             $units[$i]['src'] = 'fixed';
+        } elseif ($u['fixed'] !== null) {
+            // fixed tag lost its number to an earlier tag -> zone 2 tail
+            $units[$i]['num'] = $nextAuto++;
+            while (isset($claimed[$nextAuto])) $nextAuto++;
+            $units[$i]['src'] = 'FIXED-CONFLICT';
+        } elseif ($u['placeholder']) {
+            $units[$i]['num'] = ($pi < count($pool)) ? $pool[$pi++] : PACKBOOK_ZONE2_START - 1;
+            $units[$i]['src'] = 'fallback';
         } else {
-            $units[$i]['num'] = ($pi < count($pool)) ? $pool[$pi++] : 99;
-            $units[$i]['src'] = ($u['fixed'] !== null) ? 'FIXED-CONFLICT' : 'fallback';
+            $units[$i]['num'] = $nextAuto++;
+            while (isset($claimed[$nextAuto])) $nextAuto++;
+            $units[$i]['src'] = 'auto50';
         }
     }
     $nums = array();
@@ -643,8 +697,10 @@ foreach ($wordboardTypes as $type) {
 // number 1..99 (100+ stays EXTRAS-only, see #div7 ol). Keys must match real
 // tags: div1 quiz = $a['type'] ('quiz' + basename of activities-base/0quiz*.
 // html), div2 = 'unique', div3/4 = base type from the JSON filename, div5 =
-// wordboard type (lowercase, displayed uppercase). 'quiz' exists in TWO
-// sections on purpose: base quiz = 2, wordboard QUIZ = 26.
+// wordboard type (lowercase, displayed uppercase). The ww quiz keeps TYPE
+// 'quiz' (glob path + game link) but its TAG is 'wbquiz' (v260930e) so the
+// filter can tell it apart from base quiz: base quiz = 2, wordboard
+// WBQUIZ = 38.
 $fixedNumbers = array(
     'melispi' => 1,
     'quiz' => array(
@@ -659,12 +715,13 @@ $fixedNumbers = array(
         'maze' => 16, 'memory' => 17, 'mind-map' => 18, 'sentence-build' => 19,
         'sorting-speed' => 20, 'speed-type' => 21, 'spot-error' => 22,
         'typing-race' => 23, 'venn-diagram' => 24, 'word-scramble' => 25,
+        'grid-game'=> 26,'drag-order'=>27,'click-game'=>28,
     ),
     'ww' => array(
-        'quiz' => 26, 'match' => 27, 'missingword' => 28, 'wheel' => 29,
-        'crossword' => 30, 'groupsort' => 31, 'wordsearch' => 32,
+        'wbquiz' => 38, 'match' => 39, 'missingword' => 41, 'wheel' => 42,
+        'crossword' => 43, 'groupsort' => 44, 'wordsearch' => 45,
     ),
-    'chess' => 33,
+    'chess' => 49,
 );
 
 $divs = [1 => '', 2 => '', 3 => '', 4 => '', 5 => '', 6 => '', 7 => ''];
@@ -707,12 +764,16 @@ foreach ($baseActs as $a) {
     );
 }
 
-// div5 items = wordboard games, grouped per type at emission
+// div5 items = wordboard games, grouped per type at emission.
+// v260930e - the ww quiz TAG is 'wbquiz' (displayed [WBQUIZ]) so the filter
+// can tell it apart from the base quiz tag; the TYPE stays 'quiz' because
+// the glob path (admin/activities/quiz/) and link (games/quiz/quiz.html) use it.
 $wwItems = [];
 foreach ($wordboardGames as $wg) {
-    $typeLabel = strtoupper($wg['type']);
+    $wwTag = ($wg['type'] === 'quiz') ? 'wbquiz' : $wg['type'];
+    $typeLabel = strtoupper($wwTag);
     $wwItems[] = array(
-        'tag' => $wg['type'],
+        'tag' => $wwTag,
         'title' => $wg['title'],
         'html' => '<li><span style="color:#bf360c;font-size:.7rem">[' . $typeLabel . ']</span> <a href="' . htmlspecialchars($wg['href']) . '" target="sideframe1">' . htmlspecialchars($wg['title']) . '</a></li>',
     );
@@ -756,6 +817,54 @@ foreach ($uniqueItems as &$it) { $it['num'] = $numOf('unique', $it['tag']); } un
 foreach ($baseItems as &$it)   { $it['num'] = $numOf('base', $it['tag']); }   unset($it);
 foreach ($wwItems as &$it)     { $it['num'] = $numOf('ww', $it['tag']); }     unset($it);
 
+// v260930b - sort each section's items by badge number so the rendered list
+// is always ascending. Without this, a fallback (auto-numbered) tag stays at
+// its DOM/first-appearance position, e.g. "...13, 34, 14..." when a new tag
+// first appears between fixed categories 13 and 14. Same-tag items keep their
+// relative order (stable sort), so a., b., c. children are unaffected.
+$_sortByNum = function (array $items) {
+    $n = count($items);
+    for ($i = 1; $i < $n; $i++) {          // insertion sort = stable, tiny lists
+        $it = $items[$i];
+        for ($j = $i - 1; $j >= 0 && $items[$j]['num'] > $it['num']; $j--) {
+            $items[$j + 1] = $items[$j];
+        }
+        $items[$j + 1] = $it;
+    }
+    return $items;
+};
+$quizItems   = $_sortByNum($quizItems);
+$uniqueItems = $_sortByNum($uniqueItems);
+$baseItems   = $_sortByNum($baseItems);
+$wwItems     = $_sortByNum($wwItems);
+unset($_sortByNum);
+
+// v260930c - zone 2 split: items whose tag took an auto number (>= 50) are
+// pulled OUT of their section and rendered together at the END of the list
+// (div6, after chess), so the 50+ zone always comes after the last fixed
+// number. Remember which sections had items BEFORE the split: the "Δεν
+// υπάρχουν..." placeholders must fire only for sections that were empty from
+// the start (a section whose items ALL moved to zone 2 just renders empty).
+$hadQuiz   = !empty($quizItems)   || !empty($melispiLinks);
+$hadUnique = !empty($uniqueItems);
+$hadBase   = !empty($baseItems);
+$hadWw     = !empty($wwItems);
+$zone2Items = array();
+$_keepZone1 = function (array $items) use (&$zone2Items) {
+    $out = array();
+    foreach ($items as $it) {
+        if ($it['num'] >= PACKBOOK_ZONE2_START) { $zone2Items[] = $it; continue; }
+        $out[] = $it;
+    }
+    return $out;
+};
+$quizItems   = $_keepZone1($quizItems);
+$uniqueItems = $_keepZone1($uniqueItems);
+$baseItems   = $_keepZone1($baseItems);
+$wwItems     = $_keepZone1($wwItems);
+unset($_keepZone1);
+usort($zone2Items, function ($a, $b) { return $a['num'] - $b['num']; });
+
 // div1 = "Μελίσπη" section FIRST (melispi_links.csv, v260906), then the
 // "Κουίζ" section (the Κουίζ heading belongs to the quiz links only).
 // Both headings live INSIDE div1 so the timer/showdiv logic is untouched.
@@ -775,9 +884,9 @@ if (!empty($melispiLinks)) {
     }
     $div1Parts[] = '<hr><b>Μελίσπη</b>';
     if (count($meliSubs) === 1) {
-        $div1Parts[] = liPin($meliSubs[0], $nMel);
+        $div1Parts[] = liPin($meliSubs[0], $nMel, 'melispi');
     } else {
-        $div1Parts[] = pinnedWrap('meli-sub', $nMel, implode("\n", $meliSubs));
+        $div1Parts[] = pinnedWrap('meli-sub', $nMel, implode("\n", $meliSubs), 'melispi');
     }
 }
 if (!empty($quizItems)) {
@@ -785,8 +894,10 @@ if (!empty($quizItems)) {
     $div1Parts = array_merge($div1Parts, groupTaggedItems($quizItems, 'tag-sub'));
 }
 $divs[1] = implode("\n", $div1Parts);
-if ($divs[1] === '') {
+if ($divs[1] === '' && !$hadQuiz) {
     // v260928b - placeholders burn a number too (pinned like real activities)
+    // v260930c - only when the section was empty from the start; a section
+    // whose items all moved to zone 2 just leaves div1 empty.
     $n = $numOf('quiz', 'placeholder');
     $divs[1] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν δραστηριότητες κουίζ</li>';
 }
@@ -794,7 +905,7 @@ if ($divs[1] === '') {
 // div2 = all unique activities (old act* + new custom*)
 // v260923 - all unique items share the tag "unique": >1 item -> ONE number
 // with a., b., c. children (as before); exactly 1 item -> plain number.
-if (empty($uniqueItems)) {
+if (!$hadUnique) {
     $n = $numOf('unique', 'placeholder');
     $divs[2] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν μοναδικές δραστηριότητες</li>';
 } else {
@@ -804,7 +915,7 @@ if (empty($uniqueItems)) {
 // div3 + div4 = split remaining base activities
 // v260923 - grouped per tag first ([drag-categories], [matching-lines], ...);
 // the div3/div4 split now cuts between whole tag-groups.
-if (empty($baseItems)) {
+if (!$hadBase) {
     $n = $numOf('base', 'placeholder');
     $divs[3] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν βασικές δραστηριότητες</li>';
     $divs[4] = '';
@@ -816,7 +927,7 @@ if (empty($baseItems)) {
 }
 
 // div5 = wordboard items grouped per type ([QUIZ], [MATCH], ...).
-if (empty($wwItems)) {
+if (!$hadWw) {
     $n = $numOf('ww', 'placeholder');
     $divs[5] = '<li class="fxnum" data-num="' . $n . '" style="counter-reset: list ' . ($n - 1) . ';color:#999;font-style:italic">Δεν υπάρχουν wordboard δραστηριότητες</li>';
 } else {
@@ -824,7 +935,15 @@ if (empty($wwItems)) {
 }
 
 // div6 = fun activities (chess), pinned to fixed number 33 (v260928b)
-$divs[6] = liPin('<li><a href="./chess--great-mate-master__chess_problems_GREEK02_NoNavUrl.swf" target="sideframe1">chess--great-mate-master<BR> chess_exercises <BR>GREEK02</a></li>', $numOf('chess', 'chess'));
+$divs[6] = liPin('<li><a href="./chess--great-mate-master__chess_problems_GREEK02_NoNavUrl.swf" target="sideframe1">chess--great-mate-master<BR> chess_exercises <BR>GREEK02</a></li>', $numOf('chess', 'chess'), 'chess');
+
+// v260930c - zone 2 (auto-numbered tags, 50+): rendered at the END of the
+// list, after chess, as their own section - so every 50+ number comes after
+// the largest fixed number no matter where the tag first appears in the DOM.
+if (!empty($zone2Items)) {
+    $divs[6] .= "\n<hr><b>Λοιπές Δραστηριότητες</b>\n"
+             . implode("\n", groupTaggedItems($zone2Items, 'tag-sub'));
+}
 
 
 if($debug)$debugUrl = '?' . http_build_query(array_merge($_GET, ['debug' => '1']));
@@ -857,7 +976,9 @@ if (isset($_GET['debug'])) {
     }
     foreach ($numAudit as $u) {
         if ($u['src'] === 'fallback')
-            echo "NOTE  [{$u['tag']}] ({$u['section']}) took fallback number {$u['num']} - add it to \$fixedNumbers to pin it.\n";
+            echo "NOTE  [{$u['tag']}] ({$u['section']}) is a placeholder, took gap number {$u['num']} (zone 1).\n";
+        if ($u['src'] === 'auto50')
+            echo "NOTE  [{$u['tag']}] ({$u['section']}) took auto number {$u['num']} (zone 2 - add it to \$fixedNumbers to pin it).\n";
         if ($u['src'] === 'FIXED-CONFLICT')
             echo "WARN  [{$u['tag']}] ({$u['section']}) lost fixed number {$u['fixed']} to an earlier tag - fix \$fixedNumbers.\n";
     }
@@ -937,6 +1058,9 @@ v260519 - div1=quiz+0quiz, div2=unique, div3/4=base split
 <b>Μάθημα <?= $lessonPad ?><?= $lessonTitle ? ' — ' . htmlspecialchars($lessonTitle) : '' ?></b>
 <br><small><a href="<?= htmlspecialchars(buildUrl($classKey, $lesson)) ?>" style="font-size:.8rem">🔄 Reload</a></small>
 
+<?php // v260930f - the class tabs + lesson numbers show ONLY while the
+      // activity filter is disabled (no_act_filter checked); ?>
+<div<?= $noActFilter ? '' : ' style="display:none"' ?>>
 <div class="cls-tabs">
 <?php foreach ($classes as $ck => $ci): ?>
 <a href="<?= htmlspecialchars(buildUrl($ck, $lesson)) ?>" class="cls-tab<?= $ck === $classKey ? ' sel' : '' ?>"><?= $ck ?></a>
@@ -951,6 +1075,7 @@ v260519 - div1=quiz+0quiz, div2=unique, div3/4=base split
 <a href="<?= htmlspecialchars(buildUrl($classKey, $i)) ?>"<?= $sel ?>><?= str_pad($i, 2, '0', STR_PAD_LEFT) ?></a>
 <?php endfor; ?>
 </small>
+</div>
 </div>
 
 <div style="margin-top:2px">
@@ -1021,12 +1146,16 @@ ignore activity filters
      active only with &probeserver). If the file below is missing the page works as before.
      v260924 - ?v260924 busts browser cache so the fixed sub-numbering JS loads.
      v260928 - ?v260928 busts cache: EXTRAS (badges >= 100) are never filtered away.
-     v260928b - ?v260928b busts cache: buildMap() reads the PHP-pinned data-num badges. -->
-<script src="pack_js_activities_filter.js?v260928b" type="text/javascript"></script>
+     v260928b - ?v260928b busts cache: buildMap() reads the PHP-pinned data-num badges.
+     v260930c - ?v260930c busts cache: zone 2 (badges >= 50) is never filtered away.
+     v260930d - ?v260930d busts cache: bracketed category NAMES (['spot-error'])
+              accepted in the CSV / shown= list - PHP stamps data-tag on <li>. -->
+<script src="pack_js_activities_filter.js?v260930d" type="text/javascript"></script>
 <script>
-    if(typeof(first_click) === 'undefined') {
+  /*  if(typeof(first_click) === 'undefined') {
     document.write('<script src="https://cdn.jsdelivr.net/gh/plirof/dim-lesson-pack-planner/lesson_packs/pack_js_footer.js"><\/script>')
     }
+    */
 </script>
 
 </body></html>

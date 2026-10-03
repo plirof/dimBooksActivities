@@ -471,7 +471,7 @@ usort($activities, function($a, $b) use ($classOrder, $typeOrder) {
     
     <script src="js/auth.js"></script>
     <script>
-        var allActivities = <?php echo json_encode(array_values($activities)); ?>;
+        var allActivities = <?php echo json_encode(array_values($activities), JSON_UNESCAPED_UNICODE); ?>;
         var currentFilter = 'all';
         var currentClass = 'all';
         var currentLesson = 'all';

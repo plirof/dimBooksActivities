@@ -111,8 +111,8 @@ if ($isEditing) {
         var segmentCount = 0;
         var isEditing = <?php echo $isEditing ? 'true' : 'false'; ?>;
         var editingId = '<?php echo $isEditing ? htmlspecialchars($editingActivity['id']) : ''; ?>';
-        var editingData = <?php echo $isEditing ? json_encode($editingActivity['data']) : '{}'; ?>;
-        var editingTags = <?php echo $isEditing ? json_encode(isset($editingActivity['tags']) ? $editingActivity['tags'] : array()) : '[]'; ?>;
+        var editingData = <?php echo $isEditing ? json_encode($editingActivity['data'], JSON_UNESCAPED_UNICODE) : '{}'; ?>;
+        var editingTags = <?php echo $isEditing ? json_encode(isset($editingActivity['tags']) ? $editingActivity['tags'] : array(), JSON_UNESCAPED_UNICODE) : '[]'; ?>;
         
         document.addEventListener('DOMContentLoaded', function() {
             if (isEditing && editingTags.length > 0) {

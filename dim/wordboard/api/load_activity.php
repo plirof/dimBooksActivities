@@ -33,4 +33,4 @@ if ($activity === null) {
     exit;
 }
 
-echo json_encode(array('success' => true, 'activity' => $activity));
+echo json_encode(array('success' => true, 'activity' => $activity), JSON_UNESCAPED_UNICODE);

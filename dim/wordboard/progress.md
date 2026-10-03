@@ -439,3 +439,16 @@
   - **games/crossword/crossword.js (backup: backup_/crossword01.js):** direction-aware cursor — crossword.curDir/curRow/curCol track typing direction; typing in a down word moves the cursor DOWN, in an across word moves RIGHT; direction remembered at crossings (same cell click toggles across/down); single-word cells auto-set their word's direction; Backspace on empty cell moves back in current direction and clears; focus selects cell content; clicking a clue highlights the word and focuses its first empty cell. Fixed leftover `this.onDocumentMouseUp.bind(this)` line (method didn't exist → renderGrid crashed and clues never rendered)
   - **Verified in browser (IAB) on dimC-les01-crossword-aod:** clues render numbered 1-6, click on ΤΟΤΕ start cell sets dir=down and highlights the word
   - **User report "Failed to save result: Unauthorized":** NOT a bug from these changes — save_result.php requires a logged-in user ($_SESSION['username'], api/login.php sets it); user opened the game URL directly without login. saveResult is byte-identical to the original and shared by all 7 games. Score saves normally when a student logs in via index.php. No code change (offered friendlier console message if wanted)
+
+  ## Fix: real UTF-8 Greek in JSON output (no more \uXXXX escapes) COMPLETED
+  - **Date:** 2026-09-30
+  - **Issue:** pages echoed Greek titles/tags as \uXXXX escapes (e.g. \u03c0\u03c1\u03cc) because PHP json_encode() escapes non-ASCII by default; stored JSON data was already real UTF-8, only the HTML/echo output was escaped
+  - **Fix:** added `JSON_UNESCAPED_UNICODE` as 2nd argument to all json_encode() calls that output Greek text:
+    - index.php:474 (search page allActivities — the reported one)
+    - admin/dashboard.php:132, admin/publisher_dashboard.php:132, student/dashboard.php:83 (allActivities)
+    - api/load_activity.php:36 (full activity response)
+    - editingData/editingTags lines in admin/create_quiz.php, create_match.php, create_missingword.php, create_wheel.php, create_crossword.php, create_wordsearch.php, create_groupsort.php
+  - **Deliberately NOT changed:** ASCII-only json_encode calls (usernames, roles, English API messages), api/file_utils.php (already had the flag), stale root-level index_*.php copies, backup_/ folder
+  - **Safety verified:** \uXXXX and raw UTF-8 are identical JSON values so behavior is unchanged; all 11 HTML pages have <meta charset="UTF-8">; JSON_UNESCAPED_UNICODE does not affect the / → \/ escaping that keeps inline scripts safe; PHP 8.2 supports the flag (5.4+); Iron 61 (00_iron61.md) fully supports JSON.parse + UTF-8 pages
+  - **Verified:** php -l clean on all 12 files; curl of index.php + 3 dashboards shows real Greek (e.g. "Πώς λύνω ένα πρόβλημα", "ΔΟΚΙΜΗ") and 0 occurrences of \u03 escapes in the page source
+  - **Backups:** backup_/index05.php, dashboard02.php, publisher_dashboard02.php, student_dashboard02.php, load_activity02.php, create_{quiz,match,missingword,wheel,crossword,wordsearch,groupsort}02.php
